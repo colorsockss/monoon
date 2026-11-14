@@ -185,6 +185,8 @@ push, pull request, 수동 실행 시 macOS arm64, Windows x64, Linux x64 러너
 
 Actions 실행의 **Artifacts**에서 `InventoryLab-<rid>-replay`를 내려받으면 두 저장 파일과 빌드 영수증을 볼 수 있다. 로그에는 실제 러너의 OS·CPU와 입력·저장 파일의 SHA-256이 남는다. Mac 작업은 저장·로드와 보상 중복 방지까지 확인한 뒤, 실행 권한을 보존한 앱 묶음과 대응하는 심볼 묶음을 따로 올린다. 별도 Ubuntu 작업은 세 플랫폼의 Release 템플릿을 만든 뒤 `./monoon test`로 엔진 전체를 검사한다.
 
+같은 세 러너에서 버전 31 커밋의 InventoryLab 소스를 버전 35 에디터로 변환하고 Release와 Native AOT를 새로 빌드한다. 각 게임은 약초 두 포기를 가진 v2 슬롯을 읽고, 한 포기를 더 모아 보상을 받은 뒤 저장한다. 읽기 직후에는 v2 원본과, 의뢰 완료 후에는 Mac v3 기준과 바이트 단위로 비교한다. Actions의 `InventoryLab-<rid>-upgrade-31-to-35` 아티팩트에는 두 시점의 슬롯과 빌드 영수증이 들어 있다. [로컬 재현 명령](../../engine/tests/InventoryLab.Replay/README.md#버전-31--35-업그레이드) · [업그레이드 가이드](upgrade.md)
+
 ## 에디터와 템플릿 관리
 
 - 에디터는 [editor](../../editor/)에, 게임 빌드 템플릿은 [player-templates](../../player-templates/)에 있다. 에디터를 옮긴 경우 필요한 템플릿을 담은 `player-templates/`를 앱 옆에 두거나 환경 변수 `MONOON_PLAYERS_DIR`로 상위 폴더를 지정한다.

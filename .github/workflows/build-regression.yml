@@ -22,6 +22,9 @@ jobs:
     timeout-minutes: 30
     steps:
       - uses: actions/checkout@v6
+        with:
+          # The upgrade regression exports the original sample from its v31 commit.
+          fetch-depth: 0
       - uses: actions/setup-dotnet@v5
         env:
           DOTNET_INSTALL_DIR: ${{ runner.temp }}/monoon-dotnet
@@ -71,6 +74,18 @@ jobs:
           name: InventoryLab-osx-arm64-symbols
           path: ${{ runner.temp }}/InventoryLab-osx-arm64-symbols.tar.gz
           if-no-files-found: error
+      - name: Migrate v31 to v35, build both players and finish the quest from v2
+        run: >-
+          python engine/tests/InventoryLab.Replay/build_guest.py
+          game-builds/InventoryLab-upgrade "${{ runner.temp }}/inventory-upgrade"
+          --expected-rid ${{ matrix.rid }} --upgrade-from-v31
+      - name: Upload upgrade saves and build receipts
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: InventoryLab-${{ matrix.rid }}-upgrade-31-to-35
+          path: ${{ runner.temp }}/inventory-upgrade/
+          if-no-files-found: warn
 
   engine:
     name: Engine regression suite
