@@ -31,13 +31,20 @@ public static class ShaderPixels
 
     public static SKBitmap Bake(ShaderClip clip, Color tint)
     {
+        if (OperatingSystem.IsLinux())
+            return LinuxShaderContext.Bake(graphics => Bake(clip, tint, graphics));
+        using var mac = OperatingSystem.IsMacOS() ? new MacShaderContext() : null;
+        return Bake(clip, tint, mac?.Graphics);
+    }
+
+    private static SKBitmap Bake(ShaderClip clip, Color tint, GRContext? graphics)
+    {
         using var effect=Compile(clip);
         var uniforms=new SKRuntimeEffectUniforms(effect);
         if (uniforms.Contains("mnSize")) uniforms["mnSize"]=new float[]{clip.Width,clip.Height};
         int columns=clip.Columns, rows=(clip.Frames+columns-1)/columns;
         var info=new SKImageInfo(clip.Width*columns,clip.Height*rows,SKColorType.Rgba8888,SKAlphaType.Premul);
-        using var mac=OperatingSystem.IsMacOS() ? new MacShaderContext() : null;
-        using var surface=(mac==null ? SKSurface.Create(info) : SKSurface.Create(mac.Graphics,true,info)) ??
+        using var surface=(graphics==null ? SKSurface.Create(info) : SKSurface.Create(graphics,true,info)) ??
             throw new InvalidDataException("Cannot allocate a shader sheet.");
         var canvas=surface.Canvas;
         using var paint=new SKPaint { BlendMode=SKBlendMode.Src };

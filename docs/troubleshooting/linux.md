@@ -27,6 +27,8 @@ game=./game-builds/KeyRoom/KeyRoom-linux-x64
 
 ## InventoryLab 헤드리스 빌드·회귀
 
+InventoryLab의 입력 리플레이는 디스플레이 없이 실행된다. 엔진 전체 회귀나 PlatformerLab에서 SkSL 셰이더의 픽셀도 그릴 때는 Linux의 오프스크린 Mesa 라이브러리 `libOSMesa.so.8`이 필요하다. Ubuntu·Debian 패키지는 `libosmesa6`다. SkiaSharp 2.88.9의 CPU 표면에서 런타임 셰이더를 그리던 경로가 Linux에서 `SIGILL`로 종료되어, 셰이더 시트를 구울 때 Mesa 컨텍스트를 사용한다.
+
 보존한 Debian 12.15 amd64 VM에서 .NET SDK 10.0.101과 clang 14로 Release와 Native AOT 배포본을 직접 빌드했다. 두 실행 파일 모두 화면 없는 환경에서 Mac의 입력 475프레임을 재생했고, 게스트에서 꺼낸 두 저장 파일 모두 Mac 기준 171바이트와 일치했다. [게스트 빌드 명령](../../engine/tests/InventoryLab.Replay/README.md) · [실행 로그](../../engine/tests/results/input-replay-x64/linux-x64/build.log)
 
 이 VM의 SDK는 `~/monoon-buildtools/dotnet`, 오프라인 NuGet 피드는 `~/monoon-buildtools/feed`, 빌드와 소스는 `~/inventory-replay-check`에 있다. 재실행 셸에서 `DOTNET_ROOT`, `PATH`, `RestoreSources`에 이 위치를 지정한다. 메모리 3GB로 AOT를 빌드할 때 사용한 스왑 파일은 `/var/tmp/monoon-aot.swap`이다. VM 재부팅 후 필요하면 `sudo swapon /var/tmp/monoon-aot.swap`으로 기존 파일을 활성화한다.

@@ -83,5 +83,11 @@ jobs:
           dotnet-version: 10.0.101
       - name: Prepare the three Release export templates
         run: ./engine/scripts/build-players.sh
+      - name: Prepare offscreen Mesa for shader pixel checks
+        run: |
+          if ! dpkg -s libosmesa6 >/dev/null 2>&1; then
+            sudo apt-get update
+            sudo apt-get install -y --no-install-recommends libosmesa6
+          fi
       - name: Run the full regression suite
         run: ./monoon test
