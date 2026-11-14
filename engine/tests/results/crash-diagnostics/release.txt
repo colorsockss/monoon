@@ -1,0 +1,17 @@
+InventoryLab release osx-arm64  build 7c99a497b83b48b1ba346fbb3142a2f5
+2026-11-14T15:05:59.3030770Z  macOS 27.0.1 Arm64  play  scene 6a7b735e-336d-5674-b2e7-a136db5a7771
+System.IO.InvalidDataException: Quest 'herbalist' needs a positive integer rewardCount.
+  MoNoon.Quests.CollectionQuest.<.ctor>g__ReadCount|23_0  Scripts/Quests/QuestJournal.cs:35  (IL 0x86)
+  MoNoon.Quests.CollectionQuest..ctor  Scripts/Quests/QuestJournal.cs:27  (IL 0x79)
+  MoNoon.Quests.QuestJournal..ctor  Scripts/Quests/QuestJournal.cs:77  (IL 0x2c)
+  MoNoon.Quests.QuestLog.OnCreate  Scripts/Quests/QuestLog.cs:10  (IL 0x0)
+  Engine.Core.SceneGame.FlushLife  /Users/paare/codex_project/brutal_engine/engine/src/Engine.Core/ScriptLifecycle.cs:49  (IL 0x108)
+System.InvalidOperationException: QuestLog.OnCreate: Quest 'herbalist' needs a positive integer rewardCount.
+  Engine.Core.SceneGame.FlushLife  /Users/paare/codex_project/brutal_engine/engine/src/Engine.Core/ScriptLifecycle.cs:55  (IL 0x132)
+  Engine.Core.SceneGame.UpdateUi  /Users/paare/codex_project/brutal_engine/engine/src/Engine.Core/SceneGame.cs:296  (IL 0x1f)
+  Engine.Core.GameSession.UpdateUi  /Users/paare/codex_project/brutal_engine/engine/src/Engine.Core/GameSession.cs:130  (IL 0x8)
+  Engine.Core.GameLoop.Advance  /Users/paare/codex_project/brutal_engine/engine/src/Engine.Core/GameLoop.cs:21  (IL 0x1f)
+  Engine.Desktop.DesktopHost.RunLoop  /Users/paare/codex_project/brutal_engine/engine/src/Engine.Desktop/DesktopHost.cs:142  (IL 0x7e0)
+  Engine.Desktop.DesktopHost.Run  /Users/paare/codex_project/brutal_engine/engine/src/Engine.Desktop/DesktopHost.cs:24  (IL 0x83)
+  Engine.Desktop.DesktopHost.Run  /Users/paare/codex_project/brutal_engine/engine/src/Engine.Desktop/DesktopHost.cs:9  (IL 0x0)
+  Program.<Main>$  /Users/paare/codex_project/brutal_engine/engine/src/Engine.Player/Program.cs:139  (IL 0x6e1)

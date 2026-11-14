@@ -43,6 +43,9 @@ try
         await InventoryBuildChecks.Run(args[2], scratch, expectedProfile);
         return;
     }
+    ContentBundleChecks.Run(scratch);
+    GameModChecks.Run(scratch);
+    ContentUpdateChecks.Run(scratch);
     DialogueChecks.Run(repository, scratch);
     DeckChecks.Run(repository, scratch);
     if (args.Contains("--deck-only")) return;

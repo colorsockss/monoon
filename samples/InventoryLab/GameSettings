@@ -1,5 +1,6 @@
 projectId: ade09cc3-a769-56d7-9832-a2bea14c7e71
 gameTitle: InventoryLab
+contentBundles: [Assets/Dialogue, Assets/Quests]
 width: 800
 height: 450
 startScene: 6a7b735e-336d-5674-b2e7-a136db5a7771

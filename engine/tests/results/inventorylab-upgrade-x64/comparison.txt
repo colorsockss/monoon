@@ -1,0 +1,8 @@
+Mac host byte comparisons
+v31 InventoryLab: 25 files equal to git tree 6232209b5ce4a2c7516db0c8fd989ba63a8e77c5
+v2 input: 126 bytes SHA-256 7450a6e0d3dab14ec6f69717f9b13e4f733197c7cb8a8f183738fc51bd13e1b2
+Mac v3 Release = Mac v3 Native AOT = Herbalist.save: 171 bytes SHA-256 eed41defcbd7987a527deb677c60da8151ad0de1616c717c646e92b26e70f795
+PASS win-x64 release 09c257b34ad149fd95cc94d04f1a0aa1 | L = Mac v2 | L 1 T 2 1 S = both Mac v3 saves and Herbalist.save
+PASS win-x64 native-aot c3871ec05bce47db9c83c17ab6a82691 | L = Mac v2 | L 1 T 2 1 S = both Mac v3 saves and Herbalist.save
+PASS linux-x64 release 53a27d257ba64271a2c8f5748a828d50 | L = Mac v2 | L 1 T 2 1 S = both Mac v3 saves and Herbalist.save
+PASS linux-x64 native-aot d655e8c0ea7043468c1165da452db30f | L = Mac v2 | L 1 T 2 1 S = both Mac v3 saves and Herbalist.save

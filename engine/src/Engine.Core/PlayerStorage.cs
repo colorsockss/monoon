@@ -17,7 +17,9 @@ public sealed class PlayerStorage
         return new(Path.Combine(root, editor ? "Play" : "Games", gameId.ToString("N")));
     }
 
-    private string DirectoryPath => directory ?? throw new InvalidOperationException("Save the project before using player storage.");
+    public static string CrashDirectory(Guid gameId) => Path.Combine(ForGame(gameId, false).DirectoryPath, "Crashes");
+
+    internal string DirectoryPath => directory ?? throw new InvalidOperationException("Save the project before using player storage.");
     private string SlotPath(int slot)
     {
         if (slot is < 1 or > 999) throw new ArgumentOutOfRangeException(nameof(slot), "Choose a slot between 1 and 999.");

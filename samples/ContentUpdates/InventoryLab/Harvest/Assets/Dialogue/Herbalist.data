@@ -1,0 +1,39 @@
+version: 1
+values:
+  format: "monoon.dialogue.v1"
+  start: "greeting"
+  nodes:
+  - id: "greeting"
+    speaker: "약초상"
+    text: "수확제에 오신 걸 환영해요!"
+    choices:
+    - {text: "의뢰를 알아본다", next: "offer", action: ""}
+    - {text: "보상을 문의한다", next: "reward", action: ""}
+    - {text: "나중에 온다", next: "farewell", action: ""}
+  - id: "offer"
+    speaker: "약초상"
+    text: "새 잎이 돋은 약초 세 포기가 필요해요. 모아 주시겠어요?"
+    choices:
+    - {text: "의뢰를 받는다", next: "accepted", action: "accept"}
+    - {text: "이번에는 사양한다", next: "farewell", action: ""}
+  - id: "accepted"
+    speaker: "약초상"
+    text: "고마워요. 약초를 모은 뒤 다시 말을 걸어 주세요."
+    choices:
+    - {text: "약초를 찾으러 간다", next: "", action: ""}
+  - id: "reward"
+    speaker: "약초상"
+    text: "의뢰를 마쳤다면 창고 열쇠를 드릴게요."
+    choices:
+    - {text: "보상을 받는다", next: "paid", action: "claim"}
+    - {text: "처음으로 돌아간다", next: "greeting", action: ""}
+  - id: "paid"
+    speaker: "약초상"
+    text: "약속한 창고 열쇠예요. 수확제 준비를 도와줘서 고마워요."
+    choices:
+    - {text: "대화를 마친다", next: "", action: ""}
+  - id: "farewell"
+    speaker: "약초상"
+    text: "필요한 일이 생기면 또 들르세요."
+    choices:
+    - {text: "대화를 마친다", next: "", action: ""}

@@ -1,0 +1,9 @@
+version: 1
+values:
+  buildId: "d655e8c0ea7043468c1165da452db30f"
+  projectId: "ade09cc3-a769-56d7-9832-a2bea14c7e71"
+  game: "InventoryLab"
+  target: "linux-x64"
+  mode: "native-aot"
+  profile: "distribution"
+  playerSha256: "563BC194FFC272DA638BBB4605E2A5BCD46A2BE95152195DBE41B6685C4629F8"

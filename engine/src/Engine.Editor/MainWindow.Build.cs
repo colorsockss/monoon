@@ -32,7 +32,10 @@ public partial class MainWindow
         var choices = scenes.Select(e => new CheckBox { Content = e.Label, Tag = e.Id,
             IsChecked = settings.IncludedScenes.Length == 0 || settings.IncludedScenes.Contains(e.Id) }).ToArray();
         var rows = new StackPanel { Spacing = 4, Margin = new Thickness(12) };
-        var grid = new Grid { ColumnDefinitions = new("78,*"), RowDefinitions = new("Auto,Auto,Auto"), ColumnSpacing = 4, RowSpacing = 4 };
+        var bundles = new TextBox { AcceptsReturn = true, MaxHeight = 80, MinHeight = 40,
+            Text = string.Join(Environment.NewLine, settings.ContentBundles ?? []),
+            Watermark = "One Assets or Scenes folder per line" };
+        var grid = new Grid { ColumnDefinitions = new("78,*"), RowDefinitions = new("Auto,Auto,Auto,Auto"), ColumnSpacing = 4, RowSpacing = 4 };
         void Row(int index, string text, Control value)
         {
             var label = new TextBlock { Text = text, VerticalAlignment = VerticalAlignment.Center };
@@ -40,7 +43,8 @@ public partial class MainWindow
             Grid.SetRow(label, index); Grid.SetRow(value, index); Grid.SetColumn(value, 1);
             grid.Children.Add(label); grid.Children.Add(value);
         }
-        Row(0, "Start scene", start); Row(1, "Platform", target); Row(2, "Build type", modePicker); rows.Children.Add(grid);
+        Row(0, "Start scene", start); Row(1, "Platform", target); Row(2, "Build type", modePicker);
+        Row(3, "Bundles", bundles); rows.Children.Add(grid);
         rows.Children.Add(new TextBlock { Text = "Included scenes" });
         var scenesPanel = new StackPanel();
         foreach (var choice in choices) scenesPanel.Children.Add(choice);
@@ -57,7 +61,9 @@ public partial class MainWindow
         chooseOutput.Click += (_, _) => dialog.Close("choose");
         build.Click += (_, _) => dialog.Close("build");
         if (await dialog.ShowDialog<string?>(this) is not { } mode || start.SelectedItem is not ObjectReference selected) return;
-        settings = settings with { StartScene = selected.Id, IncludedScenes = choices.Where(c => c.IsChecked == true).Select(c => (Guid)c.Tag!).ToArray() };
+        var folders = (bundles.Text ?? "").Split('\n', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
+        settings = settings with { StartScene = selected.Id, IncludedScenes = choices.Where(c => c.IsChecked == true).Select(c => (Guid)c.Tag!).ToArray(),
+            ContentBundles = folders.Length == 0 ? null : folders };
         if (!settings.IncludedScenes.Contains(selected.Id)) throw new InvalidDataException("Include the start scene.");
         if (mode == "settings") { settings.Save(root); Scene.Settings = settings; MarkDirty(); Status.Text = "Saved build settings."; return; }
         var rid = (string)target.SelectedItem!;

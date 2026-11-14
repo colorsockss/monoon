@@ -1,0 +1,48 @@
+version: 1
+utc: "2026-11-14T15:06:00.4670160Z"
+oS: macOS 27.0.1
+architecture: Arm64
+run: play
+scene: 6a7b735e-336d-5674-b2e7-a136db5a7771
+build:
+  version: 1
+  values:
+    buildId: "959313df7a7340f69cf84d922d4c4ce7"
+    projectId: "ade09cc3-a769-56d7-9832-a2bea14c7e71"
+    game: "InventoryLab"
+    target: "osx-arm64"
+    mode: "native-aot"
+    profile: "distribution"
+    playerSha256: "B60E3FDC81CB2F1474CF349201BEA01AE839E126592FE65D3F065BA2BB77790E"
+    nativeUuid: "0ee8fe2d-5bc1-3421-ae40-14fde4058c2f"
+causes:
+- type: System.IO.InvalidDataException
+  message: "Quest 'herbalist' needs a positive integer rewardCount."
+  frames:
+  - method: MoNoon.Quests.CollectionQuest.<.ctor>g__ReadCount|23_0
+    imageOffset: 0x908ea0
+  - method: MoNoon.Quests.CollectionQuest..ctor
+    imageOffset: 0x908a38
+  - method: MoNoon.Quests.QuestJournal..ctor
+    imageOffset: 0x908fb0
+  - method: MoNoon.Quests.QuestLog.OnCreate
+    imageOffset: 0x909be4
+  - method: Engine.Core.SceneGame.FlushLife
+    imageOffset: 0xcf4f8
+- type: System.InvalidOperationException
+  message: "QuestLog.OnCreate: Quest 'herbalist' needs a positive integer rewardCount."
+  frames:
+  - method: Engine.Core.SceneGame.FlushLife
+    imageOffset: 0xcf588
+  - method: Engine.Core.SceneGame.UpdateUi
+    imageOffset: 0xcb618
+  - method: Engine.Core.GameSession.UpdateUi
+    imageOffset: 0xfb6f4
+  - method: Engine.Core.GameLoop.Advance
+    imageOffset: 0xf8f40
+  - method: Engine.Desktop.DesktopHost.RunLoop
+    imageOffset: 0x2e8308
+  - method: Engine.Desktop.DesktopHost.Run
+    imageOffset: 0x2e7ad8
+  - method: Program.<Main>$
+    imageOffset: 0x90d5d4

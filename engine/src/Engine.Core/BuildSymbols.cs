@@ -28,12 +28,26 @@ internal static class BuildSymbols
             };
             var file = new FileInfo(Path.Combine(bin, symbol));
             if (!file.Exists || file.Length == 0) throw new InvalidDataException($"Native publish did not produce {symbol}.");
+            if (rid == "osx-arm64")
+            {
+                var uuid = MacUuid(Path.Combine(bin, "MoNoonPlayer"));
+                if (uuid != MacUuid(file.FullName)) throw new InvalidDataException("Player and dSYM UUIDs differ.");
+                receipt.Set("nativeUuid", uuid.ToString("D"));
+            }
         }
         else
         {
             foreach (var dll in new[] { "MoNoonPlayer.dll", "Engine.Core.dll", "Engine.Desktop.dll",
                 Path.Combine("Game", ".monoon-compiled", ProjectScripts.AssemblyFile) })
-                receipt.Set("pdbId/" + dll.Replace('\\', '/'), VerifyPortablePdb(Path.Combine(bin, dll)).ToString("D"));
+            {
+                string path = Path.Combine(bin, dll);
+                string key = dll.Replace(Path.DirectorySeparatorChar, '/');
+                receipt.Set("pdbId/" + key, VerifyPortablePdb(path).ToString("D"));
+                using var stream = File.OpenRead(path);
+                using var pe = new PEReader(stream);
+                var metadata = pe.GetMetadataReader();
+                receipt.Set("mvid/" + key, metadata.GetGuid(metadata.GetModuleDefinition().Mvid).ToString("D"));
+            }
         }
 
         if (archive != null) MoveSymbols(bin, archive);
@@ -51,6 +65,29 @@ internal static class BuildSymbols
                 entry.Stamp == id.Stamp && pe.ReadCodeViewDebugDirectoryData(entry).Guid == id.Guid))
             throw new InvalidDataException($"Debug symbols do not match {assembly}: {path}");
         return id.Guid;
+    }
+
+    // Both files produced by the osx-arm64 publisher are thin little-endian Mach-O images.
+    internal static Guid MacUuid(string path)
+    {
+        using var file = File.OpenRead(path);
+        using var reader = new BinaryReader(file);
+        if (reader.ReadUInt32() != 0xfeedfacf || reader.ReadUInt32() != 0x0100000c)
+            throw new InvalidDataException($"Expected an arm64 Mach-O image: {path}");
+        file.Position = 16;
+        uint count = reader.ReadUInt32(), length = reader.ReadUInt32();
+        file.Position = 32;
+        long end = file.Position + length;
+        if (end > file.Length) throw new InvalidDataException($"Invalid Mach-O header: {path}");
+        for (uint i = 0; i < count && file.Position + 8 <= end; i++)
+        {
+            long start = file.Position;
+            uint command = reader.ReadUInt32(), size = reader.ReadUInt32();
+            if (size < 8 || start + size > end) break;
+            if (command == 0x1b && size == 24) return new Guid(reader.ReadBytes(16), bigEndian: true);
+            file.Position = start + size;
+        }
+        throw new InvalidDataException($"Missing Mach-O UUID: {path}");
     }
 
     private static void MoveSymbols(string bin, string archive)

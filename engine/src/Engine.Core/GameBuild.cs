@@ -234,7 +234,7 @@ public static class GameBuild
         var markerRoot = nativeAot ? Path.GetDirectoryName(template)! : template;
         var versionFile = Path.Combine(markerRoot, "MoNoonContent.version");
         string? version = File.Exists(versionFile) ? File.ReadAllText(versionFile).Trim() : null;
-        const int minimum = 31; // Pooled sprite layers and bulk rendering.
+        const int minimum = 35; // Player crash reports carry build and frame identities.
         if (!int.TryParse(version, out var supplied) || supplied != minimum)
             throw new InvalidDataException($"This project requires content version {minimum}. Update the {rid} player template or Native AOT kit at {markerRoot}.");
         var name = settings.GameTitle ?? new DirectoryInfo(project).Name;
@@ -277,6 +277,7 @@ public static class GameBuild
             }
             var receipt = new GameData();
             receipt.Set("buildId", buildId);
+            receipt.Set("projectId", (settings.ProjectId ?? start).ToString("D"));
             receipt.Set("game", name);
             receipt.Set("target", rid);
             receipt.Set("mode", mode);
@@ -311,6 +312,8 @@ public static class GameBuild
                 return entry with { Hash = hash };
             }).ToArray();
             ProjectAssets.Write(Path.Combine(game, ProjectAssets.Manifest), manifest);
+            ContentBundle.Pack(game, settings.ContentBundles ?? [], manifest);
+            GameMods.Export(project, bin, settings.ProjectId ?? start, manifest);
             (settings with { GameTitle = name, ProjectId = settings.ProjectId ?? start }).Save(game);
             if (rid == "osx-arm64")
             {

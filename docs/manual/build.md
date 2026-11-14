@@ -50,6 +50,25 @@ CLI의 `--profile`로 심볼을 보관할 위치를 고른다. 두 프로필 모
 
 Release는 엔진·플레이어·게임 스크립트의 portable PDB를 저장한다. macOS Native AOT의 네이티브 주소를 해석할 때는 `MoNoonPlayer.dSYM`을 사용한다. `dwarfdump --uuid`에 실행 파일과 dSYM을 함께 넘겨 두 UUID를 대조할 수 있다. Windows Native AOT의 네이티브 심볼은 `.pdb`, Linux에서는 `.dbg`다. [InventoryLab 심볼과 소스 줄 검증](../../engine/tests/results/build-profiles/README.md)
 
+## 크래시 진단
+
+콘텐츠 버전 35의 독립 플레이어는 게임 실행을 끝내는 C# 예외를 게임별 사용자 프로필의 `Crashes/*.crash`에 YAML로 기록한다. 일반 실행·입력 기록·리플레이·스모크 실행에서 같은 형식을 쓴다. 보고서에는 UTC 시각, OS·CPU, 씬 ID, 실행 방식, 빌드 기록, 최초 예외부터 바깥 예외까지의 메시지와 스택이 들어 있다. 터미널로 실행하면 저장 경로도 표준 오류에 출력된다. macOS의 기본 위치는 `~/Library/Application Support/MoNoon/Games/<게임 ID 32자리>/Crashes/`이며 `MONOON_USER_DATA`를 지정한 경우 그 폴더 아래에서 찾는다. SDL·네이티브 라이브러리의 프로세스 신호 오류는 macOS의 시스템 진단 보고서를 사용한다.
+
+보고서의 `build.values`에서 게임명, `target`, `mode`, `buildId`를 확인하고 해당 빌드의 심볼 폴더를 지정한다. 개발용 프로필은 `MoNoonBuild`와 심볼이 같이 있는 앱의 바이너리 폴더를 지정한다. 아래 예시는 보관한 InventoryLab 보고서를 실제 배포 심볼로 읽는다.
+
+```sh
+reports=engine/tests/results/crash-diagnostics
+symbols=game-builds/InventoryLab/Symbols/InventoryLab/osx-arm64
+./monoon crash explain "$reports/release.crash" "$symbols/release/7c99a497b83b48b1ba346fbb3142a2f5"
+./monoon crash explain "$reports/native-aot.crash" "$symbols/native-aot/959313df7a7340f69cf84d922d4c4ce7"
+```
+
+Release에서는 모듈 ID와 portable PDB를 확인하고 메서드 토큰·IL 오프셋을 소스 줄로 해석한다. macOS arm64 Native AOT에서는 dSYM의 UUID를 대조하고 `atos`로 보고서의 이미지 상대 주소를 해석한다. 첫 예외 블록 맨 위에서 오류 지점을 보고, 이어지는 프레임에서 호출한 스크립트와 엔진 콜백을 확인한다. 실행 파일과 심볼을 보관한 상태에서 다음 명령으로 같은 실패와 복구를 다시 시험할 수 있다. [원본 보고서와 해석 결과](../../engine/tests/results/crash-diagnostics/README.md)
+
+```sh
+python3 engine/tests/InventoryLab.Crashes/check.py game-builds/InventoryLab
+```
+
 ## 터미널에서 빌드와 회귀 검사
 
 저장소 루트에서 다음 명령 하나로 InventoryLab을 검사한다. .NET 10 SDK와 호스트용 네이티브 툴체인을 사용한다. 이 Mac에서는 Xcode 명령줄 도구를 사용한다.
@@ -97,6 +116,69 @@ InventoryLab에서는 **T → 1 → 1 → S**로 의뢰를 받고 저장한다. 
 
 이미 빌드된 InventoryLab에서는 `./monoon test replay game-builds/InventoryLab` 한 줄로 저장소의 기록을 재생한다. Release·Native AOT가 각각 만든 저장 파일 전체를 실제 기록 시점의 저장 파일과 대조하고, 다르면 종료 코드 1을 반환한다. `./monoon ci`에도 이 검사가 포함된다. [기준 입력](../../engine/tests/fixtures/InventoryLab/Herbalist.inputreplay) · [기준 저장](../../engine/tests/fixtures/InventoryLab/Herbalist.save) · [이 Mac의 검증 기록](../../engine/tests/results/input-replay/README.md) · [Windows·Linux x64 게스트의 네 배포본 검증](../../engine/tests/results/input-replay-x64/README.md)
 
+## 콘텐츠 번들
+
+**Build → Build Game… → Bundles**에 프로젝트 루트 기준 폴더 경로를 한 줄에 하나씩 입력한다. **Save Settings**로 저장하면 에디터와 CLI의 Release·Native AOT 빌드에 함께 적용된다. 비워 두면 에셋을 기존 폴더 구조로 내보낸다. InventoryLab의 설정은 다음과 같다.
+
+```yaml
+contentBundles:
+  - Assets/Dialogue
+  - Assets/Quests
+```
+
+`Assets` 또는 `Scenes` 아래에서 빌드할 씬이 참조하는 에셋이 있는 폴더를 고른다. 부모·자식 폴더를 겹쳐 지정하거나 내보낼 에셋이 없는 폴더를 지정하면 빌드가 실패한다. 각 파일의 소속은 내보내는 경로로 결정되며, 번들 사이의 참조는 기존 에셋 GUID를 그대로 사용한다.
+
+`./monoon build samples/InventoryLab release`를 실행하면 플레이어 실행 파일 옆의 `ContentBundles/Assets/`에 `Dialogue.bundle`과 `Quests.bundle`이 생긴다. 번들은 ZIP 컨테이너이며 내부의 대화와 테이블은 원래의 YAML이다. 나머지 에셋과 컴파일된 스크립트는 기존 `Game/`에 있다.
+
+게임 시작 시 플레이어는 `ContentBundles/Catalog`의 SHA-256과 게임 매니페스트를 확인한 뒤 번들과 기본 콘텐츠를 실행별 임시 폴더에 준비한다. 시작 시 파일 크기에 비례하는 임시 공간이 필요하며, 정상 종료 시 해당 폴더를 지운다. 플레이어 저장은 기존 게임별 프로필에 남는다. 배포 시에는 빌드가 만든 카탈로그와 모든 번들을 함께 포함한다.
+
+## 콘텐츠 업데이트
+
+콘텐츠 버전 34부터 이미 배포한 게임의 번들에 포함된 `.data`와 `.table`을 한 파일로 업데이트할 수 있다. 제작자는 교체할 파일만 원래 상대 경로대로 준비한다. InventoryLab 수확제 샘플은 약초상의 인사·보상 대사와 약초 세 포기의 보상을 창고 열쇠 1개로 바꾼다. [수확제 교체 파일](../../samples/ContentUpdates/InventoryLab/Harvest/Assets)
+
+**제작.** 저장소 루트에서 다음 명령을 실행한다. CLI는 기준 게임의 에셋 매니페스트를 읽고 번들을 만든 뒤 SHA-256을 출력한다. 번들과 이 해시를 이용자에게 전달한다. 같은 기준 매니페스트를 쓰는 Release와 Native AOT에는 같은 파일을 배포한다.
+
+```sh
+bin=game-builds/InventoryLab/InventoryLab.app/Contents/MacOS
+bundle=game-builds/InventoryLab/Updates/Harvest.bundle
+./monoon content-update pack "$bin/Game" samples/ContentUpdates/InventoryLab/Harvest "$bundle"
+```
+
+**적용.** 아래 해시는 이 Mac에서 검증한 수확제 번들의 값이다. 교체 파일이나 기준 매니페스트가 달라지면 제작자가 새로 발행한 값을 사용한다.
+
+```sh
+sha=8288D051CC082460F3D4F20B8A4B53224CE5F77E8DF00DB4346CD8059409C15D
+"$bin/MoNoonPlayer" --content-update apply "$bundle" "$sha"
+"$bin/MoNoonPlayer"
+```
+
+플레이어는 임시 파일에서 번들 전체의 SHA-256, 게임 ID, 기준 매니페스트, 각 문서의 GUID·경로·해시와 YAML 형식을 검사한다. 이어 임시 저장 프로필로 시작 씬을 열고 한 틱을 실행한다. 모두 통과하면 번들 하나를 게임별 사용자 폴더의 `ContentUpdates/Active.bundle`로 교체한다. 이미 실행 중인 게임은 종료할 때까지 그 실행에서 연 콘텐츠를 사용한다. 새 실행의 적용 순서는 기본 번들 → 콘텐츠 업데이트 → 활성 모드다. 샘플 대사를 보려면 달맞이 장터 모드를 꺼 둔다.
+
+**후속 배포와 복구.** 각 업데이트에는 최초 배포본을 기준으로 계속 유지할 변경분을 모두 넣는다. 적용에 실패하면 명령이 종료 코드 1과 이유를 출력하며 마지막 정상 번들이 계속 쓰인다. 첫 업데이트가 실패하거나 다음 실행에서 활성 번들의 손상이 발견되면 출고 콘텐츠로 플레이할 수 있다. 같은 게임의 Release·Native AOT는 적용 상태를 공유한다. 원본으로 되돌릴 때는 아래 명령을 실행하고 게임을 다시 연다. 저장 슬롯과 이미 받은 보상은 보존된다.
+
+```sh
+"$bin/MoNoonPlayer" --content-update reset
+```
+
+문서당 최대 16 MiB, 교체 문서 합계 최대 64 MiB를 지원한다. 콘텐츠 버전 33 이하 플레이어에 이 기능을 처음 제공할 때는 버전 34로 한 번 내보낸다. 이후의 대사·보상 갱신은 번들 제작과 적용만으로 끝난다. [Release·Native AOT 실행 결과](../../engine/tests/results/content-updates/README.md)
+
+## 데이터 모드
+
+InventoryLab에는 약초상 대사와 의뢰 보상을 바꾸는 **달맞이 장터** 모드가 들어 있다. 처음에는 꺼져 있다. Mac에서 게임을 종료한 뒤 저장소 루트에서 다음 명령을 실행한다.
+
+```sh
+player=game-builds/InventoryLab/InventoryLab.app/Contents/MacOS/MoNoonPlayer
+"$player" --mods list
+"$player" --mods on moon-market
+"$player"
+```
+
+**T**로 약초상에게 말을 걸어 달맞이 장터 인사를 확인한다. 약초 세 포기의 보상은 수정 두 개다. 게임을 종료하고 `"$player" --mods off moon-market`을 실행한 뒤 다시 열면 인사와 새 의뢰의 보상이 기본값인 수정 한 개로 돌아온다. 기존 슬롯에 지급된 보상과 완료 기록은 유지된다. 같은 게임의 Release·Native AOT는 모드 선택을 공유한다.
+
+**추가 모드 설치.** `--mods list`가 표시하는 사용자 Mods 폴더에 `.mod` 파일을 넣고, 파일 이름에서 확장자를 뺀 ID로 활성화한다. 모드 ID는 영문 소문자, 숫자, 하이픈, 밑줄을 사용한다. 제작자가 게임과 함께 배포할 모드는 소스 프로젝트의 `Mods/`에 넣으면 빌더가 검증 후 포함한다.
+
+**모드 작성.** `.mod`는 VYaml 문서다. `version: 1`, 게임의 `gameId`, 표시 이름 `name`과 교체 목록 `replacements`를 지정한다. 각 항목의 `asset`은 배포에 포함된 기존 에셋의 GUID다. `.data`는 `data`, `.table`은 `table` 아래에 해당 에셋의 전체 YAML 내용을 넣는다. 번들에서 읽은 원본의 무결성을 확인한 후 이번 실행용 사본에 교체 내용을 적용한다. 같은 에셋을 교체하는 두 모드를 함께 켜면 충돌한 경로를 표시하고 기존 선택을 유지한다. [달맞이 장터 모드 원본](../../samples/InventoryLab/Mods/moon-market.mod)
+
 ## GitHub Actions
 
 push, pull request, 수동 실행 시 macOS arm64, Windows x64, Linux x64 러너가 각각 InventoryLab의 배포용 Release와 Native AOT를 빌드한다. 여섯 플레이어 모두 같은 약초 의뢰 입력을 창 없이 재생한다. 각 실행이 빈 폴더에 만든 `slot-001.save`를 저장소에 보관한 Mac 기준 파일과 바이트 단위로 비교하며, 한 바이트라도 다르면 해당 OS 작업이 실패한다. 다른 OS 작업은 계속 실행된다. [워크플로](../../.github/workflows/build-regression.yml) · [로컬 재현 명령과 기준 파일](../../engine/tests/InventoryLab.Replay/README.md) · [GitHub 호스팅 러너 사양](https://docs.github.com/en/actions/reference/runners/github-hosted-runners)
@@ -107,7 +189,7 @@ Actions 실행의 **Artifacts**에서 `InventoryLab-<rid>-replay`를 내려받�
 
 - 에디터는 [editor](../../editor/)에, 게임 빌드 템플릿은 [player-templates](../../player-templates/)에 있다. 에디터를 옮긴 경우 필요한 템플릿을 담은 `player-templates/`를 앱 옆에 두거나 환경 변수 `MONOON_PLAYERS_DIR`로 상위 폴더를 지정한다.
 - 엔진 소스를 수정했다면 저장소 루트에서 `./engine/scripts/build-editor-mac.sh`로 Mac 에디터를, `./engine/scripts/build-players.sh`로 세 Release 템플릿과 AOT 키트를 갱신한다. 특정 플랫폼만 만들려면 스크립트 뒤에 `osx-arm64` 같은 플랫폼 이름을 준다. AOT 키트만 갱신하는 명령은 `./engine/scripts/build-native-aot-kit.sh`다.
-- 새 격자를 담은 씬은 스키마 9로 저장한다. 이전 직교 타일맵에서 Layout을 생략한 경우 **Orthogonal**로 읽는다. 현재 빌더는 콘텐츠 버전 **31** 템플릿·키트를 확인한다. 구형 템플릿 오류가 나오면 템플릿을 갱신하고 게임도 다시 내보낸다.
+- 새 격자를 담은 씬은 스키마 9로 저장한다. 이전 직교 타일맵에서 Layout을 생략한 경우 **Orthogonal**로 읽는다. 현재 빌더는 콘텐츠 버전 **35** 템플릿·키트를 확인한다. 구형 템플릿 오류가 나오면 템플릿을 갱신하고 게임도 다시 내보낸다.
 - 이전 JSON 또는 `.clip.yaml` 같은 이중 확장자 프로젝트는 복사본을 **File → Open Project…**로 열어 변환한 뒤 씬 참조와 저장·재열기를 확인한다. 터미널에서 같은 변환은 `editor/MoNoon.app/Contents/MacOS/MoNoon --migrate-project <프로젝트 폴더>`다. 같은 새 경로에 다른 내용이 이미 있으면 양쪽 파일을 확인하고 이름 충돌을 해결한다.
 
 ## 개발 도구와 문제 해결

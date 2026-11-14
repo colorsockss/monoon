@@ -1,0 +1,96 @@
+version: 1
+utc: "2026-11-14T15:05:59.3030770Z"
+oS: macOS 27.0.1
+architecture: Arm64
+run: play
+scene: 6a7b735e-336d-5674-b2e7-a136db5a7771
+build:
+  version: 1
+  values:
+    buildId: "7c99a497b83b48b1ba346fbb3142a2f5"
+    projectId: "ade09cc3-a769-56d7-9832-a2bea14c7e71"
+    game: "InventoryLab"
+    target: "osx-arm64"
+    mode: "release"
+    profile: "distribution"
+    playerSha256: "C59788F7BEFAB08285BBE4A00987C0C0915A2A3B534199D5EEFF942C058C4957"
+    pdbId/MoNoonPlayer.dll: "5d19eaca-0165-43dc-b2fa-7f0e934a23f0"
+    mvid/MoNoonPlayer.dll: "5e07d326-0507-4cac-b4c5-436825aee129"
+    pdbId/Engine.Core.dll: "9c87da57-63cf-4dd8-a5ad-27ee24ab53b5"
+    mvid/Engine.Core.dll: "1cdca743-a953-4a7b-8793-e0e276ea138a"
+    pdbId/Engine.Desktop.dll: "fdcb8b09-1f7e-4307-916c-75c514dcffe5"
+    mvid/Engine.Desktop.dll: "e50557f8-15ce-45c0-acfd-44fbf382b558"
+    pdbId/Game/.monoon-compiled/MoNoon.GameScripts.dll: "d0a6f107-8576-4a1f-8f6e-3244442a4241"
+    mvid/Game/.monoon-compiled/MoNoon.GameScripts.dll: "d195baf6-12a2-4867-860a-ad2388390195"
+causes:
+- type: System.IO.InvalidDataException
+  message: "Quest 'herbalist' needs a positive integer rewardCount."
+  frames:
+  - method: MoNoon.Quests.CollectionQuest.<.ctor>g__ReadCount|23_0
+    assembly: MoNoon.GameScripts
+    moduleId: d195baf6-12a2-4867-860a-ad2388390195
+    methodToken: 100663328
+    ilOffset: 134
+  - method: MoNoon.Quests.CollectionQuest..ctor
+    assembly: MoNoon.GameScripts
+    moduleId: d195baf6-12a2-4867-860a-ad2388390195
+    methodToken: 100663323
+    ilOffset: 121
+  - method: MoNoon.Quests.QuestJournal..ctor
+    assembly: MoNoon.GameScripts
+    moduleId: d195baf6-12a2-4867-860a-ad2388390195
+    methodToken: 100663330
+    ilOffset: 44
+  - method: MoNoon.Quests.QuestLog.OnCreate
+    assembly: MoNoon.GameScripts
+    moduleId: d195baf6-12a2-4867-860a-ad2388390195
+    methodToken: 100663336
+    ilOffset: 0
+  - method: Engine.Core.SceneGame.FlushLife
+    assembly: Engine.Core
+    moduleId: 1cdca743-a953-4a7b-8793-e0e276ea138a
+    methodToken: 100663427
+    ilOffset: 264
+- type: System.InvalidOperationException
+  message: "QuestLog.OnCreate: Quest 'herbalist' needs a positive integer rewardCount."
+  frames:
+  - method: Engine.Core.SceneGame.FlushLife
+    assembly: Engine.Core
+    moduleId: 1cdca743-a953-4a7b-8793-e0e276ea138a
+    methodToken: 100663427
+    ilOffset: 306
+  - method: Engine.Core.SceneGame.UpdateUi
+    assembly: Engine.Core
+    moduleId: 1cdca743-a953-4a7b-8793-e0e276ea138a
+    methodToken: 100663408
+    ilOffset: 31
+  - method: Engine.Core.GameSession.UpdateUi
+    assembly: Engine.Core
+    moduleId: 1cdca743-a953-4a7b-8793-e0e276ea138a
+    methodToken: 100664513
+    ilOffset: 8
+  - method: Engine.Core.GameLoop.Advance
+    assembly: Engine.Core
+    moduleId: 1cdca743-a953-4a7b-8793-e0e276ea138a
+    methodToken: 100664397
+    ilOffset: 31
+  - method: Engine.Desktop.DesktopHost.RunLoop
+    assembly: Engine.Desktop
+    moduleId: e50557f8-15ce-45c0-acfd-44fbf382b558
+    methodToken: 100663309
+    ilOffset: 2016
+  - method: Engine.Desktop.DesktopHost.Run
+    assembly: Engine.Desktop
+    moduleId: e50557f8-15ce-45c0-acfd-44fbf382b558
+    methodToken: 100663308
+    ilOffset: 131
+  - method: Engine.Desktop.DesktopHost.Run
+    assembly: Engine.Desktop
+    moduleId: e50557f8-15ce-45c0-acfd-44fbf382b558
+    methodToken: 100663307
+    ilOffset: 0
+  - method: Program.<Main>$
+    assembly: MoNoonPlayer
+    moduleId: 5e07d326-0507-4cac-b4c5-436825aee129
+    methodToken: 100663299
+    ilOffset: 1761

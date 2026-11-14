@@ -3,6 +3,7 @@
     <None Update="EngineAssets/Square.png" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
     <InternalsVisibleTo Include="MoNoon"/>
     <InternalsVisibleTo Include="Engine.Checks"/>
+    <InternalsVisibleTo Include="MoNoon.Cli"/>
     <EmbeddedResource Include="LegacyScripts/*.cs.txt" WithCulture="false"
                       LogicalName="LegacyScripts.%(Filename)" />
     <PackageReference Include="VYaml" Version="1.6.1" />

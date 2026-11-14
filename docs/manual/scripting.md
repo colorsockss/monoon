@@ -48,4 +48,4 @@ KeyRoom의 **Chest → OpenChest → Player**에는 `PlayerMovement`가 붙은 �
 
 기존의 일반 `Guid` 오브젝트 참조와 `FixedUpdate`, 트리거, UI 콜백은 그대로 쓸 수 있다. 이전에 서로 다른 폴더에 같은 이름의 **전역 클래스**를 두었다면, 각각 다른 C# 네임스페이스에 넣어 전체 타입 이름을 구분한다. 파일 경로를 유지하면 기존 씬·프리팹의 스크립트 ID를 바꿀 필요가 없다.
 
-일반 Release는 `Game/.monoon-compiled/MoNoon.GameScripts.dll` 하나에 프로젝트 스크립트를 담는다. Native AOT는 같은 소스와 생성된 필드 연결 코드를 실행 파일에 정적으로 컴파일한다. 새 빌드에는 콘텐츠 버전 19의 템플릿·AOT 키트를 사용한다. 이전에 내보낸 게임은 기존 플레이어와 함께 독립적으로 실행된다.
+일반 Release는 `Game/.monoon-compiled/MoNoon.GameScripts.dll` 하나에 프로젝트 스크립트를 담는다. Native AOT는 같은 소스와 생성된 필드 연결 코드를 실행 파일에 정적으로 컴파일한다. 새로 내보낼 때는 현재 빌더와 같은 콘텐츠 버전의 템플릿·AOT 키트를 사용한다. [버전 확인과 업그레이드 절차](upgrade.md)

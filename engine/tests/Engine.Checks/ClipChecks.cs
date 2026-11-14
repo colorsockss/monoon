@@ -57,7 +57,7 @@ internal static class ClipChecks
                 throw new Exception("Expected sheet export error: " + reason);
             }
             File.WriteAllText(Path.Combine(oldTemplate,"MoNoonContent.version"),"5");
-            Reject("content version 31");
+            Reject("content version 35");
             var rulesPath = Path.Combine(root, "Assets", "KeyRoomRules.data");
             var rulesYaml = File.ReadAllText(rulesPath);
             try

@@ -1,0 +1,16 @@
+InventoryLab native-aot osx-arm64  build 959313df7a7340f69cf84d922d4c4ce7
+2026-11-14T15:06:00.4670160Z  macOS 27.0.1 Arm64  play  scene 6a7b735e-336d-5674-b2e7-a136db5a7771
+System.IO.InvalidDataException: Quest 'herbalist' needs a positive integer rewardCount.
+  MoNoon_GameScripts_MoNoon_Quests_CollectionQuest____ctor_g__ReadCount_23_0 (in MoNoonPlayer) (Scripts/Quests/QuestJournal.cs:35)  (image 0x908ea0)
+  MoNoon_GameScripts_MoNoon_Quests_CollectionQuest___ctor (in MoNoonPlayer) (Scripts/Quests/QuestJournal.cs:27)  (image 0x908a38)
+  MoNoon_GameScripts_MoNoon_Quests_QuestJournal___ctor (in MoNoonPlayer) (Scripts/Quests/QuestJournal.cs:77)  (image 0x908fb0)
+  MoNoon_GameScripts_MoNoon_Quests_QuestLog__OnCreate (in MoNoonPlayer) (Scripts/Quests/QuestLog.cs:10)  (image 0x909be4)
+  Engine_Core_Engine_Core_SceneGame__FlushLife (in MoNoonPlayer) (/Users/paare/codex_project/brutal_engine/player-templates/native-aot/src/Engine.Core/ScriptLifecycle.cs:49)  (image 0xcf4f8)
+System.InvalidOperationException: QuestLog.OnCreate: Quest 'herbalist' needs a positive integer rewardCount.
+  fram1_Engine_Core_Engine_Core_SceneGame__FlushLife (in MoNoonPlayer) (/Users/paare/codex_project/brutal_engine/player-templates/native-aot/src/Engine.Core/ScriptLifecycle.cs:55)  (image 0xcf588)
+  Engine_Core_Engine_Core_SceneGame__UpdateUi (in MoNoonPlayer) (/Users/paare/codex_project/brutal_engine/player-templates/native-aot/src/Engine.Core/SceneGame.cs:296)  (image 0xcb618)
+  Engine_Core_Engine_Core_GameSession__UpdateUi (in MoNoonPlayer) (/Users/paare/codex_project/brutal_engine/player-templates/native-aot/src/Engine.Core/GameSession.cs:130)  (image 0xfb6f4)
+  Engine_Core_Engine_Core_GameLoop__Advance (in MoNoonPlayer) (/Users/paare/codex_project/brutal_engine/player-templates/native-aot/src/Engine.Core/GameLoop.cs:21)  (image 0xf8f40)
+  Engine_Desktop_Engine_Desktop_DesktopHost__RunLoop (in MoNoonPlayer) (/Users/paare/codex_project/brutal_engine/player-templates/native-aot/src/Engine.Desktop/DesktopHost.cs:141)  (image 0x2e8308)
+  Engine_Desktop_Engine_Desktop_DesktopHost__Run_0 (in MoNoonPlayer) (/Users/paare/codex_project/brutal_engine/player-templates/native-aot/src/Engine.Desktop/DesktopHost.cs:24)  (image 0x2e7ad8)
+  MoNoonPlayer_Program___Main__ (in MoNoonPlayer) (/Users/paare/codex_project/brutal_engine/player-templates/native-aot/src/Engine.Player/Program.cs:139)  (image 0x90d5d4)

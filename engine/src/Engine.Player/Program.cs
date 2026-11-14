@@ -15,19 +15,85 @@ if (smoke && (args.Length < 2 || string.IsNullOrWhiteSpace(args[1])))
     return 2;
 }
 
+string run = smoke ? "smoke" : replay ? "replay" : record ? "record" : "play";
+bool playing = args.FirstOrDefault() is not ("--mods" or "--content-update");
+Guid? startScene = null;
+GameSession? runningSession = null;
+void Report(Exception error) => CrashDiagnostics.Report(error, run, runningSession?.SceneId ?? startScene);
+if (playing) AppDomain.CurrentDomain.UnhandledException += (_, e) =>
+{
+    if (e.ExceptionObject is Exception error) Report(error);
+};
 try
 {
-    var root = Path.Combine(AppContext.BaseDirectory, "Game");
-    var settings = GameSettings.Load(root);
-    var assets = ProjectAssets.Scan(root);
-    var path = assets.PathFor(settings.StartScene ?? Guid.Empty) ?? throw new InvalidDataException("The build has no start scene.");
-    var scene = SceneDocument.Load(Path.Combine(root, path));
+    var installed = Path.Combine(AppContext.BaseDirectory, "Game");
+    var settings = GameSettings.Load(installed);
+    startScene = settings.StartScene;
+    var mods = GameMods.ForPlayer(installed, settings);
+    if (args.FirstOrDefault() == "--mods")
+    {
+        if (args is ["--mods", "list"])
+        {
+            Console.WriteLine($"User mods: {mods.UserDirectory}");
+            foreach (string line in mods.List()) Console.WriteLine(line);
+        }
+        else if (args is ["--mods", "on" or "off", var id])
+        {
+            mods.SetEnabled(id, args[1] == "on");
+            Console.WriteLine($"Mod {id}: {args[1]}");
+        }
+        else
+        {
+            Console.Error.WriteLine("Usage: MoNoonPlayer --mods list | --mods <on|off> <id>");
+            return 2;
+        }
+        return 0;
+    }
     Func<ScriptComponent, GameBehaviour>? factory = null;
 #if MONOON_COMPILED_SCRIPTS
     factory = CompiledGameScripts.Create;
 #endif
+    GameSession Start(string root, PlayerStorage? storage, out string path)
+    {
+        var assets = ProjectAssets.Scan(root);
+        path = assets.PathFor(settings.StartScene ?? Guid.Empty) ?? throw new InvalidDataException("The build has no start scene.");
+        var scene = SceneDocument.Load(Path.Combine(root, path));
+        return new GameSession(scene, null, factory, storage);
+    }
+    var updates = new ContentUpdates(installed, settings);
+    if (args.FirstOrDefault() == "--content-update")
+    {
+        if (args is ["--content-update", "apply", var package, var sha256])
+        {
+            updates.Apply(package, sha256, root =>
+            {
+                var scratch = Directory.CreateTempSubdirectory("monoon-update-check-");
+                try
+                {
+                    using var session = Start(root, new PlayerStorage(scratch.FullName), out _);
+                    session.LoadFailed += message => throw new InvalidDataException(message);
+                    session.FixedUpdate(session.Actions.Take(), 1f / 60);
+                }
+                finally { scratch.Delete(true); }
+            });
+            Console.WriteLine("Content update applied. It will be used on the next launch.");
+        }
+        else if (args is ["--content-update", "reset"])
+        {
+            updates.Reset();
+            Console.WriteLine("Shipped content restored.");
+        }
+        else
+        {
+            Console.Error.WriteLine("Usage: MoNoonPlayer --content-update apply <bundle> <sha256> | --content-update reset");
+            return 2;
+        }
+        return 0;
+    }
+    using var content = updates.Open(mods, Console.Error.WriteLine);
     var storage = smoke ? new PlayerStorage(args[1]) : record || replay ? new PlayerStorage(args[2]) : null;
-    using var game = new GameSession(scene, null, factory, storage);
+    using var game = Start(content.Root, storage, out string path);
+    runningSession = game;
     if (record || replay)
     {
         game.LoadFailed += message => throw new InvalidDataException(message);
@@ -74,8 +140,9 @@ try
     }
     return 0;
 }
-catch (Exception ex) when (smoke || record || replay)
+catch (Exception ex)
 {
     Console.Error.WriteLine(ex.Message);
+    if (playing) Report(ex);
     return 1;
 }
