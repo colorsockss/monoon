@@ -1,0 +1,67 @@
+  복원할 프로젝트를 확인하는 중...
+  /Users/paare/codex_project/brutal_engine/benchmarks/Sprites2D/Brutal/Brutal.csproj을(를) 600밀리초 동안 복원했습니다.
+  /Users/paare/codex_project/brutal_engine/src/Engine.Core/Engine.Core.csproj을(를) 600밀리초 동안 복원했습니다.
+  /Users/paare/codex_project/brutal_engine/src/Engine.Desktop/Engine.Desktop.csproj을(를) 600밀리초 동안 복원했습니다.
+  Engine.Core -> /Users/paare/codex_project/brutal_engine/build/sprite-benchmark/bin/Engine.Core/release/Engine.Core.dll
+  Engine.Desktop -> /Users/paare/codex_project/brutal_engine/build/sprite-benchmark/bin/Engine.Desktop/release/Engine.Desktop.dll
+  Brutal -> /Users/paare/codex_project/brutal_engine/build/sprite-benchmark/bin/Brutal/release/Brutal.dll
+
+빌드했습니다.
+    경고 0개
+    오류 0개
+
+경과 시간: 00:00:02.52
+  복원할 프로젝트를 확인하는 중...
+  /Users/paare/codex_project/brutal_engine/benchmarks/Sprites2D/MonoGame/MonoGame.csproj을(를) 85밀리초 동안 복원했습니다.
+  MonoGame -> /Users/paare/codex_project/brutal_engine/build/sprite-benchmark/bin/MonoGame/release/MonoGame.dll
+
+빌드했습니다.
+    경고 0개
+    오류 0개
+
+경과 시간: 00:00:00.50
+BRUTAL metal, 800x450, warmup=120, measured=600
+sprites,draw_p50_ms,draw_p95_ms,draw_present_p50_ms,draw_present_p95_ms
+100,0.0310,0.0575,8.2912,9.1247
+1000,0.2041,0.5831,8.1994,9.2055
+10000,0.9390,1.9717,8.2178,9.0913
+BRUTAL opengl, 800x450, warmup=120, measured=600
+sprites,draw_p50_ms,draw_p95_ms,draw_present_p50_ms,draw_present_p95_ms
+100,0.0091,0.0180,0.1725,1.8106
+1000,0.0771,0.0894,0.2102,1.7186
+10000,0.5988,0.6404,0.7745,2.9023
+MonoGame DesktopGL, 800x450, warmup=120, measured=600
+sprites,draw_p50_ms,draw_p95_ms,draw_present_p50_ms,draw_present_p95_ms
+100,0.0182,0.0282,0.1603,0.5069
+1000,0.0546,0.0706,0.1597,0.3955
+10000,0.1875,0.2227,0.3007,1.8328
+BRUTAL opengl, 800x450, warmup=120, measured=600
+sprites,draw_p50_ms,draw_p95_ms,draw_present_p50_ms,draw_present_p95_ms
+100,0.0168,0.0248,0.1380,0.3395
+1000,0.0886,0.1063,0.2102,1.2047
+10000,0.6293,0.6917,0.8186,2.8671
+MonoGame DesktopGL, 800x450, warmup=120, measured=600
+sprites,draw_p50_ms,draw_p95_ms,draw_present_p50_ms,draw_present_p95_ms
+100,0.0198,0.0320,0.1409,0.2952
+1000,0.0584,0.0757,0.1633,0.3358
+10000,0.1990,0.2374,0.3117,2.0144
+BRUTAL metal, 800x450, warmup=120, measured=600
+sprites,draw_p50_ms,draw_p95_ms,draw_present_p50_ms,draw_present_p95_ms
+100,0.0098,0.0252,0.3302,9.3242
+1000,0.1832,0.2384,0.7173,8.5556
+10000,0.6507,0.7603,2.3224,7.8584
+MonoGame DesktopGL, 800x450, warmup=120, measured=600
+sprites,draw_p50_ms,draw_p95_ms,draw_present_p50_ms,draw_present_p95_ms
+100,0.0184,0.0315,0.1491,0.5219
+1000,0.0415,0.0670,0.1489,0.4389
+10000,0.1865,0.2158,0.2852,3.3250
+BRUTAL metal, 800x450, warmup=120, measured=600
+sprites,draw_p50_ms,draw_p95_ms,draw_present_p50_ms,draw_present_p95_ms
+100,0.0186,0.0307,0.4081,8.6718
+1000,0.0766,0.2190,0.8216,9.4277
+10000,0.6431,1.7734,2.3012,6.5967
+BRUTAL opengl, 800x450, warmup=120, measured=600
+sprites,draw_p50_ms,draw_p95_ms,draw_present_p50_ms,draw_present_p95_ms
+100,0.0098,0.0176,0.1610,0.8255
+1000,0.0891,0.1030,0.2149,3.8215
+10000,0.7301,0.7996,0.9677,5.1380

@@ -1,0 +1,9 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/Engine.Cli/Engine.Cli.csproj" />
+    <Project Path="src/Engine.Player/Engine.Player.csproj" />
+    <Project Path="src/Engine.Core/Engine.Core.csproj" />
+    <Project Path="src/Engine.Desktop/Engine.Desktop.csproj" />
+    <Project Path="src/Engine.Editor/Engine.Editor.csproj" />
+  </Folder>
+</Solution>

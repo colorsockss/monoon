@@ -1,0 +1,39 @@
+# Camera 2D: 추적, 분할 화면, 미니맵
+
+**Scene → Create Camera**로 카메라를 만들고 Inspector에서 설정한다. [CameraLab](../../samples/CameraLab)은 두 플레이어의 시점을 좌우로 나누고, 오른쪽 위에 전체 맵을 그리는 예제다. **방향키 / WASD**로 움직이거나 **Space**를 누르면 두 플레이어가 반대 모서리로 이동한다. Space를 다시 누르면 돌아온다.
+
+## 플레이어를 부드럽게 따라가기
+
+1. **Output → Primary**인 카메라에서 **Follow**에 Player를 지정한다. 대상의 부모 변환을 포함한 사각형의 월드 중심을 따라간다. 카메라의 Transform은 시작 시점이므로, 시작 위치를 플레이어 근처에 두면 처음부터 자연스럽다.
+2. **Half-life**는 추적 오차가 절반으로 줄어드는 데 걸리는 초다. 예를 들어 0.16이면 가만히 있는 목표까지 남은 거리가 0.16초마다 절반이 된다. 0은 즉시 추적이다. 엔진은 충돌로 결정된 위치를 고정 틱마다 읽고 렌더 프레임 사이에는 위치를 보간한다. Follow가 None이면 기존처럼 카메라 Transform(부모의 이동 포함)을 사용한다.
+3. **Bounds → Limit to map**을 켜고 월드 좌표의 **X / Y**와 **W / H**를 입력한다. 예를 들어 `0, 0, 1600, 896`이다. 카메라는 화면 전체가 이 사각형 안에 있도록 멈춘다. 맵이 시야보다 작으면 빈 바깥 공간이 노출되지 않도록 필요한 만큼만 Zoom을 올린다. 이 조정은 해당 뷰에만 적용되고 Inspector의 Zoom은 바뀌지 않는다.
+
+Follow 대상이 비활성화되거나 제거되면 마지막 시점을 유지한다. 같은 대상이 다시 활성화되면 그 위치를 따라간다. 플레이어와 카메라를 같은 서브트리에서 복제하거나 프리팹으로 만들면 새 인스턴스의 플레이어를 따라간다.
+
+## 분할 화면과 미니맵 구성하기
+
+| Output | 언제 그리는가 | 용도 |
+| --- | --- | --- |
+| Primary | 활성 주 카메라 한 대 | 기본 화면, 연출용 카메라 컷. **Set as start camera**로 시작 카메라를 정한다. |
+| Extra | 오브젝트가 활성인 동안 주 화면 뒤에 이어서 합성 | 두 번째 플레이어, 감시 카메라. **Order**가 클수록 나중에 그린다. |
+| Minimap | Extra까지 그린 뒤 합성 | 기본 영역은 우상단이다. **Show view frames**로 주 카메라(흰색)와 Extra(하늘색)의 월드 시야를 표시한다. |
+
+**Viewport → Custom region**을 켜고 화면 왼쪽 위 기준 **X, Y, W, H**를 0–1 비율로 입력한다. 두 플레이어를 좌우로 나누려면 Primary는 `0, 0, 0.5, 1`, Extra는 `0.5, 0, 0.5, 1`이다. 각자 Follow 대상을 정한다. 위아래 분할도 같은 방식으로 높이를 반씩 나누면 된다. 각 화면의 종횡비를 유지하며, 겹치는 곳에서는 나중 카메라가 자기 영역을 덮는다.
+
+맵 전체를 표시하려면 Minimap의 Follow를 None으로 두고 Transform을 맵 중심에 놓는다. 예제의 1600×896 맵은 **Zoom 0.125**, **200×112 논리 픽셀**에서 정확히 들어맞는다. HUD는 모든 카메라가 그려진 뒤 게임 해상도 기준으로 한 번만 그린다. 샘플은 아래쪽 50px를 HUD 전용으로 비워 둔다.
+
+## 스크립트에서 카메라 읽기
+
+```csharp
+if (tick.Cameras.TryGetView(cameraId, out var view))
+{
+    var cameraCenter = view.Center;                      // 실제 추적·경계 적용 후
+    var worldFrame = view.World;                         // 월드 사각형
+    var logicalPixel = view.WorldToScreen(worldPoint);   // 전체 게임 화면 기준
+    var restored = view.ScreenToWorld(logicalPixel);
+}
+```
+
+이 API는 마지막으로 완료한 시뮬레이션 상태를 반환한다. 렌더 보간이나 창의 레터박스는 논리 좌표에 포함하지 않는다. `TrySetActive(id)`로 Primary 사이를 전환할 수 있다. Extra와 Minimap은 자신의 오브젝트를 활성화·비활성화해 표시를 제어한다.
+
+[Mac 실행 화면과 측정 기록](../../engine/tests/results/cameras/README.md)

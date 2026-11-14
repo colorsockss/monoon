@@ -1,0 +1,13 @@
+/var/folders/q5/zk8228hn6zn1m15c3xctt8pr0000gn/T/monoon-52-window-za0vwfdv
+Test window is not frontmost; no input sent.
+release 26014 800 478 version: 3
+values:
+  capacity: 3
+  quests: {}
+  dialogue: "offer" InventoryLab | 약초상 | 새 잎이 돋은 약초 세 포기가 필요해요. 모아 주시겠어요? | [1] 의뢰를 받는다 | [2] 이번에는 사양한다 | 저장 [S] | 열기 [L] | 대화 닫기 | 진행 상황을 저장했습니다. | 
+Test window is not frontmost; no input sent.
+native-aot 26022 800 482 version: 3
+values:
+  capacity: 3
+  quests: {}
+  dialogue: "offer" InventoryLab | 약초상 | 새 잎이 돋은 약초 세 포기가 필요해요. 모아 주시겠어요? | [1] 의뢰를 받는다 | [2] 이번에는 사양한다 | 저장 [S] | 열기 [L] | 대화 닫기 (T] | 진행 상황을 저장했습니다 | 

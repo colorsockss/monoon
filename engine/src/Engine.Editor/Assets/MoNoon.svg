@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+     width="1024" height="1024" viewBox="0 0 512 512">
+  <defs>
+    <path id="tile" d="M0 -55 82.5 0 0 55 -82.5 0Z"/>
+    <path id="body" d="M256 70 454 202V324L256 456 58 324V202Z"/>
+  </defs>
+
+  <use xlink:href="#body" fill="#791428"/>
+  <path fill="#480819" d="M256 70 454 202 448 205 256 333 64 205 58 202Z"/>
+  <g fill="#F6EDE2">
+    <use xlink:href="#tile" x="256" y="144"/>
+    <use xlink:href="#tile" x="164.5" y="205"/>
+    <use xlink:href="#tile" x="347.5" y="205"/>
+    <use xlink:href="#tile" x="256" y="266" fill="#FFD00A"/>
+  </g>
+
+  <g fill="#FF3010">
+    <path d="M58 255 88 275 58 295ZM454 255 424 275 454 295Z"/>
+    <path d="M58 255 256 387 454 255" fill="none" stroke="#FF3010" stroke-width="12"
+          stroke-linejoin="miter"/>
+  </g>
+  <use xlink:href="#body" fill="none" stroke="#FF3010" stroke-width="12" stroke-linejoin="miter"/>
+</svg>

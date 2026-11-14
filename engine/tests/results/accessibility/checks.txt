@@ -1,0 +1,17 @@
+PASS regional locale falls back to Korean
+PASS stack uses shared padding, gap and stretched width
+PASS clipped content cannot be picked or scrolled from outside
+PASS wheel reveals the bottom row and its hit area
+PASS hiding a row reflows content and clamps scroll
+PASS reverse Tab reveals a clipped button
+PASS wraparound reveals the first input
+PASS marked text replaces the previous composition without committing
+PASS limit counts graphemes instead of UTF-16 units
+PASS backspace removes one complete emoji cluster
+PASS larger type reflows rows and leaves authored sizes intact
+PASS directional pad and stick navigate and reveal offscreen targets
+PASS pad cancel leaves UI focus
+PASS missing translation uses the authored base text
+PASS narrow translated text wraps and contributes to stack height
+PASS horizontal scroll reveals the focused column
+Full Engine.Checks: 176 checks passed.

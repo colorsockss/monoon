@@ -1,0 +1,41 @@
+<Window xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="using:Engine.Editor" x:Class="Engine.Editor.SheetPickerWindow"
+        Title="Select sheet cells" WindowStartupLocation="CenterOwner" Width="700" Height="480" MinWidth="385" MinHeight="355">
+  <Grid Margin="12" RowDefinitions="Auto,Auto,*,Auto">
+    <Grid Margin="0,0,0,6" ColumnDefinitions="48,*,Auto,Auto" ColumnSpacing="6">
+      <TextBlock Text="Sheet" Classes="fieldLabel"/>
+      <ComboBox x:Name="Sheets" Grid.Column="1" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch"
+                ItemTemplate="{StaticResource SheetPathTemplate}" AutomationProperties.Name="Sprite sheet"
+                ToolTip.Tip="{Binding SelectedItem.Path, RelativeSource={RelativeSource Self}}"/>
+      <ToggleButton x:Name="ShowGrid" Grid.Column="2" Theme="{StaticResource SheetGridToggle}" AutomationProperties.Name="Grid settings"/>
+      <Button x:Name="SliceMenu" Grid.Column="2" IsVisible="False" Content="Frames ▾" AutomationProperties.Name="Select packed frames"/>
+      <ComboBox x:Name="Zoom" Grid.Column="3" Width="66" AutomationProperties.Name="Sheet zoom" ToolTip.Tip="Preview zoom"/>
+    </Grid>
+    <Grid Grid.Row="1" Margin="0,0,0,6" IsVisible="{Binding IsChecked, ElementName=ShowGrid}" ColumnDefinitions="48,*,*,*"
+          RowDefinitions="Auto,Auto,Auto" ColumnSpacing="6" RowSpacing="4">
+      <TextBlock Grid.Column="1" Text="Cell size" Classes="fieldLabel"/>
+      <TextBlock Grid.Column="2" Text="Margin" Classes="fieldLabel" ToolTip.Tip="Pixels at each edge"/>
+      <TextBlock Grid.Column="3" Text="Spacing" Classes="fieldLabel" ToolTip.Tip="Pixels between cells"/>
+      <TextBlock Grid.Row="1" Text="X (px)" Classes="fieldLabel"/>
+      <TextBlock Grid.Row="2" Text="Y (px)" Classes="fieldLabel"/>
+      <TextBox Grid.Row="1" Grid.Column="1" x:Name="CellWidth" AutomationProperties.Name="Cell width"/>
+      <TextBox Grid.Row="2" Grid.Column="1" x:Name="CellHeight" AutomationProperties.Name="Cell height"/>
+      <TextBox Grid.Row="1" Grid.Column="2" x:Name="MarginX" Text="0" AutomationProperties.Name="Horizontal margin"/>
+      <TextBox Grid.Row="2" Grid.Column="2" x:Name="MarginY" Text="0" AutomationProperties.Name="Vertical margin"/>
+      <TextBox Grid.Row="1" Grid.Column="3" x:Name="GapX" Text="0" AutomationProperties.Name="Horizontal spacing"/>
+      <TextBox Grid.Row="2" Grid.Column="3" x:Name="GapY" Text="0" AutomationProperties.Name="Vertical spacing"/>
+    </Grid>
+    <ScrollViewer x:Name="SheetScroll" Grid.Row="2" Background="#252B32" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+                  HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+      <local:SheetGridView x:Name="Cells" ClipToBounds="True" AutomationProperties.Name="Select cells on the sprite sheet"/>
+    </ScrollViewer>
+    <Grid x:Name="Footer" Margin="0,6,0,0" Grid.Row="3" RowDefinitions="Auto,Auto" ColumnDefinitions="*,Auto" ColumnSpacing="8">
+      <TextBlock x:Name="Info" Classes="label" TextTrimming="CharacterEllipsis" ToolTip.Tip="{Binding Text, RelativeSource={RelativeSource Self}}"/>
+      <StackPanel x:Name="Actions" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center" Spacing="4">
+        <Button x:Name="Cancel" Classes="quiet" Content="Cancel"/>
+        <Button x:Name="Replace" Content="Replace frame"/>
+        <Button x:Name="Insert" Classes="primary" Content="Insert cells"/>
+      </StackPanel>
+    </Grid>
+  </Grid>
+</Window>

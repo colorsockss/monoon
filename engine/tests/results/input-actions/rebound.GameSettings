@@ -1,0 +1,44 @@
+width: 800
+height: 450
+startScene: 64fb4cd6-2469-5cec-ba6d-9a49e61f42e7
+includedScenes:
+- 64fb4cd6-2469-5cec-ba6d-9a49e61f42e7
+- 97ae2562-6e93-5e7a-be3b-45ec603896c6
+input:
+  actions:
+  - name: MoveLeft
+    controls:
+    - Left
+    - A
+    - Pad.DpadLeft
+    - Pad.LeftStickLeft
+  - name: MoveRight
+    controls:
+    - Right
+    - D
+    - Pad.DpadRight
+    - Pad.LeftStickRight
+  - name: MoveUp
+    controls:
+    - Up
+    - W
+    - Pad.DpadUp
+    - Pad.LeftStickUp
+  - name: MoveDown
+    controls:
+    - Down
+    - S
+    - Pad.DpadDown
+    - Pad.LeftStickDown
+  - name: Interact
+    controls:
+    - E
+    - Space
+    - Pad.South
+  - name: ShowControls
+    controls:
+    - J
+    - Mouse.Right
+  - name: ExtraLongProjectActionForAlignment
+    controls:
+    - X

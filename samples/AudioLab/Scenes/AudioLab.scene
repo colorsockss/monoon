@@ -1,0 +1,267 @@
+schemaVersion: 13
+objects:
+- id: 2b0d9352-a0f9-5b8e-9a82-36ff1d28e3b0
+  name: Tide
+  x: 0
+  y: 0
+  width: 1
+  height: 1
+  components:
+  - type: audioSource
+    sound: ed4cf490-f4b6-5f0e-bdd4-0a46214c7cbb
+    bus: Music
+    loop: true
+    playOnStart: true
+    volume: 0.55
+    fadeIn: 0.4
+    fadeOut: 0.6
+- id: a3e06a29-84c3-5ff3-bff7-74cf7b51cab7
+  name: Player
+  x: 144
+  y: 198
+  width: 32
+  height: 32
+  components:
+  - type: spriteRenderer
+    order: 3
+    squareColor: "#63E6C1"
+  - type: audioListener2D
+  - type: script
+    script: ListeningWalk
+    values:
+      Music: "2b0d9352-a0f9-5b8e-9a82-36ff1d28e3b0"
+      Beacon: "45a0bc60-61c2-5d57-bd9e-9c8b0a98ea7f"
+      Levels: "237d412b-ab64-568b-85f4-fd0c9c4c3e93"
+      Readout: "20c3d31e-94a6-59e3-ac9d-a9ec83896432"
+- id: 45a0bc60-61c2-5d57-bd9e-9c8b0a98ea7f
+  name: Beacon
+  x: 388
+  y: 202
+  width: 24
+  height: 24
+  components:
+  - type: spriteRenderer
+    order: 3
+    squareColor: "#EFA963"
+  - type: audioSource
+    sound: 3c0b343d-2ba0-5b56-a652-319bf6b1425e
+    bus: Effects
+    spatial: true
+    range: 400
+    loop: true
+    volume: 0.8
+    fadeIn: 0.06
+    fadeOut: 0.08
+- id: ab5eab81-e704-5bd8-b253-c88e0110b539
+  name: Rail
+  x: 160
+  y: 213
+  width: 480
+  height: 2
+  components:
+  - type: spriteRenderer
+    order: 0
+    squareColor: "#5A6B75"
+- id: 8427e193-5833-5672-a711-19c1cbf59e2e
+  name: Mark 1
+  x: 158
+  y: 210
+  width: 4
+  height: 8
+  components:
+  - type: spriteRenderer
+    order: 1
+    squareColor: "#87949D"
+- id: 2c7459f3-8a16-59ce-b584-d2d57c384229
+  name: Mark 2
+  x: 218
+  y: 210
+  width: 4
+  height: 8
+  components:
+  - type: spriteRenderer
+    order: 1
+    squareColor: "#87949D"
+- id: 33883d87-6233-5a42-957a-3359ae7d44a2
+  name: Mark 3
+  x: 278
+  y: 210
+  width: 4
+  height: 8
+  components:
+  - type: spriteRenderer
+    order: 1
+    squareColor: "#87949D"
+- id: 6ddacf38-47e2-518e-b3df-da5ea5fab351
+  name: Mark 4
+  x: 338
+  y: 210
+  width: 4
+  height: 8
+  components:
+  - type: spriteRenderer
+    order: 1
+    squareColor: "#87949D"
+- id: dadbff3f-483a-5888-96d7-2a81a87a475f
+  name: Mark 5
+  x: 398
+  y: 210
+  width: 4
+  height: 8
+  components:
+  - type: spriteRenderer
+    order: 1
+    squareColor: "#87949D"
+- id: 702735d2-f0e5-53db-9d96-adbeb6cf9f43
+  name: Mark 6
+  x: 458
+  y: 210
+  width: 4
+  height: 8
+  components:
+  - type: spriteRenderer
+    order: 1
+    squareColor: "#87949D"
+- id: 9eec1a80-d039-562c-aa80-e551253a1638
+  name: Mark 7
+  x: 518
+  y: 210
+  width: 4
+  height: 8
+  components:
+  - type: spriteRenderer
+    order: 1
+    squareColor: "#87949D"
+- id: 7f1bb235-3c6c-5d09-b457-16f2ef19176c
+  name: Mark 8
+  x: 578
+  y: 210
+  width: 4
+  height: 8
+  components:
+  - type: spriteRenderer
+    order: 1
+    squareColor: "#87949D"
+- id: dea839f6-c7c1-57f3-b7b9-baa208406d49
+  name: Mark 9
+  x: 638
+  y: 210
+  width: 4
+  height: 8
+  components:
+  - type: spriteRenderer
+    order: 1
+    squareColor: "#87949D"
+- id: 8241f05a-bc2e-54c8-9922-756347112139
+  name: Camera
+  x: 400
+  y: 225
+  width: 1
+  height: 1
+  components:
+  - type: camera2D
+- id: c8404033-aaef-521e-8513-9076bdc9941a
+  name: Canvas
+  x: 0
+  y: 0
+  width: 1
+  height: 1
+  components:
+  - type: uiCanvas
+- id: 120b048d-6431-5f5f-9f68-52ecec6ffe72
+  name: Title
+  x: 32
+  y: 24
+  width: 720
+  height: 40
+  parentId: c8404033-aaef-521e-8513-9076bdc9941a
+  components:
+  - type: uiRect
+  - type: uiText
+    size: 27
+    text: "Audio Lab"
+- id: 504b15fd-7f37-59de-a17d-9304878f9a69
+  name: Subhead
+  x: 32
+  y: 75
+  width: 730
+  height: 26
+  parentId: c8404033-aaef-521e-8513-9076bdc9941a
+  components:
+  - type: uiRect
+  - type: uiText
+    size: 17
+    text: "Tide  /  stereo music loop                 Beacon  /  spatial effects"
+- id: 05863b58-4f98-5f5c-9bf0-dfe468e48b21
+  name: L
+  x: 134
+  y: 242
+  width: 90
+  height: 24
+  parentId: c8404033-aaef-521e-8513-9076bdc9941a
+  components:
+  - type: uiRect
+  - type: uiText
+    size: 15
+    text: "WEST"
+- id: 25cfb757-1617-5537-b418-b29396b2939e
+  name: B
+  x: 367
+  y: 242
+  width: 90
+  height: 24
+  parentId: c8404033-aaef-521e-8513-9076bdc9941a
+  components:
+  - type: uiRect
+  - type: uiText
+    size: 15
+    text: "BEACON"
+- id: 59799d67-2198-5e61-91ee-3c6b222a9035
+  name: R
+  x: 620
+  y: 242
+  width: 90
+  height: 24
+  parentId: c8404033-aaef-521e-8513-9076bdc9941a
+  components:
+  - type: uiRect
+  - type: uiText
+    size: 15
+    text: "EAST"
+- id: 20c3d31e-94a6-59e3-ac9d-a9ec83896432
+  name: Readout
+  x: 32
+  y: 294
+  width: 736
+  height: 26
+  parentId: c8404033-aaef-521e-8513-9076bdc9941a
+  components:
+  - type: uiRect
+  - type: uiText
+    size: 19
+    text: "Listener ready"
+- id: 237d412b-ab64-568b-85f4-fd0c9c4c3e93
+  name: Levels
+  x: 32
+  y: 333
+  width: 736
+  height: 25
+  parentId: c8404033-aaef-521e-8513-9076bdc9941a
+  components:
+  - type: uiRect
+  - type: uiText
+    size: 17
+    text: "Mixer ready"
+- id: ed980d4c-dbd4-5089-8dc0-3bcdc4e67188
+  name: Keys
+  x: 32
+  y: 396
+  width: 747
+  height: 24
+  parentId: c8404033-aaef-521e-8513-9076bdc9941a
+  components:
+  - type: uiRect
+  - type: uiText
+    size: 15
+    text: "A/D: walk    Space: beacon    W/S: music / effects level    F: fade music    M: master mute"
+defaultCameraId: 8241f05a-bc2e-54c8-9922-756347112139

@@ -1,0 +1,9 @@
+version: 1
+values:
+  capacity: 3
+  item0: "herb"
+  count0: 3
+  item1: "herb"
+  count1: 1
+  item2: "gem"
+  count2: 2

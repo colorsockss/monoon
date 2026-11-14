@@ -1,0 +1,87 @@
+name: MoNoon build and regression
+
+on: [push, pull_request, workflow_dispatch]
+
+permissions:
+  contents: read
+
+jobs:
+  inventorylab:
+    name: InventoryLab / ${{ matrix.rid }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - runner: macos-15
+            rid: osx-arm64
+          - runner: windows-2022
+            rid: win-x64
+          - runner: ubuntu-24.04
+            rid: linux-x64
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-dotnet@v5
+        env:
+          DOTNET_INSTALL_DIR: ${{ runner.temp }}/monoon-dotnet
+        with:
+          dotnet-version: 10.0.101
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - name: Check Linux Native AOT prerequisites
+        if: runner.os == 'Linux'
+        run: |
+          if ! command -v clang || ! dpkg -s zlib1g-dev >/dev/null; then
+            sudo apt-get update
+            sudo apt-get install -y --no-install-recommends clang zlib1g-dev
+          fi
+      - name: Build Release and Native AOT, replay the quest and compare both saves
+        run: >-
+          python engine/tests/InventoryLab.Replay/build_guest.py
+          game-builds/InventoryLab "${{ runner.temp }}/inventory-replay"
+          --expected-rid ${{ matrix.rid }}
+      - name: Upload replay saves and build receipts
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: InventoryLab-${{ matrix.rid }}-replay
+          path: ${{ runner.temp }}/inventory-replay/
+          if-no-files-found: warn
+      - name: Check Mac distribution profiles and quest checkpoints
+        if: runner.os == 'macOS'
+        run: ./monoon test inventorylab game-builds/InventoryLab --profile distribution
+      - name: Archive the verified apps with their executable permissions
+        if: runner.os == 'macOS'
+        run: tar --no-mac-metadata -czf "$RUNNER_TEMP/InventoryLab-osx-arm64.tar.gz" -C game-builds/InventoryLab InventoryLab.app NativeAOT/InventoryLab.app
+      - if: runner.os == 'macOS'
+        uses: actions/upload-artifact@v4
+        with:
+          name: InventoryLab-osx-arm64
+          path: ${{ runner.temp }}/InventoryLab-osx-arm64.tar.gz
+          if-no-files-found: error
+
+      - name: Archive matching debug symbols
+        if: runner.os == 'macOS'
+        run: tar --no-mac-metadata -czf "$RUNNER_TEMP/InventoryLab-osx-arm64-symbols.tar.gz" -C game-builds/InventoryLab Symbols
+      - if: runner.os == 'macOS'
+        uses: actions/upload-artifact@v4
+        with:
+          name: InventoryLab-osx-arm64-symbols
+          path: ${{ runner.temp }}/InventoryLab-osx-arm64-symbols.tar.gz
+          if-no-files-found: error
+
+  engine:
+    name: Engine regression suite
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: 10.0.101
+      - name: Prepare the three Release export templates
+        run: ./engine/scripts/build-players.sh
+      - name: Run the full regression suite
+        run: ./monoon test

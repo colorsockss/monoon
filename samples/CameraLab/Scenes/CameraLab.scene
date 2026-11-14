@@ -1,0 +1,862 @@
+schemaVersion: 12
+objects:
+- id: 9220cdc4-76fa-5e2b-9107-5f4aef99a67e
+  name: Player Camera
+  x: 200
+  y: 200
+  width: 1
+  height: 1
+  components:
+  - type: camera2D
+    output: Primary
+    zoom: 1
+    bounds: {x: 0, y: 0, width: 1600, height: 896}
+    viewport: {x: 0, y: 0, width: 0.5, height: 0.8888889}
+    follow: 45c4c558-3fb3-5861-88e3-dfd8a5c5bae3
+    halfLife: 0.16
+- id: 44e4c6f9-a8d1-5d37-a753-a54a9fdb7a39
+  name: Partner Camera
+  x: 1400
+  y: 696
+  width: 1
+  height: 1
+  components:
+  - type: camera2D
+    output: Extra
+    zoom: 1
+    bounds: {x: 0, y: 0, width: 1600, height: 896}
+    viewport: {x: 0.5, y: 0, width: 0.5, height: 0.8888889}
+    follow: f81d520a-421d-5c56-8abd-793db0413f22
+    halfLife: 0.16
+- id: 05592337-d958-55eb-a4cf-91bfbc71fadd
+  name: Map Camera
+  x: 800
+  y: 448
+  width: 1
+  height: 1
+  components:
+  - type: camera2D
+    output: Minimap
+    zoom: 0.125
+    bounds: {x: 0, y: 0, width: 1600, height: 896}
+    viewport: {x: 0.73, y: 0.04, width: 0.25, height: 0.249}
+- id: 46e7b8db-8fdd-51f6-ae4a-2542067b52ed
+  name: West Range
+  x: 0
+  y: 0
+  width: 800
+  height: 896
+  components:
+  - type: spriteRenderer
+    order: -8
+    squareColor: "#23444C"
+- id: cbb7751b-ca69-5fe1-b3e0-51aab45a113b
+  name: East Range
+  x: 800
+  y: 0
+  width: 800
+  height: 896
+  components:
+  - type: spriteRenderer
+    order: -8
+    squareColor: "#423C58"
+- id: 8799f546-3c16-5dc2-a4c3-58c226b3a767
+  name: Boundary 1
+  x: 0
+  y: 0
+  width: 1600
+  height: 8
+  components:
+  - type: spriteRenderer
+    order: -6
+    squareColor: "#98B2AB"
+- id: 2e1c6d39-2697-5294-b9fa-1bc9a5bf46eb
+  name: Boundary 2
+  x: 0
+  y: 888
+  width: 1600
+  height: 8
+  components:
+  - type: spriteRenderer
+    order: -6
+    squareColor: "#98B2AB"
+- id: 485b9641-c3c4-59bf-919b-f39b9415f873
+  name: Boundary 3
+  x: 0
+  y: 0
+  width: 8
+  height: 896
+  components:
+  - type: spriteRenderer
+    order: -6
+    squareColor: "#98B2AB"
+- id: 7d5c9e5d-d45b-52b0-a4dd-137e3f7d9de6
+  name: Boundary 4
+  x: 1592
+  y: 0
+  width: 8
+  height: 896
+  components:
+  - type: spriteRenderer
+    order: -6
+    squareColor: "#98B2AB"
+- id: 2d5ebf55-f419-5f8c-978c-df2f1b178436
+  name: Boundary 5
+  x: 795
+  y: 8
+  width: 10
+  height: 880
+  components:
+  - type: spriteRenderer
+    order: -6
+    squareColor: "#716558"
+- id: 7b6356c8-bca0-5e15-ac28-d04a6348972b
+  name: Marker 1.1
+  x: 60
+  y: 76
+  width: 42
+  height: 8
+  components:
+  - type: spriteRenderer
+    order: -4
+    squareColor: "#4B7376"
+- id: 16a8dbd5-2364-55a8-81dc-1012db26510a
+  name: Post 1.1
+  x: 60
+  y: 76
+  width: 8
+  height: 38
+  components:
+  - type: spriteRenderer
+    order: -4
+    squareColor: "#4B7376"
+- id: e775aa65-77ba-5acb-be5d-1639ba478366
+  name: Marker 1.2
+  x: 60
+  y: 296
+  width: 50
+  height: 8
+  components:
+  - type: spriteRenderer
+    order: -4
+    squareColor: "#4B7376"
+- id: 3792699a-9b56-51c1-85f0-e8f89a91131b
+  name: Post 1.2
+  x: 60
+  y: 296
+  width: 8
+  height: 38
+  components:
+  - type: spriteRenderer
+    order: -4
+    squareColor: "#4B7376"
+- id: e9af678d-ff62-5906-983b-315a462ec72a
+  name: Marker 1.3
+  x: 60
+  y: 516
+  width: 58
+  height: 8
+  components:
+  - type: spriteRenderer
+    order: -4
+    squareColor: "#4B7376"
+- id: dca99d59-8e7c-5362-8d75-21c07d394ca8
+  name: Post 1.3
+  x: 60
+  y: 516
+  width: 8
+  height: 38
+  components:
+  - type: spriteRenderer
+    order: -4
+    squareColor: "#4B7376"
+- id: ff1f706b-530c-574b-9024-ed70726c9c55
+  name: Marker 1.4
+  x: 60
+  y: 736
+  width: 66
+  height: 8
+  components:
+  - type: spriteRenderer
+    order: -4
+    squareColor: "#4B7376"
+- id: 526b648b-9016-53d6-bc17-d4c94ca8ed61
+  name: Post 1.4
+  x: 60
+  y: 736
+  width: 8
+  height: 38
+  components:
+  - type: spriteRenderer
+    order: -4
+    squareColor: "#4B7376"
+- id: 3961e3e4-b5f5-55c0-985d-d3cf5b2bf2a6
+  name: Marker 2.1
+  x: 260
+  y: 76
+  width: 42
+  height: 8
+  components:
+  - type: spriteRenderer
+    order: -4
+    squareColor: "#4B7376"
+- id: 23951d39-2c80-53c3-9b48-4770ea582dc2
+  name: Post 2.1
+  x: 260
+  y: 76
+  width: 8
+  height: 38
+  components:
+  - type: spriteRenderer
+    order: -4
+    squareColor: "#4B7376"
+- id: 6dd886d0-b792-586f-a898-e9b740a83b2a
+  name: Marker 2.2
+  x: 260
+  y: 296
+  width: 50
+  height: 8
+  components:
+  - type: spriteRenderer
+    order: -4
+    squareColor: "#4B7376"
+- id: ed5ad0c1-ca7b-5e24-8e73-e8ce68e80db0
+  name: Post 2.2
+  x: 260
+  y: 296
+  width: 8
+  height: 38
+  components:
+  - type: spriteRenderer
+    order: -4
+    squareColor: "#4B7376"
+- id: e8a910a7-b59a-5e21-924e-e4621f9b6cee
+  name: Marker 2.3
+  x: 260
+  y: 516
+  width: 58
+  height: 8
+  components:
+  - type: spriteRenderer
+    order: -4
+    squareColor: "#4B7376"
+- id: 466628b5-97bf-5126-aa17-82de34e30aad
+  name: Post 2.3
+  x: 260
+  y: 516
+  width: 8
+  height: 38
+  components:
+  - type: spriteRenderer
+    order: -4
+    squareColor: "#4B7376"
+- id: da168891-f2af-5b47-9eca-9e904da89ab9
+  name: Marker 2.4
+  x: 260
+  y: 736
+  width: 66
+  height: 8
+  components:
+  - type: spriteRenderer
+    order: -4
+    squareColor: "#4B7376"
+- id: 19629746-45de-5b55-a34a-91f87bf3f7b6
+  name: Post 2.4
+  x: 260
+  y: 736
+  width: 8
+  height: 38
+  components:
+  - type: spriteRenderer
+    order: -4
+    squareColor: "#4B7376"
+- id: a300d2a3-3e86-5b05-aaca-c79906b86ce1
+  name: Marker 3.1
+  x: 460
+  y: 76
+  width: 42
+  height: 8
+  components:
+  - type: spriteRenderer
+    order: -4
+    squareColor: "#4B7376"
+- id: 8b4e80e1-06d4-587c-8bea-06a66f076dcc
+  name: Post 3.1
+  x: 460
+  y: 76
+  width: 8
+  height: 38
+  components:
+  - type: spriteRenderer
+    order: -4
+    squareColor: "#4B7376"
+- id: bb8f415c-ac9d-5bff-85c4-f4b66fb09c93
+  name: Marker 3.2
+  x: 460
+  y: 296
+  width: 50
+  height: 8
+  components:
+  - type: spriteRenderer
+    order: -4
+    squareColor: "#4B7376"
+- id: cbea5776-0a2f-5035-8825-6d3b60bcef73
+  name: Post 3.2
+  x: 460
+  y: 296
+  width: 8
+  height: 38
+  components:
+  - type: spriteRenderer
+    order: -4
+    squareColor: "#4B7376"
+- id: dc969e46-5ae9-57cd-af11-fe44a21cdb98
+  name: Marker 3.3
+  x: 460
+  y: 516
+  width: 58
+  height: 8
+  components:
+  - type: spriteRenderer
+    order: -4
+    squareColor: "#4B7376"
+- id: a0edd111-c0de-5bbc-a98e-2300ef501fc9
+  name: Post 3.3
+  x: 460
+  y: 516
+  width: 8
+  height: 38
+  components:
+  - type: spriteRenderer
+    order: -4
+    squareColor: "#4B7376"
+- id: d7a564fb-7c59-559d-b0f9-0b88f355f1b6
+  name: Marker 3.4
+  x: 460
+  y: 736
+  width: 66
+  height: 8
+  components:
+  - type: spriteRenderer
+    order: -4
+    squareColor: "#4B7376"
+- id: ff5ad3da-158d-500f-9307-b01af7928b1b
+  name: Post 3.4
+  x: 460
+  y: 736
+  width: 8
+  height: 38
+  components:
+  - type: spriteRenderer
+    order: -4
+    squareColor: "#4B7376"
+- id: 67e78926-22a1-50a9-b700-ea67de386090
+  name: Marker 4.1
+  x: 660
+  y: 76
+  width: 42
+  height: 8
+  components:
+  - type: spriteRenderer
+    order: -4
+    squareColor: "#4B7376"
+- id: c13f4609-0c1e-524d-bcb4-18be71d96682
+  name: Post 4.1
+  x: 660
+  y: 76
+  width: 8
+  height: 38
+  components:
+  - type: spriteRenderer
+    order: -4
+    squareColor: "#4B7376"
+- id: c3a04b3f-ab7c-5230-ab00-1f9cc1b5cc1d
+  name: Marker 4.2
+  x: 660
+  y: 296
+  width: 50
+  height: 8
+  components:
+  - type: spriteRenderer
+    order: -4
+    squareColor: "#4B7376"
+- id: 831d3b23-1435-5ccb-b81c-6978160bdf27
+  name: Post 4.2
+  x: 660
+  y: 296
+  width: 8
+  height: 38
+  components:
+  - type: spriteRenderer
+    order: -4
+    squareColor: "#4B7376"
+- id: ee03c751-94d9-5824-b2fa-6ce7dc51df0e
+  name: Marker 4.3
+  x: 660
+  y: 516
+  width: 58
+  height: 8
+  components:
+  - type: spriteRenderer
+    order: -4
+    squareColor: "#4B7376"
+- id: e4748b17-f795-563d-b12a-ef1f5283c117
+  name: Post 4.3
+  x: 660
+  y: 516
+  width: 8
+  height: 38
+  components:
+  - type: spriteRenderer
+    order: -4
+    squareColor: "#4B7376"
+- id: 6547e126-335c-56d7-bff8-968723c6e7d7
+  name: Marker 4.4
+  x: 660
+  y: 736
+  width: 66
+  height: 8
+  components:
+  - type: spriteRenderer
+    order: -4
+    squareColor: "#4B7376"
+- id: df570c2a-ad63-5358-b3d4-da496e1a00d6
+  name: Post 4.4
+  x: 660
+  y: 736
+  width: 8
+  height: 38
+  components:
+  - type: spriteRenderer
+    order: -4
+    squareColor: "#4B7376"
+- id: 71c4f9ba-4ab0-582c-b39d-2059e0df5232
+  name: Marker 5.1
+  x: 860
+  y: 76
+  width: 42
+  height: 8
+  components:
+  - type: spriteRenderer
+    order: -4
+    squareColor: "#725F79"
+- id: c23673ff-c8b2-56b0-afa7-aced463b71a0
+  name: Post 5.1
+  x: 860
+  y: 76
+  width: 8
+  height: 38
+  components:
+  - type: spriteRenderer
+    order: -4
+    squareColor: "#725F79"
+- id: 9f93f915-e809-5d04-86fd-f23dea6b9732
+  name: Marker 5.2
+  x: 860
+  y: 296
+  width: 50
+  height: 8
+  components:
+  - type: spriteRenderer
+    order: -4
+    squareColor: "#725F79"
+- id: d9410cf1-ffd8-5e70-aff7-2715b2b9e6dd
+  name: Post 5.2
+  x: 860
+  y: 296
+  width: 8
+  height: 38
+  components:
+  - type: spriteRenderer
+    order: -4
+    squareColor: "#725F79"
+- id: 23c9f893-18c8-5b88-81bb-7d7d5a0ab0c0
+  name: Marker 5.3
+  x: 860
+  y: 516
+  width: 58
+  height: 8
+  components:
+  - type: spriteRenderer
+    order: -4
+    squareColor: "#725F79"
+- id: 9ad6f239-1896-51ba-999b-78eda99c4073
+  name: Post 5.3
+  x: 860
+  y: 516
+  width: 8
+  height: 38
+  components:
+  - type: spriteRenderer
+    order: -4
+    squareColor: "#725F79"
+- id: 46db9cae-6006-5509-8753-957829b4b3f8
+  name: Marker 5.4
+  x: 860
+  y: 736
+  width: 66
+  height: 8
+  components:
+  - type: spriteRenderer
+    order: -4
+    squareColor: "#725F79"
+- id: 3b362c39-6492-56d4-ae38-16767e00a215
+  name: Post 5.4
+  x: 860
+  y: 736
+  width: 8
+  height: 38
+  components:
+  - type: spriteRenderer
+    order: -4
+    squareColor: "#725F79"
+- id: 32c7693b-1891-5df2-9650-e62f606722a7
+  name: Marker 6.1
+  x: 1060
+  y: 76
+  width: 42
+  height: 8
+  components:
+  - type: spriteRenderer
+    order: -4
+    squareColor: "#725F79"
+- id: 90624e37-0382-510d-ae54-7c38691924e4
+  name: Post 6.1
+  x: 1060
+  y: 76
+  width: 8
+  height: 38
+  components:
+  - type: spriteRenderer
+    order: -4
+    squareColor: "#725F79"
+- id: 1e57a408-0dc2-505b-bea3-10d165549351
+  name: Marker 6.2
+  x: 1060
+  y: 296
+  width: 50
+  height: 8
+  components:
+  - type: spriteRenderer
+    order: -4
+    squareColor: "#725F79"
+- id: 2ff739c3-9c78-5aa0-8826-aebf39b20737
+  name: Post 6.2
+  x: 1060
+  y: 296
+  width: 8
+  height: 38
+  components:
+  - type: spriteRenderer
+    order: -4
+    squareColor: "#725F79"
+- id: c7669032-e408-532d-ab12-c20c38a829cb
+  name: Marker 6.3
+  x: 1060
+  y: 516
+  width: 58
+  height: 8
+  components:
+  - type: spriteRenderer
+    order: -4
+    squareColor: "#725F79"
+- id: 8913ed25-e59e-5a5c-9ee3-1562b79afcbe
+  name: Post 6.3
+  x: 1060
+  y: 516
+  width: 8
+  height: 38
+  components:
+  - type: spriteRenderer
+    order: -4
+    squareColor: "#725F79"
+- id: b061c1d2-feb7-5c38-9b4b-33f1d1bd7a72
+  name: Marker 6.4
+  x: 1060
+  y: 736
+  width: 66
+  height: 8
+  components:
+  - type: spriteRenderer
+    order: -4
+    squareColor: "#725F79"
+- id: 0da15072-1614-5e03-ad9d-fd7d9332a3a5
+  name: Post 6.4
+  x: 1060
+  y: 736
+  width: 8
+  height: 38
+  components:
+  - type: spriteRenderer
+    order: -4
+    squareColor: "#725F79"
+- id: ef8cdf60-53c2-525d-bc76-f9f46a96a4f7
+  name: Marker 7.1
+  x: 1260
+  y: 76
+  width: 42
+  height: 8
+  components:
+  - type: spriteRenderer
+    order: -4
+    squareColor: "#725F79"
+- id: 5af08530-6854-5ae7-bb83-72ae78c1d23a
+  name: Post 7.1
+  x: 1260
+  y: 76
+  width: 8
+  height: 38
+  components:
+  - type: spriteRenderer
+    order: -4
+    squareColor: "#725F79"
+- id: 7aff4c5e-6257-53e8-9dba-25a3031db0e4
+  name: Marker 7.2
+  x: 1260
+  y: 296
+  width: 50
+  height: 8
+  components:
+  - type: spriteRenderer
+    order: -4
+    squareColor: "#725F79"
+- id: e42613ab-7e7b-5eab-af49-736088250542
+  name: Post 7.2
+  x: 1260
+  y: 296
+  width: 8
+  height: 38
+  components:
+  - type: spriteRenderer
+    order: -4
+    squareColor: "#725F79"
+- id: 541a700a-491b-5cdc-bd89-eaa47262f42f
+  name: Marker 7.3
+  x: 1260
+  y: 516
+  width: 58
+  height: 8
+  components:
+  - type: spriteRenderer
+    order: -4
+    squareColor: "#725F79"
+- id: 934b64e2-0a1d-5a13-b905-85336a93e039
+  name: Post 7.3
+  x: 1260
+  y: 516
+  width: 8
+  height: 38
+  components:
+  - type: spriteRenderer
+    order: -4
+    squareColor: "#725F79"
+- id: eec06546-b6d6-5006-bb0b-44bd4de7085b
+  name: Marker 7.4
+  x: 1260
+  y: 736
+  width: 66
+  height: 8
+  components:
+  - type: spriteRenderer
+    order: -4
+    squareColor: "#725F79"
+- id: f243b757-4bca-5b5f-9e19-e02aefc651ec
+  name: Post 7.4
+  x: 1260
+  y: 736
+  width: 8
+  height: 38
+  components:
+  - type: spriteRenderer
+    order: -4
+    squareColor: "#725F79"
+- id: 0f7dfc22-949b-54da-a7d1-bf05f2fda269
+  name: Marker 8.1
+  x: 1460
+  y: 76
+  width: 42
+  height: 8
+  components:
+  - type: spriteRenderer
+    order: -4
+    squareColor: "#725F79"
+- id: a799c656-ad05-5a52-9654-9b42b79756b1
+  name: Post 8.1
+  x: 1460
+  y: 76
+  width: 8
+  height: 38
+  components:
+  - type: spriteRenderer
+    order: -4
+    squareColor: "#725F79"
+- id: 17c696cc-81ac-5c0f-91cd-1831b02c61b1
+  name: Marker 8.2
+  x: 1460
+  y: 296
+  width: 50
+  height: 8
+  components:
+  - type: spriteRenderer
+    order: -4
+    squareColor: "#725F79"
+- id: 88b224dd-663e-5194-83be-7de42804a6c6
+  name: Post 8.2
+  x: 1460
+  y: 296
+  width: 8
+  height: 38
+  components:
+  - type: spriteRenderer
+    order: -4
+    squareColor: "#725F79"
+- id: fc1a72df-f282-50fa-84bf-2f0b4f92828e
+  name: Marker 8.3
+  x: 1460
+  y: 516
+  width: 58
+  height: 8
+  components:
+  - type: spriteRenderer
+    order: -4
+    squareColor: "#725F79"
+- id: 9ff1f64f-6b1a-5ded-bf2a-23072ae8b5e0
+  name: Post 8.3
+  x: 1460
+  y: 516
+  width: 8
+  height: 38
+  components:
+  - type: spriteRenderer
+    order: -4
+    squareColor: "#725F79"
+- id: 9f56890c-3261-5557-ba1f-9d3d0bdda3e4
+  name: Marker 8.4
+  x: 1460
+  y: 736
+  width: 66
+  height: 8
+  components:
+  - type: spriteRenderer
+    order: -4
+    squareColor: "#725F79"
+- id: 7ab2baa1-4b75-51af-94fe-c19f8f3a8749
+  name: Post 8.4
+  x: 1460
+  y: 736
+  width: 8
+  height: 38
+  components:
+  - type: spriteRenderer
+    order: -4
+    squareColor: "#725F79"
+- id: 45c4c558-3fb3-5861-88e3-dfd8a5c5bae3
+  name: Player
+  x: 184
+  y: 184
+  width: 32
+  height: 32
+  components:
+  - type: spriteRenderer
+    order: 4
+    squareColor: "#52E4B5"
+  - type: script
+    script: FieldPlayer
+    values:
+      Main: "9220cdc4-76fa-5e2b-9107-5f4aef99a67e"
+      Second: "44e4c6f9-a8d1-5d37-a753-a54a9fdb7a39"
+      Map: "05592337-d958-55eb-a4cf-91bfbc71fadd"
+      Readout: "b94006ed-15e3-5653-9f77-e547373fb716"
+- id: f81d520a-421d-5c56-8abd-793db0413f22
+  name: Partner
+  x: 1384
+  y: 680
+  width: 32
+  height: 32
+  components:
+  - type: spriteRenderer
+    order: 4
+    squareColor: "#F3AE68"
+  - type: script
+    script: MirrorPlayer
+    values:
+      Player: "45c4c558-3fb3-5861-88e3-dfd8a5c5bae3"
+- id: 4a7dd3e2-8d5b-5ad2-8145-59280de2db84
+  name: HUD
+  x: 0
+  y: 0
+  width: 1
+  height: 1
+  components:
+  - type: uiCanvas
+- id: 908d57d4-edc2-5acb-9b05-908b84c6e8ef
+  name: Split
+  x: 399
+  y: 0
+  width: 2
+  height: 400
+  parentId: 4a7dd3e2-8d5b-5ad2-8145-59280de2db84
+  components:
+  - type: uiRect
+  - type: uiImage
+    color: "#18272D"
+- id: f8c033a3-7f99-5b32-963d-78b5f48acb16
+  name: Legend
+  x: 0
+  y: 400
+  width: 800
+  height: 50
+  parentId: 4a7dd3e2-8d5b-5ad2-8145-59280de2db84
+  components:
+  - type: uiRect
+  - type: uiImage
+    color: "#192A33"
+- id: 0870524f-ec2c-564e-93e3-79e1576c9f52
+  name: West label
+  x: 46
+  y: 12
+  width: 203
+  height: 28
+  parentId: 4a7dd3e2-8d5b-5ad2-8145-59280de2db84
+  components:
+  - type: uiRect
+  - type: uiText
+    size: 18
+    text: "01    PLAYER"
+- id: b76ea9cb-188b-5e1b-9836-e45fb6381ffa
+  name: East label
+  x: 446
+  y: 12
+  width: 162
+  height: 28
+  parentId: 4a7dd3e2-8d5b-5ad2-8145-59280de2db84
+  components:
+  - type: uiRect
+  - type: uiText
+    size: 18
+    text: "02    PARTNER"
+- id: 52e7d3b2-2ff5-5ca5-87c4-6bb54d3ab7d8
+  name: Controls
+  x: 14
+  y: 406
+  width: 780
+  height: 20
+  parentId: 4a7dd3e2-8d5b-5ad2-8145-59280de2db84
+  components:
+  - type: uiRect
+  - type: uiText
+    size: 14
+    text: "CAMERA LAB     /     Arrows or WASD: move     /     Space: travel to opposite corner"
+- id: b94006ed-15e3-5653-9f77-e547373fb716
+  name: Readout
+  x: 14
+  y: 427
+  width: 778
+  height: 22
+  parentId: 4a7dd3e2-8d5b-5ad2-8145-59280de2db84
+  components:
+  - type: uiRect
+  - type: uiText
+    size: 15
+    text: "Ready"
+defaultCameraId: 9220cdc4-76fa-5e2b-9107-5f4aef99a67e

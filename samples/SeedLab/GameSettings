@@ -1,0 +1,30 @@
+projectId: f308a024-f67d-5f58-a81c-f501e0b42828
+gameTitle: SeedLab
+width: 800
+height: 450
+startScene: 0cfbf6ac-2359-53aa-abc6-f603bdf4dbee
+includedScenes: [0cfbf6ac-2359-53aa-abc6-f603bdf4dbee]
+input:
+  actions:
+  - name: MoveLeft
+    controls: ["A", "Left"]
+  - name: MoveRight
+    controls: ["D", "Right"]
+  - name: MoveUp
+    controls: ["W", "Up"]
+  - name: MoveDown
+    controls: ["S", "Down"]
+  - name: NextSeed
+    controls: ["N"]
+  - name: PreviousSeed
+    controls: ["P"]
+  - name: Rebuild
+    controls: ["R"]
+  - name: WaitTurn
+    controls: ["Space"]
+  - name: Replay
+    controls: ["T"]
+  - name: StepReplay
+    controls: ["J"]
+  - name: SaveReplay
+    controls: ["K"]

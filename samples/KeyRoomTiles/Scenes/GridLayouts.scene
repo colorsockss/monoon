@@ -1,0 +1,88 @@
+schemaVersion: 9
+objects:
+- id: 74c97020-f638-4779-9f2f-000000000001
+  name: Isometric
+  x: 112
+  y: 160
+  components:
+  - type: tilemap2D
+    layout: Isometric
+    tileset: cabcdbe8-c7f9-4dbb-b25b-b44a7a9574b2
+    cellSize: {width: 64, height: 32}
+    order: -1
+    chunks:
+    - x: 0
+      y: 0
+      cells:
+      - {index: 0, tile: 1}
+      - {index: 1, tile: 2}
+      - {index: 2, tile: 2}
+      - {index: 32, tile: 2}
+      - {index: 33, tile: 1}
+      - {index: 34, tile: 2}
+      - {index: 64, tile: 2}
+      - {index: 65, tile: 2}
+      - {index: 66, tile: 1}
+- id: 74c97020-f638-4779-9f2f-000000000002
+  name: Hex Pointy
+  x: 300
+  y: 150
+  components:
+  - type: tilemap2D
+    layout: HexPointy
+    tileset: cabcdbe8-c7f9-4dbb-b25b-b44a7a9574b2
+    cellSize: {width: 48, height: 56}
+    order: -1
+    chunks:
+    - x: 0
+      y: 0
+      cells:
+      - {index: 0, tile: 1}
+      - {index: 1, tile: 2}
+      - {index: 2, tile: 2}
+      - {index: 32, tile: 2}
+      - {index: 33, tile: 1}
+      - {index: 34, tile: 2}
+      - {index: 64, tile: 2}
+      - {index: 65, tile: 2}
+      - {index: 66, tile: 1}
+- id: 74c97020-f638-4779-9f2f-000000000003
+  name: Hex Flat
+  x: 559
+  y: 128
+  components:
+  - type: tilemap2D
+    layout: HexFlat
+    tileset: cabcdbe8-c7f9-4dbb-b25b-b44a7a9574b2
+    cellSize: {width: 56, height: 48}
+    order: -1
+    chunks:
+    - x: 0
+      y: 0
+      cells:
+      - {index: 0, tile: 1}
+      - {index: 1, tile: 2}
+      - {index: 2, tile: 2}
+      - {index: 32, tile: 2}
+      - {index: 33, tile: 1}
+      - {index: 34, tile: 2}
+      - {index: 64, tile: 2}
+      - {index: 65, tile: 2}
+      - {index: 66, tile: 1}
+- id: 74c97020-f638-4779-9f2f-000000000004
+  name: Player
+  x: 38
+  y: 272
+  width: 16
+  height: 16
+  components:
+  - {type: spriteRenderer, squareColor: "#63E6C1"}
+  - {type: boxCollider2D}
+  - {type: script, script: PlayerMovement, values: {}}
+- id: 74c97020-f638-4779-9f2f-000000000005
+  name: Camera
+  x: 400
+  y: 225
+  components:
+  - {type: camera2D, zoom: 1}
+defaultCameraId: 74c97020-f638-4779-9f2f-000000000005

@@ -1,0 +1,21 @@
+version: 1
+columns:
+- name: label
+  type: Text
+- name: copies
+  type: Number
+- name: steps
+  type: Number
+rows:
+- key: dew
+  cells: ["이슬길", 1, 1]
+- key: moon
+  cells: ["달고개", 1, 3]
+- key: pine
+  cells: ["솔숲", 1, 2]
+- key: stream
+  cells: ["샛강", 1, 1]
+- key: bridge
+  cells: ["돌다리", 1, 2]
+- key: ridge
+  cells: ["별마루", 1, 3]

@@ -1,0 +1,14 @@
+projectId: 6c5dd0cd-638e-5a00-9d80-744596f3a647
+gameTitle: BarrageLab
+width: 800
+height: 450
+startScene: 719a1aa5-015b-503e-85ad-0722931cc1c0
+includedScenes: [719a1aa5-015b-503e-85ad-0722931cc1c0]
+input:
+  actions:
+  - name: Fire
+    controls: ["Space"]
+  - name: Compare
+    controls: ["B"]
+  - name: Restart
+    controls: ["R"]

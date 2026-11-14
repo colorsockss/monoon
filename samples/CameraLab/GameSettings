@@ -1,0 +1,38 @@
+width: 800
+height: 450
+projectId: cf624488-489b-5951-a279-fffa22d99f7a
+gameTitle: CameraLab
+startScene: cf624488-489b-5951-a279-fffa22d99f7a
+includedScenes:
+- cf624488-489b-5951-a279-fffa22d99f7a
+input:
+  actions:
+  - name: MoveLeft
+    controls:
+    - Left
+    - A
+    - Pad.DpadLeft
+    - Pad.LeftStickLeft
+  - name: MoveRight
+    controls:
+    - Right
+    - D
+    - Pad.DpadRight
+    - Pad.LeftStickRight
+  - name: MoveUp
+    controls:
+    - Up
+    - W
+    - Pad.DpadUp
+    - Pad.LeftStickUp
+  - name: MoveDown
+    controls:
+    - Down
+    - S
+    - Pad.DpadDown
+    - Pad.LeftStickDown
+  - name: Interact
+    controls:
+    - E
+    - Space
+    - Pad.South

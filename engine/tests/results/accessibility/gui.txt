@@ -1,0 +1,33 @@
+editor 61845 [23348, 418, 159, 1220, 768]
+save: version: 1
+values:
+  name: "한글"
+  locale: "ja"
+  textScale: 1.5
+  highContrast: true
+  scroll: 55
+  saveFocused: true
+  sawComposition: true
+editor resized [1100, 720] focus ring 212 429 603 462 click saved
+release 61909 [23362, 628, 409, 800, 478]
+save: version: 1
+values:
+  name: "한글"
+  locale: "ja"
+  textScale: 1.5
+  highContrast: true
+  scroll: 55
+  saveFocused: true
+  sawComposition: true
+release resized [920, 660] focus ring 47 410 556 454 click saved
+aot 62220 [23390, 628, 405, 800, 482]
+save: version: 1
+values:
+  name: "한글"
+  locale: "ja"
+  textScale: 1.5
+  highContrast: true
+  scroll: 55
+  saveFocused: true
+  sawComposition: true
+aot resized [920, 660] focus ring 47 412 556 456 click saved

@@ -1,0 +1,72 @@
+<Window xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="using:Engine.Editor" x:Class="Engine.Editor.ClipEditorWindow"
+        Width="710" Height="455" MinWidth="375" MinHeight="405" WindowStartupLocation="CenterOwner"
+        Title="Sprite Animation">
+  <Grid Margin="12" RowDefinitions="Auto,*,Auto,Auto,Auto" RowSpacing="6">
+    <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="8">
+      <TextBlock Classes="fieldLabel" Text="Clip" VerticalAlignment="Center"/>
+      <TextBox x:Name="ClipName" Grid.Column="1" AutomationProperties.Name="Clip name"/>
+      <CheckBox x:Name="LoopBox" Grid.Column="2" Content="Loop"/>
+    </Grid>
+    <ScrollViewer x:Name="StageScroll" Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+      <Grid x:Name="Stage" ColumnDefinitions="*,240" ColumnSpacing="12" RowSpacing="6">
+        <Border x:Name="PreviewPanel" MinHeight="94" Background="{DynamicResource EditorPanel}" ClipToBounds="True">
+          <Grid RowDefinitions="*,Auto">
+            <Border x:Name="PreviewHost" Margin="8" ClipToBounds="True"/>
+            <TextBlock x:Name="Caption" Grid.Row="1" Margin="8,0,8,5" TextTrimming="CharacterEllipsis"/>
+          </Grid>
+        </Border>
+        <StackPanel x:Name="Properties" Grid.Column="1" Spacing="5">
+          <TextBlock x:Name="FrameHeading" TextTrimming="CharacterEllipsis" FontWeight="SemiBold" Text="Frame"/>
+          <Grid ColumnDefinitions="60,*" RowDefinitions="Auto,Auto,Auto,Auto" ColumnSpacing="5" RowSpacing="4">
+            <TextBlock Classes="fieldLabel" Text="Sprite" VerticalAlignment="Center"/>
+            <ComboBox x:Name="SpriteBox" Grid.Column="1" HorizontalAlignment="Stretch" AutomationProperties.Name="Frame sprite"/>
+            <TextBlock Grid.Row="1" Classes="fieldLabel" Text="Seconds" VerticalAlignment="Center"/>
+            <TextBox x:Name="SecondsBox" Grid.Row="1" Grid.Column="1" AutomationProperties.Name="Frame duration in seconds"/>
+            <TextBlock Grid.Row="2" Classes="fieldLabel" Text="Event" VerticalAlignment="Center"/>
+            <TextBox x:Name="EventBox" Grid.Row="2" Grid.Column="1" AutomationProperties.Name="Frame event" Watermark="Event name"/>
+            <TextBlock Grid.Row="3" Classes="fieldLabel" Text="Preview" VerticalAlignment="Center"/>
+            <ComboBox x:Name="ZoomBox" Grid.Row="3" Grid.Column="1" HorizontalAlignment="Stretch" AutomationProperties.Name="Preview zoom"/>
+          </Grid>
+        </StackPanel>
+      </Grid>
+    </ScrollViewer>
+    <Grid Grid.Row="2" ColumnDefinitions="Auto,*,Auto,Auto" ColumnSpacing="4">
+      <StackPanel Orientation="Horizontal" Spacing="2">
+        <Button x:Name="First" Classes="quiet" Content="|◀" ToolTip.Tip="First frame" AutomationProperties.Name="First frame"/>
+        <Button x:Name="Previous" Classes="quiet" Content="◀" ToolTip.Tip="Previous frame" AutomationProperties.Name="Previous frame"/>
+        <Button x:Name="PreviewPlay" Content="Play" Width="46" HorizontalContentAlignment="Center" AutomationProperties.Name="Play or pause preview"/>
+        <Button x:Name="Next" Classes="quiet" Content="▶" ToolTip.Tip="Next frame" AutomationProperties.Name="Next frame"/>
+      </StackPanel>
+      <TextBlock x:Name="ClockText" Grid.Column="1" Classes="label" TextTrimming="CharacterEllipsis" Margin="4,0"
+                 ToolTip.Tip="{Binding Text, RelativeSource={RelativeSource Self}}"/>
+      <Button Grid.Column="2" Content="Add ▾" AutomationProperties.Name="Add frames">
+        <Button.Flyout>
+          <MenuFlyout>
+            <MenuItem x:Name="Add" Header="Add PNG…"/>
+            <MenuItem x:Name="AddCells" Header="Sheet cells…"/>
+          </MenuFlyout>
+        </Button.Flyout>
+      </Button>
+      <Button Grid.Column="3" x:Name="FrameActions" Content="Frame ▾" AutomationProperties.Name="Frame actions">
+        <Button.Flyout>
+          <MenuFlyout>
+            <MenuItem x:Name="Left" Header="Move left"/>
+            <MenuItem x:Name="Right" Header="Move right"/>
+            <Separator/>
+            <MenuItem x:Name="Duplicate" Header="Duplicate"/>
+            <MenuItem x:Name="Remove" Header="Remove"/>
+          </MenuFlyout>
+        </Button.Flyout>
+      </Button>
+    </Grid>
+    <ScrollViewer x:Name="TrackScroll" Grid.Row="3" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
+      <local:ClipTimelineTrack x:Name="Track" Height="86" ToolTip.Tip="Drag frames to reorder. Drag the ruler to scrub." AutomationProperties.Name="Animation timeline"/>
+    </ScrollViewer>
+    <Grid Grid.Row="4" ColumnDefinitions="*,Auto,Auto" ColumnSpacing="5">
+      <TextBlock x:Name="StatusLine" MaxLines="2" TextWrapping="Wrap" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"/>
+      <Button Classes="quiet" x:Name="CloseButton" Grid.Column="1" Content="Close"/>
+      <Button Classes="primary" x:Name="SaveButton" Grid.Column="2" Content="Save Clip"/>
+    </Grid>
+  </Grid>
+</Window>

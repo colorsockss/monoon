@@ -1,0 +1,527 @@
+schemaVersion: 14
+objects:
+- id: 319b31a9-29b5-562f-b5d2-f054cd1ffe68
+  name: "Bag"
+  x: 0
+  y: 0
+  width: 16
+  height: 16
+  components:
+  - type: script
+    script: "Inventory/InventoryContainer"
+    values: {"Catalog": {"Id": "27e8e87b-8eac-5142-a8ca-7cf02581b103"}, "Slots": 3}
+  - type: script
+    script: "Quests/QuestLog"
+    values: {"Catalog": {"Id": "7daa83ca-0ee2-4e06-959b-681c1b7180d5"}}
+  - type: script
+    script: Dialogue/DialoguePlayer
+    values: {"Story": {"Id": "be65fc7d-c374-5aa1-8a6b-4f548c4bcd03"}}
+  - type: script
+    script: "InventoryWorkbench"
+    values: {"Container": "319b31a9-29b5-562f-b5d2-f054cd1ffe68", "FirstSlot": "c276675b-654c-59cf-bdea-5d48217ed689", "SecondSlot": "23e7f514-bd97-575c-8883-6ba0f3a95fea", "ThirdSlot": "ba32b00c-7ce5-5740-8886-6a8a55b3f187", "Selection": "5b336eea-634a-5fd1-878d-5c64ce06ff01", "Status": "71042a39-1e0b-58e2-999e-281d5dec61d1", "Quests": "319b31a9-29b5-562f-b5d2-f054cd1ffe68", "QuestTitle": "55ab5299-7710-5e25-8f4f-284b6bc2e73a", "QuestProgress": "41b4476d-dfaf-58ff-8678-fd79a74c10bd", "QuestButton": "aa5c230a-8760-5e39-876f-83c8b14507da", "InventoryPanel": "56cf45d6-93a1-58f9-a5ad-c0d2c32b9c76", "DialoguePanel": "68ed6837-e9f4-5ed6-a614-b36f3e9485d8", "Speaker": "c4d40681-206c-57e9-a4c2-81737c8016f4", "Line": "a57a861d-8d51-5d49-8558-0cfa607de5b4", "FirstChoice": "9eb7ca43-8a03-5fdc-80a5-65f1a4920e0e", "SecondChoice": "c18f0e6b-97bd-536b-9118-30c48e35851f", "ThirdChoice": "1e761aa6-2d83-520c-bfa0-39b752fc2270", "MoreChoices": "e25c6af1-7f73-5aea-8a01-7fb79891a95a", "Merchant": "319b31a9-29b5-562f-b5d2-f054cd1ffe68"}
+- id: 467a3d00-6d1b-5566-bd63-66258fed3749
+  name: "Camera"
+  x: 400
+  y: 225
+  width: 1
+  height: 1
+  components:
+  - type: camera2D
+- id: e0fb2176-2cd7-55a4-8f27-3932670aad90
+  name: "Workbench"
+  x: 0
+  y: 0
+  width: 800
+  height: 450
+  components:
+  - type: uiCanvas
+- id: 63a08a20-b072-500f-a7fa-d37fb9f10a77
+  name: "Surface"
+  parentId: e0fb2176-2cd7-55a4-8f27-3932670aad90
+  x: 0
+  y: 0
+  width: 800
+  height: 450
+  components:
+  - type: uiRect
+  - type: uiImage
+    color: "#162325"
+- id: 68ed6837-e9f4-5ed6-a614-b36f3e9485d8
+  name: "Dialogue panel"
+  parentId: e0fb2176-2cd7-55a4-8f27-3932670aad90
+  x: 0
+  y: 0
+  width: 800
+  height: 450
+  components:
+  - type: uiRect
+- id: 56cf45d6-93a1-58f9-a5ad-c0d2c32b9c76
+  name: "Inventory panel"
+  parentId: e0fb2176-2cd7-55a4-8f27-3932670aad90
+  x: 0
+  y: 0
+  width: 800
+  height: 450
+  components:
+  - type: uiRect
+  - type: uiImage
+    color: "#162325"
+- id: 3d75f734-f783-5104-a235-8bc0118c5ee8
+  name: "Title"
+  parentId: 56cf45d6-93a1-58f9-a5ad-c0d2c32b9c76
+  x: 32
+  y: 10
+  width: 720
+  height: 54
+  components:
+  - type: uiRect
+  - type: uiText
+    text: "탐험 가방"
+    size: 34
+    color: "#F1EEDA"
+- id: 68eb77e8-ff2f-52e2-956e-74314f7fbfce
+  name: "Divider"
+  parentId: 56cf45d6-93a1-58f9-a5ad-c0d2c32b9c76
+  x: 32
+  y: 59
+  width: 736
+  height: 2
+  components:
+  - type: uiRect
+  - type: uiImage
+    color: "#53756C"
+- id: 21a73511-5e3c-58a6-9c7d-de9a34e06c8f
+  name: "Supply heading"
+  parentId: 56cf45d6-93a1-58f9-a5ad-c0d2c32b9c76
+  x: 32
+  y: 66
+  width: 280
+  height: 30
+  components:
+  - type: uiRect
+  - type: uiText
+    text: "보급품"
+    size: 21
+    color: "#95D8BE"
+- id: e5ed5a99-6b10-539a-b1f9-caede7b9953c
+  name: "Bag heading"
+  parentId: 56cf45d6-93a1-58f9-a5ad-c0d2c32b9c76
+  x: 352
+  y: 66
+  width: 414
+  height: 30
+  components:
+  - type: uiRect
+  - type: uiText
+    text: "보관함"
+    size: 21
+    color: "#95D8BE"
+- id: 1baf15cb-991e-5adf-8370-8ed14aa841ee
+  name: "Supply herb"
+  parentId: 56cf45d6-93a1-58f9-a5ad-c0d2c32b9c76
+  x: 32
+  y: 103
+  width: 277
+  height: 40
+  components:
+  - type: uiRect
+  - type: uiButton
+  - type: uiText
+    text: "1     약초 담기"
+    size: 17
+    color: "#F2F7F5"
+    insetX: 15
+    insetY: 8
+  - type: script
+    script: "InventoryAction"
+    values: {"Workbench": "319b31a9-29b5-562f-b5d2-f054cd1ffe68", "Command": "add", "Item": "herb"}
+- id: c276675b-654c-59cf-bdea-5d48217ed689
+  name: "Slot 1"
+  parentId: 56cf45d6-93a1-58f9-a5ad-c0d2c32b9c76
+  x: 352
+  y: 103
+  width: 416
+  height: 40
+  components:
+  - type: uiRect
+  - type: uiButton
+  - type: uiText
+    text: "●   1     빈 칸"
+    size: 17
+    color: "#F2F7F5"
+    insetX: 15
+    insetY: 8
+  - type: script
+    script: "InventoryAction"
+    values: {"Workbench": "319b31a9-29b5-562f-b5d2-f054cd1ffe68", "Command": "select", "Slot": 0}
+- id: 8522a92e-53d1-5997-a983-0417baa9831c
+  name: "Supply gem"
+  parentId: 56cf45d6-93a1-58f9-a5ad-c0d2c32b9c76
+  x: 32
+  y: 153
+  width: 277
+  height: 40
+  components:
+  - type: uiRect
+  - type: uiButton
+  - type: uiText
+    text: "2     수정 담기"
+    size: 17
+    color: "#F2F7F5"
+    insetX: 15
+    insetY: 8
+  - type: script
+    script: "InventoryAction"
+    values: {"Workbench": "319b31a9-29b5-562f-b5d2-f054cd1ffe68", "Command": "add", "Item": "gem"}
+- id: 23e7f514-bd97-575c-8883-6ba0f3a95fea
+  name: "Slot 2"
+  parentId: 56cf45d6-93a1-58f9-a5ad-c0d2c32b9c76
+  x: 352
+  y: 153
+  width: 416
+  height: 40
+  components:
+  - type: uiRect
+  - type: uiButton
+  - type: uiText
+    text: "○   2     빈 칸"
+    size: 17
+    color: "#F2F7F5"
+    insetX: 15
+    insetY: 8
+  - type: script
+    script: "InventoryAction"
+    values: {"Workbench": "319b31a9-29b5-562f-b5d2-f054cd1ffe68", "Command": "select", "Slot": 1}
+- id: d2fba648-ee16-5713-8c11-e6134218bd2d
+  name: "Supply key"
+  parentId: 56cf45d6-93a1-58f9-a5ad-c0d2c32b9c76
+  x: 32
+  y: 203
+  width: 277
+  height: 40
+  components:
+  - type: uiRect
+  - type: uiButton
+  - type: uiText
+    text: "3     열쇠 담기"
+    size: 17
+    color: "#F2F7F5"
+    insetX: 15
+    insetY: 8
+  - type: script
+    script: "InventoryAction"
+    values: {"Workbench": "319b31a9-29b5-562f-b5d2-f054cd1ffe68", "Command": "add", "Item": "key"}
+- id: ba32b00c-7ce5-5740-8886-6a8a55b3f187
+  name: "Slot 3"
+  parentId: 56cf45d6-93a1-58f9-a5ad-c0d2c32b9c76
+  x: 352
+  y: 203
+  width: 416
+  height: 40
+  components:
+  - type: uiRect
+  - type: uiButton
+  - type: uiText
+    text: "○   3     빈 칸"
+    size: 17
+    color: "#F2F7F5"
+    insetX: 15
+    insetY: 8
+  - type: script
+    script: "InventoryAction"
+    values: {"Workbench": "319b31a9-29b5-562f-b5d2-f054cd1ffe68", "Command": "select", "Slot": 2}
+- id: faedc1dc-ec7e-5e67-b933-8d5ebe375618
+  name: "Save"
+  parentId: e0fb2176-2cd7-55a4-8f27-3932670aad90
+  x: 32
+  y: 259
+  width: 132
+  height: 42
+  components:
+  - type: uiRect
+  - type: uiButton
+  - type: uiText
+    text: "저장   [S]"
+    size: 17
+    color: "#F2F7F5"
+    insetX: 15
+    insetY: 8
+  - type: script
+    script: "InventoryAction"
+    values: {"Workbench": "319b31a9-29b5-562f-b5d2-f054cd1ffe68", "Command": "save"}
+- id: 1260c990-e459-51b1-890b-cdea0f3db57b
+  name: "Load"
+  parentId: e0fb2176-2cd7-55a4-8f27-3932670aad90
+  x: 177
+  y: 259
+  width: 132
+  height: 42
+  components:
+  - type: uiRect
+  - type: uiButton
+  - type: uiText
+    text: "열기   [L]"
+    size: 17
+    color: "#F2F7F5"
+    insetX: 15
+    insetY: 8
+  - type: script
+    script: "InventoryAction"
+    values: {"Workbench": "319b31a9-29b5-562f-b5d2-f054cd1ffe68", "Command": "load"}
+- id: 5b336eea-634a-5fd1-878d-5c64ce06ff01
+  name: "Use"
+  parentId: 56cf45d6-93a1-58f9-a5ad-c0d2c32b9c76
+  x: 352
+  y: 259
+  width: 239
+  height: 42
+  components:
+  - type: uiRect
+  - type: uiButton
+  - type: uiText
+    text: "1번 칸 사용   [U]"
+    size: 17
+    color: "#F2F7F5"
+    insetX: 15
+    insetY: 8
+  - type: script
+    script: "InventoryAction"
+    values: {"Workbench": "319b31a9-29b5-562f-b5d2-f054cd1ffe68", "Command": "use"}
+- id: 583e135f-dc0c-5978-8896-d7b6ccc0976d
+  name: "Select hint"
+  parentId: 56cf45d6-93a1-58f9-a5ad-c0d2c32b9c76
+  x: 609
+  y: 267
+  width: 170
+  height: 30
+  components:
+  - type: uiRect
+  - type: uiText
+    text: "칸 선택   Q / E"
+    size: 17
+    color: "#B9CDC5"
+- id: 528fa654-08a1-5726-a983-216baf1e7964
+  name: "Status line"
+  parentId: e0fb2176-2cd7-55a4-8f27-3932670aad90
+  x: 32
+  y: 386
+  width: 736
+  height: 1
+  components:
+  - type: uiRect
+  - type: uiImage
+    color: "#53756C"
+- id: 71042a39-1e0b-58e2-999e-281d5dec61d1
+  name: "Status"
+  parentId: e0fb2176-2cd7-55a4-8f27-3932670aad90
+  x: 32
+  y: 397
+  width: 738
+  height: 34
+  components:
+  - type: uiRect
+  - type: uiText
+    text: "보급품을 골라 가방에 담으세요."
+    size: 18
+    color: "#E7CA8B"
+- id: 0bfea337-f7dc-5a7a-a877-024bba17a0b2
+  name: "Quest divider"
+  parentId: 56cf45d6-93a1-58f9-a5ad-c0d2c32b9c76
+  x: 32
+  y: 311
+  width: 736
+  height: 1
+  components:
+  - type: uiRect
+  - type: uiImage
+    color: "#53756C"
+- id: 55ab5299-7710-5e25-8f4f-284b6bc2e73a
+  name: "Quest title"
+  parentId: 56cf45d6-93a1-58f9-a5ad-c0d2c32b9c76
+  x: 32
+  y: 317
+  width: 476
+  height: 30
+  components:
+  - type: uiRect
+  - type: uiText
+    text: "약초 수집 의뢰"
+    size: 20
+    color: "#95D8BE"
+- id: 41b4476d-dfaf-58ff-8678-fd79a74c10bd
+  name: "Quest objective and reward"
+  parentId: 56cf45d6-93a1-58f9-a5ad-c0d2c32b9c76
+  x: 32
+  y: 349
+  width: 492
+  height: 29
+  components:
+  - type: uiRect
+  - type: uiText
+    text: "약초   0 / 3     ·     보상   수정 1개"
+    size: 17
+    color: "#F2F7F5"
+- id: aa5c230a-8760-5e39-876f-83c8b14507da
+  name: "Accept or claim quest"
+  parentId: 56cf45d6-93a1-58f9-a5ad-c0d2c32b9c76
+  x: 557
+  y: 327
+  width: 211
+  height: 42
+  components:
+  - type: uiRect
+  - type: uiButton
+  - type: uiText
+    text: "의뢰 받기   [J]"
+    size: 17
+    color: "#F2F7F5"
+    insetX: 15
+    insetY: 8
+  - type: script
+    script: "InventoryAction"
+    values: {"Workbench": "319b31a9-29b5-562f-b5d2-f054cd1ffe68", "Command": "quest"}
+- id: d105454a-d39d-57ab-9346-3257df019f1a
+  name: "Talk to merchant"
+  parentId: 56cf45d6-93a1-58f9-a5ad-c0d2c32b9c76
+  x: 540
+  y: 13
+  width: 228
+  height: 37
+  components:
+  - type: uiRect
+  - type: uiButton
+  - type: uiText
+    text: "약초상과 대화   [T]"
+    size: 16
+    color: "#F4F7F3"
+    insetX: 12
+    insetY: 7
+  - type: script
+    script: InventoryAction
+    values: {"Workbench": "319b31a9-29b5-562f-b5d2-f054cd1ffe68", "Command": "talk", "Slot": 0}
+- id: c4d40681-206c-57e9-a4c2-81737c8016f4
+  name: "Merchant name"
+  parentId: 68ed6837-e9f4-5ed6-a614-b36f3e9485d8
+  x: 32
+  y: 15
+  width: 500
+  height: 44
+  components:
+  - type: uiRect
+  - type: uiText
+    text: "약초상"
+    size: 28
+    color: "#A0DCC3"
+- id: a57a861d-8d51-5d49-8558-0cfa607de5b4
+  name: "Merchant line"
+  parentId: 68ed6837-e9f4-5ed6-a614-b36f3e9485d8
+  x: 32
+  y: 65
+  width: 736
+  height: 92
+  components:
+  - type: uiRect
+  - type: uiText
+    text: "어서 오세요. 무슨 일로 오셨나요?"
+    size: 19
+    color: "#F1EEDA"
+    wrap: true
+- id: 9eb7ca43-8a03-5fdc-80a5-65f1a4920e0e
+  name: "Answer 1"
+  parentId: 68ed6837-e9f4-5ed6-a614-b36f3e9485d8
+  x: 32
+  y: 168
+  width: 236
+  height: 66
+  components:
+  - type: uiRect
+  - type: uiButton
+  - type: uiText
+    text: "답변 1"
+    wrap: true
+    size: 16
+    color: "#F4F7F3"
+    insetX: 12
+    insetY: 7
+  - type: script
+    script: InventoryAction
+    values: {"Workbench": "319b31a9-29b5-562f-b5d2-f054cd1ffe68", "Command": "choose", "Slot": 0}
+- id: c18f0e6b-97bd-536b-9118-30c48e35851f
+  name: "Answer 2"
+  parentId: 68ed6837-e9f4-5ed6-a614-b36f3e9485d8
+  x: 282
+  y: 168
+  width: 236
+  height: 66
+  components:
+  - type: uiRect
+  - type: uiButton
+  - type: uiText
+    text: "답변 2"
+    wrap: true
+    size: 16
+    color: "#F4F7F3"
+    insetX: 12
+    insetY: 7
+  - type: script
+    script: InventoryAction
+    values: {"Workbench": "319b31a9-29b5-562f-b5d2-f054cd1ffe68", "Command": "choose", "Slot": 1}
+- id: 1e761aa6-2d83-520c-bfa0-39b752fc2270
+  name: "Answer 3"
+  parentId: 68ed6837-e9f4-5ed6-a614-b36f3e9485d8
+  x: 532
+  y: 168
+  width: 236
+  height: 66
+  components:
+  - type: uiRect
+  - type: uiButton
+  - type: uiText
+    text: "답변 3"
+    wrap: true
+    size: 16
+    color: "#F4F7F3"
+    insetX: 12
+    insetY: 7
+  - type: script
+    script: InventoryAction
+    values: {"Workbench": "319b31a9-29b5-562f-b5d2-f054cd1ffe68", "Command": "choose", "Slot": 2}
+- id: e25c6af1-7f73-5aea-8a01-7fb79891a95a
+  name: "More answers"
+  parentId: 68ed6837-e9f4-5ed6-a614-b36f3e9485d8
+  x: 538
+  y: 259
+  width: 230
+  height: 42
+  components:
+  - type: uiRect
+  - type: uiButton
+  - type: uiText
+    text: "다음 선택지   [E]"
+    size: 16
+    color: "#F4F7F3"
+    insetX: 12
+    insetY: 7
+  - type: script
+    script: InventoryAction
+    values: {"Workbench": "319b31a9-29b5-562f-b5d2-f054cd1ffe68", "Command": "more", "Slot": 0}
+- id: 30adbeb7-8de0-5038-8c21-0ec2bcd9b763
+  name: "Leave merchant"
+  parentId: 68ed6837-e9f4-5ed6-a614-b36f3e9485d8
+  x: 352
+  y: 259
+  width: 174
+  height: 42
+  components:
+  - type: uiRect
+  - type: uiButton
+  - type: uiText
+    text: "대화 닫기   [T]"
+    size: 16
+    color: "#F4F7F3"
+    insetX: 12
+    insetY: 7
+  - type: script
+    script: InventoryAction
+    values: {"Workbench": "319b31a9-29b5-562f-b5d2-f054cd1ffe68", "Command": "talk", "Slot": 0}
+defaultCameraId: 467a3d00-6d1b-5566-bd63-66258fed3749

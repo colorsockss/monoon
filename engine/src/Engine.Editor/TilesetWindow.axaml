@@ -1,0 +1,49 @@
+<Window xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="using:Engine.Editor" x:Class="Engine.Editor.TilesetWindow"
+        Title="Tileset" WindowStartupLocation="CenterOwner" Width="700" Height="480" MinWidth="365" MinHeight="340">
+  <Grid Margin="12" RowDefinitions="Auto,Auto,Auto,*,Auto,Auto">
+    <Grid x:Name="NameRow" Margin="0,0,0,6" ColumnDefinitions="48,*" ColumnSpacing="6">
+      <TextBlock Text="Name" Classes="fieldLabel"/>
+      <TextBox x:Name="AssetName" Grid.Column="1" AutomationProperties.Name="Tileset name"/>
+    </Grid>
+    <Grid Grid.Row="1" Margin="0,0,0,6" ColumnDefinitions="48,*,Auto" ColumnSpacing="6">
+      <TextBlock Text="Sheet" Classes="fieldLabel"/>
+      <ComboBox x:Name="Images" Grid.Column="1" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch"
+                ItemTemplate="{StaticResource SheetPathTemplate}" AutomationProperties.Name="Tile sheet"
+                ToolTip.Tip="{Binding SelectedItem.Path, RelativeSource={RelativeSource Self}}"/>
+      <ToggleButton x:Name="ShowGrid" Grid.Column="2" Theme="{StaticResource SheetGridToggle}" AutomationProperties.Name="Grid settings"/>
+    </Grid>
+    <Grid Grid.Row="2" Margin="0,0,0,6" IsVisible="{Binding IsChecked, ElementName=ShowGrid}" RowDefinitions="Auto,Auto" RowSpacing="4"
+          ColumnDefinitions="48,*,*,*,*" ColumnSpacing="6">
+      <TextBlock Text="Cell (px)" Classes="fieldLabel"/>
+      <TextBlock Grid.Column="1" Classes="fieldLabel" Text="Width"/>
+      <TextBlock Grid.Column="2" Classes="fieldLabel" Text="Height"/>
+      <TextBlock Grid.Column="3" Classes="fieldLabel" Text="Margin"/>
+      <TextBlock Grid.Column="4" Classes="fieldLabel" Text="Spacing"/>
+      <NumericUpDown x:Name="CellW" Grid.Row="1" Grid.Column="1" Classes="sheetNumber" Minimum="1" Maximum="65535" AutomationProperties.Name="Cell width"/>
+      <NumericUpDown x:Name="CellH" Grid.Row="1" Grid.Column="2" Classes="sheetNumber" Minimum="1" Maximum="65535" AutomationProperties.Name="Cell height"/>
+      <NumericUpDown x:Name="MarginBox" Grid.Row="1" Grid.Column="3" Classes="sheetNumber" Minimum="0" Maximum="65535" AutomationProperties.Name="Margin"/>
+      <NumericUpDown x:Name="Gap" Grid.Row="1" Grid.Column="4" Classes="sheetNumber" Minimum="0" Maximum="65535" AutomationProperties.Name="Spacing"/>
+    </Grid>
+    <local:SheetGridView Grid.Row="3" x:Name="Cells" MinHeight="60" ClipToBounds="True" AutomationProperties.Name="Select a tile"/>
+    <Grid Grid.Row="4" Margin="0,6,0,0" ColumnDefinitions="48,*" ColumnSpacing="6">
+      <TextBlock Text="Brush" Classes="fieldLabel"/>
+      <ComboBox Grid.Column="1" x:Name="TerrainMode" HorizontalAlignment="Stretch" AutomationProperties.Name="Terrain brush"
+                ToolTip.Tip="Start at this tile; following sheet cells are indexed by connected edges.">
+        <ComboBoxItem Content="Single tile"/><ComboBoxItem Content="Terrain · 4 edges (16 cells)"/><ComboBoxItem Content="Terrain · 6 edges (64 cells)"/>
+      </ComboBox>
+    </Grid>
+    <Grid Grid.Row="5" x:Name="Footer" Margin="0,6,0,0" RowDefinitions="Auto,Auto" ColumnDefinitions="*,Auto" ColumnSpacing="8">
+      <Grid x:Name="TileStatus" ColumnDefinitions="*,Auto" ColumnSpacing="6">
+        <TextBlock x:Name="Info" Classes="label" MaxLines="2" TextWrapping="Wrap" TextTrimming="CharacterEllipsis"
+                   ToolTip.Tip="{Binding Text, RelativeSource={RelativeSource Self}}"/>
+        <CheckBox Grid.Column="1" x:Name="Solid" Content="Solid" VerticalAlignment="Center"/>
+      </Grid>
+      <StackPanel x:Name="Actions" Grid.Column="1" Orientation="Horizontal" Spacing="4" HorizontalAlignment="Right" VerticalAlignment="Center">
+        <Button x:Name="Replace" IsVisible="False" Content="Use selected tile"/>
+        <Button x:Name="Cancel" Classes="quiet" Content="Cancel"/>
+        <Button x:Name="SaveAsset" Classes="primary" Content="Save Tileset"/>
+      </StackPanel>
+    </Grid>
+  </Grid>
+</Window>

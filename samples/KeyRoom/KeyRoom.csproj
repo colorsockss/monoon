@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Update=".monoon-assets" CopyToOutputDirectory="PreserveNewest" />
+    <None Update="GameSettings" CopyToOutputDirectory="PreserveNewest" />
+    <None Update="Scenes/**/*.scene;Scenes/**/*.scene.meta" CopyToOutputDirectory="PreserveNewest" />
+    <None Update="Assets/**/*" CopyToOutputDirectory="PreserveNewest" />
+    <Compile Remove="Scripts/**/*.cs" />
+    <None Include="Scripts/**/*.cs" CopyToOutputDirectory="PreserveNewest" />
+    <ProjectReference Include="../../engine/src/Engine.Core/Engine.Core.csproj" />
+    <ProjectReference Include="../../engine/src/Engine.Desktop/Engine.Desktop.csproj" />
+  </ItemGroup>
+</Project>

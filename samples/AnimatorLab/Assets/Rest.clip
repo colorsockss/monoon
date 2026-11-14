@@ -1,0 +1,5 @@
+frames:
+- sprite: 8ec064c4-dcc5-4e46-b68e-146bc34af0eb
+  seconds: 1
+  event: Rested
+loop: false

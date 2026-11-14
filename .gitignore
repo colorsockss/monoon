@@ -1,0 +1,8 @@
+bin/
+obj/
+/engine/.artifacts/
+/editor/
+/player-templates/
+/game-builds/
+.DS_Store
+/.test-env/

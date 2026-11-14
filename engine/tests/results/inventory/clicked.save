@@ -1,0 +1,5 @@
+version: 1
+values:
+  capacity: 3
+  item0: "gem"
+  count0: 1

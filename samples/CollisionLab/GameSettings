@@ -1,0 +1,38 @@
+width: 800
+height: 450
+projectId: 5750e5bb-1700-5a5b-94c2-b6bd02a0356c
+gameTitle: CollisionLab
+startScene: 5750e5bb-1700-5a5b-94c2-b6bd02a0356c
+includedScenes:
+- 5750e5bb-1700-5a5b-94c2-b6bd02a0356c
+input:
+  actions:
+  - name: MoveLeft
+    controls:
+    - Left
+    - A
+    - Pad.DpadLeft
+    - Pad.LeftStickLeft
+  - name: MoveRight
+    controls:
+    - Right
+    - D
+    - Pad.DpadRight
+    - Pad.LeftStickRight
+  - name: MoveUp
+    controls:
+    - Up
+    - W
+    - Pad.DpadUp
+    - Pad.LeftStickUp
+  - name: MoveDown
+    controls:
+    - Down
+    - S
+    - Pad.DpadDown
+    - Pad.LeftStickDown
+  - name: Interact
+    controls:
+    - E
+    - Space
+    - Pad.South

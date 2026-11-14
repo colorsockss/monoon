@@ -1,0 +1,16 @@
+Release accepted after 173 frames: 121 bytes SHA-256 765e6cdf97591974ed86f0a4103b4b0b671427af8986958137cea2145ac98b89
+Release ready after 326 frames: 141 bytes SHA-256 a7f56eee164a22753a559e634e8386ac3c6d218985858332aa265d9334427ae9
+Release paid after 446 frames: 171 bytes SHA-256 eed41defcbd7987a527deb677c60da8151ad0de1616c717c646e92b26e70f795
+Release bad-version: rejected: Unsupported or incomplete input recording.
+Release out-of-range-frame: rejected: Input event refers to a missing or out-of-order frame.
+Release wrong-project: rejected: Recording belongs to a different project or start scene.
+Release incomplete: rejected: /var/folders/q5/zk8228hn6zn1m15c3xctt8pr0000gn/T/tmpomh4vxfv/invalid.inputreplay: Missing required key(s) 'events' for InputReplay at Line: 1, Col: 8, Idx: 8
+Release out-of-order: rejected: Input event refers to a missing or out-of-order frame.
+Native AOT accepted after 173 frames: 121 bytes SHA-256 765e6cdf97591974ed86f0a4103b4b0b671427af8986958137cea2145ac98b89
+Native AOT ready after 326 frames: 141 bytes SHA-256 a7f56eee164a22753a559e634e8386ac3c6d218985858332aa265d9334427ae9
+Native AOT paid after 446 frames: 171 bytes SHA-256 eed41defcbd7987a527deb677c60da8151ad0de1616c717c646e92b26e70f795
+Native AOT bad-version: rejected: Unsupported or incomplete input recording.
+Native AOT out-of-range-frame: rejected: Input event refers to a missing or out-of-order frame.
+Native AOT wrong-project: rejected: Recording belongs to a different project or start scene.
+Native AOT incomplete: rejected: /var/folders/q5/zk8228hn6zn1m15c3xctt8pr0000gn/T/tmpomh4vxfv/invalid.inputreplay: Missing required key(s) 'events' for InputReplay at Line: 1, Col: 8, Idx: 8
+Native AOT out-of-order: rejected: Input event refers to a missing or out-of-order frame.

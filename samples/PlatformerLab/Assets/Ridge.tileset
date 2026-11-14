@@ -1,0 +1,55 @@
+image: 2e9d0d4a-d8e6-505d-b990-0f9fc464e1a6
+tileSize: {width: 8, height: 8}
+margin: 0
+spacing: 0
+nextId: 17
+tiles:
+- id: 1
+  source: {x: 0, y: 0, width: 8, height: 8}
+  solid: true
+  autoEdges: 4
+- id: 2
+  source: {x: 8, y: 0, width: 8, height: 8}
+  solid: true
+- id: 3
+  source: {x: 16, y: 0, width: 8, height: 8}
+  solid: true
+- id: 4
+  source: {x: 24, y: 0, width: 8, height: 8}
+  solid: true
+- id: 5
+  source: {x: 0, y: 8, width: 8, height: 8}
+  solid: true
+- id: 6
+  source: {x: 8, y: 8, width: 8, height: 8}
+  solid: true
+- id: 7
+  source: {x: 16, y: 8, width: 8, height: 8}
+  solid: true
+- id: 8
+  source: {x: 24, y: 8, width: 8, height: 8}
+  solid: true
+- id: 9
+  source: {x: 0, y: 16, width: 8, height: 8}
+  solid: true
+- id: 10
+  source: {x: 8, y: 16, width: 8, height: 8}
+  solid: true
+- id: 11
+  source: {x: 16, y: 16, width: 8, height: 8}
+  solid: true
+- id: 12
+  source: {x: 24, y: 16, width: 8, height: 8}
+  solid: true
+- id: 13
+  source: {x: 0, y: 24, width: 8, height: 8}
+  solid: true
+- id: 14
+  source: {x: 8, y: 24, width: 8, height: 8}
+  solid: true
+- id: 15
+  source: {x: 16, y: 24, width: 8, height: 8}
+  solid: true
+- id: 16
+  source: {x: 24, y: 24, width: 8, height: 8}
+  solid: true

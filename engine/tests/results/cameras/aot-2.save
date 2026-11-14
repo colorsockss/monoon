@@ -1,0 +1,31 @@
+version: 1
+values:
+  tick1PlayerX: 1570
+  tick1PlayerY: 872
+  tick1MainX: 1400
+  tick1MainY: 696
+  tick1SecondX: 200
+  tick1SecondY: 200
+  tick30PlayerX: 1164
+  tick30PlayerY: 640
+  tick30MainX: 1295.6036376953125
+  tick30MainY: 682.3914184570312
+  tick30SecondX: 304.39697265625
+  tick30SecondY: 213.6086883544922
+  tick60PlayerX: 744
+  tick60PlayerY: 400
+  tick60MainX: 924.6349487304688
+  tick60MainY: 499.4590148925781
+  tick60SecondX: 675.36572265625
+  tick60SecondY: 396.541259765625
+  tick150PlayerX: 16
+  tick150PlayerY: 16
+  tick150MainX: 200
+  tick150MainY: 200
+  tick150SecondX: 1400
+  tick150SecondY: 696
+  mapWidth: 1600
+  mapHeight: 896
+  splitSeam: 400
+  secondStart: 400
+  pass: true

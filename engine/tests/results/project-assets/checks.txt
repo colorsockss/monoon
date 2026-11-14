@@ -1,0 +1,15 @@
+PASS project: KeyRoom has no unresolved saved references
+PASS project: scene and prefab expose typed dependencies in both directions
+PASS project: typed searches span project folders
+PASS project: invalid table edits preserve the previous file
+PASS project: deleted targets report source and field despite retained manifest ID
+PASS project: failed batch does not publish its valid first asset
+PASS project: restore imports reuse sidecars and clear missing links
+PASS project: conflicting import does not duplicate the source identity
+PASS project: damaged typed script IDs are not treated as None
+PASS project: editor reopens a scene with a missing prefab and preserves the saved instance for repair
+PASS project: typed keys and values round trip
+PASS referenced YAML table exported for osx-arm64
+PASS referenced YAML table exported for win-x64
+PASS referenced YAML table exported for linux-x64
+All checks passed.

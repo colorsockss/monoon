@@ -1,0 +1,14 @@
+version: 1
+values:
+  seed: 42
+  shuffle: 1
+  draw:
+  - "stream"
+  - "bridge"
+  - "ridge"
+  - "moon"
+  - "dew"
+  - "pine"
+  hand: []
+  discard: []
+  distance: 0

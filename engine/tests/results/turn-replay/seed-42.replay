@@ -1,0 +1,34 @@
+version: 1
+setup:
+  rules: SeedLab/walk-v1
+  generatorVersion: 1
+  seed: 42
+  columns: 12
+  rows: 7
+  startX: 1
+  startY: 1
+turns:
+- command: left
+  x: 1
+  y: 1
+- command: right
+  x: 2
+  y: 1
+- command: right
+  x: 3
+  y: 1
+- command: wait
+  x: 3
+  y: 1
+- command: down
+  x: 3
+  y: 2
+- command: down
+  x: 3
+  y: 3
+- command: down
+  x: 3
+  y: 4
+- command: up
+  x: 3
+  y: 3

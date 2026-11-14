@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../Engine.Core/Engine.Core.csproj" />
+    <PackageReference Include="SkiaSharp" Version="2.88.9"/>
+    <PackageReference Include="SkiaSharp.NativeAssets.Linux" Version="2.88.9"/>
+    <PackageReference Include="Ahwoo.BRUTAL.Sdl" Version="2026.10.2" GeneratePathProperty="true" />
+    <None Include="$(PkgAhwoo_BRUTAL_Sdl)/LICENSE.txt;$(PkgAhwoo_BRUTAL_Sdl)/NOTICE.txt;$(PkgAhwoo_BRUTAL_Sdl)/CONTRIBUTORS.md"
+          Link="Licenses/BRUTAL/%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="$(PkgAhwoo_BRUTAL_Sdl)/LICENSES/**/*" Link="Licenses/BRUTAL/%(RecursiveDir)%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="../../native/windows-x64/LICENSE.txt" Link="Licenses/SDL/LICENSE.txt" CopyToOutputDirectory="PreserveNewest"
+          Condition="'$(RuntimeIdentifier)' == 'win-x64' or '$(RuntimeIdentifier)' == ''" />
+  </ItemGroup>
+</Project>

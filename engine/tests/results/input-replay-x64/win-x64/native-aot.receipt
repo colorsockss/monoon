@@ -1,0 +1,8 @@
+version: 1
+values:
+  buildId: "54bc092608bd4b3eb53d14396eb209d1"
+  game: "InventoryLab"
+  target: "win-x64"
+  mode: "native-aot"
+  profile: "distribution"
+  playerSha256: "8BDACF91AB4AB2CE53EDCDAE5169C4B395E8F90F68D143FEABC9A59E2CFAA2BC"

@@ -1,0 +1,45 @@
+width: 800
+height: 450
+projectId: 36242c46-b620-5d70-a5a5-d3a858892d65
+gameTitle: AudioLab
+startScene: 36242c46-b620-5d70-a5a5-d3a858892d65
+includedScenes:
+- 36242c46-b620-5d70-a5a5-d3a858892d65
+input:
+  actions:
+  - name: MoveLeft
+    controls:
+    - Left
+    - A
+    - Pad.DpadLeft
+    - Pad.LeftStickLeft
+  - name: MoveRight
+    controls:
+    - Right
+    - D
+    - Pad.DpadRight
+    - Pad.LeftStickRight
+  - name: MoveUp
+    controls:
+    - Up
+    - W
+    - Pad.DpadUp
+    - Pad.LeftStickUp
+  - name: MoveDown
+    controls:
+    - Down
+    - S
+    - Pad.DpadDown
+    - Pad.LeftStickDown
+  - name: Interact
+    controls:
+    - E
+    - Space
+    - Pad.South
+  - name: Fade
+    controls:
+    - F
+  - name: MasterMute
+    controls:
+    - M
+mixer: {master: 0.8, music: 0.8, effects: 0.75}

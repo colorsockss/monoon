@@ -1,0 +1,11 @@
+PASS analog dead zone
+PASS analog magnitude and device
+PASS south button single press
+PASS keyboard takes over
+PASS button release
+PASS D-pad switches back
+PASS disconnect releases held controls
+PASS reconnected pad opens KeyRoom controls
+PASS Start closes KeyRoom controls
+PASS South opens chest and spawns coin
+PASS D-pad moves player to collect coin

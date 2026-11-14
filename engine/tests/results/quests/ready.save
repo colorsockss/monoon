@@ -1,0 +1,9 @@
+version: 2
+values:
+  capacity: 3
+  item0: "herb"
+  count0: 3
+  quests:
+    herbalist:
+      collected: 3
+      claimed: false

@@ -1,0 +1,12 @@
+schemaVersion: 14
+objects:
+- id: b778bfb4-78fc-5e87-8e21-48144d5ffa3e
+  name: "Trail deck"
+  x: 0
+  y: 0
+  width: 16
+  height: 16
+  components:
+  - type: script
+    script: "Decks/DeckSource"
+    values: {"Catalog": {"Id": "b24d24d7-0735-5e1d-8193-6f14492c7e14"}, "InitialSeed": 42}

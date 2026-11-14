@@ -1,0 +1,63 @@
+  복원할 프로젝트를 확인하는 중...
+  /Users/paare/codex_project/brutal_engine/engine/src/Engine.Core/Engine.Core.csproj을(를) 95밀리초 동안 복원했습니다.
+  /Users/paare/codex_project/brutal_engine/engine/src/Engine.Desktop/Engine.Desktop.csproj을(를) 98밀리초 동안 복원했습니다.
+  복원할 3 프로젝트의 1이(가) 최신 상태입니다.
+  Engine.Core -> /Users/paare/codex_project/brutal_engine/engine/.artifacts/bin/Engine.Core/release/Engine.Core.dll
+  Engine.Desktop -> /Users/paare/codex_project/brutal_engine/engine/.artifacts/bin/Engine.Desktop/release/Engine.Desktop.dll
+  Engine.Player -> /Users/paare/codex_project/brutal_engine/engine/.artifacts/bin/Engine.Player/release_osx-arm64/MoNoonPlayer.dll
+  Engine.Player -> /Users/paare/codex_project/brutal_engine/player-templates/osx-arm64/
+Building release (Distribution) for osx-arm64 from /Users/paare/codex_project/brutal_engine/samples/InventoryLab
+Debug symbols: /Users/paare/codex_project/brutal_engine/game-builds/InventoryLab/Symbols/InventoryLab/osx-arm64/release/f904b373c5fc48578ab1c8798f7c2fc3
+/Users/paare/codex_project/brutal_engine/game-builds/InventoryLab/InventoryLab.app
+Building native-aot (Distribution) for osx-arm64 from /Users/paare/codex_project/brutal_engine/samples/InventoryLab
+Debug symbols: /Users/paare/codex_project/brutal_engine/game-builds/InventoryLab/Symbols/InventoryLab/osx-arm64/native-aot/2deb557d3c504618bf02967d5fcec6f1
+/Users/paare/codex_project/brutal_engine/game-builds/InventoryLab/NativeAOT/InventoryLab.app
+PASS dialogue: standalone package imports its story, prefab and scripts idempotently
+PASS dialogue: imported dialogue prefab starts without a quest journal or inventory
+PASS dialogue: edited line, option order and retargeted branch round-trip through YAML
+PASS dialogue: missing handler, rejected action and invalid choice preserve the current node
+PASS dialogue: successful choice executes one action before following its branch
+PASS dialogue: restore resumes at the saved line and an ending choice closes the dialogue
+PASS dialogue: unknown saved node preserves the active conversation
+PASS dialogue: save rejects a dangling branch
+PASS quest: standalone package contains matching sources, assets and stable IDs
+PASS quest: imported journal prefab plays without the inventory package or sample scripts
+PASS quest: no retroactive credit or repeated acceptance
+PASS quest: other items and early claims cannot advance a quest
+PASS quest: progress is capped and a full bag keeps the reward available
+PASS quest: retry with space grants exactly one reward including re-entrant and repeated requests
+PASS quest: one checkpoint restores the reward and its receipt together
+PASS quest: invalid receipt preserves both live bag and journal
+PASS quest: v1 inventory migrates in memory with its original slot order and a fresh journal
+PASS quest: v2 checkpoint restores the existing quest and starts outside the conversation
+PASS quest: explicit save upgrades the legacy checkpoint
+PASS inventory: package imports matched sources and is idempotent
+PASS inventory: imported prefab opens and plays with a resolved item table in an independent project
+PASS inventory: pickup splits over stack limit
+PASS inventory: full inventory rejects the whole pickup
+PASS inventory: partial stacks precede earlier empty slots
+PASS inventory: freed slot accepts another item; insufficient quantity is preserved
+PASS inventory: YAML round trip preserves slot order and holes
+PASS inventory: invalid save leaves existing contents intact
+PASS release distribution symbols and build receipt: f904b373c5fc48578ab1c8798f7c2fc3
+PASS player smoke: Scenes/Inventory.scene (3 control presses)
+PASS Release InventoryLab: offer, herbs=0, gems=0
+PASS player smoke: Scenes/Inventory.scene (10 control presses)
+PASS Release InventoryLab: paid, herbs=3, gems=1
+PASS player smoke: Scenes/Inventory.scene (6 control presses)
+PASS Release InventoryLab: reward, herbs=3, gems=1
+PASS Native AOT dSYM UUID matches arm64 player: 879C2F28-E66F-3C87-B0B0-394F35CFA7B8
+PASS native-aot distribution symbols and build receipt: 2deb557d3c504618bf02967d5fcec6f1
+PASS player smoke: Scenes/Inventory.scene (3 control presses)
+PASS Native AOT InventoryLab: offer, herbs=0, gems=0
+PASS player smoke: Scenes/Inventory.scene (10 control presses)
+PASS Native AOT InventoryLab: paid, herbs=3, gems=1
+PASS player smoke: Scenes/Inventory.scene (6 control presses)
+PASS Native AOT InventoryLab: reward, herbs=3, gems=1
+PASS InventoryLab: 3 byte-identical checkpoints across Release and Native AOT.
+PASS input recording preserves event order, held frames and elapsed ticks, discards unconsumed input and rejects invalid recordings.
+Headless replay completed: 475 frames, 31 events.
+Release replay save: 171 bytes, SHA-256 EED41DEFCBD7987A527DEB677C60DA8151AD0DE1616C717C646E92B26E70F795.
+Headless replay completed: 475 frames, 31 events.
+Native AOT replay save: 171 bytes, SHA-256 EED41DEFCBD7987A527DEB677C60DA8151AD0DE1616C717C646E92B26E70F795.
+PASS InventoryLab input replay: live recording, headless Release and headless Native AOT produced identical saves (171 bytes, SHA-256 EED41DEFCBD7987A527DEB677C60DA8151AD0DE1616C717C646E92B26E70F795).

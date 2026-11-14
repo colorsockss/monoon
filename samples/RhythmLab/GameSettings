@@ -1,0 +1,10 @@
+projectId: 17bb3b32-5df7-5c7b-bee9-25201000800c
+gameTitle: RhythmLab
+width: 800
+height: 450
+startScene: 65653679-c198-52cd-bae3-f4fb6ec7f358
+includedScenes: [65653679-c198-52cd-bae3-f4fb6ec7f358]
+input:
+  actions:
+  - name: Tap
+    controls: ["Space"]

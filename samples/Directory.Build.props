@@ -1,0 +1,6 @@
+<Project>
+  <Import Project="../engine/Directory.Build.props" />
+  <PropertyGroup>
+    <DirectoryBuildTargetsPath>$(MSBuildThisFileDirectory)../engine/Directory.Build.targets</DirectoryBuildTargetsPath>
+  </PropertyGroup>
+</Project>

@@ -1,0 +1,13 @@
+PASS workspace: independent edits on the same object merge
+PASS workspace: same-field conflict resolves to Local
+PASS workspace: same-field conflict resolves to Disk
+PASS workspace: settings undo updates the saved project
+PASS workspace: external settings edits survive Undo
+PASS workspace: open session draft is excluded
+PASS workspace: orphan retains recovery and merge base
+PASS workspace: package follows editor command, prefab, sprite, table and scripts
+PASS workspace: install package and repeat with stable IDs
+PASS workspace: conflicting package preserves existing file
+PASS workspace: new template project has its own save identity, intact references and working KeyRoom Play
+PASS workspace: migration backs up original file and identity before conversion
+220 checks passed.

@@ -1,0 +1,5 @@
+Mac source: Herbalist.save  eed41defcbd7987a527deb677c60da8151ad0de1616c717c646e92b26e70f795
+PASS linux-x64/native-aot.save  171 bytes  eed41defcbd7987a527deb677c60da8151ad0de1616c717c646e92b26e70f795  byte-for-byte equal
+PASS linux-x64/release.save  171 bytes  eed41defcbd7987a527deb677c60da8151ad0de1616c717c646e92b26e70f795  byte-for-byte equal
+PASS win-x64/native-aot.save  171 bytes  eed41defcbd7987a527deb677c60da8151ad0de1616c717c646e92b26e70f795  byte-for-byte equal
+PASS win-x64/release.save  171 bytes  eed41defcbd7987a527deb677c60da8151ad0de1616c717c646e92b26e70f795  byte-for-byte equal

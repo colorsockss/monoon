@@ -1,0 +1,30 @@
+projectId: 88c5afa9-de97-52e8-bc21-2f5b0094b98c
+gameTitle: CardLab
+width: 800
+height: 450
+startScene: 1b7eb1cc-9243-552d-9d25-844015f98200
+includedScenes: [1b7eb1cc-9243-552d-9d25-844015f98200]
+input:
+  actions:
+  - name: Draw
+    controls: ["D"]
+  - name: Restart
+    controls: ["R"]
+  - name: NextSeed
+    controls: ["N"]
+  - name: Save
+    controls: ["S"]
+  - name: Load
+    controls: ["L"]
+  - name: Play1
+    controls: ["1"]
+  - name: Play2
+    controls: ["2"]
+  - name: Play3
+    controls: ["3"]
+  - name: Play4
+    controls: ["4"]
+  - name: Play5
+    controls: ["5"]
+  - name: Play6
+    controls: ["6"]

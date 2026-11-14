@@ -1,0 +1,123 @@
+PASS shared project compilation and invalidation; typed Inspector, duplicate and prefab references; lifecycle order, activation, destruction and fresh Play
+PASS project input map: YAML migration, named edges, device changes, rebind, focus, letterbox and UI capture
+PASS rename conflict leaves project untouched
+PASS double-extension migration preserves YAML bytes, manifest-only IDs, absent assets and unrelated files
+PASS migration conflict preserves existing and legacy files
+PASS import preserves asset IDs, prefab revisions and instance edits
+PASS only migrated project files are replaced
+PASS opening a YAML project leaves files untouched
+PASS script field strings, numbers, lists, null and references retain their types after reopening
+PASS hand-authored YAML uses engine defaults
+PASS tile stroke interpolation, rectangle, eraser cancellation, mixed Undo/Redo and save point
+PASS all projected tile layouts: pick/cull at corners, brush across negative chunks, save/reopen, angled sliding and fast solid collision
+PASS diagonal slide across chunk boundary, decorative tile traversal and foreground ordering
+PASS tile coordinates, deep copies, prefab instances, visible chunks and swept wall collision
+PASS time: half speed accumulates before the first fixed tick
+PASS time: short movement survives UI frames until a game tick
+PASS time: pause freezes held movement, game time and tick count
+PASS time: unscaled repeating timer advances through pause while game timer waits
+PASS time: unscaled keyboard action opens help while paused
+PASS time: UI clicks close help while paused
+PASS time: one step executes exactly one tick and holds the current pose at 4x
+PASS time: paused Interact was not replayed on step
+PASS time: 4x resumes with four fixed ticks and one game-timer expiry
+PASS time: timer cancellation
+PASS time: invalid scale preserves previous speed
+PASS time: UI can switch scenes while paused, retaining both clocks
+PASS time: a new Play starts at normal speed with fresh clocks
+PASS time: KeyRoom door animation and one-second camera timer both stop
+PASS time: six manual ticks advance the door animation
+PASS time: door camera still active after 58 game ticks
+PASS time: camera timer expires on the 60th game tick at 2x
+PASS affine hierarchy, pivot, nonuniform mirrored reparent, world corners, YAML/Play/prefab and transformed trigger
+PASS right anchor uses game width
+PASS topmost duplicate wins picking
+PASS reparent across anchors preserves UI position
+PASS UI-only menu runs without world camera
+PASS UI-only menu receives keyboard focus
+PASS dynamic text leaves asset unchanged
+PASS disabled button leaves navigation
+PASS hidden group removes child from hit testing
+PASS UI survives Undo snapshot restore
+PASS v6 HUD converts in memory without overwriting source
+PASS converted HUD saves and reopens using UI components only
+PASS duplicate camera subtree
+PASS start camera fallback
+PASS camera history restore
+PASS start camera round trip
+PASS v1 camera migration
+PASS v2 camera migration
+PASS v3 camera migration
+PASS v4 camera migration
+PASS v5 camera migration
+PASS recover missing start camera
+PASS empty scene save and play guidance
+PASS stable sorting ties
+PASS sprite draw order
+PASS script error file and line
+PASS short diagonal movement
+PASS one interact per press
+PASS KeyRoom sheet source, all four frames and final hold over 60 rendered ticks
+PASS clip preview and actual KeyRoom door draw: 116 fixed ticks, loop=False
+PASS clip preview and actual KeyRoom door draw: 116 fixed ticks, loop=True
+PASS fresh session
+PASS release outside cancels UI click
+PASS screen button invokes project script once
+PASS focused button ignores repeated keydown
+PASS pickup and door camera
+PASS screen-space key HUD
+PASS camera restored after one second
+PASS enter next room with key: 
+PASS failed switch retains room
+PASS KeyRoom chest spawns one trigger; player collects it; scene unchanged
+PASS runtime prefab parent, internal references, active state and subtree lifetime
+PASS unique prefab instance IDs
+PASS source update propagated
+PASS instance placement preserved
+PASS instance placement preserved
+PASS prefab internal and external references
+PASS move PNG without breaking sprite
+PASS failed asset preload preserves running scene
+PASS app and source use the same external template for osx-arm64
+PASS standalone osx-arm64
+PASS game data uses asset extensions for osx-arm64
+PASS one shared project assembly for osx-arm64
+PASS fresh session
+PASS release outside cancels UI click
+PASS screen button invokes project script once
+PASS focused button ignores repeated keydown
+PASS pickup and door camera
+PASS screen-space key HUD
+PASS camera restored after one second
+PASS enter next room with key: 
+PASS failed switch retains room
+PASS KeyRoom chest spawns one trigger; player collects it; scene unchanged
+PASS app and source use the same external template for win-x64
+PASS standalone win-x64
+PASS game data uses asset extensions for win-x64
+PASS one shared project assembly for win-x64
+PASS fresh session
+PASS release outside cancels UI click
+PASS screen button invokes project script once
+PASS focused button ignores repeated keydown
+PASS pickup and door camera
+PASS screen-space key HUD
+PASS camera restored after one second
+PASS enter next room with key: 
+PASS failed switch retains room
+PASS KeyRoom chest spawns one trigger; player collects it; scene unchanged
+PASS app and source use the same external template for linux-x64
+PASS standalone linux-x64
+PASS game data uses asset extensions for linux-x64
+PASS one shared project assembly for linux-x64
+PASS fresh session
+PASS release outside cancels UI click
+PASS screen button invokes project script once
+PASS focused button ignores repeated keydown
+PASS pickup and door camera
+PASS screen-space key HUD
+PASS camera restored after one second
+PASS enter next room with key: 
+PASS failed switch retains room
+PASS KeyRoom chest spawns one trigger; player collects it; scene unchanged
+All checks passed.

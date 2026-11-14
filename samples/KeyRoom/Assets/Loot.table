@@ -1,0 +1,9 @@
+version: 1
+columns:
+- name: label
+  type: Text
+- name: flag
+  type: Text
+rows:
+- key: coin
+  cells: ["Coin", "coin"]

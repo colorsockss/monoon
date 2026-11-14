@@ -1,0 +1,184 @@
+using System.ComponentModel;
+using System.Drawing;
+using VYaml.Annotations;
+
+namespace Engine.Core;
+
+[DisplayName("UI Canvas"), YamlObject]
+public sealed partial record UiCanvasComponent : SceneComponent
+{
+    public int Order { get; set; }
+}
+
+[DisplayName("UI Rect"), YamlObject]
+public sealed partial record UiRectComponent : SceneComponent
+{
+    public UiRectComponent() { }
+    [YamlConstructor] public UiRectComponent(string anchor = "TopLeft", string showIf = "")
+        => (Anchor, ShowIf) = (anchor, showIf);
+    public string Anchor { get; set; } = "TopLeft";
+    public string ShowIf { get; set; } = "";
+}
+
+[DisplayName("UI Image"), YamlObject]
+public sealed partial record UiImageComponent : SceneComponent
+{
+    public UiImageComponent() { }
+    [YamlConstructor] public UiImageComponent(string color = "#FFFFFF") => Color = color;
+    public Guid? Sprite { get; set; }
+    public string Color { get; set; } = "#FFFFFF";
+}
+
+[DisplayName("UI Text"), YamlObject]
+public sealed partial record UiTextComponent : SceneComponent
+{
+    public UiTextComponent() { }
+    [YamlConstructor] public UiTextComponent(string text = "Text", float size = 16, string color = "#FFFFFF")
+        => (Text, Size, Color) = (text, size, color);
+    public string Text { get; set; } = "Text";
+    public float Size { get; set; } = 16;
+    public string Color { get; set; } = "#FFFFFF";
+    public bool Wrap {get;set;}
+    public Dictionary<string,string>? Translations { get;set; }
+    public float InsetX { get; set; }
+    public float InsetY { get; set; }
+}
+
+[DisplayName("UI Button"), YamlObject]
+public sealed partial record UiButtonComponent : SceneComponent
+{
+    public UiButtonComponent() { }
+    [YamlConstructor] public UiButtonComponent(bool interactable = true) => Interactable = interactable;
+    public bool Interactable { get; set; } = true;
+}
+
+public sealed partial class SceneDocument
+{
+    [System.Text.Json.Serialization.JsonIgnore, YamlIgnore]
+    public bool IsUiOnly => Objects.Any(ScreenUi.IsWidget) &&
+        !Objects.Any(o => !ScreenUi.IsWidget(o) && (o.GetComponent<Tilemap2DComponent>() != null || o.GetComponent<SpriteRendererComponent>() != null || o.GetComponent<Collider2DComponent>() != null));
+
+    public SceneObject CreateUi(string kind, SceneObject? parent)
+    {
+        var obj = new SceneObject { Name = kind, X = 12, Y = 12, Width = 112, Height = 32 };
+        if (kind == "Canvas") { obj.X = obj.Y = 0; obj.AddComponent(new UiCanvasComponent()); }
+        else
+        {
+            obj.AddComponent(new UiRectComponent());
+            switch (kind)
+            {
+                case "Button": obj.AddComponent(new UiButtonComponent()); obj.AddComponent(new UiTextComponent { Text = "Button", InsetX = 8, InsetY = 5 }); break;
+                case "Text": obj.AddComponent(new UiTextComponent()); break;
+                case "Image": obj.AddComponent(new UiImageComponent()); break;
+                case "Layout": case "Scroll View":
+                    obj.Width=240;obj.Height=180;obj.AddComponent(new UiLayoutComponent());
+                    if(kind=="Scroll View")obj.AddComponent(new UiScrollComponent());
+                    break;
+                case "Text Field": obj.AddComponent(new UiTextFieldComponent());obj.AddComponent(new UiTextComponent { Text="Enter text",InsetX=6,InsetY=3 });break;
+                case "Group": break;
+                default: throw new ArgumentException("Unknown UI element.", nameof(kind));
+            }
+        }
+        obj.SetParent(parent);
+        Objects.Add(obj);
+        return obj;
+    }
+}
+
+public interface IGameUi
+{
+    UiPreferences Preferences {get;}
+    string? Value(Guid widget);
+    float ScrollOffset(Guid widget);
+    Guid? Focused {get;}
+    void ClearFocus();
+    string Preedit {get;}
+    bool SetText(Guid widget, string text);
+    bool SetVisible(Guid widget, bool visible);
+    bool SetInteractable(Guid widget, bool interactable);
+}
+public readonly record struct UiClick(Guid ObjectId, SessionState Session, IGameUi Ui, IGameObjects Objects);
+
+/// <summary>One layout for painting, picking and keyboard navigation, in game resolution units.</summary>
+public sealed partial class ScreenUi : IGameUi
+{
+    public static IReadOnlyList<string> Anchors { get; } = Array.AsReadOnly(new[] {
+        "TopLeft", "TopCenter", "TopRight", "MiddleLeft", "Center", "MiddleRight", "BottomLeft", "BottomCenter", "BottomRight" });
+    public static bool IsWidget(SceneObject o) => o.Components.Any(c => c is UiRectComponent or UiImageComponent or UiTextComponent or UiButtonComponent or UiTextFieldComponent or UiLayoutComponent or UiScrollComponent);
+    private sealed record Node(SceneObject Object, Node? Parent, int Order, string? Image)
+    {
+        internal RectangleF Box,Clip;
+        internal float Content,Offset,Measured,MeasuredWidth,Cursor;
+        internal int Placed;
+        internal float AllocatedWidth,LineWidth,LineSize;
+        internal string? LineSource;
+        internal Type? FontBackend;
+        internal string[] Lines=[];
+        internal readonly List<Node> Children=[];
+        internal readonly UiLayoutComponent? Layout=Object.GetComponent<UiLayoutComponent>();
+        internal readonly bool Scroll=Object.GetComponent<UiScrollComponent>()!=null;
+        internal readonly UiTextFieldComponent? Field=Object.GetComponent<UiTextFieldComponent>();
+        internal readonly bool Canvas=Object.GetComponent<UiCanvasComponent>()!=null;
+        internal readonly UiTextComponent? Label = Object.GetComponent<UiTextComponent>();
+        internal readonly UiImageComponent? Picture = Object.GetComponent<UiImageComponent>();
+        internal readonly UiButtonComponent? Button = Object.GetComponent<UiButtonComponent>();
+        internal readonly string Flag = Object.GetComponent<UiRectComponent>()?.ShowIf ?? "";
+    }
+    private Node[] treeOrder=[];
+    private Node[] nodes = [];
+    private Dictionary<Guid, Node> byId = [];
+    private readonly Dictionary<Guid, string> textOverrides = [];
+    private readonly Dictionary<Guid, bool> interactOverrides = [];
+    private readonly HashSet<Guid> hidden = [];
+    private readonly RectangleF screen;
+    private readonly Func<string,bool>? flag;
+    private readonly Func<Guid,bool>? active;
+    private Guid? focus, pressed;
+    private readonly Queue<Guid> clicks = [];
+    private readonly HashSet<string> held = [];
+    public IEnumerable<string> Images => nodes.Select(n => n.Image).OfType<string>().Distinct();
+
+    public ScreenUi(SceneDocument scene, ProjectAssets? assets, Func<string,bool>? flag = null, Func<Guid,bool>? active = null,UiPreferences? preferences=null)
+    {
+        Preferences=preferences??new(scene.Settings.Accessibility);
+        this.flag = flag;
+        this.active = active;
+        screen = new(0, 0, scene.Settings.Width, scene.Settings.Height);
+        Rebuild(scene, assets);
+    }
+
+    internal void Rebuild(SceneDocument scene, ProjectAssets? assets)
+    {
+        uiOnly=scene.IsUiOnly;
+        var tree = new Dictionary<Guid,Node>();
+        var ordered = new List<Node>();
+        foreach (var obj in scene.ParentFirst())
+        {
+            var canvas = obj.GetComponent<UiCanvasComponent>();
+            if (canvas == null && !IsWidget(obj)) continue;
+            Node? parent = null;
+            for (var p = obj.Parent; p != null; p = p.Parent) if (tree.TryGetValue(p.Id, out parent)) break;
+            string? image = null;
+            if (obj.GetComponent<UiImageComponent>()?.Sprite is Guid id && assets?.PathFor(id) is { } relative && scene.ProjectDirectory != null)
+                image = Path.Combine(scene.ProjectDirectory, relative);
+            var node = new Node(obj, parent, canvas?.Order ?? parent?.Order ?? 0, image);
+            if(byId.TryGetValue(obj.Id,out var prior))node.Offset=prior.Offset;
+            parent?.Children.Add(node);tree.Add(obj.Id, node); ordered.Add(node);
+        }
+        treeOrder=ordered.ToArray();
+        nodes = ordered.OrderBy(n => n.Order).ToArray();
+        byId = tree;
+        foreach(var id in values.Keys.Where(id=>!tree.ContainsKey(id)).ToArray())values.Remove(id);
+        if(edit is Guid editing && !tree.ContainsKey(editing)) EndEditing();
+        hidden.RemoveWhere(id => !tree.ContainsKey(id));
+        foreach (var id in textOverrides.Keys.Where(id => !tree.ContainsKey(id)).ToArray()) textOverrides.Remove(id);
+        foreach (var id in interactOverrides.Keys.Where(id => !tree.ContainsKey(id)).ToArray()) interactOverrides.Remove(id);
+        if (focus is Guid f && !tree.ContainsKey(f)) focus = null;
+        if (pressed is Guid capture && !tree.ContainsKey(capture)) pressed = null;
+    }
+    internal static int AnchorIndex(string anchor)
+    {
+        for (int i = 0; i < Anchors.Count; i++) if (Anchors[i] == anchor) return i;
+        throw new InvalidDataException($"Unknown UI anchor '{anchor}'.");
+    }
+}

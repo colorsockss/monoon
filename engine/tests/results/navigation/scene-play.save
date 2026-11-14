@@ -1,0 +1,11 @@
+version: 1
+values:
+  sequence: "Patrol > Chase > Return > Patrol"
+  chaseWaypoints: 10
+  waypointsReached: 14
+  supportSegments: 2
+  chaseOnIncline: true
+  resumedOnDeck: true
+  patrolSpan: 53
+  chaseDistanceFromHome: 201
+  passed: true

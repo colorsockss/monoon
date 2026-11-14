@@ -1,0 +1,20 @@
+projectId: 3b309c28-75ce-562e-92ac-f94ee48b18c7
+gameTitle: PlatformerLab
+width: 800
+height: 450
+startScene: 4fe9f1eb-5dcd-5f90-a033-78a61e876a0d
+includedScenes: [4fe9f1eb-5dcd-5f90-a033-78a61e876a0d]
+input:
+  actions:
+  - name: MoveLeft
+    controls: ["Left", "A", "Pad.DpadLeft"]
+  - name: MoveRight
+    controls: ["Right", "D", "Pad.DpadRight"]
+  - name: Jump
+    controls: ["Space", "Pad.South"]
+  - name: Route
+    controls: ["R"]
+  - name: DialogueNext
+    controls: ["Return", "Pad.South"]
+  - name: SkipCutscene
+    controls: ["X", "Pad.East"]

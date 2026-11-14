@@ -1,0 +1,12 @@
+schemaVersion: 14
+objects:
+- id: 319b31a9-29b5-562f-b5d2-f054cd1ffe68
+  name: "Bag"
+  x: 0
+  y: 0
+  width: 16
+  height: 16
+  components:
+  - type: script
+    script: "Inventory/InventoryContainer"
+    values: {"Catalog": {"Id": "27e8e87b-8eac-5142-a8ca-7cf02581b103"}, "Slots": 3}

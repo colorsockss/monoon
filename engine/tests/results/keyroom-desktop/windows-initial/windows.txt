@@ -1,0 +1,11 @@
+
+Microsoft Windows [Version 10.0.26100.1742]
+AMD64 
+
+HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion
+    EditionID    REG_SZ    EnterpriseSEval
+
+
+HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion
+    DisplayVersion    REG_SZ    24H2
+

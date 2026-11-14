@@ -1,0 +1,32 @@
+<Project>
+  <PropertyGroup>
+    <MacSceneNativeDir>$(MSBuildThisFileDirectory)../../.artifacts/native/osx-arm64</MacSceneNativeDir>
+    <MacSceneSources>$(MSBuildThisFileDirectory)../../native/macos</MacSceneSources>
+  </PropertyGroup>
+  <Target Name="BuildPatchedSceneSdl"
+          Inputs="$(MacSceneSources)/SDL-3.4.12-pr16658.patch;$(MSBuildThisFileDirectory)../../scripts/build-scene-sdl-mac.sh"
+          Outputs="$(MacSceneNativeDir)/libSDL3.dylib">
+    <Exec Command="sh &quot;$(MSBuildThisFileDirectory)../../scripts/build-scene-sdl-mac.sh&quot;" />
+  </Target>
+  <Target Name="BuildMacScenePanel" Inputs="$(MacSceneSources)/ScenePanel.m;$(MacSceneSources)/ScriptEditorPicker.m;$(MSBuildThisFileFullPath)" Outputs="$(MacSceneNativeDir)/libBrutalScenePanel.dylib">
+    <MakeDir Directories="$(MacSceneNativeDir)" />
+    <Exec Command="xcrun clang -arch arm64 -mmacosx-version-min=12.0 -fobjc-arc -dynamiclib -framework AppKit -framework QuartzCore -framework UniformTypeIdentifiers -install_name @rpath/libBrutalScenePanel.dylib &quot;$(MacSceneSources)/ScenePanel.m&quot; &quot;$(MacSceneSources)/ScriptEditorPicker.m&quot; -o &quot;$(MacSceneNativeDir)/libBrutalScenePanel.dylib&quot;" />
+  </Target>
+  <!-- NuGet uses a runtimes subdirectory for portable builds and a flat layout for RID-specific builds. -->
+  <Target Name="StageMacSceneBuild" AfterTargets="Build" DependsOnTargets="BuildPatchedSceneSdl;BuildMacScenePanel">
+    <PropertyGroup>
+      <SceneBuildDir>$(TargetDir)</SceneBuildDir>
+      <SceneBuildDir Condition="'$(RuntimeIdentifier)' == ''">$(TargetDir)runtimes/osx-arm64/native/</SceneBuildDir>
+    </PropertyGroup>
+    <Copy SourceFiles="$(MacSceneNativeDir)/libSDL3.dylib;$(MacSceneNativeDir)/libSDL3.dylib;$(MacSceneNativeDir)/libBrutalScenePanel.dylib"
+          DestinationFiles="$(SceneBuildDir)libSDL3.dylib;$(SceneBuildDir)libSDL3.0.dylib;$(TargetDir)libBrutalScenePanel.dylib" SkipUnchangedFiles="true" />
+  </Target>
+  <Target Name="StageMacScenePublish" AfterTargets="Publish" DependsOnTargets="BuildPatchedSceneSdl;BuildMacScenePanel">
+    <PropertyGroup>
+      <ScenePublishDir>$(PublishDir)/</ScenePublishDir>
+      <ScenePublishDir Condition="'$(RuntimeIdentifier)' == ''">$(PublishDir)/runtimes/osx-arm64/native/</ScenePublishDir>
+    </PropertyGroup>
+    <Copy SourceFiles="$(MacSceneNativeDir)/libSDL3.dylib;$(MacSceneNativeDir)/libSDL3.dylib;$(MacSceneNativeDir)/libBrutalScenePanel.dylib"
+          DestinationFiles="$(ScenePublishDir)libSDL3.dylib;$(ScenePublishDir)libSDL3.0.dylib;$(PublishDir)/libBrutalScenePanel.dylib" SkipUnchangedFiles="true" />
+  </Target>
+</Project>

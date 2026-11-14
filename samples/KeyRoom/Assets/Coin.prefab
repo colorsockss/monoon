@@ -1,0 +1,18 @@
+schemaVersion: 9
+objects:
+- id: 5cbd6eda-c7f3-44df-b74b-3508b84540b1
+  name: Coin
+  width: 22
+  height: 22
+  components:
+  - type: spriteRenderer
+    assetId: 909cfb8c-893f-41a9-8e82-6d8ef5c2abb6
+    asset: Assets/Coin.png
+    order: 2
+  - type: boxCollider2D
+    isTrigger: true
+  - type: script
+    script: CollectCoin
+    values:
+      LootTable:
+        Id: "24aec28b-0157-450e-b4c8-b65e7f77bb54"

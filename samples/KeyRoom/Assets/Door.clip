@@ -1,0 +1,39 @@
+frames:
+- sprite: cc19244c-3e31-5d09-8c09-f934790a4e27
+  seconds: 0.09
+  source:
+    x: 0
+    y: 0
+    width: 24
+    height: 94
+- sprite: cc19244c-3e31-5d09-8c09-f934790a4e27
+  seconds: 0.09
+  source:
+    x: 24
+    y: 0
+    width: 24
+    height: 64
+  canvas:
+    width: 24
+    height: 94
+- sprite: cc19244c-3e31-5d09-8c09-f934790a4e27
+  seconds: 0.09
+  source:
+    x: 24
+    y: 64
+    width: 24
+    height: 32
+  canvas:
+    width: 24
+    height: 94
+- sprite: cc19244c-3e31-5d09-8c09-f934790a4e27
+  seconds: 0.09
+  source:
+    x: 0
+    y: 94
+    width: 1
+    height: 1
+  canvas:
+    width: 24
+    height: 94
+loop: false

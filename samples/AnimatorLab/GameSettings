@@ -1,0 +1,38 @@
+width: 800
+height: 450
+projectId: 793807d6-c20d-4c32-982f-08aa2e216b01
+gameTitle: AnimatorLab
+startScene: 793807d6-c20d-4c32-982f-08aa2e216b01
+includedScenes:
+- 793807d6-c20d-4c32-982f-08aa2e216b01
+input:
+  actions:
+  - name: MoveLeft
+    controls:
+    - Left
+    - A
+    - Pad.DpadLeft
+    - Pad.LeftStickLeft
+  - name: MoveRight
+    controls:
+    - Right
+    - D
+    - Pad.DpadRight
+    - Pad.LeftStickRight
+  - name: MoveUp
+    controls:
+    - Up
+    - W
+    - Pad.DpadUp
+    - Pad.LeftStickUp
+  - name: MoveDown
+    controls:
+    - Down
+    - S
+    - Pad.DpadDown
+    - Pad.LeftStickDown
+  - name: Interact
+    controls:
+    - E
+    - Space
+    - Pad.South

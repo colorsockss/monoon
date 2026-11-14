@@ -1,0 +1,15 @@
+version: 1
+values:
+  pass: true
+  sensorOverlap: true
+  sensorEntered: true
+  triggerExcluded: true
+  emptyPolygonCorner: true
+  rayDistance: 400
+  sweepDistance: 380
+  rayHitX: 500
+  sweepHitX: 500
+  normalX: -1
+  normalY: -0
+  stopX: 460
+  stopY: 180

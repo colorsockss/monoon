@@ -1,0 +1,86 @@
+{
+  "os": "Windows-11-10.0.26100-SP0",
+  "machine": "AMD64",
+  "renderer": "default",
+  "executable_sha256": "9e71881ed8c90f4e7c82fd2bb25cb23b8356d0f041cc2e7bf74909170c29790c",
+  "engine_sha256": "04d451640a70492bc862bb8e68e7329044e6bd5587f27a3bd085d778ac208c8e",
+  "routes": [
+    {
+      "controls": "arrows",
+      "room": "ROOM 2 / KEY",
+      "resize": [
+        {
+          "window": [
+            960,
+            432
+          ],
+          "game": [
+            768,
+            432
+          ],
+          "bars": [
+            96,
+            0,
+            96,
+            0
+          ]
+        },
+        {
+          "window": [
+            640,
+            600
+          ],
+          "game": [
+            640,
+            360
+          ],
+          "bars": [
+            0,
+            120,
+            0,
+            120
+          ]
+        }
+      ]
+    },
+    {
+      "controls": "wasd",
+      "room": "ROOM 2 / KEY",
+      "resize": [
+        {
+          "window": [
+            960,
+            432
+          ],
+          "game": [
+            768,
+            432
+          ],
+          "bars": [
+            96,
+            0,
+            96,
+            0
+          ]
+        },
+        {
+          "window": [
+            640,
+            600
+          ],
+          "game": [
+            640,
+            360
+          ],
+          "bars": [
+            0,
+            120,
+            0,
+            120
+          ]
+        }
+      ]
+    }
+  ],
+  "sdl_sha256": "2a2704678bf6c9c6a944270ab35079df76f5afe92b780394ed72d9c8218b98d8"
+}

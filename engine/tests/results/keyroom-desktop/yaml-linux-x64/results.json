@@ -1,0 +1,93 @@
+{
+  "os": "Linux-6.1.0-54-cloud-amd64-x86_64-with-glibc2.36",
+  "machine": "x86_64",
+  "renderer": "default",
+  "executable_sha256": "9daeea7422ceb74db0a242a7474b113919b7a5248f849721e9445c5c4240b71c",
+  "engine_sha256": "8bff472dadc79ccce0ac2ceb9b4ee82c7378311ea579e8f634e039056474b663",
+  "yaml_sha256": {
+    ".monoon-assets.yaml": "681692abcf0c80574424f1b28dfe3a0215b56db0e250cb2fdf722162a016207e",
+    "Assets/Door.clip.yaml": "798892a5ca008496b6f5693cc45ada5984d4b032794ec4e5240f4efb3b4d8ca8",
+    "GameSettings.yaml": "27fdc3a1c024d4eead7a42466a851237d5b1515fd6c241abeeab86184e4d9f63",
+    "Scenes/KeyRoom.scene.yaml": "a49f42398e0f0089708c1b12c8906892ba2cce70a745abccda6bd7fc4aad96fd",
+    "Scenes/SecondRoom.scene.yaml": "7bc9a74e42349f18448f3ae7fbbecbb63c9e772478ccd24c117af8151d7a2b3f"
+  },
+  "core_sha256": "085d01b133ecd2e6c485e5652e7803b0ae7fbc27a0902c446058b3138126c21c",
+  "routes": [
+    {
+      "controls": "arrows",
+      "room": "ROOM 2 / KEY",
+      "resize": [
+        {
+          "window": [
+            960,
+            432
+          ],
+          "game": [
+            768,
+            432
+          ],
+          "bars": [
+            96,
+            0,
+            96,
+            0
+          ]
+        },
+        {
+          "window": [
+            640,
+            600
+          ],
+          "game": [
+            640,
+            360
+          ],
+          "bars": [
+            0,
+            120,
+            0,
+            120
+          ]
+        }
+      ]
+    },
+    {
+      "controls": "wasd",
+      "room": "ROOM 2 / KEY",
+      "resize": [
+        {
+          "window": [
+            960,
+            432
+          ],
+          "game": [
+            768,
+            432
+          ],
+          "bars": [
+            96,
+            0,
+            96,
+            0
+          ]
+        },
+        {
+          "window": [
+            640,
+            600
+          ],
+          "game": [
+            640,
+            360
+          ],
+          "bars": [
+            0,
+            120,
+            0,
+            120
+          ]
+        }
+      ]
+    }
+  ]
+}

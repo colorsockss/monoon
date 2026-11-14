@@ -1,0 +1,8 @@
+version: 3
+values:
+  capacity: 3
+  quests:
+    herbalist:
+      collected: 0
+      claimed: false
+  dialogue: "accepted"

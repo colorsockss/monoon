@@ -1,0 +1,34 @@
+--- a/src/video/cocoa/SDL_cocoametalview.m
++++ b/src/video/cocoa/SDL_cocoametalview.m
+@@ -138,14 +138,14 @@ SDL_MetalView Cocoa_Metal_CreateView(SDL_VideoDevice *_this, SDL_Window *window)
+ {
+     @autoreleasepool {
+         SDL_CocoaWindowData *data = (__bridge SDL_CocoaWindowData *)window->internal;
+-        NSView *view = data.nswindow.contentView;
++        NSView *view = data.sdlContentView;
+         BOOL highDPI = (window->flags & SDL_WINDOW_HIGH_PIXEL_DENSITY) != 0;
+         BOOL opaque = (window->flags & SDL_WINDOW_TRANSPARENT) == 0;
+         Uint32 windowID = SDL_GetWindowID(window);
+         SDL3_cocoametalview *newview;
+         SDL_MetalView metalview;
+ 
+-        newview = [[SDL3_cocoametalview alloc] initWithFrame:view.frame
++        newview = [[SDL3_cocoametalview alloc] initWithFrame:view.bounds
+                                                     highDPI:highDPI
+                                                    windowID:windowID
+                                                      opaque:opaque];
+--- a/src/video/cocoa/SDL_cocoawindow.m
++++ b/src/video/cocoa/SDL_cocoawindow.m
+@@ -2568,7 +2568,11 @@ bool Cocoa_CreateWindow(SDL_VideoDevice *_this, SDL_Window *window, SDL_Properti
+         }
+ #endif // SDL_VIDEO_OPENGL_EGL
+ #endif // SDL_VIDEO_OPENGL_ES2
+-        [nswindow setContentView:nsview];
++        // A caller-provided view may be a subview of an existing NSWindow.
++        // Do not replace the host application's root content view.
++        if (!(window->flags & SDL_WINDOW_EXTERNAL)) {
++            [nswindow setContentView:nsview];
++        }
+ 
+         if (!SetupWindowData(_this, window, nswindow, nsview)) {
+             return false;

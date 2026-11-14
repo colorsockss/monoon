@@ -1,0 +1,28 @@
+projectId: ade09cc3-a769-56d7-9832-a2bea14c7e71
+gameTitle: InventoryLab
+width: 800
+height: 450
+startScene: 6a7b735e-336d-5674-b2e7-a136db5a7771
+includedScenes: [6a7b735e-336d-5674-b2e7-a136db5a7771]
+input:
+  actions:
+  - name: AddHerb
+    controls: ["1"]
+  - name: AddGem
+    controls: ["2"]
+  - name: AddKey
+    controls: ["3"]
+  - name: Previous
+    controls: ["Q"]
+  - name: Next
+    controls: ["E"]
+  - name: Use
+    controls: ["U"]
+  - name: Save
+    controls: ["S"]
+  - name: Load
+    controls: ["L"]
+  - name: Quest
+    controls: ["J"]
+  - name: Talk
+    controls: ["T"]

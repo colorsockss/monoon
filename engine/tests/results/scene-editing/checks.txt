@@ -1,0 +1,18 @@
+PASS Scene two-object selection, snapped X move and one Undo
+PASS snapped 45 degree rotation and one Undo
+PASS snapped group scale, child local values unchanged, undo and reopen
+PASS nested source, create variant and asset undo/redo
+PASS revert, undo, source apply/undo/redo, variant and nested link on reopen
+PASS exported macOS Release scene (52, 36, 15°) and variant template (52, 21, 15°)
+PASS placing a nested prefab preserves its link
+PASS variant and instance override separate properties of the same component
+PASS nested source update propagates through a variant with stable child IDs
+PASS duplicated link keeps independent overrides
+PASS revert restores variant defaults and keeps scene placement
+PASS runtime instantiation resolves the nested variant
+PASS cyclic prefab update leaves the source intact
+PASS parent and child receive a group transform exactly once
+PASS cancel restores the original affine transform
+Engine.Checks: 185 passed.
+PASS repeated Apply keeps the asset and scene in one Undo step
+PASS reopened KeyRoom enters Scene Play

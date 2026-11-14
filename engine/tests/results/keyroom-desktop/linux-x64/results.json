@@ -1,0 +1,85 @@
+{
+  "os": "Linux-6.1.0-54-cloud-amd64-x86_64-with-glibc2.36",
+  "machine": "x86_64",
+  "renderer": "default",
+  "executable_sha256": "9daeea7422ceb74db0a242a7474b113919b7a5248f849721e9445c5c4240b71c",
+  "engine_sha256": "04d451640a70492bc862bb8e68e7329044e6bd5587f27a3bd085d778ac208c8e",
+  "routes": [
+    {
+      "controls": "arrows",
+      "room": "ROOM 2 / KEY",
+      "resize": [
+        {
+          "window": [
+            960,
+            432
+          ],
+          "game": [
+            768,
+            432
+          ],
+          "bars": [
+            96,
+            0,
+            96,
+            0
+          ]
+        },
+        {
+          "window": [
+            640,
+            600
+          ],
+          "game": [
+            640,
+            360
+          ],
+          "bars": [
+            0,
+            120,
+            0,
+            120
+          ]
+        }
+      ]
+    },
+    {
+      "controls": "wasd",
+      "room": "ROOM 2 / KEY",
+      "resize": [
+        {
+          "window": [
+            960,
+            432
+          ],
+          "game": [
+            768,
+            432
+          ],
+          "bars": [
+            96,
+            0,
+            96,
+            0
+          ]
+        },
+        {
+          "window": [
+            640,
+            600
+          ],
+          "game": [
+            640,
+            360
+          ],
+          "bars": [
+            0,
+            120,
+            0,
+            120
+          ]
+        }
+      ]
+    }
+  ]
+}

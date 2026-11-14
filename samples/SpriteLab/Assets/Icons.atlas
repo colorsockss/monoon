@@ -1,0 +1,24 @@
+imageHash: 53934DE1EB1B9720F35D47AA0ABA29D1E1B475CE517093FAA2FEABAA30B5C081
+entries:
+- sprite: b6e4c2df-4273-40f0-9ea8-27a50d3ce265
+  source:
+    x: 1
+    y: 1
+    width: 11
+    height: 9
+  canvas:
+    width: 16
+    height: 12
+    offsetX: 2
+    offsetY: 1
+- sprite: 6a3bc207-1e30-441c-968f-2159943d00ce
+  source:
+    x: 1
+    y: 12
+    width: 4
+    height: 4
+  canvas:
+    width: 16
+    height: 12
+    offsetX: 5
+    offsetY: 4

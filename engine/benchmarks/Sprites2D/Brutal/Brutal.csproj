@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../../../src/Engine.Desktop/Engine.Desktop.csproj" />
+    <Compile Include="../SpriteBenchmark.cs" />
+    <None Update="Checks/Cells.png" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="../../../../samples/KeyRoom/Assets/Key.png" Link="Checks/Key.png" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+</Project>

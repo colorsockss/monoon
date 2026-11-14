@@ -1,0 +1,84 @@
+<Styles xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <Styles.Resources>
+    <x:Double x:Key="ControlContentThemeFontSize">11</x:Double>
+    <x:Double x:Key="TreeViewItemMinHeight">20</x:Double>
+    <SolidColorBrush x:Key="EditorBase">#1B1D21</SolidColorBrush>
+    <SolidColorBrush x:Key="EditorPanel">#222428</SolidColorBrush>
+    <SolidColorBrush x:Key="EditorDivider">#383B40</SolidColorBrush>
+    <SolidColorBrush x:Key="EditorText">#E4E7EB</SolidColorBrush>
+    <SolidColorBrush x:Key="EditorMuted">#ADB2B9</SolidColorBrush>
+    <SolidColorBrush x:Key="EditorAccent">#9EDAC9</SolidColorBrush>
+    <SolidColorBrush x:Key="TextControlBackground">#191B1E</SolidColorBrush>
+    <SolidColorBrush x:Key="TextControlBorderBrush">#414449</SolidColorBrush>
+    <SolidColorBrush x:Key="TextControlBorderBrushPointerOver">#60666C</SolidColorBrush>
+    <SolidColorBrush x:Key="TextControlBorderBrushFocused">#9EDAC9</SolidColorBrush>
+    <SolidColorBrush x:Key="ComboBoxBackground">#303338</SolidColorBrush>
+    <SolidColorBrush x:Key="ComboBoxBorderBrush">#414449</SolidColorBrush>
+    <SolidColorBrush x:Key="ButtonBackground">#313439</SolidColorBrush>
+    <SolidColorBrush x:Key="ButtonBorderBrush">#42454A</SolidColorBrush>
+    <SolidColorBrush x:Key="TreeViewItemBackgroundSelected">#354B46</SolidColorBrush>
+    <SolidColorBrush x:Key="TreeViewItemBackgroundSelectedPointerOver">#405B54</SolidColorBrush>
+    <DataTemplate x:Key="SheetPathTemplate">
+      <TextBlock Text="{Binding Path}" TextTrimming="LeadingCharacterEllipsis" ToolTip.Tip="{Binding Path}"/>
+    </DataTemplate>
+    <ControlTheme x:Key="SheetGridToggle" TargetType="ToggleButton" BasedOn="{StaticResource {x:Type ToggleButton}}">
+      <Setter Property="MaxWidth" Value="148"/>
+      <Setter Property="HorizontalContentAlignment" Value="Center"/>
+      <Setter Property="ToolTip.Tip" Value="Show or hide cell size, margin and spacing (pixels)"/>
+      <Setter Property="ContentTemplate">
+        <DataTemplate>
+          <Grid ColumnDefinitions="*,Auto" ColumnSpacing="6">
+            <TextBlock Text="{Binding}" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"/>
+            <PathIcon Classes="sheetDisclosure" Grid.Column="1" Width="7" Height="7" Data="M1,0 L7,4 L1,8 Z"/>
+          </Grid>
+        </DataTemplate>
+      </Setter>
+    </ControlTheme>
+  </Styles.Resources>
+  <Style Selector="ToggleButton:checked PathIcon.sheetDisclosure"><Setter Property="RenderTransform" Value="rotate(90deg)"/></Style>
+  <Style Selector="NumericUpDown.sheetNumber">
+    <Setter Property="ShowButtonSpinner" Value="False"/>
+    <Setter Property="FormatString" Value="0"/>
+  </Style>
+  <Style Selector="Window">
+    <Setter Property="Background" Value="{DynamicResource EditorBase}"/>
+    <Setter Property="Foreground" Value="{DynamicResource EditorText}"/>
+  </Style>
+  <Style Selector="Window, Button, ToggleButton, TextBox, NumericUpDown, ComboBox, ComboBoxItem, CheckBox, TreeViewItem, ListBoxItem, MenuItem">
+    <Setter Property="FontSize" Value="11"/>
+  </Style>
+  <Style Selector="Button, ToggleButton">
+    <Setter Property="MinHeight" Value="23"/>
+    <Setter Property="Padding" Value="7,2"/>
+    <Setter Property="CornerRadius" Value="3"/>
+    <Setter Property="VerticalContentAlignment" Value="Center"/>
+  </Style>
+  <Style Selector="TextBox, NumericUpDown, ComboBox">
+    <Setter Property="MinHeight" Value="24"/>
+    <Setter Property="Padding" Value="6,2"/>
+  </Style>
+  <Style Selector="TextBox"><Setter Property="VerticalContentAlignment" Value="Center"/></Style>
+  <Style Selector="Button.quiet">
+    <Setter Property="Background" Value="Transparent"/>
+    <Setter Property="BorderBrush" Value="Transparent"/>
+    <Setter Property="Foreground" Value="{DynamicResource EditorMuted}"/>
+  </Style>
+  <Style Selector="Button.primary">
+    <Setter Property="Background" Value="{DynamicResource EditorAccent}"/>
+    <Setter Property="Foreground" Value="#142920"/>
+    <Setter Property="FontWeight" Value="SemiBold"/>
+    <Setter Property="HorizontalContentAlignment" Value="Center"/>
+  </Style>
+  <Style Selector="Button.primary:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+    <Setter Property="Background" Value="#B0E8D9"/>
+    <Setter Property="Foreground" Value="#142920"/>
+  </Style>
+  <Style Selector="Button.primary:pressed /template/ ContentPresenter#PART_ContentPresenter">
+    <Setter Property="Background" Value="#88BCAD"/>
+    <Setter Property="Foreground" Value="#142920"/>
+  </Style>
+  <Style Selector="TextBlock.label, TextBlock.fieldLabel">
+    <Setter Property="Foreground" Value="{DynamicResource EditorMuted}"/>
+    <Setter Property="VerticalAlignment" Value="Center"/>
+  </Style>
+</Styles>

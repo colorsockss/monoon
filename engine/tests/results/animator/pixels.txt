@@ -1,0 +1,7 @@
+release: Idle / Pulse 1 / Pulse 2 / Idle center sRGB = [(144, 212, 198), (234, 192, 134), (247, 220, 154), (144, 212, 198)]
+aot: Idle / Pulse 1 / Pulse 2 / Idle center sRGB = [(144, 212, 198), (234, 192, 134), (247, 220, 154), (144, 212, 198)]
+editor: Idle / Pulse 1 / Pulse 2 / Idle center sRGB = [(144, 212, 198), (234, 192, 134), (247, 220, 154), (144, 212, 198)]
+preview: Idle / Pulse 1 / Pulse 2 / Idle center sRGB = [(144, 212, 198), (234, 192, 134), (247, 220, 154), (144, 212, 198)]
+reopened clip preview, Pulse frame 2: center sRGB = (247, 220, 154)
+Release: both state clips, all three PNGs and controller match authored assets
+Native AOT: both state clips, all three PNGs and controller match authored assets

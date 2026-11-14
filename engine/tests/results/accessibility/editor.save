@@ -1,0 +1,9 @@
+version: 1
+values:
+  name: "한글"
+  locale: "ja"
+  textScale: 1.5
+  highContrast: true
+  scroll: 55
+  saveFocused: true
+  sawComposition: true

@@ -1,0 +1,174 @@
+  복원할 프로젝트를 확인하는 중...
+  /Users/paare/codex_project/brutal_engine/benchmarks/Sprites2D/Brutal/Brutal.csproj을(를) 118밀리초 동안 복원했습니다.
+  /Users/paare/codex_project/brutal_engine/src/Engine.Desktop/Engine.Desktop.csproj을(를) 118밀리초 동안 복원했습니다.
+  복원할 3 프로젝트의 1이(가) 최신 상태입니다.
+  Engine.Core -> /Users/paare/codex_project/brutal_engine/build/sprite-benchmark/bin/Engine.Core/release/Engine.Core.dll
+  Engine.Desktop -> /Users/paare/codex_project/brutal_engine/build/sprite-benchmark/bin/Engine.Desktop/release/Engine.Desktop.dll
+  Brutal -> /Users/paare/codex_project/brutal_engine/build/sprite-benchmark/bin/Brutal/release/Brutal.dll
+
+빌드했습니다.
+    경고 0개
+    오류 0개
+
+경과 시간: 00:00:01.93
+  복원할 프로젝트를 확인하는 중...
+  복원할 모든 프로젝트가 최신 상태입니다.
+  MonoGameVK -> /Users/paare/codex_project/brutal_engine/build/sprite-benchmark/bin/MonoGameVK/release/MonoGameVK.dll
+
+빌드했습니다.
+    경고 0개
+    오류 0개
+
+경과 시간: 00:00:00.34
+Found 16 Vulkan instance extensions.
+Supported Vulkan instance extensions:
+- VK_KHR_device_group_creation
+- VK_KHR_external_fence_capabilities
+- VK_KHR_external_memory_capabilities
+- VK_KHR_external_semaphore_capabilities
+- VK_KHR_get_physical_device_properties2
+- VK_KHR_get_surface_capabilities2
+- VK_KHR_surface
+- VK_EXT_debug_report
+- VK_EXT_debug_utils
+- VK_EXT_headless_surface
+- VK_EXT_layer_settings
+- VK_EXT_metal_surface
+- VK_EXT_surface_maintenance1
+- VK_EXT_swapchain_colorspace
+- VK_MVK_macos_surface
+- VK_MVK_moltenvk
+Found 2 Vulkan instance extensions required by SDL.
+Retrieved Vulkan instance extensions required by SDL:
+- VK_KHR_surface
+- VK_EXT_metal_surface
+MonoGame Vulkan, 800x450, warmup=120, measured=600
+sprites,draw_p50_ms,draw_p95_ms,draw_present_p50_ms,draw_present_p95_ms,present_interval_p50_ms,present_interval_p95_ms
+100,0.0163,0.0816,8.0507,9.1557,8.1045,9.1968
+1000,0.0243,0.1133,8.0395,9.1666,8.0861,9.2155
+10000,0.6545,0.7576,7.9763,9.0863,8.1248,9.2384
+Vulkan instance version: 1.2.296
+Selected GPU: Apple M4 Max
+Supported Vulkan API version: 1.2.296
+VK_EXT_custom_border_color is not supported by this driver!
+VK_GOOGLE_hlsl_functionality1 is not supported by this driver!
+VK_GOOGLE_user_type is not supported by this driver!
+BRUTAL metal, 800x450, warmup=120, measured=600
+sprites,draw_p50_ms,draw_p95_ms,draw_present_p50_ms,draw_present_p95_ms,present_interval_p50_ms,present_interval_p95_ms
+100,0.0470,0.0496,8.2438,9.1784,8.3089,9.2049
+1000,0.2665,0.4562,8.1912,8.8923,8.2397,9.1915
+10000,2.1507,2.7727,8.4297,8.9161,8.4634,8.9582
+BRUTAL metal, 800x450, warmup=120, measured=600
+sprites,draw_p50_ms,draw_p95_ms,draw_present_p50_ms,draw_present_p95_ms,present_interval_p50_ms,present_interval_p95_ms
+100,0.0473,0.0501,8.2487,8.3446,8.3113,8.4259
+1000,0.4399,0.4524,8.6626,8.7506,8.7081,8.8058
+10000,2.3079,2.7946,8.4514,8.8875,8.4859,8.9275
+Found 16 Vulkan instance extensions.
+Supported Vulkan instance extensions:
+- VK_KHR_device_group_creation
+- VK_KHR_external_fence_capabilities
+- VK_KHR_external_memory_capabilities
+- VK_KHR_external_semaphore_capabilities
+- VK_KHR_get_physical_device_properties2
+- VK_KHR_get_surface_capabilities2
+- VK_KHR_surface
+- VK_EXT_debug_report
+- VK_EXT_debug_utils
+- VK_EXT_headless_surface
+- VK_EXT_layer_settings
+- VK_EXT_metal_surface
+- VK_EXT_surface_maintenance1
+- VK_EXT_swapchain_colorspace
+- VK_MVK_macos_surface
+- VK_MVK_moltenvk
+Found 2 Vulkan instance extensions required by SDL.
+Retrieved Vulkan instance extensions required by SDL:
+- VK_KHR_surface
+- VK_EXT_metal_surface
+MonoGame Vulkan, 800x450, warmup=120, measured=600
+sprites,draw_p50_ms,draw_p95_ms,draw_present_p50_ms,draw_present_p95_ms,present_interval_p50_ms,present_interval_p95_ms
+100,0.0248,0.0369,8.2250,8.3233,8.3408,8.4572
+1000,0.0849,0.0976,8.2746,8.3821,8.3728,8.5114
+10000,0.6701,0.7270,7.9113,8.9510,8.0116,9.0541
+Vulkan instance version: 1.2.296
+Selected GPU: Apple M4 Max
+Supported Vulkan API version: 1.2.296
+VK_EXT_custom_border_color is not supported by this driver!
+VK_GOOGLE_hlsl_functionality1 is not supported by this driver!
+VK_GOOGLE_user_type is not supported by this driver!
+Found 16 Vulkan instance extensions.
+Supported Vulkan instance extensions:
+- VK_KHR_device_group_creation
+- VK_KHR_external_fence_capabilities
+- VK_KHR_external_memory_capabilities
+- VK_KHR_external_semaphore_capabilities
+- VK_KHR_get_physical_device_properties2
+- VK_KHR_get_surface_capabilities2
+- VK_KHR_surface
+- VK_EXT_debug_report
+- VK_EXT_debug_utils
+- VK_EXT_headless_surface
+- VK_EXT_layer_settings
+- VK_EXT_metal_surface
+- VK_EXT_surface_maintenance1
+- VK_EXT_swapchain_colorspace
+- VK_MVK_macos_surface
+- VK_MVK_moltenvk
+Found 2 Vulkan instance extensions required by SDL.
+Retrieved Vulkan instance extensions required by SDL:
+- VK_KHR_surface
+- VK_EXT_metal_surface
+MonoGame Vulkan, 800x450, warmup=120, measured=600
+sprites,draw_p50_ms,draw_p95_ms,draw_present_p50_ms,draw_present_p95_ms,present_interval_p50_ms,present_interval_p95_ms
+100,0.0241,0.0379,8.2202,8.3578,8.3327,8.4990
+1000,0.0150,0.0201,7.9982,9.1453,8.0273,9.1742
+10000,0.1053,0.1321,8.0761,9.2094,8.1110,9.2408
+Vulkan instance version: 1.2.296
+Selected GPU: Apple M4 Max
+Supported Vulkan API version: 1.2.296
+VK_EXT_custom_border_color is not supported by this driver!
+VK_GOOGLE_hlsl_functionality1 is not supported by this driver!
+VK_GOOGLE_user_type is not supported by this driver!
+BRUTAL metal, 800x450, warmup=120, measured=600
+sprites,draw_p50_ms,draw_p95_ms,draw_present_p50_ms,draw_present_p95_ms,present_interval_p50_ms,present_interval_p95_ms
+100,0.0496,0.0541,8.3907,8.5136,8.4736,8.6186
+1000,0.4471,0.4660,8.1953,8.9645,8.2139,9.0361
+10000,2.1373,2.9188,8.4001,8.9699,8.4367,9.0014
+BRUTAL metal, 800x450, warmup=120, measured=600
+sprites,draw_p50_ms,draw_p95_ms,draw_present_p50_ms,draw_present_p95_ms,present_interval_p50_ms,present_interval_p95_ms
+100,0.0474,0.0504,8.2528,8.3728,8.3170,8.4516
+1000,0.4404,0.4575,8.6452,8.7592,8.6903,8.8124
+10000,0.6413,2.5212,8.6589,8.8410,8.6681,8.8823
+Found 16 Vulkan instance extensions.
+Supported Vulkan instance extensions:
+- VK_KHR_device_group_creation
+- VK_KHR_external_fence_capabilities
+- VK_KHR_external_memory_capabilities
+- VK_KHR_external_semaphore_capabilities
+- VK_KHR_get_physical_device_properties2
+- VK_KHR_get_surface_capabilities2
+- VK_KHR_surface
+- VK_EXT_debug_report
+- VK_EXT_debug_utils
+- VK_EXT_headless_surface
+- VK_EXT_layer_settings
+- VK_EXT_metal_surface
+- VK_EXT_surface_maintenance1
+- VK_EXT_swapchain_colorspace
+- VK_MVK_macos_surface
+- VK_MVK_moltenvk
+Found 2 Vulkan instance extensions required by SDL.
+Retrieved Vulkan instance extensions required by SDL:
+- VK_KHR_surface
+- VK_EXT_metal_surface
+MonoGame Vulkan, 800x450, warmup=120, measured=600
+sprites,draw_p50_ms,draw_p95_ms,draw_present_p50_ms,draw_present_p95_ms,present_interval_p50_ms,present_interval_p95_ms
+100,0.0312,0.0471,8.2759,8.4703,8.4019,8.6336
+1000,0.0836,0.0991,8.2765,8.4904,8.3737,8.6123
+10000,0.4307,0.6821,8.5361,8.8715,8.6320,8.9787
+Vulkan instance version: 1.2.296
+Selected GPU: Apple M4 Max
+Supported Vulkan API version: 1.2.296
+VK_EXT_custom_border_color is not supported by this driver!
+VK_GOOGLE_hlsl_functionality1 is not supported by this driver!
+VK_GOOGLE_user_type is not supported by this driver!

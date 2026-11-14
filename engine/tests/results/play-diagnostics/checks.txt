@@ -1,0 +1,10 @@
+PASS diagnostics: no debug drawing by default
+PASS diagnostics: physics outlines use the camera viewport and distinguish solid and trigger
+PASS diagnostics: selection ray respects viewport, ignores its owner and records the actual trigger hit
+PASS diagnostics: overlap trace matches query results
+PASS diagnostics: bounded query history records misses and expires by simulation tick
+PASS diagnostics: turning off queries clears traces and live inspection reads runtime activation
+PASS diagnostics: movement sweep and live world position do not mutate the scene
+PASS diagnostics: spawned prefab origin and destruction are visible immediately
+PASS diagnostics: runtime log keeps severity and caller location
+All checks passed.

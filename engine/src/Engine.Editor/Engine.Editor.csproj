@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <Product>MoNoon Engine</Product>
+    <AssemblyTitle>MoNoon</AssemblyTitle>
+    <AssemblyName>MoNoon</AssemblyName>
+    <ApplicationIcon>Assets/MoNoon.ico</ApplicationIcon>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="../../../samples/InventoryLab/Scripts/Dialogue/DialogueGraph.cs" Link="Dialogue/DialogueGraph.cs" />
+    <AvaloniaResource Include="Assets/MoNoon.png" />
+    <AvaloniaResource Include="Assets/MoNoon.macOS.png" />
+    <ProjectReference Include="../Engine.Core/Engine.Core.csproj" />
+    <ProjectReference Include="../Engine.Desktop/Engine.Desktop.csproj" />
+    <PackageReference Include="Avalonia.Desktop" Version="11.3.23" />
+    <PackageReference Include="Avalonia.Themes.Fluent" Version="11.3.23" />
+  </ItemGroup>
+  <Import Project="MacScene.targets" Condition="$([MSBuild]::IsOSPlatform('OSX')) and ('$(RuntimeIdentifier)' == 'osx-arm64' or ('$(RuntimeIdentifier)' == '' and '$(NETCoreSdkRuntimeIdentifier)' == 'osx-arm64'))" />
+</Project>

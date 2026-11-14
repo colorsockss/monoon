@@ -1,0 +1,4 @@
+version: 1
+commands:
+- label: Place Coin
+  prefab: Assets/Coin.prefab

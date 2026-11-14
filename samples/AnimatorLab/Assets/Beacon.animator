@@ -1,0 +1,19 @@
+entry: Idle
+states:
+- name: Idle
+  clip: 47a2ea97-aab3-47ee-b381-8dac6324f9b3
+- name: Pulse
+  clip: e0898dcc-0a61-4660-b4cd-15186ca385c0
+parameters:
+- name: Running
+  kind: Bool
+  default: 0
+transitions:
+- from: Idle
+  to: Pulse
+  parameter: Running
+  test: "True"
+- from: Pulse
+  to: Idle
+  parameter: Running
+  test: "False"

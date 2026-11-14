@@ -1,0 +1,10 @@
+version: 1
+values:
+  passed: true
+  rampContact: true
+  climb: 90
+  ride: 118.80120849609375
+  slip: 0
+  jointError: 7.62939453125E-06
+  swing: 28.299560546875
+  rideTicks: 100

@@ -1,0 +1,164 @@
+PASS audio: gapless streamed loops, exact fades, bus isolation, listener pan/attenuation/fallback, source lifecycle, WAV/YAML compatibility; preparing 96 MiB allocated 4464 bytes
+PASS camera tracking, fixed/render interpolation, bounds/zoom, split/overlay/HUD order, odd viewports, reference remapping, validation and YAML
+PASS collision geometry: shape casts, tangent/endpoint, overlap, filters, affine circle, sensor crossing, YAML validation and legacy defaults
+PASS controller YAML, per-instance parameters, ordered bool/float/trigger transitions, exact and skipped frame events, script callbacks
+PASS Sprite atlas trim, padded pixels, mask alpha/tint, flip/snap, repack, static/animated export
+PASS shared project compilation and invalidation; typed Inspector, duplicate and prefab references; lifecycle order, activation, destruction and fresh Play
+PASS project input map: YAML migration, named edges, device changes, rebind, focus, letterbox and UI capture
+PASS rename conflict leaves project untouched
+PASS double-extension migration preserves YAML bytes, manifest-only IDs, absent assets and unrelated files
+PASS migration conflict preserves existing and legacy files
+PASS import preserves asset IDs, prefab revisions and instance edits
+PASS only migrated project files are replaced
+PASS legacy project gains a stable save identity
+PASS opening a YAML project leaves files untouched
+PASS script field strings, numbers, lists, null and references retain their types after reopening
+PASS hand-authored YAML uses engine defaults
+PASS physics queries against transformed orthogonal, isometric and hexagonal solid tiles
+PASS tile stroke interpolation, rectangle, eraser cancellation, mixed Undo/Redo and save point
+PASS all projected tile layouts: pick/cull at corners, brush across negative chunks, save/reopen, angled sliding and fast solid collision
+PASS diagonal slide across chunk boundary, decorative tile traversal and foreground ordering
+PASS tile coordinates, deep copies, prefab instances, visible chunks and swept wall collision
+PASS scene streaming: additive UI shares the primary world and preloads only new textures
+PASS scene streaming: adding the same scene twice is idempotent
+PASS scene streaming: close input removes the guide and releases its last texture reference
+PASS scene streaming: camera-less sector uses the host collision world, remaps duplicate IDs and spawns its own prefab
+PASS scene streaming: unload removes sector collision and unparented runtime children, preserving player state
+PASS scene streaming: unloading the final scene owner drops its cached YAML data
+PASS scene streaming: failed runtime prefab preparation leaves no half-spawned object
+PASS scene streaming: failed native preparation preserves active UI, scene, and shared resources
+PASS scene streaming: a failed scene can be retried
+PASS scene streaming: replacement transition blocks simulation and UI input
+PASS scene streaming: cancel keeps the old world and resumes input
+PASS scene streaming: async replace commits callbacks, unloads all added scenes and keeps shared key texture
+PASS scene streaming: missing scene preserves the committed room
+PASS scene streaming: primary scene cannot be removed without a replacement
+PASS scene streaming: session disposal releases last shared texture once
+PASS player data: nested YAML and typed values round trip
+PASS player data: migration is sequential, explicit, and leaves the source intact
+PASS player data: concurrent writer cannot replace a locked profile
+PASS player data: damaged and newer saves are preserved
+PASS player data: slot deletion leaves preferences intact
+PASS player data: data reference survives rename and cached values stay isolated
+PASS player data: slot one saves an opened chest with pending loot
+PASS player data: collected the pending coin
+PASS player data: second room and preferences use independent files
+PASS player data: new session restores settings and exactly one uncollected coin
+PASS player data: repeated load cannot duplicate loot
+PASS player data: second slot restores the second room and its progression
+PASS player data: legacy checkpoint migrates and reopens the unlocked door
+PASS time: half speed accumulates before the first fixed tick
+PASS time: short movement survives UI frames until a game tick
+PASS time: pause freezes held movement, game time and tick count
+PASS time: unscaled repeating timer advances through pause while game timer waits
+PASS time: unscaled keyboard action opens help while paused
+PASS time: UI clicks close help while paused
+PASS time: one step executes exactly one tick and holds the current pose at 4x
+PASS time: paused Interact was not replayed on step
+PASS time: 4x resumes with four fixed ticks and one game-timer expiry
+PASS time: timer cancellation
+PASS time: invalid scale preserves previous speed
+PASS time: UI can switch scenes while paused, retaining both clocks
+PASS time: a new Play starts at normal speed with fresh clocks
+PASS time: KeyRoom door animation and one-second camera timer both stop
+PASS time: six manual ticks advance the door animation
+PASS time: door camera still active after 58 game ticks
+PASS time: camera timer expires on the 60th game tick at 2x
+PASS affine hierarchy, pivot, nonuniform mirrored reparent, world corners, YAML/Play/prefab and transformed trigger
+PASS right anchor uses game width
+PASS topmost duplicate wins picking
+PASS reparent across anchors preserves UI position
+PASS UI-only menu runs without world camera
+PASS UI-only menu receives keyboard focus
+PASS dynamic text leaves asset unchanged
+PASS disabled button leaves navigation
+PASS hidden group removes child from hit testing
+PASS UI survives Undo snapshot restore
+PASS v6 HUD converts in memory without overwriting source
+PASS converted HUD saves and reopens using UI components only
+PASS duplicate camera subtree
+PASS start camera fallback
+PASS camera history restore
+PASS start camera round trip
+PASS v1 camera migration
+PASS v2 camera migration
+PASS v3 camera migration
+PASS v4 camera migration
+PASS v5 camera migration
+PASS recover missing start camera
+PASS empty scene save and play guidance
+PASS stable sorting ties
+PASS sprite draw order
+PASS script error file and line
+PASS short diagonal movement
+PASS one interact per press
+PASS KeyRoom sheet source, all four frames and final hold over 60 rendered ticks
+PASS clip preview and actual KeyRoom door draw: 116 fixed ticks, loop=False
+PASS clip preview and actual KeyRoom door draw: 116 fixed ticks, loop=True
+PASS fresh session
+PASS release outside cancels UI click
+PASS screen button invokes project script once
+PASS focused button ignores repeated keydown
+PASS pickup and door camera
+PASS screen-space key HUD
+PASS camera restored after one second
+PASS enter next room with key: 
+PASS failed switch retains room
+PASS KeyRoom chest spawns one trigger; player collects it; scene unchanged
+PASS runtime prefab parent, internal references, active state and subtree lifetime
+PASS unique prefab instance IDs
+PASS source update propagated
+PASS instance placement preserved
+PASS instance placement preserved
+PASS prefab internal and external references
+PASS move PNG without breaking sprite
+PASS failed asset preload preserves running scene
+PASS app and source use the same external template for osx-arm64
+PASS standalone osx-arm64
+PASS game data uses asset extensions for osx-arm64
+PASS referenced YAML data exported for osx-arm64
+PASS one shared project assembly for osx-arm64
+PASS fresh session
+PASS release outside cancels UI click
+PASS screen button invokes project script once
+PASS focused button ignores repeated keydown
+PASS pickup and door camera
+PASS screen-space key HUD
+PASS camera restored after one second
+PASS enter next room with key: 
+PASS failed switch retains room
+PASS KeyRoom chest spawns one trigger; player collects it; scene unchanged
+/var/folders/q5/zk8228hn6zn1m15c3xctt8pr0000gn/T/monoon-check-LV0Cb0/Builds/KeyRoom.app
+PASS app and source use the same external template for win-x64
+PASS standalone win-x64
+PASS game data uses asset extensions for win-x64
+PASS referenced YAML data exported for win-x64
+PASS one shared project assembly for win-x64
+PASS fresh session
+PASS release outside cancels UI click
+PASS screen button invokes project script once
+PASS focused button ignores repeated keydown
+PASS pickup and door camera
+PASS screen-space key HUD
+PASS camera restored after one second
+PASS enter next room with key: 
+PASS failed switch retains room
+PASS KeyRoom chest spawns one trigger; player collects it; scene unchanged
+/var/folders/q5/zk8228hn6zn1m15c3xctt8pr0000gn/T/monoon-check-LV0Cb0/Builds/KeyRoom-win-x64
+PASS app and source use the same external template for linux-x64
+PASS standalone linux-x64
+PASS game data uses asset extensions for linux-x64
+PASS referenced YAML data exported for linux-x64
+PASS one shared project assembly for linux-x64
+PASS fresh session
+PASS release outside cancels UI click
+PASS screen button invokes project script once
+PASS focused button ignores repeated keydown
+PASS pickup and door camera
+PASS screen-space key HUD
+PASS camera restored after one second
+PASS enter next room with key: 
+PASS failed switch retains room
+PASS KeyRoom chest spawns one trigger; player collects it; scene unchanged
+/var/folders/q5/zk8228hn6zn1m15c3xctt8pr0000gn/T/monoon-check-LV0Cb0/Builds/KeyRoom-linux-x64
+All checks passed.

@@ -1,0 +1,278 @@
+{
+  "os": "Linux-6.1.0-54-cloud-amd64-x86_64-with-glibc2.36",
+  "machine": "x86_64",
+  "renderer": "default",
+  "executable_sha256": "9daeea7422ceb74db0a242a7474b113919b7a5248f849721e9445c5c4240b71c",
+  "engine_sha256": "4833a07a068606f28d97e1f953d28ee4e7650a960d345e32457ac4148d4635f0",
+  "yaml_sha256": {
+    ".monoon-assets": "ba692e2c438c0cfd85c69213799bb91903ebbb5f4a42061915cfd81d0dde758d",
+    "Assets/Door.clip": "2caeed229a97a55d5670327d12d852575e4074ce8d61036b56c999b24cbd288a",
+    "Assets/Room.tileset": "a877783080a489da973ab1032fc4f29d717174f6333e9392989ad044da472170",
+    "GameSettings": "27fdc3a1c024d4eead7a42466a851237d5b1515fd6c241abeeab86184e4d9f63",
+    "Scenes/KeyRoom.scene": "91cf4bd488c63a71d2c7e8814c61cb309960e765cebc8dd16fa0cc3ce927a03f",
+    "Scenes/SecondRoom.scene": "70797fec2280948ba9cffb71d04f76abac11368cf0d91904abda94cd2949886e"
+  },
+  "core_sha256": "8359dc221eca0bdc045eaed93264a0a6db24b3f241aac8fb4b5a62434b3340ba",
+  "button_script_sha256": "a3784c3193255c3097eeb8e18ad94f32001559eb147b378fa10f4ac2fd4977fd",
+  "routes": [
+    {
+      "controls": "arrows",
+      "room": "ROOM 2 / KEY",
+      "resize": [
+        {
+          "window": [
+            960,
+            432
+          ],
+          "game": [
+            768,
+            432
+          ],
+          "bars": [
+            96,
+            0,
+            96,
+            0
+          ]
+        },
+        {
+          "window": [
+            640,
+            600
+          ],
+          "game": [
+            640,
+            360
+          ],
+          "bars": [
+            0,
+            120,
+            0,
+            120
+          ]
+        }
+      ],
+      "tile_wall": true
+    },
+    {
+      "controls": "wasd",
+      "room": "ROOM 2 / KEY",
+      "resize": [
+        {
+          "window": [
+            960,
+            432
+          ],
+          "game": [
+            768,
+            432
+          ],
+          "bars": [
+            96,
+            0,
+            96,
+            0
+          ]
+        },
+        {
+          "window": [
+            640,
+            600
+          ],
+          "game": [
+            640,
+            360
+          ],
+          "bars": [
+            0,
+            120,
+            0,
+            120
+          ]
+        }
+      ],
+      "tile_wall": true
+    }
+  ],
+  "controls_ui": [
+    {
+      "size": [
+        800,
+        450
+      ],
+      "viewport": [
+        0,
+        0,
+        800,
+        450
+      ],
+      "button_expected": [
+        698,
+        14,
+        786,
+        42
+      ],
+      "button_measured": [
+        698,
+        14,
+        786,
+        42
+      ],
+      "keyboard": [
+        "focus",
+        "open",
+        "close"
+      ],
+      "inside_clicks": [
+        [
+          700,
+          16
+        ],
+        [
+          783,
+          39
+        ]
+      ],
+      "outside_clicks": {
+        "left": [
+          696,
+          28
+        ],
+        "right": [
+          787,
+          28
+        ],
+        "top": [
+          742,
+          12
+        ],
+        "bottom": [
+          742,
+          43
+        ]
+      }
+    },
+    {
+      "size": [
+        960,
+        432
+      ],
+      "viewport": [
+        96,
+        0,
+        864,
+        432
+      ],
+      "button_expected": [
+        766,
+        13,
+        851,
+        40
+      ],
+      "button_measured": [
+        766,
+        13,
+        851,
+        40
+      ],
+      "keyboard": [
+        "focus",
+        "open",
+        "close"
+      ],
+      "inside_clicks": [
+        [
+          768,
+          15
+        ],
+        [
+          848,
+          37
+        ]
+      ],
+      "outside_clicks": {
+        "left": [
+          764,
+          26
+        ],
+        "right": [
+          852,
+          26
+        ],
+        "top": [
+          808,
+          11
+        ],
+        "bottom": [
+          808,
+          41
+        ],
+        "bar": [
+          912,
+          26
+        ]
+      }
+    },
+    {
+      "size": [
+        640,
+        600
+      ],
+      "viewport": [
+        0,
+        120,
+        640,
+        480
+      ],
+      "button_expected": [
+        558,
+        131,
+        629,
+        154
+      ],
+      "button_measured": [
+        558,
+        131,
+        629,
+        154
+      ],
+      "keyboard": [
+        "focus",
+        "open",
+        "close"
+      ],
+      "inside_clicks": [
+        [
+          560,
+          133
+        ],
+        [
+          626,
+          151
+        ]
+      ],
+      "outside_clicks": {
+        "left": [
+          556,
+          142
+        ],
+        "right": [
+          630,
+          142
+        ],
+        "top": [
+          593,
+          129
+        ],
+        "bottom": [
+          593,
+          155
+        ],
+        "bar": [
+          593,
+          60
+        ]
+      }
+    }
+  ]
+}

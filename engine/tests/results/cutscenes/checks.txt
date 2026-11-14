@@ -1,0 +1,317 @@
+PASS cutscene: sample sequence resolves by GUID and retains speaker order
+PASS cutscene: Completed: boarding while holding Right takes the far shot
+PASS cutscene: Completed: the world advances while walking and jumping are blocked
+PASS cutscene: a second director or camera request cannot steal the shot
+PASS cutscene: a held advance stops at the second line
+PASS cutscene: a new press displays the last line
+PASS cutscene: Completed: previous non-default camera and UI return; dismissal does not jump
+PASS cutscene: Completed: movement relative to shuttle and a fresh jump work without retriggering
+PASS cutscene: Skipped: boarding while holding Right takes the far shot
+PASS cutscene: Skipped: the world advances while walking and jumping are blocked
+PASS cutscene: a second director or camera request cannot steal the shot
+PASS cutscene: Skipped: previous non-default camera and UI return; dismissal does not jump
+PASS cutscene: Skipped: movement relative to shuttle and a fresh jump work without retriggering
+PASS cutscene: Interrupted: boarding while holding Right takes the far shot
+PASS cutscene: Interrupted: the world advances while walking and jumping are blocked
+PASS cutscene: a second director or camera request cannot steal the shot
+PASS cutscene: Interrupted: previous non-default camera and UI return; dismissal does not jump
+PASS cutscene: Interrupted: movement relative to shuttle and a fresh jump work without retriggering
+PASS cutscene: the guided approach also triggers on contact
+PASS cutscene: skipping immediately during the guided route releases the motor on the next tick
+PASS cutscene: an empty sequence is rejected before playback
+Platformer route: True, rise 90.00, ride 124.13, slip 0.0001.
+Shuttle round trip: 134.0 px; foot IK error: 0.000 px.
+PASS rig: both stance soles stay on the incline; swing clears it; occupied shuttle travels out and back (version: 1
+values:
+  passed: true
+  rearPlants: 33
+  frontPlants: 33
+  swingSamples: 49
+  maxSoleError: 3.0517578125E-05
+  maxAngleError: 9.050000517163426E-05
+  maxPlantedSlip: 3.0517578125E-05
+  maxRideSlip: 0.0001220703125
+  outbound: 134
+  returned: 0
+)
+PASS rig: rider stays on the kinematic tween through both reversals
+PASS rig: jump releases IK contact
+PASS rig: airborne animation keeps joints connected and bone lengths fixed
+PASS rig: preview does not edit authored transforms
+PASS rig: cyclic or forward parent links are rejected before playback
+PASS rig: half-time Ease In advances one quarter in the parent's local direction
+PASS rig: one-shot tween clamps to the endpoint across a long step
+PASS rig: ping-pong preserves time across multiple reversals
+PASS effects: SkSL changes the torch silhouette and keeps its transparent border
+PASS effects: point light fades from its center to zero outside the radius
+PASS effects: dust has a transparent soft edge
+PASS effects: starting on the floor produces no landing burst
+PASS effects: landing emits 22 world-space particles once and they expire while the player moves
+PASS effects: fixed steps cover the shader loop and vary the light intensity
+PASS effects: scripts can emit a manual burst
+PASS effects: disabling the emitter clears its particles
+PASS effects: effect settings round-trip through scene YAML
+PASS navigation: solid wall occludes sight and mask can exclude it
+PASS navigation: a thin blocking wall cannot be walked through
+PASS navigation: next plan uses current active colliders
+PASS navigation: unsupported route disappears
+PASS navigation: inactive target is invisible
+PASS navigation: planner connects the patrol deck and incline
+PASS navigation: player starts outside sight
+PASS navigation: unconnected landing across the shuttle gap has no walk route
+PASS navigation: guard patrols without a target
+PASS navigation: chase moves the physical enemy down the slope (315.54187, 234.21721)
+PASS navigation: lost player returns guard to the patrol deck and resumes walking
+PASS tile world: brush connects both sides of a negative chunk boundary
+PASS tile world: erase updates the untouched adjacent tile
+PASS tile world: cancel restores both visuals from logical brush IDs
+PASS tile world: a different brush does not connect
+PASS tile world: unloaded neighbor is absent but cross-page art retains its west connection
+PASS tile world: a corrupt page is rejected only when requested
+PASS tile world: return reloads page data from disk
+PASS tile world: missing focus releases every resident cell
+PASS tile world: opposite axial hex edges choose complementary masks
+PASS tile world: isometric adjacency uses shared grid edges
+PASS tile world: only initial focus window is resident before first tick
+PASS tile world: runner crosses two boundaries and returns; residency and physics swap both ways (x=75.5)
+PASS tile world: Play leaves authored pages intact
+Platformer route: True, rise 90.00, ride 124.13, slip 0.0001.
+Shuttle round trip: 134.0 px; foot IK error: 0.000 px.
+PASS platformer: ramp, moving platform, joint swing and relative slip
+PASS platformer: jump releases the moving support
+PASS platformer: dynamic contacts share impulse by inverse mass
+PASS platformer: off-center impulse produces angular velocity
+PASS platformer: fast body stops at a static wall without tunnelling
+PASS platformer: vertical platform carries its rider and stops under a ceiling
+PASS platformer: nested rigid body simulates independently of its parent
+PASS platformer: slope above motor limit blocks ascent (158.0, 300.0)
+PASS platformer: YAML joint target and authored pose survive Play
+PASS workspace: independent edits on the same object merge
+PASS workspace: same-field conflict resolves to Local
+PASS workspace: same-field conflict resolves to Disk
+PASS workspace: settings undo updates the saved project
+PASS workspace: external settings edits survive Undo
+PASS workspace: open session draft is excluded
+PASS workspace: orphan retains recovery and merge base
+PASS workspace: package follows editor command, prefab, sprite, table and scripts
+PASS workspace: install package and repeat with stable IDs
+PASS workspace: conflicting package preserves existing file
+PASS workspace: new template project has its own save identity, intact references and working KeyRoom Play
+PASS workspace: migration backs up original file and identity before conversion
+PASS audio: gapless streamed loops, exact fades, bus isolation, listener pan/attenuation/fallback, source lifecycle, WAV/YAML compatibility; preparing 96 MiB allocated 4464 bytes
+PASS camera tracking, fixed/render interpolation, bounds/zoom, split/overlay/HUD order, odd viewports, reference remapping, validation and YAML
+PASS collision geometry: shape casts, tangent/endpoint, overlap, filters, affine circle, sensor crossing, YAML validation and legacy defaults
+PASS diagnostics: no debug drawing by default
+PASS diagnostics: physics outlines use the camera viewport and distinguish solid and trigger
+PASS diagnostics: selection ray respects viewport, ignores its owner and records the actual trigger hit
+PASS diagnostics: overlap trace matches query results
+PASS diagnostics: bounded query history records misses and expires by simulation tick
+PASS diagnostics: turning off queries clears traces and live inspection reads runtime activation
+PASS diagnostics: movement sweep and live world position do not mutate the scene
+PASS diagnostics: spawned prefab origin and destruction are visible immediately
+PASS diagnostics: runtime log keeps severity and caller location
+PASS controller YAML, per-instance parameters, ordered bool/float/trigger transitions, exact and skipped frame events, script callbacks
+PASS Sprite atlas trim, padded pixels, mask alpha/tint, flip/snap, repack, static/animated export
+PASS shared project compilation and invalidation; typed Inspector, duplicate and prefab references; lifecycle order, activation, destruction and fresh Play
+PASS project input map: YAML migration, named edges, device changes, rebind, focus, letterbox and UI capture
+PASS rename conflict leaves project untouched
+PASS double-extension migration preserves YAML bytes, manifest-only IDs, absent assets and unrelated files
+PASS migration conflict preserves existing and legacy files
+PASS import preserves asset IDs, prefab revisions and instance edits
+PASS only migrated project files are replaced
+PASS legacy project gains a stable save identity
+PASS opening a YAML project leaves files untouched
+PASS script field strings, numbers, lists, null and references retain their types after reopening
+PASS hand-authored YAML uses engine defaults
+PASS physics queries against transformed orthogonal, isometric and hexagonal solid tiles
+PASS tile stroke interpolation, rectangle, eraser cancellation, mixed Undo/Redo and save point
+PASS all projected tile layouts: pick/cull at corners, brush across negative chunks, save/reopen, angled sliding and fast solid collision
+PASS diagonal slide across chunk boundary, decorative tile traversal and foreground ordering
+PASS tile coordinates, deep copies, prefab instances, visible chunks and swept wall collision
+PASS project: KeyRoom has no unresolved saved references
+PASS project: scene and prefab expose typed dependencies in both directions
+PASS project: typed searches span project folders
+PASS project: invalid table edits preserve the previous file
+PASS project: deleted targets report source and field despite retained manifest ID
+PASS project: failed batch does not publish its valid first asset
+PASS project: restore imports reuse sidecars and clear missing links
+PASS project: conflicting import does not duplicate the source identity
+PASS project: damaged typed script IDs are not treated as None
+PASS project: editor reopens a scene with a missing prefab and preserves the saved instance for repair
+PASS project: typed keys and values round trip
+PASS scene streaming: additive UI shares the primary world and preloads only new textures
+PASS scene streaming: adding the same scene twice is idempotent
+PASS scene streaming: close input removes the guide and releases its last texture reference
+PASS scene streaming: camera-less sector uses the host collision world, remaps duplicate IDs and spawns its own prefab
+PASS scene streaming: unload removes sector collision and unparented runtime children, preserving player state
+PASS scene streaming: unloading the final scene owner drops its cached YAML data
+PASS scene streaming: failed runtime prefab preparation leaves no half-spawned object
+PASS scene streaming: failed native preparation preserves active UI, scene, and shared resources
+PASS scene streaming: a failed scene can be retried
+PASS scene streaming: replacement transition blocks simulation and UI input
+PASS scene streaming: cancel keeps the old world and resumes input
+PASS scene streaming: async replace commits callbacks, unloads all added scenes and keeps shared key texture
+PASS scene streaming: missing scene preserves the committed room
+PASS scene streaming: primary scene cannot be removed without a replacement
+PASS scene streaming: session disposal releases last shared texture once
+PASS player data: nested YAML and typed values round trip
+PASS player data: migration is sequential, explicit, and leaves the source intact
+PASS player data: concurrent writer cannot replace a locked profile
+PASS player data: damaged and newer saves are preserved
+PASS player data: slot deletion leaves preferences intact
+PASS player data: data reference survives rename and cached values stay isolated
+PASS player data: slot one saves an opened chest with pending loot
+Coin collected.
+PASS player data: collected the pending coin
+PASS player data: second room and preferences use independent files
+PASS player data: new session restores settings and exactly one uncollected coin
+PASS player data: repeated load cannot duplicate loot
+PASS player data: second slot restores the second room and its progression
+PASS player data: legacy checkpoint migrates and reopens the unlocked door
+PASS time: half speed accumulates before the first fixed tick
+PASS time: short movement survives UI frames until a game tick
+PASS time: pause freezes held movement, game time and tick count
+PASS time: unscaled repeating timer advances through pause while game timer waits
+PASS time: unscaled keyboard action opens help while paused
+PASS time: UI clicks close help while paused
+PASS time: one step executes exactly one tick and holds the current pose at 4x
+PASS time: paused Interact was not replayed on step
+PASS time: 4x resumes with four fixed ticks and one game-timer expiry
+PASS time: timer cancellation
+PASS time: invalid scale preserves previous speed
+PASS time: UI can switch scenes while paused, retaining both clocks
+PASS time: a new Play starts at normal speed with fresh clocks
+PASS time: KeyRoom door animation and one-second camera timer both stop
+PASS time: six manual ticks advance the door animation
+PASS time: door camera still active after 58 game ticks
+PASS time: camera timer expires on the 60th game tick at 2x
+PASS affine hierarchy, pivot, nonuniform mirrored reparent, world corners, YAML/Play/prefab and transformed trigger
+PASS right anchor uses game width
+PASS topmost duplicate wins picking
+PASS reparent across anchors preserves UI position
+PASS UI-only menu runs without world camera
+PASS UI-only menu receives keyboard focus
+PASS dynamic text leaves asset unchanged
+PASS disabled button leaves navigation
+PASS hidden group removes child from hit testing
+PASS UI survives Undo snapshot restore
+PASS v6 HUD converts in memory without overwriting source
+PASS converted HUD saves and reopens using UI components only
+PASS regional locale falls back to Korean
+PASS stack uses shared padding, gap and stretched width
+PASS clipped content cannot be picked or scrolled from outside
+PASS wheel reveals the bottom row and its hit area
+PASS hiding a row reflows content and clamps scroll
+PASS reverse Tab reveals a clipped button
+PASS wraparound reveals the first input
+PASS marked text replaces the previous composition without committing
+PASS limit counts graphemes instead of UTF-16 units
+PASS backspace removes one complete emoji cluster
+PASS larger type reflows rows and leaves authored sizes intact
+PASS directional pad and stick navigate and reveal offscreen targets
+PASS pad cancel leaves UI focus
+PASS missing translation uses the authored base text
+PASS narrow translated text wraps and contributes to stack height
+PASS horizontal scroll reveals the focused column
+PASS placing a nested prefab preserves its link
+PASS variant and instance override separate properties of the same component
+PASS nested source update propagates through a variant with stable child IDs
+PASS duplicated link keeps independent overrides
+PASS revert restores variant defaults and keeps scene placement
+PASS runtime instantiation resolves the nested variant
+PASS cyclic prefab update leaves the source intact
+PASS parent and child receive a group transform exactly once
+PASS cancel restores the original affine transform
+PASS duplicate camera subtree
+PASS start camera fallback
+PASS camera history restore
+PASS start camera round trip
+PASS v1 camera migration
+PASS v2 camera migration
+PASS v3 camera migration
+PASS v4 camera migration
+PASS v5 camera migration
+PASS recover missing start camera
+PASS empty scene save and play guidance
+PASS stable sorting ties
+PASS sprite draw order
+PASS script error file and line
+PASS short diagonal movement
+PASS one interact per press
+PASS KeyRoom sheet source, all four frames and final hold over 60 rendered ticks
+PASS clip preview and actual KeyRoom door draw: 116 fixed ticks, loop=False
+PASS clip preview and actual KeyRoom door draw: 116 fixed ticks, loop=True
+PASS fresh session
+PASS release outside cancels UI click
+PASS screen button invokes project script once
+PASS focused button ignores repeated keydown
+PASS pickup and door camera
+PASS screen-space key HUD
+PASS camera restored after one second
+PASS enter next room with key: 
+PASS failed switch retains room
+Coin collected.
+PASS KeyRoom chest spawns one trigger; player collects it; scene unchanged
+PASS runtime prefab parent, internal references, active state and subtree lifetime
+PASS unique prefab instance IDs
+PASS source update propagated
+PASS instance placement preserved
+PASS instance placement preserved
+PASS prefab internal and external references
+PASS move PNG without breaking sprite
+PASS failed asset preload preserves running scene
+PASS app and source use the same external template for osx-arm64
+PASS standalone osx-arm64
+PASS game data uses asset extensions for osx-arm64
+PASS referenced YAML data exported for osx-arm64
+PASS referenced YAML table exported for osx-arm64
+PASS one shared project assembly for osx-arm64
+PASS fresh session
+PASS release outside cancels UI click
+PASS screen button invokes project script once
+PASS focused button ignores repeated keydown
+PASS pickup and door camera
+PASS screen-space key HUD
+PASS camera restored after one second
+PASS enter next room with key: 
+PASS failed switch retains room
+Coin collected.
+PASS KeyRoom chest spawns one trigger; player collects it; scene unchanged
+/var/folders/q5/zk8228hn6zn1m15c3xctt8pr0000gn/T/monoon-check-KN27Sa/Builds/KeyRoom.app
+PASS app and source use the same external template for win-x64
+PASS standalone win-x64
+PASS game data uses asset extensions for win-x64
+PASS referenced YAML data exported for win-x64
+PASS referenced YAML table exported for win-x64
+PASS one shared project assembly for win-x64
+PASS fresh session
+PASS release outside cancels UI click
+PASS screen button invokes project script once
+PASS focused button ignores repeated keydown
+PASS pickup and door camera
+PASS screen-space key HUD
+PASS camera restored after one second
+PASS enter next room with key: 
+PASS failed switch retains room
+Coin collected.
+PASS KeyRoom chest spawns one trigger; player collects it; scene unchanged
+/var/folders/q5/zk8228hn6zn1m15c3xctt8pr0000gn/T/monoon-check-KN27Sa/Builds/KeyRoom-win-x64
+PASS app and source use the same external template for linux-x64
+PASS standalone linux-x64
+PASS game data uses asset extensions for linux-x64
+PASS referenced YAML data exported for linux-x64
+PASS referenced YAML table exported for linux-x64
+PASS one shared project assembly for linux-x64
+PASS fresh session
+PASS release outside cancels UI click
+PASS screen button invokes project script once
+PASS focused button ignores repeated keydown
+PASS pickup and door camera
+PASS screen-space key HUD
+PASS camera restored after one second
+PASS enter next room with key: 
+PASS failed switch retains room
+Coin collected.
+PASS KeyRoom chest spawns one trigger; player collects it; scene unchanged
+/var/folders/q5/zk8228hn6zn1m15c3xctt8pr0000gn/T/monoon-check-KN27Sa/Builds/KeyRoom-linux-x64
+All checks passed.

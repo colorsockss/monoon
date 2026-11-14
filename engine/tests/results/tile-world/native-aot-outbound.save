@@ -1,0 +1,12 @@
+version: 1
+values:
+  passed: true
+  center: 2
+  resident: 3
+  total: 9
+  loads: 5
+  unloads: 2
+  originLoaded: false
+  farLoaded: true
+  originCollision: false
+  farCollision: true

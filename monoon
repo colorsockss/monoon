@@ -1,0 +1,60 @@
+#!/bin/sh
+set -eu
+
+repo=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
+run_project() {
+    project=$1
+    shift
+    dotnet run --project "$repo/engine/$project" -c Release --disable-build-servers -p:NuGetAudit=false -- "$@"
+}
+usage() {
+    cat <<'HELP'
+MoNoon Engine
+  monoon build <project> <release|native-aot> [--profile <development|distribution>] [--target <rid>] [--output <directory>]
+  monoon test                                  Run the full engine regression suite
+  monoon test inventorylab <build-directory> [--profile <development|distribution>]
+  monoon test replay <build-directory>          Replay the recorded InventoryLab quest in both players
+  monoon ci                                    Prepare templates, build and check InventoryLab
+HELP
+}
+case "${1:-}" in
+    -h|--help|help) usage ;;
+    build) run_project src/Engine.Cli "$@" ;;
+    test)
+        shift
+        if [ "$#" -eq 0 ]; then
+            run_project tests/Engine.Checks "$repo"
+        elif [ "$1" = replay ] && [ "$#" -eq 2 ]; then
+            run_project tests/Engine.Checks "$repo" --inventory-replay "$2"
+        elif [ "$1" = inventorylab ]; then
+            shift
+            case "$#" in
+                1) ;;
+                3)
+                    case "$2/$3" in
+                        --profile/development|--profile/distribution) ;;
+                        *) usage >&2; exit 2 ;;
+                    esac ;;
+                *) usage >&2; exit 2 ;;
+            esac
+            run_project tests/Engine.Checks "$repo" --inventory-builds "$@"
+        else
+            usage >&2
+            exit 2
+        fi ;;
+    ci)
+        if [ "$#" -ne 1 ]; then usage >&2; exit 2; fi
+        case "$(uname -s)/$(uname -m)" in
+            Darwin/arm64) target=osx-arm64 ;;
+            Linux/x86_64) target=linux-x64 ;;
+            *) echo "InventoryLab CI requires a macOS arm64 or Linux x64 host." >&2; exit 2 ;;
+        esac
+        cd "$repo"
+        engine/scripts/build-players.sh "$target"
+        output="$repo/game-builds/InventoryLab"
+        "$repo/monoon" build samples/InventoryLab release --profile distribution --output "$output"
+        "$repo/monoon" build samples/InventoryLab native-aot --profile distribution --output "$output"
+        "$repo/monoon" test inventorylab "$output" --profile distribution
+        "$repo/monoon" test replay "$output" ;;
+    *) usage >&2; exit 2 ;;
+esac

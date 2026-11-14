@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <AssemblyName>MoNoonPlayer</AssemblyName>
+    <Product>MoNoon Engine</Product>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(MoNoonGameReferences)' != ''">
+    <DefineConstants>$(DefineConstants);MONOON_COMPILED_SCRIPTS</DefineConstants>
+  </PropertyGroup>
+  <Import Project="$(MoNoonGameReferences)" Condition="'$(MoNoonGameReferences)' != ''" />
+  <ItemGroup>
+    <ProjectReference Include="../Engine.Desktop/Engine.Desktop.csproj"/>
+    <None Update="MoNoonContent.version" CopyToPublishDirectory="PreserveNewest" CopyToOutputDirectory="PreserveNewest"/>
+  </ItemGroup>
+</Project>

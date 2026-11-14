@@ -1,0 +1,11 @@
+schemaVersion: 14
+objects:
+- id: 47c22ef5-05de-4fd0-a14e-cb08c2d75fc4
+  name: Quest Journal
+  width: 16
+  height: 16
+  components:
+  - type: script
+    script: Quests/QuestLog
+    values:
+      Catalog: {Id: 7daa83ca-0ee2-4e06-959b-681c1b7180d5}

@@ -1,0 +1,13 @@
+version: 1
+columns:
+- name: label
+  type: Text
+- name: stackLimit
+  type: Number
+rows:
+- key: herb
+  cells: ["약초", 3]
+- key: gem
+  cells: ["수정", 2]
+- key: key
+  cells: ["열쇠", 1]

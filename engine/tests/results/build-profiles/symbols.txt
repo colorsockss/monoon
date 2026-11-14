@@ -1,0 +1,20 @@
+distribution release 0dbc391b3233480480fff5f1cc3fb652 app symbol files/bundles 0
+files Engine.Core.pdb, Engine.Desktop.pdb, Game/.monoon-compiled/MoNoon.GameScripts.pdb, MoNoonPlayer.pdb
+PDB IDs {'pdbId/MoNoonPlayer.dll': '286c9ad9-9db6-4695-9d84-1bb077e48f21', 'pdbId/Engine.Core.dll': 'a3ed8911-a7e2-4377-9ec6-264342e7d1d0', 'pdbId/Engine.Desktop.dll': '2bc55dd4-6f19-4e4f-b14d-675e0559b15f', 'pdbId/Game/.monoon-compiled/MoNoon.GameScripts.dll': '22530e03-d0c3-4799-8c51-79596aa1db86'}
+distribution native-aot bbb7b599b6a54423bd4413e75b7687ef app symbol files/bundles 0
+files Engine.Core.pdb, Engine.Desktop.pdb, MoNoon.GameScripts.pdb, MoNoonPlayer.dSYM
+Matching arm64 UUID 3D625E3A-E2BD-3005-AC01-DFA1E38D74C6
+Symbolication 0x1008cc0ec MoNoon_GameScripts_InventoryWorkbench__FixedUpdate (in MoNoonPlayer) (InventoryWorkbench.cs:40)
+development release cca0f1aae97044db89cffbe0e4651bc6 app symbol files/bundles 4
+files Engine.Core.pdb, Engine.Desktop.pdb, Game/.monoon-compiled/MoNoon.GameScripts.pdb, MoNoonPlayer.pdb
+PDB IDs {'pdbId/MoNoonPlayer.dll': '286c9ad9-9db6-4695-9d84-1bb077e48f21', 'pdbId/Engine.Core.dll': 'a3ed8911-a7e2-4377-9ec6-264342e7d1d0', 'pdbId/Engine.Desktop.dll': '2bc55dd4-6f19-4e4f-b14d-675e0559b15f', 'pdbId/Game/.monoon-compiled/MoNoon.GameScripts.dll': '22530e03-d0c3-4799-8c51-79596aa1db86'}
+development native-aot 74ac9f85ae404f9588ac9ad4c2295e79 app symbol files/bundles 4
+files Engine.Core.pdb, Engine.Desktop.pdb, MoNoon.GameScripts.pdb, MoNoonPlayer.dSYM
+Matching arm64 UUID 74777FF4-9B5F-36D5-B141-84EF94D959AA
+Symbolication 0x1008cc0ec MoNoon_GameScripts_InventoryWorkbench__FixedUpdate (in MoNoonPlayer) (InventoryWorkbench.cs:40)
+Both distribution apps have no loose debug symbols; development peers retain their symbols.
+PASS expected exit 2 : Unknown build profile 'unknown'. Use development or distribution.
+PASS expected exit 2 : Unknown or repeated option '--profile'.
+PASS expected exit 1 : System.IO.InvalidDataException: Debug symbols do not match /var/folders/q5/zk8228hn6zn1m15c3xctt8pr0000gn/T/monoon-symbol-fail-d1cium29/InventoryLab.app/Contents/MacOS/MoNoonPlayer.dll: /var/folders/q5/zk8228hn6zn1m15c3xctt8pr0000gn/T/monoon-symbol-fail-d1cium29/Symbols/InventoryLab/osx-arm64/release/0dbc391b3233480480fff5f1cc3fb652/MoNoonPlayer.pdb
+PASS expected exit 1 : System.IO.InvalidDataException: Symbol in distribution player: /var/folders/q5/zk8228hn6zn1m15c3xctt8pr0000gn/T/monoon-symbol-fail-d1cium29/InventoryLab.app/Contents/MacOS/leak.pdb
+PASS expected exit 1 : System.IO.FileNotFoundException: Could not find file '/var/folders/q5/zk8228hn6zn1m15c3xctt8pr0000gn/T/monoon-symbol-fail-d1cium29/InventoryLab.app/Contents/MacOS/MoNoonBuild'.

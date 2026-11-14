@@ -1,0 +1,12 @@
+version: 1
+values:
+  passed: true
+  rearPlants: 33
+  frontPlants: 33
+  swingSamples: 46
+  maxSoleError: 3.0517578125E-05
+  maxAngleError: 9.050000517163426E-05
+  maxPlantedSlip: 3.0517578125E-05
+  maxRideSlip: 0.0003662109375
+  outbound: 134
+  returned: 0

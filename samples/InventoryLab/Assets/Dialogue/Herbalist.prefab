@@ -1,0 +1,10 @@
+schemaVersion: 14
+objects:
+- id: a9efaff2-6cd5-521e-92fb-07eaf54227de
+  name: Herbalist
+  width: 16
+  height: 16
+  components:
+  - type: script
+    script: Dialogue/DialoguePlayer
+    values: {Story: {Id: be65fc7d-c374-5aa1-8a6b-4f548c4bcd03}}

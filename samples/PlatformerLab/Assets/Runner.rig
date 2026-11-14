@@ -1,0 +1,31 @@
+bones:
+- {name: Hips, x: 11, y: 17, angle: 0, length: 1, width: 0, color: "#FFFFFF"}
+- {name: RearThigh, parent: Hips, x: -3, y: 0, angle: 70, length: 13, width: 4, color: "#779AAC", keys: [{phase: 0, degrees: -21}, {phase: 0.5, degrees: 21}]}
+- {name: RearShin, parent: RearThigh, x: 13, y: 0, angle: 62, length: 12, width: 3, color: "#86ADBC"}
+- {name: RearFoot, parent: RearShin, x: 12, y: 0, angle: -132, length: 7, width: 3, color: "#8AD9E0"}
+- {name: FrontThigh, parent: Hips, x: 3, y: 0, angle: 35, length: 12, width: 4, color: "#D78E60", keys: [{phase: 0, degrees: 21}, {phase: 0.5, degrees: -21}]}
+- {name: FrontShin, parent: FrontThigh, x: 12, y: 0, angle: 100, length: 12, width: 3.5, color: "#F3AD72"}
+- {name: FrontFoot, parent: FrontShin, x: 12, y: 0, angle: -135, length: 8, width: 3, color: "#FFE39A"}
+- name: Torso
+  parent: Hips
+  x: 0
+  y: 1
+  angle: -90
+  length: 12
+  width: 11
+  color: "#E9974F"
+  keys: [{phase: 0, degrees: -4}, {phase: 0.5, degrees: 5}]
+- {name: Helmet, parent: Torso, x: 11, y: -1, angle: 0, length: 8, width: 13, color: "#FFD087"}
+- {name: Visor, parent: Helmet, x: 4, y: 3, angle: 90, length: 5, width: 3, color: "#3D5368"}
+- name: Arm
+  parent: Torso
+  x: 8
+  y: -1
+  angle: 172
+  length: 8
+  width: 3
+  color: "#FFBE7B"
+  keys: [{phase: 0, degrees: -34}, {phase: 0.5, degrees: 34}]
+feet:
+- {upper: RearThigh, lower: RearShin, foot: RearFoot, homeX: 7, homeY: 30, phase: 0.75, bend: 1}
+- {upper: FrontThigh, lower: FrontShin, foot: FrontFoot, homeX: 15, homeY: 30, phase: 0.25, bend: 1}

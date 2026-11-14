@@ -1,0 +1,4 @@
+frame 0: gold=0, second-room wall samples=0/6, HUD text pixels=0, playerY=115
+frame 1: gold=241, second-room wall samples=0/6, HUD text pixels=0, playerY=-1
+frame 2: gold=241, second-room wall samples=6/6, HUD text pixels=274, playerY=201
+frame 3: gold=241, second-room wall samples=6/6, HUD text pixels=274, playerY=153

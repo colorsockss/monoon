@@ -1,0 +1,23 @@
+<Project>
+  <!-- The official SDL 3.4.12 x64 build uses only Windows system DLLs.
+       The BRUTAL build of the same ABI also imports VCRUNTIME140.dll. -->
+  <PropertyGroup>
+    <WindowsSdlLibrary>$(MSBuildThisFileDirectory)native/windows-x64/SDL3.dll</WindowsSdlLibrary>
+  </PropertyGroup>
+
+  <Target Name="UseWindowsSdlInBuild" AfterTargets="ResolveLockFileCopyLocalFiles">
+    <ItemGroup>
+      <_BrutalSdlBuild Include="@(ReferenceCopyLocalPaths->WithMetadataValue('NuGetPackageId', 'Ahwoo.BRUTAL.Sdl')->WithMetadataValue('PathInPackage', 'runtimes/win-x64/native/SDL3.dll'))" />
+      <ReferenceCopyLocalPaths Remove="@(_BrutalSdlBuild)" />
+      <ReferenceCopyLocalPaths Include="@(_BrutalSdlBuild->'$(WindowsSdlLibrary)')" />
+    </ItemGroup>
+  </Target>
+
+  <Target Name="UseWindowsSdlInPublish" AfterTargets="ComputeResolvedFilesToPublishList">
+    <ItemGroup>
+      <_BrutalSdlPublish Include="@(ResolvedFileToPublish->WithMetadataValue('NuGetPackageId', 'Ahwoo.BRUTAL.Sdl')->WithMetadataValue('PathInPackage', 'runtimes/win-x64/native/SDL3.dll'))" />
+      <ResolvedFileToPublish Remove="@(_BrutalSdlPublish)" />
+      <ResolvedFileToPublish Include="@(_BrutalSdlPublish->'$(WindowsSdlLibrary)')" />
+    </ItemGroup>
+  </Target>
+</Project>

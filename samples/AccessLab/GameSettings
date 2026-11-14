@@ -1,0 +1,8 @@
+width: 800
+height: 450
+projectId: 9334557b-6911-5bb6-851d-5e22dc632773
+gameTitle: AccessLab
+startScene: 1fb72c5c-439e-5544-99b2-7e20c9f46ddd
+includedScenes:
+- 1fb72c5c-439e-5544-99b2-7e20c9f46ddd
+accessibility: {locale: ko-KR, textScale: 1, highContrast: false}

@@ -1,0 +1,15 @@
+CLI invocation outside repository and paths with spaces: exit 0 (expected 0)
+/var/folders/q5/zk8228hn6zn1m15c3xctt8pr0000gn/T/monoon cli regression xijvd6nv/products with spaces/InventoryLab.app
+Game compilation failure: exit 1 (expected 1)
+Scenes/Inventory.scene: Bag: InventoryWorkbench.cs(185,1): error CS8803: 최상위 문은 네임스페이스 및 형식 선언 앞에 와야 합니다.
+PASS prior Release preserved, including all file contents
+Repeated option: exit 2 (expected 2)
+Unknown or repeated option '--output'.
+Missing argument: exit 2 (expected 2)
+monoon build <project> <release|native-aot> [--target <osx-arm64|win-x64|linux-x64>] [--output <directory>]
+Native AOT cross-target: exit 1 (expected 1)
+Build the linux-x64 Native AOT player on a matching host.
+Player rejects unbound input: exit 1 (expected 1)
+Unbound control 'InvalidControl'.
+Regression fails on a damaged Release: exit 1 (expected 1)
+System.IO.InvalidDataException: Unexpected player or script compilation mode at /var/folders/q5/zk8228hn6zn1m15c3xctt8pr0000gn/T/monoon cli regression xijvd6nv/products with spaces/InventoryLab.app/Contents/MacOS.

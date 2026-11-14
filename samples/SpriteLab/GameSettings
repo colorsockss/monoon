@@ -1,0 +1,38 @@
+width: 800
+height: 450
+projectId: 4394934e-c0de-4350-a585-27a682237b83
+gameTitle: SpriteLab
+startScene: 4394934e-c0de-4350-a585-27a682237b83
+includedScenes:
+- 4394934e-c0de-4350-a585-27a682237b83
+input:
+  actions:
+  - name: MoveLeft
+    controls:
+    - Left
+    - A
+    - Pad.DpadLeft
+    - Pad.LeftStickLeft
+  - name: MoveRight
+    controls:
+    - Right
+    - D
+    - Pad.DpadRight
+    - Pad.LeftStickRight
+  - name: MoveUp
+    controls:
+    - Up
+    - W
+    - Pad.DpadUp
+    - Pad.LeftStickUp
+  - name: MoveDown
+    controls:
+    - Down
+    - S
+    - Pad.DpadDown
+    - Pad.LeftStickDown
+  - name: Interact
+    controls:
+    - E
+    - Space
+    - Pad.South

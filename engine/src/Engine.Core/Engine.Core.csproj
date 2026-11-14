@@ -1,0 +1,11 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <ItemGroup>
+    <None Update="EngineAssets/Square.png" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
+    <InternalsVisibleTo Include="MoNoon"/>
+    <InternalsVisibleTo Include="Engine.Checks"/>
+    <EmbeddedResource Include="LegacyScripts/*.cs.txt" WithCulture="false"
+                      LogicalName="LegacyScripts.%(Filename)" />
+    <PackageReference Include="VYaml" Version="1.6.1" />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.13.0" />
+  </ItemGroup>
+</Project>

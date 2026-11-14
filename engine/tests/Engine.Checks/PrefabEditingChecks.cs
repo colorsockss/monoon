@@ -1,0 +1,68 @@
+using System.Numerics;
+using Engine.Core;
+
+internal static class PrefabEditingChecks
+{
+    internal static void Run(string project)
+    {
+        string Asset(string name)=>Path.Combine(project,"Assets",name+".prefab");
+        var scene=SceneDocument.Load(Path.Combine(project,"Scenes","KeyRoom.scene"));
+        var chest=scene.Objects.Single(o=>o.Name=="Chest");
+        var lid=scene.Objects.Single(o=>o.Name=="Chest Lid");
+        var nestedId=lid.Id;
+        scene.ExportPrefab(lid,Asset("CheckLid"));
+        scene.ExportPrefab(chest,Asset("CheckChest"));
+        var placed=scene.PlacePrefab("Assets/CheckChest.prefab",new(80,64));
+        var placedLid=scene.Objects.Single(o=>o.Parent==placed);
+        Check(placedLid.Prefab?.AssetId==lid.Prefab!.AssetId,"placing a nested prefab preserves its link");
+        placed.Width=56;
+        placed.GetComponent<SpriteRendererComponent>()!.Order=7;
+        placedLid.Rotation=15;
+        scene.CreatePrefabVariant(placed,Asset("CheckVariant"));
+        var variantId=placed.Prefab!.AssetId;
+        var second=scene.PlacePrefab("Assets/CheckVariant.prefab",new(144,100));
+        var secondId=second.Id;
+        var secondLid=scene.Objects.Single(o=>o.Parent==second).Id;
+        second.GetComponent<SpriteRendererComponent>()!.Order=9;
+        var copy=scene.DuplicateObject(second);
+        var copyId=copy.Id;
+        var saved=Path.Combine(project,"Scenes","CheckOverrides.scene");
+        scene.Save(saved);
+        // Change both levels of the source independently with instances already saved.
+        lid.Height=14;
+        scene.ExportPrefab(lid,Asset("CheckLid"),true);
+        chest.GetComponent<SpriteRendererComponent>()!.SquareColor="#224488";
+        scene.ExportPrefab(chest,Asset("CheckChest"),true);
+        var reopened=SceneDocument.Load(saved);
+        SceneObject Find(Guid id)=>reopened.Objects.Single(o=>o.Id==id);
+        Check(Find(secondId).Width==56 && Find(secondId).GetComponent<SpriteRendererComponent>() is {Order:9,SquareColor:"#224488"} &&
+              Find(secondId).WorldPosition==new Vector2(144,100),"variant and instance override separate properties of the same component");
+        Check(Find(secondLid).Height==14 && Find(secondLid).Rotation==15 && Find(secondLid).Parent==Find(secondId),
+            "nested source update propagates through a variant with stable child IDs");
+        Check(Find(copyId).GetComponent<SpriteRendererComponent>() is {Order:9,SquareColor:"#224488"},"duplicated link keeps independent overrides");
+        var clean=reopened.RevertPrefab(Find(secondId));
+        Check(clean.GetComponent<SpriteRendererComponent>()!.Order==7 && clean.Width==56 && clean.X==144,"revert restores variant defaults and keeps scene placement");
+        using(var game=new SceneGame(reopened))
+        {
+            var spawned=game.Instantiate(new(variantId),new(90,50));
+            Check(game.Objects.Single(o=>o.Id==spawned).Width==56 && game.Objects.Single(o=>o.Parent?.Id==spawned).Height==14,
+                "runtime instantiation resolves the nested variant");
+        }
+        var sourceFile=Asset("CheckChest");
+        var original=File.ReadAllBytes(sourceFile);
+        // Adding an instance of the same source beneath its root would introduce a cycle.
+        var recursive=reopened.PlacePrefab("Assets/CheckChest.prefab",new(0,0));
+        reopened.Reparent(recursive,Find(chest.Id));
+        bool rejected=false;
+        try {reopened.ExportPrefab(Find(chest.Id),sourceFile,true);}
+        catch(InvalidDataException){rejected=true;}
+        Check(rejected && File.ReadAllBytes(sourceFile).SequenceEqual(original),"cyclic prefab update leaves the source intact");
+        var transform=new SelectionTransform([chest,lid]);
+        var before=lid.WorldPosition;
+        transform.Apply(Matrix3x2.CreateTranslation(16,32));
+        Check(lid.WorldPosition==before+new Vector2(16,32) && lid.Id==nestedId,"parent and child receive a group transform exactly once");
+        transform.Apply(Matrix3x2.Identity);
+        Check(lid.WorldPosition==before,"cancel restores the original affine transform");
+    }
+    private static void Check(bool passed,string message){if(!passed)throw new Exception(message);Console.WriteLine("PASS "+message);}
+}

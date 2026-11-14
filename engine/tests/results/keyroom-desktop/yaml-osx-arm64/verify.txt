@@ -1,0 +1,17 @@
+YAML project and game validation — macOS arm64
+
+The editor opened a copy of the previous JSON KeyRoom, saved it via Cmd+S, and reopened it in a new process. All 9 asset IDs, sidecars and hashes were compared; both scenes and the clip retained their values.
+
+release:
+start gold HUD pixels, room-two wall samples, white text pixels: (0, 0, 0)
+pickup gold HUD pixels, room-two wall samples, white text pixels: (247, 0, 96)
+room two gold HUD pixels, room-two wall samples, white text pixels: (247, 6, 374)
+
+native:
+start gold HUD pixels, room-two wall samples, white text pixels: (0, 0, 0)
+pickup gold HUD pixels, room-two wall samples, white text pixels: (247, 0, 96)
+room two gold HUD pixels, room-two wall samples, white text pixels: (247, 6, 374)
+
+62 engine integration assertions passed.
+
+Windows x64 and Linux x64: Release export, manifest hashes and gameplay data checked on macOS; executables not run on those OSes in this check.

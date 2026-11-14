@@ -1,0 +1,5 @@
+release: original, tinted body, partial/empty mask, mirrored silhouette, static/animated pair and dot frame PASS; max sampled RGB difference vs Release = 0
+release: exported manifest matches bytes; original sprite PNGs excluded
+aot: original, tinted body, partial/empty mask, mirrored silhouette, static/animated pair and dot frame PASS; max sampled RGB difference vs Release = 0
+aot: exported manifest matches bytes; original sprite PNGs excluded
+editor: original, tinted body, partial/empty mask, mirrored silhouette, static/animated pair and dot frame PASS; max sampled RGB difference vs Release = 0

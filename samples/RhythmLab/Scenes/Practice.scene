@@ -1,0 +1,314 @@
+schemaVersion: 14
+objects:
+- id: ab6f45e6-617f-5244-881d-2717714e7f82
+  name: Afterbeat
+  x: 0
+  y: 0
+  width: 1
+  height: 1
+  components:
+  - type: audioSource
+    sound: "4c93ca4a-0f1c-5f34-8ad6-c6fc7a79e9a2"
+    bus: "Music"
+    loop: true
+    playOnStart: true
+    volume: 0.85
+  - type: script
+    script: "BeatPractice"
+    values: {"Lamp1": "4dfc767a-e59a-5c78-acb8-5195b16d24af", "Lamp2": "c1763533-5a03-5d44-a048-8fa56a2a819e", "Lamp3": "7ad6d74c-fa96-562a-ae16-dcc81c87322c", "Lamp4": "bb133211-0228-5a6f-a330-7442c32e6218", "Verdict": "2707825f-b485-5ed7-b030-7fe07f9ec2e2", "Detail": "672c05af-2845-56c0-b4f2-904aae59ef5b", "Previous": "fcc683af-db1e-5a93-88bf-c27595638c93"}
+- id: 659602c5-ac66-5300-85b8-84f7aaf4e624
+  name: Camera
+  x: 400
+  y: 225
+  width: 1
+  height: 1
+  components:
+  - type: camera2D
+- id: 482ea190-2311-54e9-b614-3db0cc7736bc
+  name: Canvas
+  x: 0
+  y: 0
+  width: 800
+  height: 450
+  components:
+  - type: uiCanvas
+- id: ecff02b7-b600-565d-84fe-66a8f7df1038
+  name: Title
+  parentId: 482ea190-2311-54e9-b614-3db0cc7736bc
+  x: 48
+  y: 28
+  width: 440
+  height: 46
+  components:
+  - type: uiRect
+  - type: uiText
+    text: "Rhythm Lab"
+    size: 32
+    color: "#F1F4F1"
+    insetX: 0
+    insetY: 0
+- id: 6095bf84-475d-512a-9bf0-112ceb484cdd
+  name: Tempo
+  parentId: 482ea190-2311-54e9-b614-3db0cc7736bc
+  x: 590
+  y: 39
+  width: 170
+  height: 28
+  components:
+  - type: uiRect
+  - type: uiText
+    text: "120 BPM   /   4⁄4"
+    size: 19
+    color: "#81E3CF"
+    insetX: 0
+    insetY: 0
+- id: 1a28979e-38c3-50b1-a290-85f4afd80c7f
+  name: Prompt
+  parentId: 482ea190-2311-54e9-b614-3db0cc7736bc
+  x: 48
+  y: 85
+  width: 704
+  height: 30
+  components:
+  - type: uiRect
+  - type: uiText
+    text: "박자에 맞춰 Space를 누르세요."
+    size: 21
+    color: "#F1F4F1"
+    insetX: 0
+    insetY: 0
+- id: cfe09b81-bab7-55bb-b0b1-ffdcd22fbf92
+  name: Beat 1
+  parentId: 482ea190-2311-54e9-b614-3db0cc7736bc
+  x: 48
+  y: 146
+  width: 164
+  height: 9
+  components:
+  - type: uiRect
+  - type: uiImage
+    color: "#40596A"
+- id: 4dfc767a-e59a-5c78-acb8-5195b16d24af
+  name: Pulse 1
+  parentId: 482ea190-2311-54e9-b614-3db0cc7736bc
+  x: 48
+  y: 146
+  width: 164
+  height: 9
+  components:
+  - type: uiRect
+  - type: uiImage
+    color: "#81E3CF"
+- id: 3c96fb86-4d1c-5d85-8839-72b82fd86f58
+  name: Count 1
+  parentId: 482ea190-2311-54e9-b614-3db0cc7736bc
+  x: 48
+  y: 119
+  width: 100
+  height: 24
+  components:
+  - type: uiRect
+  - type: uiText
+    text: "1"
+    size: 16
+    color: "#A4B8C7"
+    insetX: 0
+    insetY: 0
+- id: 4868e471-e031-590b-8f57-beee793f6c1e
+  name: Beat 2
+  parentId: 482ea190-2311-54e9-b614-3db0cc7736bc
+  x: 228
+  y: 146
+  width: 164
+  height: 9
+  components:
+  - type: uiRect
+  - type: uiImage
+    color: "#40596A"
+- id: c1763533-5a03-5d44-a048-8fa56a2a819e
+  name: Pulse 2
+  parentId: 482ea190-2311-54e9-b614-3db0cc7736bc
+  x: 228
+  y: 146
+  width: 164
+  height: 9
+  components:
+  - type: uiRect
+  - type: uiImage
+    color: "#81E3CF"
+- id: f8f15417-7c13-5aa5-956f-d5a1982a63f0
+  name: Count 2
+  parentId: 482ea190-2311-54e9-b614-3db0cc7736bc
+  x: 228
+  y: 119
+  width: 100
+  height: 24
+  components:
+  - type: uiRect
+  - type: uiText
+    text: "2"
+    size: 16
+    color: "#A4B8C7"
+    insetX: 0
+    insetY: 0
+- id: af0e9d90-d4f3-5783-8b97-0b2b27db6d6c
+  name: Beat 3
+  parentId: 482ea190-2311-54e9-b614-3db0cc7736bc
+  x: 408
+  y: 146
+  width: 164
+  height: 9
+  components:
+  - type: uiRect
+  - type: uiImage
+    color: "#40596A"
+- id: 7ad6d74c-fa96-562a-ae16-dcc81c87322c
+  name: Pulse 3
+  parentId: 482ea190-2311-54e9-b614-3db0cc7736bc
+  x: 408
+  y: 146
+  width: 164
+  height: 9
+  components:
+  - type: uiRect
+  - type: uiImage
+    color: "#81E3CF"
+- id: b5d0df31-910d-55d0-86c7-0b24de9c481a
+  name: Count 3
+  parentId: 482ea190-2311-54e9-b614-3db0cc7736bc
+  x: 408
+  y: 119
+  width: 100
+  height: 24
+  components:
+  - type: uiRect
+  - type: uiText
+    text: "3"
+    size: 16
+    color: "#A4B8C7"
+    insetX: 0
+    insetY: 0
+- id: 5728fe9f-5320-503a-9bcf-4073380bde81
+  name: Beat 4
+  parentId: 482ea190-2311-54e9-b614-3db0cc7736bc
+  x: 588
+  y: 146
+  width: 164
+  height: 9
+  components:
+  - type: uiRect
+  - type: uiImage
+    color: "#40596A"
+- id: bb133211-0228-5a6f-a330-7442c32e6218
+  name: Pulse 4
+  parentId: 482ea190-2311-54e9-b614-3db0cc7736bc
+  x: 588
+  y: 146
+  width: 164
+  height: 9
+  components:
+  - type: uiRect
+  - type: uiImage
+    color: "#81E3CF"
+- id: 04f37a70-462b-5e67-983a-239b4b7284fb
+  name: Count 4
+  parentId: 482ea190-2311-54e9-b614-3db0cc7736bc
+  x: 588
+  y: 119
+  width: 100
+  height: 24
+  components:
+  - type: uiRect
+  - type: uiText
+    text: "4"
+    size: 16
+    color: "#A4B8C7"
+    insetX: 0
+    insetY: 0
+- id: 2707825f-b485-5ed7-b030-7fe07f9ec2e2
+  name: Verdict
+  parentId: 482ea190-2311-54e9-b614-3db0cc7736bc
+  x: 48
+  y: 192
+  width: 325
+  height: 75
+  components:
+  - type: uiRect
+  - type: uiText
+    text: "입력 대기"
+    size: 50
+    color: "#F1F4F1"
+    insetX: 0
+    insetY: 0
+- id: 672c05af-2845-56c0-b4f2-904aae59ef5b
+  name: Detail
+  parentId: 482ea190-2311-54e9-b614-3db0cc7736bc
+  x: 390
+  y: 224
+  width: 362
+  height: 40
+  components:
+  - type: uiRect
+  - type: uiText
+    text: "정확 범위   ±35 ms"
+    size: 22
+    color: "#81E3CF"
+    insetX: 0
+    insetY: 0
+- id: 9436be67-4f88-5a12-bf6d-db138c8ecee5
+  name: Divider
+  parentId: 482ea190-2311-54e9-b614-3db0cc7736bc
+  x: 48
+  y: 299
+  width: 704
+  height: 2
+  components:
+  - type: uiRect
+  - type: uiImage
+    color: "#40596A"
+- id: d19a1fff-ad03-5aa7-934e-da13d452032f
+  name: Previous label
+  parentId: 482ea190-2311-54e9-b614-3db0cc7736bc
+  x: 48
+  y: 319
+  width: 155
+  height: 35
+  components:
+  - type: uiRect
+  - type: uiText
+    text: "이전 입력"
+    size: 18
+    color: "#A4B8C7"
+    insetX: 0
+    insetY: 0
+- id: fcc683af-db1e-5a93-88bf-c27595638c93
+  name: Previous
+  parentId: 482ea190-2311-54e9-b614-3db0cc7736bc
+  x: 223
+  y: 317
+  width: 529
+  height: 40
+  components:
+  - type: uiRect
+  - type: uiText
+    text: "—"
+    size: 21
+    color: "#F1F4F1"
+    insetX: 0
+    insetY: 0
+- id: 18adca35-c702-58e7-8e35-7b1bc2ff946c
+  name: Window legend
+  parentId: 482ea190-2311-54e9-b614-3db0cc7736bc
+  x: 48
+  y: 393
+  width: 710
+  height: 32
+  components:
+  - type: uiRect
+  - type: uiText
+    text: "빠름    −140 ~ −35 ms        정확    ±35 ms        늦음    +35 ~ +140 ms"
+    size: 17
+    color: "#A4B8C7"
+    insetX: 0
+    insetY: 0
+defaultCameraId: 659602c5-ac66-5300-85b8-84f7aaf4e624

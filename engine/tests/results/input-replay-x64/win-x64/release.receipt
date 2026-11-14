@@ -1,0 +1,12 @@
+version: 1
+values:
+  buildId: "0277413721d04ad38d14a55225f8d533"
+  game: "InventoryLab"
+  target: "win-x64"
+  mode: "release"
+  profile: "distribution"
+  playerSha256: "FEB456C8EEE0770C9CD12042B9AEC3E49644471C986AE019D34538E75E0F9653"
+  pdbId/MoNoonPlayer.dll: "5c53847b-dcd7-459b-8d48-acb50750413c"
+  pdbId/Engine.Core.dll: "b0a2da33-9d50-41a9-979b-0566d3f62b91"
+  pdbId/Engine.Desktop.dll: "ef94f6f6-6579-4224-bd59-eb6ac08d41e5"
+  pdbId/Game/.monoon-compiled/MoNoon.GameScripts.dll: "3446e712-8762-4748-b91d-9ecafec641da"

@@ -1,0 +1,7 @@
+Pixel match: 100 sprites
+Pixel match: 1000 sprites
+Pixel match: 10000 sprites
+Pixel match: all six sheet cells including interior and outer edges, immediate and batched SDL.
+Pixel match: diamond and both hexagon orientations clip opaque atlas cells.
+Pixel match: 2,500 pooled, tinted atlas sprites; 3 vs 2,500 SDL submissions.
+Pixel match: textures, alpha, cache invalidation, overlays and clipping

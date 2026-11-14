@@ -1,0 +1,95 @@
+schemaVersion: 9
+objects:
+- id: 37c900b6-bc3b-4015-a69e-224768e026d1
+  name: Room Guide
+  components:
+  - type: uiCanvas
+    order: 10
+- id: 45cb8223-7fd9-4370-8b32-02abfed95186
+  name: Guide panel
+  parentId: 37c900b6-bc3b-4015-a69e-224768e026d1
+  width: 290
+  height: 130
+  components:
+  - type: uiRect
+    anchor: Center
+  - type: uiImage
+    color: "#263D50"
+- id: 240a83d7-e672-43ba-a0d8-6ad5c28d7395
+  name: Guide title
+  parentId: 45cb8223-7fd9-4370-8b32-02abfed95186
+  x: 14
+  y: 10
+  width: 150
+  height: 24
+  components:
+  - type: uiRect
+  - type: uiText
+    text: Room guide
+    size: 19
+- id: f07c10ff-61e9-4181-baaf-878bb53f3c7a
+  name: Key route
+  parentId: 45cb8223-7fd9-4370-8b32-02abfed95186
+  x: 14
+  y: 51
+  width: 32
+  height: 16
+  components:
+  - type: uiRect
+  - type: uiImage
+    sprite: fb750913-c06a-50c4-beae-cb27d559af91
+- id: fc81f639-1c31-49c5-84be-d90313a2ca53
+  name: Chest route
+  parentId: 45cb8223-7fd9-4370-8b32-02abfed95186
+  x: 21
+  y: 87
+  width: 18
+  height: 18
+  components:
+  - type: uiRect
+  - type: uiImage
+    sprite: 909cfb8c-893f-41a9-8e82-6d8ef5c2abb6
+- id: 7ca75e20-ee93-45ce-a65c-dff95bd714ce
+  name: Key description
+  parentId: 45cb8223-7fd9-4370-8b32-02abfed95186
+  x: 58
+  y: 48
+  width: 222
+  height: 24
+  components:
+  - type: uiRect
+  - type: uiText
+    text: Pick up the key to open the door.
+    size: 14
+- id: 4bd40b87-50d4-49e1-b6ef-522e49cf6b12
+  name: Chest description
+  parentId: 45cb8223-7fd9-4370-8b32-02abfed95186
+  x: 58
+  y: 84
+  width: 222
+  height: 24
+  components:
+  - type: uiRect
+  - type: uiText
+    text: Open the chest to find a coin.
+    size: 14
+- id: 7f1ec2e9-981d-438a-9aeb-25be66793554
+  name: Close guide
+  parentId: 45cb8223-7fd9-4370-8b32-02abfed95186
+  x: -12
+  y: 10
+  width: 62
+  height: 25
+  components:
+  - type: uiRect
+    anchor: TopRight
+  - type: uiButton
+  - type: uiText
+    text: Close
+    insetX: 11
+    insetY: 2
+  - type: script
+    script: CloseGuide
+    values:
+      Guide:
+        Id: "25fc2224-7695-4e19-a05c-d8524a2ffe50"
