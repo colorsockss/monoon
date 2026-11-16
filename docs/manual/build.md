@@ -179,15 +179,17 @@ player=game-builds/InventoryLab/InventoryLab.app/Contents/MacOS/MoNoonPlayer
 
 **모드 작성.** `.mod`는 VYaml 문서다. `version: 1`, 게임의 `gameId`, 표시 이름 `name`과 교체 목록 `replacements`를 지정한다. 각 항목의 `asset`은 배포에 포함된 기존 에셋의 GUID다. `.data`는 `data`, `.table`은 `table` 아래에 해당 에셋의 전체 YAML 내용을 넣는다. 번들에서 읽은 원본의 무결성을 확인한 후 이번 실행용 사본에 교체 내용을 적용한다. 같은 에셋을 교체하는 두 모드를 함께 켜면 충돌한 경로를 표시하고 기존 선택을 유지한다. [달맞이 장터 모드 원본](../../samples/InventoryLab/Mods/moon-market.mod)
 
-## GitHub Actions
+## 로컬 회귀 검사
 
-push, pull request, 수동 실행 시 macOS arm64, Windows x64, Linux x64 러너가 각각 InventoryLab의 배포용 Release와 Native AOT를 빌드한다. 여섯 플레이어 모두 같은 약초 의뢰 입력을 창 없이 재생한다. 각 실행이 빈 폴더에 만든 `slot-001.save`를 저장소에 보관한 Mac 기준 파일과 바이트 단위로 비교하며, 한 바이트라도 다르면 해당 OS 작업이 실패한다. 다른 OS 작업은 계속 실행된다. [워크플로](../../.github/workflows/build-regression.yml) · [로컬 재현 명령과 기준 파일](../../engine/tests/InventoryLab.Replay/README.md) · [GitHub 호스팅 러너 사양](https://docs.github.com/en/actions/reference/runners/github-hosted-runners)
+엔진을 수정한 뒤 저장소 루트에서 `./monoon test`를 실행한다. 새 체크아웃에서 세 플랫폼의 Release 내보내기 템플릿을 준비하거나 플레이어 소스 변경을 반영하려면 먼저 `./engine/scripts/build-players.sh`를 실행한다.
 
-같은 워크플로의 macOS arm64·Windows x64·Linux x64 작업은 배포 에디터에서 KeyRoom의 Player X를 190으로 편집하고 씬을 저장한다. 에디터를 다시 열어 Play와 F5를 실행하고 두 번의 열쇠 획득 저장을 Mac 기준과 대조한다. 작업별 창 캡처와 저장 파일은 `KeyRoom-editor-<RID>-results`에서 내려받을 수 있다. [에디터 조작 회귀](../../engine/tests/KeyRoom.Desktop/README.md#배포-에디터-조작-회귀)
+플랫폼별 검사는 Apple Silicon Mac과 기존 Windows x64·Linux x64 VM에서 실행한다. 각 검사에 새 결과 폴더를 지정하면 해당 OS의 저장 파일, 측정값 또는 캡처를 로컬에서 확인할 수 있다. [VM 실행 방법](../troubleshooting/README.md)
 
-Actions 실행의 **Artifacts**에서 `InventoryLab-<rid>-replay`를 내려받으면 두 저장 파일과 빌드 영수증을 볼 수 있다. 로그에는 실제 러너의 OS·CPU와 입력·저장 파일의 SHA-256이 남는다. Mac 작업은 저장·로드와 보상 중복 방지까지 확인한 뒤, 실행 권한을 보존한 앱 묶음과 대응하는 심볼 묶음을 따로 올린다. 별도 Ubuntu 작업은 세 플랫폼의 Release 템플릿을 만든 뒤 `./monoon test`로 엔진 전체를 검사한다.
-
-같은 세 러너에서 버전 31 커밋의 InventoryLab 소스를 버전 35 에디터로 변환하고 Release와 Native AOT를 새로 빌드한다. 각 게임은 약초 두 포기를 가진 v2 슬롯을 읽고, 한 포기를 더 모아 보상을 받은 뒤 저장한다. 읽기 직후에는 v2 원본과, 의뢰 완료 후에는 Mac v3 기준과 바이트 단위로 비교한다. Actions의 `InventoryLab-<rid>-upgrade-31-to-35` 아티팩트에는 두 시점의 슬롯과 빌드 영수증이 들어 있다. [로컬 재현 명령](../../engine/tests/InventoryLab.Replay/README.md#버전-31--35-업그레이드) · [업그레이드 가이드](upgrade.md)
+| 대상 | 검사 방법 |
+| --- | --- |
+| InventoryLab 배포 게임 | Release와 Native AOT에서 약초 의뢰 입력을 재생하고 저장 바이트를 Mac 기준과 대조한다. v31 프로젝트를 v35로 변환하고 기존 v2 슬롯에서 의뢰를 마치는 경우도 재생할 수 있다. [실행 명령](../../engine/tests/InventoryLab.Replay/README.md) |
+| KeyRoom 배포 에디터 | Inspector에서 Player X를 바꾸고 씬을 저장한다. 편집 직후와 다시 연 뒤의 Play에서 F5 저장을 기준 파일과 비교한다. [OS별 조작 회귀 명령](../../engine/tests/KeyRoom.Desktop/README.md#배포-에디터-조작-회귀) |
+| AudioLab 배포 게임 | Release와 Native AOT에서 Ogg 루프를 재생하고 F 키로 정지해 SDL 출력과 페이드 길이를 대조한다. [실행 명령](../../engine/tests/AudioLab.Vorbis/README.md) |
 
 ## 에디터와 템플릿 관리
 

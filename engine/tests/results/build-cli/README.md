@@ -17,4 +17,4 @@
 
 공백이 있는 프로젝트·출력 경로와 저장소 밖에서 호출하는 경우를 확인했다. 잘못된 인자에 2, 스크립트 컴파일 오류와 손상된 빌드에 1이 반환됐다. 임시 프로젝트의 컴파일 오류에는 파일명과 줄이 포함됐고 직전 Release의 모든 파일 내용이 보존됐다. [실패 경로 로그](failures.txt)
 
-이 기록은 로컬 Mac의 실행 결과다. GitHub Actions 워크플로의 YAML과 두 작업의 정의를 확인했다. 원격 러너에서의 실행 이력은 아직 없다. [빌드와 CI 사용법](../../../../docs/manual/build.md#터미널에서-빌드와-회귀-검사) · [워크플로](../../../../.github/workflows/build-regression.yml)
+이 기록은 로컬 Mac의 실행 결과다. GitHub Actions 워크플로의 YAML과 두 작업의 정의를 확인했다. 원격 러너에서의 실행 이력은 아직 없다. [빌드와 CI 사용법](../../../../docs/manual/build.md#터미널에서-빌드와-회귀-검사) · [당시 워크플로](https://github.com/colorsockss/monoon/blob/6232209b5ce4a2c7516db0c8fd989ba63a8e77c5/.github/workflows/build-regression.yml)

@@ -45,4 +45,4 @@ SDL_AUDIO_DRIVER=dummy xvfb-run -a -s "-screen 0 1400x900x24" \
 
 검사기는 새 결과 폴더 안에 샘플을 풀고 배포 실행 파일을 두 번 시작한다. 원래 배치는 이동 전 F5 저장에 `key: false`를 기록해야 한다. 검사기가 Inspector로 Player X를 190으로 바꾼 뒤 Ctrl+S를 보내면 씬 파일과 다음 실행의 Play에 그 값이 반영되어야 한다. 각 실행의 저장 폴더와 창 캡처를 결과 폴더에서 대조할 수 있다.
 
-GitHub Actions의 `KeyRoom packaged editor` 작업은 macOS arm64, Windows x64, Linux x64에서 각자 빌드한 배포 에디터를 소스 트리 밖에서 실행한다. `--expected-save`에 [Mac 기준 파일](../results/editor-packaging/collected.save)을 주면 편집 직후와 에디터 재시작 후의 F5 저장을 각각 전체 바이트로 비교한다. 불일치하면 작업이 실패하고 로그에 실제값과 기준값의 바이트 수와 SHA-256이 남는다. 실행 결과의 `KeyRoom-editor-<RID>-results` 아티팩트에는 창 캡처, 저장된 씬, F5 저장과 에디터 로그가 들어 있다.
+Windows·Linux 검사기에 `--expected-save`와 [Mac 기준 파일](../results/editor-packaging/collected.save)의 경로를 주면 편집 직후와 재시작 후의 F5 저장을 각각 바이트 단위로 비교한다. 불일치하면 로그에 실제값과 기준값의 바이트 수와 SHA-256이 남는다.
