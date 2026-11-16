@@ -23,7 +23,6 @@ final class KeyRoomTests: XCTestCase {
         play.click()
         XCTAssertTrue(stop.waitForExistence(timeout: 20), "Scene Play did not start")
         let profile = phase.appendingPathComponent("profile")
-        // The edit profile first contains the baseline with key=false. Reopen uses a fresh profile.
         let slot = profile.appendingPathComponent("Play/64fb4cd624695cecba6d9a49e61f42e7/slot-001.save")
         let keyFlag = expected == nil ? "  key: false" : "  key: true"
         let deadline = Date().addingTimeInterval(12)
@@ -63,26 +62,27 @@ final class KeyRoomTests: XCTestCase {
             return yaml?.contains("\n  name: Player\n  x: \(x)\n") == true
         }
 
-        for name in ["edit", "reopen"] {
+        for name in ["baseline", "edit", "reopen"] {
             let phase = results.appendingPathComponent(name)
             let profile = phase.appendingPathComponent("profile")
-            XCTAssertTrue(playerAt(name == "edit" ? 274 : 190), "Unexpected Player X before launch")
+            XCTAssertTrue(playerAt(name == "reopen" ? 190 : 274), "Unexpected Player X before launch")
             app.launchArguments = [project.path]
             app.launchEnvironment = ["MONOON_USER_DATA": profile.path, "SDL_AUDIO_DRIVER": "dummy"]
             app.launch()
             let xField = app.descendants(matching: .any)["Position X"].firstMatch
             XCTAssertTrue(xField.waitForExistence(timeout: 30), "Player's Transform Inspector did not open")
             if name == "edit" {
-                try checkPlay(app, phase: phase, name: "baseline", expected: nil)
-                xField.coordinate(withNormalizedOffset: CGVector(dx: 0.2, dy: 0.5)).click()
-                app.typeKey("a", modifierFlags: .command)
+                xField.coordinate(withNormalizedOffset: CGVector(dx: 0.2, dy: 0.5)).doubleClick()
                 app.typeText("190")
                 app.typeKey(XCUIKeyboardKey.return.rawValue, modifierFlags: [])
-                app.typeKey("s", modifierFlags: .command)
+                keep(XCTAttachment(screenshot: app.screenshot()), as: "entered-position")
+                app.menuBars.menuBarItems["File"].click()
+                app.menuItems["Save Scene"].click()
                 waitFor("Save Scene persisted Player X=190") { playerAt(190) }
             }
             keep(XCTAttachment(screenshot: app.screenshot()), as: "\(name)-inspector")
-            try checkPlay(app, phase: phase, name: "edited", expected: reference)
+            try checkPlay(app, phase: phase, name: name == "baseline" ? "original" : "edited",
+                          expected: name == "baseline" ? nil : reference)
             app.terminate()
             XCTAssertTrue(app.wait(for: .notRunning, timeout: 15), "Editor process did not exit")
         }

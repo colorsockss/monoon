@@ -21,7 +21,7 @@ Linux는 Debian x64의 X11 가상 디스플레이와 기본 SDL 렌더러, Windo
 
 ## 배포 에디터 조작 회귀
 
-게임 창과 별도로 세 OS의 배포 에디터를 검사한다. Apple Silicon Mac에서는 Xcode UI 테스트가 배포된 `MoNoon.app`을 두 번 실행한다. 저장소 루트에서 다음 명령을 실행한다.
+게임 창과 별도로 세 OS의 배포 에디터를 검사한다. Apple Silicon Mac에서는 Xcode UI 테스트가 원래 배치, 편집, 재열기를 각각 새 `MoNoon.app` 프로세스와 저장 폴더에서 실행한다. 저장소 루트에서 다음 명령을 실행한다.
 
 ```sh
 engine/scripts/build-editor-mac.sh
