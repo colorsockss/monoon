@@ -183,7 +183,7 @@ player=game-builds/InventoryLab/InventoryLab.app/Contents/MacOS/MoNoonPlayer
 
 push, pull request, 수동 실행 시 macOS arm64, Windows x64, Linux x64 러너가 각각 InventoryLab의 배포용 Release와 Native AOT를 빌드한다. 여섯 플레이어 모두 같은 약초 의뢰 입력을 창 없이 재생한다. 각 실행이 빈 폴더에 만든 `slot-001.save`를 저장소에 보관한 Mac 기준 파일과 바이트 단위로 비교하며, 한 바이트라도 다르면 해당 OS 작업이 실패한다. 다른 OS 작업은 계속 실행된다. [워크플로](../../.github/workflows/build-regression.yml) · [로컬 재현 명령과 기준 파일](../../engine/tests/InventoryLab.Replay/README.md) · [GitHub 호스팅 러너 사양](https://docs.github.com/en/actions/reference/runners/github-hosted-runners)
 
-같은 워크플로의 Windows·Linux x64 작업은 배포 에디터에서 KeyRoom의 Player X를 190으로 편집하고 씬을 저장한다. 에디터를 다시 열어 Play와 F5를 실행하고 두 번의 열쇠 획득 저장을 Mac 기준과 대조한다. 작업별 창 캡처와 저장 파일은 `KeyRoom-editor-<RID>-results`에서 내려받을 수 있다. [에디터 조작 회귀](../../engine/tests/KeyRoom.Desktop/README.md#배포-에디터-조작-회귀)
+같은 워크플로의 macOS arm64·Windows x64·Linux x64 작업은 배포 에디터에서 KeyRoom의 Player X를 190으로 편집하고 씬을 저장한다. 에디터를 다시 열어 Play와 F5를 실행하고 두 번의 열쇠 획득 저장을 Mac 기준과 대조한다. 작업별 창 캡처와 저장 파일은 `KeyRoom-editor-<RID>-results`에서 내려받을 수 있다. [에디터 조작 회귀](../../engine/tests/KeyRoom.Desktop/README.md#배포-에디터-조작-회귀)
 
 Actions 실행의 **Artifacts**에서 `InventoryLab-<rid>-replay`를 내려받으면 두 저장 파일과 빌드 영수증을 볼 수 있다. 로그에는 실제 러너의 OS·CPU와 입력·저장 파일의 SHA-256이 남는다. Mac 작업은 저장·로드와 보상 중복 방지까지 확인한 뒤, 실행 권한을 보존한 앱 묶음과 대응하는 심볼 묶음을 따로 올린다. 별도 Ubuntu 작업은 세 플랫폼의 Release 템플릿을 만든 뒤 `./monoon test`로 엔진 전체를 검사한다.
 
