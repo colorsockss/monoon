@@ -4,7 +4,7 @@ public sealed record AssetLink(string Source, string Field, string Target, strin
 public sealed class ProjectCatalog
 {
     public static string Kind(string path) => Path.GetExtension(path).ToLowerInvariant() switch {
-        ".ttf" or ".otf" => "font", ".png" => "sprite", ".wav" => "audio", ".cs" => "script", "" => "settings", var ext => ext[1..]
+        ".ttf" or ".otf" => "font", ".png" => "sprite", ".wav" or ".ogg" => "audio", ".cs" => "script", "" => "settings", var ext => ext[1..]
     };
     public static string[] Files(string root) => ProjectAssets.Enumerate(root,root)
         .Concat(new ProjectScripts(root).Locations().Values)
@@ -36,16 +36,16 @@ public sealed class ProjectCatalog
         var scriptFiles=scripts.Locations();
         string source=GameSettings.FileName;
         void Problem(string field,string target,string message) => report.links.Add(new(source,field,target,message));
-        void PathLink(string field,string target,string extension)
+        void PathLink(string field,string target,string extension, Func<string, bool>? accepts = null)
         {
-            var problem = !target.EndsWith(extension,StringComparison.OrdinalIgnoreCase) ? "Expected "+extension :
+            var problem = !(accepts?.Invoke(target) ?? target.EndsWith(extension,StringComparison.OrdinalIgnoreCase)) ? "Expected "+extension :
                 !File.Exists(Path.Combine(root,target)) ? "Missing file" : null;
             report.links.Add(new(source,field,target,problem));
         }
-        void Id(string field,Guid? id,string extension)
+        void Id(string field,Guid? id,string extension, Func<string, bool>? accepts = null)
         {
             if (id is not Guid g) return;
-            if (byId.TryGetValue(g,out var path)) PathLink(field,path,extension);
+            if (byId.TryGetValue(g,out var path)) PathLink(field,path,extension,accepts);
             else Problem(field,g.ToString(),"Unknown asset ID");
         }
         void Objects(SceneDocument scene)
@@ -75,7 +75,7 @@ public sealed class ProjectCatalog
                 Id(F("Tilemap.Tileset"),o.GetComponent<Tilemap2DComponent>()?.Tileset,ProjectAssets.Tileset);
                 Id(F("UI Image.Sprite"),o.GetComponent<UiImageComponent>()?.Sprite,".png");
                 Id(F("HUD.Image"),o.GetComponent<HudComponent>()?.Image,".png");
-                Id(F("Audio Source.Sound"),o.GetComponent<AudioSourceComponent>()?.Sound,".wav");
+                Id(F("Audio Source.Sound"),o.GetComponent<AudioSourceComponent>()?.Sound,"WAV or Ogg Vorbis",AudioFile.IsSupported);
                 if (o.GetComponent<SpriteAnimatorComponent>() is {} anim)
                 {
                     Id(F("Animator.Controller"),anim.Controller,AnimationController.Extension);

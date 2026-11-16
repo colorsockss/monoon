@@ -193,12 +193,12 @@ public sealed partial class SceneGame : IGameObjects, IGame2D, IGameCameras, IDi
                 12 * body.InvMass / (bounds.Width * bounds.Width + bounds.Height * bounds.Height);
             body.MinGroundCos = MathF.Cos(float.DegreesToRadians(body.Motor?.MaxSlope ?? 60));
         }
-        string? Resolve(Guid? id, string extension)
+        string? Resolve(Guid? id, string format, Func<string, bool> accepts)
         {
             if (id == null) return null;
             var path = assets?.PathFor(id.Value);
-            if (path?.EndsWith(extension, StringComparison.OrdinalIgnoreCase) != true || !File.Exists(Path.Combine(scene.ProjectDirectory!, path)))
-                throw new InvalidDataException($"{obj.Name}: missing {extension} asset {id}.");
+            if (path == null || !accepts(path) || !File.Exists(Path.Combine(scene.ProjectDirectory!, path)))
+                throw new InvalidDataException($"{obj.Name}: missing {format} asset {id}.");
             return Path.Combine(scene.ProjectDirectory!, path);
         }
         if (body.Map is { } map)
@@ -225,8 +225,8 @@ public sealed partial class SceneGame : IGameObjects, IGame2D, IGameCameras, IDi
             body.Animation = new(config,root,assets!,imageSizes);
             if (animator.PlayOnStart) body.Animation.Play();
         }
-        _ = Resolve(obj.GetComponent<UiImageComponent>()?.Sprite, ".png");
-        body.Sound = Resolve(obj.GetComponent<AudioSourceComponent>()?.Sound, ".wav");
+        _ = Resolve(obj.GetComponent<UiImageComponent>()?.Sprite, ".png", SpriteAssets.IsPng);
+        body.Sound = Resolve(obj.GetComponent<AudioSourceComponent>()?.Sound, "WAV or Ogg Vorbis", AudioFile.IsSupported);
         var instances = new List<GameBehaviour>();
         foreach (var script in obj.Components.OfType<ScriptComponent>())
         {

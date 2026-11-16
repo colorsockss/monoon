@@ -84,6 +84,7 @@ public static class GameBuild
         var assets = ProjectAssets.Scan(project);
         var checkedShaders = new HashSet<Guid>();
         var dependencies = new HashSet<string>(StringComparer.Ordinal);
+        var audioAssets = new HashSet<Guid>();
         GameLocalization.Load(project, assets, settings.Localization, dependencies);
         var bakedDocuments = new Dictionary<string, SceneDocument>();
         var projectScripts = new ProjectScripts(project);
@@ -163,7 +164,13 @@ public static class GameBuild
                     CollectTiles(obj);
                     if (obj.GetComponent<Tilemap2DComponent>() is {StreamRadius: not null, StreamTarget: Guid anchor} && !scene.Objects.Any(o => o.Id == anchor))
                         throw new InvalidDataException($"Missing tile stream target {anchor}.");
-                    Asset(obj.GetComponent<AudioSourceComponent>()?.Sound);
+                    if (obj.GetComponent<AudioSourceComponent>()?.Sound is Guid sound && audioAssets.Add(sound))
+                    {
+                        var path = assets.PathFor(sound);
+                        if (path == null || !AudioFile.IsSupported(path)) throw new InvalidDataException($"Expected WAV or Ogg Vorbis for audio asset {sound}.");
+                        Add(path);
+                        AudioFile.Read(Path.Combine(project, path));
+                    }
                     if (obj.GetComponent<UiImageComponent>()?.Sprite is Guid uiSprite)
                     {
                         if (assets.PathFor(uiSprite) is not { } path || !SpriteAssets.IsPng(path))
@@ -245,6 +252,9 @@ public static class GameBuild
         const int minimum = 35; // Player crash reports carry build and frame identities.
         if (!int.TryParse(version, out var supplied) || supplied != minimum)
             throw new InvalidDataException($"This project requires content version {minimum}. Update the {rid} player template or Native AOT kit at {markerRoot}.");
+        if (dependencies.Any(path => path.EndsWith(".ogg", StringComparison.OrdinalIgnoreCase)) &&
+            !File.Exists(Path.Combine(markerRoot, "MoNoonVorbis.version")))
+            throw new InvalidDataException($"Update the player template or Native AOT kit at {markerRoot} to stream Ogg Vorbis.");
         // Project scripts are compiled against this engine. An older template may support the
         // same on-disk content format but lack methods referenced by the compiled scripts.
         if (!nativeAot && System.Reflection.AssemblyName.GetAssemblyName(Path.Combine(template, "Engine.Core.dll")).Version

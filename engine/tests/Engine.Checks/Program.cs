@@ -16,6 +16,11 @@ if (args is [_, "--tile-build",var fixture,var output])
     TileChecks.Run(fixture);
     return;
 }
+if (args is [_, "--check-vorbis-stream", var musicFile])
+{
+    VorbisChecks.CheckLongTrack(musicFile);
+    return;
+}
 if (args is [_, "--sprite-sample",var folderPath]) { SpriteChecks.Prepare(Path.GetFullPath(folderPath)); return; }
 var scratch = Directory.CreateTempSubdirectory("monoon-check-").FullName;
 var previousProfile = Environment.GetEnvironmentVariable("MONOON_USER_DATA");
@@ -76,6 +81,7 @@ try
     if (args.Contains("--platformer-only")) return;
     WorkspaceChecks.Run(project, scratch);
     AudioChecks.Run(repository,scratch);
+    VorbisChecks.Run(repository, scratch);
     CameraChecks.Run(repository,scratch);
     CollisionChecks.Run(repository);
     ContactChecks.Run(project);

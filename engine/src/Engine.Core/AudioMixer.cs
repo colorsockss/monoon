@@ -27,7 +27,7 @@ public sealed class AudioMixer : IDisposable
     public const int SampleRate=48000;
     private const int GainRamp=240,MaxVoices=96;
     private readonly object gate=new();
-    private readonly Dictionary<string,WaveInfo> files=new(StringComparer.Ordinal);
+    private readonly Dictionary<string,AudioFile> files=new(StringComparer.Ordinal);
     private readonly List<Voice> voices=[];
     private MixerLevels levels=new();
     private float master=1,music=1,effects=1;
@@ -69,11 +69,11 @@ public sealed class AudioMixer : IDisposable
             }
         }
     }
-    private sealed class Voice(object owner,WaveInfo info,AudioSourceComponent config,float seconds,Vector2 position) : IDisposable
+    private sealed class Voice(object owner,AudioFile info,AudioSourceComponent config,float seconds,Vector2 position) : IDisposable
     {
         public readonly object Owner=owner;
-        public readonly WaveInfo Info=info;
-        public readonly WaveStream Stream=new(info);
+        public readonly AudioFile Info=info;
+        public readonly IAudioStream Stream=info.Open();
         public readonly AudioBus Bus=config.Bus;
         public readonly bool Loop=config.Loop,Spatial=config.Spatial;
         public readonly float Volume=config.Volume,Range=config.Range;
@@ -104,7 +104,7 @@ public sealed class AudioMixer : IDisposable
     { lock(gate) foreach(var v in voices)if(ReferenceEquals(v.Owner,owner))v.Position=center; }
     public bool HasVoices { get { lock(gate)return voices.Count!=0; } }
     internal bool Playing(object owner) { lock(gate)return voices.Exists(v=>ReferenceEquals(v.Owner,owner)); }
-    public void Prepare(string path) { lock(gate){ if(!files.ContainsKey(path))files.Add(path,WaveInfo.Read(path)); } }
+    public void Prepare(string path) { lock(gate){ if(!files.ContainsKey(path))files.Add(path,AudioFile.Read(path)); } }
     public void Release(string path) { lock(gate)files.Remove(path); }
     internal AudioPlayback Start(object owner,string path,AudioSourceComponent c,Vector2 position,float seconds)
     {
@@ -112,7 +112,7 @@ public sealed class AudioMixer : IDisposable
         lock(gate)
         {
             ObjectDisposedException.ThrowIf(disposed,this);
-            if(!files.TryGetValue(path,out var info))files[path]=info=WaveInfo.Read(path);
+            if(!files.TryGetValue(path,out var info))files[path]=info=AudioFile.Read(path);
             var voice=new Voice(owner,info,c,seconds,position) { Playback = new(renderedFrames) };
             voice.Gain=Gains(voice,listener);
             if(c.Bus==AudioBus.Music || c.Loop)Stop(owner,0);

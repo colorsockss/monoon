@@ -8,7 +8,7 @@ objects:
   height: 1
   components:
   - type: audioSource
-    sound: ed4cf490-f4b6-5f0e-bdd4-0a46214c7cbb
+    sound: ce9c0dcb-6b8a-4dbf-ab87-b6dc71bec7f1
     bus: Music
     loop: true
     playOnStart: true

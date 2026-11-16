@@ -52,7 +52,8 @@ public static class ProjectImport
                 {
                     case ".png": SpriteRegion.ReadPngSize(temp); break;
                     case ".ttf": case ".otf": GameLocalization.ValidateFont(temp); break;
-                    case ".wav": WaveInfo.Read(temp); break;
+                    case ".wav": WaveInfo.ReadFile(temp); break;
+                    case ".ogg": VorbisInfo.ReadFile(temp); break;
                     case ProjectAssets.Scene: case ProjectAssets.Prefab: SceneDocument.ReadAsset(temp); break;
                     case CutsceneSequence.Extension: CutsceneSequence.Load(temp); break;
                     case SkeletonRig.Extension: SkeletonRig.Load(temp); break;

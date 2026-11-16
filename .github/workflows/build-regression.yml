@@ -183,3 +183,51 @@ jobs:
           name: KeyRoom-editor-${{ matrix.rid }}-results
           path: ${{ runner.temp }}/editor-results/
           if-no-files-found: warn
+
+  audiolab:
+    name: AudioLab Ogg playback / ${{ matrix.rid }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - runner: macos-15
+            rid: osx-arm64
+          - runner: windows-2022
+            rid: win-x64
+          - runner: ubuntu-24.04
+            rid: linux-x64
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-dotnet@v5
+        env:
+          DOTNET_INSTALL_DIR: ${{ runner.temp }}/monoon-dotnet
+        with:
+          dotnet-version: 10.0.101
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - name: Prepare native window capture
+        if: runner.os != 'macOS'
+        run: python -m pip install Pillow==11.3.0
+      - name: Prepare X11 input and Native AOT
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends xvfb xauth xdotool dbus-daemon clang zlib1g-dev
+      - name: Play both distributions, press F and compare SDL output with the Mac recording
+        if: runner.os != 'Linux'
+        run: python engine/tests/AudioLab.Vorbis/ci.py ${{ matrix.rid }} "${{ runner.temp }}/audio-results"
+      - name: Play both distributions on X11, press F and compare SDL output with the Mac recording
+        if: runner.os == 'Linux'
+        run: >-
+          xvfb-run -a -s "-screen 0 1280x800x24" dbus-run-session --
+          python engine/tests/AudioLab.Vorbis/ci.py ${{ matrix.rid }} "${{ runner.temp }}/audio-results"
+      - name: Upload raw audio, measurements, screenshots and receipts
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: AudioLab-${{ matrix.rid }}-playback
+          path: ${{ runner.temp }}/audio-results/
+          if-no-files-found: warn

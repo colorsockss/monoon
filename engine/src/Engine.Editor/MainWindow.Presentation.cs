@@ -16,10 +16,10 @@ public partial class MainWindow
             row.Children.Add(new TextBlock { Text = label, Classes = { "fieldLabel" } });
             Grid.SetColumn(editor, 1); row.Children.Add(editor); fields.Children.Add(row);
         }
-        void Asset(string label, string suffix, Guid? current, Action<Guid?> set)
+        void Asset(string label, string suffix, Guid? current, Action<Guid?> set, Func<string, bool>? accepts = null)
         {
             var items = new List<ObjectReference> { new(Guid.Empty, "None") };
-            if (project != null) items.AddRange(ProjectAssets.Scan(project).Entries.Where(e => e.Path.EndsWith(suffix, StringComparison.OrdinalIgnoreCase)
+            if (project != null) items.AddRange(ProjectAssets.Scan(project).Entries.Where(e => (accepts?.Invoke(e.Path) ?? e.Path.EndsWith(suffix, StringComparison.OrdinalIgnoreCase))
                 && File.Exists(Path.Combine(project, e.Path))).Select(e => new ObjectReference(e.Id, e.Path)));
             var picker = new ComboBox { ItemsSource = items, SelectedItem = items.FirstOrDefault(i => i.Id == (current ?? Guid.Empty)),
                 HorizontalAlignment = HorizontalAlignment.Stretch };
@@ -213,7 +213,7 @@ public partial class MainWindow
                 auto.IsCheckedChanged += (_, _) => { animator.PlayOnStart = auto.IsChecked == true; MarkDirty(); };
                 Row("", auto);
                 break;
-            case AudioSourceComponent audio: Asset("Sound", ".wav", audio.Sound, id => audio.Sound = id); SourceFields(audio,Row); break;
+            case AudioSourceComponent audio: Asset("Sound", "", audio.Sound, id => audio.Sound = id, AudioFile.IsSupported); SourceFields(audio,Row); break;
             case AudioListener2DComponent:
                 Row("Listen at",new TextBlock { Text="Object center",Classes={"fieldLabel"} }); break;
             case UiCanvasComponent canvas:

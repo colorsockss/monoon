@@ -3,10 +3,11 @@ using System.Buffers.Binary;
 namespace Engine.Core;
 
 // Keep only a page of source frames per voice. RIFF chunks may be padded or in arbitrary order.
-internal sealed record WaveInfo(string Path,int Channels,int Rate,int Bits,bool Floating,long Offset,long Frames)
+internal sealed record WaveInfo(string Path,int Channels,int Rate,int Bits,bool Floating,long Offset,long Frames) : AudioFile(Path, Channels, Rate, Frames)
 {
     public int Stride => Channels*(Bits/8);
-    public static WaveInfo Read(string path)
+    internal override IAudioStream Open() => new WaveStream(this);
+    public static WaveInfo ReadFile(string path)
     {
         using var f=File.OpenRead(path);
         using var r=new BinaryReader(f);
@@ -41,7 +42,7 @@ internal sealed record WaveInfo(string Path,int Channels,int Rate,int Bits,bool 
     }
 }
 
-internal sealed class WaveStream(WaveInfo info) : IDisposable
+internal sealed class WaveStream(WaveInfo info) : IAudioStream
 {
     private readonly FileStream file=new(info.Path,FileMode.Open,FileAccess.Read,FileShare.Read,1);
     private readonly byte[] page=new byte[1024*info.Stride];

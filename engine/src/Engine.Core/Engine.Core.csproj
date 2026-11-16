@@ -9,6 +9,8 @@
     <InternalsVisibleTo Include="MoNoon.Cli"/>
     <EmbeddedResource Include="LegacyScripts/*.cs.txt" WithCulture="false"
                       LogicalName="LegacyScripts.%(Filename)" />
+    <PackageReference Include="NVorbis" Version="0.10.4" GeneratePathProperty="true" />
+    <None Include="$(PkgNVorbis)/LICENSE" Link="Licenses/NVorbis/LICENSE.txt" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
     <PackageReference Include="VYaml" Version="1.6.1" />
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.13.0" />
   </ItemGroup>
