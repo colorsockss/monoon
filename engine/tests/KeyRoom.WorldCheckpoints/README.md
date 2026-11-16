@@ -16,3 +16,9 @@
 ```sh
 python3 engine/tests/KeyRoom.WorldCheckpoints/ci.py osx-arm64 /tmp/keyroom-world-results
 ```
+
+## 데스크톱 3종 검증 기록
+
+2026-11-17에 macOS 27.0.1 arm64, Windows 11 Enterprise LTSC x64 VM(빌드 26100.1742), Debian 12 x64 VM에서 각각 Release와 Native AOT를 빌드해 위 입력을 헤드리스로 재생했다. 여섯 배포본 모두 새 코인의 부모가 Chest이고 로컬 위치가 (84, −5)였다. 게임을 다시 실행해 F9로 복원하고 F5로 저장한 1,129바이트는 해당 실행의 첫 슬롯과 동일했다. 실행마다 새로 생성된 GUID는 서로 달랐으며 각 실행의 저장·복원 사이에는 그대로 유지됐다.
+
+코인을 획득한 후 게임을 다시 시작해 F9를 두 번 누르고 E를 눌렀을 때 여섯 저장 파일 모두 코인이 0개였고, [맥 획득 기준](fixtures/collected.save) 612바이트와 일치했다. SHA-256은 `0becae59f181da639d3442621ea0857c45ccc2a1aad317ab28ba3ce157184fb0`이다. 각 배포본은 [기존 Mac Scene Play 슬롯](fixtures/pending.save)도 바이트 단위로 동일하게 복원·저장했다.
