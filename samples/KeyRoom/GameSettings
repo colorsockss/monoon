@@ -26,6 +26,8 @@ input:
     controls: ["1"]
   - name: SlotTwo
     controls: ["2"]
+  - name: NudgeCoin
+    controls: [N]
   - name: SaveGame
     controls: ["F5"]
   - name: LoadGame

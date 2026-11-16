@@ -5,7 +5,7 @@ namespace Engine.Core;
 
 public readonly record struct SceneReference(Guid Id);
 
-public sealed class SessionState
+public sealed partial class SessionState
 {
     public event Action<GameLogEntry>? Logged;
     public void Log(string message,GameLogLevel level=GameLogLevel.Info,
@@ -110,6 +110,7 @@ public sealed partial class GameSession : IGame2D, IDisposable
             sharedScripts = new ScriptRuntime(scripts ?? new ProjectScripts(project));
         try { Current = new SceneGame(scene, scripts, State, compiledScripts,sharedScripts,manifest); }
         catch { sharedScripts?.Dispose(); throw; }
+        State.LiveWorld = Current;
         Current.SoundRequested += Sound;
         Current.AssetsChanged += OnAssetsChanged;
         Current.PreparingBodies += PrepareBodies;

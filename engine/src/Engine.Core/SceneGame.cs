@@ -12,6 +12,7 @@ public sealed partial class SceneGame : IGameObjects, IGame2D, IGameCameras, IDi
         public readonly Guid Id = obj.Id;
         public Guid? SceneOwner;
         public string? SpawnedFrom;
+        public SpawnOrigin? Origin;
         public readonly Camera2DComponent? Camera = obj.GetComponent<Camera2DComponent>();
         public readonly Vector2 Size = new(obj.Width, obj.Height);
         public GameBehaviour[] Behaviours = [];
@@ -146,7 +147,11 @@ public sealed partial class SceneGame : IGameObjects, IGame2D, IGameCameras, IDi
     public ScreenUi Ui { get; }
     public SessionState State { get; }
     public SceneGame(SceneDocument scene, ProjectScripts? library = null, SessionState? state = null)
-        : this(scene, library, state, null) { }
+        : this(scene, library, state, null)
+    {
+        State.LiveWorld = this;
+        State.SceneId = scene.AssetId;
+    }
 
     internal SceneGame(SceneDocument scene, ProjectScripts? library, SessionState? state,
         Func<ScriptComponent, GameBehaviour>? compiledScripts, ScriptRuntime? sharedScripts = null, ProjectAssets? manifest = null, bool additive = false)

@@ -10,6 +10,8 @@ public interface IGameObjects
 {
     // Position is in world coordinates, including when a parent is supplied.
     Guid Instantiate(PrefabReference prefab, Vector2 position, Guid? parent = null);
+    bool HasRestoredWorld { get; }
+    void TrackForSave(Guid id, WorldSaveFields fields = WorldSaveFields.All);
     bool Destroy(Guid id);
     bool TryMoveStep(Guid id, Vector2 displacement);
     SpritePool2D CreateSpritePool(Guid owner, int capacity);
@@ -128,7 +130,10 @@ public sealed partial class SceneGame
         return false;
     }
 
-    public Guid Instantiate(PrefabReference prefab, Vector2 position, Guid? parent = null)
+    public Guid Instantiate(PrefabReference prefab, Vector2 position, Guid? parent = null) =>
+        Instantiate(prefab, position, parent, null);
+
+    private Guid Instantiate(PrefabReference prefab, Vector2 position, Guid? parent, Dictionary<Guid, Guid>? restoredIds)
     {
         ObjectDisposedException.ThrowIf(closing,this);
         if (!float.IsFinite(position.X) || !float.IsFinite(position.Y)) throw new ArgumentException("Position must be finite.");
@@ -144,7 +149,11 @@ public sealed partial class SceneGame
             : SceneDocument.ReadResolvedPrefab(project,assets!,prefab.Id);
         template.ResolveAssets(assets!);
         if (template.Objects.Count(o => o.Parent == null) != 1) throw new InvalidDataException($"{path}: expected one root.");
-        var ids = template.Objects.ToDictionary(o => o.Id, _ => Guid.NewGuid());
+        var ids = restoredIds ?? template.Objects.ToDictionary(o => o.Id, _ => Guid.NewGuid());
+        if (restoredIds != null && (ids.Count != template.Objects.Count || template.Objects.Any(o => !ids.ContainsKey(o.Id)) ||
+            ids.Values.Any(id => id == Guid.Empty || byId.ContainsKey(id)) || ids.Values.Distinct().Count() != ids.Count))
+            throw new InvalidDataException($"{path}: saved instance IDs do not match this prefab.");
+        var origin = new SpawnOrigin(prefab.Id, ids[template.Objects.Single(o => o.Parent == null).Id], ids);
         var staged = new Dictionary<Guid, Body>();
         foreach (var src in template.ParentFirst())
         {
@@ -161,8 +170,10 @@ public sealed partial class SceneGame
             foreach (var script in obj.Components.OfType<ScriptComponent>()) script.InstanceIds = ids;
             var body = CreateBody(obj);
             body.SpawnedFrom=path;
+            body.Origin = origin;
             body.SceneOwner = owner == null ? executingScene : owner.SceneOwner;
             body.Active = p?.Active ?? true;
+            body.Angle = p?.Angle ?? 0;
             body.Position = p == null ? obj.WorldPosition : Vector2.Transform(obj.LocalMatrix.Translation, p.MatrixAt(p.Position));
             body.BeginStep();
             staged.Add(src.Id, body);
@@ -174,7 +185,7 @@ public sealed partial class SceneGame
         dirty = true;
         RegisterLife(staged.Values);
         FlushLife();
-        return ids[template.Objects.Single(o => o.Parent == null).Id];
+        return origin.Root;
     }
 
     public bool Destroy(Guid id)

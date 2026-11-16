@@ -20,7 +20,7 @@ public sealed class SceneOperation
     internal void Complete() { Status = SceneStatus.Completed; Progress = 1; }
 }
 
-internal sealed record SceneRequest(Guid Id, SceneChange Change, SceneOperation? Operation, Action<SessionState>? Entered);
+internal sealed record SceneRequest(Guid Id, SceneChange Change, SceneOperation? Operation, Action<SessionState>? Entered, Dictionary<Guid, SavedSceneWorld>? Worlds = null);
 
 public sealed partial class GameSession
 {
@@ -90,10 +90,16 @@ public sealed partial class GameSession
         return doc;
     }
 
-    private SceneGame Stage(SceneDocument doc, bool add)
+    private SceneGame Stage(SceneDocument doc, bool add, SceneRequest request)
     {
         if (add) Current.ResolveAdditiveIds(doc);
-        return new SceneGame(doc, null, State, compiledScripts, sharedScripts, manifest, additive: add);
+        var stage = new SceneGame(doc, null, State, compiledScripts, sharedScripts, manifest, additive: add);
+        try
+        {
+            if (!add && State.WorldForEntry(request) is {} saved) stage.RestoreWorld(saved);
+            return stage;
+        }
+        catch { stage.Dispose(); throw; }
     }
 
     private void PumpScenes(double seconds)
@@ -113,7 +119,7 @@ public sealed partial class GameSession
         {
             if (active.Stage == null)
             {
-                active.Stage = Stage(active.Read.GetAwaiter().GetResult(), op.Change == SceneChange.Add);
+                active.Stage = Stage(active.Read.GetAwaiter().GetResult(), op.Change == SceneChange.Add, active.Request);
                 active.Assets = resources == null ? [] : SceneResources.Required(active.Stage).ToArray();
                 op.Status = SceneStatus.Preparing;
                 op.Progress = .5f;
@@ -140,7 +146,7 @@ public sealed partial class GameSession
             State.Added(op.SceneId);
             stage.Dispose(); // Transferred bodies receive lifecycle events in Current.
         }
-        else Replace(op.SceneId,stage);
+        else Replace(active.Request,stage);
         loading = null;
         Finish(active.Request);
     }
@@ -176,7 +182,7 @@ public sealed partial class GameSession
             }
             else
             {
-                var scene = Stage(ReadScene(request.Id), false);
+                var scene = Stage(ReadScene(request.Id), false, request);
                 try
                 {
                     prepare?.Invoke(scene);
@@ -184,16 +190,18 @@ public sealed partial class GameSession
                         foreach (var asset in SceneResources.Required(scene)) resources.Acquire(asset);
                 }
                 catch { scene.Dispose(); throw; }
-                Replace(request.Id,scene);
+                Replace(request,scene);
             }
         }
         catch (Exception ex) { Reject(request,ex); return; }
         Finish(request);
     }
 
-    private void Replace(Guid id, SceneGame scene)
+    private void Replace(SceneRequest request, SceneGame scene)
     {
+        var id = request.Id;
         var previous = Current;
+        var outgoing = request.Worlds == null ? previous.CaptureWorld() : null;
         if (previous.Ui.ActiveInputMode.HasValue) Actions.ChangeInputMode();
         previous.AssetsChanged -= OnAssetsChanged;
         previous.PreparingBodies -= PrepareBodies;
@@ -206,6 +214,7 @@ public sealed partial class GameSession
         try { previous.Dispose(); }
         catch (InvalidOperationException ex) { LoadFailed?.Invoke(ex.Message); }
         SceneId = id;
+        State.SwitchWorld(request, scene, outgoing);
         State.Replaced(id);
     }
 

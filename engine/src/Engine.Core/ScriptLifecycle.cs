@@ -80,6 +80,7 @@ public sealed partial class SceneGame
         {
             foreach (var stream in ownedWorlds) stream.Dispose();
             ownedWorlds.Clear();
+            if (State.LiveWorld == this) State.LiveWorld = null;
             notifications.Clear();
             if (ownsScripts) scripts?.Dispose();
             if (ownsAudio) Mixer.Dispose();

@@ -14,6 +14,11 @@ public sealed class CollectCoin : GameBehaviour
             throw new System.InvalidOperationException("Coin needs a trigger collider.");
     }
 
+    public override void FixedUpdate(ScriptTick tick)
+    {
+        if (tick.Input.Pressed("NudgeCoin")) tick.Move(new System.Numerics.Vector2(16, 0));
+    }
+
     public override void OnEnable(ScriptLife life) => available = true;
     public override void OnDisable(ScriptLife life) => available = false;
 

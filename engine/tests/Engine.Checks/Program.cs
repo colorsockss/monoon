@@ -115,6 +115,7 @@ try
     var scene = SceneDocument.Load(sceneFile);
     SceneStreamingChecks.Run(scratch, scene);
     PlayerDataChecks.Run(scratch, scene);
+    WorldCheckpointChecks.Run(scene);
     TimeChecks.Run(scene);
     TransformChecks.Run(scratch);
     UiChecks.Run(scene, scratch);

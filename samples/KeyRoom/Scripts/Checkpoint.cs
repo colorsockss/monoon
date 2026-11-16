@@ -31,6 +31,7 @@ public sealed class Checkpoint : GameBehaviour
                 var data = new GameData { Version = Version };
                 data.Set("room", room.ToString());
                 foreach (string flag in Progress) data.Set(flag, state.Has(flag));
+                state.SaveWorld(data);
                 state.Storage.SaveSlot(slot, data);
                 Show(tick, "slot.saved", slot);
             }
@@ -42,7 +43,7 @@ public sealed class Checkpoint : GameBehaviour
                 foreach (string flag in Progress)
                     if (!data.Values.TryGetValue(flag, out var value) || value.ValueKind is not (JsonValueKind.True or JsonValueKind.False))
                         throw new InvalidDataException("Missing checkpoint flag: " + flag);
-                state.LoadScene(savedRoom, restored =>
+                state.LoadSavedScene(savedRoom, data, restored =>
                 {
                     foreach (string flag in Progress)
                         if (data.GetBool(flag)) restored.Set(flag); else restored.Clear(flag);

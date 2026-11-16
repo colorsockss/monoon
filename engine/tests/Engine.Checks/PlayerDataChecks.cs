@@ -63,12 +63,17 @@ internal static class PlayerDataChecks
         var loop = new GameLoop(session, session.Actions);
         void Tap(string key) { session.Actions.Press(key); session.Actions.Release(key); loop.Advance(GameTime.FixedStep); }
         Tap("E");
+        Tap("N");
+        var pending = session.Current.Objects.Single(o => o.Name == "Coin");
+        var chest = scene.Objects.Single(o => o.Name == "Chest").Id;
+        Check(pending.ParentId == chest && session.Current.TryGetPosition(pending.Id, out var moved) &&
+            moved == new Vector2(400,126), "N moves the spawned coin 16 pixels under Chest");
         Tap("F5");
         Check(store.LoadSlot(1,2)!.GetBool("chest") && !store.LoadSlot(1,2)!.GetBool("coin"), "slot one saves an opened chest with pending loot");
         Tap("Right");
-        for (int i = 0; i < 27; i++) session.FixedUpdate(Vector2.UnitX, 1f/60);
+        for (int i = 0; i < 33; i++) session.FixedUpdate(Vector2.UnitX, 1f/60);
         Check(session.State.Has("coin"), "collected the pending coin");
-        for (int i = 0; i < 52; i++) session.FixedUpdate(-Vector2.UnitX, 1f/60);
+        for (int i = 0; i < 58; i++) session.FixedUpdate(-Vector2.UnitX, 1f/60);
         for (int i = 0; i < 65; i++) session.FixedUpdate(Vector2.Zero, 1f/60);
         for (int i = 0; i < 120; i++) session.FixedUpdate(Vector2.UnitX, 1f/60);
         SceneStreamingChecks.Wait(session);
@@ -81,10 +86,29 @@ internal static class PlayerDataChecks
         void Press(string key) { restart.Actions.Press(key); restart.Actions.Release(key); next.Advance(GameTime.FixedStep); next.Advance(GameTime.FixedStep); }
         Press("F9");
         Check(restart.State.Has("controls") && !restart.State.Has("coin") && restart.Current.Objects.Count(o => o.Name=="Coin")==1, "new session restores settings and exactly one uncollected coin");
+        var restored = restart.Current.Objects.Single(o => o.Name == "Coin");
+        Check(restored.Id == pending.Id && restored.ParentId == chest && restart.Current.TryGetPosition(restored.Id, out var pos) &&
+            pos == new Vector2(400,126), "F9 restores the saved coin ID, parent and edited position after restart");
         Press("F9");
         Check(restart.Current.Objects.Count(o => o.Name=="Coin")==1, "repeated load cannot duplicate loot");
+        for (int i = 0; i < 33; i++) restart.FixedUpdate(Vector2.UnitX, 1f/60);
+        Press("F5"); Press("F9"); Press("F9"); Press("E");
+        Check(restart.State.Has("coin") && !restart.Current.Objects.Any(o => o.Name == "Coin") &&
+            !restart.Current.IsActive(scene.Objects.Single(o => o.Name == "Chest Lid").Id),
+            "collected checkpoint keeps the chest open and the instance absent after repeated F9 and E");
         Press("2"); Press("F9");
         Check(restart.SceneId==second && restart.State.Has("coin") && restart.State.Has("key"), "second slot restores the second room and its progression");
+        var legacyPending = new GameData { Version = 2 };
+        legacyPending.Set("room", scene.AssetId!.Value.ToString());
+        legacyPending.Set("key", false); legacyPending.Set("chest", true); legacyPending.Set("coin", false);
+        store.SaveSlot(1, legacyPending);
+        Press("1"); Press("F9");
+        var migrated = restart.Current.Objects.Single(o => o.Name == "Coin");
+        Check(migrated.ParentId == chest && restart.Current.TryGetPosition(migrated.Id, out var initial) &&
+            initial == new Vector2(384,126), "v2 pending loot restores at its original location");
+        Press("N"); Press("F5"); Press("F9");
+        Check(restart.Current.TryGetPosition(migrated.Id, out var upgradedPosition) && upgradedPosition == new Vector2(400,126),
+            "next explicit save adopts stable instance identity for legacy loot");
         var legacy = new GameData();
         legacy.Set("room", scene.AssetId!.Value.ToString());
         legacy.Set("hasKey", true);
