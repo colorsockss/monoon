@@ -5,14 +5,24 @@ namespace Engine.Core;
 
 public sealed partial class ScreenUi
 {
+    internal GameLocalization Language { get; }
+    private readonly Dictionary<Guid,string> keyOverrides = [];
+    public string Translate(string key, string? fallback = null) => Language.Resolve(Preferences.Locale, key, fallback);
+    public bool SetTextKey(Guid id, string key)
+    {
+        if (byId.GetValueOrDefault(id)?.Label == null || string.IsNullOrWhiteSpace(key)) return false;
+        textOverrides.Remove(id);
+        keyOverrides[id] = key;
+        return true;
+    }
     public UiPreferences Preferences { get; }
     private bool Visible(Node n)
     {
         for(Node? p=n;p!=null;p=p.Parent)
-            if(hidden.Contains(p.Object.Id)||active?.Invoke(p.Object.Id)==false||p.Flag.Length>0&&flag?.Invoke(p.Flag)==false)return false;
+            if(ModeClosed(p)||hidden.Contains(p.Object.Id)||active?.Invoke(p.Object.Id)==false||p.Flag.Length>0&&flag?.Invoke(p.Flag)==false)return false;
         return true;
     }
-    private bool Enabled(Node n)=>(n.Button!=null||n.Field!=null)&&interactOverrides.GetValueOrDefault(n.Object.Id,n.Button?.Interactable??true);
+    private bool Enabled(Node n)=>ReceivesInput(n.Object.Id)&&(n.Button!=null||n.Field!=null)&&interactOverrides.GetValueOrDefault(n.Object.Id,n.Button?.Interactable??true);
     private bool Shown(Node n)=>Visible(n)&&n.Box.IntersectsWith(n.Clip);
     private static bool Horizontal(Node n)=>n.Layout?.Axis=="Horizontal";
     private static float Extent(Node n)=>Horizontal(n)?n.Box.Width:n.Box.Height;
@@ -20,6 +30,7 @@ public sealed partial class ScreenUi
     private float Height(Node n)=>Math.Max(n.Object.Height,n.Label==null&&n.Field==null?0:Math.Max(0,n.Label?.InsetY??3)+(n.Label?.Size??16)*Preferences.TextScale*1.4f*Math.Max(1,n.Lines.Length));
     private void Arrange(ICanvas2D? metrics=null)
     {
+        ValidateInputModes();
         // Width is independent of wrapping. Resolve it first so a narrow translated label can
         // grow vertically and push later siblings before deriving positions and scroll ranges.
         for(int i=treeOrder.Length-1;i>=0;i--)
@@ -99,9 +110,10 @@ public sealed partial class ScreenUi
     }
     public bool Wheel(float x,float y,float delta)
     {
-        Arrange();var n=nodes.LastOrDefault(o=>Hit(o,x,y));
+        Arrange();var n=nodes.LastOrDefault(o=>ReceivesInput(o.Object.Id)&&Hit(o,x,y));
         for(;n!=null;n=n.Parent)
         {
+            if(!ReceivesInput(n.Object.Id))break;
             if(!n.Scroll)continue;
             float next=Math.Clamp(n.Offset-delta*32,0,Limit(n));
             if(n.Offset!=next){n.Offset=next;return true;}
@@ -123,12 +135,14 @@ public sealed partial class ScreenUi
     {
         if(byId.GetValueOrDefault(id) is not {} n || n.Label==null&&n.Field==null)return false;
         if(n.Field!=null){values[id]=Trim(text,n.Field.MaxLength);if(edit==id){caret=values[id].Length;Preedit="";}}
-        else textOverrides[id]=text;
+        else { keyOverrides.Remove(id); textOverrides[id]=text; }
         return true;
     }
     private string Label(Node n)
     {
         if(textOverrides.TryGetValue(n.Object.Id,out var s))return s;
+        if (keyOverrides.TryGetValue(n.Object.Id, out var dynamicKey)) return Translate(dynamicKey);
+        if (n.Label?.TextKey is { Length: > 0 } key) return Translate(key, n.Label.Text);
         var locale=Preferences.Locale;
         if(n.Label?.Translations is {} table)
         {

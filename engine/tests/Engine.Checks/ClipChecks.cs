@@ -37,6 +37,12 @@ internal static class ClipChecks
                 for (int tick = 0; tick < 60; tick++)
                 {
                     session.Draw(canvas,1);
+                    if (tick * (double)dt >= time.Duration)
+                    {
+                        Require(canvas.Images.Any(p => Path.GetFileName(p.Path) == "DoorOpen3.png"), "one-shot returns to the open renderer sprite");
+                        session.FixedUpdate(Vector2.Zero,dt);
+                        continue;
+                    }
                     var door = canvas.Images.Single(p => Path.GetFileName(p.Path) == "DoorSheet.png");
                     int cell = Math.Min(3,(int)(tick * (double)dt / .09));
                     if (tick == 0) closed = door.Rect;
@@ -47,7 +53,7 @@ internal static class ClipChecks
                     session.FixedUpdate(Vector2.Zero,dt);
                 }
             }
-            Console.WriteLine("PASS KeyRoom sheet source, all four frames and final hold over 60 rendered ticks");
+            Console.WriteLine("PASS KeyRoom sheet source, all four frames and open renderer sprite over 60 rendered ticks");
             var oldTemplate = Directory.CreateDirectory(Path.Combine(root,".old-template")).FullName;
             File.WriteAllText(Path.Combine(oldTemplate,"MoNoonPlayer"),"");
             void Reject(string reason)
@@ -90,7 +96,7 @@ internal static class ClipChecks
                 var canvas = new CaptureCanvas();
                 for (int tick = 0; tick <= 115; tick++)
                 {
-                    // At tick 0 the trigger has just called PlayEffect, following the animation step.
+                    // The pickup starts the one-shot after the animation step of tick 0.
                     double t = tick * (double)dt, local = loop ? t % .9 : t;
                     int i = local < .25 ? 0 : local < .45 ? 1 : local < .75 ? 2 : 3;
                     game.Draw(canvas,1);

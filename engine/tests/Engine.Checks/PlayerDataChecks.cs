@@ -91,7 +91,9 @@ internal static class PlayerDataChecks
         store.DeleteSlot(1);
         store.SaveSlot(1,legacy);
         Press("1"); Press("F9");
+        var door = scene.Objects.Single(o => o.Name == "Door").Id;
         Check(restart.SceneId==scene.AssetId && restart.State.Has("key") && !restart.State.Has("chest") &&
-            !restart.Current.IsActive(scene.Objects.Single(o=>o.Name=="Door").Id), "legacy checkpoint migrates and reopens the unlocked door");
+            restart.Current.IsActive(door) && !restart.Current.IsColliderEnabled(door) &&
+            restart.Current.GetComponent<SpriteRendererComponent>(door)?.Asset == "Assets/DoorOpen3.png", "legacy checkpoint migrates and reopens the unlocked door");
     }
 }

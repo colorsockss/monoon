@@ -84,6 +84,7 @@ public static class GameBuild
         var assets = ProjectAssets.Scan(project);
         var checkedShaders = new HashSet<Guid>();
         var dependencies = new HashSet<string>(StringComparer.Ordinal);
+        GameLocalization.Load(project, assets, settings.Localization, dependencies);
         var bakedDocuments = new Dictionary<string, SceneDocument>();
         var projectScripts = new ProjectScripts(project);
         var imageSizes = new Dictionary<string, System.Drawing.Size>(StringComparer.Ordinal);
@@ -189,6 +190,13 @@ public static class GameBuild
                         var def = library.Get(script.Script);
                         foreach (var field in def.Fields)
                         {
+                            if (field.Type == typeof(SpriteReference) && field.Value(script) is SpriteReference sprite && sprite.Id != Guid.Empty)
+                            {
+                                var relative = assets.PathFor(sprite.Id);
+                                if (relative == null || !SpriteAssets.IsReference(relative))
+                                    throw new InvalidDataException($"{script.Script}.{field.Name}: missing PNG {sprite.Id}.");
+                                if (!Pack(sprite.Id)) Add(relative);
+                            }
                             if (field.Type == typeof(TableReference) && field.Value(script) is TableReference table && table.Id != Guid.Empty)
                             {
                                 var relative = GameTable.AssetPath(assets,table);
@@ -237,6 +245,11 @@ public static class GameBuild
         const int minimum = 35; // Player crash reports carry build and frame identities.
         if (!int.TryParse(version, out var supplied) || supplied != minimum)
             throw new InvalidDataException($"This project requires content version {minimum}. Update the {rid} player template or Native AOT kit at {markerRoot}.");
+        // Project scripts are compiled against this engine. An older template may support the
+        // same on-disk content format but lack methods referenced by the compiled scripts.
+        if (!nativeAot && System.Reflection.AssemblyName.GetAssemblyName(Path.Combine(template, "Engine.Core.dll")).Version
+            != typeof(GameBehaviour).Assembly.GetName().Version)
+            throw new InvalidDataException($"Incompatible scripting API in {rid} player template. Rebuild the template at {template}.");
         var name = settings.GameTitle ?? new DirectoryInfo(project).Name;
         if (string.IsNullOrWhiteSpace(name) || name is "." or ".." || name.IndexOfAny(Path.GetInvalidFileNameChars()) >= 0)
             throw new InvalidDataException("Invalid game title.");

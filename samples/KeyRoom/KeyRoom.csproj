@@ -9,6 +9,12 @@
     <None Update="Assets/**/*" CopyToOutputDirectory="PreserveNewest" />
     <Compile Remove="Scripts/**/*.cs" />
     <None Include="Scripts/**/*.cs" CopyToOutputDirectory="PreserveNewest" />
+    <_MovedScriptMeta Include="**/*.cs.meta" Exclude="$(DefaultItemExcludes);$(DefaultExcludesInProjectFolder)" />
+    <_MovedScript Include="@(_MovedScriptMeta->'%(RelativeDir)%(Filename)')" />
+    <Compile Remove="@(_MovedScript)" />
+    <None Remove="@(_MovedScript)" />
+    <None Include="@(_MovedScript)" CopyToOutputDirectory="PreserveNewest" />
+    <None Update="@(_MovedScriptMeta)" CopyToOutputDirectory="PreserveNewest" />
     <ProjectReference Include="../../engine/src/Engine.Core/Engine.Core.csproj" />
     <ProjectReference Include="../../engine/src/Engine.Desktop/Engine.Desktop.csproj" />
   </ItemGroup>

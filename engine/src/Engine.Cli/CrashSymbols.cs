@@ -69,7 +69,7 @@ internal static class CrashSymbols
                 }
                 if (found is not { IsHidden: false } line || line.Document.IsNil) continue;
                 string source = reader.GetString(reader.GetDocument(line.Document).Name).Replace('\\', '/');
-                if (name == "MoNoon.GameScripts") source = "Scripts/" + source;
+                if (name == "MoNoon.GameScripts") source = source.StartsWith("./", StringComparison.Ordinal) ? source[2..] : "Scripts/" + source;
                 locations[frame] = $"{frame.Method}  {source}:{line.StartLine}  (IL 0x{frame.IlOffset:x})";
             }
         }
@@ -109,7 +109,7 @@ internal static class CrashSymbols
             string symbol = lines[i].Trim();
             if (!System.Text.RegularExpressions.Regex.IsMatch(symbol, @":\d+\)")) continue;
             // AOT compiles a temporary snapshot. Show the project-relative script path from its DWARF record.
-            symbol = System.Text.RegularExpressions.Regex.Replace(symbol, @"\([^()\n]*/GameScripts/(Scripts/[^()\n]+:\d+)\)", "($1)");
+            symbol = System.Text.RegularExpressions.Regex.Replace(symbol, @"\([^()\n]*/GameScripts/(?:GameSources/|(?=Scripts/))([^()\n]+:\d+)\)", "($1)");
             locations[native[i]] = $"{symbol.Replace("\n", "\n    ")}  (image {native[i].ImageOffset})";
         }
         return locations;

@@ -7,8 +7,23 @@ public sealed partial class ScreenUi
 {
     public void Draw(ICanvas2D canvas,float x=0,float y=0,float scale=1)
     {
-        Arrange(canvas);RectangleF At(RectangleF b)=>new(x+b.X*scale,y+b.Y*scale,b.Width*scale,b.Height*scale);
-        foreach(var n in nodes)
+        canvas.UseFonts(Language.Fonts);
+        Arrange(canvas);
+        if (inputModes.Count == 0) { DrawLayer(canvas, x, y, scale, nodes); return; }
+        // Paint each panel, including its scrollbars, before painting the panel above it.
+        for (int start = 0; start < nodes.Length;)
+        {
+            int layer = PaintLayer(nodes[start]), end = start + 1;
+            while (end < nodes.Length && PaintLayer(nodes[end]) == layer) end++;
+            DrawLayer(canvas, x, y, scale, nodes.AsSpan(start, end - start));
+            start = end;
+        }
+    }
+
+    private void DrawLayer(ICanvas2D canvas, float x, float y, float scale, ReadOnlySpan<Node> widgets)
+    {
+        RectangleF At(RectangleF b)=>new(x+b.X*scale,y+b.Y*scale,b.Width*scale,b.Height*scale);
+        foreach(var n in widgets)
         {
             if(!Shown(n))continue;
             using var clip=n.Clip!=screen?canvas.PushClip(At(n.Clip)):null;
@@ -72,7 +87,7 @@ public sealed partial class ScreenUi
                 canvas.FillRectangle(new(box.X,box.Y,u,box.Height),ring);canvas.FillRectangle(new(box.Right-u,box.Y,u,box.Height),ring);
             }
         }
-        foreach(var n in nodes)if(n.Scroll&&Shown(n)&&Limit(n)>0)
+        foreach(var n in widgets)if(n.Scroll&&Shown(n)&&Limit(n)>0)
         {
             using var clip=canvas.PushClip(At(RectangleF.Intersect(n.Box,n.Clip)));
             canvas.FillRectangle(At(Track(n)),Color.FromArgb(44,54,67));canvas.FillRectangle(At(Thumb(n)),Preferences.HighContrast?Color.White:Color.LightSlateGray);

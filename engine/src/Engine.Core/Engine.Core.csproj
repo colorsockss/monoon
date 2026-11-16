@@ -1,4 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <AssemblyVersion>1.5.0.0</AssemblyVersion>
+  </PropertyGroup>
   <ItemGroup>
     <None Update="EngineAssets/Square.png" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
     <InternalsVisibleTo Include="MoNoon"/>

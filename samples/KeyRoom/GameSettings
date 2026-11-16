@@ -32,3 +32,14 @@ input:
     controls: ["F9"]
   - name: RoomGuide
     controls: [M, Pad.North]
+  - name: OpenBag
+    controls: [I, Pad.West]
+  - name: MenuBack
+    controls: [Backspace, I, Pad.East]
+  - name: ChangeLanguage
+    controls: [L]
+localization:
+  table: 2c898767-c577-57f0-bb09-2fc866cbc6df
+  fallbackLocale: en
+  defaultFont: aaf6f4bb-1621-5fe0-a2fc-cd954da2cae7
+  fallbackFonts: [0d164d8e-969a-52f8-a1f0-7a5ba90fb719]

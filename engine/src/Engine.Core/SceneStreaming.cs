@@ -194,6 +194,7 @@ public sealed partial class GameSession
     private void Replace(Guid id, SceneGame scene)
     {
         var previous = Current;
+        if (previous.Ui.ActiveInputMode.HasValue) Actions.ChangeInputMode();
         previous.AssetsChanged -= OnAssetsChanged;
         previous.PreparingBodies -= PrepareBodies;
         previous.SoundRequested -= Sound;

@@ -131,6 +131,15 @@ public sealed class InputActions
             Peaks.Clear();
         }
     }
+    private readonly HashSet<string> suppressed = new(StringComparer.OrdinalIgnoreCase);
+    internal bool Suppressed(string control) => suppressed.Contains(control);
+    internal void ChangeInputMode()
+    {
+        suppressed.UnionWith(controls.Keys);
+        controls.Clear();
+        ClearSamples();
+    }
+
     private readonly InputHistory gameHistory = new();
     private readonly InputHistory uiHistory = new();
     private InputDevice device;
@@ -181,6 +190,11 @@ public sealed class InputActions
     {
         if (!float.IsFinite(strength)) return false;
         strength=Math.Clamp(strength,0,1);
+        if (suppressed.Contains(control))
+        {
+            if (strength == 0) suppressed.Remove(control);
+            return true;
+        }
         float previous=controls.GetValueOrDefault(control);
         bool changed=previous!=strength;
         if (changed)
@@ -209,11 +223,16 @@ public sealed class InputActions
     public void Reset()
     {
         controls.Clear();
+        suppressed.Clear();
+        ClearSamples();
+        inside = false;
+    }
+    private void ClearSamples()
+    {
         values.Clear();
         gameHistory.Clear();
         uiHistory.Clear();
         gameHistory.Snapshot = uiHistory.Snapshot = null;
-        inside = false;
     }
 
     public GameInput Take() => Take(gameHistory);

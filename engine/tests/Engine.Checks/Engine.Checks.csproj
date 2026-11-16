@@ -6,12 +6,14 @@
     <Compile Include="../../../samples/InventoryLab/Scripts/Inventory/InventoryBag.cs" Link="Packages/InventoryBag.cs"/>
     <Compile Include="../../../samples/InventoryLab/Scripts/Quests/QuestJournal.cs" Link="Packages/QuestJournal.cs"/>
     <Compile Include="../../../samples/InventoryLab/Scripts/WorkbenchSave.cs" Link="Samples/WorkbenchSave.cs"/>
+    <Compile Include="../../src/Engine.Editor/SceneDebugInstrumentation.cs" Link="Editor/SceneDebugInstrumentation.cs"/>
     <Compile Include="../../src/Engine.Editor/TileStroke.cs" Link="Editor/TileStroke.cs"/>
     <Compile Include="../../src/Engine.Editor/SceneRecovery.cs" Link="Editor/SceneRecovery.cs"/>
     <Compile Include="../../src/Engine.Editor/SceneMerge.cs" Link="Editor/SceneMerge.cs"/>
     <Compile Include="../../src/Engine.Editor/WorkspaceArchives.cs" Link="Editor/WorkspaceArchives.cs"/>
     <Compile Include="../../src/Engine.Editor/MigrationBackup.cs" Link="Editor/MigrationBackup.cs"/>
     <Compile Include="../../src/Engine.Editor/SceneHistory.cs" Link="Editor/SceneHistory.cs"/>
+    <Compile Include="../../src/Engine.Editor/ProjectPathEdit.cs" Link="Editor/ProjectPathEdit.cs"/>
     <Compile Include="../../src/Engine.Editor/PrefabFileEdit.cs" Link="Editor/PrefabFileEdit.cs"/>
   </ItemGroup>
   <ItemGroup><ProjectReference Include="../../src/Engine.Desktop/Engine.Desktop.csproj"/></ItemGroup>

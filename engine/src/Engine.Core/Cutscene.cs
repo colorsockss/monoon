@@ -6,7 +6,11 @@ using VYaml.Annotations;
 namespace Engine.Core;
 
 [YamlObject]
-public sealed partial record DialogueLine(string Speaker, string Text);
+public sealed partial record DialogueLine(string Speaker, string Text)
+{
+    public string? SpeakerKey { get; init; }
+    public string? TextKey { get; init; }
+}
 
 [YamlObject]
 public sealed partial record CutsceneSequence(DialogueLine[] Lines)
@@ -83,12 +87,13 @@ public sealed partial class SceneGame
         }
     }
 
-    private sealed record DialogueLayout(float Scale, float Size, float Pad, float Top, string[] Rows);
+    private sealed record DialogueLayout(string Locale, float Scale, float Size, float Pad, float Top, string[] Rows);
     private void DrawDialogue(ICanvas2D canvas, Playback p)
     {
         float w = LogicalSize.Width, h = LogicalSize.Height, scale = Ui.Preferences.TextScale;
         var line = p.Lines[p.Line];
-        if (p.Layout is not {} layout || layout.Scale != scale)
+        string speaker = line.SpeakerKey is {} sk ? Ui.Translate(sk, line.Speaker) : line.Speaker;
+        if (p.Layout is not {} layout || layout.Scale != scale || layout.Locale != Ui.Preferences.Locale)
         {
             float unit = Math.Min(w / 800, h / 450), pad = 20 * unit, font = 20 * unit * scale;
             string[] rows;
@@ -96,23 +101,24 @@ public sealed partial class SceneGame
             // Keep every authored line visible, including text without word separators.
             while (true)
             {
-                rows = ScreenUi.WrapText(line.Text, w - 4 * pad, s => canvas.MeasureText(s, font));
+                rows = ScreenUi.WrapText(line.TextKey is {} tk ? Ui.Translate(tk, line.Text) : line.Text, w - 4 * pad, s => canvas.MeasureText(s, font));
                 height = 2 * pad + (2 + rows.Length) * font * 1.4f;
-                if (height <= h * .65f && canvas.MeasureText(line.Speaker, font) <= w - 6 * pad) break;
+                if (height <= h * .65f && canvas.MeasureText(speaker, font) <= w - 6 * pad) break;
                 font *= .85f;
             }
-            p.Layout = layout = new(scale, font, pad, h - height, rows);
+            p.Layout = layout = new(Ui.Preferences.Locale, scale, font, pad, h - height, rows);
         }
-        var (unused, size, margin, top, lines) = layout;
+        var (_, _, size, margin, top, lines) = layout;
         var accent = Ui.Preferences.HighContrast ? Color.Yellow : Color.FromArgb(122, 223, 203);
         float left = 2 * margin, y = top + margin, step = size * 1.4f;
         canvas.FillRectangle(new(margin, top, w - 2 * margin, h - top), Color.FromArgb(16, 25, 38));
         canvas.FillRectangle(new(margin, top, w - 2 * margin, Math.Max(1, margin / 9)), accent);
-        canvas.DrawText(line.Speaker, left, y, size * .83f, accent);
+        canvas.DrawText(speaker, left, y, size * .83f, accent);
         foreach (var row in lines) canvas.DrawText(row, left, y += step, size, Color.White);
         string Key(string action) => (Actions.BindingFor(action, p.Device) ?? Actions.BindingFor(action, InputDevice.Keyboard) ??
             Actions.BindingFor(action, InputDevice.Gamepad) ?? action) switch { "Return" => "Enter", var key => key };
-        string hint = $"{p.Line + 1} / {p.Lines.Length}     {Key("DialogueNext")}  {(p.Line + 1 == p.Lines.Length ? "Finish" : "Next")}     {Key("SkipCutscene")}  Skip";
+        string advance = p.Line + 1 == p.Lines.Length ? Ui.Translate("dialogue.finish", "Finish") : Ui.Translate("dialogue.next", "Next");
+        string hint = $"{p.Line + 1} / {p.Lines.Length}     {Key("DialogueNext")}  {advance}     {Key("SkipCutscene")}  {Ui.Translate("dialogue.skip", "Skip")}";
         float hintSize = size * .72f;
         hintSize *= Math.Min(1, (w - 2 * left) / Math.Max(1, canvas.MeasureText(hint, hintSize)));
         canvas.DrawText(hint, left, y + step, hintSize, Color.WhiteSmoke);

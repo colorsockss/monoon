@@ -1,4 +1,4 @@
-schemaVersion: 9
+schemaVersion: 23
 objects:
 - id: 37c900b6-bc3b-4015-a69e-224768e026d1
   name: Room Guide
@@ -26,6 +26,7 @@ objects:
   - type: uiRect
   - type: uiText
     text: Room guide
+    textKey: guide.title
     size: 19
 - id: f07c10ff-61e9-4181-baaf-878bb53f3c7a
   name: Key route
@@ -60,6 +61,7 @@ objects:
   - type: uiRect
   - type: uiText
     text: Pick up the key to open the door.
+    textKey: guide.key
     size: 14
 - id: 4bd40b87-50d4-49e1-b6ef-522e49cf6b12
   name: Chest description
@@ -72,6 +74,7 @@ objects:
   - type: uiRect
   - type: uiText
     text: Open the chest to find a coin.
+    textKey: guide.chest
     size: 14
 - id: 7f1ec2e9-981d-438a-9aeb-25be66793554
   name: Close guide
@@ -86,6 +89,7 @@ objects:
   - type: uiButton
   - type: uiText
     text: Close
+    textKey: ui.close
     insetX: 11
     insetY: 2
   - type: script

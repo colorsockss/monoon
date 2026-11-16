@@ -34,6 +34,22 @@ internal sealed record SpriteFields(SpriteRendererComponent Sprite, string? Proj
 {
     public decimal Layer { get => Sprite.SortingLayer; set { if ((int)value != Sprite.SortingLayer) { Sprite.SortingLayer = (int)value; Changed(); } } }
     public decimal Order { get => Sprite.Order; set { if ((int)value != Sprite.Order) { Sprite.Order = (int)value; Changed(); } } }
+    public bool SortByY
+    {
+        get => Sprite.SortByY;
+        set
+        {
+            if (value == Sprite.SortByY) return;
+            Sprite.SortByY = value;
+            PropertyChanged?.Invoke(this, new(nameof(SortByY)));
+            Changed();
+        }
+    }
+    public decimal FootOffset
+    {
+        get => decimal.CreateSaturating(Sprite.FootOffset);
+        set { if ((float)value != Sprite.FootOffset) { Sprite.FootOffset = (float)value; Changed(); } }
+    }
     public string AssetLabel => Sprite.Asset is { } path
         ? Project != null && File.Exists(Path.Combine(Project, path)) ? path : $"Missing: {path}"
         : "Square";

@@ -99,6 +99,7 @@ internal static class WorkspaceChecks
         using var zip = ZipFile.OpenRead(backup!);
         Check(zip.GetEntry("Assets/Door.clip.yaml") != null && zip.GetEntry("Assets/Door.clip.yaml.meta") != null &&
             File.Exists(current) && !File.Exists(old), "migration backs up original file and identity before conversion");
+        ProjectMoveChecks.Run(clone, workspace);
         Directory.Delete(workspace, true);
     }
 

@@ -10,6 +10,7 @@ namespace Engine.Editor;
 
 public partial class MainWindow
 {
+    private SceneDebugServer? scriptDebugger;
     private SceneRecovery? recovery;
     private readonly NativeMenu extensionMenu = new();
     private readonly NativeMenuItem extensionItem = new("Extensions");
@@ -33,6 +34,14 @@ public partial class MainWindow
         fileMenu.Add(fromTemplate);
         fileMenu.Add(Item("Export Project Template…", () => ExportArchive(WorkspaceArchives.Template)));
         projectMenu.Add(new NativeMenuItemSeparator());
+        projectMenu.Add(Item("Open C# Project…", async () => {
+            if (ExternalScriptEditor.UsesSceneWorkspace) scriptDebugger ??= new SceneDebugServer(project!);
+            else { scriptDebugger?.Dispose(); scriptDebugger = null; }
+            var files = ScriptIdeProject.Generate(project!, scriptDebugger);
+            await ExternalScriptEditor.OpenProject(files);
+            Status.Text = scriptDebugger != null ? "Choose Attach to MoNoon Scene Play in Run and Debug."
+                : $"Attach the .NET debugger to MoNoon (PID {Environment.ProcessId}), then press Play.";
+        }));
         projectMenu.Add(Item("Import Package…", ImportPackage));
         projectMenu.Add(Item("Export Package…", () => ExportArchive(WorkspaceArchives.Package)));
         projectMenu.Add(Item("Recover Scene Edits…", PromptRecovery));
@@ -40,7 +49,7 @@ public partial class MainWindow
         projectMenu.Add(extensionItem);
         projectMenu.Add(Item("Reload Extensions", () => { RefreshExtensions(); return Task.CompletedTask; }));
         checkpointTimer.Tick += (_, _) => FlushCheckpoint();
-        Closed += (_, _) => { FlushCheckpoint(); recovery?.Dispose(); };
+        Closed += (_, _) => { scriptDebugger?.Dispose(); FlushCheckpoint(); recovery?.Dispose(); };
     }
 
     private void RefreshExtensions()
@@ -88,6 +97,7 @@ public partial class MainWindow
 
     private void StartWorkspace(string? root)
     {
+        if (scriptDebugger != null && scriptDebugger.Root != root) { scriptDebugger.Dispose(); scriptDebugger = null; }
         checkpointTimer.Stop();
         pendingSnapshot = null;
         recovery?.ClearOwn();

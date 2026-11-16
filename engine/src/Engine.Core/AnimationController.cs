@@ -64,6 +64,7 @@ public interface IGameAnimator
     string State { get; }
     int Frame { get; }
     void Play();
+    void PlayThenShowSprite();
     void SetBool(string name, bool value);
     void SetFloat(string name, float value);
     void SetTrigger(string name);
@@ -87,7 +88,7 @@ public sealed class AnimationPlayer : IGameAnimator
     private readonly Dictionary<string,AnimationParameter> parameters;
     private readonly Dictionary<string,float> values;
     private Track Current => tracks[states[State].Clip];
-    private bool started, entering;
+    private bool started, entering, returnToSprite;
     private long playRevision;
     private double time;
     public string State { get; private set; }
@@ -144,7 +145,14 @@ public sealed class AnimationPlayer : IGameAnimator
     public void Play()
     {
         playRevision++;
+        returnToSprite = false;
         Enter(controller.Entry);
+    }
+
+    public void PlayThenShowSprite()
+    {
+        Play();
+        returnToSprite = true;
     }
     private void Enter(string state)
     {
@@ -205,5 +213,6 @@ public sealed class AnimationPlayer : IGameAnimator
                 }
         }
         time = track.Axis.Position(end,track.Clip.Loop);
+        if (returnToSprite && !track.Clip.Loop && end >= track.Axis.Duration) started = false;
     }
 }

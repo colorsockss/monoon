@@ -51,6 +51,7 @@ public static class ProjectImport
                 switch(Path.GetExtension(name).ToLowerInvariant())
                 {
                     case ".png": SpriteRegion.ReadPngSize(temp); break;
+                    case ".ttf": case ".otf": GameLocalization.ValidateFont(temp); break;
                     case ".wav": WaveInfo.Read(temp); break;
                     case ProjectAssets.Scene: case ProjectAssets.Prefab: SceneDocument.ReadAsset(temp); break;
                     case CutsceneSequence.Extension: CutsceneSequence.Load(temp); break;
@@ -72,7 +73,19 @@ public static class ProjectImport
                         }
                         break;
                 }
-                if(script) continue;
+                if (GameLocalization.IsFont(name) && File.Exists(input + ".license"))
+                    File.Copy(input + ".license", Stage(relative + ".license"));
+                if (script)
+                {
+                    if (File.Exists(input + ".meta"))
+                    {
+                        var location = ProjectYaml.Read<ScriptLocation>(input + ".meta");
+                        if (string.IsNullOrEmpty(location.ScriptId) || !location.ScriptId.Split('/').All(ValidName))
+                            throw new InvalidDataException($"Invalid script metadata for {name}.");
+                        File.Copy(input + ".meta", Stage(relative + ".meta"));
+                    }
+                    continue;
+                }
                 var incoming=File.Exists(input+".meta")?ProjectYaml.Read<AssetMeta>(input+".meta"):null;
                 var sidecar=Destination(relative+".meta");
                 var retained=File.Exists(sidecar)?ProjectYaml.Read<AssetMeta>(sidecar):null;
@@ -90,6 +103,7 @@ public static class ProjectImport
                 Directory.CreateDirectory(Path.GetDirectoryName(dest)!);
                 File.Move(temp,dest,false); written.Add(dest);
             }
+            if (result.Any(p => p.EndsWith(".cs", StringComparison.Ordinal))) _ = new ProjectScripts(root).Locations();
             ProjectAssets.Scan(root);
             return result.ToArray();
         }

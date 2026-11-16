@@ -84,7 +84,7 @@ public sealed partial class ScreenUi
     public bool Pointer(bool down,float x,float y)
     {
         Arrange();
-        if(down && nodes.LastOrDefault(n=>n.Scroll&&Limit(n)>0&&Hit(n,x,y)&&Track(n).Contains(x,y)) is {} scroll)
+        if(down && nodes.LastOrDefault(n=>ReceivesInput(n.Object.Id)&&n.Scroll&&Limit(n)>0&&Hit(n,x,y)&&Track(n).Contains(x,y)) is {} scroll)
         {
             var t=Thumb(scroll);bool h=Horizontal(scroll);barDrag=scroll.Object.Id;
             barGrab=t.Contains(x,y)?(h?x-t.X:y-t.Y):(h?t.Width:t.Height)/2;Drag(x,y);pressed=null;return true;
@@ -92,7 +92,7 @@ public sealed partial class ScreenUi
         if(!down&&barDrag!=null){Drag(x,y);barDrag=null;return true;}
         var target=nodes.LastOrDefault(n=>Enabled(n)&&Hit(n,x,y));
         var id=target?.Object.Id;
-        if(down){pressed=id;SetFocus(id);if(target?.Field!=null)Begin(target);return id.HasValue;}
+        if(down){pressed=id;if(id.HasValue || ActiveInputMode==null)SetFocus(id);if(target?.Field!=null)Begin(target);return id.HasValue;}
         bool captured=pressed.HasValue;
         if(target?.Button!=null && target.Field==null && id==pressed)clicks.Enqueue(id!.Value);
         pressed=null;return captured;
@@ -137,7 +137,7 @@ public sealed partial class ScreenUi
             if(key is "Backspace" or "Delete" or "Left" or "Right")return used;
         }
         else if(key=="Tab")used=Navigate(key,reverse);
-        else if(key is "Up" or "Down" or "Left" or "Right")used=(focus!=null||uiOnly)&&Navigate(key);
+        else if(key is "Up" or "Down" or "Left" or "Right")used=(focus!=null||uiOnly||ActiveInputMode.HasValue)&&Navigate(key);
         else used=(key is "Return" or "Space")&&Activate();
         if(used)held.Add(key);return used;
     }
@@ -146,14 +146,14 @@ public sealed partial class ScreenUi
     public bool PadKey(string key)
     {
         Arrange();
-        if(key=="Pad.East"){if(focus==null)return false;SetFocus(null);return true;}
+        if(key=="Pad.East"){if(ActiveInputMode.HasValue||focus==null)return false;SetFocus(null);return true;}
         if(key=="Pad.South"){if(edit!=null){EndEditing();return true;}return Activate();}
         string? dir=key switch
         {
             "Pad.DpadLeft" or "Pad.LeftStickLeft"=>"Left","Pad.DpadRight" or "Pad.LeftStickRight"=>"Right",
             "Pad.DpadUp" or "Pad.LeftStickUp"=>"Up","Pad.DpadDown" or "Pad.LeftStickDown"=>"Down",_=>null
         };
-        return dir!=null&&(focus!=null||uiOnly)&&Navigate(dir);
+        return dir!=null&&(focus!=null||uiOnly||ActiveInputMode.HasValue)&&Navigate(dir);
     }
     internal void Dispatch(Action<Guid> click)
     {

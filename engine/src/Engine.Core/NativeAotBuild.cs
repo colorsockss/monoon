@@ -53,11 +53,11 @@ internal static class NativeAotBuild
         var sources = new XElement("ItemGroup");
         foreach (var file in scripts.Sources)
         {
-            var path = Path.Combine(dir, "Scripts", file.Id + ".cs");
+            var path = Path.Combine(dir, "GameSources", file.Path);
             Directory.CreateDirectory(Path.GetDirectoryName(path)!);
             File.WriteAllText(path, file.Text);
         }
-        sources.Add(new XElement("Compile", new XAttribute("Include", "Scripts/**/*.cs")));
+        sources.Add(new XElement("Compile", new XAttribute("Include", "GameSources/**/*.cs")));
         File.WriteAllText(Path.Combine(dir,"Factory.g.cs"),scripts.Factory);
         sources.Add(new XElement("Compile",new XAttribute("Include","Factory.g.cs")));
         var project = Path.Combine(dir,"GameScripts.csproj");
@@ -65,7 +65,7 @@ internal static class NativeAotBuild
         new XDocument(new XElement("Project",new XAttribute("Sdk","Microsoft.NET.Sdk"),
             new XElement("PropertyGroup",new XElement("TargetFramework","net10.0"),
                 new XElement("AssemblyName","MoNoon.GameScripts"),new XElement("EnableDefaultCompileItems","false"),
-                new XElement("PathMap", "$(MSBuildProjectDirectory)=/_/")),
+                new XElement("PathMap", "$(MSBuildProjectDirectory)/GameSources=/_/")),
             sources,new XElement("ItemGroup",new XElement("ProjectReference",new XAttribute("Include",core))))).Save(project);
         var source = Path.Combine(work,"CompiledGameScripts.g.cs");
         File.WriteAllText(source, """

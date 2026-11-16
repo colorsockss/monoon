@@ -2,8 +2,13 @@ namespace Engine.Editor;
 
 internal sealed record PrefabFiles(byte[]? Document,byte[]? Metadata);
 
+internal interface IProjectFileEdit
+{
+    void Restore(bool redo);
+}
+
 // The scene and the source file are one Undo step. Never erase a later external edit.
-internal sealed record PrefabFileEdit(string Path,PrefabFiles Before,PrefabFiles After)
+internal sealed record PrefabFileEdit(string Path,PrefabFiles Before,PrefabFiles After) : IProjectFileEdit
 {
     public static PrefabFiles Read(string path)=>new(ReadFile(path),ReadFile(path+".meta"));
     private static byte[]? ReadFile(string path)=>File.Exists(path)?File.ReadAllBytes(path):null;

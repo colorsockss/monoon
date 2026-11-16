@@ -3,6 +3,8 @@ using System.Numerics;
 
 namespace Engine.Core;
 
+public readonly record struct SpriteReference(Guid Id);
+
 public static class SpriteAssets
 {
     public const string Folder = "Assets";
@@ -21,8 +23,13 @@ public readonly record struct SceneAppearance(string? Image, Color Color, Sprite
 {
     public static SceneAppearance From(SceneObject obj, string? project, ProjectAssets? assets = null)
     {
-        if (obj.GetComponent<SpriteRendererComponent>() is not { } r) return default;
-        SceneObject.TryColor(r.Tint ?? (r.Asset == null ? r.SquareColor : "#FFFFFF"), out var color);
+        return obj.GetComponent<SpriteRendererComponent>() is {} renderer
+            ? From(renderer, project, assets) : default;
+    }
+
+    internal static SceneAppearance From(SpriteRendererComponent r, string? project, ProjectAssets? assets)
+    {
+        SceneObject.TryColor(r.Tint ?? (r.Asset == null && r.AssetId == null ? r.SquareColor : "#FFFFFF"), out var color);
         var packed = project != null && r.AssetId.HasValue ? assets?.Sprites(project).Find(r.AssetId) : null;
         var asset = packed?.Sheet ?? r.Asset;
         var image = asset == null ? SpriteAssets.SquarePath : project == null ? asset : Path.Combine(project,asset);
@@ -31,7 +38,7 @@ public readonly record struct SceneAppearance(string? Image, Color Color, Sprite
         {
             var name = assets?.PathFor(id);
             if (project == null || name == null || !SpriteAssets.IsReference(name))
-                throw new InvalidDataException($"{obj.Name}: missing PNG mask {id}.");
+                throw new InvalidDataException($"Sprite Renderer: missing PNG mask {id}.");
             mask = Path.Combine(project,name);
         }
         return new(image,color,packed?.Entry.Source,packed?.Entry.Canvas,r.FlipX,r.FlipY,r.PixelSnap,mask);

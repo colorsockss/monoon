@@ -10,6 +10,7 @@ namespace Engine.Core;
 [JsonSerializable(typeof(SpriteClip))]
 [JsonSerializable(typeof(AssetEntry[]))]
 [JsonSerializable(typeof(SceneReference))]
+[JsonSerializable(typeof(SpriteReference))]
 [JsonSerializable(typeof(PrefabReference))]
 [JsonSerializable(typeof(DataReference))]
 [JsonSerializable(typeof(TableReference))]

@@ -2,6 +2,7 @@ using System.Globalization;
 using System.Text.Json;
 using System.Text;
 using Microsoft.CodeAnalysis.Emit;
+using Microsoft.CodeAnalysis.Text;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -25,14 +26,25 @@ public sealed record ScriptField(string Name, Type Type, object? Default, string
 
 public sealed record ScriptDefinition(string Source, IReadOnlyList<ScriptField> Fields);
 
+[VYaml.Annotations.YamlObject]
+internal sealed partial record ScriptLocation(string ScriptId);
+
 public sealed class ProjectScripts
 {
     internal const string AssemblyFile = "MoNoon.GameScripts.dll";
     internal const string FactoryName = "MoNoon.Generated.ProjectScriptFactory";
-    private readonly string folder;
-    public ProjectScripts(string project) => folder = Path.Combine(project, "Scripts");
-    internal string CompiledPath => Path.Combine(Path.GetDirectoryName(folder)!, ".monoon-compiled", AssemblyFile);
-    internal sealed record SourceFile(string Id, string Text);
+    private readonly string root;
+    public ProjectScripts(string project) => root = Path.GetFullPath(project);
+    internal bool ScenePlay { get; private init; }
+    private Func<CSharpCompilation, CSharpCompilation>? instrument;
+    internal static ProjectScripts ForScenePlay(string project, Func<CSharpCompilation, CSharpCompilation>? instrument = null) =>
+        new(project) { ScenePlay = true, instrument = instrument };
+    internal string CompiledPath => Path.Combine(root, ".monoon-compiled", AssemblyFile);
+    internal sealed record SourceFile(string Id, string Text, string Path)
+    {
+        // Old symbols use an ID relative to Scripts. Relocated sources carry a project-relative path.
+        public string DebugPath => Path == $"Scripts/{Id}.cs" ? Id + ".cs" : "./" + Path;
+    }
     internal sealed record Build(SourceFile[] Sources, Dictionary<string,ScriptDefinition> Components, byte[] Bytes, byte[] Symbols, string Factory);
     private static readonly UTF8Encoding ScriptEncoding = new(false);
     private Build? cache;
@@ -50,7 +62,7 @@ public sealed class ProjectScripts
         !System.Text.RegularExpressions.Regex.IsMatch(name, @"^(CON|AUX|NUL|PRN|COM[1-9]|LPT[1-9])$",
             System.Text.RegularExpressions.RegexOptions.IgnoreCase | System.Text.RegularExpressions.RegexOptions.CultureInvariant);
 
-    // Stored script IDs are relative to Scripts, with the .cs suffix omitted.
+    // Existing components retain their original ID when their source file moves.
     public static bool ValidReference(string? id)
     {
         if (string.IsNullOrEmpty(id)) return false;
@@ -59,21 +71,48 @@ public sealed class ProjectScripts
             !part.Any(c => char.IsControl(c) || "<>:\"\\|?*".Contains(c)));
     }
 
-    private IEnumerable<string> Files() => !Directory.Exists(folder) ? [] :
-        Directory.EnumerateFiles(folder, "*.cs", new EnumerationOptions {
-            RecurseSubdirectories = true, AttributesToSkip = FileAttributes.Hidden | FileAttributes.ReparsePoint })
-        .Where(path => path.EndsWith(".cs", StringComparison.Ordinal))
-        .Order(StringComparer.Ordinal);
+    internal static bool ReservedFolder(string name) => name is "bin" or "obj" or "Builds" or "build" || name.EndsWith(".app", StringComparison.OrdinalIgnoreCase);
+    internal static bool ContentFolder(DirectoryInfo dir) => !dir.Name.StartsWith('.') && !ReservedFolder(dir.Name) &&
+        !dir.Attributes.HasFlag(FileAttributes.ReparsePoint) && !File.Exists(Path.Combine(dir.FullName, ".monoon-player")) &&
+        !File.Exists(Path.Combine(dir.FullName, "Game", ".monoon-player"));
 
-    private string IdFor(string path) => Path.GetRelativePath(folder,path)[..^3].Replace(Path.DirectorySeparatorChar, '/');
-    public string[] Names() => Files().Select(IdFor).ToArray();
+    public Dictionary<string,string> Locations()
+    {
+        var locations = new Dictionary<string,string>(StringComparer.Ordinal);
+        void Visit(DirectoryInfo directory)
+        {
+            foreach (var file in directory.EnumerateFiles("*.cs"))
+            {
+                if (file.Name.StartsWith('.') || !file.Name.EndsWith(".cs", StringComparison.Ordinal) || file.Attributes.HasFlag(FileAttributes.ReparsePoint)) continue;
+                string path = Path.GetRelativePath(root, file.FullName).Replace(Path.DirectorySeparatorChar, '/');
+                string? id = path.StartsWith("Scripts/", StringComparison.Ordinal) ? path[8..^3] : null;
+                var meta = new FileInfo(file.FullName + ".meta");
+                if (meta.Exists)
+                {
+                    if (meta.LinkTarget != null) throw new IOException($"Linked script metadata: {path}");
+                    id = ProjectYaml.Read<ScriptLocation>(meta.FullName).ScriptId;
+                    if (string.IsNullOrEmpty(id) || !id.Split('/').All(ProjectImport.ValidName)) throw new InvalidDataException($"Invalid script ID in {path}.meta");
+                }
+                if (id != null && !locations.TryAdd(id, path)) throw new InvalidDataException($"Duplicate script ID '{id}' in {path} and {locations[id]}.");
+            }
+            foreach (var child in directory.EnumerateDirectories().Where(ContentFolder)) Visit(child);
+        }
+        Visit(new DirectoryInfo(root));
+        return locations;
+    }
+
+    public string[] Names() => Locations().Keys.Order(StringComparer.Ordinal).ToArray();
     public string[] Components() => Current().Components.Keys.ToArray();
-    public string ChangeStamp() => string.Join("\n", Files().Select(f => { var info = new FileInfo(f);
-        return $"{IdFor(f)}:{info.LastWriteTimeUtc.Ticks}:{info.Length}"; }));
+    public string ChangeStamp() => string.Join("\n", Locations().OrderBy(p => p.Key, StringComparer.Ordinal).Select(p => {
+        var info = new FileInfo(Path.Combine(root, p.Value));
+        return $"{p.Key}:{p.Value}:{info.LastWriteTimeUtc.Ticks}:{info.Length}";
+    }));
+    public string RelativePath(string id) => Locations().GetValueOrDefault(id) ?? $"Scripts/{id}.cs";
+
     public string SourcePath(string name)
     {
         if (!ValidReference(name)) throw new InvalidDataException("Enter a valid component script path.");
-        return Path.GetFullPath(Path.Combine(folder, name + ".cs"));
+        return Path.Combine(root, RelativePath(name));
     }
 
     public string Read(string name) => File.ReadAllText(SourcePath(name));
@@ -89,7 +128,8 @@ public sealed class ProjectScripts
     public ScriptDefinition Get(string name) => Current().Components.TryGetValue(name,out var def) ? def :
         throw new InvalidDataException($"Scripts/{name}.cs: no attachable public GameBehaviour matching the file name.");
 
-    private SourceFile[] Sources() => Files().Select(f => new SourceFile(IdFor(f),File.ReadAllText(f))).ToArray();
+    private SourceFile[] Sources() => Locations().OrderBy(p => p.Key, StringComparer.Ordinal)
+        .Select(p => new SourceFile(p.Key, File.ReadAllText(Path.Combine(root, p.Value)), p.Value)).ToArray();
     internal Build Current()
     {
         var files = Sources();
@@ -101,7 +141,7 @@ public sealed class ProjectScripts
         var path = SourcePath(name);
         if (previousSource == null && Names().Contains(name, StringComparer.OrdinalIgnoreCase))
             throw new IOException($"Scripts/{name}.cs already exists. Choose another name.");
-        var files = Sources().Where(f => f.Id != name).Append(new SourceFile(name,source)).OrderBy(f => f.Id,StringComparer.Ordinal).ToArray();
+        var files = Sources().Where(f => f.Id != name).Append(new SourceFile(name,source,Path.GetRelativePath(root,path).Replace(Path.DirectorySeparatorChar, '/'))).OrderBy(f => f.Id,StringComparer.Ordinal).ToArray();
         var build = Compile(files);
         if (requireComponent && !build.Components.ContainsKey(name)) throw new InvalidDataException($"Declare a public GameBehaviour matching {name}.cs.");
         var directory = Directory.CreateDirectory(Path.GetDirectoryName(path)!);
@@ -117,11 +157,21 @@ public sealed class ProjectScripts
         finally { File.Delete(temporary); }
     }
 
-    private static Build Compile(SourceFile[] files)
+    private Build Compile(SourceFile[] files)
     {
-        var trees = files.Select(f => CSharpSyntaxTree.ParseText(f.Text, path: f.Id + ".cs", encoding: ScriptEncoding)).ToArray();
+        SyntaxTree Parse(SourceFile source)
+        {
+            if (!ScenePlay) return CSharpSyntaxTree.ParseText(source.Text, path: source.DebugPath, encoding: ScriptEncoding);
+            // Use the bytes on disk (including the BOM) for the same checksum the IDE verifies.
+            var path = Path.GetFullPath(Path.Combine(root, source.Path));
+            using var stream = File.OpenRead(path);
+            var text = SourceText.From(stream, ScriptEncoding, SourceHashAlgorithm.Sha256);
+            if (text.ToString() != source.Text) throw new IOException($"Script changed during compilation: {source.Path}");
+            return CSharpSyntaxTree.ParseText(text, path: path);
+        }
+        var trees = files.Select(Parse).ToArray();
         var compilation = CSharpCompilation.Create("MoNoon.GameScripts", trees, References.Value,
-            new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary, optimizationLevel: OptimizationLevel.Release,
+            new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary, optimizationLevel: ScenePlay ? OptimizationLevel.Debug : OptimizationLevel.Release,
                 deterministic: true));
         var baseType = compilation.GetTypeByMetadataName(typeof(GameBehaviour).FullName!);
         var candidates = new Dictionary<string, INamedTypeSymbol>(StringComparer.Ordinal);
@@ -160,6 +210,7 @@ public sealed class ProjectScripts
             factory.AppendLine("return instance; }");
         }
         factory.AppendLine("default: throw new global::System.IO.InvalidDataException(component.Script); } } } }");
+        if (instrument != null) compilation = instrument(compilation);
         compilation = compilation.AddSyntaxTrees(CSharpSyntaxTree.ParseText(factory.ToString(),path: "MoNoon.Factory.g.cs", encoding: Encoding.UTF8));
         using var bytes = new MemoryStream();
         using var symbols = new MemoryStream();
@@ -186,6 +237,7 @@ public sealed class ProjectScripts
                 SpecialType.System_Double => typeof(double), SpecialType.System_Boolean => typeof(bool),
                 SpecialType.System_String => typeof(string),
                 _ when field.Type.ToDisplayString() == "Engine.Core.TableReference" => typeof(TableReference),
+                _ when field.Type.ToDisplayString() == "Engine.Core.SpriteReference" => typeof(SpriteReference),
                 _ when field.Type.ToDisplayString() == "Engine.Core.DataReference" => typeof(DataReference),
                 _ when field.Type.ToDisplayString() == "Engine.Core.PrefabReference" => typeof(PrefabReference),
                 _ when field.Type.ToDisplayString() == "Engine.Core.SceneReference" => typeof(SceneReference),

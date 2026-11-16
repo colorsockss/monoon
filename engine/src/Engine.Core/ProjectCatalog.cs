@@ -4,10 +4,10 @@ public sealed record AssetLink(string Source, string Field, string Target, strin
 public sealed class ProjectCatalog
 {
     public static string Kind(string path) => Path.GetExtension(path).ToLowerInvariant() switch {
-        ".png" => "sprite", ".wav" => "audio", ".cs" => "script", "" => "settings", var ext => ext[1..]
+        ".ttf" or ".otf" => "font", ".png" => "sprite", ".wav" => "audio", ".cs" => "script", "" => "settings", var ext => ext[1..]
     };
     public static string[] Files(string root) => ProjectAssets.Enumerate(root,root)
-        .Concat(new ProjectScripts(root).Names().Select(n=>"Scripts/"+n+".cs"))
+        .Concat(new ProjectScripts(root).Locations().Values)
         .Concat(File.Exists(Path.Combine(root,GameSettings.FileName)) ? [GameSettings.FileName] : Array.Empty<string>())
         .Order(StringComparer.OrdinalIgnoreCase).ToArray();
     public static IEnumerable<string> Search(IEnumerable<string> paths, string query)
@@ -33,7 +33,7 @@ public sealed class ProjectCatalog
         var scripts = new ProjectScripts(root);
         Dictionary<string,ScriptDefinition>? definitions = null;
         string? compilerError = null;
-        var scriptFiles=scripts.Names().ToHashSet(StringComparer.Ordinal);
+        var scriptFiles=scripts.Locations();
         string source=GameSettings.FileName;
         void Problem(string field,string target,string message) => report.links.Add(new(source,field,target,message));
         void PathLink(string field,string target,string extension)
@@ -84,7 +84,8 @@ public sealed class ProjectCatalog
                 foreach (var script in o.Components.OfType<ScriptComponent>())
                 {
                     var path=$"Scripts/{script.Script}.cs";
-                    if (!scriptFiles.Contains(script.Script)) { Problem(F("Script"),path,"Missing script"); continue; }
+                    if (!scriptFiles.TryGetValue(script.Script, out var location)) { Problem(F("Script"),path,"Missing script"); continue; }
+                    path = location;
                     PathLink(F("Script"),path,".cs");
                     if (definitions==null && compilerError==null)
                         try { definitions=scripts.Current().Components; }
@@ -96,7 +97,7 @@ public sealed class ProjectCatalog
                         var f=F(script.Script+"."+field.Name);
                         var type=field.Type;
                         if ((type==typeof(Guid) || type==typeof(DataReference) || type==typeof(TableReference) ||
-                            type==typeof(PrefabReference) || type==typeof(SceneReference)) && script.Values.TryGetValue(field.Name,out var stored))
+                            type==typeof(PrefabReference) || type==typeof(SpriteReference) || type==typeof(SceneReference)) && script.Values.TryGetValue(field.Name,out var stored))
                         {
                             var guid=stored;
                             bool valid=type==typeof(Guid) || (stored.ValueKind==System.Text.Json.JsonValueKind.Object &&
@@ -108,6 +109,7 @@ public sealed class ProjectCatalog
                         switch(field.Value(script))
                         {
                             case Guid g when g!=Guid.Empty: ObjectRef(script.Script+"."+field.Name,g,field); break;
+                            case SpriteReference sprite when sprite.Id!=Guid.Empty: Id(f,sprite.Id,".png"); break;
                             case DataReference dr when dr.Id!=Guid.Empty: Id(f,dr.Id,ProjectAssets.Data); break;
                             case TableReference tr when tr.Id!=Guid.Empty: Id(f,tr.Id,GameTable.Extension); break;
                             case PrefabReference pr when pr.Id!=Guid.Empty: Id(f,pr.Id,ProjectAssets.Prefab); break;
@@ -146,6 +148,18 @@ public sealed class ProjectCatalog
                     case GameTable.Extension: GameTable.Load(file); break;
                     case "" when path==GameSettings.FileName:
                         var settings=GameSettings.Load(root); Id("Start scene",settings.StartScene,ProjectAssets.Scene);
+                        if (settings.Localization is {} text)
+                        {
+                            Id("Translation table", text.Table, GameTable.Extension);
+                            void Font(string field, Guid id)
+                            {
+                                if (byId.TryGetValue(id, out var font) && GameLocalization.IsFont(font)) PathLink(field, font, Path.GetExtension(font));
+                                else Problem(field, id.ToString(), "Missing font asset");
+                            }
+                            if (text.DefaultFont is Guid primary) Font("Default font", primary);
+                            foreach (var font in text.FallbackFonts ?? []) Font("Fallback font", font);
+                            GameLocalization.Load(root, assets, text);
+                        }
                         foreach(var id in settings.IncludedScenes) Id("Included scene",id,ProjectAssets.Scene);
                         break;
                 }

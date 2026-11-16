@@ -7,6 +7,7 @@ public sealed class ToggleControls : GameBehaviour
     public Guid Hint, CheckpointHint;
     private InputDevice? shown;
     private int revision;
+    private string locale;
     private GameData settings;
 
     public override void OnCreate(ScriptLife life)
@@ -25,14 +26,15 @@ public sealed class ToggleControls : GameBehaviour
     public override void UpdateUi(UiTick tick)
     {
         var device = tick.Input.ActiveDevice;
-        if (shown != device || revision != tick.Session.InputRevision)
+        if (shown != device || revision != tick.Session.InputRevision || locale != tick.Ui.Preferences.Locale)
         {
+            locale = tick.Ui.Preferences.Locale;
             shown = device;
             revision = tick.Session.InputRevision;
             string Binding(string action) => (tick.Session.BindingFor(action,device) ??
                 tick.Session.BindingFor(action,InputDevice.Keyboard) ?? "—").Replace("Mouse.", "Mouse ").Replace("Pad.", "");
-            tick.Ui.SetText(CheckpointHint, $"{Binding("SlotOne")} / {Binding("SlotTwo")}: Slot   {Binding("SaveGame")}: Save   {Binding("LoadGame")}: Load   {Binding("RoomGuide")}: Guide");
-            tick.Ui.SetText(Hint, $"Move: {Binding("MoveLeft")} / {Binding("MoveRight")}   Interact: {Binding("Interact")}   Help: {Binding("ShowControls")}   Pause: {Binding("PauseGame")}");
+            tick.Ui.SetText(CheckpointHint, string.Format(tick.Ui.Translate("hud.slots"), Binding("SlotOne"), Binding("SlotTwo"), Binding("SaveGame"), Binding("LoadGame"), Binding("RoomGuide")));
+            tick.Ui.SetText(Hint, string.Format(tick.Ui.Translate("hud.bindings"), Binding("MoveLeft"), Binding("MoveRight"), Binding("Interact"), Binding("ShowControls"), Binding("PauseGame")));
         }
         if (tick.Input.Pressed("ShowControls")) Toggle(tick.Session);
     }

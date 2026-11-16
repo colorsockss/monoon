@@ -10,6 +10,7 @@ public sealed class GameInputRouter(InputActions actions, Func<ScreenUi?> ui, Si
     public bool Key(string control,bool down,bool reverse=false,long? timestamp=null)
     {
         control=InputControls.KeyName(control);
+        if (down && actions.Suppressed(control)) return true;
         if(down && InputControls.Supported(control)) actions.NoteDevice(InputDevice.Keyboard);
         bool used=ui()?.Key(control,down,reverse)==true;
         if(!down) return actions.Release(control) || used;
@@ -22,6 +23,7 @@ public sealed class GameInputRouter(InputActions actions, Func<ScreenUi?> ui, Si
         actions.PointerAt(point,inside);
         ui()?.Drag(point.X,point.Y);
         if(control==null) return;
+        if (down && actions.Suppressed(control)) return;
         if(down && inside) actions.NoteDevice(InputDevice.Pointer);
         bool used=control=="Mouse.Left" && ui()?.Pointer(down,point.X,point.Y)==true;
         if(!down) actions.Release(control);
@@ -44,6 +46,16 @@ public sealed class GameInputRouter(InputActions actions, Func<ScreenUi?> ui, Si
     public void Pad(string control,float value) => Pad(control,value,null);
     public void Pad(string control,float value,long? timestamp)
     {
+        if (actions.Suppressed(control))
+        {
+            if (value <= .25f)
+            {
+                actions.Release(control);
+                padDown.Remove(control);
+                padUsed.Remove(control);
+            }
+            return;
+        }
         if(value>=.55f && padDown.Add(control) && ui()?.PadKey(control)==true)
         { padUsed.Add(control);actions.Set(control,0);actions.NoteDevice(InputDevice.Gamepad); }
         bool used=padUsed.Contains(control);

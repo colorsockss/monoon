@@ -60,6 +60,11 @@ public abstract class GameBehaviour
     public virtual void OnAnimationEvent(ScriptAnimationEvent frame) { }
     public virtual void OnUiClick(UiClick click) { }
     public virtual void OnTriggerEnter(ScriptContact contact) { }
+    public virtual void OnTriggerStay(ScriptContact contact) { }
+    public virtual void OnTriggerExit(ScriptContact contact) { }
+    public virtual void OnCollisionEnter(ScriptContact contact) { }
+    public virtual void OnCollisionStay(ScriptContact contact) { }
+    public virtual void OnCollisionExit(ScriptContact contact) { }
 }
 
 public readonly record struct ScriptAnimationEvent(Guid ObjectId, AnimationMarker Marker, SessionState Session, IGameObjects Objects, IGameUi Ui);

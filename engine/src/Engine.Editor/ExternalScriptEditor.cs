@@ -48,6 +48,11 @@ internal static class ExternalScriptEditor
         finally { File.Delete(temp); }
     }
 
+    public static bool UsesSceneWorkspace => Path.GetFileNameWithoutExtension(Preference).ToLowerInvariant()
+        is "visual studio code" or "code" or "cursor" or "codium" or "vscodium" or "code - insiders" or "code-insiders";
+
+    public static Task OpenProject(ScriptIdeProject files) => Open(UsesSceneWorkspace ? files.Workspace : files.Solution);
+
     public static async Task Open(string source, int line = 0)
     {
         if (!File.Exists(source)) throw new FileNotFoundException($"Script file is missing: {source}");

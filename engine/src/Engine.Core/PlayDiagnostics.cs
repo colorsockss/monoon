@@ -49,7 +49,7 @@ public sealed partial class SceneGame
     {
         if (!byId.TryGetValue(id,out var b) || removed.Contains(id))return null;
         return new(b.ActiveSelf,b.Active,b.SpawnedFrom,b.Position,b.SceneOwner??State.SceneId,
-            overlapping.Count(pair=>pair.Trigger==b || pair.Other==b),b.Animation?.State,b.Animation?.Frame??-1,IsPlaying(id));
+            contacts.Count(pair => pair.Valid && (pair.A == b || pair.B == b)),b.Animation?.State,b.Animation?.Frame??-1,IsPlaying(id));
     }
 
     public bool TryDebugRay(Guid origin,Vector2 screen,out PhysicsHit? hit)
@@ -79,9 +79,9 @@ public sealed partial class SceneGame
         }
         if(debug.Colliders){
             foreach(var b in colliders){
-                if(!b.Active)continue;
+                if(!b.Active || b.Collider is not {} collider)continue;
                 var shape=b.ShapeAt(b.At(fraction), b.AngleAt(fraction));if(!shot.World.IntersectsWith(shape.Bounds))continue;
-                Shape(shape,b.Collider!.IsTrigger?Color.HotPink:Color.SpringGreen,debug.Selection==b.Id?3:1.5f);
+                Shape(shape,collider.IsTrigger?Color.HotPink:Color.SpringGreen,debug.Selection==b.Id?3:1.5f);
             }
             foreach(var b in bodies)
                 if (b.Active && b.WalkPreview.Count>1)

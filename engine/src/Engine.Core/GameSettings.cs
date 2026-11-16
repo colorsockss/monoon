@@ -13,6 +13,7 @@ public sealed partial record GameSettings(int Width = 800, int Height = 450)
     public Guid? StartScene { get; init; }
     public Guid[] IncludedScenes { get => field ??= []; set; }
     public string[]? ContentBundles { get; init; }
+    public LocalizationSettings? Localization { get; init; }
     public UiDefaults Accessibility { get=>field??=new();init; }
     public MixerLevels Mixer { get => field ??= new(); init; }
     public InputBindings Input { get => field ??= new(); set; }
@@ -47,6 +48,7 @@ public sealed partial record GameSettings(int Width = 800, int Height = 450)
 
     internal void Validate()
     {
+        Localization?.Validate();
         ContentBundle.ValidateFolders(ContentBundles ?? []);
         Input.Validate();
         if(string.IsNullOrWhiteSpace(Accessibility.Locale) || Accessibility.Locale.Length>64 || Accessibility.TextScale is not (>=.75f and <=2)) throw new InvalidDataException("Invalid default UI locale or text scale.");

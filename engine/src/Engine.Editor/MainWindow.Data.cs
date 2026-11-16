@@ -40,7 +40,9 @@ public partial class MainWindow
         }
         Window editor = dialogue ? new DialogueWindow(relative,original,Write) : new ValuesWindow(relative,original,table) { Write = Write };
         if (await editor.ShowDialog<string?>(this) is not {} saved) return;
-        ProjectAssets.Scan(root);
+        var assets = ProjectAssets.Scan(root);
+        if (Scene.Settings.Localization?.Table is Guid textTable && saved == assets.PathFor(textTable))
+            Viewport.InvalidateUi();
         var savedPath = Path.Combine(root, saved);
         var edit = new PrefabFileEdit(savedPath, before!, PrefabFileEdit.Read(savedPath));
         if (edit.HasChanges) RecordEdit(Selected?.Id, asset: edit);

@@ -10,33 +10,51 @@ public sealed partial class SceneGame : IPhysics2D
     private IEnumerable<Obstacle> Candidates(RectangleF bounds,uint mask,bool triggersIncluded,Guid? ignore,
         int first=-1,int last=-1,int movingLayer=-1,Body? ignoreOwner=null)
     {
-        bool Accept(Body b,int layer,uint otherMask) => b.Active && b.Id!=ignore &&
-            (mask & (1u<<layer))!=0 && (movingLayer<0 || (otherMask & (1u<<movingLayer))!=0) &&
-            (b.Index<first || b.Index>=last) && (ignoreOwner == null || b.MotionOwner != ignoreOwner);
-        bool Intersects(RectangleF b) => bounds.Left<=b.Right && bounds.Right>=b.Left && bounds.Top<=b.Bottom && bounds.Bottom>=b.Top;
         foreach (var body in triggersIncluded?colliders:solids)
         {
-            var c=body.Collider!;
-            if (!Accept(body,c.Layer,c.Mask)) continue;
+            if (body.Collider is not {} c || !Allows(body,c.Layer,c.Mask,mask,ignore,first,last,movingLayer,ignoreOwner)) continue;
             var shape=body.ShapeAt(body.Position);
-            if (Intersects(shape.Bounds)) yield return new(shape,new(body.Id,c.Layer,c.IsTrigger,null));
+            if (BoundsMeet(bounds,shape.Bounds)) yield return new(shape,new(body.Id,c.Layer,c.IsTrigger,null));
         }
+        foreach (var obstacle in TileCandidates(bounds, mask, ignore, first, last, movingLayer, ignoreOwner))
+            yield return obstacle;
+    }
+
+    private IEnumerable<Obstacle> TileCandidates(RectangleF bounds, uint mask, Guid? ignore, int first, int last,
+        int movingLayer, Body? ignoreOwner, bool sweptMaps = false)
+    {
         foreach (var body in tileLayers)
         {
             var map=body.Map!;
-            if (body.Palette==null || !Accept(body,map.CollisionLayer,map.CollisionMask)) continue;
+            if (body.Palette == null || !Allows(body, map.CollisionLayer, map.CollisionMask, mask, ignore,
+                    first, last, movingLayer, ignoreOwner)) continue;
             var m=body.MatrixAt(body.Position);
-            var local=Affine2D.Bounds(bounds,Affine2D.Inverse(m));
+            var search = bounds;
+            if (sweptMaps && body.Moved)
+                for (float t = 0; t < 1; t = body.NextBreak(t))
+                {
+                    var relative = bounds;
+                    var shift = body.Position - body.At(t);
+                    relative.Offset(shift.X,shift.Y);
+                    search = RectangleF.Union(search,relative);
+                }
+            var local=Affine2D.Bounds(search,Affine2D.Inverse(m));
             // Include the neighbouring solid cell when a ray ends exactly on its boundary.
             local.Inflate(.001f,.001f);
             foreach (var (cell,id) in map.InView(Vector2.Zero,local))
             {
                 if (!body.Palette.Tiles[id].Solid) continue;
                 var shape=CollisionGeometry.Tile(map.Bounds(Vector2.Zero,cell),map.Layout,m);
-                if (Intersects(shape.Bounds)) yield return new(shape,new(body.Id,map.CollisionLayer,false,cell));
+                if (BoundsMeet(search,shape.Bounds)) yield return new(shape,new(body.Id,map.CollisionLayer,false,cell));
             }
         }
     }
+    private static bool Allows(Body body, int layer, uint otherMask, uint mask, Guid? ignore, int first, int last,
+        int movingLayer, Body? ignoreOwner) => body.Active && body.Id != ignore && (mask & (1u << layer)) != 0 &&
+        (movingLayer < 0 || (otherMask & (1u << movingLayer)) != 0) && (body.Index < first || body.Index >= last) &&
+        (ignoreOwner == null || body.MotionOwner != ignoreOwner);
+    private static bool BoundsMeet(RectangleF a, RectangleF b) =>
+        a.Left <= b.Right && a.Right >= b.Left && a.Top <= b.Bottom && a.Bottom >= b.Top;
     private static RectangleF SweptBounds(Shape2D s,Vector2 travel)
     {
         var end=s.Bounds; end.Offset(travel.X,travel.Y);
@@ -144,17 +162,5 @@ public sealed partial class SceneGame : IPhysics2D
             target=position+slide;
         }
         return new(Vector2.Zero,bend,bendTime,position,time);
-    }
-    private static bool Crosses(Body a,Body b)
-    {
-        float time=0;
-        while (time<1)
-        {
-            float next=Math.Min(a.NextBreak(time),b.NextBreak(time));
-            var pa=a.At(time);var pb=b.At(time);
-            if (CollisionGeometry.Cast(a.ShapeAt(pa),(a.At(next)-pa)-(b.At(next)-pb),b.ShapeAt(pb),false,false)!=null) return true;
-            time=next;
-        }
-        return false;
     }
 }

@@ -53,11 +53,11 @@ public partial class MainWindow
     private Control ScriptInspector(ScriptComponent component)
     {
         var panel = new StackPanel { Spacing = 3 };
-        ToolTip.SetTip(panel, $"Scripts/{component.Script}.cs");
         if (scripts == null) return panel;
 
         try
         {
+            ToolTip.SetTip(panel, scripts.RelativePath(component.Script));
             inspectorSourceStamp = scripts.ChangeStamp();
             var definition = scripts.Get(component.Script);
             foreach (var field in definition.Fields)
@@ -98,12 +98,13 @@ public partial class MainWindow
         ToolTip.SetTip(row, field.Name);
         string? assetExtension = field.Type == typeof(SceneReference) ? ProjectAssets.Scene :
             field.Type == typeof(PrefabReference) ? ProjectAssets.Prefab :
+            field.Type == typeof(SpriteReference) ? ".png" :
             field.Type == typeof(DataReference) ? ProjectAssets.Data : field.Type == typeof(TableReference) ? GameTable.Extension : null;
         if (field.Type == typeof(Guid) || assetExtension != null)
         {
-            var id = field.Value(component) switch { SceneReference sc => sc.Id, PrefabReference pf => pf.Id, DataReference data => data.Id, TableReference table => table.Id, Guid guid => guid, _ => Guid.Empty };
+            var id = field.Value(component) switch { SpriteReference sprite => sprite.Id, SceneReference sc => sc.Id, PrefabReference pf => pf.Id, DataReference data => data.Id, TableReference table => table.Id, Guid guid => guid, _ => Guid.Empty };
             var choices = assetExtension != null ? (project == null ? [] : ProjectAssets.Scan(project).Entries
-                .Where(e => e.Path.EndsWith(assetExtension, StringComparison.Ordinal) && File.Exists(Path.Combine(project,e.Path))).Select(e => new ObjectReference(e.Id, e.Path)).ToList())
+                .Where(e => e.Path.EndsWith(assetExtension, StringComparison.OrdinalIgnoreCase) && File.Exists(Path.Combine(project,e.Path))).Select(e => new ObjectReference(e.Id, e.Path)).ToList())
                 : (Viewport.PlayWorld?.Objects ?? Scene.Objects).Where(field.Accepts).Select(obj => new ObjectReference(obj.Id, ObjectPath(obj))).ToList();
             choices.Insert(0, new ObjectReference(Guid.Empty, "None"));
             if (choices.All(choice => choice.Id != id)) choices.Add(new ObjectReference(id, "Missing object or component"));
@@ -115,6 +116,7 @@ public partial class MainWindow
                 if (picker.SelectedItem is not ObjectReference choice) return;
                 Store(assetExtension switch
                 {
+                    ".png" => new SpriteReference(choice.Id),
                     ProjectAssets.Scene => new SceneReference(choice.Id),
                     ProjectAssets.Prefab => new PrefabReference(choice.Id),
                     ProjectAssets.Data => new DataReference(choice.Id),
@@ -158,7 +160,7 @@ public partial class MainWindow
         RefreshProjectFiles();
         if (inspectorSourceStamp != null && scripts != null)
             try { if (inspectorSourceStamp != scripts.ChangeStamp()) RefreshComponentList(); }
-            catch (IOException ex) { Status.Text = ex.Message; }
+            catch (Exception ex) when (ex is IOException or InvalidDataException or UnauthorizedAccessException) { Status.Text = ex.Message; }
     }
 
     private async Task<string?> NewScriptDialog(ProjectScripts library, string prefix, bool attach, bool shared)

@@ -19,6 +19,10 @@ public interface IGameObjects
     CutsceneState? Cutscene { get; }
     CutsceneExit? LastCutsceneExit { get; }
     bool TryGetBonePose(Guid id,string bone,out BonePose2D pose);
+    bool SetSprite(Guid id, SpriteReference sprite);
+    bool SetSpriteTint(Guid id, string? tint);
+    bool SetColliderEnabled(Guid id, bool enabled);
+    bool IsColliderEnabled(Guid id);
     bool SetActive(Guid id, bool active);
     bool IsActive(Guid id);
     bool TryGetPosition(Guid id, out Vector2 position);
@@ -106,7 +110,8 @@ public sealed partial class SceneGame
         foreach (var behaviour in body.Behaviours) if (behaviour is T instance) return instance;
         // Built-in components are configuration snapshots, never references into the authored scene.
         foreach (var config in body.Source.Components)
-            if (config is T && config is not ScriptComponent) return (config with { }) as T;
+            if (config is T && config is not ScriptComponent)
+                return ((config is SpriteRendererComponent ? body.Renderer! : config) with { }) as T;
         return null;
     }
 
@@ -185,7 +190,62 @@ public sealed partial class SceneGame
             QueueLife(body,LifeEvent.Destroy);
         }
         dirty = true;
+        Ui.ValidateInputModes();
         FlushLife();
+        return true;
+    }
+
+    public bool IsColliderEnabled(Guid id) =>
+        !removed.Contains(id) && byId.TryGetValue(id, out var body) && body.Collider != null;
+
+    public bool SetColliderEnabled(Guid id, bool enabled)
+    {
+        if (closing || removed.Contains(id) || !byId.TryGetValue(id, out var body) || body.ColliderConfig == null) return false;
+        if (body.ColliderEnabled == enabled) return true;
+        body.ColliderEnabled = enabled;
+        if (!enabled)
+        {
+            body.ContactRevision++;
+            foreach (var rigid in rigidBodies)
+                if (rigid.Support == body || rigid == body.MotionOwner) rigid.Support = null;
+        }
+        return true;
+    }
+
+    public bool SetSprite(Guid id, SpriteReference sprite)
+    {
+        if (closing || removed.Contains(id) || !byId.TryGetValue(id, out var body) || body.Renderer is not {} renderer) return false;
+        string? path = null;
+        if (sprite.Id != Guid.Empty)
+        {
+            if (world.ProjectDirectory is not {} root || assets == null) return false;
+            path = assets.PathFor(sprite.Id);
+            var packed = assets.Sprites(root).Find(sprite.Id);
+            if (packed == null && (path == null || !SpriteAssets.IsReference(path) || !File.Exists(Path.Combine(root, path)))) return false;
+        }
+        Guid? assetId = sprite.Id == Guid.Empty ? null : sprite.Id;
+        if (renderer.AssetId == assetId && renderer.Asset == path) return true;
+        var next = renderer with { AssetId = assetId, Asset = path };
+        var appearance = SceneAppearance.From(next, world.ProjectDirectory, assets);
+        var previous = body.Appearance;
+        body.Appearance = appearance;
+        try { PreparingBodies?.Invoke([body]); }
+        catch { body.Appearance = previous; throw; }
+        body.Renderer = next;
+        if (body.SpritePool != null) body.SpritePool.Appearance = appearance;
+        AssetsChanged?.Invoke();
+        return true;
+    }
+
+    public bool SetSpriteTint(Guid id, string? tint)
+    {
+        if (closing || removed.Contains(id) || !byId.TryGetValue(id, out var body) || body.Renderer is not {} renderer) return false;
+        if (tint != null && !SceneObject.TryColor(tint, out _)) return false;
+        if (renderer.Tint == tint) return true;
+        var next = renderer with { Tint = tint };
+        body.Appearance = SceneAppearance.From(next, world.ProjectDirectory, assets);
+        body.Renderer = next;
+        if (body.SpritePool != null) body.SpritePool.Appearance = body.Appearance;
         return true;
     }
 
@@ -199,11 +259,10 @@ public sealed partial class SceneGame
         {
             var body = byId[obj.Id];
             var next = !removed.Contains(obj.Id) && body.ActiveSelf && (obj.ParentId == null || byId[obj.ParentId.Value].Active);
-            if (next != body.Active) { body.Active = next; if (!next) { Silence(body); body.Particles?.Reset(); } changed.Add(body); }
+            if (next != body.Active) { body.Active = next; if (!next) { body.ContactRevision++; Silence(body); body.Particles?.Reset(); } changed.Add(body); }
         }
-        if (!active) changed.Reverse();
+        if (!active) { changed.Reverse(); Ui.ValidateInputModes(); }
         foreach (var body in changed) QueueLife(body, active ? LifeEvent.Enable : LifeEvent.Disable);
-        overlapping.RemoveWhere(pair => !pair.Trigger.Active || !pair.Other.Active);
         HierarchyRevision++;
         FlushLife();
         return true;
@@ -215,7 +274,6 @@ public sealed partial class SceneGame
         world.Objects.RemoveAll(o => removed.Contains(o.Id));
         foreach (var id in removed)
             if (byId.Remove(id,out var b) && b.Stream is {} stream && ownedWorlds.Remove(stream)) stream.Dispose();
-        overlapping.RemoveWhere(p => removed.Contains(p.Trigger.Id) || removed.Contains(p.Other.Id));
         // A parent may have moved later in the spawning tick. Newly registered bodies
         // start at their final parent transform and first participate in the next simulation step.
         foreach (var body in added)
@@ -241,10 +299,9 @@ public sealed partial class SceneGame
         for (int i = parentFirst.Length - 1; i >= 0; i--)
             if (parentFirst[i].Source.ParentId is Guid id)
                 byId[id].SubtreeEnd = Math.Max(byId[id].SubtreeEnd, parentFirst[i].SubtreeEnd);
-        colliders = bodies.Where(b => b.Collider != null).ToArray();
-        solids = colliders.Where(b => !b.Collider!.IsTrigger).ToArray();
-        triggers = colliders.Where(b => b.Collider!.IsTrigger).ToArray();
-        drawOrder = world.WorldItems().Select(i => (byId[i.Owner.Id], i.Map != null)).ToArray();
+        colliders = bodies.Where(b => b.ColliderConfig != null).ToArray();
+        solids = colliders.Where(b => !b.ColliderConfig!.IsTrigger).ToArray();
+        drawOrder = new WorldDrawOrder(world.Objects, DrawMatrix);
         foreach (var b in parentFirst)
             b.MotionOwner = b.Rigid != null ? b : b.Source.ParentId is Guid parent ? byId[parent].MotionOwner : null;
         rigidBodies = parentFirst.Where(b => b.Rigid != null).ToArray();

@@ -229,6 +229,7 @@ internal sealed class MacSceneHost : NativeControlHost
             (float)(r.Width * sx), (float)(r.Height * sy));
         public void FillRectangle(RectangleF r, Color color) => target.FillRectangle(ToPixels(r), color);
         public void DrawSquareSprite(RectangleF r, Color color) => target.DrawSquareSprite(ToPixels(r), color);
+        public void UseFonts(IReadOnlyList<string> paths) => target.UseFonts(paths);
         public float MeasureText(string text,float size)=>target.MeasureText(text,size);
         public void DrawText(string text, float left, float top, float size, Color color) => target.DrawText(text, (float)(x + left * sx), (float)(y + top * sy), (float)(size * sy), color);
         public bool DrawTile(string path, RectangleF r, SpriteRegion source, string layout) => target.DrawTile(path,ToPixels(r),source,layout);

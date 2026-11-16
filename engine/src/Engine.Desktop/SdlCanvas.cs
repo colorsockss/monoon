@@ -110,6 +110,7 @@ public sealed class SdlCanvas(SdlRenderer renderer) : ICanvas2D, IDisposable
         }
     }
 
+    public void UseFonts(IReadOnlyList<string> paths) => labels.UseFonts(paths);
     public float MeasureText(string text,float size)=>labels.Measure(text,size);
     public void DrawText(string text, float x, float y, float size, Color color)
     {
@@ -233,7 +234,7 @@ public sealed class SdlCanvas(SdlRenderer renderer) : ICanvas2D, IDisposable
         return renderer.RenderTexture(texture, source == null ? null : &crop, &target);
     }
 
-    public void ClearSprites() { FlushSprites(); sprites.Clear(); variants.Dispose(); shaderSheets?.Dispose(); }
+    public void ClearSprites() { FlushSprites(); labels.Dispose(); sprites.Clear(); variants.Dispose(); shaderSheets?.Dispose(); }
     public void InvalidateSprite(string path) { FlushSprites(); sprites.Invalidate(path); variants.Invalidate(path); }
     public void Dispose()
     {

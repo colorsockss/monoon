@@ -76,13 +76,17 @@ public partial class MainWindow
         NativeMenu.SetMenu(this, menus);
     }
 
-    private Task RestoreEdit(bool redo)
+    private async Task RestoreEdit(bool redo)
     {
         Viewport.Focus();
         if (redo ? history.CanRedo : history.CanUndo)
         {
             var group=Viewport.Selection.Select(o=>o.Id).ToArray();
+            var fileEdit = history.FileEdit(redo);
+            if (fileEdit is ProjectPathEdit moveClip && clipEditor?.RelativePath is {} clipPath &&
+                moveClip.Remap(clipPath, redo) != clipPath && !await clipEditor.RequestClose()) return;
             var selection = history.Restore(Scene, redo);
+            if (fileEdit is ProjectPathEdit move) ShowMovedEntry(move, redo);
             Viewport.InvalidateUi();
             RebuildHierarchy(Scene.Objects.FirstOrDefault(obj => obj.Id == selection));
             if(group.Length>1 && selection==group[^1]) ShowSelection(group.Select(id=>Scene.Objects.FirstOrDefault(o=>o.Id==id)).OfType<SceneObject>().ToList());
@@ -92,7 +96,6 @@ public partial class MainWindow
             QueueCheckpoint();
             Status.Text = redo ? "Redid edit." : "Undid edit.";
         }
-        return Task.CompletedTask;
     }
 
     private void BindMenuAction(NativeMenuItem item, KeyGesture gesture, Func<Task> action)

@@ -89,6 +89,7 @@ internal static class TileChecks
         var wall = scene.Objects.Single(o => o.Name == "Wall");
         var map = wall.GetComponent<Tilemap2DComponent>()!;
         CollisionChecks.Tiles(root,map.Tileset!.Value);
+        ContactChecks.Tiles(root,map.Tileset.Value);
         CheckEditing();
         ProjectedTileChecks.Run(root,map.Tileset!.Value);
         CheckSlideAndDraw(root, map.Tileset!.Value);

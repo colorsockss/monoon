@@ -16,7 +16,7 @@ public sealed partial class SceneDocument
     public const int Width = 800;
     [Obsolete("Use Settings.Height for a project's game resolution.")]
     public const int Height = 450;
-    private const int CurrentVersion = 21;
+    private const int CurrentVersion = 23;
     public ProjectScripts OpenScripts(string root) => new(root);
     internal ProjectScripts ResolveScripts(ProjectScripts? library) => library ??
         OpenScripts(ProjectDirectory ?? throw new InvalidDataException("Save the project before running scripts."));
@@ -150,17 +150,10 @@ public sealed partial class SceneDocument
 
     public IEnumerable<(SceneObject Owner, Tilemap2DComponent? Map, int Layer, int Order)> WorldItems()
     {
-        IEnumerable<(SceneObject Owner, Tilemap2DComponent? Map, int Layer, int Order)> Items()
-        {
-            foreach (var obj in Objects)
-            {
-                if (obj.GetComponent<Tilemap2DComponent>() is { } map) yield return (obj,map,map.SortingLayer,map.Order);
-                var sprite = obj.GetComponent<SpriteRendererComponent>();
-                var skeleton=obj.GetComponent<SkeletonAnimator2DComponent>();
-                yield return (obj,null,sprite?.SortingLayer ?? skeleton?.SortingLayer ?? 0,sprite?.Order ?? skeleton?.Order ?? 0);
-            }
-        }
-        return Items().OrderBy(i => i.Layer).ThenBy(i => i.Order);
+        var sorted = new WorldDrawOrder(Objects, (index, _) => Objects[index].WorldMatrix);
+        sorted.Sample(1);
+        foreach (var item in sorted.Items)
+            yield return (Objects[item.Index], item.Map, item.Layer, item.Order);
     }
 
     public void CheckReferences() => CheckReferences(null);
@@ -191,7 +184,7 @@ public sealed partial class SceneDocument
 
     private void Validate()
     {
-        if (SchemaVersion is not (6 or 7 or 8 or 9 or 10 or 11 or 12 or 13 or 14 or 15 or 16 or 17 or 18 or 19 or 20 or CurrentVersion) || Objects is null)
+        if (SchemaVersion is < 6 or > CurrentVersion || Objects is null)
             throw new InvalidDataException($"Expected a version {CurrentVersion} scene with an objects list.");
         ResolveHierarchy();
         foreach(var obj in Objects)
@@ -201,7 +194,10 @@ public sealed partial class SceneDocument
                 throw new InvalidDataException($"{obj.Name} has an invalid prefab object map.");
         UpgradeHud();
         // Older readers must reject transformed scenes instead of silently flattening them.
-        SchemaVersion = Objects.Any(o => o.GetComponent<CutsceneDirectorComponent>() != null) ? CurrentVersion :
+        SchemaVersion = Objects.Any(o => o.GetComponent<UiTextComponent>()?.TextKey is { Length: > 0 }) ? CurrentVersion :
+            Objects.SelectMany(o => o.Components).Any(c => c is SortingGroup2DComponent or
+                SpriteRendererComponent { SortByY: true } or SpriteRendererComponent { FootOffset: not 0 }) ? 22 :
+            Objects.Any(o => o.GetComponent<CutsceneDirectorComponent>() != null) ? 21 :
             Objects.SelectMany(o=>o.Components).Any(c=>c is PositionTween2DComponent or SkeletonAnimator2DComponent or FootIK2DComponent) ? 20 :
             Objects.SelectMany(o=>o.Components).Any(c=>c is ParticleEmitter2DComponent or PointLight2DComponent or SpriteShader2DComponent) ? 19 :
             Objects.Any(o=>o.GetComponent<NavigationRegion2DComponent>()!=null) ? 18 :
@@ -253,6 +249,9 @@ public sealed partial class SceneDocument
                 if (component is Tilemap2DComponent { CollisionLayer: < 0 or > 31 })
                     throw new InvalidDataException($"{obj.Name}: collision layer must be 0–31.");
                 if (component is Camera2DComponent camera) camera.Validate(obj.Name);
+                if (component is SpriteRendererComponent sr && !float.IsFinite(sr.FootOffset) ||
+                    component is SortingGroup2DComponent group && !float.IsFinite(group.FootOffset))
+                    throw new InvalidDataException($"{obj.Name}: sprite sorting foot offset must be finite.");
                 if (component is SpriteRendererComponent sprite && (!SceneObject.TryColor(sprite.SquareColor, out _) || sprite.Tint != null && !SceneObject.TryColor(sprite.Tint,out _)))
                     throw new InvalidDataException($"'{obj.Name}' needs a sprite color in #RRGGBB format.");
                 if (component is SpriteRendererComponent { Asset: { } asset } && !SpriteAssets.IsReference(asset))

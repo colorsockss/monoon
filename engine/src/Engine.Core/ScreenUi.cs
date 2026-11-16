@@ -18,6 +18,7 @@ public sealed partial record UiRectComponent : SceneComponent
         => (Anchor, ShowIf) = (anchor, showIf);
     public string Anchor { get; set; } = "TopLeft";
     public string ShowIf { get; set; } = "";
+    public bool InputModeRoot { get; set; }
 }
 
 [DisplayName("UI Image"), YamlObject]
@@ -38,6 +39,7 @@ public sealed partial record UiTextComponent : SceneComponent
     public string Text { get; set; } = "Text";
     public float Size { get; set; } = 16;
     public string Color { get; set; } = "#FFFFFF";
+    public string? TextKey { get; set; }
     public bool Wrap {get;set;}
     public Dictionary<string,string>? Translations { get;set; }
     public float InsetX { get; set; }
@@ -88,8 +90,13 @@ public sealed partial class SceneDocument
 public interface IGameUi
 {
     UiPreferences Preferences {get;}
+    string Translate(string key, string? fallback = null);
+    bool SetTextKey(Guid widget, string key);
     string? Value(Guid widget);
     float ScrollOffset(Guid widget);
+    Guid? ActiveInputMode { get; }
+    bool PushInputMode(Guid root);
+    bool PopInputMode(Guid root);
     Guid? Focused {get;}
     void ClearFocus();
     string Preedit {get;}
@@ -140,6 +147,7 @@ public sealed partial class ScreenUi : IGameUi
 
     public ScreenUi(SceneDocument scene, ProjectAssets? assets, Func<string,bool>? flag = null, Func<Guid,bool>? active = null,UiPreferences? preferences=null)
     {
+        Language = assets != null && scene.ProjectDirectory is {} root ? GameLocalization.Load(root, assets, scene.Settings.Localization) : GameLocalization.Empty;
         Preferences=preferences??new(scene.Settings.Accessibility);
         this.flag = flag;
         this.active = active;
@@ -152,8 +160,12 @@ public sealed partial class ScreenUi : IGameUi
         uiOnly=scene.IsUiOnly;
         var tree = new Dictionary<Guid,Node>();
         var ordered = new List<Node>();
+        modeOwners.Clear();
         foreach (var obj in scene.ParentFirst())
         {
+            var owner = obj.GetComponent<UiRectComponent>()?.InputModeRoot == true
+                ? obj.Id : obj.ParentId is Guid parentId ? modeOwners.GetValueOrDefault(parentId) : (Guid?)null;
+            if (owner.HasValue) modeOwners.Add(obj.Id, owner);
             var canvas = obj.GetComponent<UiCanvasComponent>();
             if (canvas == null && !IsWidget(obj)) continue;
             Node? parent = null;
@@ -170,11 +182,14 @@ public sealed partial class ScreenUi : IGameUi
         byId = tree;
         foreach(var id in values.Keys.Where(id=>!tree.ContainsKey(id)).ToArray())values.Remove(id);
         if(edit is Guid editing && !tree.ContainsKey(editing)) EndEditing();
+        foreach (var id in keyOverrides.Keys.Where(id => !tree.ContainsKey(id)).ToArray()) keyOverrides.Remove(id);
         hidden.RemoveWhere(id => !tree.ContainsKey(id));
         foreach (var id in textOverrides.Keys.Where(id => !tree.ContainsKey(id)).ToArray()) textOverrides.Remove(id);
         foreach (var id in interactOverrides.Keys.Where(id => !tree.ContainsKey(id)).ToArray()) interactOverrides.Remove(id);
         if (focus is Guid f && !tree.ContainsKey(f)) focus = null;
         if (pressed is Guid capture && !tree.ContainsKey(capture)) pressed = null;
+        ValidateInputModes();
+        OrderModeLayers();
     }
     internal static int AnchorIndex(string anchor)
     {

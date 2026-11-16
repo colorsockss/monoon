@@ -401,7 +401,7 @@ public partial class MainWindow : Window
             ObjectName.Text = obj.Name;
             PositionRow.IsVisible = obj.GetComponent<UiCanvasComponent>() == null;
             PositionRowLabel.Text = ScreenUi.IsWidget(obj) ? "Offset" : obj.Parent == null ? "Position" : "Local pos.";
-            SizeRow.IsVisible = obj.GetComponent<SpriteRendererComponent>() != null || obj.GetComponent<Collider2DComponent>() != null || ScreenUi.IsWidget(obj);
+            SizeRow.IsVisible = obj.GetComponent<SpriteRendererComponent>() != null || obj.GetComponent<SortingGroup2DComponent>() != null || obj.GetComponent<Collider2DComponent>() != null || ScreenUi.IsWidget(obj);
             AffineRows.IsVisible = !ScreenUi.IsWidget(obj) && obj.GetComponent<UiCanvasComponent>() == null;
             ObjRotation.Value = decimal.CreateSaturating(obj.Rotation);
             ObjScaleX.Value = decimal.CreateSaturating(obj.ScaleX);
@@ -509,7 +509,7 @@ public partial class MainWindow : Window
         if (row?.Component is ScriptComponent script)
         {
             var edit = new MenuItem { Header = "Edit Script" };
-            edit.Click += (_, _) => { if (Current()) RunAction(() => OpenProjectSource($"Scripts/{script.Script}.cs")); };
+            edit.Click += (_, _) => { if (Current()) RunAction(() => OpenProjectSource(scripts!.RelativePath(script.Script))); };
             menu.Items.Add(edit);
         }
         var remove = new MenuItem { Header = "Remove", IsEnabled = row != null };
@@ -602,7 +602,7 @@ public partial class MainWindow : Window
 
     private void MarkDirty(object? group = null) => RecordEdit(Selected?.Id, group);
 
-    private void RecordEdit(Guid? previous, object? group = null, PrefabFileEdit? asset=null)
+    private void RecordEdit(Guid? previous, object? group = null, IProjectFileEdit? asset=null)
     {
         Viewport.InvalidateUi();
         Scene.NormalizeCamera();
@@ -629,7 +629,9 @@ public partial class MainWindow : Window
             Viewport.EndDrag();
             CommitText();
             editSelection = Selected?.Id;
-            try { Viewport.Play(scripts); WriteLog(new(GameLogLevel.Info,$"Play started: {sceneName}",null,0)); }
+            try {
+                if (project != null && (scriptDebugger != null || ScriptIdeProject.Exists(project))) ScriptIdeProject.Generate(project, scriptDebugger);
+                Viewport.Play(scriptDebugger); WriteLog(new(GameLogLevel.Info,$"Play started: {sceneName}",null,0)); }
             catch (Exception ex) { LogError(ex.Message); Status.Text = ex.Message; return; }
         }
         SyncPlayInspector();

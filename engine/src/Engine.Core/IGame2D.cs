@@ -17,6 +17,7 @@ public interface IGame2D
 
 public interface ICanvas2D
 {
+    void UseFonts(IReadOnlyList<string> paths) { }
     void FlushSprites() { }
 
     void DrawSpriteInstances(SceneAppearance sprite, ReadOnlySpan<SpriteInstance2D> instances, Matrix3x2 view, bool batched)

@@ -10,7 +10,7 @@ public sealed class ProjectAssets
 {
     public const string Manifest = ".monoon-assets";
     public const string Scene = ".scene", Prefab = ".prefab", Clip = ".clip", Tileset = ".tileset", Data = ".data";
-    public static bool IsAsset(string path) => Path.GetExtension(path) is Scene or Prefab or Clip or Tileset or Data or CutsceneSequence.Extension or SkeletonRig.Extension or ShaderClip.Extension or GameTable.Extension or SpriteAtlas.Extension or AnimationController.Extension || SpriteAssets.IsPng(path) || path.EndsWith(".wav", StringComparison.OrdinalIgnoreCase);
+    public static bool IsAsset(string path) => Path.GetExtension(path) is Scene or Prefab or Clip or Tileset or Data or CutsceneSequence.Extension or SkeletonRig.Extension or ShaderClip.Extension or GameTable.Extension or SpriteAtlas.Extension or AnimationController.Extension || GameLocalization.IsFont(path) || SpriteAssets.IsPng(path) || path.EndsWith(".wav", StringComparison.OrdinalIgnoreCase);
     internal static bool IsDocument(string path) => Path.GetExtension(path) is Scene or Prefab or Clip;
     private readonly Dictionary<Guid, CutsceneSequence> sequences = [];
     internal CutsceneSequence LoadSequence(string root, Guid id)

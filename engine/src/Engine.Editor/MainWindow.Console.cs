@@ -21,10 +21,15 @@ public partial class MainWindow
     {
         // A script may emit from a worker. The queue is bounded even when the window is closed.
         string? path=null;
-        if(project is {} root && entry.Source is {Length:>0} source && !Path.IsPathRooted(source) &&
-            source.EndsWith(".cs",StringComparison.Ordinal) && ProjectScripts.ValidReference(source[..^3])){
-            var candidate=Path.Combine(root,"Scripts",source);
-            if(File.Exists(candidate))path=candidate;
+        if(project is {} root && entry.Source is {Length:>0} source && source.EndsWith(".cs",StringComparison.Ordinal)){
+            if (Path.IsPathFullyQualified(source)) source = "./" + Path.GetRelativePath(root,source).Replace(Path.DirectorySeparatorChar,'/');
+            bool projectRelative = source.StartsWith("./", StringComparison.Ordinal);
+            var relative = projectRelative ? source[2..] : source;
+            if (relative.Split('/').All(ProjectImport.ValidName))
+            {
+                var candidate = Path.Combine(projectRelative ? root : Path.Combine(root,"Scripts"), relative);
+                if (File.Exists(candidate)) path = candidate;
+            }
         }
         var msg=entry.Message??"";
         lock(consoleRows){

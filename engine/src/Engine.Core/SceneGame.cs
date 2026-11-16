@@ -16,7 +16,8 @@ public sealed partial class SceneGame : IGameObjects, IGame2D, IGameCameras, IDi
         public readonly Vector2 Size = new(obj.Width, obj.Height);
         public GameBehaviour[] Behaviours = [];
         public SpritePool2D? SpritePool;
-        public readonly SceneAppearance Appearance = SceneAppearance.From(obj, project, assets);
+        public SpriteRendererComponent? Renderer = obj.GetComponent<SpriteRendererComponent>();
+        public SceneAppearance Appearance = SceneAppearance.From(obj, project, assets);
         public readonly CutsceneSequence? Sequence = obj.GetComponent<CutsceneDirectorComponent>()?.Sequence is Guid sequence
             ? assets?.LoadSequence(project!, sequence) ?? throw new InvalidDataException($"{obj.Name}: a cutscene requires a project.") : null;
         public readonly PositionTween? Tween = obj.GetComponent<PositionTween2DComponent>() is {} tween ? new(tween) : null;
@@ -39,7 +40,13 @@ public sealed partial class SceneGame : IGameObjects, IGame2D, IGameCameras, IDi
         public AudioPlayback? Playback;
         public AnimationPlayer? Animation;
         public Action<AnimationMarker>? FrameEvent;
-        public readonly Collider2DComponent? Collider = obj.GetComponent<Collider2DComponent>();
+        public readonly Collider2DComponent? ColliderConfig = obj.GetComponent<Collider2DComponent>();
+        public bool ColliderEnabled = true;
+        public long ContactRevision;
+        public Shape2D EndShape;
+        public RectangleF ContactBounds;
+        public bool Moved => translations.Count != 0 || StartAngle != Angle;
+        public Collider2DComponent? Collider => ColliderEnabled ? ColliderConfig : null;
         private readonly Shape2D geometry = CollisionGeometry.ForObject(obj);
         public readonly Rigidbody2DComponent? Rigid = obj.GetComponent<Rigidbody2DComponent>();
         public readonly CharacterMotor2DComponent? Motor = obj.GetComponent<CharacterMotor2DComponent>();
@@ -103,16 +110,19 @@ public sealed partial class SceneGame : IGameObjects, IGame2D, IGameCameras, IDi
     private Body[] bodies = [];
     private Body[] parentFirst = [];
     private Body[] colliders = [];
-    private Body[] triggers = [];
     private Body[] solids = [];
     private ScriptRuntime? scripts;
     private readonly bool ownsScripts;
-    private readonly HashSet<(Body Trigger, Body Other)> overlapping = [];
     public event Action<Guid, Guid>? TriggerEntered;
     private Body? camera;
     private readonly Body? defaultCamera;
     private Body? requestedCamera;
-    private (Body Body, bool Tiles)[] drawOrder = [];
+    private WorldDrawOrder drawOrder = null!;
+    private Matrix3x2 DrawMatrix(int index, float interpolation)
+    {
+        var body = bodies[index];
+        return body.MatrixAt(body.At(interpolation), body.AngleAt(interpolation));
+    }
     private Body[] tileLayers = [];
     public event Action<string>? SoundRequested;
     internal void PlayEffect(Guid id)
@@ -159,6 +169,7 @@ public sealed partial class SceneGame : IGameObjects, IGame2D, IGameCameras, IDi
             if (scene.Camera is { } cam) camera = defaultCamera = byId[cam.Id];
             else if (!additive && !scene.Cameras.Any() && !scene.IsUiOnly) throw new InvalidOperationException("Add a camera with Scene → Create Camera before playing.");
             Ui = new ScreenUi(world, assets, State.Has, id => byId.TryGetValue(id, out var b) && b.Active, State.UiPreferences??=new(settings.Accessibility));
+            Ui.InputModeChanged += Actions.ChangeInputMode;
             Reindex();
             UpdateTileWorlds();
             RegisterLife(parentFirst);
@@ -284,13 +295,16 @@ public sealed partial class SceneGame : IGameObjects, IGame2D, IGameCameras, IDi
 
     public void FixedUpdate(GameInput input, float seconds)
     {
+        int revision = Ui.InputModeRevision;
         UpdateUi(input, seconds);
-        Simulate(input, seconds);
+        Simulate(revision == Ui.InputModeRevision ? input : default, seconds);
     }
 
     public void UpdateUi(GameInput input, double seconds)
     {
         ObjectDisposedException.ThrowIf(closing,this);
+        int revision = Ui.InputModeRevision;
+        Ui.ValidateInputModes();
         Time.AdvanceUi(seconds);
         started = true;
         FlushLife();
@@ -302,7 +316,7 @@ public sealed partial class SceneGame : IGameObjects, IGame2D, IGameCameras, IDi
             using var scope = EnterScene(button);
             foreach (var behaviour in button.Behaviours)
             {
-                if (!button.Active) break;
+                if (!button.Active || revision != Ui.InputModeRevision) break;
                 try { behaviour.OnUiClick(new UiClick(id, State, Ui, this)); }
                 catch (Exception ex) { throw ScriptFailure(behaviour, nameof(GameBehaviour.OnUiClick), ex); }
             }
@@ -313,16 +327,21 @@ public sealed partial class SceneGame : IGameObjects, IGame2D, IGameCameras, IDi
             foreach (var behaviour in body.Behaviours)
             {
                 if (!body.Active) break;
-                try { behaviour.UpdateUi(new UiTick(body.Id, State, Ui, modalFrame ? default : input, seconds)); }
+                try { behaviour.UpdateUi(new UiTick(body.Id, State, Ui, RoutedInput(body, input, revision), seconds)); }
                 catch (Exception ex) { throw ScriptFailure(behaviour, nameof(GameBehaviour.UpdateUi), ex); }
             }
         }
         if (Time.IsPaused) { CommitChanges(); SyncAudio(); }
     }
 
+    private GameInput RoutedInput(Body body, GameInput input, int revision) =>
+        !modalFrame && playback == null && revision == Ui.InputModeRevision && Ui.ReceivesInput(body.Id) ? input : default;
+
     public void Simulate(GameInput input, float seconds)
     {
         ObjectDisposedException.ThrowIf(closing,this);
+        int revision = Ui.InputModeRevision;
+        Ui.ValidateInputModes();
         Time.AdvanceGame(seconds);
         started = true;
         UpdateTileWorlds();
@@ -336,7 +355,7 @@ public sealed partial class SceneGame : IGameObjects, IGame2D, IGameCameras, IDi
             foreach (var behaviour in body.Behaviours)
             {
                 if (!body.Active) break;
-                try { behaviour.FixedUpdate(new ScriptTick(this, body, modalFrame || playback != null ? default : input, seconds)); }
+                try { behaviour.FixedUpdate(new ScriptTick(this, body, RoutedInput(body, input, revision), seconds)); }
                 catch (Exception ex) { throw ScriptFailure(behaviour, nameof(GameBehaviour.FixedUpdate), ex); }
             }
             if (body.Active && body.Animation is {} animation)
@@ -355,7 +374,7 @@ public sealed partial class SceneGame : IGameObjects, IGame2D, IGameCameras, IDi
         if (rigidBodies.Length > 0) StepRigidBodies(seconds);
         foreach (var body in skeletons) if (body.Active) body.Skeleton!.Step(this,body,seconds);
         StepEffects(seconds);
-        if (triggers.Length > 0) DispatchTriggerEntries();
+        DispatchContacts();
         CommitChanges();
         StepCameras(seconds);
         if (requestedCamera?.Active == true) camera = requestedCamera;
@@ -365,35 +384,10 @@ public sealed partial class SceneGame : IGameObjects, IGame2D, IGameCameras, IDi
         SyncAudio();
     }
 
-    private void DispatchTriggerEntries()
-    {
-        foreach (var trigger in triggers)
-        {
-            foreach (var other in colliders)
-            {
-                if (!trigger.Active) break;
-                if (!other.Active || trigger == other || !CollisionGeometry.Pair(trigger.Collider!, other.Collider!)) continue;
-                var pair = (trigger, other);
-                bool inside = CollisionGeometry.Overlap(trigger.ShapeAt(trigger.Position), other.ShapeAt(other.Position));
-                if (inside)
-                {
-                    if (!overlapping.Add(pair)) continue;
-                }
-                else if (overlapping.Remove(pair) || !Crosses(trigger, other)) continue;
-                using var scope = EnterScene(trigger);
-                foreach (var behaviour in trigger.Behaviours)
-                {
-                    if (!trigger.Active || !other.Active) break;
-                    try { behaviour.OnTriggerEnter(new ScriptContact(this, trigger.Id, other.Id)); }
-                    catch (Exception ex) { throw ScriptFailure(behaviour, nameof(GameBehaviour.OnTriggerEnter), ex); }
-                }
-                TriggerEntered?.Invoke(trigger.Id, other.Id);
-            }
-        }
-    }
-
     public void Draw(ICanvas2D canvas, float interpolation)
     {
+        canvas.UseFonts(Ui.Language.Fonts);
+        drawOrder.Sample(interpolation);
         canvas.Clear(Background);
         if (ViewCamera is { Active:true } lens) DrawCamera(canvas,lens,interpolation);
         if (playback is {} p) { DrawDialogue(canvas,p); return; }
@@ -412,12 +406,12 @@ public sealed partial class SceneGame : IGameObjects, IGame2D, IGameCameras, IDi
         var frame=shot.World;
         var view=Matrix3x2.CreateTranslation(-frame.X,-frame.Y)*Matrix3x2.CreateScale(shot.Zoom)*Matrix3x2.CreateTranslation(port.X,port.Y);
         double effectTime=Math.Max(0,Time.GameSeconds-(1-interpolation)*effectStep);
-        foreach (var (body,tiles) in drawOrder)
+        foreach (var item in drawOrder.Items)
         {
+            var body = bodies[item.Index];
             if (!body.Active || body.Interface) continue;
-            var point = body.At(interpolation);
-            var matrix = body.MatrixAt(point, body.AngleAt(interpolation));
-            if (tiles)
+            var matrix = DrawMatrix(item.Index, interpolation);
+            if (item.Map != null)
             {
                 if (body.Palette != null) body.Map!.Draw(canvas,body.Palette,matrix,frame,view);
                 continue;
@@ -429,7 +423,7 @@ public sealed partial class SceneGame : IGameObjects, IGame2D, IGameCameras, IDi
                 var appearance = body.Appearance;
                 if (body.Animation?.Appearance is {} anim)
                     appearance = appearance.Image == null ? anim : appearance with { Image = anim.Image, Source = anim.Source, Canvas = anim.Canvas,
-                        Color = body.Source.GetComponent<SpriteRendererComponent>()?.Tint == null ? Color.White : appearance.Color };
+                        Color = body.Renderer?.Tint == null ? Color.White : appearance.Color };
                 if (body.SpritePool == null) appearance.Draw(canvas, local, matrix * view);
                 if (body.Shader is {} shader) canvas.DrawShader(shader,shader.FrameAt(effectTime),local,matrix*view,Color.White,false);
             }

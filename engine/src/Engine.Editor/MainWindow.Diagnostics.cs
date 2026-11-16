@@ -75,7 +75,10 @@ public partial class MainWindow
         string active=state.Active?"Active":state.ActiveSelf?"Inactive (parent)":"Inactive (self)";
         var lines=new StringBuilder().Append(active).Append(" · ").Append(state.SpawnedFrom==null?"Scene object":Path.GetFileName(state.SpawnedFrom))
             .Append($"\nWorld  {state.Position.X:0.##}, {state.Position.Y:0.##}");
-        if(owner.GetComponent<Collider2DComponent>() is {} c)lines.Append($"\n{(c.IsTrigger?"Trigger":"Solid")} · Layer {c.Layer} · Overlaps {state.Contacts}");
+        if (world.GetComponent<SpriteRendererComponent>(owner.Id) is {} renderer)
+            lines.Append($"\nSprite  {renderer.Asset ?? renderer.AssetId?.ToString() ?? "Square"}");
+        if (owner.GetComponent<Collider2DComponent>() is {} c)
+            lines.Append(world.IsColliderEnabled(owner.Id) ? $"\n{(c.IsTrigger?"Trigger":"Solid")} · Layer {c.Layer} · Contacts {state.Contacts}" : "\nCollider disabled");
         if(state.Animation!=null)lines.Append($"\n{state.Animation} · "+(state.Frame<0?"Stopped":$"Frame {state.Frame+1}"));
         if(owner.GetComponent<AudioSourceComponent>()!=null)lines.Append(state.AudioPlaying?"\nAudio playing":"\nAudio stopped");
         if (world.TryGetMotion(owner.Id, out var motion))

@@ -31,6 +31,8 @@ namespace Engine.Core;
 [YamlObjectUnion("tilemap2D", typeof(Tilemap2DComponent), DiscriminatorKey = "type")]
 [JsonDerivedType(typeof(Camera2DComponent), "camera2D")]
 [YamlObjectUnion("camera2D", typeof(Camera2DComponent), DiscriminatorKey = "type")]
+[JsonDerivedType(typeof(SortingGroup2DComponent), "sortingGroup2D")]
+[YamlObjectUnion("sortingGroup2D", typeof(SortingGroup2DComponent), DiscriminatorKey = "type")]
 [JsonDerivedType(typeof(SpriteRendererComponent), "spriteRenderer")]
 [YamlObjectUnion("spriteRenderer", typeof(SpriteRendererComponent), DiscriminatorKey = "type")]
 [JsonDerivedType(typeof(CircleCollider2DComponent), "circleCollider2D")]
@@ -114,6 +116,8 @@ public sealed partial record SpriteRendererComponent : SceneComponent
 {
     public int SortingLayer { get; set; }
     public int Order { get; set; }
+    public bool SortByY { get; set; }
+    public float FootOffset { get; set; }
     public bool FlipX { get; set; }
     public bool FlipY { get; set; }
     public bool PixelSnap { get; set; }

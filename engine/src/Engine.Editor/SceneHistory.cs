@@ -5,7 +5,7 @@ namespace Engine.Editor;
 internal sealed class SceneHistory
 {
     private sealed record State(string Objects, GameSettings Settings);
-    private sealed record Edit(State? Before, State? After, Guid? PreviousSelection, Guid? Selection, TileChange[]? Cells = null, PrefabFileEdit? Asset=null);
+    private sealed record Edit(State? Before, State? After, Guid? PreviousSelection, Guid? Selection, TileChange[]? Cells = null, IProjectFileEdit? Asset=null);
     private const int Capacity = 100;
     private readonly List<Edit> edits = [];
     private int position;
@@ -14,6 +14,7 @@ internal sealed class SceneHistory
     private object? editGroup;
 
     public bool CanUndo => position > 0;
+    public IProjectFileEdit? FileEdit(bool redo) => edits[redo ? position : position - 1].Asset;
     public bool CanRedo => position < edits.Count;
     internal string CurrentSnapshot => current.Objects;
     public bool IsDirty => current.Objects != savedObjects;
@@ -43,9 +44,10 @@ internal sealed class SceneHistory
 
     public void EndGroup() => editGroup = null;
 
-    public bool Record(SceneDocument scene, Guid? previousSelection, Guid? selection, object? group, PrefabFileEdit? asset=null)
+    public bool Record(SceneDocument scene, Guid? previousSelection, Guid? selection, object? group, IProjectFileEdit? asset=null)
     {
         var next = new State(scene.CaptureObjects(), scene.Settings);
+        if (asset is ProjectPathEdit move) savedObjects = move.RewriteSnapshot(savedObjects, true);
         if (next == current && asset==null) return false;
         if (CanRedo) edits.RemoveRange(position, edits.Count - position);
         if (group != null && ReferenceEquals(group, editGroup) && CanUndo)
@@ -92,9 +94,9 @@ internal sealed class SceneHistory
             EndGroup();
             return edit.Selection;
         }
-        if(edit.Asset is {} asset){asset.Restore(redo);ProjectAssets.Scan(scene.ProjectDirectory!);}
+        if (edit.Asset is {} asset) asset.Restore(redo);
         var state = (redo ? edit.After : edit.Before)!;
-        if (state.Settings != scene.Settings && scene.ProjectDirectory is { } project)
+        if (edit.Asset is not ProjectPathEdit && state.Settings != scene.Settings && scene.ProjectDirectory is { } project)
         {
             var disk = GameSettings.Load(project);
             if (!disk.SerializedSettings().AsSpan().SequenceEqual(scene.Settings.SerializedSettings()))
@@ -103,7 +105,9 @@ internal sealed class SceneHistory
         }
         scene.RestoreObjects(state.Objects);
         scene.Settings = state.Settings;
-        current = state;
+        if (edit.Asset != null) scene.ResolveAssets(ProjectAssets.Scan(scene.ProjectDirectory!));
+        if (edit.Asset is ProjectPathEdit move) savedObjects = move.RewriteSnapshot(savedObjects, redo);
+        current = new(scene.CaptureObjects(), scene.Settings);
         position += redo ? 1 : -1;
         EndGroup();
         return redo ? edit.Selection : edit.PreviousSelection;

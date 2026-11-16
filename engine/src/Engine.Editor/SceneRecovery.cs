@@ -10,12 +10,12 @@ internal sealed partial record SceneDraft(int Version, string Scene, string? Dis
 internal sealed class SceneRecovery : IDisposable
 {
     private readonly string directory;
-    private readonly string relative;
+    private string relative;
     private readonly string draft;
     private FileStream? lease;
     internal string? Disk { get; private set; }
     internal string Baseline { get; private set; }
-    internal string ScenePath { get; }
+    internal string ScenePath { get; private set; }
 
     public SceneRecovery(string root, string scene, string snapshot)
     {
@@ -25,6 +25,14 @@ internal sealed class SceneRecovery : IDisposable
         draft = Path.Combine(directory, Guid.NewGuid().ToString("N") + ".draft");
         Disk = File.Exists(ScenePath) ? File.ReadAllText(ScenePath) : null;
         Baseline = snapshot;
+    }
+
+    internal void Relocate(string root, string scene, ProjectPathEdit edit, bool forward)
+    {
+        if (Disk != null) Disk = edit.RewriteDisk(relative, Disk, forward);
+        relative = scene;
+        ScenePath = Path.Combine(root, scene);
+        Baseline = edit.RewriteSnapshot(Baseline, forward);
     }
 
     public void Checkpoint(string edited)

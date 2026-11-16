@@ -14,8 +14,6 @@ public partial class MainWindow
         public string Directory => ParentPath(RelativePath);
         public string Name => Path.GetFileName(RelativePath);
         public bool IsSource => !IsFolder && Name.EndsWith(".cs", StringComparison.OrdinalIgnoreCase);
-        public string? ComponentId => !IsFolder && Name.EndsWith(".cs", StringComparison.Ordinal) && RelativePath.StartsWith("Scripts/", StringComparison.Ordinal) &&
-            ProjectScripts.ValidReference(RelativePath[8..^3]) ? RelativePath[8..^3] : null;
         public override string ToString() => Name;
     }
 
@@ -25,6 +23,7 @@ public partial class MainWindow
     private string browserFolder = "";
     private DateTime? browserStamp;
     private static readonly Cursor CopyFileCursor = new(StandardCursorType.DragCopy);
+    private static readonly Cursor MoveFileCursor = new(StandardCursorType.DragMove);
     private static readonly Cursor NoDropCursor = new(StandardCursorType.No);
 
     private void InitializeProjectBrowser()
@@ -42,18 +41,36 @@ public partial class MainWindow
         ProjectBrowser.AddHandler(PointerPressedEvent, (_,e)=>{
             if(busy || Viewport.IsPlaying || !e.GetCurrentPoint(ProjectBrowser).Properties.IsRightButtonPressed || e.Source is not Visual v)return;
             var item=v as ListBoxItem??v.FindAncestorOfType<ListBoxItem>();
-            if(item?.DataContext is not ProjectEntry {IsFolder:false} entry)return;
+            if(item?.DataContext is not ProjectEntry entry)return;
             ProjectBrowser.SelectedItem=entry;
-            var refs=new MenuItem{Header="Asset References…"};
-            refs.Click+=(_,_)=>RunAction(()=>InspectAssets(false));
-            var reveal=new MenuItem{Header="Show in Folder"};
-            reveal.Click+=(_,_)=>BrowseFolder(ParentPath(entry.RelativePath),entry.RelativePath);
-            var menu=new ContextMenu{Items={refs,reveal}};menu.Open(item);e.Handled=true;
+            var menu = new ContextMenu();
+            if (ProjectPathEdit.CanMove(entry.RelativePath, entry.IsFolder))
+            {
+                var rename = new MenuItem { Header = "Rename…" };
+                rename.Click += (_,_) => RunAction(() => ChangeProjectPath(entry, rename: true));
+                var move = new MenuItem { Header = "Move to Folder…" };
+                move.Click += (_,_) => RunAction(() => ChangeProjectPath(entry, rename: false));
+                menu.Items.Add(rename);
+                menu.Items.Add(move);
+            }
+            if (!entry.IsFolder)
+            {
+                var refs = new MenuItem { Header = "Asset References…" };
+                refs.Click += (_,_) => RunAction(() => InspectAssets(false));
+                var reveal = new MenuItem { Header = "Show in Folder" };
+                reveal.Click += (_,_) => BrowseFolder(ParentPath(entry.RelativePath),entry.RelativePath);
+                menu.Items.Add(refs);
+                menu.Items.Add(reveal);
+            }
+            if (menu.Items.Count != 0) menu.Open(item);
+            e.Handled=true;
         },RoutingStrategies.Tunnel);
         ParentFolderButton.Click += (_, _) => UpOneFolder();
         ProjectBrowser.KeyDown += (_, e) =>
         {
-            if (e.Key == Key.Enter && ProjectBrowser.SelectedItem is ProjectEntry entry) OpenEntry(entry);
+            if (e.Key == Key.F2 && ProjectBrowser.SelectedItem is ProjectEntry selected && ProjectPathEdit.CanMove(selected.RelativePath, selected.IsFolder))
+                RunAction(() => ChangeProjectPath(selected, rename: true));
+            else if (e.Key == Key.Enter && ProjectBrowser.SelectedItem is ProjectEntry entry) OpenEntry(entry);
             else if (e.Key == Key.Back || (e.Key == Key.Up && e.KeyModifiers == KeyModifiers.Alt)) UpOneFolder();
             else return;
             e.Handled = true;
@@ -226,9 +243,33 @@ public partial class MainWindow
         if (!press.Checked)
         {
             press.Checked = true;
-            if (press.Entry.ComponentId is { } id && AttachableScripts().Contains(id)) press.ScriptToAttach = id;
+            if (press.Entry.IsSource && scripts != null)
+            {
+                try
+                {
+                    var id = scripts.Locations().FirstOrDefault(p => p.Value == press.Entry.RelativePath).Key;
+                    if (id != null && AttachableScripts().Contains(id)) press.ScriptToAttach = id;
+                }
+                catch (Exception ex) when (ex is IOException or InvalidDataException or UnauthorizedAccessException)
+                { Status.Text = ex.Message; }
+            }
         }
         return press.ScriptToAttach;
+    }
+
+    private string? FolderDrop(PointerEventArgs e, ProjectEntry entry)
+    {
+        if (!ProjectPathEdit.CanMove(entry.RelativePath, entry.IsFolder)) return null;
+        string? folder = null;
+        if (ParentFolderButton.IsVisible && new Rect(ParentFolderButton.Bounds.Size).Contains(e.GetPosition(ParentFolderButton)))
+            folder = ParentPath(browserFolder);
+        else if (ProjectBrowser.InputHitTest(e.GetPosition(ProjectBrowser)) is Visual hit)
+        {
+            var row = hit as ListBoxItem ?? hit.FindAncestorOfType<ListBoxItem>();
+            if (row?.DataContext is ProjectEntry { IsFolder: true } target) folder = target.RelativePath;
+        }
+        return folder != null && folder != entry.Directory && !ProjectPathEdit.Within(folder, entry.RelativePath)
+            ? (folder.Length == 0 ? "" : folder + "/") + entry.Name : null;
     }
 
     private void FileMoved(object? sender, PointerEventArgs e)
@@ -244,7 +285,8 @@ public partial class MainWindow
         bool place = (png || press.Entry.Name.EndsWith(ProjectAssets.Prefab)) && Viewport.CanDropPng(e.GetPosition(Viewport));
         HighlightSpriteTarget(sprite);
         InspectorPanel.Classes.Set("scriptDrop", attach);
-        ProjectBrowser.Cursor = attach || place || sprite != null ? CopyFileCursor : NoDropCursor;
+        ProjectBrowser.Cursor = FolderDrop(e, press.Entry) != null ? MoveFileCursor :
+            attach || place || sprite != null ? CopyFileCursor : NoDropCursor;
         e.Handled = true;
     }
 
@@ -263,7 +305,14 @@ public partial class MainWindow
             if (press.DoubleClick) OpenEntry(entry);
             return;
         }
-        if (entry.ComponentId != null && OverInspector(e) && Selected is { } owner)
+        if (FolderDrop(e, entry) is {} destination)
+        {
+            RunAction(async () => {
+                if (clipEditor is {} clip && !await clip.RequestClose()) return;
+                MoveProjectEntry(entry, destination);
+            });
+        }
+        else if (entry.IsSource && OverInspector(e) && Selected is { } owner)
         {
             if (!File.Exists(Path.Combine(project, entry.RelativePath))) Status.Text = $"Missing {entry.RelativePath}";
             else if (ScriptToAttach(press) is not { } name) Status.Text = "Only a project GameBehaviour can be attached.";

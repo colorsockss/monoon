@@ -142,6 +142,7 @@ public sealed partial class GameSession : IGame2D, IDisposable
     {
         if (loading?.Operation is { TransitionText: { } label, Change: SceneChange.Replace } op)
         {
+            canvas.UseFonts(Current.Ui.Language.Fonts);
             canvas.Clear(SceneGame.Background);
             float width = Math.Min(240, LogicalSize.Width * .6f);
             float x = (LogicalSize.Width - width) / 2, y = LogicalSize.Height * .5f;

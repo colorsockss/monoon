@@ -3,23 +3,28 @@ using Engine.Core;
 
 public sealed class KeySequence : GameBehaviour
 {
-    public Guid Collector, KeyImage, DoorBlocker, DoorVisual, DoorCamera, PlayerCamera;
+    public Guid Collector, KeyImage, Door, DoorCamera, PlayerCamera;
+    public SpriteReference OpenSprite;
     private GameTimer returnToPlayer;
+
+    private void OpenDoor(IGameObjects objects)
+    {
+        if (OpenSprite.Id == Guid.Empty || !objects.SetSprite(Door, OpenSprite) || !objects.SetColliderEnabled(Door, false))
+            throw new InvalidOperationException("KeySequence needs a door with a Sprite Renderer, an open sprite and a collider.");
+        objects.SetActive(KeyImage, false);
+    }
 
     public override void OnCreate(ScriptLife life)
     {
-        if (!life.Session.Has("key")) return;
-        life.Objects.SetActive(KeyImage, false);
-        life.Objects.SetActive(DoorBlocker, false);
-        life.Objects.SetActive(DoorVisual, false);
+        if (life.Session.Has("key")) OpenDoor(life.Objects);
     }
 
     public override void OnTriggerEnter(ScriptContact contact)
     {
         if (contact.OtherId != Collector || !contact.Session.Set("key")) return;
-        contact.Deactivate(KeyImage);
-        contact.Deactivate(DoorBlocker);
-        contact.PlayEffect(DoorVisual);
+        OpenDoor(contact.Objects);
+        contact.Objects.Animator(Door)?.PlayThenShowSprite();
+        contact.Objects.Audio.Play(Door);
         contact.Cameras.TrySetActive(DoorCamera);
         returnToPlayer = contact.Session.Time.StartTimer(1);
     }

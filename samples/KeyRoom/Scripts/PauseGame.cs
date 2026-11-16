@@ -4,6 +4,7 @@ public sealed class PauseGame : GameBehaviour
 {
     private GameTimer seconds;
     private double pausedAt;
+    private string locale;
 
     public override void UpdateUi(UiTick tick)
     {
@@ -20,11 +21,12 @@ public sealed class PauseGame : GameBehaviour
             tick.Session.Set("paused");
             seconds = tick.Time.StartTimer(1, TimeDomain.Ui, repeat: true);
             pausedAt = tick.Time.UiSeconds;
-            tick.Ui.SetText(tick.ObjectId, "Paused  0s");
+            locale = null;
         }
-        else if (seconds.Consume())
+        if (seconds.Consume() || locale != tick.Ui.Preferences.Locale)
         {
-            tick.Ui.SetText(tick.ObjectId, $"Paused  {(int)(tick.Time.UiSeconds - pausedAt)}s");
+            locale = tick.Ui.Preferences.Locale;
+            tick.Ui.SetText(tick.ObjectId, string.Format(tick.Ui.Translate("time.paused"), (int)(tick.Time.UiSeconds - pausedAt)));
         }
     }
 }

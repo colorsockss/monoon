@@ -59,6 +59,22 @@ public partial class MainWindow
                 var autoplayTween=new CheckBox {Content="Play on start",IsChecked=tween.PlayOnStart};
                 autoplayTween.IsCheckedChanged+=(_,_)=>{tween.PlayOnStart=autoplayTween.IsChecked==true;MarkDirty();}; Row("",autoplayTween);
                 break;
+            case SortingGroup2DComponent group:
+                Number("Layer", group.SortingLayer, -32768, 32767, v => group.SortingLayer = (int)v);
+                Number("Order", group.Order, -32768, 32767, v => group.Order = (int)v);
+                var byY = new CheckBox { Content = "Use foot Y", IsChecked = group.SortByY };
+                Row("Y sort", byY);
+                Number("Foot ΔY", group.FootOffset, -1000000, 1000000, v => group.FootOffset = v);
+                var offsetRow = fields.Children[^1];
+                offsetRow.IsEnabled = group.SortByY;
+                ToolTip.SetTip(offsetRow, "Local Y offset from the bottom center, in world units.");
+                byY.IsCheckedChanged += (_, _) =>
+                {
+                    group.SortByY = byY.IsChecked == true;
+                    offsetRow.IsEnabled = group.SortByY;
+                    MarkDirty();
+                };
+                break;
             case SkeletonAnimator2DComponent skeleton:
                 Asset("Rig",SkeletonRig.Extension,skeleton.Rig,v=>skeleton.Rig=v);
                 if (Selected?.GetComponent<SpriteRendererComponent>()==null)
@@ -208,6 +224,9 @@ public partial class MainWindow
                 anchor.SelectionChanged += (_, _) => { if (anchor.SelectedItem is string a) { rect.Anchor = a; MarkDirty(); } };
                 Row("Anchor", anchor);
                 Text("Show if", rect.ShowIf, s => rect.ShowIf = s);
+                var modeRoot = new CheckBox { Content = "Input mode root", IsChecked = rect.InputModeRoot };
+                modeRoot.IsCheckedChanged += (_, _) => { rect.InputModeRoot = modeRoot.IsChecked == true; MarkDirty(); };
+                Row("", modeRoot);
                 break;
             case UiImageComponent image:
                 Asset("Sprite", ".png", image.Sprite, id => image.Sprite = id);
@@ -231,6 +250,7 @@ public partial class MainWindow
                 Number("Limit",field.MaxLength,1,4096,v=>field.MaxLength=(int)v);
                 break;
             case UiTextComponent label:
+                Text("Text key", label.TextKey ?? "", s => label.TextKey = string.IsNullOrWhiteSpace(s) ? null : s.Trim());
                 Text("Text", label.Text, s => label.Text = s);
                 var translations=new TextBox { AcceptsReturn=true, MinHeight=28, MaxHeight=110,
                     Watermark="ko=안녕하세요", Text=string.Join("\n", (label.Translations??[]).Select(p=>p.Key+"="+p.Value)) };

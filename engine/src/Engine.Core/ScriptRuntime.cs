@@ -14,7 +14,7 @@ internal sealed class ScriptRuntime(ProjectScripts library) : IDisposable
         {
             if (factory == null)
             {
-                var build = File.Exists(library.CompiledPath) ? null : library.Current();
+                var build = !library.ScenePlay && File.Exists(library.CompiledPath) ? null : library.Current();
                 using Stream stream = build == null ? File.OpenRead(library.CompiledPath) : new MemoryStream(build.Bytes, writable: false);
                 var pdb = Path.ChangeExtension(library.CompiledPath, ".pdb");
                 using Stream? symbols = build != null ? new MemoryStream(build.Symbols, writable: false) :
@@ -24,7 +24,7 @@ internal sealed class ScriptRuntime(ProjectScripts library) : IDisposable
             }
             return factory(component);
         }
-        catch (Exception ex) { throw new InvalidDataException($"Scripts/{component.Script}.cs: {ex.GetBaseException().Message}",ex); }
+        catch (Exception ex) { throw new InvalidDataException($"{library.RelativePath(component.Script)}: {ex.GetBaseException().Message}",ex); }
     }
 
     public void Dispose() { factory = null; context.Unload(); }

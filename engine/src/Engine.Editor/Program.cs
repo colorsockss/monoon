@@ -13,6 +13,12 @@ internal static class Program
     [STAThread]
     public static void Main(string[] args)
     {
+        if (args is ["--generate-script-project", var projectFolder])
+        {
+            try { Console.WriteLine(ScriptIdeProject.Generate(projectFolder).Project); }
+            catch (Exception ex) { Console.Error.WriteLine(ex.Message); Environment.ExitCode = 1; }
+            return;
+        }
         if (args is ["--migrate-project", var folder])
         {
             try

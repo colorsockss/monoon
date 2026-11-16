@@ -1,4 +1,4 @@
-schemaVersion: 7
+schemaVersion: 23
 objects:
 - id: e056689d-dcf0-526d-a1e2-bce145614e5d
   name: North Wall
@@ -26,6 +26,76 @@ objects:
     squareColor: "#577E96"
   - type: boxCollider2D
     isTrigger: false
+- id: 741e3c2c-87c4-41bb-9f5e-646457380001
+  name: Pressure Plate
+  x: 300
+  y: 189
+  width: 148
+  height: 61
+  components:
+  - type: spriteRenderer
+    order: -1
+    squareColor: "#485368"
+  - type: boxCollider2D
+    isTrigger: true
+  - type: script
+    script: PressurePlate
+    values:
+      Player: "1005e78b-a6fb-5b8a-8f0f-6684e64fbd68"
+      Crate: "741e3c2c-87c4-41bb-9f5e-646457380002"
+      Door: "741e3c2c-87c4-41bb-9f5e-646457380003"
+      Label: "741e3c2c-87c4-41bb-9f5e-646457380004"
+      ClosedSprite:
+        Id: "5bc5fe18-c056-5658-b492-61ee1a157a67"
+      OpenSprite:
+        Id: "988ae80f-ed6a-51f8-8740-0c07a3270cc6"
+- id: 741e3c2c-87c4-41bb-9f5e-646457380002
+  name: Push Crate
+  x: 238
+  y: 203
+  width: 34
+  height: 34
+  components:
+  - type: spriteRenderer
+    squareColor: "#DAA052"
+  - type: boxCollider2D
+    isTrigger: false
+  - type: script
+    script: PushCrate
+    values:
+      Player: "1005e78b-a6fb-5b8a-8f0f-6684e64fbd68"
+- id: 741e3c2c-87c4-41bb-9f5e-646457380003
+  name: Pressure Door
+  x: 570
+  y: 173
+  width: 24
+  height: 92
+  components:
+  - type: spriteRenderer
+    assetId: 5bc5fe18-c056-5658-b492-61ee1a157a67
+    asset: Assets/Door.png
+  - type: boxCollider2D
+    isTrigger: false
+- id: 741e3c2c-87c4-41bb-9f5e-646457380005
+  name: Gate Wall North
+  x: 570
+  y: 96
+  width: 24
+  height: 77
+  components:
+  - type: spriteRenderer
+    squareColor: "#577E96"
+  - type: boxCollider2D
+- id: 741e3c2c-87c4-41bb-9f5e-646457380006
+  name: Gate Wall South
+  x: 570
+  y: 265
+  width: 24
+  height: 75
+  components:
+  - type: spriteRenderer
+    squareColor: "#577E96"
+  - type: boxCollider2D
 - id: 1005e78b-a6fb-5b8a-8f0f-6684e64fbd68
   name: Room Two Player
   x: 110
@@ -84,6 +154,7 @@ objects:
   - type: uiRect
   - type: uiText
     text: ROOM 2 / KEY
+    textKey: hud.key2
 - id: 82979001-dcbc-443e-baa1-60ada0400003
   parentId: 82979001-dcbc-443e-baa1-60ada0400000
   name: Controls button
@@ -97,6 +168,7 @@ objects:
   - type: uiButton
   - type: uiText
     text: Controls
+    textKey: hud.controls
     insetX: 10
     insetY: 4
   - type: script
@@ -118,7 +190,7 @@ objects:
   - type: uiImage
     color: "#344B60"
   - type: uiText
-    text: "Move: arrows / WASD"
+    text: "Push crate onto plate. Stand beside it to open the door."
     insetX: 8
     insetY: 3
 - id: 82979001-dcbc-443e-baa1-60ada0400005
@@ -136,6 +208,7 @@ objects:
     color: "#344B60"
   - type: uiText
     text: Paused
+    textKey: hud.paused
     insetX: 8
     insetY: 3
   - type: script
@@ -175,4 +248,33 @@ objects:
     text: "1 / 2: Slot   F5: Save   F9: Load   M: Guide"
     insetX: 8
     insetY: 3
+- id: 741e3c2c-87c4-41bb-9f5e-646457380004
+  parentId: 82979001-dcbc-443e-baa1-60ada0400000
+  name: Pressure plate status
+  x: 185
+  y: 14
+  width: 430
+  height: 26
+  components:
+  - type: uiRect
+  - type: uiText
+    text: "Plate 0/2  Empty  |  Door CLOSED"
+- id: 3e528258-504b-5a95-8345-c3a4f2fa8642
+  name: Language
+  parentId: 82979001-dcbc-443e-baa1-60ada0400000
+  x: -110
+  y: 14
+  width: 102
+  height: 28
+  components:
+  - type: uiRect
+    anchor: TopRight
+  - type: uiButton
+  - type: uiText
+    text: "한국어 [L]"
+    textKey: ui.language
+    insetX: 8
+    insetY: 4
+  - type: script
+    script: GameLanguageButton
 defaultCameraId: 217aeef1-5c66-56ff-9550-8195f188bc9e

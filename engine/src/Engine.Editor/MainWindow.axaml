@@ -75,6 +75,14 @@
           <TextBlock Grid.Row="1" Classes="fieldLabel" Text="Order"/>
           <NumericUpDown Grid.Row="1" Grid.Column="1" Minimum="-32768" Maximum="32767" Increment="1" Value="{Binding Order, Mode=TwoWay}"/>
         </Grid>
+        <Grid ColumnDefinitions="56,*" RowDefinitions="Auto,Auto" ColumnSpacing="5" RowSpacing="2">
+          <TextBlock Classes="fieldLabel" Text="Y sort"/>
+          <CheckBox Grid.Column="1" Content="Use foot Y" IsChecked="{Binding SortByY, Mode=TwoWay}"/>
+          <TextBlock Grid.Row="1" Classes="fieldLabel" Text="Foot ΔY"/>
+          <NumericUpDown Grid.Row="1" Grid.Column="1" Minimum="-1000000" Maximum="1000000" Increment="1"
+                         IsEnabled="{Binding SortByY}" Value="{Binding FootOffset, Mode=TwoWay}"
+                         ToolTip.Tip="Local Y offset from the bottom center, in world units."/>
+        </Grid>
         <Grid ColumnDefinitions="56,16,*" ColumnSpacing="5">
           <TextBlock Text="Color" Classes="fieldLabel"/>
           <Border Grid.Column="1" Background="{Binding ColorBrush}" CornerRadius="2"/>

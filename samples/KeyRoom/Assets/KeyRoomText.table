@@ -1,0 +1,87 @@
+version: 1
+columns:
+- {name: en, type: Text}
+- {name: ko, type: Text}
+rows:
+- key: bag.equip
+  cells: ["Equip the pocket compass?", "나침반을 장착할까요?"]
+- key: bag.equipped
+  cells: ["{0}  /  Equipped", "{0}  /  장착 중"]
+- key: bag.manage
+  cells: ["Manage compass", "나침반 관리"]
+- key: bag.stow
+  cells: ["Stow the pocket compass?", "나침반을 보관할까요?"]
+- key: bag.stowed
+  cells: ["{0}  /  In bag", "{0}  /  보관 중"]
+- key: bag.title
+  cells: ["Inventory", "가방"]
+- key: door.closed
+  cells: ["CLOSED", "닫힘"]
+- key: door.open
+  cells: ["OPEN", "열림"]
+- key: guide.chest
+  cells: ["Open the chest to find a coin.", "상자를 열어 동전을 찾으세요."]
+- key: guide.key
+  cells: ["Pick up the key to open the door.", "열쇠를 주우면 문이 열립니다."]
+- key: guide.title
+  cells: ["Room guide", "방 안내"]
+- key: hud.bag
+  cells: ["Bag [I]", "가방 [I]"]
+- key: hud.bearing
+  cells: ["Compass  /  Exit east", "나침반  /  출구는 동쪽"]
+- key: hud.bindings
+  cells: ["Move: {0} / {1}   Interact: {2}   Help: {3}   Pause: {4}", "이동: {0} / {1}   상호작용: {2}   도움말: {3}   정지: {4}"]
+- key: hud.coin
+  cells: ["COIN: 1", "동전: 1"]
+- key: hud.controls
+  cells: ["Controls", "조작법"]
+- key: hud.key
+  cells: ["KEY", "열쇠"]
+- key: hud.key2
+  cells: ["ROOM 2 / KEY", "두 번째 방 / 열쇠"]
+- key: hud.paused
+  cells: ["Paused", "일시 정지"]
+- key: hud.slots
+  cells: ["{0} / {1}: Slot   {2}: Save   {3}: Load   {4}: Guide", "{0} / {1}: 슬롯   {2}: 저장   {3}: 불러오기   {4}: 안내"]
+- key: item.compass
+  cells: ["Pocket compass", "휴대용 나침반"]
+- key: item.key
+  cells: ["Brass key", "황동 열쇠"]
+- key: plate.both
+  cells: ["Player + crate", "플레이어 + 상자"]
+- key: plate.crate
+  cells: ["Crate", "상자"]
+- key: plate.empty
+  cells: ["Empty", "비었음"]
+- key: plate.player
+  cells: ["Player", "플레이어"]
+- key: plate.status
+  cells: ["Plate {0}/2  {1}  |  Door {2}", "압력판 {0}/2  {1}  |  문 {2}"]
+- key: quest.key.active
+  cells: ["Quest  /  Find {0}", "의뢰  /  {0} 찾기"]
+- key: quest.key.done
+  cells: ["Quest complete  /  {0}", "의뢰 완료  /  {0}"]
+- key: room.enter
+  cells: ["Entering the second room…", "두 번째 방으로 이동 중…"]
+- key: slot.empty
+  cells: ["Slot {0} empty", "슬롯 {0} 비어 있음"]
+- key: slot.loaded
+  cells: ["Slot {0} loaded", "슬롯 {0} 불러옴"]
+- key: slot.number
+  cells: ["Slot {0}", "슬롯 {0}"]
+- key: slot.saved
+  cells: ["Slot {0} saved", "슬롯 {0} 저장됨"]
+- key: slot.unavailable
+  cells: ["Slot {0} unavailable", "슬롯 {0} 사용 불가"]
+- key: time.paused
+  cells: ["Paused  {0}s", "일시 정지  {0}초"]
+- key: ui.apply
+  cells: ["Apply", "적용"]
+- key: ui.cancel
+  cells: ["Cancel", "취소"]
+- key: ui.close
+  cells: ["Close", "닫기"]
+- key: ui.confirm
+  cells: ["Confirm", "확인"]
+- key: ui.language
+  cells: ["한국어 [L]", "English [L]"]

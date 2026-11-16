@@ -7,6 +7,7 @@ public sealed class RoomExit : GameBehaviour
     public SceneReference Destination;
     public override void OnTriggerEnter(ScriptContact contact)
     {
-        if (contact.OtherId == Player && contact.Session.Has("key")) contact.Session.LoadSceneAsync(Destination.Id, "Entering the second room…", 0.45);
+        if (contact.OtherId == Player && contact.Session.Has("key"))
+            contact.Session.LoadSceneAsync(Destination.Id, contact.Ui.Translate("room.enter", "Entering the second room…"), 0.45);
     }
 }

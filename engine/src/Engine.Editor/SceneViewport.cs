@@ -25,6 +25,7 @@ public sealed partial class SceneViewport : Decorator
     private static readonly GameColor FrameColor = GameColor.FromArgb(84, 99, 116);
     private static readonly GameColor SelectionColor = GameColor.FromArgb(167, 238, 225);
     private readonly MacSceneHost? native;
+    private readonly PreviewText gameText = new();
     private readonly SpriteCache<Bitmap> bitmaps = new(path => new Bitmap(path));
     private ProjectAssets? sceneAssets;
     private readonly Dictionary<Guid,SkeletonPose> rigPreviews=[];
@@ -84,7 +85,23 @@ public sealed partial class SceneViewport : Decorator
     private readonly Engine.Desktop.SdlSounds sounds = new();
     private GameSession? game;
     private ScreenUi? previewUi;
-    private ScreenUi PreviewUi => previewUi ??= new(Scene, Scene.ProjectDirectory is { } root ? ProjectAssets.ReadManifest(root) : null);
+    private ScreenUi PreviewUi
+    {
+        get
+        {
+            if (previewUi == null)
+            {
+                try { previewUi = new(Scene, Scene.ProjectDirectory is { } root ? ProjectAssets.ReadManifest(root) : null); }
+                catch (Exception ex) when (ex is InvalidDataException or IOException or UnauthorizedAccessException)
+                {
+                    previewUi = new(Scene, null);
+                    if (spriteErrors.Add(ex.Message)) PlayFailed?.Invoke(ex.Message);
+                }
+            }
+            previewUi.PreviewModeFor(Selected?.Id);
+            return previewUi;
+        }
+    }
     internal void InvalidateUi() { previewUi = null; RefreshScene(); }
     private (RectangleF Frame, float Zoom) UiFrame()
     {
@@ -157,7 +174,7 @@ public sealed partial class SceneViewport : Decorator
             Focusable = false;
             AcceptFileDrops = false;
             SizeChanged += (_,_) => RefreshScene();
-            DetachedFromVisualTree += (_,_) => { bitmaps.Clear(); variants.Dispose(); shaderSheets.Dispose(); };
+            DetachedFromVisualTree += (_,_) => { bitmaps.Clear(); variants.Dispose(); shaderSheets.Dispose(); gameText.Dispose(); };
             return;
         }
         SizeChanged += (_, _) => { if (pendingFrame) FrameCamera(); RefreshScene(); };
@@ -168,7 +185,7 @@ public sealed partial class SceneViewport : Decorator
         timer.Tick += (_, _) => Tick();
         PointerExited += (_,_) => { LeaveTiles(); PointerLeft(); };
         LostFocus += (_, _) => ResetInput();
-        DetachedFromVisualTree += (_, _) => { Stop(); bitmaps.Clear(); variants.Dispose(); shaderSheets.Dispose(); };
+        DetachedFromVisualTree += (_, _) => { Stop(); bitmaps.Clear(); variants.Dispose(); shaderSheets.Dispose(); gameText.Dispose(); };
     }
 
     internal void ClearSprites()
@@ -176,7 +193,7 @@ public sealed partial class SceneViewport : Decorator
         previewUi = null;
         palettes.Clear();
         previewSizes.Clear();
-        bitmaps.Clear(); variants.Dispose(); shaderSheets.Dispose(); sceneAssets = null; rigPreviews.Clear(); spriteErrors.Clear();
+        bitmaps.Clear(); variants.Dispose(); shaderSheets.Dispose(); gameText.Dispose(); sceneAssets = null; rigPreviews.Clear(); spriteErrors.Clear();
         native?.ClearSprites();
         RefreshScene();
     }
@@ -232,8 +249,14 @@ public sealed partial class SceneViewport : Decorator
         EndDrag();
     }
 
-    public void Play(ProjectScripts? scripts)
+    public void Play() => Play(null);
+
+    private SceneDebugServer? playDebugger;
+    internal void Play(SceneDebugServer? debugger)
     {
+        playDebugger = System.Diagnostics.Debugger.IsAttached ? null : debugger;
+        var scripts = Scene.ProjectDirectory is {} root
+            ? ProjectScripts.ForScenePlay(root, playDebugger != null ? playDebugger.Instrument : null) : null;
         game = new GameSession(Scene, scripts);
         Profile.Reset();
         game.Current.Diagnostics=PhysicsDebug;
@@ -261,6 +284,7 @@ public sealed partial class SceneViewport : Decorator
         input = new(game.Actions, () => game?.InputUi, game.LogicalSize);
         gamepads = new SdlGamepads();
         loop = new GameLoop(game, game.Actions);
+        playDebugger?.TakePausedTicks();
         lastTick = Stopwatch.GetTimestamp();
         Focus();
         timer.Start();
@@ -278,7 +302,7 @@ public sealed partial class SceneViewport : Decorator
         loop = null;
         try { current?.Dispose(); }
         catch (InvalidOperationException ex) { PlayFailed?.Invoke(ex.Message); }
-        finally { FrameCapture?.Dispose(); FrameCapture = null; if(current!=null)current.State.Logged-=EmitLog; sounds.Dispose(); ResetInput(); RefreshScene(); }
+        finally { playDebugger?.EndPlay(); playDebugger = null; FrameCapture?.Dispose(); FrameCapture = null; if(current!=null)current.State.Logged-=EmitLog; sounds.Dispose(); ResetInput(); RefreshScene(); }
     }
 
     private void Tick()
@@ -286,7 +310,9 @@ public sealed partial class SceneViewport : Decorator
         if(sounds.TakeError() is {} audioError) PlayFailed?.Invoke(audioError);
         if (input != null && IsKeyboardFocusWithin && TopLevel.GetTopLevel(this) is Window { IsActive: true }) gamepads?.Poll(input.Pad);
         var now = Stopwatch.GetTimestamp();
-        var elapsed = Stopwatch.GetElapsedTime(lastTick, now).TotalSeconds;
+        // Waiting at a script breakpoint consumes wall time but must not advance game or UI clocks.
+        long paused = playDebugger?.TakePausedTicks() ?? 0;
+        var elapsed = Math.Max(0, now - lastTick - paused) / (double)Stopwatch.Frequency;
         lastTick = now;
         if (TopLevel.GetTopLevel(this) is not Window { IsActive: true } && KeepSimulationActive?.Invoke()!=true)
         {
@@ -544,7 +570,7 @@ public sealed partial class SceneViewport : Decorator
         var area = CanvasArea;
         using var clip = context.PushClip(area);
         var started=Stopwatch.GetTimestamp();
-        var canvas=new PreviewCanvas(context, bitmaps, variants, shaderSheets, area);
+        var canvas=new PreviewCanvas(context, bitmaps, variants, shaderSheets, gameText, area);
         DrawWorld(canvas);
         if(IsPlaying)Profile.Complete(started,canvas.Submissions);
     }
@@ -623,7 +649,34 @@ public sealed partial class SceneViewport : Decorator
         canvas.FillRectangle(new RectangleF(box.Right - line, box.Top, line, box.Height), color);
     }
 
-    private sealed class PreviewCanvas(DrawingContext context, SpriteCache<Bitmap> images, SpriteVariants<Bitmap> variants, ShaderSheets<Bitmap> shaders, Rect area) : ISceneCanvas
+    private sealed class PreviewText : IDisposable
+    {
+        public readonly Engine.Desktop.GameTextRasterizer Renderer = new();
+        private readonly Dictionary<string,Bitmap> cache = [];
+        public bool Configured { get; private set; }
+        public void UseFonts(IReadOnlyList<string> paths)
+        {
+            if (Renderer.UseFonts(paths)) Clear();
+            Configured = paths.Count > 0;
+        }
+        public Bitmap Get(string text)
+        {
+            if (cache.TryGetValue(text, out var existing)) return existing;
+            if (cache.Count >= 256) Clear();
+            using var pixels = Renderer.Rasterize(text);
+            using var png = pixels.Encode(SkiaSharp.SKEncodedImageFormat.Png, 100);
+            using var stream = png.AsStream();
+            return cache[text] = new Bitmap(stream);
+        }
+        private void Clear()
+        {
+            foreach (var bitmap in cache.Values) bitmap.Dispose();
+            cache.Clear();
+        }
+        public void Dispose() { Clear(); Renderer.Dispose(); Configured = false; }
+    }
+
+    private sealed class PreviewCanvas(DrawingContext context, SpriteCache<Bitmap> images, SpriteVariants<Bitmap> variants, ShaderSheets<Bitmap> shaders, PreviewText fonts, Rect area) : ISceneCanvas
     {
         public long Submissions;
         public void DrawShader(ShaderClip shader,int frame,RectangleF r,System.Numerics.Matrix3x2 m,GameColor tint,bool additive)
@@ -669,10 +722,20 @@ public sealed partial class SceneViewport : Decorator
             Submissions++;context.FillRectangle(BrushOf(color), bounds);
         }
 
-        public float MeasureText(string text,float size)=>(float)new FormattedText(text,System.Globalization.CultureInfo.CurrentCulture,FlowDirection.LeftToRight,Typeface.Default,size,Brushes.White).WidthIncludingTrailingWhitespace;
+        public void UseFonts(IReadOnlyList<string> paths) => fonts.UseFonts(paths);
+        public float MeasureText(string text,float size)=> fonts.Configured ? fonts.Renderer.Measure(text,size) : (float)new FormattedText(text,System.Globalization.CultureInfo.CurrentCulture,FlowDirection.LeftToRight,Typeface.Default,size,Brushes.White).WidthIncludingTrailingWhitespace;
         public void DrawText(string text, float left, float top, float size, GameColor color)
         {
             if (text.Length == 0) return;
+            if (fonts.Configured)
+            {
+                var glyphs = fonts.Get(text);
+                var scale = size / Engine.Desktop.GameTextRasterizer.FontSize;
+                var bounds = new Rect(left, top, glyphs.PixelSize.Width * scale, glyphs.PixelSize.Height * scale);
+                using var mask = context.PushOpacityMask(new ImageBrush(glyphs) { Stretch = Stretch.Fill }, bounds);
+                Submissions++;context.FillRectangle(BrushOf(color), bounds);
+                return;
+            }
             var label = new FormattedText(text, System.Globalization.CultureInfo.CurrentCulture, FlowDirection.LeftToRight,
                 Typeface.Default, size, BrushOf(color));
             Submissions++;context.DrawText(label, new Point(left, top));

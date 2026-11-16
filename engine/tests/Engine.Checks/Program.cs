@@ -43,6 +43,7 @@ try
         await InventoryBuildChecks.Run(args[2], scratch, expectedProfile);
         return;
     }
+    if (args is [_, "--contacts-only"]) { ContactChecks.Run(project); return; }
     ContentBundleChecks.Run(scratch);
     GameModChecks.Run(scratch);
     ContentUpdateChecks.Run(scratch);
@@ -77,13 +78,18 @@ try
     AudioChecks.Run(repository,scratch);
     CameraChecks.Run(repository,scratch);
     CollisionChecks.Run(repository);
+    ContactChecks.Run(project);
     DiagnosticsChecks.Run(project);
     var animatorRoot=Path.Combine(scratch,"AnimatorTest");
     AnimatorChecks.Run(animatorRoot,Path.Combine(repository,"samples","AnimatorLab")); Directory.Delete(animatorRoot,true);
     var spriteRoot=Path.Combine(scratch,"SpriteTest");
     SpriteChecks.Run(spriteRoot,repository); Directory.Delete(spriteRoot,true);
     ScriptingChecks.Run(scratch);
+    SceneScriptDebugChecks.Run(scratch);
     InputMapChecks.Run(scratch);
+    InputModeChecks.Run(project);
+    SpriteSortingChecks.Run(project, scratch);
+    LocalizationChecks.Run(project, scratch);
     InputReplayChecks.CheckRecording(scratch);
     YamlChecks.Run(scratch);
     var tileRoot=Path.Combine(scratch,"TileTest");
@@ -187,7 +193,7 @@ try
     var to = Path.Combine(scratch, "Assets", "DoorMoved.png");
     File.Move(from, to);
     var reopened = SceneDocument.Load(sceneFile);
-    Check(reopened.Objects.Single(o => o.Name == "Door Panel").GetComponent<SpriteRendererComponent>()!.Asset == "Assets/DoorMoved.png", "move PNG without breaking sprite");
+    Check(reopened.Objects.Single(o => o.Name == "Door").GetComponent<SpriteRendererComponent>()!.Asset == "Assets/DoorMoved.png", "move PNG without breaking sprite");
     var previousScene = reopened.AssetId;
     using (var game = new GameSession(reopened))
     {
@@ -240,6 +246,9 @@ static void WalkGame(string file)
 {
     var scene = SceneDocument.Load(file);
     var start = scene.DefaultCameraId;
+    var gate = scene.Objects.Single(o => o.Name == "Door");
+    var initial = gate.GetComponent<SpriteRendererComponent>()!;
+    var closedSprite = initial.AssetId;
     var door = scene.Objects.Single(o => o.Name == "Door Camera").Id;
     using var session = new GameSession(scene);
     var error = ""; int sounds = 0;
@@ -260,12 +269,33 @@ static void WalkGame(string file)
     session.Current.Ui.Key("Return", true);
     session.FixedUpdate(Vector2.Zero, step);
     Check(!session.State.Has("controls"), "focused button ignores repeated keydown");
-    for (int i = 0; i < 18; i++) session.FixedUpdate(-Vector2.UnitX, step);
+    var world = session.Current;
+    bool GateHit() => world.Physics.Raycast(new(468, 130), Vector2.UnitX, 48)?.Target.ObjectId == gate.Id;
+    var probe = Shape2D.Circle(new(491, 130), 2);
+    Check(world.IsActive(gate.Id) && world.IsColliderEnabled(gate.Id) && GateHit(), "door collider initially blocks");
+    Check(world.SetSpriteTint(gate.Id, "#23A4F8") && world.GetComponent<SpriteRendererComponent>(gate.Id)?.Tint == "#23A4F8" &&
+        initial.Tint == null && !world.SetSpriteTint(gate.Id, "not-a-color") &&
+        !world.SetSprite(gate.Id, new SpriteReference(Guid.NewGuid())) && world.SetSpriteTint(gate.Id, null),
+        "runtime tint and invalid edits leave the authored renderer intact");
+    for (int i = 0; i < 60; i++) session.FixedUpdate(Vector2.UnitX, step);
+    var player = scene.Objects.Single(o => o.Name == "Player").Id;
+    Check(world.TryGetPosition(player, out var stopped) && Math.Abs(stopped.X - 440) < .01f && !session.State.Has("key"), "closed door stops the player's leading edge");
+    for (int i = 0; i < 70 && !session.State.Has("key"); i++) session.FixedUpdate(-Vector2.UnitX, step);
     Check(sounds == 1 && session.State.Has("key") && session.Current.ActiveCameraId == door, "pickup and door camera");
+    Check(world.IsActive(gate.Id) && !world.IsColliderEnabled(gate.Id) &&
+        world.GetComponent<SpriteRendererComponent>(gate.Id)?.Asset == "Assets/DoorOpen3.png" &&
+        !GateHit() && world.Physics.Overlap(probe).All(hit => hit.ObjectId != gate.Id) &&
+        world.Physics.Sweep(Shape2D.Circle(new(468,130), 2), new(40,0))?.Target.ObjectId != gate.Id,
+        "opened door stays active, changes sprite and leaves movement and physics queries");
+    Check(world.SetColliderEnabled(gate.Id, true) && GateHit() && world.SetColliderEnabled(gate.Id, false) && !GateHit(),
+        "re-enabling and disabling the same collider updates queries immediately");
+    Check(initial.AssetId == closedSprite && initial.Asset != "Assets/DoorOpen3.png", "open play instance preserves the authored door");
     var canvas = new CaptureCanvas();
     session.Draw(canvas, 1);
     Check(canvas.Images.Any(i => i.Path.EndsWith("Key.png") && i.Rect.X == 14), "screen-space key HUD");
     for (int i = 0; i < 60; i++) session.FixedUpdate(Vector2.Zero, step);
+    session.Draw(canvas, 1);
+    Check(canvas.Images.Any(i => Path.GetFileName(i.Path) == "DoorOpen3.png"), "finished animation draws the assigned open PNG");
     Check(session.Current.ActiveCameraId == start, "camera restored after one second");
     for (int i = 0; i < 115; i++) session.FixedUpdate(Vector2.UnitX, step);
     SceneStreamingChecks.Wait(session);
