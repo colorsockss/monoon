@@ -11,7 +11,7 @@
 
 두 배포용 앱을 일반 실행 모드로 열었다. 각 SDL 게임 창에 **T → 1 → S**를 입력하자 약초상이 약초 세 포기를 구해 달라는 대사를 표시했다. 양쪽 모두 화면에 저장 완료가 표시됐고, 각각의 독립 저장 슬롯에 대화 노드 `offer`가 기록됐다. [Release 화면](release.png) · [Native AOT 화면](native-aot.png) · [창 입력과 저장 기록](windows.txt)
 
-이 Mac에서 CI와 같은 tar 명령으로 배포 앱과 심볼을 따로 묶어 두 압축 파일을 열어 확인했다. 앱 묶음에는 두 플레이어의 실행 권한이 보존됐고 심볼은 0개였다. 심볼 묶음에서는 두 빌드 기록과 해당 PDB·dSYM을 찾았다. [워크플로](../../../../.github/workflows/build-regression.yml)
+이 Mac에서 CI와 같은 tar 명령으로 배포 앱과 심볼을 따로 묶어 두 압축 파일을 열어 확인했다. 앱 묶음에는 두 플레이어의 실행 권한이 보존됐고 심볼은 0개였다. 심볼 묶음에서는 두 빌드 기록과 해당 PDB·dSYM을 찾았다. [당시 워크플로](https://github.com/colorsockss/monoon/blob/6232209b5ce4a2c7516db0c8fd989ba63a8e77c5/.github/workflows/build-regression.yml)
 
 배포용 Native AOT 실행 파일에서 `InventoryWorkbench.FixedUpdate`의 명령어 주소를 구해 보관된 dSYM으로 `atos`를 실행했다. `0x1008cc0ec`가 `InventoryWorkbench.cs:40`으로 해석됐다. 개발용에서도 같은 소스 줄을 얻었다. Release PDB에는 해당 스크립트의 소스 줄 매핑이 있었다. 임시 복사본에서 다른 DLL의 PDB로 바꾸거나, 배포 앱 안에 PDB를 넣거나, 빌드 기록을 지우면 각각 검사가 종료 코드 1로 실패했다. [심볼 및 실패 경로 기록](symbols.txt)
 

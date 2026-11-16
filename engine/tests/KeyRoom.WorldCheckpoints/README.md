@@ -1,6 +1,6 @@
 # KeyRoom 월드 저장 회귀
 
-GitHub Actions의 **KeyRoom world checkpoints**는 macOS arm64, Windows x64, Linux x64에서 KeyRoom의 배포용 Release와 Native AOT를 각각 빌드한다. 각 입력은 새 게임 프로세스에서 `--replay-input`으로 창 없이 재생된다. F5·F9는 KeyRoom의 평소 저장·로드 액션을 거친다.
+로컬 검사기는 현재 플랫폼(macOS arm64, Windows x64 또는 Linux x64)에서 KeyRoom의 배포용 Release와 Native AOT를 각각 빌드한다. 각 입력은 새 게임 프로세스에서 `--replay-input`으로 창 없이 재생된다. F5·F9는 KeyRoom의 평소 저장·로드 액션을 거친다.
 
 | 입력 | 저장 파일에서 확인하는 상태 |
 | --- | --- |
@@ -9,9 +9,9 @@ GitHub Actions의 **KeyRoom world checkpoints**는 macOS arm64, Windows x64, Lin
 | F9 → 오른쪽으로 이동 → F5 | 코인을 먹고 첫 슬롯에 저장한다. 뚜껑은 비활성, 획득 플래그는 참, 저장한 프리팹은 0개다. |
 | F9 → F9 → E → 2 → F5 | 획득한 슬롯을 두 번 복원하고 상자 열기를 다시 시도한다. 새로 기록한 두 번째 슬롯이 획득 후 맥 기준과 일치해야 한다. |
 
-각 배포본은 이 맥의 Scene Play에서 저장한 미획득 슬롯도 별도 프로필로 읽고 다시 저장한다. 실행 결과와 두 빌드의 영수증은 `KeyRoom-world-<RID>` 아티팩트에 남는다. [미획득 기준](fixtures/pending.save) · [획득 후 기준](fixtures/collected.save)
+각 배포본은 이 맥의 Scene Play에서 저장한 미획득 슬롯도 별도 프로필로 읽고 다시 저장한다. 실행 결과와 두 빌드의 영수증은 지정한 결과 폴더에 남는다. [미획득 기준](fixtures/pending.save) · [획득 후 기준](fixtures/collected.save)
 
-로컬에서는 저장소 루트에서 다음과 같이 실행한다. 마지막 인자는 새 결과 폴더다.
+저장소 루트에서 다음과 같이 실행한다. 첫 인자는 현재 플랫폼에 맞춰 `osx-arm64`, `win-x64`, `linux-x64` 중 하나를 사용하고, 마지막 인자에는 새 결과 폴더를 지정한다.
 
 ```sh
 python3 engine/tests/KeyRoom.WorldCheckpoints/ci.py osx-arm64 /tmp/keyroom-world-results
