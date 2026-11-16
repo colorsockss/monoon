@@ -47,30 +47,33 @@ def capture(executable, environment, folder, mac_input):
             if mac_input:
                 def command(verb):
                     return [str(mac_input), verb, str(proc.pid)]
-                wait_for(lambda: subprocess.run(command("window"), capture_output=True).returncode == 0, "AudioLab window")
-                window_id = subprocess.check_output(command("window"), text=True).strip()
+                def focus_game():
+                    return subprocess.check_output(command("focus"), text=True).strip()
                 def press(key):
                     subprocess.run(command(key), check=True)
-                def screenshot():
+                def screenshot(window_id):
                     subprocess.run(["screencapture", "-x", "-o", "-l", window_id, str(folder / "after-f.png")], check=True)
             else:
                 sys.path.insert(0, str(DESKTOP))
                 from verify_editor import WindowsWindow, X11Window, focus, tap
                 window = (WindowsWindow if os.name == "nt" else X11Window)(proc, "AudioLab")
-                def press(key):
+                def focus_game():
                     # SDL may replace its initial window while the renderer starts.
                     wait_for(window.locate, "AudioLab input window")
                     focus(window)
+                def press(key):
                     tap(window, key)
-                def screenshot():
+                def screenshot(_):
                     window.capture().save(folder / "after-f.png")
             wait_for(lambda: frames() >= 4 * PERIOD + BLOCK * 4, "four music loops")
+            window_id = focus_game()
             before = frames()
             (folder / "before-f.txt").write_text(str(before))
             press("f")
             wait_for(lambda: frames() >= before + 24000, "fade after F")
             time.sleep(1)
-            screenshot()
+            screenshot(window_id)
+            focus_game()
             press("Escape")
             if proc.wait(timeout=15) != 0:
                 raise RuntimeError("AudioLab failed to exit normally")
