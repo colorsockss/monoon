@@ -10,7 +10,7 @@ import tempfile
 import time
 import zipfile
 
-from PIL import ImageChops
+from PIL import ImageChops, ImageGrab
 from verify import WindowsWindow, X11Window
 
 
@@ -74,6 +74,13 @@ def focus(window):
     window.focus()
 
 
+def named_windows(visible):
+    args = ["--onlyvisible"] if visible else []
+    result = subprocess.run(["xdotool", "search", *args, "--name", "^MoNoon$"],
+                            capture_output=True, text=True)
+    return set(result.stdout.splitlines())
+
+
 def compare_save(path, reference):
     actual = path.read_bytes()
     digest = hashlib.sha256(actual).hexdigest()
@@ -90,6 +97,7 @@ def exercise(executable, project, output, edit, reference):
     output.mkdir()
     profile = output / "profile"
     log = (output / "editor.log").open("wb")
+    existing = named_windows(False) if os.name != "nt" else set()
     proc = subprocess.Popen([str(executable), str(project)], cwd=executable.parent,
                             env=dict(os.environ, MONOON_USER_DATA=str(profile)), stdout=log, stderr=log)
     window = (WindowsWindow if os.name == "nt" else X11Window)(proc, "MoNoon")
@@ -97,7 +105,19 @@ def exercise(executable, project, output, edit, reference):
     def locate():
         if proc.poll() is not None:
             raise RuntimeError(f"Editor exited ({proc.returncode}). See {log.name}")
-        return window.locate()
+        if window.locate():
+            return True
+        if isinstance(window, X11Window):
+            # Some X11 clients omit _NET_WM_PID. Only accept a single new,
+            # visible MoNoon window and never target a different process ID.
+            candidates = named_windows(True) - existing
+            if len(candidates) == 1:
+                handle = candidates.pop()
+                owner = subprocess.run(["xdotool", "getwindowpid", handle], capture_output=True, text=True)
+                if owner.returncode or owner.stdout.strip() == str(proc.pid):
+                    window.handle = handle
+                    return True
+        return False
 
     def play(expected, name):
         window.click(*button)
@@ -153,6 +173,11 @@ def exercise(executable, project, output, edit, reference):
     except Exception:
         if window.handle and proc.poll() is None:
             window.capture().save(output / "failure.png")
+        elif isinstance(window, X11Window):
+            ImageGrab.grab(xdisplay=os.environ["DISPLAY"]).save(output / "desktop.png")
+            with (output / "x11-windows.txt").open("w") as report:
+                subprocess.run(["ps", "-p", str(proc.pid), "-o", "pid,stat,etime,pcpu,wchan,command"], stdout=report)
+                subprocess.run(["xwininfo", "-root", "-tree"], stdout=report, stderr=subprocess.STDOUT)
         raise
     finally:
         if proc.poll() is None:

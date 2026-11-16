@@ -139,7 +139,7 @@ jobs:
         if: runner.os == 'Linux'
         run: |
           sudo apt-get update
-          sudo apt-get install -y --no-install-recommends xvfb xauth xdotool
+          sudo apt-get install -y --no-install-recommends xvfb xauth xdotool x11-utils dbus-daemon
       - name: Package the native editor
         run: python engine/scripts/package-editor.py ${{ matrix.rid }} --output "${{ runner.temp }}/packages"
       - name: Package the editable KeyRoom project
@@ -156,7 +156,7 @@ jobs:
       - name: Edit, save, reopen and compare X11 Play checkpoints
         if: runner.os == 'Linux'
         run: >-
-          xvfb-run -a -s "-screen 0 1400x900x24"
+          xvfb-run -a -s "-screen 0 1400x900x24" dbus-run-session --
           python engine/tests/KeyRoom.Desktop/verify_editor.py
           "${{ runner.temp }}/editor/MoNoon" "${{ runner.temp }}/packages/KeyRoom-sample.zip"
           "${{ runner.temp }}/editor-results" --expected-save engine/tests/results/editor-packaging/collected.save
