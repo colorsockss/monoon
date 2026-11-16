@@ -57,9 +57,10 @@ def capture(executable, environment, folder, mac_input):
                 sys.path.insert(0, str(DESKTOP))
                 from verify_editor import WindowsWindow, X11Window, focus, tap
                 window = (WindowsWindow if os.name == "nt" else X11Window)(proc, "AudioLab")
-                wait_for(window.locate, "AudioLab window")
-                focus(window)
                 def press(key):
+                    # SDL may replace its initial window while the renderer starts.
+                    wait_for(window.locate, "AudioLab input window")
+                    focus(window)
                     tap(window, key)
                 def screenshot():
                     window.capture().save(folder / "after-f.png")
