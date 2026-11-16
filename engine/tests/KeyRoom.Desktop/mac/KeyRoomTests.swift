@@ -42,8 +42,7 @@ final class KeyRoomTests: XCTestCase {
             XCTAssertEqual(saved, expected, "\(evidence.path): \(saved.count) bytes SHA-256 \(digest)")
             print("PASS \(phase.lastPathComponent)/\(name).save: \(saved.count) bytes SHA-256 \(digest)")
         }
-        app.typeKey("i", modifierFlags: [])
-        keep(XCTAttachment(screenshot: app.screenshot()), as: "\(phase.lastPathComponent)-\(name)-inventory")
+        keep(XCTAttachment(screenshot: app.windows.firstMatch.screenshot()), as: "\(phase.lastPathComponent)-\(name)-play")
         stop.click()
         XCTAssertTrue(play.waitForExistence(timeout: 20), "Scene Play did not stop")
     }
@@ -75,12 +74,12 @@ final class KeyRoomTests: XCTestCase {
                 xField.coordinate(withNormalizedOffset: CGVector(dx: 0.2, dy: 0.5)).doubleClick()
                 app.typeText("190")
                 app.typeKey(XCUIKeyboardKey.return.rawValue, modifierFlags: [])
-                keep(XCTAttachment(screenshot: app.screenshot()), as: "entered-position")
+                keep(XCTAttachment(screenshot: app.windows.firstMatch.screenshot()), as: "entered-position")
                 app.menuBars.menuBarItems["File"].click()
                 app.menuItems["Save Scene"].click()
                 waitFor("Save Scene persisted Player X=190") { playerAt(190) }
             }
-            keep(XCTAttachment(screenshot: app.screenshot()), as: "\(name)-inspector")
+            keep(XCTAttachment(screenshot: app.windows.firstMatch.screenshot()), as: "\(name)-inspector")
             try checkPlay(app, phase: phase, name: name == "baseline" ? "original" : "edited",
                           expected: name == "baseline" ? nil : reference)
             app.terminate()
