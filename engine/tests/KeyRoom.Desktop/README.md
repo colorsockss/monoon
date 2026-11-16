@@ -18,3 +18,20 @@ Linux는 Debian x64의 X11 가상 디스플레이와 기본 SDL 렌더러, Windo
 이미 설치된 다른 x64 데스크톱에서도 `python verify.py GAME_DIRECTORY OUTPUT_DIRECTORY`로 게임을 검사할 수 있다. Pillow가 필요하며 Linux X11에서는 xdotool도 필요하다.
 
 2026-11-12: 이 Mac에서 두 게스트를 종료한 뒤 다시 부팅해 같은 YAML 배포본의 두 입력 경로를 재검증했다. Windows 오프라인 평가판 바탕화면에는 라이선스 만료 표시가 있었으며 실행·입력·캡처 검사는 통과했다. 장기 사용에는 유효한 라이선스 상태를 확인한다.
+
+## 배포 에디터 조작 회귀
+
+게임 창과 별도로 Windows·Linux용 에디터를 검사한다. 각 OS에서 배포 압축을 푼 뒤, Pillow가 있는 Python 3으로 아래 명령을 실행한다. 두 검사 스크립트는 같은 폴더에 둔다. 화면 배율 100%, 가려지지 않은 기본 크기의 에디터 창을 사용한다. Linux X11에서는 xdotool이 필요하다.
+
+```powershell
+python verify_editor.py .\editor\MoNoon.exe .\KeyRoom-sample.zip .\editor-result
+```
+
+```sh
+SDL_AUDIO_DRIVER=dummy xvfb-run -a -s "-screen 0 1400x900x24" \
+  python3 verify_editor.py ./editor/MoNoon ./KeyRoom-sample.zip ./editor-result
+```
+
+검사기는 새 결과 폴더 안에 샘플을 풀고 배포 실행 파일을 두 번 시작한다. 원래 배치는 이동 전 F5 저장에 `key: false`를 기록해야 한다. 검사기가 Inspector로 Player X를 190으로 바꾼 뒤 Ctrl+S를 보내면 씬 파일과 다음 실행의 Play에 그 값이 반영되어야 한다. 각 실행의 저장 폴더와 창 캡처를 결과 폴더에서 대조할 수 있다.
+
+GitHub Actions의 `KeyRoom packaged editor` 작업은 각 x64 러너에서 압축한 에디터를 소스 트리 밖에 풀어 같은 조작을 실행한다. `--expected-save`에 [Mac 기준 파일](../results/editor-packaging/collected.save)을 주면 편집 직후와 에디터 재시작 후의 F5 저장을 각각 전체 바이트로 비교한다. 불일치하면 작업이 실패하고 로그에 실제값과 기준값의 바이트 수와 SHA-256이 남는다. 실행 결과의 `KeyRoom-editor-<RID>-results` 아티팩트에는 창 캡처, 저장된 씬, F5 저장과 에디터 로그가 들어 있다.

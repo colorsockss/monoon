@@ -17,7 +17,8 @@ from PIL import Image, ImageChops, ImageGrab
 
 
 class X11Window:
-    def __init__(self, process):
+    def __init__(self, process, title="KeyRoom"):
+        self.title = title
         self.process = process
         self.handle = None
 
@@ -28,7 +29,7 @@ class X11Window:
     def locate(self):
         try:
             matches = self.command("search", "--onlyvisible", "--pid", self.process.pid).splitlines()
-            self.handle = next((w for w in matches if self.command("getwindowname", w) == "KeyRoom"), None)
+            self.handle = next((w for w in matches if self.command("getwindowname", w) == self.title), None)
         except subprocess.CalledProcessError:
             return False
         return self.handle is not None
@@ -58,7 +59,8 @@ class X11Window:
 
 
 class WindowsWindow:
-    def __init__(self, process):
+    def __init__(self, process, title="KeyRoom"):
+        self.title = title
         from ctypes import wintypes as wt
         self.process = process
         self.api = ctypes.windll.user32
@@ -77,7 +79,7 @@ class WindowsWindow:
             if pid.value == self.process.pid and self.api.IsWindowVisible(hwnd):
                 title = ctypes.create_unicode_buffer(256)
                 self.api.GetWindowTextW(hwnd, title, len(title))
-                if title.value == "KeyRoom":
+                if title.value == self.title:
                     self.handle = hwnd
                     return False
             return True
@@ -110,7 +112,9 @@ class WindowsWindow:
     def key(self, key, down):
         if down:
             self.focus()
-        vk = {"Left": 0x25, "Right": 0x27, "Up": 0x26, "Down": 0x28, "Tab": 9, "Return": 13}.get(key, ord(key.upper()) if len(key) == 1 else 0)
+        special = {"Left": 0x25, "Right": 0x27, "Up": 0x26, "Down": 0x28,
+                   "Tab": 9, "Return": 13, "Control_L": 0x11, "F5": 0x74, "Escape": 27}
+        vk = ord(key.upper()) if len(key) == 1 else special[key]
         scan = self.api.MapVirtualKeyW(vk, 0)
         extended = 1 if key in ("Left", "Right", "Up", "Down") else 0
         self.api.keybd_event(vk, scan, extended | (0 if down else 2), 0)
