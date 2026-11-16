@@ -231,3 +231,46 @@ jobs:
           name: AudioLab-${{ matrix.rid }}-playback
           path: ${{ runner.temp }}/audio-results/
           if-no-files-found: warn
+
+  keyroom-world:
+    name: KeyRoom world checkpoints / ${{ matrix.rid }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - runner: macos-15
+            rid: osx-arm64
+          - runner: windows-2022
+            rid: win-x64
+          - runner: ubuntu-24.04
+            rid: linux-x64
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-dotnet@v5
+        env:
+          DOTNET_INSTALL_DIR: ${{ runner.temp }}/monoon-dotnet
+        with:
+          dotnet-version: 10.0.101
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - name: Check Linux Native AOT prerequisites
+        if: runner.os == 'Linux'
+        run: |
+          if ! command -v clang || ! dpkg -s zlib1g-dev >/dev/null; then
+            sudo apt-get update
+            sudo apt-get install -y --no-install-recommends clang zlib1g-dev
+          fi
+      - name: Build both players and replay spawning, loading and collecting the coin
+        run: >-
+          python engine/tests/KeyRoom.WorldCheckpoints/ci.py
+          ${{ matrix.rid }} "${{ runner.temp }}/keyroom-world"
+      - name: Upload checkpoint saves and build receipts
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: KeyRoom-world-${{ matrix.rid }}
+          path: ${{ runner.temp }}/keyroom-world/
+          if-no-files-found: warn

@@ -1,0 +1,53 @@
+version: 1
+project: 64fb4cd6-2469-5cec-ba6d-9a49e61f42e7
+startScene: 64fb4cd6-2469-5cec-ba6d-9a49e61f42e7
+frameTicks: [166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667]
+events:
+- frame: 4
+  timeTicks: 666668
+  input:
+    kind: key
+    control: "E"
+    down: true
+- frame: 5
+  timeTicks: 833335
+  input:
+    kind: key
+    control: "E"
+    down: false
+- frame: 9
+  timeTicks: 1500003
+  input:
+    kind: key
+    control: "N"
+    down: true
+- frame: 10
+  timeTicks: 1666670
+  input:
+    kind: key
+    control: "N"
+    down: false
+- frame: 14
+  timeTicks: 2333338
+  input:
+    kind: key
+    control: "N"
+    down: true
+- frame: 15
+  timeTicks: 2500005
+  input:
+    kind: key
+    control: "N"
+    down: false
+- frame: 22
+  timeTicks: 3666674
+  input:
+    kind: key
+    control: "F5"
+    down: true
+- frame: 23
+  timeTicks: 3833341
+  input:
+    kind: key
+    control: "F5"
+    down: false

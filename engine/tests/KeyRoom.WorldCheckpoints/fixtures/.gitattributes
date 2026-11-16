@@ -1,0 +1,2 @@
+*.save -text
+*.inputreplay text eol=lf
