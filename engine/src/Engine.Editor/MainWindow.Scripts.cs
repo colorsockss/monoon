@@ -1,4 +1,5 @@
 using System.Globalization;
+using System.Numerics;
 using System.Text.Json;
 using Avalonia;
 using Avalonia.Automation;
@@ -60,6 +61,7 @@ public partial class MainWindow
             ToolTip.SetTip(panel, scripts.RelativePath(component.Script));
             inspectorSourceStamp = scripts.ChangeStamp();
             var definition = scripts.Get(component.Script);
+            AddGameEvents(panel, definition, component);
             foreach (var field in definition.Fields)
                 AddScriptField(panel, field, component);
         }
@@ -77,10 +79,16 @@ public partial class MainWindow
         {
             if (Viewport.IsPlaying || Equals(value, field.Value(component))) return;
             if (Equals(value, field.Default)) component.Values.Remove(field.Name);
+            else if (value is Vector2 v) component.Values[field.Name] = JsonSerializer.SerializeToElement(new { x = v.X, y = v.Y });
             else component.Values[field.Name] = JsonSerializer.SerializeToElement(value);
             MarkDirty(group);
         }
 
+        if (field.IsObjectList || field.IsAssetList)
+        {
+            panel.Children.Add(ReferenceList(field, component));
+            return;
+        }
         if (field.Type == typeof(bool))
         {
             var check = new CheckBox { Content = new TextBlock { Text = field.Name, TextTrimming = TextTrimming.CharacterEllipsis },
@@ -96,10 +104,46 @@ public partial class MainWindow
         row.Children.Add(new TextBlock { Text = field.Name, Classes = { "fieldLabel" },
             TextTrimming = TextTrimming.CharacterEllipsis });
         ToolTip.SetTip(row, field.Name);
-        string? assetExtension = field.Type == typeof(SceneReference) ? ProjectAssets.Scene :
-            field.Type == typeof(PrefabReference) ? ProjectAssets.Prefab :
-            field.Type == typeof(SpriteReference) ? ".png" :
-            field.Type == typeof(DataReference) ? ProjectAssets.Data : field.Type == typeof(TableReference) ? GameTable.Extension : null;
+        if (field.EnumNames is {} names)
+        {
+            var picker = new ComboBox { ItemsSource = names, SelectedItem = field.Value(component),
+                HorizontalAlignment = HorizontalAlignment.Stretch, PlaceholderText = "Select value" };
+            AutomationProperties.SetName(picker, field.Name);
+            picker.SelectionChanged += (_, _) => { if (picker.SelectedItem is string name) Store(name); };
+            Grid.SetColumn(picker, 1);
+            row.Children.Add(picker);
+            panel.Children.Add(row);
+            return;
+        }
+        if (field.Type == typeof(Vector2))
+        {
+            var axes = new Grid { ColumnDefinitions = new("Auto,*,Auto,*"), ColumnSpacing = 3 };
+            Vector2 Current() => (Vector2)field.Value(component)!;
+            void Axis(string axis, int column)
+            {
+                var label = new TextBlock { Text = axis, Classes = { "fieldLabel" } };
+                Grid.SetColumn(label,column);
+                axes.Children.Add(label);
+                string Coordinate() => (column == 0 ? Current().X : Current().Y).ToString("R", CultureInfo.InvariantCulture);
+                var input = new TextBox { Text = Coordinate(), MinWidth = 0 };
+                AutomationProperties.SetName(input, $"{field.Name} {axis}");
+                input.TextChanged += (_, _) =>
+                {
+                    if (float.TryParse(input.Text, NumberStyles.Float, CultureInfo.InvariantCulture, out float n) && float.IsFinite(n))
+                        Store(column == 0 ? new Vector2(n, Current().Y) : new Vector2(Current().X, n), input);
+                };
+                input.LostFocus += (_, _) => input.Text = Coordinate();
+                Grid.SetColumn(input,column+1);
+                axes.Children.Add(input);
+            }
+            Axis("X", 0);
+            Axis("Y", 2);
+            Grid.SetColumn(axes, 1);
+            row.Children.Add(axes);
+            panel.Children.Add(row);
+            return;
+        }
+        string? assetExtension = field.AssetExtension;
         if (field.Type == typeof(Guid) || assetExtension != null)
         {
             var id = field.Value(component) switch { SpriteReference sprite => sprite.Id, SceneReference sc => sc.Id, PrefabReference pf => pf.Id, DataReference data => data.Id, TableReference table => table.Id, Guid guid => guid, _ => Guid.Empty };

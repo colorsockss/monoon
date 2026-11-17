@@ -47,6 +47,28 @@ internal sealed class SheetGridView : Control
         SelectionChanged?.Invoke();
     }
 
+    internal void RestoreSelection(SpriteRegion[] previous)
+    {
+        selected.Clear();
+        if (image != null)
+        foreach (var region in previous)
+        {
+            if (slices != null)
+            {
+                int index = Array.FindIndex(slices, s => s.Source == region);
+                if (index >= 0) selected.Add((0, index));
+            }
+            else if (grid != null && region.Fits(image.PixelSize.Width, image.PixelSize.Height))
+            {
+                int col = (int)((region.X - grid.MarginX) / ((long)grid.Width + grid.GapX));
+                int row = (int)((region.Y - grid.MarginY) / ((long)grid.Height + grid.GapY));
+                if (col >= 0 && row >= 0 && grid.Region(col, row) == region) selected.Add((row, col));
+            }
+        }
+        InvalidateVisual();
+        SelectionChanged?.Invoke();
+    }
+
     private Rect SheetBounds()
     {
         if (image == null) return default;

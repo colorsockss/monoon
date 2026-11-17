@@ -28,19 +28,28 @@ public sealed partial class ScreenUi
             if(!Shown(n))continue;
             using var clip=n.Clip!=screen?canvas.PushClip(At(n.Clip)):null;
             var box=At(n.Box);var id=n.Object.Id;
+            ButtonPaint? paint = null;
             if(n.Button!=null||n.Field!=null)
-                canvas.FillRectangle(box,!Enabled(n)?Color.DimGray:pressed==id?Color.DarkSlateGray:Preferences.HighContrast?Color.Black:
-                    focus==id?Color.SteelBlue:Color.FromArgb(59,83,107));
+            {
+                var state = !Enabled(n) ? ButtonState.Disabled :
+                    (pressed == id && hovered == id || activationOwner == id && focus == id) ? ButtonState.Pressed :
+                    hovered == id ? ButtonState.Hover : focus == id ? ButtonState.Focused : ButtonState.Normal;
+                if (n.Palette != null) paint = n.Palette[(int)state];
+                canvas.FillRectangle(box, Preferences.HighContrast && Enabled(n) ? Color.Black : paint?.Fill ?? (state switch {
+                    ButtonState.Disabled => Color.DimGray, ButtonState.Pressed => Color.DarkSlateGray,
+                    ButtonState.Focused => Color.SteelBlue, _ => focus == id ? Color.SteelBlue : Color.FromArgb(59,83,107) }));
+            }
             if(n.Picture!=null)
             {
                 if(n.Picture.Sprite==null&&SceneObject.TryColor(n.Picture.Color,out var c))canvas.FillRectangle(box,c);
-                else if(n.Image==null||!canvas.DrawSprite(n.Image,box))canvas.FillRectangle(box,Color.Magenta);
+                else if(n.Image==null||!(n.Slice?.Draw(canvas,n.Image,box,scale) ?? canvas.DrawSprite(n.Image,box)))canvas.FillRectangle(box,Color.Magenta);
             }
             var label=n.Label;
             if(label!=null||n.Field!=null)
             {
                 float size=(label?.Size??16)*Preferences.TextScale*scale, tx=box.Left+(label?.InsetX??5)*scale, ty=box.Top+(label?.InsetY??2)*scale;
                 var ink=label!=null&&SceneObject.TryColor(label.Color,out var color)?color:Color.White;
+                if (paint is {} themed) ink = themed.Ink;
                 var text=Label(n);bool editing=edit==id;
                 if(Preferences.HighContrast){canvas.FillRectangle(box,Color.Black);ink=Color.White;}
                 if(n.Field!=null)

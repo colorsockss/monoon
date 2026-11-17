@@ -1,0 +1,17 @@
+<Project>
+  <Target Name="CheckPlayerReferences" AfterTargets="ResolveReferences">
+    <ItemGroup>
+      <_AuthoringReference Include="@(ReferencePath)"
+          Condition="'%(ReferencePath.Filename)' == 'SkiaSharp' or '%(ReferencePath.Filename)' == 'Engine.Authoring' or '%(ReferencePath.Filename)' == 'Microsoft.CodeAnalysis' or '%(ReferencePath.Filename)' == 'Microsoft.CodeAnalysis.CSharp'" />
+    </ItemGroup>
+    <Error Condition="'@(_AuthoringReference)' != ''"
+        Text="Game players must not reference authoring assemblies: @(_AuthoringReference->'%(Filename)', ', ')." />
+  </Target>
+
+  <!-- The SDK resolves the complete self-contained runtime for this RID. An old
+       publish directory may still contain files from previous dependencies. -->
+  <Target Name="WritePlayerFileList" AfterTargets="Publish" Condition="'$(PublishAot)' != 'true'">
+    <WriteLinesToFile File="$(PublishDir)/MoNoonPlayer.files"
+        Lines="@(ResolvedFileToPublish->'%(RelativePath)')" Overwrite="true" />
+  </Target>
+</Project>

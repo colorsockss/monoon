@@ -1,0 +1,10 @@
+{
+  "system": "Windows-11-10.0.26100-SP0",
+  "machine": "AMD64",
+  "mode": "native-aot",
+  "driver": "wasapi",
+  "playerSha256": "d762e7aea01470732117d6030d01213b4987f58f6715be289abc5a130d26a18b",
+  "musicSha256": "7b8c4c6b524b4d1f8c4b72553b6adc5b3b2dd5f7e38dcf8ae134b5b4862b5e7e",
+  "framesBeforeF": 236544,
+  "capturedFrames": 268800
+}

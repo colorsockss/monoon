@@ -1,0 +1,19 @@
+HOST Windows-11-10.0.26100-SP0 AMD64 usage(total=84933603328, used=28945440768, free=55988162560)
++ dotnet C:\MNSdlPlayer17\cli\MoNoon.Cli.dll build C:\MNSdlPlayer17\samples\KeyRoom release --profile distribution --target win-x64 --output C:\MNSdlPlayer17\local-after
+Building release (Distribution) for win-x64 from C:\MNSdlPlayer17\samples\KeyRoom
+Debug symbols: C:\MNSdlPlayer17\local-after\Symbols\KeyRoom\win-x64\release\5515a6cb28b54c27aa296d45b0456f8a
+C:\MNSdlPlayer17\local-after\KeyRoom-win-x64
+after release {'files': 258, 'folder': 89024459, 'zip': 39075443, 'sha256': '88e12405e4a7234838b1327f02e650496bfa4ca793c6dfedb98035b5ce094f67', 'rid': 'win-x64', 'mode': 'release', 'os': 'Windows-11-10.0.26100-SP0', 'arch': 'AMD64', 'skia': []}
++ C:\KeyRoomQA\payload\qa-runtime\python.exe -u -c import sys,os,runpy;sys.path.insert(0,os.getcwd());sys.argv=['play.py']+sys.argv[1:];runpy.run_path('play.py',run_name='__main__') C:\MNSdlPlayer17\local-after\KeyRoom-win-x64 C:\MNSdlPlayer17\local-results\release stock
+captured stock (800, 450)
+captured en (800, 450)
+captured ko (800, 450)
+large client (1284, 781)
++ C:\KeyRoomQA\payload\qa-runtime\python.exe -u -c import sys,os,runpy;sys.path.insert(0,os.getcwd());sys.argv=['play.py']+sys.argv[1:];runpy.run_path('play.py',run_name='__main__') C:\MNSdlPlayer17\mask-test\release\KeyRoom-win-x64 C:\MNSdlPlayer17\local-results\release mask
+captured masked (800, 450)
+large client (1284, 781)
++ dotnet C:\MNSdlPlayer17\cli\MoNoon.Cli.dll build C:\MNSdlPlayer17\samples\KeyRoom release --profile distribution --target win-x64 --output C:\MNSdlPlayer17\local-before
+Building release (Distribution) for win-x64 from C:\MNSdlPlayer17\samples\KeyRoom
+Debug symbols: C:\MNSdlPlayer17\local-before\Symbols\KeyRoom\win-x64\release\81c378c2f8644f4e8182caa849741289
+C:\MNSdlPlayer17\local-before\KeyRoom-win-x64
+before release {'files': 256, 'folder': 98810733, 'zip': 43048513, 'sha256': '35228bb20a4151b68c3ac4df8ae237d7ef009a5a9d53943925bfb94205b3e8c3', 'rid': 'win-x64', 'mode': 'release', 'os': 'Windows-11-10.0.26100-SP0', 'arch': 'AMD64', 'skia': ['libSkiaSharp.dll', 'SkiaSharp.dll']}

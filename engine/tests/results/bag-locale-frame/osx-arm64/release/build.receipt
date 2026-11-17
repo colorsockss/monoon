@@ -1,0 +1,17 @@
+version: 1
+values:
+  buildId: "7da328ea01054e86b74e0d667ac83404"
+  projectId: "64fb4cd6-2469-5cec-ba6d-9a49e61f42e7"
+  game: "KeyRoom"
+  target: "osx-arm64"
+  mode: "release"
+  profile: "distribution"
+  playerSha256: "C59788F7BEFAB08285BBE4A00987C0C0915A2A3B534199D5EEFF942C058C4957"
+  pdbId/MoNoonPlayer.dll: "ff662511-01fe-455a-bcf8-a3034cdbe313"
+  mvid/MoNoonPlayer.dll: "64ad15db-ebb0-4431-a23d-74be6d1cc661"
+  pdbId/Engine.Core.dll: "c9dc3f60-7dca-4c9d-86c0-3f46ea39be7d"
+  mvid/Engine.Core.dll: "76da1eaa-a0b4-4340-914c-7d576672b564"
+  pdbId/Engine.Desktop.dll: "2e3ccb1c-84aa-452e-b6bf-6b9cbde3a52b"
+  mvid/Engine.Desktop.dll: "bafe9bea-771f-4a35-90b4-86125fc133c9"
+  pdbId/Game/.monoon-compiled/MoNoon.GameScripts.dll: "662a1369-63d5-46a3-915a-65d7fc135425"
+  mvid/Game/.monoon-compiled/MoNoon.GameScripts.dll: "07102f1e-7ae5-4e0d-a3c0-0e6c70eb427d"

@@ -21,6 +21,11 @@ if (args is [_, "--check-vorbis-stream", var musicFile])
     VorbisChecks.CheckLongTrack(musicFile);
     return;
 }
+if (args is [_, "--check-shader-players", var releaseGame, var aotGame])
+{
+    BakedShaderChecks.ComparePlayers(repository, releaseGame, aotGame);
+    return;
+}
 if (args is [_, "--sprite-sample",var folderPath]) { SpriteChecks.Prepare(Path.GetFullPath(folderPath)); return; }
 var scratch = Directory.CreateTempSubdirectory("monoon-check-").FullName;
 var previousProfile = Environment.GetEnvironmentVariable("MONOON_USER_DATA");
@@ -72,6 +77,7 @@ try
     RigChecks.Run(repository,scratch);
     if (args.Contains("--rig-only")) return;
     EffectsChecks.Run(repository);
+    BakedShaderChecks.Run(repository, scratch);
     if (args.Contains("--effects-only")) return;
     NavigationChecks.Run(repository,scratch);
     if(args.Contains("--nav-only")) return;
@@ -85,6 +91,7 @@ try
     CameraChecks.Run(repository,scratch);
     CollisionChecks.Run(repository);
     ContactChecks.Run(project);
+    WorldPointerChecks.Run(project);
     DiagnosticsChecks.Run(project);
     var animatorRoot=Path.Combine(scratch,"AnimatorTest");
     AnimatorChecks.Run(animatorRoot,Path.Combine(repository,"samples","AnimatorLab")); Directory.Delete(animatorRoot,true);
@@ -116,11 +123,15 @@ try
     SceneStreamingChecks.Run(scratch, scene);
     PlayerDataChecks.Run(scratch, scene);
     WorldCheckpointChecks.Run(scene);
+    RuntimeTransformChecks.Run(scene);
     TimeChecks.Run(scene);
     TransformChecks.Run(scratch);
     UiChecks.Run(scene, scratch);
     AccessibilityChecks.Run();
+    UiThemeChecks.Run(project);
+    MultiInspectorChecks.Run(scratch);
     PrefabEditingChecks.Run(scratch);
+    GameEventChecks.Run(scratch);
     var original = scene.CaptureObjects();
     var main = scene.Camera!;
     var doorCam = scene.Objects.Single(o => o.Name == "Door Camera");

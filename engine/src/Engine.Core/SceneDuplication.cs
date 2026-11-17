@@ -4,7 +4,7 @@ public sealed partial class SceneDocument
 {
     public bool ContainsGameCamera(SceneObject root) => Cameras.Any(camera => camera.IsWithin(root));
 
-    public SceneObject DuplicateObject(SceneObject root, ProjectScripts? scripts = null)
+    public SceneObject DuplicateObject(SceneObject root, ScriptLibrary? scripts = null)
     {
         if (!Objects.Contains(root)) throw new ArgumentException("Select an object from this scene.", nameof(root));
 

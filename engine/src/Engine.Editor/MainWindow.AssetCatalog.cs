@@ -14,15 +14,60 @@ public partial class MainWindow
     private FileSystemWatcher? catalogWatcher;
     private string[]? catalogFiles;
     private int catalogDirty=1;
+    private ProjectSpriteMonitor? spriteMonitor;
+    private bool refreshSceneReferences;
+
     private void WatchCatalog(string? root)
     {
-        catalogWatcher?.Dispose();catalogWatcher=null;catalogFiles=null;catalogDirty=1;
-        if(root==null)return;
-        var watch=new FileSystemWatcher(root){IncludeSubdirectories=true,NotifyFilter=NotifyFilters.DirectoryName|NotifyFilters.FileName};
-        void Mark(object? _, FileSystemEventArgs e)=>Interlocked.Exchange(ref catalogDirty,1);
-        watch.Created+=Mark;watch.Deleted+=Mark;watch.Renamed+=Mark;
-        watch.Error+=(_,_)=>Interlocked.Exchange(ref catalogDirty,1);
-        catalogWatcher=watch;watch.EnableRaisingEvents=true;
+        catalogWatcher?.Dispose();
+        spriteMonitor?.Dispose();
+        catalogWatcher = null;
+        spriteMonitor = null;
+        catalogFiles = null;
+        catalogDirty = 1;
+        if (root == null) return;
+        var monitor = new ProjectSpriteMonitor(root, ApplyImportedAssets, message => { LogError(message); Status.Text = message; });
+        spriteMonitor = monitor;
+        var watch = new FileSystemWatcher(root) { IncludeSubdirectories = true,
+            NotifyFilter = NotifyFilters.DirectoryName | NotifyFilters.FileName | NotifyFilters.LastWrite | NotifyFilters.Size };
+        bool Relevant(string? path)
+        {
+            if (path == null) return false;
+            var parts = path.Replace(Path.DirectorySeparatorChar, '/').Split('/');
+            if (parts.Any(p => p.StartsWith('.') || p is "bin" or "obj" or "build" or "Builds")) return false;
+            return SpriteAssets.IsPng(path) || path.EndsWith(".png.meta", StringComparison.OrdinalIgnoreCase) ||
+                path.EndsWith(SpriteAtlas.Extension, StringComparison.OrdinalIgnoreCase) || !Path.HasExtension(path);
+        }
+        void Changed(object? sender, FileSystemEventArgs e)
+        {
+            if (e.ChangeType != WatcherChangeTypes.Changed) Interlocked.Exchange(ref catalogDirty, 1);
+            if (Relevant(e.Name) || e is RenamedEventArgs renamed && Relevant(renamed.OldName)) monitor.Request();
+        }
+        watch.Changed += Changed;
+        watch.Created += Changed;
+        watch.Deleted += Changed;
+        watch.Renamed += Changed;
+        watch.Error += (_, _) => { Interlocked.Exchange(ref catalogDirty, 1); monitor.Request(); };
+        catalogWatcher = watch;
+        watch.EnableRaisingEvents = true;
+        monitor.Request();
+    }
+
+    private void ApplyImportedAssets(ProjectAssets assets)
+    {
+        clipEditor?.SetCatalog(assets);
+        RefreshProjectPreview(assets);
+        if (Viewport.RefreshTileAssets(assets) && !Viewport.IsPlaying) RefreshComponentList();
+        if (!refreshSceneReferences || prefabSource != null || Viewport.IsPlaying || busy) return;
+        refreshSceneReferences = false;
+        var before = Scene.CaptureObjects();
+        var selection = Selected?.Id;
+        Scene.RefreshPrefabs(assets);
+        Scene.ResolveAssets(assets);
+        if (Scene.CaptureObjects() == before) return;
+        RebuildHierarchy(Scene.Objects.FirstOrDefault(o => o.Id == selection));
+        MarkDirty();
+        Viewport.ClearSprites();
     }
 
     private async Task ChooseAssets()

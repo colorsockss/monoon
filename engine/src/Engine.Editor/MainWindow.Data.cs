@@ -41,7 +41,8 @@ public partial class MainWindow
         Window editor = dialogue ? new DialogueWindow(relative,original,Write) : new ValuesWindow(relative,original,table) { Write = Write };
         if (await editor.ShowDialog<string?>(this) is not {} saved) return;
         var assets = ProjectAssets.Scan(root);
-        if (Scene.Settings.Localization?.Table is Guid textTable && saved == assets.PathFor(textTable))
+        if (saved == assets.PathFor(Scene.Settings.Localization?.Table ?? Guid.Empty) ||
+            saved == assets.PathFor(Scene.Settings.UiTheme ?? Guid.Empty))
             Viewport.InvalidateUi();
         var savedPath = Path.Combine(root, saved);
         var edit = new PrefabFileEdit(savedPath, before!, PrefabFileEdit.Read(savedPath));

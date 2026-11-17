@@ -1,5 +1,6 @@
 <Solution>
   <Folder Name="/src/">
+    <Project Path="src/Engine.Authoring/Engine.Authoring.csproj" />
     <Project Path="src/Engine.Cli/Engine.Cli.csproj" />
     <Project Path="src/Engine.Player/Engine.Player.csproj" />
     <Project Path="src/Engine.Core/Engine.Core.csproj" />

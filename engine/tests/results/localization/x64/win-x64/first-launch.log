@@ -1,0 +1,91 @@
+
+Microsoft Windows [Version 10.0.26100.1742]
+HOST Windows-11-10.0.26100-SP0 AMD64
++ dotnet --version
+10.0.101
++ dotnet publish C:\MNLocale67\engine\src\Engine.Player -r win-x64 --self-contained true -c Release -p:NuGetAudit=false -p:UseSharedCompilation=false -nr:false -m:1 -o C:\MNLocale67\templates\win-x64
+  Determining projects to restore...
+  Restored C:\MNLocale67\engine\src\Engine.Player\Engine.Player.csproj (in 7.41 sec).
+  Restored C:\MNLocale67\engine\src\Engine.Core\Engine.Core.csproj (in 6.77 sec).
+  Restored C:\MNLocale67\engine\src\Engine.Desktop\Engine.Desktop.csproj (in 7.42 sec).
+C:\MNLocale67\engine\.artifacts\obj\Engine.Core\release\VYaml.SourceGenerator\VYaml.SourceGenerator.VYamlIncrementalSourceGenerator\Engine.Core.BoxCollider2DComponent.YamlFormatter.g.cs(23,29): warning CS0108: 'BoxCollider2DComponent.__RegisterVYamlFormatter()' hides inherited member 'SceneComponent.__RegisterVYamlFormatter()'. Use the new keyword if hiding was intended. [C:\MNLocale67\engine\src\Engine.Core\Engine.Core.csproj]
+C:\MNLocale67\engine\.artifacts\obj\Engine.Core\release\VYaml.SourceGenerator\VYaml.SourceGenerator.VYamlIncrementalSourceGenerator\Engine.Core.CircleCollider2DComponent.YamlFormatter.g.cs(23,29): warning CS0108: 'CircleCollider2DComponent.__RegisterVYamlFormatter()' hides inherited member 'SceneComponent.__RegisterVYamlFormatter()'. Use the new keyword if hiding was intended. [C:\MNLocale67\engine\src\Engine.Core\Engine.Core.csproj]
+C:\MNLocale67\engine\.artifacts\obj\Engine.Core\release\VYaml.SourceGenerator\VYaml.SourceGenerator.VYamlIncrementalSourceGenerator\Engine.Core.PolygonCollider2DComponent.YamlFormatter.g.cs(23,29): warning CS0108: 'PolygonCollider2DComponent.__RegisterVYamlFormatter()' hides inherited member 'SceneComponent.__RegisterVYamlFormatter()'. Use the new keyword if hiding was intended. [C:\MNLocale67\engine\src\Engine.Core\Engine.Core.csproj]
+  Engine.Core -> C:\MNLocale67\engine\.artifacts\bin\Engine.Core\release\Engine.Core.dll
+  Engine.Desktop -> C:\MNLocale67\engine\.artifacts\bin\Engine.Desktop\release\Engine.Desktop.dll
+  Engine.Player -> C:\MNLocale67\engine\.artifacts\bin\Engine.Player\release_win-x64\MoNoonPlayer.dll
+  Engine.Player -> C:\MNLocale67\templates\win-x64\
++ dotnet build C:\MNLocale67\engine\src\Engine.Cli -c Release -p:NuGetAudit=false -p:UseSharedCompilation=false -nr:false -m:1 -o C:\MNLocale67\cli
+  Determining projects to restore...
+  Restored C:\MNLocale67\engine\src\Engine.Core\Engine.Core.csproj (in 2.7 sec).
+  Restored C:\MNLocale67\engine\src\Engine.Cli\Engine.Cli.csproj (in 2.7 sec).
+  Restored C:\MNLocale67\engine\src\Engine.Desktop\Engine.Desktop.csproj (in 2.7 sec).
+C:\MNLocale67\engine\.artifacts\obj\Engine.Core\release\VYaml.SourceGenerator\VYaml.SourceGenerator.VYamlIncrementalSourceGenerator\Engine.Core.BoxCollider2DComponent.YamlFormatter.g.cs(23,29): warning CS0108: 'BoxCollider2DComponent.__RegisterVYamlFormatter()' hides inherited member 'SceneComponent.__RegisterVYamlFormatter()'. Use the new keyword if hiding was intended. [C:\MNLocale67\engine\src\Engine.Core\Engine.Core.csproj]
+C:\MNLocale67\engine\.artifacts\obj\Engine.Core\release\VYaml.SourceGenerator\VYaml.SourceGenerator.VYamlIncrementalSourceGenerator\Engine.Core.CircleCollider2DComponent.YamlFormatter.g.cs(23,29): warning CS0108: 'CircleCollider2DComponent.__RegisterVYamlFormatter()' hides inherited member 'SceneComponent.__RegisterVYamlFormatter()'. Use the new keyword if hiding was intended. [C:\MNLocale67\engine\src\Engine.Core\Engine.Core.csproj]
+C:\MNLocale67\engine\.artifacts\obj\Engine.Core\release\VYaml.SourceGenerator\VYaml.SourceGenerator.VYamlIncrementalSourceGenerator\Engine.Core.PolygonCollider2DComponent.YamlFormatter.g.cs(23,29): warning CS0108: 'PolygonCollider2DComponent.__RegisterVYamlFormatter()' hides inherited member 'SceneComponent.__RegisterVYamlFormatter()'. Use the new keyword if hiding was intended. [C:\MNLocale67\engine\src\Engine.Core\Engine.Core.csproj]
+  Engine.Core -> C:\MNLocale67\cli\Engine.Core.dll
+  Engine.Desktop -> C:\MNLocale67\cli\Engine.Desktop.dll
+  Engine.Cli -> C:\MNLocale67\cli\MoNoon.Cli.dll
+
+Build succeeded.
+
+C:\MNLocale67\engine\.artifacts\obj\Engine.Core\release\VYaml.SourceGenerator\VYaml.SourceGenerator.VYamlIncrementalSourceGenerator\Engine.Core.BoxCollider2DComponent.YamlFormatter.g.cs(23,29): warning CS0108: 'BoxCollider2DComponent.__RegisterVYamlFormatter()' hides inherited member 'SceneComponent.__RegisterVYamlFormatter()'. Use the new keyword if hiding was intended. [C:\MNLocale67\engine\src\Engine.Core\Engine.Core.csproj]
+C:\MNLocale67\engine\.artifacts\obj\Engine.Core\release\VYaml.SourceGenerator\VYaml.SourceGenerator.VYamlIncrementalSourceGenerator\Engine.Core.CircleCollider2DComponent.YamlFormatter.g.cs(23,29): warning CS0108: 'CircleCollider2DComponent.__RegisterVYamlFormatter()' hides inherited member 'SceneComponent.__RegisterVYamlFormatter()'. Use the new keyword if hiding was intended. [C:\MNLocale67\engine\src\Engine.Core\Engine.Core.csproj]
+C:\MNLocale67\engine\.artifacts\obj\Engine.Core\release\VYaml.SourceGenerator\VYaml.SourceGenerator.VYamlIncrementalSourceGenerator\Engine.Core.PolygonCollider2DComponent.YamlFormatter.g.cs(23,29): warning CS0108: 'PolygonCollider2DComponent.__RegisterVYamlFormatter()' hides inherited member 'SceneComponent.__RegisterVYamlFormatter()'. Use the new keyword if hiding was intended. [C:\MNLocale67\engine\src\Engine.Core\Engine.Core.csproj]
+    3 Warning(s)
+    0 Error(s)
+
+Time Elapsed 00:02:50.98
++ dotnet C:\MNLocale67\cli\MoNoon.Cli.dll build C:\MNLocale67\samples\KeyRoom release --profile distribution --target win-x64 --output C:\MNLocale67\exports
+Building release (Distribution) for win-x64 from C:\MNLocale67\samples\KeyRoom
+Debug symbols: C:\MNLocale67\exports\Symbols\KeyRoom\win-x64\release\d01294c11f9e4ad88eecd419619d1442
+C:\MNLocale67\exports\KeyRoom-win-x64
++ dotnet C:\MNLocale67\cli\MoNoon.Cli.dll build C:\MNLocale67\samples\KeyRoom native-aot --profile distribution --target win-x64 --output C:\MNLocale67\exports
+Building native-aot (Distribution) for win-x64 from C:\MNLocale67\samples\KeyRoom
+Debug symbols: C:\MNLocale67\exports\Symbols\KeyRoom\win-x64\native-aot\a5fa3e9bbc0545b380516294a2244fc2
+C:\MNLocale67\exports\NativeAOT\KeyRoom-win-x64
++ C:\KeyRoomQA\payload\qa-runtime\python.exe -u -c import sys,os,runpy;sys.path.insert(0,os.getcwd());sys.argv=['play.py']+sys.argv[1:];runpy.run_path('play.py',run_name='__main__') C:\MNLocale67\exports\KeyRoom-win-x64 C:\MNLocale67\results\release
+Traceback (most recent call last):
+  File "<string>", line 1, in <module>
+    import sys,os,runpy;sys.path.insert(0,os.getcwd());sys.argv=['play.py']+sys.argv[1:];runpy.run_path('play.py',run_name='__main__')
+                                                                                         ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen runpy>", line 287, in run_path
+  File "<frozen runpy>", line 98, in _run_module_code
+  File "<frozen runpy>", line 88, in _run_code
+  File "play.py", line 73, in <module>
+    if __name__=='__main__':run_game(Path(sys.argv[1]),Path(sys.argv[2]))
+                            ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "play.py", line 46, in run_game
+    win.focus();win.resize(800,450)
+    ~~~~~~~~~^^
+  File "C:\MNLocale67\verify.py", line 108, in focus
+    raise RuntimeError("KeyRoom could not acquire keyboard focus")
+RuntimeError: KeyRoom could not acquire keyboard focus
+FAILED release
++ C:\KeyRoomQA\payload\qa-runtime\python.exe -u -c import sys,os,runpy;sys.path.insert(0,os.getcwd());sys.argv=['play.py']+sys.argv[1:];runpy.run_path('play.py',run_name='__main__') C:\MNLocale67\exports\NativeAOT\KeyRoom-win-x64 C:\MNLocale67\results\native-aot
+Traceback (most recent call last):
+  File "<string>", line 1, in <module>
+    import sys,os,runpy;sys.path.insert(0,os.getcwd());sys.argv=['play.py']+sys.argv[1:];runpy.run_path('play.py',run_name='__main__')
+                                                                                         ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen runpy>", line 287, in run_path
+  File "<frozen runpy>", line 98, in _run_module_code
+  File "<frozen runpy>", line 88, in _run_code
+  File "play.py", line 73, in <module>
+    if __name__=='__main__':run_game(Path(sys.argv[1]),Path(sys.argv[2]))
+                            ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "play.py", line 46, in run_game
+    win.focus();win.resize(800,450)
+    ~~~~~~~~~^^
+  File "C:\MNLocale67\verify.py", line 108, in focus
+    raise RuntimeError("KeyRoom could not acquire keyboard focus")
+RuntimeError: KeyRoom could not acquire keyboard focus
+FAILED native-aot
+Traceback (most recent call last):
+  File "C:\MNLocale67\build.py", line 29, in <module>
+    try: run(*cmd)
+         ~~~^^^^^^
+  File "C:\MNLocale67\build.py", line 9, in run
+    subprocess.run(args,check=True)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "subprocess.py", line 577, in run
+subprocess.CalledProcessError: Command '('C:\\KeyRoomQA\\payload\\qa-runtime\\python.exe', '-u', '-c', "import sys,os,runpy;sys.path.insert(0,os.getcwd());sys.argv=['play.py']+sys.argv[1:];runpy.run_path('play.py',run_name='__main__')", 'C:\\MNLocale67\\exports\\NativeAOT\\KeyRoom-win-x64', 'C:\\MNLocale67\\results\\native-aot')' returned non-zero exit status 1.

@@ -29,6 +29,10 @@ public interface IGameObjects
     bool IsActive(Guid id);
     bool TryGetPosition(Guid id, out Vector2 position);
     bool TryGetWorldMatrix(Guid id, out Matrix3x2 transform);
+    bool TryGetLocalTransform(Guid id, out LocalTransform2D transform);
+    bool SetLocalTransform(Guid id, LocalTransform2D transform);
+    bool TryGetParent(Guid id, out Guid? parent);
+    bool SetParent(Guid id, Guid? parent, bool keepWorld = true);
     GameTable ReadTable(TableReference asset);
     GameData ReadData(DataReference asset);
     bool HasScript(Guid id, string script);
@@ -47,7 +51,7 @@ public sealed partial class SceneGame
 {
     private readonly SceneDocument world;
     private readonly ProjectAssets? assets;
-    private readonly ProjectScripts? library;
+    private readonly ScriptLibrary? library;
     private readonly Func<ScriptComponent, GameBehaviour>? compiledScripts;
     private readonly Dictionary<Guid, Body> byId = [];
     private readonly Dictionary<Guid, TilePalette> palettes = [];
@@ -173,9 +177,7 @@ public sealed partial class SceneGame
             body.Origin = origin;
             body.SceneOwner = owner == null ? executingScene : owner.SceneOwner;
             body.Active = p?.Active ?? true;
-            body.Angle = p?.Angle ?? 0;
-            body.Position = p == null ? obj.WorldPosition : Vector2.Transform(obj.LocalMatrix.Translation, p.MatrixAt(p.Position));
-            body.BeginStep();
+            body.SetWorldPose(obj.LocalMatrix * (p?.MatrixAt(p.Position) ?? Matrix3x2.Identity), p?.Angle ?? 0);
             staged.Add(src.Id, body);
         }
         // Runtime prefab resources can be absent from the scene's initial asset list.
@@ -265,6 +267,12 @@ public sealed partial class SceneGame
         if (closing || !byId.TryGetValue(id, out var root) || removed.Contains(id)) return false;
         if (root.ActiveSelf == active) return true;
         root.ActiveSelf = active;
+        RefreshActive(root);
+        return true;
+    }
+
+    private void RefreshActive(Body root)
+    {
         var changed = new List<Body>();
         foreach (var obj in world.ParentFirst(root.Source))
         {
@@ -272,11 +280,10 @@ public sealed partial class SceneGame
             var next = !removed.Contains(obj.Id) && body.ActiveSelf && (obj.ParentId == null || byId[obj.ParentId.Value].Active);
             if (next != body.Active) { body.Active = next; if (!next) { body.ContactRevision++; Silence(body); body.Particles?.Reset(); } changed.Add(body); }
         }
-        if (!active) { changed.Reverse(); Ui.ValidateInputModes(); }
-        foreach (var body in changed) QueueLife(body, active ? LifeEvent.Enable : LifeEvent.Disable);
+        if (!root.Active) { changed.Reverse(); Ui.ValidateInputModes(); }
+        foreach (var body in changed) QueueLife(body, body.Active ? LifeEvent.Enable : LifeEvent.Disable);
         HierarchyRevision++;
         FlushLife();
-        return true;
     }
 
     private void CommitChanges()

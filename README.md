@@ -1,6 +1,6 @@
 # MoNoon Engine · BRUTAL 기반 2D 게임 엔진
 
-**MoNoon**은 Mac에서 직접 열어 2D 게임을 만드는 데스크톱 에디터다. 프로젝트 폴더를 열고, 장면에 오브젝트를 배치하고, Inspector에서 속성을 바꾼 뒤 Play로 테스트할 수 있다. `KeyRoom`은 이 엔진으로 여는 예제 게임 프로젝트다. Windows x64와 Linux x64도 이식 대상에 포함한다.
+**MoNoon**은 macOS arm64, Windows x64, Linux x64에서 실행하는 2D 게임 에디터다. 프로젝트 폴더를 열고, 장면에 오브젝트를 배치하고, Inspector에서 속성을 바꾼 뒤 Play로 테스트할 수 있다. `KeyRoom`은 이 엔진으로 여는 예제 게임 프로젝트다.
 
 [사용자 매뉴얼](docs/manual/README.md) · [타일맵과 타일셋 사용법](docs/manual/tilemaps.md)
 
@@ -9,9 +9,10 @@
 | 하려는 일 | 위치 |
 | --- | --- |
 | 엔진 개발 | [engine/](engine/) — [엔진 솔루션](engine/MoNoonEngine.slnx), 소스, 네이티브 라이브러리, 빌드 스크립트, 테스트 |
-| 에디터 실행 | [editor/MoNoon.app](editor/MoNoon.app) — Apple Silicon Mac에서 더블클릭 |
+| 에디터 실행 | [Mac 앱](editor/MoNoon.app) · [Windows x64 ZIP](editor/MoNoon-win-x64.zip) · [Linux x64 tar.gz](editor/MoNoon-linux-x64.tar.gz) · [패키지 생성과 샘플 열기](docs/manual/editor.md#데스크톱-배포-에디터) |
 | 게임 빌드용 플레이어 템플릿 | [player-templates/](player-templates/) — `osx-arm64`, `win-x64`, `linux-x64` 중 내보낼 플랫폼의 폴더를 사용 |
-| 샘플 편집 | [samples/KeyRoom/](samples/KeyRoom/) — 에디터에서 열 장면, 에셋, C# 스크립트 |
+| 샘플 편집 | [KeyRoom 프로젝트](samples/KeyRoom/) · [편집용 샘플 ZIP](samples/dist/KeyRoom-sample.zip) |
+| 월드 오브젝트 클릭·드래그 | KeyRoom 첫 방에서 Play 후 **F8**을 눌러 상자 두 개와 확대 카메라를 조작한다. [조작법](docs/manual/input-actions.md#월드-오브젝트-클릭과-드래그) |
 | 선택형 인벤토리 | [InventoryLab](samples/InventoryLab/)에서 아이템을 담고 사용하거나, [패키지](packages/Inventory.monopackage)를 다른 프로젝트로 가져온다. [사용법](docs/manual/inventory.md) |
 | 선택형 퀘스트 | InventoryLab에서 약초 수집 의뢰를 받고 보상을 수령한다. [퀘스트 패키지](packages/Quests.monopackage) · [사용법](docs/manual/quests.md) |
 | 선택형 대화 | InventoryLab의 약초상 대사와 선택지를 편집하고 대화로 의뢰와 보상을 받는다. [대화 패키지](packages/Dialogue.monopackage) · [사용법](docs/manual/dialogue.md) |

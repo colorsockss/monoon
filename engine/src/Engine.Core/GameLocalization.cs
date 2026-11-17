@@ -29,6 +29,7 @@ internal sealed class GameLocalization
     private readonly Dictionary<string, int> languages = new(StringComparer.OrdinalIgnoreCase);
     private readonly Dictionary<string, string[]> messages = new(StringComparer.Ordinal);
     private readonly string fallback;
+    internal IEnumerable<string> Messages => messages.Values.SelectMany(values => values);
     public IReadOnlyList<string> Fonts { get; }
     private GameLocalization(string fallback = "en", string[]? fonts = null) => (this.fallback, Fonts) = (fallback, fonts ?? []);
     internal static bool IsLanguageTag(string? tag) => tag is { Length: > 0 and <= 64 } &&

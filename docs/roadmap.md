@@ -30,4 +30,43 @@
 | 5.2 | 배포·유지보수 | [데스크톱 3종 로컬 검증](manual/build.md#로컬-회귀-검사), [로컬 콘텐츠 번들](manual/build.md#콘텐츠-번들), [데이터 모드](manual/build.md#데이터-모드), [콘텐츠 업데이트](manual/build.md#콘텐츠-업데이트), [크래시 진단](manual/build.md#크래시-진단) 구현. [InventoryLab 번들 검증](../engine/tests/results/content-bundles/README.md) · [모드 전환 검증](../engine/tests/results/data-mods/README.md) · [업데이트 적용과 실패 복구 검증](../engine/tests/results/content-updates/README.md) · [Release와 Native AOT의 오류 줄 대조](../engine/tests/results/crash-diagnostics/README.md). [InventoryLab API 문서](manual/api.md)와 [기존 프로젝트 업그레이드 가이드](manual/upgrade.md) 작성 완료. [콘텐츠 버전 31 → 35 macOS·Windows·Linux 빌드·저장 검증](verification/inventorylab-upgrade.md) |
 | 5.2 | 모바일·웹 타깃 | **보류.** BRUTAL이 Android, iOS, 웹을 각각 공식 지원할 때 해당 타깃의 개발을 재개한다. |
 
+## 6. 데스크톱 게임 제작에서 남은 기능
+
+| 순서 | 기능 | 상태와 완료 기준 |
+| --- | --- | --- |
+| 6.1 | 런타임 컴포넌트 속성 변경 | 구현 완료. 스크립트에서 Sprite Renderer의 PNG·색상과 2D 충돌체의 활성 상태를 바꾼다. KeyRoom 문은 활성 상태로 남고 Stop 후에는 원본으로 돌아간다. [API와 조작법](manual/scripting.md#플레이-중-스프라이트와-충돌체-바꾸기) · [Mac에서 세 실행 경로 검증](../engine/tests/results/runtime-components/README.md) |
+| 6.2 | 참조를 보존하는 에셋 이동·이름 변경 | 구현 완료. Project 패널에서 파일·폴더를 옮기거나 이름을 변경하면 PNG와 스크립트 참조가 새 경로를 가리킨다. 변경마다 Undo 한 번으로 복원한다. [조작법](manual/project-assets.md#에셋-이동과-이름-변경) · [Mac KeyRoom 검증](../engine/tests/results/project-moves/README.md) |
+| 6.3 | 외부 IDE 게임 스크립트 디버깅 | 구현 완료. 게임별 C# 솔루션을 생성하고 VS Code에서 Scene Play에 연결해 줄 중단점을 걸고 변수를 조회한 뒤 재개한다. [연결 방법](manual/scripting.md#외부-ide로-scene-play-디버깅) · [Mac KeyRoom 검증](../engine/tests/results/ide-debugging/README.md) |
+| 6.4 | 충돌·트리거의 진입·유지·이탈 이벤트 | 구현 완료. 충돌·트리거의 Enter·Stay·Exit를 양쪽 오브젝트에 전달한다. KeyRoom 두 번째 방에서 플레이어와 상자가 압력판 문을 열고 마지막 물체가 나가면 닫힌다. [스크립트 API와 조작법](manual/collision.md#진입유지이탈-이벤트) · [Mac Scene Play·Release·Native AOT 검증](../engine/tests/results/contact-events/README.md) |
+| 6.5 | 입력 모드 전환과 복귀 | 구현 완료. KeyRoom 첫 방에서 인벤토리와 나침반 확인창을 겹쳐 열고, 맨 위 창을 닫으면 이전 포커스와 조작이 돌아온다. [입력 모드 API와 조작법](manual/input-actions.md#입력-모드-전환과-복귀) · [Mac 실행 검증](../engine/tests/results/input-modes/README.md) |
+| 6.6 | Y좌표 정렬과 스프라이트 정렬 그룹 | 구현 완료. KeyRoom 첫 방에서 발의 월드 Y에 따라 나무와 플레이어의 순서가 바뀌고, 몸·가방·버클은 한 그룹으로 그린다. [Inspector 설정](manual/sprites.md#발-위치로-앞뒤-정렬하기) · [Mac 실행 검증](../engine/tests/results/y-sorting/README.md) |
+| 6.7 | 공용 번역 테이블과 게임 폰트 에셋 | 구현. UI·아이템·의뢰·컷신 대사는 공용 번역 테이블을 사용한다. KeyRoom의 기본·대체 한글 폰트를 macOS Scene Play와 데스크톱 3종의 Release·Native AOT에서 확인했다. [사용법](manual/game-ui.md#공용-번역-테이블과-게임-폰트) · [Mac 검증](../engine/tests/results/localization/README.md) · [Windows·Linux x64 검증](../engine/tests/results/localization/x64/README.md) |
+| 6.8 | Windows·Linux 에디터 패키징과 조작 회귀 | 구현 완료. Windows·Linux x64 배포 에디터에서 KeyRoom 열기, Transform 편집, Play, 저장·재열기를 검증했다. 편집한 씬과 열쇠 획득 저장은 Mac Scene Play·Release·Native AOT와 일치했다. [패키지와 조작법](manual/editor.md#데스크톱-배포-에디터) · [실행 기록](../engine/tests/results/editor-packaging/README.md) |
+
 각 단계는 에디터 조작과 실제 빌드에서 같은 결과를 내는 작은 샘플로 검증한다. KeyRoom 다음에는 플랫포머로 물리·카메라를, 보드 퍼즐로 입력·UI·저장을 검증한다.
+
+## 7. 범용 게임 제작과 배포 고도화
+
+| 순서 | 기능 | 범위와 완료 기준 |
+| --- | --- | --- |
+| 7.1 | 스크립트 Inspector | 구현 완료. 오브젝트·에셋 참조 목록의 드래그 추가·정렬·제거, enum 드롭다운과 Vector2 좌표 편집을 지원한다. [조작법](manual/scripting.md#에셋-참조-목록과-enum-vector2) · [InventoryLab 선택지 검증](../engine/tests/results/script-reference-lists/README.md) · [KeyRoom 문 스프라이트·위치 검증](../engine/tests/results/script-asset-fields/README.md) |
+| 7.2 | 프리팹 원본 편집 | 구현 완료. Project에서 원본을 단독 편집하고 Inspector에서 인스턴스의 개별 속성을 적용·복원한다. [KeyRoom 나무 두 그루로 따라 하기](manual/editor.md#프리팹-원본과-속성별-오버라이드) · [Mac 실행 검증](../engine/tests/results/prefab-source/README.md) |
+| 7.3 | 게임 정의 이벤트 | 구현 완료. Inspector에서 C# 이벤트와 수신 메서드를 연결한다. KeyRoom 열쇠와 문으로 저장·재열기, 제거·재진입 후 호출 횟수를 비교했다. [사용법](manual/scripting.md#게임-정의-이벤트) · [Mac 검증](../engine/tests/results/game-events/README.md) |
+| 7.4 | 월드와 런타임 프리팹 상태 저장 | 구현 완료. 주 씬별로 저장할 오브젝트와 속성을 등록한다. KeyRoom에서 상자의 자식으로 생성한 코인의 ID·이동 위치와 획득 후 제거 상태를 F5·F9로 복원한다. macOS arm64·Windows x64·Linux x64에서 Release와 Native AOT의 저장·복원을 검증하고 `main`에 반영했다. [데스크톱 3종 검증 기록](../engine/tests/KeyRoom.WorldCheckpoints/README.md#데스크톱-3종-검증-기록) [사용법](manual/player-data.md#월드와-런타임-프리팹-저장) · [Mac 실행 기록](../engine/tests/results/world-checkpoints/README.md) · [체크아웃별 검증](../engine/tests/results/world-checkpoints/README.md#깨끗한-체크아웃-검증) |
+| 7.5 | 인게임 UI 테마와 9-slice | 구현 완료. KeyRoom의 공용 버튼 테마와 9-slice 안내 패널을 한글 200%로 표시하고, 세 Mac 실행 경로에서 창을 줄인 뒤 버튼 안팎을 눌러 확인했다. [사용법](manual/game-ui.md#버튼-테마와-9-slice) · [검증 기록](../engine/tests/results/ui-theme/README.md) |
+| 7.6 | 대형 프로젝트의 번들 로딩·진단 | 구현 완료. 배포 번들의 검증·압축 해제를 진단하고 검증된 콘텐츠를 재사용한다. InventoryLab의 시장 배경음 번들로 macOS Release·Native AOT에서 캐시 비활성·최초 생성·재사용을 비교했다. [사용법](manual/build.md#대형-번들-로딩과-시작-진단) · [측정값](../engine/tests/results/bundle-loading/README.md) |
+| 7.7 | 배포용 셰이더 프레임 사전 생성 | 구현 완료. 씬·프리팹에서 참조한 셰이더와 내장 광원·입자 이미지를 빌드 시 PNG로 생성한다. PlatformerLab 횃불의 32프레임과 루프 경계에서 macOS Scene Play·Release·Native AOT의 깜빡임과 밝기를 비교했다. [사용법](manual/effects.md#배포용-프레임-시트) · [Mac 검증](../engine/tests/results/baked-shaders/README.md) |
+| 7.8 | 압축 배경음악 | 구현 완료. Ogg Vorbis를 임포트해 스트리밍 재생한다. AudioLab에서 WAV 대비 배경음 용량이 94.0% 줄었고 Mac의 Scene Play·Release·Native AOT에서 루프 주기와 페이드 길이가 일치했다. [사용법](manual/audio.md) · [출력·배포 용량 검증](../engine/tests/results/vorbis/README.md) |
+
+## 8. 데스크톱 제작 도구와 런타임 개선
+
+| 순서 | 기능 | 범위와 완료 기준 |
+| --- | --- | --- |
+| 8.1 | 런타임 Transform과 부모 변경 | 구현 완료. 스크립트에서 로컬 위치·회전·스케일을 바꾸고, 부모 변경 시 월드 변환이나 로컬 변환을 유지한다. KeyRoom에서 코인을 들고 내려놓은 뒤 F5·F9로 부모·변환·충돌 영역을 복원했다. Mac Scene Play·Release·Native AOT의 저장 결과와 Stop 뒤 원본 씬을 확인했다. [사용법](manual/transform-2d.md#play-중-변환과-부모-변경) · [실행 기록](../engine/tests/results/runtime-transforms/README.md) |
+| 8.2 | 외부에서 수정한 에셋 자동 재임포트 | 구현 완료. 외부에서 KeyRoom의 `Door.png`를 덮어쓰면 Project 미리보기, `Door.clip`의 연결된 시트 셀과 타임라인, Scene의 문이 갱신된다. macOS arm64와 Windows·Linux x64 배포 에디터에서 포커스 복귀와 재실행 후 네 셀의 참조·재생 시간을 확인했다. [사용법](manual/project-assets.md#외부-png-자동-재임포트) · [화면 검증](../engine/tests/results/external-sprite-reimport/README.md) |
+| 8.3 | Inspector 다중 편집 | 구현 완료. 공통 컴포넌트의 서로 다른 값은 Mixed로 표시한다. KeyRoom의 WallWorkshop 씬에서 벽 10개의 충돌 마스크를 함께 편집하고 Undo 한 번으로 각 인스턴스의 값과 프리팹 오버라이드를 복원한다. [사용법](manual/editor.md#inspector에서-충돌-마스크-함께-편집하기) · [검증 기록](../engine/tests/results/inspector-multi-edit/README.md) |
+| 8.4 | 월드 오브젝트 클릭·드래그 | 구현 완료. KeyRoom의 PointerWorkshop에서 겹친 상자 중 앞의 상자만 움직인다. 드래그를 시작한 카메라와 잡은 지점을 유지하며 UI 버튼이 뒤의 상자 입력을 차단한다. macOS arm64와 Windows·Linux x64 배포 에디터에서 확인했다. [사용법](manual/input-actions.md#월드-오브젝트-클릭과-드래그) · [검증 기록](../engine/tests/results/world-pointer/README.md) |
+| 8.5 | 플레이어 저장 슬롯 복구 | 구현 완료. 슬롯별 직전 정상본을 보존하고 최신 파일이 누락되거나 손상되면 불러올 때 복구한다. InventoryLab에서 약초 의뢰 보상 수령 후 서로 다른 두 저장을 만들고, 직전 저장의 수량·수령 상태 복원과 보상 재청구를 검사한다. [사용법](manual/player-data.md#직전-저장으로-복구하기) · [검증 기록](../engine/tests/results/slot-recovery/README.md) |
+| 8.6 | 인게임 설정 위젯 | 테마와 키보드·패드 탐색을 지원하는 슬라이더·토글·드롭다운을 제공한다. AudioLab에서 마우스·방향키·패드로 음악 볼륨을 같은 값에 맞추고, 효과음 볼륨과 재실행 후 설정값을 확인한다. |
+| 8.7 | 데스크톱 화면 설정 | 창 모드·테두리 없는 전체 화면·VSync를 선택하고 재실행 후 복원한다. macOS·Windows·Linux에서 전체 화면을 나왔을 때 이전 창 크기, 16:9 화면 비율, 버튼의 클릭 영역을 확인한다. |
+| 8.8 | 대형 씬의 물리 질의 최적화 | CollisionLab에서 충돌체 1천 개와 1만 개를 배치해 공간 인덱스 적용 전후에 같은 질의를 실행한다. 적중 대상·순서를 대조하고 검사한 후보 수와 95백분위 질의 시간을 비교한다. |

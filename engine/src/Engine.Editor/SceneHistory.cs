@@ -5,7 +5,7 @@ namespace Engine.Editor;
 internal sealed class SceneHistory
 {
     private sealed record State(string Objects, GameSettings Settings);
-    private sealed record Edit(State? Before, State? After, Guid? PreviousSelection, Guid? Selection, TileChange[]? Cells = null, IProjectFileEdit? Asset=null);
+    private sealed record Edit(State? Before, State? After, Guid? PreviousSelection, Guid? Selection, TileChange[]? Cells = null, IProjectFileEdit? Asset=null, Guid[]? MultiSelection=null);
     private const int Capacity = 100;
     private readonly List<Edit> edits = [];
     private int position;
@@ -15,6 +15,7 @@ internal sealed class SceneHistory
 
     public bool CanUndo => position > 0;
     public IProjectFileEdit? FileEdit(bool redo) => edits[redo ? position : position - 1].Asset;
+    public Guid[]? MultiSelection(bool redo) => edits[redo ? position : position - 1].MultiSelection;
     public bool CanRedo => position < edits.Count;
     internal string CurrentSnapshot => current.Objects;
     public bool IsDirty => current.Objects != savedObjects;
@@ -44,7 +45,7 @@ internal sealed class SceneHistory
 
     public void EndGroup() => editGroup = null;
 
-    public bool Record(SceneDocument scene, Guid? previousSelection, Guid? selection, object? group, IProjectFileEdit? asset=null)
+    public bool Record(SceneDocument scene, Guid? previousSelection, Guid? selection, object? group, IProjectFileEdit? asset=null, Guid[]? multiSelection=null)
     {
         var next = new State(scene.CaptureObjects(), scene.Settings);
         if (asset is ProjectPathEdit move) savedObjects = move.RewriteSnapshot(savedObjects, true);
@@ -62,7 +63,7 @@ internal sealed class SceneHistory
         }
         else
         {
-            edits.Add(new(current, next, previousSelection, selection, Asset:asset));
+            edits.Add(new(current, next, previousSelection, selection, Asset:asset, MultiSelection:multiSelection));
             if (edits.Count > Capacity) edits.RemoveAt(0);
             position = edits.Count;
         }

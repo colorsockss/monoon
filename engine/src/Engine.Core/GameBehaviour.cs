@@ -16,9 +16,53 @@ public sealed partial record ScriptComponent : SceneComponent
     internal IReadOnlyDictionary<Guid, Guid>? InstanceIds { get; set; }
     internal Guid InstanceId(Guid id) => InstanceIds?.GetValueOrDefault(id, id) ?? id;
 
+    internal Guid[] ReadReferences(string name, bool sceneObjects)
+    {
+        if (!Values.TryGetValue(name, out var stored)) return [];
+        if (stored.ValueKind != JsonValueKind.Array)
+            throw new InvalidDataException($"{Script}.{name} must be a list of references.");
+        var ids = new Guid[stored.GetArrayLength()];
+        int i = 0;
+        foreach (var item in stored.EnumerateArray())
+        {
+            if (item.ValueKind != JsonValueKind.String || !item.TryGetGuid(out var id))
+                throw new InvalidDataException($"{Script}.{name}[{i}] is not a reference.");
+            ids[i++] = sceneObjects ? InstanceId(id) : id;
+        }
+        return ids;
+    }
+
+    internal void WriteReferences(string field, Guid[] ids) =>
+        Values[field] = JsonSerializer.SerializeToElement(ids, GameJson.Default.GuidArray);
+
+    public T[] ReadAssetList<T>(string name, T[] initial, Converter<Guid,T> wrap) =>
+        Values.ContainsKey(name) ? Array.ConvertAll(ReadReferences(name, false), wrap) : initial;
+
+    public T ReadEnum<T>(string name, T initial) where T : struct, Enum
+    {
+        if (!Values.TryGetValue(name, out var stored)) return initial;
+        if (stored.ValueKind == JsonValueKind.String && Enum.GetNames<T>().Contains(stored.GetString()) &&
+            Enum.TryParse<T>(stored.GetString(), out var value)) return value;
+        throw new InvalidDataException($"{Script}.{name} is not a declared {typeof(T).Name} value.");
+    }
+
+    public Vector2 ReadVector(string name, Vector2 initial)
+    {
+        if (!Values.TryGetValue(name, out var stored)) return initial;
+        if (stored.ValueKind == JsonValueKind.Object && Axis("x", out var x) && Axis("y", out var y)) return new(x,y);
+        throw new InvalidDataException($"{Script}.{name} requires finite x and y coordinates.");
+        bool Axis(string axis, out float n)
+        {
+            n = 0;
+            return stored.TryGetProperty(axis,out var v) && v.ValueKind == JsonValueKind.Number &&
+                v.TryGetSingle(out n) && float.IsFinite(n);
+        }
+    }
+
     public T ReadOverride<T>(string name, T initialValue)
     {
         if (!Values.TryGetValue(name, out var stored)) return initialValue;
+        if (typeof(T) == typeof(Guid[])) return (T)(object)ReadReferences(name, true);
         try
         {
             var info = (System.Text.Json.Serialization.Metadata.JsonTypeInfo<T>)GameJson.Default.GetTypeInfo(typeof(T))!;
@@ -28,12 +72,18 @@ public sealed partial record ScriptComponent : SceneComponent
         catch (JsonException) { return initialValue; }
     }
 
-    internal ScriptComponent Duplicate(IReadOnlyDictionary<Guid, SceneObject> copies, ProjectScripts? library)
+    internal ScriptComponent Duplicate(IReadOnlyDictionary<Guid, SceneObject> copies, ScriptLibrary? library)
     {
-        var copy = this with { Values = Values.ToDictionary(pair => pair.Key, pair => pair.Value.Clone(), Values.Comparer) };
+        var copy = this with
+        {
+            EventLinks = EventLinks?.Select(link => copies.TryGetValue(InstanceId(link.Target), out var target)
+                ? link with { Target = target.Id } : link).ToArray(),
+            Values = Values.ToDictionary(pair => pair.Key, pair => pair.Value.Clone(), Values.Comparer)
+        };
         bool PointsIntoCopy(JsonElement value) =>
             value.ValueKind == JsonValueKind.String && value.TryGetGuid(out var id) && copies.ContainsKey(id);
-        if (library == null || !Values.Values.Any(PointsIntoCopy)) return copy;
+        if (library == null || !Values.Values.Any(v => PointsIntoCopy(v) ||
+                v.ValueKind == JsonValueKind.Array && v.EnumerateArray().Any(PointsIntoCopy))) return copy;
 
         // A GUID-shaped string is also a valid text field. Only rewrite declared object references.
         ScriptDefinition definition;
@@ -45,11 +95,14 @@ public sealed partial record ScriptComponent : SceneComponent
         foreach (var field in definition.Fields)
             if (field.Type == typeof(Guid) && field.Value(this) is Guid id && copies.TryGetValue(id, out var target))
                 copy.Values[field.Name] = JsonSerializer.SerializeToElement(target.Id, GameJson.Default.Guid);
+            else if (field.IsObjectList && Values.ContainsKey(field.Name))
+                copy.WriteReferences(field.Name, ReadReferences(field.Name, true)
+                    .Select(entry => copies.TryGetValue(entry, out var obj) ? obj.Id : entry).ToArray());
         return copy;
     }
 }
 
-public abstract class GameBehaviour
+public abstract partial class GameBehaviour
 {
     public virtual void OnCreate(ScriptLife life) { }
     public virtual void OnEnable(ScriptLife life) { }

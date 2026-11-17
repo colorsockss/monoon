@@ -1,0 +1,10 @@
+{
+  "system": "Windows-11-10.0.26100-SP0",
+  "machine": "AMD64",
+  "mode": "release",
+  "driver": "wasapi",
+  "playerSha256": "51264bc2dc1d2ea2540b03e56520d82611fecd9245b9acb9697c30589461b27e",
+  "musicSha256": "7b8c4c6b524b4d1f8c4b72553b6adc5b3b2dd5f7e38dcf8ae134b5b4862b5e7e",
+  "framesBeforeF": 240640,
+  "capturedFrames": 276992
+}

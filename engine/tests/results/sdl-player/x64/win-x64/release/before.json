@@ -1,0 +1,14 @@
+{
+  "files": 256,
+  "folder": 98810733,
+  "zip": 43048513,
+  "sha256": "35228bb20a4151b68c3ac4df8ae237d7ef009a5a9d53943925bfb94205b3e8c3",
+  "rid": "win-x64",
+  "mode": "release",
+  "os": "Windows-11-10.0.26100-SP0",
+  "arch": "AMD64",
+  "skia": [
+    "libSkiaSharp.dll",
+    "SkiaSharp.dll"
+  ]
+}

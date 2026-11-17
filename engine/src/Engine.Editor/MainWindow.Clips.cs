@@ -18,6 +18,7 @@ public partial class MainWindow
         var root = project!;
         var clip = relative == null ? new SpriteClip([],false) : SpriteClip.OpenForEditing(Path.Combine(root,relative));
         var window = new ClipEditorWindow(root,CreationFolder("Assets"),relative,clip);
+        window.Activated += (_, _) => spriteMonitor?.Request();
         window.Saved += path => {
             BrowseFolder(ParentPath(path),path); RefreshComponentList();
             Status.Text = $"Saved {path}.";

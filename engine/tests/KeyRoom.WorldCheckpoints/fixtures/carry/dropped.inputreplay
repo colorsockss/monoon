@@ -1,0 +1,23 @@
+version: 1
+project: 64fb4cd6-2469-5cec-ba6d-9a49e61f42e7
+startScene: 64fb4cd6-2469-5cec-ba6d-9a49e61f42e7
+frameTicks: [166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667]
+events:
+- frame: 2
+  timeTicks: 333334
+  input: {kind: key, control: "F9", down: true}
+- frame: 3
+  timeTicks: 500001
+  input: {kind: key, control: "F9", down: false}
+- frame: 12
+  timeTicks: 2000004
+  input: {kind: key, control: "C", down: true}
+- frame: 13
+  timeTicks: 2166671
+  input: {kind: key, control: "C", down: false}
+- frame: 17
+  timeTicks: 2833339
+  input: {kind: key, control: "F5", down: true}
+- frame: 18
+  timeTicks: 3000006
+  input: {kind: key, control: "F5", down: false}

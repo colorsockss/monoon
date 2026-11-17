@@ -13,8 +13,8 @@ internal static class SpriteSortingChecks
         void Expect(float interpolation, bool inFront)
         {
             game.Draw(canvas, interpolation);
-            string[] behind = ["Body", "Satchel", "Flap", "Clasp", "Oak"];
-            string[] front = ["Oak", "Body", "Satchel", "Flap", "Clasp"];
+            string[] behind = ["Body", "Satchel", "Flap", "Clasp", "Oak", "Courtyard oak"];
+            string[] front = ["Oak", "Body", "Satchel", "Flap", "Clasp", "Courtyard oak"];
             if (!canvas.Sprites.SequenceEqual(inFront ? front : behind))
                 throw new Exception($"Incorrect draw order at t={interpolation}: {string.Join(", ", canvas.Sprites)}");
         }
@@ -82,7 +82,7 @@ internal static class SpriteSortingChecks
         public void Clear(Color color) => Sprites.Clear();
         public bool DrawAffine(string? path, RectangleF rect, Matrix3x2 matrix, Color tint, SpriteRegion? source = null, string layout = TileGrid.Orthogonal)
         {
-            var name = Path.GetFileName(path) == "Oak.png" ? "Oak" : (tint.ToArgb() & 0xffffff) switch
+            var name = Path.GetFileName(path) == "Oak.png" ? (rect.Width == 76 ? "Courtyard oak" : "Oak") : (tint.ToArgb() & 0xffffff) switch
             {
                 0x63E6C1 => "Body", 0xBB504A => "Satchel", 0xEA8661 => "Flap", 0xFFE9AD => "Clasp", _ => null
             };

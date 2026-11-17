@@ -1,0 +1,140 @@
+{
+  "system": "macOS-27.0.1-arm64-arm-64bit",
+  "machine": "arm64",
+  "target": "packaged editor / Scene Play",
+  "inputs": "F8; UI down/move/up; overlap click; front drag + D with stationary pointer; release; inset drag out of viewport",
+  "initial": {
+    "front": [
+      300,
+      198
+    ],
+    "back": [
+      240,
+      168
+    ],
+    "camera": [
+      400,
+      225
+    ],
+    "status": null,
+    "button": null
+  },
+  "ui": {
+    "front": [
+      300,
+      198
+    ],
+    "back": [
+      240,
+      168
+    ],
+    "camera": [
+      400,
+      225
+    ],
+    "status": null,
+    "button": "UI clicks: 1"
+  },
+  "clicked": {
+    "front": [
+      300,
+      198
+    ],
+    "back": [
+      240,
+      168
+    ],
+    "camera": [
+      400,
+      225
+    ],
+    "status": "Front crate  /  Click",
+    "button": "UI clicks: 1"
+  },
+  "drag": {
+    "front": [
+      430.15872,
+      260.43387
+    ],
+    "back": [
+      240,
+      168
+    ],
+    "camera": [
+      400,
+      225
+    ],
+    "status": "Front crate  /  Drag",
+    "button": "UI clicks: 1"
+  },
+  "pan": {
+    "front": [
+      530.1587,
+      260.43387
+    ],
+    "back": [
+      240,
+      168
+    ],
+    "camera": [
+      500,
+      225
+    ],
+    "status": "Front crate  /  Drag",
+    "button": "UI clicks: 1"
+  },
+  "release": {
+    "front": [
+      530.1587,
+      260.43387
+    ],
+    "back": [
+      240,
+      168
+    ],
+    "camera": [
+      500,
+      225
+    ],
+    "status": "Front crate  /  Release",
+    "button": "UI clicks: 1"
+  },
+  "detail": {
+    "front": [
+      530.1587,
+      260.43387
+    ],
+    "back": [
+      174.99622,
+      185.38474
+    ],
+    "camera": [
+      500,
+      225
+    ],
+    "status": "Back crate  /  Drag",
+    "button": "UI clicks: 1"
+  },
+  "world": {
+    "front": [
+      530.1587,
+      260.43387
+    ],
+    "back": [
+      174.99622,
+      185.38474
+    ],
+    "camera": [
+      500,
+      225
+    ],
+    "status": "Back crate  /  Release",
+    "button": "UI clicks: 1"
+  },
+  "cameraDelta": [
+    100,
+    0
+  ],
+  "mainGrabError": 0,
+  "extraGrabError": 0.24191192
+}

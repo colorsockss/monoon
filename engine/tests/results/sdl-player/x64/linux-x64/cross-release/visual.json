@@ -1,0 +1,84 @@
+{
+  "ko@1": {
+    "pixels": 48000,
+    "different": 6550,
+    "mae": 0.0552,
+    "max": 2,
+    "refSHA256": "b779c29d7b895e40b7a6e0939facd5190ea74a5a454b7bb6c7aec8e2288434ce",
+    "sha256": "ca41a2ecc75294bfb8975b1582fca13f03389cb791c359500e9264ed830a9a97",
+    "textCorrelation": {
+      "title": 0.99999,
+      "item": 0.99999,
+      "quest": 0.99999
+    }
+  },
+  "masked@1": {
+    "pixels": 9996,
+    "different": 3192,
+    "mae": 0.1792,
+    "max": 59,
+    "refSHA256": "8b457992d5cf991277c18cd2f53348ac4c5de30c62752d62448e050e913b1c0b",
+    "sha256": "6975f36c9ea62cbb73478eb0a839d75a28241414b1667110ee68a0d4f2e64597"
+  },
+  "ko@2": {
+    "pixels": 192000,
+    "different": 36394,
+    "mae": 1.619,
+    "max": 34,
+    "refSHA256": "e7ec5150549fd61891dd758d4e5a342bdecb8f878fd3cc0d1594d372dda71889",
+    "sha256": "774ee3d4b88157dea9bb7c6e72e04afbc8ab38518e828ef6b808a4b2f95d00fd",
+    "textCorrelation": {
+      "title": 0.99999,
+      "item": 1.0,
+      "quest": 0.99999
+    }
+  },
+  "masked@2": {
+    "pixels": 39984,
+    "different": 12502,
+    "mae": 0.185,
+    "max": 102,
+    "refSHA256": "f1252e8715472bb21dca64437972a5a8fb72c0ffc18b7288a64f54e5fac1bf00",
+    "sha256": "66241ce87f698d8d40bb897f7acb66e2a20170fbcba0cef7c1b5883bed085350"
+  },
+  "ocr": "가방\n휴대용 나침반 / 보관 중\n의뢰 / 황동 열쇠 찾기\n나침반 관리\nEnglish [L]\n닫기",
+  "readable": true,
+  "maskSamples": {
+    "265": [
+      [
+        49,
+        123,
+        49
+      ],
+      [
+        49,
+        123,
+        49
+      ]
+    ],
+    "300": [
+      [
+        48,
+        121,
+        50
+      ],
+      [
+        36,
+        78,
+        48
+      ]
+    ],
+    "328": [
+      [
+        19,
+        68,
+        43
+      ],
+      [
+        24,
+        33,
+        45
+      ]
+    ]
+  }
+}

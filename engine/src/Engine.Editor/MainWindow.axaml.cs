@@ -6,7 +6,6 @@ using Avalonia.Layout;
 using Avalonia.Media;
 using Avalonia.Platform.Storage;
 using Engine.Core;
-using Vector2 = System.Numerics.Vector2;
 
 namespace Engine.Editor;
 
@@ -50,10 +49,15 @@ public partial class MainWindow : Window
 
     public MainWindow() : this(null) { }
 
-    public MainWindow(string? initialProject)
+    public MainWindow(string? initialProject) : this(initialProject, null, null) { }
+
+    private MainWindow(string? initialProject, SceneDocument.PrefabSource? source, Action<SceneDocument.PrefabSource>? saveSource)
     {
+        prefabSource = source;
+        savePrefabSource = saveSource;
         InitializeComponent();
         InitializeMenus();
+        OverridesButton.Click += (_, _) => RunAction(ShowPrefabOverrides);
         InitializeDiagnostics();
         ImportAssetsButton.Click += (_,_) => RunAction(ChooseAssets);
         ReferencesButton.Click += (_,_) => RunAction(()=>InspectAssets(false));
@@ -77,7 +81,7 @@ public partial class MainWindow : Window
         NewScriptButton.Click += (_, _) => RunAction(() => CreateScript(null));
         AddComponentButton.Click += (_, _) => ShowComponentMenu();
         InitializeTimeControls();
-        PlayButton.Click += (_, _) => TogglePlay();
+        PlayButton.Click += (_, _) => { if (prefabSource == null) TogglePlay(); else RunAction(Save); };
         AddButton.Click += (_, _) => AddObject();
         InitializeHierarchy();
         Viewport.Picked += Select;
@@ -117,28 +121,19 @@ public partial class MainWindow : Window
         Activated += (_, _) =>
         {
             RefreshChangedScripts();
-            if (!Viewport.IsPlaying && !busy && project != null)
-            {
-                try
-                {
-                    var assets = ProjectAssets.Scan(project);
-                    clipEditor?.SetCatalog(assets);
-                    if (Viewport.RefreshTileAssets(assets)) RefreshComponentList();
-                    var before = Scene.CaptureObjects();
-                    var selection = Selected?.Id;
-                    Scene.RefreshPrefabs(assets);
-                    Scene.ResolveAssets(assets);
-                    if (Scene.CaptureObjects() != before)
-                    {
-                        RebuildHierarchy(Scene.Objects.FirstOrDefault(o => o.Id == selection));
-                        MarkDirty(); Viewport.ClearSprites();
-                    }
-                }
-                catch (Exception ex) { LogError(ex.Message); Status.Text = ex.Message; }
-            }
+            refreshSceneReferences = true;
+            spriteMonitor?.Request();
         };
         scriptRefresh.Tick += (_, _) => RefreshChangedScripts();
         Closed += (_, _) => scriptRefresh.Stop();
+        if (source != null)
+        {
+            OpenScene(source.Document.ProjectDirectory, initialProject!, source.Document);
+            Viewport.PrefabFraming = true;
+            Viewport.FrameCamera();
+            WindowStartupLocation = WindowStartupLocation.CenterOwner;
+            return;
+        }
         OpenScene(null, "Untitled", SceneDocument.Starter());
         var start = initialProject ?? FindSample();
         if (start != null)
@@ -282,12 +277,24 @@ public partial class MainWindow : Window
         RebuildHierarchy(savingCurrent ? Selected : document.Objects.FirstOrDefault());
         UpdateTitle();
         SetControls();
-        StartWorkspace(root);
+        if (prefabSource == null) StartWorkspace(root);
         Status.Text = document.LoadNotice ?? "";
     }
 
     private async Task<bool> Save()
     {
+        if (prefabSource != null)
+        {
+            if (history.IsDirty)
+            {
+                savePrefabSource!(prefabSource);
+                prefabSource = SceneDocument.OpenPrefabSource(project!, sceneName) with { Document = Scene };
+                history.MarkSaved(Scene);
+                UpdateTitle();
+            }
+            Status.Text = $"Saved {sceneName}";
+            return true;
+        }
         if (project == null)
         {
             var folders = await StorageProvider.OpenFolderPickerAsync(new FolderPickerOpenOptions { Title = "Save project in an empty folder" });
@@ -312,7 +319,7 @@ public partial class MainWindow : Window
     {
         if (clipEditor is {} clip && !await clip.RequestClose()) return false;
         if (!history.IsDirty) return true;
-        var dialog = new Window { Title = "Unsaved scene", SizeToContent = SizeToContent.WidthAndHeight,
+        var dialog = new Window { Title = prefabSource == null ? "Unsaved scene" : "Unsaved prefab", SizeToContent = SizeToContent.WidthAndHeight,
             CanResize = false, WindowStartupLocation = WindowStartupLocation.CenterOwner, ShowInTaskbar = false };
         var buttons = new StackPanel { Orientation = Orientation.Horizontal, Spacing = 6, HorizontalAlignment = HorizontalAlignment.Right };
         foreach (var choice in new[] { "Cancel", "Discard", "Save" })
@@ -370,7 +377,11 @@ public partial class MainWindow : Window
         ShowSelection(selection);
     }
 
-    private void Select(SceneObject? obj) => ShowSelection(obj==null?[]:[obj]);
+    private void Select(SceneObject? obj)
+    {
+        rangeAnchor = obj;
+        ShowSelection(obj == null ? [] : [obj]);
+    }
 
     private void ShowSelection(IReadOnlyList<SceneObject> selection)
     {
@@ -394,30 +405,27 @@ public partial class MainWindow : Window
     {
         refreshing = true;
         RefreshLiveInspector();
-        Inspector.IsVisible = Selected != null;
+        MultiInspector.IsVisible = Viewport.Selection.Count > 1;
+        Inspector.IsVisible = Selected != null && !MultiInspector.IsVisible;
         EmptyInspector.IsVisible = Selected == null;
-        if (Selected is { } obj)
+        OverridesButton.IsVisible = prefabSource == null && !Viewport.IsPlaying && Viewport.Selection.Count == 1 && Selected?.Prefab != null;
+        if (MultiInspector.IsVisible) RefreshMultiTransform();
+        if (Inspector.IsVisible && Selected is { } obj)
         {
             ObjectName.Text = obj.Name;
             PositionRow.IsVisible = obj.GetComponent<UiCanvasComponent>() == null;
             PositionRowLabel.Text = ScreenUi.IsWidget(obj) ? "Offset" : obj.Parent == null ? "Position" : "Local pos.";
             SizeRow.IsVisible = obj.GetComponent<SpriteRendererComponent>() != null || obj.GetComponent<SortingGroup2DComponent>() != null || obj.GetComponent<Collider2DComponent>() != null || ScreenUi.IsWidget(obj);
             AffineRows.IsVisible = !ScreenUi.IsWidget(obj) && obj.GetComponent<UiCanvasComponent>() == null;
-            ObjRotation.Value = decimal.CreateSaturating(obj.Rotation);
-            ObjScaleX.Value = decimal.CreateSaturating(obj.ScaleX);
-            ObjScaleY.Value = decimal.CreateSaturating(obj.ScaleY);
+            var local = Viewport.PlayWorld is { } world && world.TryGetLocalTransform(obj.Id, out var live)
+                ? live : new LocalTransform2D(new(obj.X, obj.Y), obj.Rotation, new(obj.ScaleX, obj.ScaleY), obj.Shear);
+            ObjRotation.Value = decimal.CreateSaturating(local.Rotation);
+            ObjScaleX.Value = decimal.CreateSaturating(local.Scale.X);
+            ObjScaleY.Value = decimal.CreateSaturating(local.Scale.Y);
             ObjPivotX.Value = decimal.CreateSaturating(obj.PivotX);
             ObjPivotY.Value = decimal.CreateSaturating(obj.PivotY);
-            var local = new Vector2(obj.X, obj.Y);
-            if (Viewport.PlayWorld is { } world && world.TryGetPosition(obj.Id, out var position))
-            {
-                var shift = position - obj.WorldPosition;
-                if (obj.Parent is {} p && world.TryGetPosition(p.Id, out var parent))
-                    shift = Vector2.TransformNormal(shift - (parent-p.WorldPosition), Affine2D.Inverse(p.WorldMatrix));
-                local += shift;
-            }
-            PosX.Value = decimal.CreateSaturating(local.X);
-            PosY.Value = decimal.CreateSaturating(local.Y);
+            PosX.Value = decimal.CreateSaturating(local.Position.X);
+            PosY.Value = decimal.CreateSaturating(local.Position.Y);
             ObjWidth.Value = decimal.CreateSaturating(obj.Width);
             ObjHeight.Value = decimal.CreateSaturating(obj.Height);
         }
@@ -429,6 +437,8 @@ public partial class MainWindow : Window
         componentMenu?.Hide();
         var owner = Selected;
         inspectorSourceStamp = null;
+        RefreshMultiComponents();
+        if (Viewport.Selection.Count > 1) owner = null;
         TransformSection.Foldout = owner == null ? null : FoldoutFor(owner, null);
         AttachedComponents.ItemsSource = owner?.Components.Select(c => new AttachedComponent(c, project, owner, FoldoutFor(owner, c), () =>
         {
@@ -529,7 +539,7 @@ public partial class MainWindow : Window
 
     private void CommitText()
     {
-        if (refreshing || Viewport.IsPlaying || Selected is not { } obj) return;
+        if (refreshing || Viewport.IsPlaying || Viewport.Selection.Count != 1 || Selected is not { } obj) return;
         var name = ObjectName.Text?.Trim();
         if (string.IsNullOrWhiteSpace(name))
         {
@@ -545,7 +555,7 @@ public partial class MainWindow : Window
 
     private void ChangeBounds(NumericUpDown field)
     {
-        if (refreshing || Viewport.IsPlaying || Selected is not { } obj || field.Value is not { } number) return;
+        if (refreshing || Viewport.IsPlaying || Viewport.Selection.Count != 1 || Selected is not { } obj || field.Value is not { } number) return;
         var value = (float)number;
         if (field == ObjWidth || field == ObjHeight)
             Scene.Resize(obj, field == ObjWidth ? value : obj.Width, field == ObjHeight ? value : obj.Height);
@@ -567,6 +577,7 @@ public partial class MainWindow : Window
     private void AddObject(SceneObject? parent = null, bool square = true)
     {
         if (busy || Viewport.IsPlaying || (parent != null && !Scene.Objects.Contains(parent))) return;
+        if (parent == null && prefabSource != null) parent = Scene.Objects.Single(o => o.Id == prefabSource.RootId);
         string name = square ? "Square" : "GameObject";
         var number = 1;
         while (Scene.Objects.Any(obj => obj.Name == $"{name} {number}")) number++;
@@ -584,6 +595,7 @@ public partial class MainWindow : Window
     private void DeleteObject()
     {
         if (busy || Viewport.IsPlaying || Selected is not { } obj) return;
+        if (prefabSource?.RootId == obj.Id) return;
         bool resetCamera = Scene.Camera == obj;
         Scene.RemoveObject(obj);
         FinishObjectChange(obj.Parent ?? Scene.Objects.LastOrDefault());
@@ -595,6 +607,12 @@ public partial class MainWindow : Window
 
     private void FinishObjectChange(SceneObject? selection,PrefabFileEdit? asset=null)
     {
+        if (prefabSource != null)
+        {
+            var root = Scene.Objects.Single(o => o.Id == prefabSource.RootId);
+            foreach (var child in Scene.Objects.Where(o => o != root && o.Parent == null).ToArray())
+                Scene.Reparent(child, root);
+        }
         var previous = Selected?.Id;
         RebuildHierarchy(selection);
         RecordEdit(previous,asset:asset);
@@ -602,11 +620,11 @@ public partial class MainWindow : Window
 
     private void MarkDirty(object? group = null) => RecordEdit(Selected?.Id, group);
 
-    private void RecordEdit(Guid? previous, object? group = null, IProjectFileEdit? asset=null)
+    private void RecordEdit(Guid? previous, object? group = null, IProjectFileEdit? asset=null, Guid[]? multiSelection=null)
     {
         Viewport.InvalidateUi();
         Scene.NormalizeCamera();
-        if (!history.Record(Scene, previous, Selected?.Id, group,asset)) return;
+        if (!history.Record(Scene, previous, Selected?.Id, group,asset,multiSelection)) return;
         QueueCheckpoint();
         UpdateMenuState();
         UpdateTitle();
@@ -616,7 +634,7 @@ public partial class MainWindow : Window
     private void UpdateTitle()
     {
         SceneCaption.Text = sceneName + (history.IsDirty ? " *" : "");
-        Title = "MoNoon";
+        Title = prefabSource == null ? "MoNoon" : $"Prefab · {Path.GetFileName(sceneName)}";
     }
 
     private void TogglePlay()
@@ -655,8 +673,9 @@ public partial class MainWindow : Window
         UpdateMenuState();
         SyncTimeControls();
         GizmoControls.IsVisible=edit;
-        ViewMode.Text = edit ? "Scene" : "Game";
-        PlayButton.Content = edit ? "▶  Play" : "■  Stop";
+        ProjectActions.IsVisible = prefabSource == null;
+        ViewMode.Text = prefabSource != null ? "Prefab" : edit ? "Scene" : "Game";
+        PlayButton.Content = prefabSource != null ? "Save" : edit ? "▶  Play" : "■  Stop";
     }
 
     private void Shortcut(object? sender, KeyEventArgs e)

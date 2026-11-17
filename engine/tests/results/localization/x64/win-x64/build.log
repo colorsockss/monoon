@@ -1,0 +1,22 @@
+RUN release C:\MNLocale67\exports\KeyRoom-win-x64
+captured start
+captured en
+captured ko
+captured closed
+captured key
+captured ko-complete
+captured en-complete
+captured ko-again
+captured ko-confirm
+PASS Windows-11-10.0.26100-SP0 C:\MNLocale67\exports\KeyRoom-win-x64\MoNoonPlayer.exe Korean primary/fallback
+RUN native-aot C:\MNLocale67\exports\NativeAOT\KeyRoom-win-x64
+captured start
+captured en
+captured ko
+captured closed
+captured key
+captured ko-complete
+captured en-complete
+captured ko-again
+captured ko-confirm
+PASS Windows-11-10.0.26100-SP0 C:\MNLocale67\exports\NativeAOT\KeyRoom-win-x64\MoNoonPlayer.exe Korean primary/fallback

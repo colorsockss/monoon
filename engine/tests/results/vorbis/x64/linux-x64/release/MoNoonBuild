@@ -1,0 +1,17 @@
+version: 1
+values:
+  buildId: "e8807d332b014e39b7bd38ca4619c71b"
+  projectId: "36242c46-b620-5d70-a5a5-d3a858892d65"
+  game: "AudioLab"
+  target: "linux-x64"
+  mode: "release"
+  profile: "distribution"
+  playerSha256: "9DAEEA7422CEB74DB0A242A7474B113919B7A5248F849721E9445C5C4240B71C"
+  pdbId/MoNoonPlayer.dll: "7a99f5bb-c2e7-4aeb-becd-0f1423931703"
+  mvid/MoNoonPlayer.dll: "c0f0312a-6728-42bc-b6e8-0d0fd8834b60"
+  pdbId/Engine.Core.dll: "b14293bf-cb3b-499b-a0b6-b3c9e188e384"
+  mvid/Engine.Core.dll: "1f8512b7-dd82-489e-8709-7db01dbd6bd9"
+  pdbId/Engine.Desktop.dll: "8e1077af-2ea4-4b86-bd17-fe182b3a3fb7"
+  mvid/Engine.Desktop.dll: "bcee9bee-54e5-42e6-a3bb-bc69bd924c85"
+  pdbId/Game/.monoon-compiled/MoNoon.GameScripts.dll: "2fcfa8ce-637a-40a7-9805-10a39979cabe"
+  mvid/Game/.monoon-compiled/MoNoon.GameScripts.dll: "219a60cf-4f7e-4d2e-a8ad-dbc61ffb183e"

@@ -1,0 +1,10 @@
+Key acquired.
+Door received KeyAcquired.
+Key acquired.
+Door received KeyAcquired.
+Door restored open.
+RemoveDoor
+Key acquired.
+RemoveKey
+Key acquired.
+Door received KeyAcquired.

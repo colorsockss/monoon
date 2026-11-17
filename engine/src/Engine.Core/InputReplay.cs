@@ -81,7 +81,7 @@ public sealed partial record InputReplay([property: YamlRequired] int Version, [
         Validate();
         if (Project != project || StartScene != game.SceneId)
             throw new InvalidDataException("Recording belongs to a different project or start scene.");
-        var input = new GameInputRouter(game.Actions, () => game.InputUi, game.LogicalSize);
+        var input = new GameInputRouter(game.Actions, () => game.InputUi, game.LogicalSize, () => game.InputUi == null ? null : game.Current);
         var loop = new GameLoop(game, game.Actions);
         long origin = Stopwatch.GetTimestamp();
         int next = 0;
@@ -94,6 +94,7 @@ public sealed partial record InputReplay([property: YamlRequired] int Version, [
                 e.Input.Dispatch(input, loop, timestamp);
             }
             loop.Advance(TimeSpan.FromTicks(FrameTicks[frame]).TotalSeconds);
+            game.Current.SetPointerFrame(loop.Interpolation);
         }
     }
 }
@@ -102,6 +103,7 @@ public sealed class InputRecorder(Guid project, Guid startScene)
 {
     private readonly long origin = Stopwatch.GetTimestamp();
     private readonly List<long> frames = [];
+    public int FrameCount => frames.Count;
     private readonly List<RecordedInput> events = [];
     private int committedEvents;
 

@@ -1,0 +1,570 @@
+{
+  "system": "Linux-6.1.0-54-cloud-amd64-x86_64-with-glibc2.36",
+  "machine": "x86_64",
+  "input": "Mouse click, Shift+click, Mask > None, Ctrl+Z",
+  "maskBefore": [
+    3,
+    1,
+    7,
+    3,
+    0,
+    2147483649,
+    15,
+    3,
+    4294967295,
+    4
+  ],
+  "maskAfter": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+  ],
+  "before": "A9CA080881EB2729B55BA9CAC6C6B9C8D06B07285F0B1CB8F3F6203EB557B0EA",
+  "after": "8408BA7D670D435C9AD1955A76429D332E950AC10632857890FA054DE5137E73",
+  "undo": "A9CA080881EB2729B55BA9CAC6C6B9C8D06B07285F0B1CB8F3F6203EB557B0EA",
+  "restoredOverrides": true,
+  "sourceHash": "5409d378979775f3e2351dc8128b848d8003ab8c2e71de66c41a0685815a1bf0",
+  "noOtherFieldsChanged": true,
+  "undoSteps": 1,
+  "walls": [
+    {
+      "wall": "Wall 01",
+      "maskBefore": 3,
+      "maskAfter": 0,
+      "maskRestored": 3,
+      "overridesBefore": [
+        {
+          "field": "name",
+          "source": "Wall",
+          "local": "Wall 01"
+        }
+      ],
+      "overridesAfter": [
+        {
+          "field": "name",
+          "source": "Wall",
+          "local": "Wall 01"
+        },
+        {
+          "field": "boxCollider2D.mask",
+          "source": "3",
+          "local": "0"
+        }
+      ],
+      "overridesRestored": [
+        {
+          "field": "name",
+          "source": "Wall",
+          "local": "Wall 01"
+        }
+      ]
+    },
+    {
+      "wall": "Wall 02",
+      "maskBefore": 1,
+      "maskAfter": 0,
+      "maskRestored": 1,
+      "overridesBefore": [
+        {
+          "field": "name",
+          "source": "Wall",
+          "local": "Wall 02"
+        },
+        {
+          "field": "boxCollider2D.layer",
+          "source": "1",
+          "local": "2"
+        },
+        {
+          "field": "boxCollider2D.mask",
+          "source": "3",
+          "local": "1"
+        }
+      ],
+      "overridesAfter": [
+        {
+          "field": "name",
+          "source": "Wall",
+          "local": "Wall 02"
+        },
+        {
+          "field": "boxCollider2D.layer",
+          "source": "1",
+          "local": "2"
+        },
+        {
+          "field": "boxCollider2D.mask",
+          "source": "3",
+          "local": "0"
+        }
+      ],
+      "overridesRestored": [
+        {
+          "field": "name",
+          "source": "Wall",
+          "local": "Wall 02"
+        },
+        {
+          "field": "boxCollider2D.layer",
+          "source": "1",
+          "local": "2"
+        },
+        {
+          "field": "boxCollider2D.mask",
+          "source": "3",
+          "local": "1"
+        }
+      ]
+    },
+    {
+      "wall": "Wall 03",
+      "maskBefore": 7,
+      "maskAfter": 0,
+      "maskRestored": 7,
+      "overridesBefore": [
+        {
+          "field": "name",
+          "source": "Wall",
+          "local": "Wall 03"
+        },
+        {
+          "field": "boxCollider2D.mask",
+          "source": "3",
+          "local": "7"
+        }
+      ],
+      "overridesAfter": [
+        {
+          "field": "name",
+          "source": "Wall",
+          "local": "Wall 03"
+        },
+        {
+          "field": "boxCollider2D.mask",
+          "source": "3",
+          "local": "0"
+        }
+      ],
+      "overridesRestored": [
+        {
+          "field": "name",
+          "source": "Wall",
+          "local": "Wall 03"
+        },
+        {
+          "field": "boxCollider2D.mask",
+          "source": "3",
+          "local": "7"
+        }
+      ]
+    },
+    {
+      "wall": "Wall 04",
+      "maskBefore": 3,
+      "maskAfter": 0,
+      "maskRestored": 3,
+      "overridesBefore": [
+        {
+          "field": "name",
+          "source": "Wall",
+          "local": "Wall 04"
+        }
+      ],
+      "overridesAfter": [
+        {
+          "field": "name",
+          "source": "Wall",
+          "local": "Wall 04"
+        },
+        {
+          "field": "boxCollider2D.mask",
+          "source": "3",
+          "local": "0"
+        }
+      ],
+      "overridesRestored": [
+        {
+          "field": "name",
+          "source": "Wall",
+          "local": "Wall 04"
+        }
+      ]
+    },
+    {
+      "wall": "Wall 05",
+      "maskBefore": 0,
+      "maskAfter": 0,
+      "maskRestored": 0,
+      "overridesBefore": [
+        {
+          "field": "name",
+          "source": "Wall",
+          "local": "Wall 05"
+        },
+        {
+          "field": "boxCollider2D.layer",
+          "source": "1",
+          "local": "2"
+        },
+        {
+          "field": "boxCollider2D.mask",
+          "source": "3",
+          "local": "0"
+        }
+      ],
+      "overridesAfter": [
+        {
+          "field": "name",
+          "source": "Wall",
+          "local": "Wall 05"
+        },
+        {
+          "field": "boxCollider2D.layer",
+          "source": "1",
+          "local": "2"
+        },
+        {
+          "field": "boxCollider2D.mask",
+          "source": "3",
+          "local": "0"
+        }
+      ],
+      "overridesRestored": [
+        {
+          "field": "name",
+          "source": "Wall",
+          "local": "Wall 05"
+        },
+        {
+          "field": "boxCollider2D.layer",
+          "source": "1",
+          "local": "2"
+        },
+        {
+          "field": "boxCollider2D.mask",
+          "source": "3",
+          "local": "0"
+        }
+      ]
+    },
+    {
+      "wall": "Wall 06",
+      "maskBefore": 2147483649,
+      "maskAfter": 0,
+      "maskRestored": 2147483649,
+      "overridesBefore": [
+        {
+          "field": "name",
+          "source": "Wall",
+          "local": "Wall 06"
+        },
+        {
+          "field": "boxCollider2D.isTrigger",
+          "source": "false",
+          "local": "true"
+        },
+        {
+          "field": "boxCollider2D.mask",
+          "source": "3",
+          "local": "2147483649"
+        },
+        {
+          "field": "spriteRenderer.squareColor",
+          "source": "#567787",
+          "local": "#B78354"
+        }
+      ],
+      "overridesAfter": [
+        {
+          "field": "name",
+          "source": "Wall",
+          "local": "Wall 06"
+        },
+        {
+          "field": "boxCollider2D.isTrigger",
+          "source": "false",
+          "local": "true"
+        },
+        {
+          "field": "boxCollider2D.mask",
+          "source": "3",
+          "local": "0"
+        },
+        {
+          "field": "spriteRenderer.squareColor",
+          "source": "#567787",
+          "local": "#B78354"
+        }
+      ],
+      "overridesRestored": [
+        {
+          "field": "name",
+          "source": "Wall",
+          "local": "Wall 06"
+        },
+        {
+          "field": "boxCollider2D.isTrigger",
+          "source": "false",
+          "local": "true"
+        },
+        {
+          "field": "boxCollider2D.mask",
+          "source": "3",
+          "local": "2147483649"
+        },
+        {
+          "field": "spriteRenderer.squareColor",
+          "source": "#567787",
+          "local": "#B78354"
+        }
+      ]
+    },
+    {
+      "wall": "Wall 07",
+      "maskBefore": 15,
+      "maskAfter": 0,
+      "maskRestored": 15,
+      "overridesBefore": [
+        {
+          "field": "name",
+          "source": "Wall",
+          "local": "Wall 07"
+        },
+        {
+          "field": "boxCollider2D.mask",
+          "source": "3",
+          "local": "15"
+        },
+        {
+          "field": "spriteRenderer.squareColor",
+          "source": "#567787",
+          "local": "#B78354"
+        }
+      ],
+      "overridesAfter": [
+        {
+          "field": "name",
+          "source": "Wall",
+          "local": "Wall 07"
+        },
+        {
+          "field": "boxCollider2D.mask",
+          "source": "3",
+          "local": "0"
+        },
+        {
+          "field": "spriteRenderer.squareColor",
+          "source": "#567787",
+          "local": "#B78354"
+        }
+      ],
+      "overridesRestored": [
+        {
+          "field": "name",
+          "source": "Wall",
+          "local": "Wall 07"
+        },
+        {
+          "field": "boxCollider2D.mask",
+          "source": "3",
+          "local": "15"
+        },
+        {
+          "field": "spriteRenderer.squareColor",
+          "source": "#567787",
+          "local": "#B78354"
+        }
+      ]
+    },
+    {
+      "wall": "Wall 08",
+      "maskBefore": 3,
+      "maskAfter": 0,
+      "maskRestored": 3,
+      "overridesBefore": [
+        {
+          "field": "name",
+          "source": "Wall",
+          "local": "Wall 08"
+        },
+        {
+          "field": "boxCollider2D.layer",
+          "source": "1",
+          "local": "2"
+        },
+        {
+          "field": "spriteRenderer.squareColor",
+          "source": "#567787",
+          "local": "#B78354"
+        }
+      ],
+      "overridesAfter": [
+        {
+          "field": "name",
+          "source": "Wall",
+          "local": "Wall 08"
+        },
+        {
+          "field": "boxCollider2D.layer",
+          "source": "1",
+          "local": "2"
+        },
+        {
+          "field": "boxCollider2D.mask",
+          "source": "3",
+          "local": "0"
+        },
+        {
+          "field": "spriteRenderer.squareColor",
+          "source": "#567787",
+          "local": "#B78354"
+        }
+      ],
+      "overridesRestored": [
+        {
+          "field": "name",
+          "source": "Wall",
+          "local": "Wall 08"
+        },
+        {
+          "field": "boxCollider2D.layer",
+          "source": "1",
+          "local": "2"
+        },
+        {
+          "field": "spriteRenderer.squareColor",
+          "source": "#567787",
+          "local": "#B78354"
+        }
+      ]
+    },
+    {
+      "wall": "Wall 09",
+      "maskBefore": 4294967295,
+      "maskAfter": 0,
+      "maskRestored": 4294967295,
+      "overridesBefore": [
+        {
+          "field": "name",
+          "source": "Wall",
+          "local": "Wall 09"
+        },
+        {
+          "field": "boxCollider2D.mask",
+          "source": "3",
+          "local": "4294967295"
+        },
+        {
+          "field": "spriteRenderer.squareColor",
+          "source": "#567787",
+          "local": "#B78354"
+        }
+      ],
+      "overridesAfter": [
+        {
+          "field": "name",
+          "source": "Wall",
+          "local": "Wall 09"
+        },
+        {
+          "field": "boxCollider2D.mask",
+          "source": "3",
+          "local": "0"
+        },
+        {
+          "field": "spriteRenderer.squareColor",
+          "source": "#567787",
+          "local": "#B78354"
+        }
+      ],
+      "overridesRestored": [
+        {
+          "field": "name",
+          "source": "Wall",
+          "local": "Wall 09"
+        },
+        {
+          "field": "boxCollider2D.mask",
+          "source": "3",
+          "local": "4294967295"
+        },
+        {
+          "field": "spriteRenderer.squareColor",
+          "source": "#567787",
+          "local": "#B78354"
+        }
+      ]
+    },
+    {
+      "wall": "Wall 10",
+      "maskBefore": 4,
+      "maskAfter": 0,
+      "maskRestored": 4,
+      "overridesBefore": [
+        {
+          "field": "name",
+          "source": "Wall",
+          "local": "Wall 10"
+        },
+        {
+          "field": "boxCollider2D.mask",
+          "source": "3",
+          "local": "4"
+        },
+        {
+          "field": "spriteRenderer.squareColor",
+          "source": "#567787",
+          "local": "#B78354"
+        }
+      ],
+      "overridesAfter": [
+        {
+          "field": "name",
+          "source": "Wall",
+          "local": "Wall 10"
+        },
+        {
+          "field": "boxCollider2D.mask",
+          "source": "3",
+          "local": "0"
+        },
+        {
+          "field": "spriteRenderer.squareColor",
+          "source": "#567787",
+          "local": "#B78354"
+        }
+      ],
+      "overridesRestored": [
+        {
+          "field": "name",
+          "source": "Wall",
+          "local": "Wall 10"
+        },
+        {
+          "field": "boxCollider2D.mask",
+          "source": "3",
+          "local": "4"
+        },
+        {
+          "field": "spriteRenderer.squareColor",
+          "source": "#567787",
+          "local": "#B78354"
+        }
+      ]
+    }
+  ],
+  "mixedFields": [
+    "Is Trigger",
+    "Layer",
+    "Color",
+    "Mask"
+  ],
+  "selectionAfterUndo": "Inspector · 10 selected"
+}

@@ -10,8 +10,15 @@ public enum WorldSaveFields { Existence = 0, Transform = 1, Active = 2, Collider
 internal sealed record WorldCheckpoint(int Version, Dictionary<Guid, SavedSceneWorld> Scenes);
 internal sealed record SavedSceneWorld(SavedObject[] Objects, SavedPrefab[] Prefabs);
 internal sealed record SavedPrefab(Guid Asset, Guid? Parent, float SpawnX, float SpawnY, Dictionary<Guid, Guid> Members, SavedObject[] Objects);
-internal sealed record SavedObject(Guid Id, WorldSaveFields Fields, bool Removed, SavedPose? Pose, bool? Active, bool? Collider);
-internal sealed record SavedPose(float X, float Y, float Angle);
+internal sealed record SavedObject(Guid Id, WorldSaveFields Fields, bool Removed, SavedPose? Pose, bool? Active, bool? Collider,
+    [property: JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)] SavedParent? Reparented = null);
+internal sealed record SavedParent(Guid? Id);
+internal sealed record SavedPose(float X, float Y, float Angle,
+    [property: JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)] SavedBasis? Basis = null);
+internal sealed record SavedBasis(float M11, float M12, float M21, float M22, bool NegativeX)
+{
+    internal Matrix3x2 At(Vector2 origin) => new(M11, M12, M21, M22, origin.X, origin.Y);
+}
 
 // Every constructor argument is part of the on-disk schema, including nullable overrides.
 [JsonSourceGenerationOptions(JsonSerializerDefaults.Web, RespectRequiredConstructorParameters = true,
@@ -30,7 +37,11 @@ public sealed partial class SessionState
         var scenes = new Dictionary<Guid, SavedSceneWorld>(rememberedWorlds);
         if (SceneId is Guid id && LiveWorld?.CaptureWorld() is {} current) scenes[id] = current;
         if (scenes.Count == 0) { data.Values.Remove(key); return; }
-        data.Values[key] = JsonSerializer.SerializeToElement(new WorldCheckpoint(1, scenes), WorldCheckpointJson.Default.WorldCheckpoint);
+        bool extended = scenes.Values.Any(scene => scene.Objects.Any(NeedsHierarchyPose) ||
+            scene.Prefabs.Any(prefab => prefab.Objects.Any(NeedsHierarchyPose)));
+        data.Values[key] = JsonSerializer.SerializeToElement(new WorldCheckpoint(extended ? 2 : 1, scenes), WorldCheckpointJson.Default.WorldCheckpoint);
+
+        static bool NeedsHierarchyPose(SavedObject obj) => obj.Reparented != null || obj.Pose?.Basis != null;
     }
 
     public void LoadSavedScene(Guid room, GameData data, Action<SessionState>? onEntered = null, string key = "world")
@@ -41,7 +52,7 @@ public sealed partial class SessionState
             WorldCheckpoint? checkpoint;
             try { checkpoint = value.Deserialize(WorldCheckpointJson.Default.WorldCheckpoint); }
             catch (JsonException ex) { throw new InvalidDataException("Invalid world checkpoint.", ex); }
-            if (checkpoint is not { Version: 1, Scenes: not null } || checkpoint.Scenes.ContainsKey(Guid.Empty))
+            if (checkpoint is not { Version: 1 or 2, Scenes: not null } || checkpoint.Scenes.ContainsKey(Guid.Empty))
                 throw new InvalidDataException("Unsupported world checkpoint.");
             foreach (var scene in checkpoint.Scenes.Values) SceneGame.ValidateWorld(scene);
             scenes = checkpoint.Scenes;
@@ -82,17 +93,24 @@ public sealed partial class SceneGame
         if (!byId.TryGetValue(id, out var body) || removed.Contains(id) || body.SceneOwner.HasValue)
             throw new ArgumentException("Choose a live object in the primary scene.", nameof(id));
         worldTracked = true;
-        while (true)
+        var expanded = new HashSet<Guid>();
+        Track(body, fields);
+        void Track(Body member, WorldSaveFields selected)
         {
-            if (body.Origin is {} origin)
+            const WorldSaveFields ancestor = WorldSaveFields.Transform | WorldSaveFields.Active;
+            if (member.Origin is {} origin)
             {
-                origin.Fields = origin.Fields.GetValueOrDefault() | fields;
-                body = byId[origin.Root];
+                origin.Fields = origin.Fields.GetValueOrDefault() | selected;
+                if (!expanded.Add(origin.Root)) return;
+                foreach (var instance in origin.Members.Values)
+                    if (byId.TryGetValue(instance, out var child) && !removed.Contains(instance) &&
+                        child.Source.ParentId is Guid parent && byId[parent].Origin != origin) Track(byId[parent], ancestor);
             }
-            else trackedObjects[body.Id] = trackedObjects.GetValueOrDefault(body.Id) | fields;
-            if (body.Source.ParentId is not Guid parent) break;
-            body = byId[parent];
-            fields = WorldSaveFields.Transform | WorldSaveFields.Active;
+            else
+            {
+                trackedObjects[member.Id] = trackedObjects.GetValueOrDefault(member.Id) | selected;
+                if (expanded.Add(member.Id) && member.Source.ParentId is Guid parent) Track(byId[parent], ancestor);
+            }
         }
     }
 
@@ -101,11 +119,13 @@ public sealed partial class SceneGame
         if (!worldTracked) return null;
         var objects = trackedObjects.Select(entry => Capture(entry.Key, entry.Value)).ToArray();
         var prefabs = new List<SavedPrefab>();
+        var captured = new HashSet<Guid>();
         foreach (var obj in world.ParentFirst())
         {
-            if (removed.Contains(obj.Id) || byId[obj.Id].Origin is not { Fields: {} fields } origin || origin.Root != obj.Id) continue;
-            var spawn = obj.LocalMatrix.Translation;
-            prefabs.Add(new(origin.Asset, obj.ParentId, spawn.X, spawn.Y, origin.Members,
+            if (removed.Contains(obj.Id) || byId[obj.Id].Origin is not { Fields: {} fields } origin || !captured.Add(origin.Root)) continue;
+            var root = byId.GetValueOrDefault(origin.Root)?.Source;
+            var spawn = root?.LocalMatrix.Translation ?? Vector2.Zero;
+            prefabs.Add(new(origin.Asset, root?.ParentId, spawn.X, spawn.Y, origin.Members,
                 origin.Members.Values.Select(id => Capture(id, fields)).ToArray()));
         }
         return new(objects, prefabs.ToArray());
@@ -123,10 +143,17 @@ public sealed partial class SceneGame
                 var owner = byId[parent];
                 position = Vector2.Transform(position, Affine2D.Inverse(owner.MatrixAt(owner.Position)));
             }
-            pose = new(position.X, position.Y, body.Angle);
+            SavedBasis? basis = null;
+            if (body.EditedBasis)
+            {
+                var local = CurrentLocal(body);
+                basis = new(local.M11, local.M12, local.M21, local.M22, body.Source.ScaleX < 0);
+            }
+            pose = new(position.X, position.Y, body.Angle, basis);
         }
         return new(id, fields, false, pose, fields.HasFlag(WorldSaveFields.Active) ? body.ActiveSelf : null,
-            fields.HasFlag(WorldSaveFields.Collider) && body.ColliderConfig != null ? body.ColliderEnabled : null);
+            fields.HasFlag(WorldSaveFields.Collider) && body.ColliderConfig != null ? body.ColliderEnabled : null,
+            pose != null && body.Origin?.Root != id && body.Source.ParentId != body.InitialParent ? new(body.Source.ParentId) : null);
     }
 
     internal static void ValidateWorld(SavedSceneWorld saved)
@@ -151,7 +178,9 @@ public sealed partial class SceneGame
                 (obj.Pose != null) != (!obj.Removed && obj.Fields.HasFlag(WorldSaveFields.Transform)) ||
                 (obj.Active != null) != (!obj.Removed && obj.Fields.HasFlag(WorldSaveFields.Active)) ||
                 obj.Collider != null && (obj.Removed || !obj.Fields.HasFlag(WorldSaveFields.Collider)) ||
-                obj.Pose is {} pose && (!float.IsFinite(pose.X) || !float.IsFinite(pose.Y) || !float.IsFinite(pose.Angle)))
+                obj.Reparented != null && (obj.Pose == null || obj.Reparented.Id == Guid.Empty || obj.Reparented.Id == obj.Id) ||
+                obj.Pose is {} pose && (!float.IsFinite(pose.X) || !float.IsFinite(pose.Y) || !float.IsFinite(pose.Angle) ||
+                    pose.Basis != null && !Invertible(pose.Basis.At(new(pose.X, pose.Y)))))
                 throw new InvalidDataException("Invalid saved object state.");
         }
     }
@@ -166,18 +195,27 @@ public sealed partial class SceneGame
             trackedObjects.Add(obj.Id, obj.Fields);
             states.Add(obj.Id, obj);
         }
-        // Capture emits parent instances before children, including independently spawned nested prefabs.
+        // Instantiate all members before resolving links: an authored object can now be
+        // parented to a spawned object, and members of different instances can interleave.
+        var parents = new Dictionary<Guid, Guid?>();
         foreach (var prefab in saved.Prefabs)
         {
-            var position = new Vector2(prefab.SpawnX, prefab.SpawnY);
-            if (prefab.Parent is Guid parent)
-            {
-                if (!byId.TryGetValue(parent, out var owner)) throw new InvalidDataException($"Missing saved prefab parent {parent}.");
-                position = Vector2.Transform(position, owner.MatrixAt(owner.Position));
-            }
-            var root = Instantiate(new(prefab.Asset), position, prefab.Parent, prefab.Members);
+            var root = Instantiate(new(prefab.Asset), new(prefab.SpawnX, prefab.SpawnY), null, prefab.Members);
+            parents.Add(root, prefab.Parent);
             byId[root].Origin!.Fields = prefab.Objects[0].Fields;
             foreach (var obj in prefab.Objects) states.Add(obj.Id, obj);
+        }
+        foreach (var obj in states.Values)
+            if (obj.Reparented is {} link) parents[obj.Id] = link.Id;
+        foreach (var (id, parent) in parents)
+        {
+            if (parent.HasValue && !byId.ContainsKey(parent.Value)) throw new InvalidDataException($"Missing saved parent {parent}.");
+            byId[id].Source.SetParent(parent is Guid p ? byId[p].Source : null);
+        }
+        if (parents.Count > 0)
+        {
+            if (world.ParentFirst().Count() != world.Objects.Count) throw new InvalidDataException("Cycle in saved object parents.");
+            dirty = true;
         }
         foreach (var obj in states.Values) if (obj.Removed) Destroy(obj.Id);
         CommitChanges();
@@ -189,13 +227,28 @@ public sealed partial class SceneGame
             var obj = states.GetValueOrDefault(body.Id);
             var parent = body.Source.ParentId is Guid p ? byId[p] : null;
             var local = body.Source.LocalMatrix.Translation;
-            body.Angle = parent?.Angle ?? 0;
-            if (obj?.Pose is {} pose) { local = new(pose.X, pose.Y); body.Angle = pose.Angle; }
-            body.Position = parent == null ? local : Vector2.Transform(local, parent.MatrixAt(parent.Position));
+            float angle = obj?.Pose?.Angle ?? parent?.Angle ?? 0;
+            if (obj?.Pose is {} pose) local = new(pose.X, pose.Y);
+            var matrix = body.Source.LocalMatrix;
+            if (obj?.Pose?.Basis is {} basis)
+            {
+                matrix = basis.At(local);
+                body.Source.ScaleX = basis.NegativeX ? -1 : 1;
+                body.Source.SetLocalMatrix(matrix);
+                body.EditedBasis = true;
+            }
+            matrix.Translation = local;
+            matrix *= ParentMatrix(body);
+            if (!body.EditedBasis && angle != (parent?.Angle ?? 0))
+            {
+                var position = matrix.Translation;
+                matrix *= Matrix3x2.CreateRotation(angle - (parent?.Angle ?? 0));
+                matrix.Translation = position;
+            }
+            body.SetWorldPose(matrix, angle);
             body.ActiveSelf = obj?.Active ?? body.ActiveSelf;
             body.Active = body.ActiveSelf && (parent?.Active ?? true);
             body.ColliderEnabled = obj?.Collider ?? body.ColliderEnabled;
-            body.BeginStep();
         }
         // Queue creation only for survivors and let OnCreate see the final hierarchy and values.
         notifications.Clear();

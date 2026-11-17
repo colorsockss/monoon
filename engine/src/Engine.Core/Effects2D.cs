@@ -7,20 +7,34 @@ namespace Engine.Core;
 
 // A looping procedural sprite sampled in local UV space. The raster atlas is owned by each renderer.
 [YamlObject]
-public sealed partial record ShaderClip(int Width, int Height, int Frames, int Fps, string Source)
+public sealed partial record ShaderClip(int Width, int Height, int Frames, int Fps, string? Source)
 {
+    public Guid? Sheet { get; init; }
+    [YamlIgnore] public string? SheetPath { get; internal init; }
+    [YamlIgnore] public bool Additive { get; private init; }
     public const string Extension = ".shader";
     [YamlIgnore] public int Columns => Math.Min(Frames, 1024 / Width);
     public SpriteRegion Region(int frame) => new(frame % Columns * Width, frame / Columns * Height, Width, Height);
     public int FrameAt(double seconds) => (int)(Math.Floor(seconds * Fps) % Frames);
 
-    public static ShaderClip Load(string file)
+    public static ShaderClip Load(string file) => Load(file, null, null);
+
+    internal static ShaderClip Load(string file, ProjectAssets? assets, string? root)
     {
         var clip = ProjectYaml.Read<ShaderClip>(file);
         if (clip.Width is < 1 or > 256 || clip.Height is < 1 or > 256 || clip.Frames is < 1 or > 128 ||
-            clip.Fps is < 1 or > 60 || clip.Width * clip.Height * clip.Frames > 1048576 ||
-            string.IsNullOrWhiteSpace(clip.Source) || clip.Source.Length > 65536)
+            clip.Fps is < 1 or > 60 || clip.Width * clip.Height * clip.Frames > 1048576)
             throw new InvalidDataException($"{file}: invalid shader size, frame count, FPS or source.");
+        if (clip.Sheet is Guid id)
+        {
+            var relative = assets?.PathFor(id);
+            if (root == null || !File.Exists(Path.Combine(root, ".monoon-player")) || clip.Source != null ||
+                relative == null || !SpriteAssets.IsReference(relative))
+                throw new InvalidDataException($"{file}: missing or invalid baked shader sheet {id}.");
+            return clip with { SheetPath = Path.Combine(root, relative) };
+        }
+        if (string.IsNullOrWhiteSpace(clip.Source) || clip.Source.Length > 65536)
+            throw new InvalidDataException($"{file}: invalid shader source.");
         return clip;
     }
 
@@ -29,7 +43,7 @@ public sealed partial record ShaderClip(int Width, int Height, int Frames, int F
             float d = max(0.0, 1.0 - length(uv * 2.0 - 1.0));
             return half4(d*d);
         }
-        """);
+        """) { Additive = true };
 
     internal static readonly ShaderClip Puff = new(12,12,1,1,"""
         half4 shade(float2 uv, float t) {
@@ -64,7 +78,7 @@ public sealed partial record PointLight2DComponent : SceneComponent
             throw new InvalidDataException($"{name}: invalid point light radius, intensity, flicker, frequency or color.");
     }
 
-    internal void Draw(ICanvas2D canvas, Vector2 center, RectangleF visible, Matrix3x2 view, double seconds)
+    internal void Draw(ICanvas2D canvas, ShaderClip sheet, Vector2 center, RectangleF visible, Matrix3x2 view, double seconds)
     {
         var area = new RectangleF(center.X-Radius,center.Y-Radius,Radius*2,Radius*2);
         if (!visible.IntersectsWith(area) || Intensity == 0) return;
@@ -72,7 +86,7 @@ public sealed partial record PointLight2DComponent : SceneComponent
         double wave = .5 + .34 * Math.Sin(phase) + .16 * Math.Sin(phase * 2.71);
         double brightness = Intensity * (1 - Flicker * wave);
         SceneObject.TryColor(Color,out var rgb);
-        canvas.DrawShader(ShaderClip.LightFalloff,0,area,view,System.Drawing.Color.FromArgb((int)Math.Round(255*brightness),rgb),true);
+        canvas.DrawShader(sheet,0,area,view,System.Drawing.Color.FromArgb((int)Math.Round(255*brightness),rgb),true);
     }
 }
 
@@ -130,7 +144,7 @@ internal sealed class ParticleBurst(Guid owner, ParticleEmitter2DComponent confi
         }
     }
 
-    internal void Draw(ICanvas2D canvas, RectangleF frame, Matrix3x2 view, double now)
+    internal void Draw(ICanvas2D canvas, ShaderClip sheet, RectangleF frame, Matrix3x2 view, double now)
     {
         SceneObject.TryColor(config.Color,out var rgb);
         foreach (var p in particles)
@@ -142,7 +156,7 @@ internal sealed class ParticleBurst(Guid owner, ParticleEmitter2DComponent confi
             float size=p.Size*(.55f+.45f*life);
             var area=new RectangleF(point.X-size,point.Y-size*.5f,size*2,size);
             if (frame.IntersectsWith(area))
-                canvas.DrawShader(ShaderClip.Puff,0,area,view,System.Drawing.Color.FromArgb((int)(life*255),rgb),false);
+                canvas.DrawShader(sheet,0,area,view,System.Drawing.Color.FromArgb((int)(life*255),rgb),false);
         }
     }
 }

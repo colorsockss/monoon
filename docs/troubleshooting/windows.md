@@ -4,7 +4,9 @@
 
 ## 엔진·에디터
 
-Windows 패키지 에디터의 통과 기록은 없다. 소스와 .NET 10 SDK가 있는 Windows 데스크톱에서 저장소 루트를 열고 PowerShell로 실행한다.
+배포 에디터 문제는 `MoNoon-win-x64.zip`을 푼 뒤 PowerShell에서 `.\editor\MoNoon.exe .\KeyRoom`으로 재현한다. KeyRoom은 같은 상위 폴더에 편집용 샘플 ZIP을 풀어 준비한다. Inspector 편집과 Play를 반복하려면 [배포 에디터 조작 검사](../../engine/tests/KeyRoom.Desktop/README.md#배포-에디터-조작-회귀)를 사용한다.
+
+소스와 비교할 때는 .NET 10 SDK가 있는 Windows 데스크톱에서 저장소 루트를 열고 실행한다.
 
 ```powershell
 dotnet --info

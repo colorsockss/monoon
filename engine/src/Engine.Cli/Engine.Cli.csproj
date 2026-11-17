@@ -4,6 +4,6 @@
     <AssemblyName>MoNoon.Cli</AssemblyName>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="../Engine.Desktop/Engine.Desktop.csproj" />
+    <ProjectReference Include="../Engine.Authoring/Engine.Authoring.csproj" />
   </ItemGroup>
 </Project>

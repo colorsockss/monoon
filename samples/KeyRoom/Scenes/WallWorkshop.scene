@@ -1,0 +1,612 @@
+schemaVersion: 15
+objects:
+- id: 74221e76-e2b1-4907-a12b-06b47055f26a
+  name: Main Camera
+  x: 400
+  y: 225
+  width: 40
+  height: 40
+  components:
+  - type: camera2D
+    output: Primary
+    showViews: true
+    order: 0
+    halfLife: 0
+    zoom: 1
+  rotation: 0
+  scaleX: 1
+  scaleY: 1
+  pivotX: 0
+  pivotY: 0
+  shear: 0
+- id: 5de1ae29-99c8-453c-ab96-f4e565c0a216
+  prefab:
+    assetId: ce77d4bd-f26f-46e0-abeb-2e147b29467d
+    instances:
+      a2813c96-acb9-4110-ac2b-2447edefc1aa: 5de1ae29-99c8-453c-ab96-f4e565c0a216
+    revision: 5409D378979775F3E2351DC8128B848D8003AB8C2E71DE66C41A0685815A1BF0
+    baseline:
+      a2813c96-acb9-4110-ac2b-2447edefc1aa:
+        id: "5de1ae29-99c8-453c-ab96-f4e565c0a216"
+        name: "Wall"
+        x: 0
+        y: 0
+        width: 76
+        height: 28
+        components:
+        - type: "boxCollider2D"
+          isTrigger: false
+          layer: 1
+          mask: 3
+        - type: "spriteRenderer"
+          sortingLayer: 0
+          order: 0
+          sortByY: false
+          footOffset: 0
+          flipX: false
+          flipY: false
+          pixelSnap: false
+          squareColor: "#567787"
+        rotation: 0
+        scaleX: 1
+        scaleY: 1
+        pivotX: 0
+        pivotY: 0
+        shear: 0
+  name: Wall 01
+  x: 140
+  y: 145
+  width: 76
+  height: 28
+  components:
+  - type: boxCollider2D
+    isTrigger: false
+    layer: 1
+    mask: 3
+  - type: spriteRenderer
+    sortingLayer: 0
+    order: 0
+    sortByY: false
+    footOffset: 0
+    flipX: false
+    flipY: false
+    pixelSnap: false
+    squareColor: "#567787"
+  rotation: 0
+  scaleX: 1
+  scaleY: 1
+  pivotX: 0
+  pivotY: 0
+  shear: 0
+- id: 0ee256a0-d3de-44af-800c-9cdfd34a3519
+  prefab:
+    assetId: ce77d4bd-f26f-46e0-abeb-2e147b29467d
+    instances:
+      a2813c96-acb9-4110-ac2b-2447edefc1aa: 0ee256a0-d3de-44af-800c-9cdfd34a3519
+    revision: 5409D378979775F3E2351DC8128B848D8003AB8C2E71DE66C41A0685815A1BF0
+    baseline:
+      a2813c96-acb9-4110-ac2b-2447edefc1aa:
+        id: "0ee256a0-d3de-44af-800c-9cdfd34a3519"
+        name: "Wall"
+        x: 0
+        y: 0
+        width: 76
+        height: 28
+        components:
+        - type: "boxCollider2D"
+          isTrigger: false
+          layer: 1
+          mask: 3
+        - type: "spriteRenderer"
+          sortingLayer: 0
+          order: 0
+          sortByY: false
+          footOffset: 0
+          flipX: false
+          flipY: false
+          pixelSnap: false
+          squareColor: "#567787"
+        rotation: 0
+        scaleX: 1
+        scaleY: 1
+        pivotX: 0
+        pivotY: 0
+        shear: 0
+  name: Wall 02
+  x: 240
+  y: 145
+  width: 76
+  height: 28
+  components:
+  - type: boxCollider2D
+    isTrigger: false
+    layer: 2
+    mask: 1
+  - type: spriteRenderer
+    sortingLayer: 0
+    order: 0
+    sortByY: false
+    footOffset: 0
+    flipX: false
+    flipY: false
+    pixelSnap: false
+    squareColor: "#567787"
+  rotation: 0
+  scaleX: 1
+  scaleY: 1
+  pivotX: 0
+  pivotY: 0
+  shear: 0
+- id: af713d51-5f2f-4c3c-a80f-189927b313a8
+  prefab:
+    assetId: ce77d4bd-f26f-46e0-abeb-2e147b29467d
+    instances:
+      a2813c96-acb9-4110-ac2b-2447edefc1aa: af713d51-5f2f-4c3c-a80f-189927b313a8
+    revision: 5409D378979775F3E2351DC8128B848D8003AB8C2E71DE66C41A0685815A1BF0
+    baseline:
+      a2813c96-acb9-4110-ac2b-2447edefc1aa:
+        id: "af713d51-5f2f-4c3c-a80f-189927b313a8"
+        name: "Wall"
+        x: 0
+        y: 0
+        width: 76
+        height: 28
+        components:
+        - type: "boxCollider2D"
+          isTrigger: false
+          layer: 1
+          mask: 3
+        - type: "spriteRenderer"
+          sortingLayer: 0
+          order: 0
+          sortByY: false
+          footOffset: 0
+          flipX: false
+          flipY: false
+          pixelSnap: false
+          squareColor: "#567787"
+        rotation: 0
+        scaleX: 1
+        scaleY: 1
+        pivotX: 0
+        pivotY: 0
+        shear: 0
+  name: Wall 03
+  x: 340
+  y: 145
+  width: 76
+  height: 28
+  components:
+  - type: boxCollider2D
+    isTrigger: false
+    layer: 1
+    mask: 7
+  - type: spriteRenderer
+    sortingLayer: 0
+    order: 0
+    sortByY: false
+    footOffset: 0
+    flipX: false
+    flipY: false
+    pixelSnap: false
+    squareColor: "#567787"
+  rotation: 0
+  scaleX: 1
+  scaleY: 1
+  pivotX: 0
+  pivotY: 0
+  shear: 0
+- id: b555582c-5fb2-42d4-874c-7bfe904961d9
+  prefab:
+    assetId: ce77d4bd-f26f-46e0-abeb-2e147b29467d
+    instances:
+      a2813c96-acb9-4110-ac2b-2447edefc1aa: b555582c-5fb2-42d4-874c-7bfe904961d9
+    revision: 5409D378979775F3E2351DC8128B848D8003AB8C2E71DE66C41A0685815A1BF0
+    baseline:
+      a2813c96-acb9-4110-ac2b-2447edefc1aa:
+        id: "b555582c-5fb2-42d4-874c-7bfe904961d9"
+        name: "Wall"
+        x: 0
+        y: 0
+        width: 76
+        height: 28
+        components:
+        - type: "boxCollider2D"
+          isTrigger: false
+          layer: 1
+          mask: 3
+        - type: "spriteRenderer"
+          sortingLayer: 0
+          order: 0
+          sortByY: false
+          footOffset: 0
+          flipX: false
+          flipY: false
+          pixelSnap: false
+          squareColor: "#567787"
+        rotation: 0
+        scaleX: 1
+        scaleY: 1
+        pivotX: 0
+        pivotY: 0
+        shear: 0
+  name: Wall 04
+  x: 440
+  y: 145
+  width: 76
+  height: 28
+  components:
+  - type: boxCollider2D
+    isTrigger: false
+    layer: 1
+    mask: 3
+  - type: spriteRenderer
+    sortingLayer: 0
+    order: 0
+    sortByY: false
+    footOffset: 0
+    flipX: false
+    flipY: false
+    pixelSnap: false
+    squareColor: "#567787"
+  rotation: 0
+  scaleX: 1
+  scaleY: 1
+  pivotX: 0
+  pivotY: 0
+  shear: 0
+- id: d8c68cfd-02b2-4dff-95c7-126645c36689
+  prefab:
+    assetId: ce77d4bd-f26f-46e0-abeb-2e147b29467d
+    instances:
+      a2813c96-acb9-4110-ac2b-2447edefc1aa: d8c68cfd-02b2-4dff-95c7-126645c36689
+    revision: 5409D378979775F3E2351DC8128B848D8003AB8C2E71DE66C41A0685815A1BF0
+    baseline:
+      a2813c96-acb9-4110-ac2b-2447edefc1aa:
+        id: "d8c68cfd-02b2-4dff-95c7-126645c36689"
+        name: "Wall"
+        x: 0
+        y: 0
+        width: 76
+        height: 28
+        components:
+        - type: "boxCollider2D"
+          isTrigger: false
+          layer: 1
+          mask: 3
+        - type: "spriteRenderer"
+          sortingLayer: 0
+          order: 0
+          sortByY: false
+          footOffset: 0
+          flipX: false
+          flipY: false
+          pixelSnap: false
+          squareColor: "#567787"
+        rotation: 0
+        scaleX: 1
+        scaleY: 1
+        pivotX: 0
+        pivotY: 0
+        shear: 0
+  name: Wall 05
+  x: 540
+  y: 145
+  width: 76
+  height: 28
+  components:
+  - type: boxCollider2D
+    isTrigger: false
+    layer: 2
+    mask: 0
+  - type: spriteRenderer
+    sortingLayer: 0
+    order: 0
+    sortByY: false
+    footOffset: 0
+    flipX: false
+    flipY: false
+    pixelSnap: false
+    squareColor: "#567787"
+  rotation: 0
+  scaleX: 1
+  scaleY: 1
+  pivotX: 0
+  pivotY: 0
+  shear: 0
+- id: bc440b37-60e3-46f5-8cd7-eb5126b94d77
+  prefab:
+    assetId: ce77d4bd-f26f-46e0-abeb-2e147b29467d
+    instances:
+      a2813c96-acb9-4110-ac2b-2447edefc1aa: bc440b37-60e3-46f5-8cd7-eb5126b94d77
+    revision: 5409D378979775F3E2351DC8128B848D8003AB8C2E71DE66C41A0685815A1BF0
+    baseline:
+      a2813c96-acb9-4110-ac2b-2447edefc1aa:
+        id: "bc440b37-60e3-46f5-8cd7-eb5126b94d77"
+        name: "Wall"
+        x: 0
+        y: 0
+        width: 76
+        height: 28
+        components:
+        - type: "boxCollider2D"
+          isTrigger: false
+          layer: 1
+          mask: 3
+        - type: "spriteRenderer"
+          sortingLayer: 0
+          order: 0
+          sortByY: false
+          footOffset: 0
+          flipX: false
+          flipY: false
+          pixelSnap: false
+          squareColor: "#567787"
+        rotation: 0
+        scaleX: 1
+        scaleY: 1
+        pivotX: 0
+        pivotY: 0
+        shear: 0
+  name: Wall 06
+  x: 140
+  y: 251
+  width: 76
+  height: 28
+  components:
+  - type: boxCollider2D
+    isTrigger: true
+    layer: 1
+    mask: 2147483649
+  - type: spriteRenderer
+    sortingLayer: 0
+    order: 0
+    sortByY: false
+    footOffset: 0
+    flipX: false
+    flipY: false
+    pixelSnap: false
+    squareColor: "#B78354"
+  rotation: 0
+  scaleX: 1
+  scaleY: 1
+  pivotX: 0
+  pivotY: 0
+  shear: 0
+- id: d726123d-5582-4aae-8b9e-da6716a7d2e5
+  prefab:
+    assetId: ce77d4bd-f26f-46e0-abeb-2e147b29467d
+    instances:
+      a2813c96-acb9-4110-ac2b-2447edefc1aa: d726123d-5582-4aae-8b9e-da6716a7d2e5
+    revision: 5409D378979775F3E2351DC8128B848D8003AB8C2E71DE66C41A0685815A1BF0
+    baseline:
+      a2813c96-acb9-4110-ac2b-2447edefc1aa:
+        id: "d726123d-5582-4aae-8b9e-da6716a7d2e5"
+        name: "Wall"
+        x: 0
+        y: 0
+        width: 76
+        height: 28
+        components:
+        - type: "boxCollider2D"
+          isTrigger: false
+          layer: 1
+          mask: 3
+        - type: "spriteRenderer"
+          sortingLayer: 0
+          order: 0
+          sortByY: false
+          footOffset: 0
+          flipX: false
+          flipY: false
+          pixelSnap: false
+          squareColor: "#567787"
+        rotation: 0
+        scaleX: 1
+        scaleY: 1
+        pivotX: 0
+        pivotY: 0
+        shear: 0
+  name: Wall 07
+  x: 240
+  y: 251
+  width: 76
+  height: 28
+  components:
+  - type: boxCollider2D
+    isTrigger: false
+    layer: 1
+    mask: 15
+  - type: spriteRenderer
+    sortingLayer: 0
+    order: 0
+    sortByY: false
+    footOffset: 0
+    flipX: false
+    flipY: false
+    pixelSnap: false
+    squareColor: "#B78354"
+  rotation: 0
+  scaleX: 1
+  scaleY: 1
+  pivotX: 0
+  pivotY: 0
+  shear: 0
+- id: 83510b56-a4d0-4054-8074-89e406b632f2
+  prefab:
+    assetId: ce77d4bd-f26f-46e0-abeb-2e147b29467d
+    instances:
+      a2813c96-acb9-4110-ac2b-2447edefc1aa: 83510b56-a4d0-4054-8074-89e406b632f2
+    revision: 5409D378979775F3E2351DC8128B848D8003AB8C2E71DE66C41A0685815A1BF0
+    baseline:
+      a2813c96-acb9-4110-ac2b-2447edefc1aa:
+        id: "83510b56-a4d0-4054-8074-89e406b632f2"
+        name: "Wall"
+        x: 0
+        y: 0
+        width: 76
+        height: 28
+        components:
+        - type: "boxCollider2D"
+          isTrigger: false
+          layer: 1
+          mask: 3
+        - type: "spriteRenderer"
+          sortingLayer: 0
+          order: 0
+          sortByY: false
+          footOffset: 0
+          flipX: false
+          flipY: false
+          pixelSnap: false
+          squareColor: "#567787"
+        rotation: 0
+        scaleX: 1
+        scaleY: 1
+        pivotX: 0
+        pivotY: 0
+        shear: 0
+  name: Wall 08
+  x: 340
+  y: 251
+  width: 76
+  height: 28
+  components:
+  - type: boxCollider2D
+    isTrigger: false
+    layer: 2
+    mask: 3
+  - type: spriteRenderer
+    sortingLayer: 0
+    order: 0
+    sortByY: false
+    footOffset: 0
+    flipX: false
+    flipY: false
+    pixelSnap: false
+    squareColor: "#B78354"
+  rotation: 0
+  scaleX: 1
+  scaleY: 1
+  pivotX: 0
+  pivotY: 0
+  shear: 0
+- id: 4d48ba88-1387-4786-a047-7f53703e1430
+  prefab:
+    assetId: ce77d4bd-f26f-46e0-abeb-2e147b29467d
+    instances:
+      a2813c96-acb9-4110-ac2b-2447edefc1aa: 4d48ba88-1387-4786-a047-7f53703e1430
+    revision: 5409D378979775F3E2351DC8128B848D8003AB8C2E71DE66C41A0685815A1BF0
+    baseline:
+      a2813c96-acb9-4110-ac2b-2447edefc1aa:
+        id: "4d48ba88-1387-4786-a047-7f53703e1430"
+        name: "Wall"
+        x: 0
+        y: 0
+        width: 76
+        height: 28
+        components:
+        - type: "boxCollider2D"
+          isTrigger: false
+          layer: 1
+          mask: 3
+        - type: "spriteRenderer"
+          sortingLayer: 0
+          order: 0
+          sortByY: false
+          footOffset: 0
+          flipX: false
+          flipY: false
+          pixelSnap: false
+          squareColor: "#567787"
+        rotation: 0
+        scaleX: 1
+        scaleY: 1
+        pivotX: 0
+        pivotY: 0
+        shear: 0
+  name: Wall 09
+  x: 440
+  y: 251
+  width: 76
+  height: 28
+  components:
+  - type: boxCollider2D
+    isTrigger: false
+    layer: 1
+    mask: 4294967295
+  - type: spriteRenderer
+    sortingLayer: 0
+    order: 0
+    sortByY: false
+    footOffset: 0
+    flipX: false
+    flipY: false
+    pixelSnap: false
+    squareColor: "#B78354"
+  rotation: 0
+  scaleX: 1
+  scaleY: 1
+  pivotX: 0
+  pivotY: 0
+  shear: 0
+- id: 95b736e5-b057-4a3f-a8d0-34ee075cf4ac
+  prefab:
+    assetId: ce77d4bd-f26f-46e0-abeb-2e147b29467d
+    instances:
+      a2813c96-acb9-4110-ac2b-2447edefc1aa: 95b736e5-b057-4a3f-a8d0-34ee075cf4ac
+    revision: 5409D378979775F3E2351DC8128B848D8003AB8C2E71DE66C41A0685815A1BF0
+    baseline:
+      a2813c96-acb9-4110-ac2b-2447edefc1aa:
+        id: "95b736e5-b057-4a3f-a8d0-34ee075cf4ac"
+        name: "Wall"
+        x: 0
+        y: 0
+        width: 76
+        height: 28
+        components:
+        - type: "boxCollider2D"
+          isTrigger: false
+          layer: 1
+          mask: 3
+        - type: "spriteRenderer"
+          sortingLayer: 0
+          order: 0
+          sortByY: false
+          footOffset: 0
+          flipX: false
+          flipY: false
+          pixelSnap: false
+          squareColor: "#567787"
+        rotation: 0
+        scaleX: 1
+        scaleY: 1
+        pivotX: 0
+        pivotY: 0
+        shear: 0
+  name: Wall 10
+  x: 540
+  y: 251
+  width: 76
+  height: 28
+  components:
+  - type: boxCollider2D
+    isTrigger: false
+    layer: 1
+    mask: 4
+  - type: spriteRenderer
+    sortingLayer: 0
+    order: 0
+    sortByY: false
+    footOffset: 0
+    flipX: false
+    flipY: false
+    pixelSnap: false
+    squareColor: "#B78354"
+  rotation: 0
+  scaleX: 1
+  scaleY: 1
+  pivotX: 0
+  pivotY: 0
+  shear: 0
+defaultCameraId: 74221e76-e2b1-4907-a12b-06b47055f26a

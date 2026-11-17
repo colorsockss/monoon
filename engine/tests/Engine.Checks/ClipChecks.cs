@@ -5,6 +5,7 @@ internal static class ClipChecks
 {
     public static void Run(string root, string sceneFile)
     {
+        SpriteReimportChecks.Run(root);
         string file = Path.Combine(root,"Assets","Door.clip"), meta = file + ".meta";
         byte[] original = File.ReadAllBytes(file), id = File.ReadAllBytes(meta);
         var clip = SpriteClip.Load(file);

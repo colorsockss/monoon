@@ -1,0 +1,14 @@
+{
+  "files": 258,
+  "folder": 110276583,
+  "zip": 46853311,
+  "sha256": "24b27497b5b2c76ecd5b10543ddb6b70af4c4ed439325d4119be4ec140f0ae64",
+  "rid": "linux-x64",
+  "mode": "release",
+  "os": "Linux-6.1.0-54-cloud-amd64-x86_64-with-glibc2.36",
+  "arch": "x86_64",
+  "skia": [
+    "libSkiaSharp.so",
+    "SkiaSharp.dll"
+  ]
+}

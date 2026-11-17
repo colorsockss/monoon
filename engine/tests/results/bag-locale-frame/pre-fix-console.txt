@@ -1,0 +1,10 @@
+L     open             en | Inventory | Pocket compass  /  In bag | Quest  /  Find Brass key
+L     en->ko input     ko | 가방 | Pocket compass  /  In bag | Quest  /  Find Brass key
+L     next             ko | 가방 | 휴대용 나침반  /  보관 중 | 의뢰  /  황동 열쇠 찾기
+L     ko->en input     en | Inventory | 휴대용 나침반  /  보관 중 | 의뢰  /  황동 열쇠 찾기
+L     next             en | Inventory | Pocket compass  /  In bag | Quest  /  Find Brass key
+Click open             en | Inventory | Pocket compass  /  In bag | Quest  /  Find Brass key
+Click en->ko input     ko | 가방 | 휴대용 나침반  /  보관 중 | 의뢰  /  황동 열쇠 찾기
+Click next             ko | 가방 | 휴대용 나침반  /  보관 중 | 의뢰  /  황동 열쇠 찾기
+Click ko->en input     en | Inventory | Pocket compass  /  In bag | Quest  /  Find Brass key
+Click next             en | Inventory | Pocket compass  /  In bag | Quest  /  Find Brass key

@@ -1,0 +1,11 @@
+{
+  "files": 260,
+  "folder": 100669693,
+  "zip": 42796092,
+  "sha256": "b1ddac17b7f37887e22b0c781e89552d431299a94f629743a06d85a5700a8cc0",
+  "rid": "linux-x64",
+  "mode": "release",
+  "os": "Linux-6.1.0-54-cloud-amd64-x86_64-with-glibc2.36",
+  "arch": "x86_64",
+  "skia": []
+}

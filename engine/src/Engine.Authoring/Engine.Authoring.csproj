@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="SkiaSharp" Version="2.88.9"/>
+    <PackageReference Include="SkiaSharp.NativeAssets.Linux" Version="2.88.9"/>
+    <ProjectReference Include="../Engine.Desktop/Engine.Desktop.csproj" />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.13.0" />
+    <EmbeddedResource Include="LegacyScripts/*.cs.txt" WithCulture="false" LogicalName="LegacyScripts.%(Filename)" />
+    <InternalsVisibleTo Include="MoNoon"/>
+    <InternalsVisibleTo Include="MoNoon.Cli"/>
+    <InternalsVisibleTo Include="Engine.Checks"/>
+  </ItemGroup>
+</Project>

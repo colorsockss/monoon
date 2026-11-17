@@ -1,0 +1,36 @@
+{
+  "system": "macOS-27.0.1-arm64-arm-64bit",
+  "machine": "arm64",
+  "input": "Mouse click, Shift+click, Mask > Layers 24\u201331 > 31, Cmd+Z",
+  "maskBefore": [
+    3,
+    1,
+    7,
+    3,
+    0,
+    2147483649,
+    15,
+    3,
+    4294967295,
+    4
+  ],
+  "maskAfter": [
+    2147483651,
+    2147483649,
+    2147483655,
+    2147483651,
+    2147483648,
+    2147483649,
+    2147483663,
+    2147483651,
+    4294967295,
+    2147483652
+  ],
+  "before": "A9CA080881EB2729B55BA9CAC6C6B9C8D06B07285F0B1CB8F3F6203EB557B0EA",
+  "after": "92F7EDCC0DBCBFCA7359A0587B53EA9B8768686D427E0B10CB93633B219204FB",
+  "undo": "A9CA080881EB2729B55BA9CAC6C6B9C8D06B07285F0B1CB8F3F6203EB557B0EA",
+  "restoredOverrides": true,
+  "sourceHash": "5409d378979775f3e2351dc8128b848d8003ab8c2e71de66c41a0685815a1bf0",
+  "noOtherFieldsChanged": true,
+  "undoSteps": 1
+}

@@ -8,13 +8,15 @@ public sealed partial class SceneGame
 
     private void QueueLife(Body body, LifeEvent change)
     {
+        if (change == LifeEvent.Disable && capture is {} held && (held.Target == body || held.Lens == body))
+            CancelWorldPointer();
         if (body.Behaviours.Length != 0) notifications.Enqueue((body, change));
     }
 
     private void RegisterLife(IEnumerable<Body> ordered)
     {
         // Every object in the batch is already addressable. Create all instances before enabling any.
-        foreach (var body in ordered) QueueLife(body, LifeEvent.Create);
+        foreach (var body in ordered) { BindEventEndpoints(body); QueueLife(body, LifeEvent.Create); }
         foreach (var body in ordered) if (body.Active) QueueLife(body, LifeEvent.Enable);
     }
 
@@ -53,6 +55,7 @@ public sealed partial class SceneGame
                         }
                     }
                     catch (Exception ex) { throw ScriptFailure(script,"On"+item.Event,ex); }
+                    finally { if (item.Event == LifeEvent.Destroy) script.Endpoint = null; }
             }
         }
         finally { dispatching = false; }
@@ -80,6 +83,9 @@ public sealed partial class SceneGame
         {
             foreach (var stream in ownedWorlds) stream.Dispose();
             ownedWorlds.Clear();
+            foreach (var body in byId.Values)
+                foreach (var script in body.Behaviours)
+                    if (script.Endpoint?.World == this) script.Endpoint = null;
             if (State.LiveWorld == this) State.LiveWorld = null;
             notifications.Clear();
             if (ownsScripts) scripts?.Dispose();

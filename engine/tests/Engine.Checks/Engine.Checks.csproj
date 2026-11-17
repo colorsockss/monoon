@@ -12,9 +12,10 @@
     <Compile Include="../../src/Engine.Editor/SceneMerge.cs" Link="Editor/SceneMerge.cs"/>
     <Compile Include="../../src/Engine.Editor/WorkspaceArchives.cs" Link="Editor/WorkspaceArchives.cs"/>
     <Compile Include="../../src/Engine.Editor/MigrationBackup.cs" Link="Editor/MigrationBackup.cs"/>
+    <Compile Include="../../src/Engine.Editor/CollisionMaskSelection.cs" Link="Editor/CollisionMaskSelection.cs"/>
     <Compile Include="../../src/Engine.Editor/SceneHistory.cs" Link="Editor/SceneHistory.cs"/>
     <Compile Include="../../src/Engine.Editor/ProjectPathEdit.cs" Link="Editor/ProjectPathEdit.cs"/>
     <Compile Include="../../src/Engine.Editor/PrefabFileEdit.cs" Link="Editor/PrefabFileEdit.cs"/>
   </ItemGroup>
-  <ItemGroup><ProjectReference Include="../../src/Engine.Desktop/Engine.Desktop.csproj"/></ItemGroup>
+  <ItemGroup><ProjectReference Include="../../src/Engine.Authoring/Engine.Authoring.csproj"/></ItemGroup>
 </Project>

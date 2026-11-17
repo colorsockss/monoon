@@ -37,7 +37,7 @@ public sealed class ContentUpdates
         ContentBundle.ValidateFolders(folders);
         return ProjectAssets.ReadManifest(game).Entries.Where(e =>
             Path.GetExtension(e.Path) is ProjectAssets.Data or GameTable.Extension
-            && e.Path.Split('/').All(ProjectImport.ValidName)
+            && e.Path.Split('/').All(ProjectAssets.ValidName)
             && folders.Any(f => e.Path.StartsWith(f + "/", StringComparison.Ordinal)))
             .ToDictionary(e => e.Path, StringComparer.Ordinal);
     }
@@ -172,7 +172,9 @@ public sealed class ContentUpdates
         finally { File.Delete(stage); }
     }
 
-    public ContentBundle Open(GameMods? mods, Action<string> report)
+    public ContentBundle Open(GameMods? mods, Action<string> report) => Open(mods, report, null);
+
+    public ContentBundle Open(GameMods? mods, Action<string> report, Action<BundleReadSample>? observe)
     {
         Dictionary<Guid, byte[]>? changes = null;
         try
@@ -186,7 +188,9 @@ public sealed class ContentUpdates
         {
             report($"Content update unavailable; using shipped content: {ex.Message}");
         }
-        return ContentBundle.Open(game, settings, mods, changes);
+        var cacheDirectory = Environment.GetEnvironmentVariable("MONOON_BUNDLE_CACHE") == "off" ? null :
+            Path.Combine(PlayerStorage.ForGame(gameId, false).DirectoryPath, "BundleCache", "v1");
+        return ContentBundle.Open(game, settings, mods, changes, cacheDirectory, report, observe);
     }
 
     public void Reset()

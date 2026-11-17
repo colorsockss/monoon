@@ -37,9 +37,10 @@ public partial class MainWindow
                 e.Handled=true;
             }
         };
-        Closed+=(_,_)=>catalogWatcher?.Dispose();
+        ProjectBrowser.SelectionChanged += (_, _) => ShowProjectPreview();
+        Closed += (_, _) => { catalogWatcher?.Dispose(); spriteMonitor?.Dispose(); previewBitmap?.Dispose(); };
         ProjectBrowser.AddHandler(PointerPressedEvent, (_,e)=>{
-            if(busy || Viewport.IsPlaying || !e.GetCurrentPoint(ProjectBrowser).Properties.IsRightButtonPressed || e.Source is not Visual v)return;
+            if(prefabSource != null || busy || Viewport.IsPlaying || !e.GetCurrentPoint(ProjectBrowser).Properties.IsRightButtonPressed || e.Source is not Visual v)return;
             var item=v as ListBoxItem??v.FindAncestorOfType<ListBoxItem>();
             if(item?.DataContext is not ProjectEntry entry)return;
             ProjectBrowser.SelectedItem=entry;
@@ -68,7 +69,7 @@ public partial class MainWindow
         ParentFolderButton.Click += (_, _) => UpOneFolder();
         ProjectBrowser.KeyDown += (_, e) =>
         {
-            if (e.Key == Key.F2 && ProjectBrowser.SelectedItem is ProjectEntry selected && ProjectPathEdit.CanMove(selected.RelativePath, selected.IsFolder))
+            if (prefabSource == null && e.Key == Key.F2 && ProjectBrowser.SelectedItem is ProjectEntry selected && ProjectPathEdit.CanMove(selected.RelativePath, selected.IsFolder))
                 RunAction(() => ChangeProjectPath(selected, rename: true));
             else if (e.Key == Key.Enter && ProjectBrowser.SelectedItem is ProjectEntry entry) OpenEntry(entry);
             else if (e.Key == Key.Back || (e.Key == Key.Up && e.KeyModifiers == KeyModifiers.Alt)) UpOneFolder();
@@ -178,6 +179,8 @@ public partial class MainWindow
     {
         if (busy || Viewport.IsPlaying || project == null) return;
         if (entry.IsFolder) BrowseFolder(entry.RelativePath);
+        else if (prefabSource != null) return;
+        else if (entry.Name.EndsWith(ProjectAssets.Prefab)) RunAction(() => EditPrefabSource(entry.RelativePath));
         else if (entry.Name.EndsWith(".monopackage", StringComparison.OrdinalIgnoreCase))
             RunAction(() => InstallPackage(Path.Combine(project, entry.RelativePath)));
         else if (entry.Name.EndsWith(SpriteAtlas.Extension)) RunAction(() => EditAtlas(entry.RelativePath));
@@ -259,7 +262,7 @@ public partial class MainWindow
 
     private string? FolderDrop(PointerEventArgs e, ProjectEntry entry)
     {
-        if (!ProjectPathEdit.CanMove(entry.RelativePath, entry.IsFolder)) return null;
+        if (prefabSource != null || !ProjectPathEdit.CanMove(entry.RelativePath, entry.IsFolder)) return null;
         string? folder = null;
         if (ParentFolderButton.IsVisible && new Rect(ParentFolderButton.Bounds.Size).Contains(e.GetPosition(ParentFolderButton)))
             folder = ParentPath(browserFolder);
@@ -272,10 +275,25 @@ public partial class MainWindow
             ? (folder.Length == 0 ? "" : folder + "/") + entry.Name : null;
     }
 
+    private static bool AcceptsProjectEntry(ReferenceDrop target, ProjectEntry entry) =>
+        !entry.IsFolder && target.Extension is {} ext && entry.Name.EndsWith(ext, StringComparison.OrdinalIgnoreCase);
+
     private void FileMoved(object? sender, PointerEventArgs e)
     {
         if (filePress is not { } press || press.Pointer != e.Pointer || !IsFileDrag(press, e)) return;
         draggingFile = true;
+        var reference = ReferenceTarget(e);
+        if (reference?.Tag is ReferenceDrop target)
+        {
+            bool accepted = AcceptsProjectEntry(target, press.Entry);
+            HighlightReference(accepted ? reference : null);
+            HighlightSpriteTarget(null);
+            InspectorPanel.Classes.Remove("scriptDrop");
+            ProjectBrowser.Cursor = accepted ? CopyFileCursor : NoDropCursor;
+            e.Handled = true;
+            return;
+        }
+        HighlightReference(null);
         bool attach = OverInspector(e) && ScriptToAttach(press) is { } name && Selected is { } owner && !HasScript(owner, name);
         bool png = !press.Entry.IsFolder && SpriteAssets.IsPng(press.Entry.Name);
         if (png && ClipDrop(e,false)) { HighlightSpriteTarget(null); InspectorPanel.Classes.Remove("scriptDrop");
@@ -305,7 +323,12 @@ public partial class MainWindow
             if (press.DoubleClick) OpenEntry(entry);
             return;
         }
-        if (FolderDrop(e, entry) is {} destination)
+        if (ReferenceTarget(e)?.Tag is ReferenceDrop target)
+        {
+            if (AcceptsProjectEntry(target, entry) && ProjectAssets.Scan(project).IdFor(entry.RelativePath) is Guid id)
+                target.Insert(id);
+        }
+        else if (FolderDrop(e, entry) is {} destination)
         {
             RunAction(async () => {
                 if (clipEditor is {} clip && !await clip.RequestClose()) return;
@@ -347,6 +370,7 @@ public partial class MainWindow
         filePress = null;
         draggingFile = false;
         clipEditor?.ClearDrop();
+        HighlightReference(null);
         HighlightSpriteTarget(null);
         InspectorPanel.Classes.Remove("scriptDrop");
         ProjectBrowser.Cursor = null;

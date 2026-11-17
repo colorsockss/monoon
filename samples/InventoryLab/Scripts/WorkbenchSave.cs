@@ -19,8 +19,11 @@ internal static class WorkbenchSave
     }
 
     public static bool Read(PlayerStorage storage, InventoryBag bag, QuestJournal journal, DialogueSession talk)
+        => Read(storage, bag, journal, talk, out _);
+
+    public static bool Read(PlayerStorage storage, InventoryBag bag, QuestJournal journal, DialogueSession talk, out bool recovered)
     {
-        var data = storage.LoadSlot(1, Version, (from, old) =>
+        var data = storage.LoadSlot(1, Version, out recovered, (from, old) =>
         {
             if (from == 1 && !old.Values.TryAdd("quests", GameData.ParseValue("{}")))
                 throw new InvalidDataException("Invalid legacy inventory save.");

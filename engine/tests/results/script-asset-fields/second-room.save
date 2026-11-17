@@ -1,0 +1,6 @@
+version: 2
+values:
+  room: "97ae2562-6e93-5e7a-be3b-45ec603896c6"
+  key: true
+  chest: false
+  coin: false

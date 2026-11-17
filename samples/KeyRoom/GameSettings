@@ -6,6 +6,7 @@ includedScenes:
 - 64fb4cd6-2469-5cec-ba6d-9a49e61f42e7
 - 97ae2562-6e93-5e7a-be3b-45ec603896c6
 - 25fc2224-7695-4e19-a05c-d8524a2ffe50
+- c1676878-57dc-5d9d-b1e0-508e0a525a08
 input:
   actions:
   - name: MoveLeft
@@ -26,12 +27,20 @@ input:
     controls: ["1"]
   - name: SlotTwo
     controls: ["2"]
+  - name: CarryCoin
+    controls: [C]
   - name: NudgeCoin
     controls: [N]
   - name: SaveGame
     controls: ["F5"]
+  - name: RemoveDoor
+    controls: [F6]
+  - name: RemoveKey
+    controls: [F7]
   - name: LoadGame
     controls: ["F9"]
+  - name: PointerWorkshop
+    controls: [F8]
   - name: RoomGuide
     controls: [M, Pad.North]
   - name: OpenBag
@@ -40,6 +49,7 @@ input:
     controls: [Backspace, I, Pad.East]
   - name: ChangeLanguage
     controls: [L]
+uiTheme: c08eff10-71b4-4da8-b33f-5482bcc4c531
 localization:
   table: 2c898767-c577-57f0-bb09-2fc866cbc6df
   fallbackLocale: en

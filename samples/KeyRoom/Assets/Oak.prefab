@@ -1,0 +1,26 @@
+schemaVersion: 22
+objects:
+- id: fb7e5ae6-3740-44e7-80bc-81f162a811d9
+  name: Oak tree
+  x: 0
+  y: 0
+  width: 102
+  height: 98
+  components:
+  - type: spriteRenderer
+    sortingLayer: 0
+    order: 0
+    sortByY: true
+    footOffset: -2
+    flipX: false
+    flipY: false
+    pixelSnap: false
+    squareColor: "#FFFFFF"
+    assetId: 891136e7-f2d7-57bb-b09a-a10cb3a73b1b
+    asset: Assets/Oak.png
+  rotation: 0
+  scaleX: 1
+  scaleY: 1
+  pivotX: 0
+  pivotY: 0
+  shear: 0

@@ -1,0 +1,9 @@
+version: 1
+values:
+  buildId: "c8244b1c3c644683bb946a4614d7ce02"
+  projectId: "64fb4cd6-2469-5cec-ba6d-9a49e61f42e7"
+  game: "KeyRoom"
+  target: "win-x64"
+  mode: "native-aot"
+  profile: "distribution"
+  playerSha256: "9A3FABDF75CEA7146E980FF9A449A04123084CE0D176F03B0E0C3BB664FB628A"

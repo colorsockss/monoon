@@ -1,4 +1,5 @@
 using System.Globalization;
+using Brutal.SdlApi;
 using Engine.Core;
 
 namespace Engine.Desktop;
@@ -20,6 +21,17 @@ public sealed class SdlFrameCapture : IDisposable
         ? new(path) : null;
 
     public void BeginUpdate() => start = GC.GetAllocatedBytesForCurrentThread();
+
+    internal static unsafe void SaveImage(SdlRenderer renderer, string path)
+    {
+        var surface = Sdl.PInvoke.RenderReadPixels(renderer, null);
+        if (surface == null) throw new IOException(Sdl.PInvoke.GetError());
+        try
+        {
+            if (Sdl.PInvoke.SavePNG(surface, path) == 0) throw new IOException(Sdl.PInvoke.GetError());
+        }
+        finally { Sdl.PInvoke.DestroySurface(surface); }
+    }
     public void EndUpdate() => updateBytes += GC.GetAllocatedBytesForCurrentThread() - start;
 
     public void Frame(SceneGame? world, long calls, long drawStartBytes)

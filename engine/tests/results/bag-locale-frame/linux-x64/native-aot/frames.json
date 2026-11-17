@@ -1,0 +1,62 @@
+[
+  {
+    "key": "I",
+    "frame": 13,
+    "locale": "en",
+    "ocr": [
+      "Inventory",
+      "Pocket compass / In bag",
+      "Quest / Find Brass key"
+    ],
+    "drawable": [
+      800,
+      450
+    ],
+    "sourceSha256": "0dee9984fe6f024539fd6110050323f7ed0a926c92fd4a93a8cdc19f2352f976",
+    "textRegionRgbSha256": [
+      "04b369ea0a7d29efdbb302856397abc675961ab269579bace6ee76a7d8d8b979",
+      "02ee7b785c1975058bfe4b23eb899bf3adac531386b3391bfba186f9565e143b",
+      "fa5c1dce032999849f88a61119efcba5fdddba0e9bcd815692d52bc7fa7fec4f"
+    ]
+  },
+  {
+    "key": "L",
+    "frame": 31,
+    "locale": "ko",
+    "ocr": [
+      "가방",
+      "휴대용 나침반/ 보관 중",
+      "의뢰/ 황동 열쇠 찾기"
+    ],
+    "drawable": [
+      800,
+      450
+    ],
+    "sourceSha256": "e4817ea13145a11220a5d03632bb94adf6c7a7c3876ce4516fe7130db48a1ac5",
+    "textRegionRgbSha256": [
+      "272ec6668da1b227bb9a64f647e2c5422b12b1480da687d0b4e74111afea5a73",
+      "a833ac7b28a2ec288f5a30a277fc3ae2c302636c5e7399cf56667b05f1f60f4c",
+      "2bc515b77a829548dd1dc203ae3d6e00e619e926fce629796acfb52f73a6de0d"
+    ]
+  },
+  {
+    "key": "L",
+    "frame": 46,
+    "locale": "en",
+    "ocr": [
+      "Inventory",
+      "Pocket compass / In bag",
+      "Quest / Find Brass key"
+    ],
+    "drawable": [
+      800,
+      450
+    ],
+    "sourceSha256": "0dee9984fe6f024539fd6110050323f7ed0a926c92fd4a93a8cdc19f2352f976",
+    "textRegionRgbSha256": [
+      "04b369ea0a7d29efdbb302856397abc675961ab269579bace6ee76a7d8d8b979",
+      "02ee7b785c1975058bfe4b23eb899bf3adac531386b3391bfba186f9565e143b",
+      "fa5c1dce032999849f88a61119efcba5fdddba0e9bcd815692d52bc7fa7fec4f"
+    ]
+  }
+]

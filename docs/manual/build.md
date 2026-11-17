@@ -25,6 +25,16 @@ Release 템플릿은 플랫폼별 .NET 런타임을 포함한 최적화 빌드�
 
 현재 컴퓨터와 같은 OS·아키텍처를 고르면 **Build type → Native AOT**가 나타난다. 사용 중인 C# 스크립트와 필드 연결 코드, VYaml 포매터를 플레이어에 함께 컴파일한다. 배포 데이터는 Release와 같은 YAML을 쓴다. 결과는 `NativeAOT/` 하위에 생성되어 일반 Release와 함께 보관할 수 있다. 빌드하는 컴퓨터에는 .NET 10 SDK와 해당 플랫폼의 네이티브 링커가 필요하다.
 
+macOS arm64의 Native AOT 배포 프로필은 실행 파일을 크기 우선(`OptimizationPreference=Size`)으로 컴파일한다. 배포 게임은 BRUTAL의 SDL3 렌더러로 화면을 그린다. 스프라이트 마스크는 SDL로 읽은 RGBA 픽셀에 적용하고, 셰이더는 빌드 시 생성한 프레임 시트를 사용한다. 프로젝트 글꼴을 지정하면 UI와 번역표에 쓰인 글자의 모양과 너비를 작은 `.glyphs` 파일에 담는다. 새 입력이나 콘텐츠에서 추가된 글자는 원본 TTF·OTF에서 StbTrueTypeSharp로 읽어 SDL 텍스처에 그린다. 글꼴을 교체하면 이전 글리프 데이터는 사용하지 않는다. SkiaSharp는 에디터와 빌드 도구에서만 사용한다. macOS에서 내용이 같은 두 SDL 라이브러리는 상대 심볼릭 링크로 연결한다. ZIP으로 전달할 때는 이 링크와 실행 권한을 보존하도록 다음처럼 압축한다.
+
+```sh
+./monoon build samples/KeyRoom native-aot
+cd game-builds/KeyRoom/NativeAOT
+ditto -c -k --keepParent KeyRoom.app KeyRoom.zip
+```
+
+게임 플레이어와 에디터·빌드 도구는 별도 어셈블리로 빌드한다. Release는 SDK가 대상 플랫폼에 대해 작성한 파일 목록과 빌드 시 컴파일한 게임 스크립트 DLL을 사용한다. Native AOT는 같은 스크립트를 실행 파일에 정적으로 연결한다. Roslyn, 프로젝트 변환기, 임포터, 빌더는 에디터와 CLI에 포함된다. 이전 템플릿을 사용하고 있다면 저장소 루트에서 `./engine/scripts/build-players.sh`로 갱신한다.
+
 ## 개발용·배포용 프로필과 디버그 심볼
 
 CLI의 `--profile`로 심볼을 보관할 위치를 고른다. 두 프로필 모두 최적화된 Release 구성으로 컴파일한다. 기본값은 `distribution`이며 에디터의 **Build Game…**도 이 프로필을 쓴다.
@@ -98,6 +108,8 @@ python3 engine/tests/InventoryLab.Crashes/check.py game-builds/InventoryLab
 
 플레이어의 `--record-input <기록 파일> <저장 폴더>`로 게임 창을 열고 평소처럼 조작한다. Esc로 종료하거나 창을 닫으면 입력과 프레임 시간을 확장자 `.inputreplay`의 YAML 파일에 기록한다. 기록 파일에는 새 이름을 사용하고, 처음부터 진행하는 테스트는 빈 저장 폴더에서 시작한다.
 
+키를 누른 직후의 화면을 검사하려면 기록을 시작할 때 `MONOON_KEY_FRAME_DIR`을 새 출력 폴더로 지정한다. 플레이어는 키를 처음 누른 이벤트를 처리한 프레임의 SDL 화면을 `<frame>.png`로 저장한다. 파일명의 숫자는 입력 기록에 있는 0부터 시작하는 `frame` 값과 같다.
+
 ```sh
 run=$(mktemp -d)
 player=game-builds/InventoryLab/InventoryLab.app/Contents/MacOS/MoNoonPlayer
@@ -124,13 +136,35 @@ InventoryLab에서는 **T → 1 → 1 → S**로 의뢰를 받고 저장한다. 
 contentBundles:
   - Assets/Dialogue
   - Assets/Quests
+  - Assets/Market
 ```
 
 `Assets` 또는 `Scenes` 아래에서 빌드할 씬이 참조하는 에셋이 있는 폴더를 고른다. 부모·자식 폴더를 겹쳐 지정하거나 내보낼 에셋이 없는 폴더를 지정하면 빌드가 실패한다. 각 파일의 소속은 내보내는 경로로 결정되며, 번들 사이의 참조는 기존 에셋 GUID를 그대로 사용한다.
 
-`./monoon build samples/InventoryLab release`를 실행하면 플레이어 실행 파일 옆의 `ContentBundles/Assets/`에 `Dialogue.bundle`과 `Quests.bundle`이 생긴다. 번들은 ZIP 컨테이너이며 내부의 대화와 테이블은 원래의 YAML이다. 나머지 에셋과 컴파일된 스크립트는 기존 `Game/`에 있다.
+`./monoon build samples/InventoryLab release`를 실행하면 플레이어 옆 `ContentBundles/Assets/`에 대화·의뢰·시장 배경음 번들이 생긴다. InventoryLab의 시작 씬은 `MarketMorning.wav`를 음악 버스에서 반복 재생한다. 카탈로그와 모든 번들을 앱에 함께 배포한다.
 
-게임 시작 시 플레이어는 `ContentBundles/Catalog`의 SHA-256과 게임 매니페스트를 확인한 뒤 번들과 기본 콘텐츠를 실행별 임시 폴더에 준비한다. 시작 시 파일 크기에 비례하는 임시 공간이 필요하며, 정상 종료 시 해당 폴더를 지운다. 플레이어 저장은 기존 게임별 프로필에 남는다. 배포 시에는 빌드가 만든 카탈로그와 모든 번들을 함께 포함한다.
+### 대형 번들 로딩과 시작 진단
+
+기본 플레이어는 첫 실행에서 게임 프로필의 `BundleCache/v1/Game`에 번들을 풀고 원본과 에셋의 SHA-256을 확인한다. 성공한 뒤에만 완료 표시를 기록한다. 다음 실행에서는 배포 아카이브, 캐시 에셋, 씬과 스크립트를 포함한 개별 파일을 다시 확인하고 압축 해제를 생략한다. 파일이 추가·변경·누락됐거나 지난 실행의 준비가 중단됐다면 다시 만든다. 배포 원본의 해시가 맞지 않으면 시작 오류를 보고한다.
+
+캐시는 게임당 한 벌을 보관한다. 같은 게임의 두 번째 실행, 활성 모드나 콘텐츠 업데이트가 있는 실행은 독립된 임시 폴더를 쓰고 정상 종료 시 지운다. 게임 종료 후 프로필의 `BundleCache` 폴더를 지우면 다음 실행에서 자동으로 다시 만든다. `MONOON_BUNDLE_CACHE=off`를 지정하면 기존 임시 폴더 경로로 성능을 비교할 수 있다.
+
+macOS에서 새 CSV 경로를 지정해 앱을 실행하고 첫 화면에서 `1`을 눌러 약초를 담는다. 120프레임 이상 지난 뒤 Esc로 종료한다. 창이 일찍 닫히면 그때까지의 프레임 수와 최댓값이 기록된다.
+
+```sh
+MONOON_STARTUP_TRACE="$PWD/inventory-startup.csv" \
+  game-builds/InventoryLab-Bundles/InventoryLab.app/Contents/MacOS/MoNoonPlayer
+```
+
+| CSV 이벤트 | 읽는 법 |
+| --- | --- |
+| `content_begin` → `content_ready` | 업데이트 조회부터 번들 준비 완료까지의 경과 시간. `value`에 캐시 최초 생성·재생성(`miss`), 재사용(`hit`), 비활성(`off`), 동시 실행(`busy`), 오버라이드(`overlay`), 캐시 사용 실패(`unavailable`), 개별 파일 배포(`loose`)가 표시된다. |
+| `bundle` | 폴더별 아카이브 바이트, 에셋 수, 이번에 압축 해제한 바이트와 읽기 시간. 재사용 시 번들별 시간에는 아카이브 해시 검사만 들어간다. 캐시 파일 자체를 검사한 시간은 전체 콘텐츠 준비 시간에 포함된다. |
+| `temp_mount_bytes`, `cache_mount_bytes`, `loose_bytes` | 준비 완료 시 해당 폴더에 있는 파일 길이의 합. 캐시 완료 표시·파일시스템 할당량·종료 후 잔여량은 별도로 측정한다. |
+| `first_present`, `first_action` | 플레이어 진입 후 첫 SDL 화면을 표시한 시점과 매핑된 누름을 소비한 첫 시뮬레이션 틱이 끝난 시점. 액션 이름도 기록한다. |
+| `frames`, `max_frame_ms` | SDL 루프 시작부터 첫 화면 표시까지와 이후 연속 화면 표시 사이의 간격 중 최댓값. 기본 관찰 구간은 첫 120프레임이다. |
+
+Mac 측정기는 프로세스 시작 직전부터 약초 획득까지 별도로 시간을 재고 실제 저장 슬롯을 확인한다. 두 배포본의 빌드 명령과 실행별 CSV는 검증 기록에 있다. [InventoryLab 실행 기록](../../engine/tests/results/bundle-loading/README.md)
 
 ## 콘텐츠 업데이트
 

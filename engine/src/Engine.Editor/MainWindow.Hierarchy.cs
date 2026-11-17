@@ -16,6 +16,17 @@ public partial class MainWindow
     private readonly Dictionary<SceneObject, TreeViewItem> treeItems = [];
     private SceneObject? pressedNode;
     private Point pressPoint;
+    private SceneObject? rangeAnchor;
+
+    private IEnumerable<SceneObject> VisibleRows(ItemCollection items)
+    {
+        foreach (var row in items.OfType<TreeViewItem>())
+        {
+            if (row.Tag is SceneObject owner) yield return owner;
+            if (row.IsExpanded)
+                foreach (var child in VisibleRows(row.Items)) yield return child;
+        }
+    }
     private bool draggingNode;
     private TreeViewItem? dropTarget;
 
@@ -71,6 +82,7 @@ public partial class MainWindow
 
     private void ChangeParent(SceneObject obj, SceneObject? parent)
     {
+        if (prefabSource != null && (obj.Id == prefabSource.RootId || parent == null)) return;
         if (Viewport.IsPlaying || !Scene.Reparent(obj, parent)) return;
         RebuildHierarchy(obj);
         MarkDirty();
@@ -87,7 +99,7 @@ public partial class MainWindow
 
     private Task DuplicateObject()
     {
-        if (Selected is { } source)
+        if (Selected is { } source && source.Id != prefabSource?.RootId)
         {
             var copy = Scene.DuplicateObject(source, scripts);
             FinishObjectChange(copy);
@@ -116,6 +128,7 @@ public partial class MainWindow
         bool atPointer = e.TryGetPosition(Hierarchy, out var point);
         var item = atPointer ? TreeItemAt(Hierarchy.InputHitTest(point) as Visual) : Hierarchy.SelectedItem as TreeViewItem;
         var parent = item?.Tag as SceneObject;
+        if (parent == null && prefabSource != null) parent = Scene.Objects.Single(o => o.Id == prefabSource.RootId);
         item?.Focus();
         if (Selected != parent) Select(parent);
 
@@ -159,7 +172,7 @@ public partial class MainWindow
                 var command=new MenuItem {Header=title};
                 command.Click+=(_,_)=>RunAction(action);menu.Items.Add(command);
             }
-            if(project!=null){
+            if(project!=null && prefabSource == null){
                 Option("Create Prefab",()=>SavePrefab(false));
                 if(parent.Prefab!=null){
                     Option("Inspect Overrides…",ShowPrefabOverrides);
@@ -176,6 +189,7 @@ public partial class MainWindow
             };
             remove.Click += (_, _) => { if (Selected == parent) DeleteObject(); };
             menu.Items.Add(new Separator());
+            duplicate.IsEnabled = remove.IsEnabled = parent.Id != prefabSource?.RootId;
             menu.Items.Add(duplicate);
             menu.Items.Add(remove);
         }
@@ -192,10 +206,25 @@ public partial class MainWindow
         if (TreeItemAt(visual) is not { Tag: SceneObject obj } item) return;
         if ((e.KeyModifiers & (KeyModifiers.Shift|KeyModifiers.Control|KeyModifiers.Meta))!=0)
         {
-            ToggleSelection(obj);e.Handled=true;return;
+            if (e.KeyModifiers.HasFlag(KeyModifiers.Shift))
+            {
+                var visible = VisibleRows(Hierarchy.Items).ToList();
+                int end = visible.IndexOf(obj);
+                int start = visible.IndexOf(rangeAnchor ?? Selected ?? obj);
+                if (start < 0) start = end;
+                var range = visible.GetRange(Math.Min(start, end), Math.Abs(end - start) + 1);
+                if (start > end) range.Reverse();
+                ShowSelection(range);
+            }
+            else
+            {
+                ToggleSelection(obj);
+                rangeAnchor = obj;
+            }
+            e.Handled = true;
+            return;
         }
-        item.Focus();
-        Select(obj);
+        // Keep the current Inspector visible while dragging a different object into a field.
         pressedNode = obj;
         pressPoint = e.GetPosition(Hierarchy);
         e.Pointer.Capture(Hierarchy);
@@ -211,8 +240,11 @@ public partial class MainWindow
         var item = TreeItemAt(Hierarchy.InputHitTest(point) as Visual);
         HighlightTarget(item?.Tag is SceneObject target && !target.IsWithin(pressedNode) ? item : null);
         bool allowed = new Rect(Hierarchy.Bounds.Size).Contains(point) && (item == null || dropTarget != null);
-        bool export = project != null && new Rect(ProjectBrowser.Bounds.Size).Contains(e.GetPosition(ProjectBrowser));
-        Hierarchy.Cursor = export ? CopyFileCursor : allowed ? new Cursor(StandardCursorType.DragMove) : NoDropCursor;
+        bool export = prefabSource == null && project != null && new Rect(ProjectBrowser.Bounds.Size).Contains(e.GetPosition(ProjectBrowser));
+        var reference = ReferenceTarget(e);
+        if (reference?.Tag is not ReferenceDrop { Extension: null }) reference = null;
+        HighlightReference(reference);
+        Hierarchy.Cursor = export || reference != null ? CopyFileCursor : allowed ? new Cursor(StandardCursorType.DragMove) : NoDropCursor;
         e.Handled = true;
     }
 
@@ -224,9 +256,23 @@ public partial class MainWindow
         bool drop = source != null && moved &&
             new Rect(Hierarchy.Bounds.Size).Contains(point);
         var target = TreeItemAt(Hierarchy.InputHitTest(point) as Visual)?.Tag as SceneObject;
-        bool export = source != null && moved && project != null && new Rect(ProjectBrowser.Bounds.Size).Contains(e.GetPosition(ProjectBrowser));
+        var reference = moved ? ReferenceTarget(e)?.Tag as ReferenceDrop : null;
+        bool export = prefabSource == null && source != null && moved && project != null && new Rect(ProjectBrowser.Bounds.Size).Contains(e.GetPosition(ProjectBrowser));
         EndHierarchyDrag();
         if (e.Pointer.Captured == Hierarchy) e.Pointer.Capture(null);
+        if (source != null && !moved)
+        {
+            Select(source);
+            treeItems[source].Focus();
+            e.Handled = true;
+            return;
+        }
+        if (source != null && reference is { Extension: null })
+        {
+            reference.Insert(source.Id);
+            e.Handled = true;
+            return;
+        }
         if (export)
         {
             RunAction(() =>
@@ -259,6 +305,7 @@ public partial class MainWindow
         pressedNode = null;
         draggingNode = false;
         HighlightTarget(null);
+        HighlightReference(null);
         Hierarchy.Cursor = null;
     }
 }

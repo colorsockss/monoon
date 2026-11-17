@@ -10,8 +10,8 @@
 
 ```csharp
 // FixedUpdate(ScriptTick tick) 안에서 원하는 조건이 충족됐을 때
-var id = tick.Objects.Instantiate(Loot, tick.Position + new Vector2(52, -5));
-// 부모를 지정하려면 세 번째 인자로 부모 오브젝트의 GUID를 전달한다.
+var id = tick.Objects.Instantiate(Loot, tick.LocalToWorld(new Vector2(52, -5)), tick.ObjectId);
+tick.Objects.TrackForSave(id);
 ```
 
 ```csharp
@@ -23,4 +23,4 @@ contact.Objects.Destroy(contact.ObjectId);
 
 빌드할 때 엔진은 Inspector에 연결한 프리팹을 따라가서 그 안의 PNG·클립·오디오·타일셋과 스크립트까지 수집한다. 프리팹에서만 쓰는 스크립트도 Release에서는 컴파일된 어셈블리에, Native AOT에서는 게임 실행 파일에 포함된다. 코드에서 GUID만 만들어 참조하는 방식으로는 빌드 의존성을 선언할 수 없다. 스크립트가 있는 프로젝트를 새로 빌드할 때는 현재 빌더와 같은 버전의 템플릿·AOT 키트를 준비한다. [프로젝트 업그레이드](upgrade.md)
 
-[KeyRoom 상자 스크립트](../../samples/KeyRoom/Scripts/OpenChest.cs) · [Coin.prefab](../../samples/KeyRoom/Assets/Coin.prefab) · [획득 스크립트](../../samples/KeyRoom/Scripts/CollectCoin.cs) · [macOS 실행 기록](../../engine/tests/results/runtime-prefabs/README.md)
+[F5·F9에서 위치와 부모 복원하기](player-data.md#월드와-런타임-프리팹-저장) · [KeyRoom 상자 스크립트](../../samples/KeyRoom/Scripts/OpenChest.cs) · [Coin.prefab](../../samples/KeyRoom/Assets/Coin.prefab) · [획득 스크립트](../../samples/KeyRoom/Scripts/CollectCoin.cs) · [macOS 실행 기록](../../engine/tests/results/runtime-prefabs/README.md)

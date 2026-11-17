@@ -8,6 +8,10 @@ public sealed partial record AssetEntry(Guid Id, string Path, string Hash);
 
 public sealed class ProjectAssets
 {
+    internal static bool ValidName(string? name) => !string.IsNullOrWhiteSpace(name) && name==name.Trim() &&
+        !name.StartsWith('.') && !name.EndsWith('.') && !name.Any(c=>char.IsControl(c)||"<>:\"/\\|?*".Contains(c)) &&
+        !System.Text.RegularExpressions.Regex.IsMatch(name,@"^(CON|PRN|AUX|NUL|COM[1-9]|LPT[1-9])(\.|$)",System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+
     public const string Manifest = ".monoon-assets";
     public const string Scene = ".scene", Prefab = ".prefab", Clip = ".clip", Tileset = ".tileset", Data = ".data";
     public static bool IsAsset(string path) => Path.GetExtension(path) is Scene or Prefab or Clip or Tileset or Data or CutsceneSequence.Extension or SkeletonRig.Extension or ShaderClip.Extension or GameTable.Extension or SpriteAtlas.Extension or AnimationController.Extension || GameLocalization.IsFont(path) || SpriteAssets.IsPng(path) || AudioFile.IsSupported(path);
@@ -34,7 +38,7 @@ public sealed class ProjectAssets
         if (shaders.TryGetValue(id,out var cached)) return cached;
         if (PathFor(id) is not {} path || !path.EndsWith(ShaderClip.Extension))
             throw new InvalidDataException($"Missing shader {id}.");
-        return shaders[id]=ShaderClip.Load(Path.Combine(root,path));
+        return shaders[id]=ShaderClip.Load(Path.Combine(root,path), this, root);
     }
     private SpriteLibrary? spriteLibrary;
     public SpriteLibrary Sprites(string root) => spriteLibrary ??= new(root,this);
@@ -92,7 +96,7 @@ public sealed class ProjectAssets
                 var id = match?.Id ?? Guid.NewGuid();
                 if (!used.Add(id)) throw new InvalidDataException($"Duplicate asset ID on {relative}.");
                 if (metadata != id)
-                    ProjectYaml.Write(sidecar, new AssetMeta(id, existingMeta?.Slices));
+                    ProjectYaml.Write(sidecar, existingMeta == null ? new AssetMeta(id) : existingMeta with { Id = id });
                 next.Add(new(id, relative, hash));
             }
             // Retain an absent reference so restoring the original file restores its identity.
@@ -105,7 +109,7 @@ public sealed class ProjectAssets
 
     public static void Write<T>(string path, T value) => ProjectYaml.Write(path, value);
 
-    internal static IEnumerable<string> Enumerate(string root, string folder, bool includeLegacy = false)
+    internal static IEnumerable<string> Enumerate(string root, string folder, Func<string, bool>? includeExtra = null)
     {
         foreach (var item in new DirectoryInfo(folder).EnumerateFileSystemInfos())
         {
@@ -115,10 +119,10 @@ public sealed class ProjectAssets
                 if (directory.Name is "bin" or "obj" or "build" or "Builds" || directory.Name.EndsWith(".app")
                     || File.Exists(Path.Combine(directory.FullName, ".monoon-player"))
                     || File.Exists(Path.Combine(directory.FullName, "Game", ".monoon-player"))) continue;
-                foreach (var child in Enumerate(root, directory.FullName, includeLegacy)) yield return child;
+                foreach (var child in Enumerate(root, directory.FullName, includeExtra)) yield return child;
             }
             else if (IsAsset(item.Name)
-                     || includeLegacy && (LegacyProject.IsDocument(item.Name) || LegacyProject.IsDocumentSidecar(item.Name)))
+                     || includeExtra?.Invoke(item.Name) == true)
                 yield return Path.GetRelativePath(root, item.FullName).Replace(Path.DirectorySeparatorChar, '/');
         }
     }

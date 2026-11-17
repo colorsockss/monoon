@@ -1,0 +1,104 @@
+[
+  {
+    "target": "osx-arm64",
+    "os": "macOS-27.0.1-arm64-arm-64bit",
+    "machine": "arm64",
+    "mode": "release",
+    "profile": "distribution",
+    "buildId": "3034aefc64bb4c63afe1585997b0bbe1",
+    "executableSHA256": "c59788f7befab08285bbe4a00987c0c0915a2a3b534199d5eeff942c058c4957",
+    "saveSHA256": {
+      "edited-count-after-claim.save": "5570c1427d04192dc167843dd16b474c0724dd360f93949f7d37ef088015af49",
+      "edited-count-recovered.save": "eed41defcbd7987a527deb677c60da8151ad0de1616c717c646e92b26e70f795",
+      "first.save": "eed41defcbd7987a527deb677c60da8151ad0de1616c717c646e92b26e70f795",
+      "second.save": "2a07621950bdfd9752bd8e09b2bc8958beb83899895d43c097c3ec25ee45620d",
+      "truncated-after-claim.save": "5570c1427d04192dc167843dd16b474c0724dd360f93949f7d37ef088015af49",
+      "truncated-recovered.save": "eed41defcbd7987a527deb677c60da8151ad0de1616c717c646e92b26e70f795"
+    }
+  },
+  {
+    "target": "osx-arm64",
+    "os": "macOS-27.0.1-arm64-arm-64bit",
+    "machine": "arm64",
+    "mode": "native-aot",
+    "profile": "distribution",
+    "buildId": "f7698d7660c54d25b0a487e5167275fd",
+    "executableSHA256": "f407e9dadca46ced90257381f74af0f0d8932f5b64d26245e3861a23cd13755a",
+    "saveSHA256": {
+      "edited-count-after-claim.save": "5570c1427d04192dc167843dd16b474c0724dd360f93949f7d37ef088015af49",
+      "edited-count-recovered.save": "eed41defcbd7987a527deb677c60da8151ad0de1616c717c646e92b26e70f795",
+      "first.save": "eed41defcbd7987a527deb677c60da8151ad0de1616c717c646e92b26e70f795",
+      "second.save": "2a07621950bdfd9752bd8e09b2bc8958beb83899895d43c097c3ec25ee45620d",
+      "truncated-after-claim.save": "5570c1427d04192dc167843dd16b474c0724dd360f93949f7d37ef088015af49",
+      "truncated-recovered.save": "eed41defcbd7987a527deb677c60da8151ad0de1616c717c646e92b26e70f795"
+    }
+  },
+  {
+    "target": "win-x64",
+    "os": "Windows-11-10.0.26100-SP0",
+    "machine": "AMD64",
+    "mode": "release",
+    "profile": "distribution",
+    "buildId": "ebb3ddf98b394f4bab3868e8d06bf24b",
+    "executableSHA256": "80b531260c3b73194cde81e5ba0fe2374cb95775161d1a1492027c11d43e77a7",
+    "saveSHA256": {
+      "edited-count-after-claim.save": "5570c1427d04192dc167843dd16b474c0724dd360f93949f7d37ef088015af49",
+      "edited-count-recovered.save": "eed41defcbd7987a527deb677c60da8151ad0de1616c717c646e92b26e70f795",
+      "first.save": "eed41defcbd7987a527deb677c60da8151ad0de1616c717c646e92b26e70f795",
+      "second.save": "2a07621950bdfd9752bd8e09b2bc8958beb83899895d43c097c3ec25ee45620d",
+      "truncated-after-claim.save": "5570c1427d04192dc167843dd16b474c0724dd360f93949f7d37ef088015af49",
+      "truncated-recovered.save": "eed41defcbd7987a527deb677c60da8151ad0de1616c717c646e92b26e70f795"
+    }
+  },
+  {
+    "target": "win-x64",
+    "os": "Windows-11-10.0.26100-SP0",
+    "machine": "AMD64",
+    "mode": "native-aot",
+    "profile": "distribution",
+    "buildId": "c25ded8b550346ea8bfafd86f87d6670",
+    "executableSHA256": "abf542a335a7a6e98072d4d4ddab46f908b260d866cfb7ac1b608c05d9bbeebe",
+    "saveSHA256": {
+      "edited-count-after-claim.save": "5570c1427d04192dc167843dd16b474c0724dd360f93949f7d37ef088015af49",
+      "edited-count-recovered.save": "eed41defcbd7987a527deb677c60da8151ad0de1616c717c646e92b26e70f795",
+      "first.save": "eed41defcbd7987a527deb677c60da8151ad0de1616c717c646e92b26e70f795",
+      "second.save": "2a07621950bdfd9752bd8e09b2bc8958beb83899895d43c097c3ec25ee45620d",
+      "truncated-after-claim.save": "5570c1427d04192dc167843dd16b474c0724dd360f93949f7d37ef088015af49",
+      "truncated-recovered.save": "eed41defcbd7987a527deb677c60da8151ad0de1616c717c646e92b26e70f795"
+    }
+  },
+  {
+    "target": "linux-x64",
+    "os": "Linux-6.1.0-54-cloud-amd64-x86_64-with-glibc2.36",
+    "machine": "x86_64",
+    "mode": "release",
+    "profile": "distribution",
+    "buildId": "b4333e44a3f743f791ae22933d66db21",
+    "executableSHA256": "9daeea7422ceb74db0a242a7474b113919b7a5248f849721e9445c5c4240b71c",
+    "saveSHA256": {
+      "edited-count-after-claim.save": "5570c1427d04192dc167843dd16b474c0724dd360f93949f7d37ef088015af49",
+      "edited-count-recovered.save": "eed41defcbd7987a527deb677c60da8151ad0de1616c717c646e92b26e70f795",
+      "first.save": "eed41defcbd7987a527deb677c60da8151ad0de1616c717c646e92b26e70f795",
+      "second.save": "2a07621950bdfd9752bd8e09b2bc8958beb83899895d43c097c3ec25ee45620d",
+      "truncated-after-claim.save": "5570c1427d04192dc167843dd16b474c0724dd360f93949f7d37ef088015af49",
+      "truncated-recovered.save": "eed41defcbd7987a527deb677c60da8151ad0de1616c717c646e92b26e70f795"
+    }
+  },
+  {
+    "target": "linux-x64",
+    "os": "Linux-6.1.0-54-cloud-amd64-x86_64-with-glibc2.36",
+    "machine": "x86_64",
+    "mode": "native-aot",
+    "profile": "distribution",
+    "buildId": "4a8d6af6035140809ab94a997d1f88bb",
+    "executableSHA256": "536f323d9f3386f1cfd23275aead1b3e35f44f0f0c884d8900ea0c3f3b70d853",
+    "saveSHA256": {
+      "edited-count-after-claim.save": "5570c1427d04192dc167843dd16b474c0724dd360f93949f7d37ef088015af49",
+      "edited-count-recovered.save": "eed41defcbd7987a527deb677c60da8151ad0de1616c717c646e92b26e70f795",
+      "first.save": "eed41defcbd7987a527deb677c60da8151ad0de1616c717c646e92b26e70f795",
+      "second.save": "2a07621950bdfd9752bd8e09b2bc8958beb83899895d43c097c3ec25ee45620d",
+      "truncated-after-claim.save": "5570c1427d04192dc167843dd16b474c0724dd360f93949f7d37ef088015af49",
+      "truncated-recovered.save": "eed41defcbd7987a527deb677c60da8151ad0de1616c717c646e92b26e70f795"
+    }
+  }
+]

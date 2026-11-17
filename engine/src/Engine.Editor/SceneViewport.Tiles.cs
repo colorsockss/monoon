@@ -33,7 +33,7 @@ public sealed partial class SceneViewport
     private AssetEntry[] tileAssets = [];
     internal bool RefreshTileAssets(ProjectAssets assets)
     {
-        var files = assets.Entries.Where(e => e.Path.EndsWith(SkeletonRig.Extension) || e.Path.EndsWith(ShaderClip.Extension) || e.Path.EndsWith(SpriteAtlas.Extension) || e.Path.EndsWith(ProjectAssets.Tileset) || SpriteAssets.IsPng(e.Path)).ToArray();
+        var files = assets.Entries.Where(e => e.Path.EndsWith(SkeletonRig.Extension) || e.Path.EndsWith(ShaderClip.Extension) || e.Path.EndsWith(SpriteAtlas.Extension) || e.Path.EndsWith(ProjectAssets.Tileset) || SpriteAssets.IsPng(e.Path)).Where(e => File.Exists(Path.Combine(Scene.ProjectDirectory!, e.Path))).ToArray();
         bool changed = !tileAssets.SequenceEqual(files);
         tileAssets = files;
         if (changed) { ClearSprites(); return true; }

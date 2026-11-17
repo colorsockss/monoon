@@ -1,6 +1,7 @@
 """Build and replay KeyRoom's world checkpoints on the current desktop OS."""
 import argparse
 from hashlib import sha256
+import json
 import os
 from pathlib import Path
 import re
@@ -16,6 +17,20 @@ sys.path.insert(0, str(TESTS))
 from desktop_players import REPO, build_player, host_rid, prepare_tools
 
 FIXTURES = Path(__file__).resolve().with_name("fixtures")
+STALE_TEMPLATE_FILE = "stale-template-file.txt"
+
+
+def check_runtime_package(product, mode):
+    tools = ("Engine.Authoring", "Microsoft.CodeAnalysis", "Avalonia", "SkiaSharp")
+    unexpected = [p.name for p in product.rglob("*.dll") if p.name.startswith(tools)]
+    unexpected += [p.name for p in product.rglob("*") if "skiasharp" in p.name.lower()]
+    unexpected += [name for name in (STALE_TEMPLATE_FILE, "MoNoonPlayer.files", "MoNoonContent.version",
+                                     "MoNoonSdlPlayer.version", "MoNoonVorbis.version", "MoNoonShaderSheets.version") if (product / name).exists()]
+    if mode == "release":
+        dependencies = json.loads((product / "MoNoonPlayer.deps.json").read_text())["libraries"]
+        unexpected += [name for name in dependencies if name.startswith(tools)]
+    if unexpected:
+        raise ValueError(f"Authoring or template files in {mode} game: {unexpected}")
 
 
 def coin_id(save):
@@ -26,9 +41,9 @@ def coin_id(save):
     return member[1]
 
 
-def check_recording(player, profile, recording, slot, evidence, env):
+def check_recording(player, profile, recording, slot, evidence, env, fixtures=FIXTURES):
     # Each recording restarts the exported game. Preserve the output even on a mismatch.
-    subprocess.run([str(player), "--replay-input", str(FIXTURES / (recording + ".inputreplay")),
+    subprocess.run([str(player), "--replay-input", str(fixtures / (recording + ".inputreplay")),
                     str(profile)], cwd=player.parent, env=env, timeout=60, check=True)
     shutil.copyfile(slot, evidence)
     return evidence.read_bytes()
@@ -38,6 +53,13 @@ def match(name, actual, expected):
     if actual != expected:
         raise ValueError(f"{name}: expected {sha256(expected).hexdigest()}, got {sha256(actual).hexdigest()}")
     print(f"PASS {name}: {len(actual)} bytes SHA-256 {sha256(actual).hexdigest()}", flush=True)
+
+
+def check_mac_libraries(product):
+    alias = product / "libSDL3.dylib"
+    versioned = product / "libSDL3.0.dylib"
+    if not versioned.is_file() or versioned.is_symlink() or os.readlink(alias) != versioned.name:
+        raise ValueError("Expected the SDL loader alias to point to the bundled versioned library")
 
 
 def check_player(product, rid, folder):
@@ -70,6 +92,31 @@ def check_player(product, rid, folder):
                                folder / "mac-roundtrip.save", dict(env, MONOON_USER_DATA=str(mac_profile)))
     match("Mac Scene Play checkpoint round trip", restored, pending)
 
+    check_carry_checkpoints(player, folder / "carry", env)
+
+
+def check_carry_checkpoints(player, folder, env):
+    fixtures = FIXTURES / "carry"
+    profile = folder / "profile"
+    profile.mkdir(parents=True)
+    env = dict(env, MONOON_USER_DATA=str(profile))
+    held_id = None
+    for name, slot in (("held", 1), ("held-restored", 2), ("dropped", 1),
+                       ("dropped-restored", 2), ("outside", 1), ("collected", 1)):
+        save = profile / f"slot-{slot:03d}.save"
+        if slot == 2:
+            save.unlink(missing_ok=True)
+        actual = check_recording(player, profile, name, save, folder / (name + ".save"), env, fixtures)
+        if name.endswith("-restored"):
+            expected = (folder / (name.removesuffix("-restored") + ".save")).read_bytes()
+        else:
+            expected = (fixtures / (name + ".save")).read_bytes()
+            if name == "held":
+                held_id = coin_id(actual)
+            if name != "collected":
+                expected = expected.replace(coin_id(expected), held_id)
+        match("CarryCoin " + name, actual, expected)
+
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
@@ -84,11 +131,15 @@ def main():
     with tempfile.TemporaryDirectory(prefix="monoon-coin-") as tmp:
         work = Path(tmp).resolve()
         env, _ = prepare_tools(work, args.rid)
+        (Path(env["MONOON_PLAYERS_DIR"]) / args.rid / STALE_TEMPLATE_FILE).write_text("not a runtime file")
         for mode in ("release", "native-aot"):
             folder = results / mode
             folder.mkdir()
             try:
                 product = build_player(work, REPO / "samples/KeyRoom", mode, args.rid, work / "exports", env)
+                check_runtime_package(product, mode)
+                if args.rid == "osx-arm64":
+                    check_mac_libraries(product)
                 check_player(product, args.rid, folder)
             except Exception:
                 failure = traceback.format_exc()

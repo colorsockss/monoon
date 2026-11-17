@@ -17,6 +17,7 @@ internal static class PlayerDataChecks
 
     internal static void Run(string scratch, SceneDocument scene)
     {
+        Recovery(Path.Combine(scratch, "slot-recovery"));
         string root = Path.Combine(scratch, "profile");
         var store = new PlayerStorage(root);
         var data = GameData.Parse("version: 1\nvalues:\n  list: [1, false]\n  nested: {name: test}\n");
@@ -120,4 +121,62 @@ internal static class PlayerDataChecks
             restart.Current.IsActive(door) && !restart.Current.IsColliderEnabled(door) &&
             restart.Current.GetComponent<SpriteRendererComponent>(door)?.Asset == "Assets/DoorOpen3.png", "legacy checkpoint migrates and reopens the unlocked door");
     }
+    private static void Recovery(string root)
+    {
+        Directory.CreateDirectory(root);
+        var store = new PlayerStorage(root);
+        var path = Path.Combine(root, "slot-017.save");
+        var backup = path + ".bak";
+        var old = new GameData();
+        old.Set("herbs", 3);
+        var next = new GameData();
+        next.Set("herbs", 2);
+
+        // A pre-recovery save may include a BOM, comments and platform-specific line endings.
+        File.WriteAllText(path, "# old save\r\nversion: 1\r\nvalues: {herbs: 3}\r\n", new System.Text.UTF8Encoding(true));
+        byte[] original = File.ReadAllBytes(path);
+        store.SaveSlot(17, next);
+        byte[] second = File.ReadAllBytes(path);
+        Check(File.ReadAllBytes(backup).SequenceEqual(original), "legacy slot is backed up byte-for-byte");
+        File.WriteAllText(path, next.ToYaml().Replace("herbs: 2", "herbs: 9"));
+        Check(store.LoadSlot(17, 1, out bool recovered)!.GetNumber("herbs") == 3 && recovered &&
+            File.ReadAllBytes(path).SequenceEqual(original), "valid YAML with modified values restores the previous slot");
+        store.LoadSlot(17, 1, out recovered);
+        Check(!recovered, "the next load reads the repaired primary");
+
+        File.Delete(path);
+        Check(store.ListSlots().SequenceEqual([17]) && store.LoadSlot(17, 1, out recovered) != null && recovered,
+            "a missing primary remains discoverable and can be restored");
+        File.WriteAllText(path, "broken: [");
+        store.SaveSlot(17, next);
+        Check(File.ReadAllBytes(backup).SequenceEqual(original) && File.ReadAllBytes(path).SequenceEqual(second),
+            "saving directly over a damaged primary preserves the good backup");
+
+        var upgraded = next.UpgradeTo(2, (_, _) => { });
+        store.SaveSlot(17, upgraded);
+        byte[] newer = File.ReadAllBytes(path);
+        Reject(() => store.LoadSlot(17, 1));
+        Reject(() => store.SaveSlot(17, old));
+        Check(File.ReadAllBytes(path).SequenceEqual(newer) && File.ReadAllBytes(backup).SequenceEqual(second),
+            "valid newer primary never falls back or downgrades");
+
+        // A process stopped after publishing the next checksums but before File.Replace.
+        File.WriteAllBytes(path, second);
+        File.WriteAllBytes(backup, original);
+        Check(store.LoadSlot(17, 1, out recovered)!.GetNumber("herbs") == 2 && !recovered,
+            "interrupted rotation still reads the previously committed primary");
+        File.WriteAllBytes(path, []);
+        Check(store.LoadSlot(17, 1)!.GetNumber("herbs") == 3, "interrupted rotation still verifies its old backup");
+
+        File.WriteAllText(path, "broken primary");
+        File.WriteAllText(backup, "broken backup");
+        Reject(() => store.LoadSlot(17, 1));
+        Reject(() => store.SaveSlot(17, old));
+        Check(File.ReadAllText(path) == "broken primary" && File.ReadAllText(backup) == "broken backup",
+            "two damaged copies are reported and preserved");
+        store.DeleteSlot(17);
+        Check(!Directory.EnumerateFiles(root, "slot-*").Any() && store.LoadSlot(17, 1) == null &&
+            store.ListSlots().Length == 0, "deleting a slot removes the backup and checksums");
+    }
+
 }

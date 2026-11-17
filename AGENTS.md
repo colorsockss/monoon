@@ -18,8 +18,8 @@
 | 대상 | 엔진·에디터를 살필 환경 | 빌드한 게임을 살필 환경 |
 | --- | --- | --- |
 | [macOS arm64](docs/troubleshooting/macos.md) | 이 Apple Silicon Mac의 `editor/MoNoon.app`. Scene은 패치한 SDL 3.4.12 + Cocoa NSView를 사용한다. | 같은 Mac에서 `game-builds/KeyRoom/KeyRoom.app`과 `NativeAOT/KeyRoom.app`을 구분한다. 둘 다 플레이 기록이 있다. |
-| [Windows x64](docs/troubleshooting/windows.md) | Avalonia Scene 경로. 에디터 문제는 Windows 데스크톱에서 소스로 재현한다. 패키지 에디터 검증 기록은 없다. | 보존한 QEMU Windows 11 Enterprise LTSC x64에서 `KeyRoom-win-x64/MoNoonPlayer.exe` (Release). 시작 오류는 배포 폴더의 SDL3.dll부터 확인한다. |
-| [Linux x64](docs/troubleshooting/linux.md) | Avalonia Scene 경로. 에디터 문제는 데스크톱 세션에서 소스로 재현한다. 패키지 에디터 검증 기록은 없다. | 보존한 QEMU Debian 12 amd64의 X11/Xvfb에서 `KeyRoom-linux-x64/MoNoonPlayer` (Release). 창 초기화와 HUD 텍스트 오류를 구분한다. |
+| [Windows x64](docs/troubleshooting/windows.md) | 보존한 Windows VM에서 패키지의 `editor\MoNoon.exe`로 KeyRoom을 열어 Avalonia Scene 편집·Play를 재현한다. | 보존한 QEMU Windows 11 Enterprise LTSC x64에서 `KeyRoom-win-x64/MoNoonPlayer.exe` (Release). 시작 오류는 배포 폴더의 SDL3.dll부터 확인한다. |
+| [Linux x64](docs/troubleshooting/linux.md) | 보존한 Debian VM의 X11/Xvfb에서 패키지의 `editor/MoNoon`으로 KeyRoom을 열어 Avalonia Scene 편집·Play를 재현한다. | 보존한 QEMU Debian 12 amd64의 X11/Xvfb에서 `KeyRoom-linux-x64/MoNoonPlayer` (Release). 창 초기화와 HUD 텍스트 오류를 구분한다. |
 
 - x64 게스트는 이 Mac의 `.test-env/`를 재사용한다. 가상 디스크·기반 이미지·키를 삭제하거나 저장소에 추가하지 않는다. [재실행 명령과 합격 기준](docs/troubleshooting/README.md)을 따른다.
 - InventoryLab의 Windows·Linux x64 회귀는 각 게스트에서 Release와 Native AOT를 직접 빌드하고 같은 입력을 헤드리스로 재생한다. [게스트 실행기](engine/tests/InventoryLab.Replay/README.md) · [네 배포본의 기준 저장 비교](engine/tests/results/input-replay-x64/README.md)

@@ -25,6 +25,7 @@ public sealed class CollectCoin : GameBehaviour
     public override void OnTriggerEnter(ScriptContact contact)
     {
         if (!available || collected || contact.Objects.GetComponent<PlayerMovement>(contact.OtherId) == null) return;
+        if (contact.Objects.TryGetParent(contact.ObjectId, out var parent) && parent == contact.OtherId) return;
         collected = true;
         contact.Objects.Destroy(contact.ObjectId);
     }

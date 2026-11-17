@@ -1,0 +1,9 @@
+version: 1
+values:
+  buildId: "388f23a8b8274f11a2c296d1d3be62ac"
+  projectId: "36242c46-b620-5d70-a5a5-d3a858892d65"
+  game: "AudioLab"
+  target: "linux-x64"
+  mode: "native-aot"
+  profile: "distribution"
+  playerSha256: "FE41A2A90D22DAD45F84AF22BE975E9932C26F5C55CA7C763D79481B7E2A8020"

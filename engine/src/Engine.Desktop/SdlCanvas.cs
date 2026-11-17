@@ -5,7 +5,7 @@ using Engine.Core;
 
 namespace Engine.Desktop;
 
-public sealed class SdlCanvas(SdlRenderer renderer) : ICanvas2D, IDisposable
+public sealed class SdlCanvas(SdlRenderer renderer, Func<ShaderClip, RgbaImage>? previewShader = null, IGameTextRasterizer? textRasterizer = null) : ICanvas2D, IDisposable
 {
     private sealed class SpriteTexture(SdlTexture handle, Size size, SdlScaleMode original) : IDisposable
     {
@@ -20,15 +20,30 @@ public sealed class SdlCanvas(SdlRenderer renderer) : ICanvas2D, IDisposable
     private readonly SpriteCache<SpriteTexture> sprites = new(path => LoadTexture(renderer, path));
     private readonly SpriteVariants<SpriteTexture> variants = new((filter, _) => LoadFiltered(renderer,filter));
     private ShaderSheets<SpriteTexture>? shaderSheets;
-    public void PrepareShader(ShaderClip shader) => ShaderTexture(shader,shader==ShaderClip.LightFalloff);
+    public void PrepareShader(ShaderClip shader) => ShaderTexture(shader,shader.Additive);
     public void ReleaseShader(ShaderClip shader) => shaderSheets?.Release(shader);
 
     private SpriteTexture ShaderTexture(ShaderClip shader,bool additive)
     {
         shaderSheets ??= new((clip,_,add) =>
         {
-            using var pixels=ShaderPixels.Bake(clip,Color.White);
-            var texture=Upload(renderer,pixels);
+            SpriteTexture texture;
+            if (clip.SheetPath is {} path)
+            {
+                texture = LoadTexture(renderer, path);
+                var last = clip.Region(clip.Frames - 1);
+                if (texture.Size != new Size(clip.Columns * clip.Width, last.Y + last.Height) ||
+                    !SetScale(texture, SdlScaleMode.Nearest))
+                {
+                    texture.Dispose();
+                    throw new InvalidDataException($"Invalid shader sheet dimensions or sampling mode: {path}");
+                }
+            }
+            else
+            {
+                var pixels = previewShader?.Invoke(clip) ?? throw new InvalidDataException("The exported game is missing a baked shader sheet.");
+                texture = Upload(renderer, pixels);
+            }
             const uint additiveBlend=2; // SDL_BLENDMODE_ADD
             if (!add || Sdl.Render.SetTextureBlendMode(texture.Handle,additiveBlend)) return texture;
             texture.Dispose();
@@ -46,23 +61,18 @@ public sealed class SdlCanvas(SdlRenderer renderer) : ICanvas2D, IDisposable
 
     private static SpriteTexture LoadFiltered(SdlRenderer renderer,SpriteFilter filter)
     {
-        using var bitmap = SpritePixels.Filter(filter,Color.White);
+        var bitmap = SdlSpriteMask.Filter(filter,Color.White);
         return Upload(renderer,bitmap);
     }
 
-    private static unsafe SpriteTexture Upload(SdlRenderer renderer,SkiaSharp.SKBitmap bitmap)
+    private static SpriteTexture Upload(SdlRenderer renderer, RgbaImage bitmap)
     {
-        var surface = Sdl.PInvoke.CreateSurfaceFrom(bitmap.Width,bitmap.Height,SdlPixelFormat.Rgba32,(byte*)bitmap.GetPixels(),bitmap.RowBytes);
-        if (surface == null) throw new InvalidDataException(Sdl.PInvoke.GetError());
-        try
-        {
-            var tex = renderer.CreateTextureFromSurface(surface);
-            if (tex.SetScaleMode(SdlScaleMode.Nearest)) return new(tex,new(bitmap.Width,bitmap.Height),SdlScaleMode.Nearest);
-            tex.Dispose();
-            throw new InvalidDataException(Sdl.PInvoke.GetError());
-        }
-        finally { Sdl.PInvoke.DestroySurface(surface); }
+        var texture = bitmap.CreateTexture(renderer);
+        if (texture.SetScaleMode(SdlScaleMode.Nearest)) return new(texture, new(bitmap.Width, bitmap.Height), SdlScaleMode.Nearest);
+        texture.Dispose();
+        throw new InvalidDataException(Sdl.PInvoke.GetError());
     }
+
     public bool DrawFiltered(SpriteFilter filter,RectangleF local,Matrix3x2 matrix,Color tint)
     {
         var tex = variants.Get(filter,Color.White);
@@ -78,8 +88,8 @@ public sealed class SdlCanvas(SdlRenderer renderer) : ICanvas2D, IDisposable
     private readonly bool software = Sdl.Render.GetRendererName(renderer) == "software";
     internal Size LogicalSize { get; init; }
 
-    private readonly SdlText labels = new();
-    public SdlCanvas(SdlRenderer renderer, bool batchSprites) : this(renderer)
+    private readonly SdlText labels = new(textRasterizer ?? new SdlFontRasterizer());
+    public SdlCanvas(SdlRenderer renderer, bool batchSprites, Func<ShaderClip, RgbaImage>? previewShader = null, IGameTextRasterizer? textRasterizer = null) : this(renderer, previewShader, textRasterizer)
     {
         this.batchSprites = batchSprites;
     }

@@ -1,6 +1,6 @@
 namespace Engine.Core;
 
-public sealed class PlayerStorage
+public sealed partial class PlayerStorage
 {
     private readonly string? directory;
     public PlayerStorage(string directory) => this.directory = Path.GetFullPath(directory);
@@ -50,20 +50,73 @@ public sealed class PlayerStorage
     public int[] ListSlots()
     {
         if (!Directory.Exists(DirectoryPath)) return [];
-        return Directory.EnumerateFiles(DirectoryPath, "slot-???.save")
-            .Select(f => int.TryParse(Path.GetFileNameWithoutExtension(f).AsSpan(5), out int n) ? n : 0)
-            .Where(n => n is >= 1 and <= 999).Order().ToArray();
+        return Directory.EnumerateFiles(DirectoryPath, "slot-???.save*")
+            .Select(path => Path.GetFileName(path))
+            .Where(name => name.Length == "slot-000.save".Length || name.EndsWith(".save.bak", StringComparison.Ordinal))
+            .Select(name => int.TryParse(name.AsSpan(5, 3), out int slot) ? slot : 0)
+            .Where(slot => slot is >= 1 and <= 999).Distinct().Order().ToArray();
     }
 
     public GameData? LoadSlot(int slot, int version, Action<int,GameData>? migrate = null) =>
-        Read(SlotPath(slot), version, migrate);
-    public void SaveSlot(int slot, GameData data) => Write(SlotPath(slot), data);
+        LoadSlot(slot, version, out _, migrate);
+
+    public GameData? LoadSlot(int slot, int version, out bool recovered, Action<int,GameData>? migrate = null)
+    {
+        string path = SlotPath(slot);
+        if (version < 1) throw new ArgumentOutOfRangeException(nameof(version));
+        recovered = false;
+        if (!Directory.Exists(DirectoryPath)) return null;
+        var hashes = ReadHashes(path);
+        // Healthy loads (including read-only legacy profiles) need no writer lock.
+        try
+        {
+            var current = ReadCopy(path, hashes);
+            if (current != null) return Upgrade(current);
+            if (hashes == null && !File.Exists(path + ".bak")) return null;
+        }
+        catch (SlotIntegrityException) { }
+
+        // Re-read under the writer lock: a save could have completed since the first read.
+        SlotCopy? copy;
+        using (var writer = LockProfile(DirectoryPath))
+        {
+            hashes = ReadHashes(path);
+            copy = SelectCopy(path, hashes, out recovered);
+            if (copy == null) return null;
+            if (recovered)
+            {
+                // Check version compatibility before repairing. Keep the original schema on disk.
+                if (copy.Data.Version > version || copy.Data.Version < version && migrate == null)
+                    return Upgrade(copy);
+                ProjectYaml.WriteBytes(path, copy.Bytes);
+            }
+        }
+        return Upgrade(copy);
+
+        GameData Upgrade(SlotCopy source) => source.Data.UpgradeTo(version, migrate);
+    }
+
+    public void SaveSlot(int slot, GameData data)
+    {
+        string path = SlotPath(slot);
+        byte[] bytes = ProjectYaml.Encode(data.Validate());
+        Directory.CreateDirectory(DirectoryPath);
+        using var writer = LockProfile(DirectoryPath);
+        var hashes = ReadHashes(path);
+        var previous = SelectCopy(path, hashes, out bool fromBackup);
+        if (previous?.Data.Version > data.Version)
+            throw new InvalidDataException($"Cannot overwrite version {previous.Data.Version} with version {data.Version}.");
+        PublishSlot(path, bytes, previous, hashes, fromBackup);
+    }
+
     public void DeleteSlot(int slot)
     {
         var path = SlotPath(slot);
         if (!Directory.Exists(DirectoryPath)) return;
         using var writer = LockProfile(DirectoryPath);
+        File.Delete(path + ".bak");
         File.Delete(path);
+        File.Delete(path + ".sha256");
     }
     public GameData? LoadSettings(int version, Action<int,GameData>? migrate = null) =>
         Read(Path.Combine(DirectoryPath, "player.settings"), version, migrate);

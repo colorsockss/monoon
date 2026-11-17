@@ -1,0 +1,11 @@
+{
+  "files": 42,
+  "folder": 26457656,
+  "zip": 10670056,
+  "sha256": "afc2d86bc6ca914bceb7e6348e009ceb2ac417fe6c7c587036a77969d984f8bf",
+  "rid": "linux-x64",
+  "mode": "native-aot",
+  "os": "Linux-6.1.0-54-cloud-amd64-x86_64-with-glibc2.36",
+  "arch": "x86_64",
+  "skia": []
+}

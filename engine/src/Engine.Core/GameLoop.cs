@@ -4,6 +4,8 @@ namespace Engine.Core;
 public sealed class GameLoop(IGame2D game, InputActions actions)
 {
     private readonly GameTime clock = game.Time ?? new GameTime();
+    // Invoked after the first simulation tick that consumed a mapped press, when requested by a diagnostic.
+    public Action<string>? FirstActionProcessed { get; set; }
     private long pauseRevision;
     private double accumulator;
     private bool interpolate;
@@ -30,20 +32,34 @@ public sealed class GameLoop(IGame2D game, InputActions actions)
         {
             actions.DiscardGameEdges();
             while (clock.IsPaused && clock.TakeStep())
-                game.Simulate(actions.Take(), (float)GameTime.FixedStep);
+                Simulate();
             return;
         }
         accumulator += Math.Min(elapsed, 0.1) * clock.Scale;
         while (accumulator + 1e-12 >= GameTime.FixedStep)
         {
             accumulator = Math.Max(0, accumulator - GameTime.FixedStep);
-            game.Simulate(actions.Take(), (float)GameTime.FixedStep);
+            Simulate();
             interpolate = true;
             if (clock.PauseRevision != pauseRevision)
             {
                 ResetElapsed();
                 break;
             }
+        }
+    }
+
+    private void Simulate()
+    {
+        var input = actions.Take();
+        game.Simulate(input, (float)GameTime.FixedStep);
+        if (FirstActionProcessed is not {} observe || input.Samples == null) return;
+        foreach (var (action, sample) in input.Samples)
+        {
+            if (!sample.Pressed) continue;
+            FirstActionProcessed = null;
+            observe(action);
+            break;
         }
     }
 }

@@ -1,0 +1,34 @@
+{
+  "crossReleaseVsSameGlyphsNativeAot": {
+    "pixels": 48000,
+    "different": 0,
+    "mae": 0.0,
+    "max": 0,
+    "refSHA256": "3b39a955c68f1b8f8848a2b85bfbf897594f609d592cf20bccc246ab4347e34a",
+    "sha256": "3b39a955c68f1b8f8848a2b85bfbf897594f609d592cf20bccc246ab4347e34a"
+  },
+  "nativeAotBeforeVsAfterReplacingGlyphs": {
+    "pixels": 48000,
+    "different": 3276,
+    "mae": 1.4284,
+    "max": 179,
+    "refSHA256": "d0ccb235fab6f39cb53ee7d932f15bfa10159cfed9cc54e25e02121c95a824c5",
+    "sha256": "3b39a955c68f1b8f8848a2b85bfbf897594f609d592cf20bccc246ab4347e34a"
+  },
+  "nativeReleaseVsNativeAot": {
+    "pixels": 48000,
+    "different": 0,
+    "mae": 0.0,
+    "max": 0,
+    "refSHA256": "d0ccb235fab6f39cb53ee7d932f15bfa10159cfed9cc54e25e02121c95a824c5",
+    "sha256": "d0ccb235fab6f39cb53ee7d932f15bfa10159cfed9cc54e25e02121c95a824c5"
+  },
+  "nativeReleaseVsNativeAotMask": {
+    "pixels": 9996,
+    "different": 0,
+    "mae": 0.0,
+    "max": 0,
+    "refSHA256": "251cee88a9d308f66f5aebcf279aa6dde839e8b2830c3509cf1ab70b3d72154b",
+    "sha256": "251cee88a9d308f66f5aebcf279aa6dde839e8b2830c3509cf1ab70b3d72154b"
+  }
+}

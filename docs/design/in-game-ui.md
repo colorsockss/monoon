@@ -27,7 +27,7 @@ Inspector에서 앵커와 크기를 고르고, Scene의 시작 카메라 프레�
 
 ## 저장과 검증
 
-[ScreenUi](../../engine/src/Engine.Core/ScreenUi.cs)가 편집 미리보기와 실행 중 배치·그리기·클릭 영역을 계산한다. `.scene`·프리팹에 VYaml 컴포넌트를 저장하고, PNG는 `.meta`의 기존 GUID로 참조한다. [게임 빌더](../../engine/src/Engine.Core/GameBuild.cs)가 UI PNG와 버튼 스크립트를 배포본에 포함한다. UI를 쓰려면 새 플레이어 템플릿으로 내보내야 한다.
+[ScreenUi](../../engine/src/Engine.Core/ScreenUi.cs)가 편집 미리보기와 실행 중 배치·그리기·클릭 영역을 계산한다. `.scene`·프리팹에 VYaml 컴포넌트를 저장하고, PNG는 `.meta`의 기존 GUID로 참조한다. [게임 빌더](../../engine/src/Engine.Authoring/GameBuild.cs)가 UI PNG와 버튼 스크립트를 배포본에 포함한다. UI를 쓰려면 새 플레이어 템플릿으로 내보내야 한다.
 
 씬 형식은 **v7**이다. v6의 `hud`는 읽을 때 같은 오브젝트 ID의 Rect·Text와 선택적 Image로 바꾼다. 이미지 너비와 글자 사이 6픽셀, 글자 크기 16, 표시 플래그를 보존한다. 열기만 해서는 기존 씬 파일을 다시 쓰지 않으며 다음 저장부터 새 형식이다. 새 컴포넌트 목록에는 예전 HUD가 나오지 않는다.
 

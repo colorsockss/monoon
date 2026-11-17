@@ -26,7 +26,7 @@ internal sealed class MacSceneHost : NativeControlHost
     [DllImport(Bridge)]
     private static extern int BrutalScenePanelAttached(nint view);
     [DllImport(Bridge)]
-    private static extern int BrutalSizeSceneDrawable(nint view, nint layer, out double width, out double height);
+    private static extern int BrutalSizeSceneDrawable(nint view, nint layer, double panelWidth, double panelHeight, out double width, out double height);
 
     [DllImport(Bridge)]
     private static extern double BrutalKeyEventAge();
@@ -90,7 +90,7 @@ internal sealed class MacSceneHost : NativeControlHost
                 return;
             }
         }
-        if (BrutalSizeSceneDrawable(view, layer, out var width, out var height) == 0) return;
+        if (BrutalSizeSceneDrawable(view, layer, Bounds.Width, Bounds.Height, out var width, out var height) == 0) return;
 
         // SDL normally derives its default viewport from NSWindow notifications.
         // A child can resize after that notification, or independently of the window.
@@ -139,9 +139,9 @@ internal sealed class MacSceneHost : NativeControlHost
             finally { Sdl.PInvoke.DestroyProperties(properties); }
             renderer = Sdl.Render.CreateRenderer(window, "metal");
             layer = (nint)Sdl.PInvoke.GetRenderMetalLayer(renderer);
-            if (BrutalSizeSceneDrawable(view, layer, out _, out _) == 0)
+            if (BrutalSizeSceneDrawable(view, layer, Bounds.Width, Bounds.Height, out _, out _) == 0)
                 throw new InvalidOperationException("SDL's Metal surface is outside the Scene panel.");
-            canvas = new SdlCanvas(renderer, batchSprites: true);
+            canvas = new SdlCanvas(renderer, batchSprites: true, previewShader: ShaderPixels.Preview, textRasterizer: new GameTextRasterizer());
         }
         catch
         {

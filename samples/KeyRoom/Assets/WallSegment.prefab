@@ -1,0 +1,12 @@
+schemaVersion: 25
+objects:
+- id: a2813c96-acb9-4110-ac2b-2447edefc1aa
+  name: Wall
+  width: 76
+  height: 28
+  components:
+  - type: boxCollider2D
+    layer: 1
+    mask: 3
+  - type: spriteRenderer
+    squareColor: "#567787"

@@ -1,4 +1,9 @@
+using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.Primitives;
+using Avalonia.Controls.Templates;
+using Avalonia.Layout;
+using Avalonia.Media;
 using Engine.Core;
 
 namespace Engine.Editor;
@@ -42,17 +47,112 @@ public partial class MainWindow
         return Task.CompletedTask;
     }
 
+    private SceneDocument.PrefabSource? prefabSource;
+    private readonly Action<SceneDocument.PrefabSource>? savePrefabSource;
+
+    private Task EditPrefabSource(string relative)
+    {
+        var source = SceneDocument.OpenPrefabSource(project!, relative);
+        var path = Path.Combine(project!, relative);
+        var window = new MainWindow(relative, source, edited =>
+            RecordPrefabAssetChange(path, () =>
+            {
+                SceneDocument.SavePrefabSource(edited);
+                Scene.RefreshPrefabs(ProjectAssets.Scan(project!));
+            }));
+        return window.ShowDialog(this);
+    }
+
+    private void RecordPrefabAssetChange(string path, Action write)
+    {
+        var before = PrefabFileEdit.Read(path);
+        var snapshot = Scene.CaptureObjects();
+        var selected = Selected?.Id;
+        try
+        {
+            write();
+        }
+        catch
+        {
+            var failed = new PrefabFileEdit(path, before, PrefabFileEdit.Read(path));
+            if (failed.HasChanges) { failed.Restore(false); ProjectAssets.Scan(project!); }
+            Scene.RestoreObjects(snapshot);
+            RebuildHierarchy(Scene.Objects.FirstOrDefault(o => o.Id == selected));
+            throw;
+        }
+        var edit = new PrefabFileEdit(path, before, PrefabFileEdit.Read(path));
+        Viewport.ClearSprites();
+        FinishObjectChange(Scene.Objects.FirstOrDefault(o => o.Id == selected), edit.HasChanges ? edit : null);
+    }
+
     private Task ShowPrefabOverrides()
     {
-        if(Selected?.Prefab is not {} link || project==null)return Task.CompletedTask;
-        var items=Scene.PrefabOverrides(Selected).ToArray();
-        var source=ProjectAssets.ReadManifest(project).PathFor(link.AssetId);
-        var grid=new Avalonia.Controls.Grid {RowDefinitions=new("Auto,*"),RowSpacing=6,Margin=new Avalonia.Thickness(10)};
-        grid.Children.Add(new TextBlock {Text=source,TextTrimming=Avalonia.Media.TextTrimming.CharacterEllipsis});
-        var list=new ListBox {ItemsSource=items.Length>0?items:["No overrides"]};
-        Grid.SetRow(list,1);grid.Children.Add(list);
-        var window=new Window {Title="Prefab Overrides",Width=380,Height=260,MinWidth=260,MinHeight=160,
-            WindowStartupLocation=WindowStartupLocation.CenterOwner,Content=grid};
+        if (Selected?.Prefab is not {} link || project == null) return Task.CompletedTask;
+        var rootId = Selected.Id;
+        var relative = ProjectAssets.Scan(project).PathFor(link.AssetId) ?? throw new IOException("Missing prefab source.");
+        var grid = new Grid { RowDefinitions = new("Auto,*,Auto,Auto,Auto"), RowSpacing = 6, Margin = new Thickness(10) };
+        var path = new TextBlock { Text = relative, TextTrimming = TextTrimming.CharacterEllipsis };
+        ToolTip.SetTip(path, relative);
+        var list = new ListBox
+        {
+            ItemTemplate = new FuncDataTemplate<object>((item, _) =>
+            {
+                var label = item is PropertyOverride change ? $"{change.Property.Label} · {change.Owner}" : item as string;
+                var text = new TextBlock { Text = label, TextTrimming = TextTrimming.CharacterEllipsis };
+                ToolTip.SetTip(text, label);
+                return text;
+            })
+        };
+        ScrollViewer.SetHorizontalScrollBarVisibility(list, ScrollBarVisibility.Disabled);
+        var details = new TextBlock { TextWrapping = TextWrapping.Wrap, MaxHeight = 64 };
+        var status = new TextBlock { TextWrapping = TextWrapping.Wrap, IsVisible = false };
+        var apply = new Button { Content = "Apply to Source" };
+        var revert = new Button { Content = "Revert Property" };
+        var done = new Button { Content = "Done" };
+        var buttons = new StackPanel { Orientation = Orientation.Horizontal, Spacing = 6,
+            HorizontalAlignment = HorizontalAlignment.Right, Children = { revert, apply, done } };
+        void Add(Control control, int row) { Grid.SetRow(control, row); grid.Children.Add(control); }
+        Add(path, 0); Add(list, 1); Add(details, 2); Add(status, 3); Add(buttons, 4);
+        var window = new Window { Title = "Prefab Overrides", Width = 435, Height = 315, MinWidth = 350, MinHeight = 235,
+            WindowStartupLocation = WindowStartupLocation.CenterOwner, Content = grid };
+        SceneObject Root() => Scene.Objects.Single(o => o.Id == rootId);
+        void Describe()
+        {
+            var change = list.SelectedItem as PropertyOverride;
+            revert.IsEnabled = apply.IsEnabled = change != null;
+            details.Text = change == null ? (list.ItemCount == 0 ? "No overrides" : "Use the Scene menu for whole-instance changes.")
+                : $"Source   {change.SourceValue}\nInstance   {change.LocalValue}";
+            ToolTip.SetTip(details, details.Text);
+        }
+        void Reload()
+        {
+            var root = Root();
+            list.ItemsSource = Scene.PropertyOverrides(root).Cast<object>().Concat(Scene.StructuralOverrides(root)).ToArray();
+            list.SelectedIndex = list.ItemCount > 0 ? 0 : -1;
+            Describe();
+        }
+        void Edit(bool toSource)
+        {
+            if (list.SelectedItem is not PropertyOverride change) return;
+            try
+            {
+                if (toSource)
+                    RecordPrefabAssetChange(Path.Combine(project, relative), () => Scene.EditPrefabProperty(Root(), change, true));
+                else
+                {
+                    Scene.EditPrefabProperty(Root(), change, false);
+                    FinishObjectChange(Root());
+                }
+                status.IsVisible = false;
+                Reload();
+            }
+            catch (Exception ex) { LogError(ex.Message); status.Text = ex.Message; status.IsVisible = true; }
+        }
+        list.SelectionChanged += (_, _) => Describe();
+        apply.Click += (_, _) => Edit(true);
+        revert.Click += (_, _) => Edit(false);
+        done.Click += (_, _) => window.Close();
+        Reload();
         return window.ShowDialog(this);
     }
 

@@ -1,6 +1,6 @@
 # 기존 게임 프로젝트 업그레이드
 
-대상은 MoNoon Engine 콘텐츠 버전 **35**다. 1~5단계의 명령은 Apple Silicon Mac 기준이고, 마지막 절에는 Windows x64·Linux x64의 실행 경로와 저장 비교 방법이 있다. 아래 순서로 버전 31 당시의 InventoryLab 소스를 복사해 최신 에디터로 열 수 있는지 확인하고, 배포용 Release와 Native AOT를 각각 만든다. 모든 명령은 **현재 엔진 저장소의 루트에서 같은 셸**로 실행한다. 두 빌드 형식의 산출물과 심볼은 기존 InventoryLab 배포본과 다른 폴더에 보관한다. [빌더의 버전 검사](../../engine/src/Engine.Core/GameBuild.cs) · [샘플 API](api.md)
+대상은 MoNoon Engine 콘텐츠 버전 **35**다. 1~5단계의 명령은 Apple Silicon Mac 기준이고, 마지막 절에는 Windows x64·Linux x64의 실행 경로와 저장 비교 방법이 있다. 아래 순서로 버전 31 당시의 InventoryLab 소스를 복사해 최신 에디터로 열 수 있는지 확인하고, 배포용 Release와 Native AOT를 각각 만든다. 모든 명령은 **현재 엔진 저장소의 루트에서 같은 셸**로 실행한다. 두 빌드 형식의 산출물과 심볼은 기존 InventoryLab 배포본과 다른 폴더에 보관한다. [빌더의 버전 검사](../../engine/src/Engine.Authoring/GameBuild.cs) · [샘플 API](api.md)
 
 ## 1. 원본과 복구 지점 확보
 
@@ -49,7 +49,7 @@ cat "$project/GameSettings"
 cat "$project/Scenes/Inventory.scene.meta"
 ```
 
-`YAML project`와 종료 코드 0을 확인한다. **File → Open Project…**로 소스 폴더를 여는 방법도 같은 변환기를 사용한다. 변환기는 출고용 `Game/` 안의 `.monoon-player`를 인식해 건너뛰므로 반드시 소스 프로젝트를 지정한다. [변환기](../../engine/src/Engine.Core/LegacyProject.cs)
+`YAML project`와 종료 코드 0을 확인한다. **File → Open Project…**로 소스 폴더를 여는 방법도 같은 변환기를 사용한다. 변환기는 출고용 `Game/` 안의 `.monoon-player`를 인식해 건너뛰므로 반드시 소스 프로젝트를 지정한다. [변환기](../../engine/src/Engine.Authoring/LegacyProject.cs)
 
 | 기존 프로젝트의 상태 | 변환 결과와 확인할 내용 |
 | --- | --- |

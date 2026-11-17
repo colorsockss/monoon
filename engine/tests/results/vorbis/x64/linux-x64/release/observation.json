@@ -1,0 +1,10 @@
+{
+  "system": "Linux-6.1.0-54-amd64-x86_64-with-glibc2.36",
+  "machine": "x86_64",
+  "mode": "release",
+  "driver": "alsa",
+  "playerSha256": "9daeea7422ceb74db0a242a7474b113919b7a5248f849721e9445c5c4240b71c",
+  "musicSha256": "7b8c4c6b524b4d1f8c4b72553b6adc5b3b2dd5f7e38dcf8ae134b5b4862b5e7e",
+  "framesBeforeF": 235520,
+  "capturedFrames": 273920
+}

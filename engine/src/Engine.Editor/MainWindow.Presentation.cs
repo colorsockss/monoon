@@ -10,12 +10,7 @@ public partial class MainWindow
     private Control PresentationFields(SceneComponent component)
     {
         var fields = new StackPanel { Spacing = 2 };
-        void Row(string label, Control editor)
-        {
-            var row = new Grid { ColumnDefinitions = new("56,*"), ColumnSpacing = 5 };
-            row.Children.Add(new TextBlock { Text = label, Classes = { "fieldLabel" } });
-            Grid.SetColumn(editor, 1); row.Children.Add(editor); fields.Children.Add(row);
-        }
+        void Row(string label, Control editor) => InspectorRow(fields, label, editor);
         void Asset(string label, string suffix, Guid? current, Action<Guid?> set, Func<string, bool>? accepts = null)
         {
             var items = new List<ObjectReference> { new(Guid.Empty, "None") };
@@ -223,13 +218,19 @@ public partial class MainWindow
                 var anchor = new ComboBox { ItemsSource = ScreenUi.Anchors, SelectedItem = rect.Anchor, HorizontalAlignment = HorizontalAlignment.Stretch };
                 anchor.SelectionChanged += (_, _) => { if (anchor.SelectedItem is string a) { rect.Anchor = a; MarkDirty(); } };
                 Row("Anchor", anchor);
+                var scaleWidth = new CheckBox { Content="Scale width and X with text", IsChecked=rect.ScaleHorizontalWithText };
+                scaleWidth.IsCheckedChanged += (_,_) => { rect.ScaleHorizontalWithText=scaleWidth.IsChecked==true; MarkDirty(); };
+                Row("",scaleWidth);
                 Text("Show if", rect.ShowIf, s => rect.ShowIf = s);
                 var modeRoot = new CheckBox { Content = "Input mode root", IsChecked = rect.InputModeRoot };
                 modeRoot.IsCheckedChanged += (_, _) => { rect.InputModeRoot = modeRoot.IsChecked == true; MarkDirty(); };
                 Row("", modeRoot);
                 break;
             case UiImageComponent image:
-                Asset("Sprite", ".png", image.Sprite, id => image.Sprite = id);
+                Asset("Sprite", ".png", image.Sprite, id => {
+                    if (id != image.Sprite) { image.Sprite = id; image.Borders = null; RefreshComponentList(); }
+                });
+                SliceFields(image, Row);
                 Text("Fill", image.Color, s => { if (SceneObject.TryColor(s, out _)) image.Color = s; });
                 break;
             case UiLayoutComponent stack:
@@ -271,6 +272,17 @@ public partial class MainWindow
                 Number("Inset Y", label.InsetY, -16384, 16384, n => label.InsetY = n);
                 break;
             case UiButtonComponent button:
+                var names = new List<string> { "button" };
+                if (project != null && Scene.Settings.UiTheme != null)
+                {
+                    try { names = UiTheme.Load(project, ProjectAssets.ReadManifest(project), Scene.Settings.UiTheme).Names.Order().ToList(); }
+                    catch (Exception ex) when (ex is InvalidDataException or IOException) { Status.Text = ex.Message; }
+                }
+                string current = button.Style ?? "button";
+                if (!names.Contains(current)) names.Add(current);
+                var style = new ComboBox { ItemsSource=names, SelectedItem=current, HorizontalAlignment=HorizontalAlignment.Stretch };
+                style.SelectionChanged += (_,_) => { if (style.SelectedItem is string name) {button.Style=name=="button"?null:name; MarkDirty();} };
+                Row("Style",style);
                 var enabled = new CheckBox { Content = "Interactable", IsChecked = button.Interactable };
                 enabled.IsCheckedChanged += (_, _) => { button.Interactable = enabled.IsChecked == true; MarkDirty(); };
                 Row("", enabled);

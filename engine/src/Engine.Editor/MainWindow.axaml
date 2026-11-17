@@ -108,6 +108,8 @@
   <Window.Styles>
     <Style Selector="TreeViewItem.groupSelected"><Setter Property="Foreground" Value="{DynamicResource EditorAccent}"/></Style>
     <Style Selector="TreeViewItem.dropTarget"><Setter Property="Foreground" Value="{DynamicResource EditorAccent}"/></Style>
+    <Style Selector="Border.referenceRow"><Setter Property="Background" Value="Transparent"/></Style>
+    <Style Selector="Border.referenceRow.referenceDrop"><Setter Property="Background" Value="#405551"/></Style>
     <Style Selector="ToggleButton.drawerHeader:checked PathIcon"><Setter Property="RenderTransform" Value="rotate(90deg)"/></Style>
     <Style Selector="TextBlock.panel">
       <Setter Property="FontSize" Value="11.5"/><Setter Property="FontWeight" Value="SemiBold"/>
@@ -197,7 +199,7 @@
               </Button>
             </Grid>
           </Border>
-          <Grid Grid.Row="3" RowDefinitions="Auto,*">
+          <Grid Grid.Row="3" RowDefinitions="Auto,*,Auto">
             <TextBox x:Name="AssetSearch" Margin="6,5,6,0" Watermark="Search project…" AutomationProperties.Name="Search project" ToolTip.Tip="Search all assets and scripts by path, or type (e.g. t:sprite). Esc clears."/>
             <ListBox Grid.Row="1" x:Name="ProjectBrowser" Margin="4,3" AutomationProperties.Name="Project files"
                      ScrollViewer.HorizontalScrollBarVisibility="Disabled">
@@ -220,6 +222,11 @@
                 </DataTemplate>
               </ListBox.ItemTemplate>
             </ListBox>
+            <Border Grid.Row="2" x:Name="ProjectPreviewPanel" IsVisible="False" BorderBrush="{DynamicResource EditorDivider}"
+                    BorderThickness="0,1,0,0" Padding="6,4">
+              <Image x:Name="ProjectPreview" Height="64" Stretch="Uniform" RenderOptions.BitmapInterpolationMode="None"
+                     AutomationProperties.Name="Selected PNG preview"/>
+            </Border>
             <TextBlock Grid.Row="1" x:Name="EmptyFolder" Classes="label" Margin="10,8" IsHitTestVisible="False" VerticalAlignment="Top" Text="Empty folder"/>
           </Grid>
         </Grid>
@@ -267,11 +274,16 @@
       <Border x:Name="InspectorPanel" Grid.Column="2" BorderBrush="{DynamicResource EditorDivider}" BorderThickness="1,0,0,0" Background="{DynamicResource EditorPanel}">
         <Grid RowDefinitions="Auto,*">
           <Border Classes="panelHeader">
-            <TextBlock x:Name="InspectorTitle" Classes="panel" Text="Inspector" VerticalAlignment="Center"/>
+            <Grid ColumnDefinitions="*,Auto" ColumnSpacing="5">
+              <TextBlock x:Name="InspectorTitle" Classes="panel" Text="Inspector" VerticalAlignment="Center"/>
+              <Button x:Name="OverridesButton" Grid.Column="1" Classes="quiet" Content="Overrides…" IsVisible="False"
+                      Height="21" MinHeight="0" Padding="5,0" ToolTip.Tip="Inspect prefab property overrides"/>
+            </Grid>
           </Border>
           <ScrollViewer Grid.Row="1">
             <StackPanel Margin="9,6">
               <TextBlock x:Name="EmptyInspector" Classes="label" Text="Select an object in the scene." TextWrapping="Wrap"/>
+              <StackPanel x:Name="MultiInspector" IsVisible="False"/>
               <StackPanel x:Name="Inspector">
                 <Grid ColumnDefinitions="56,*" ColumnSpacing="5" Margin="0,0,0,4">
                   <TextBlock Text="Name" Classes="fieldLabel"/>

@@ -6,13 +6,31 @@ namespace Engine.Core;
 public sealed partial class ScreenUi
 {
     internal GameLocalization Language { get; }
-    private readonly Dictionary<Guid,string> keyOverrides = [];
+    private sealed class LocalizedLabel(string key, string[] argumentKeys)
+    {
+        private string? lastLocale;
+        private string text = "";
+
+        public string Resolve(GameLocalization language, string locale)
+        {
+            if (locale == lastLocale) return text;
+            var template = language.Resolve(locale, key);
+            text = argumentKeys.Length == 0 ? template : string.Format(template,
+                Array.ConvertAll<string, object>(argumentKeys, argument => language.Resolve(locale, argument)));
+            lastLocale = locale;
+            return text;
+        }
+    }
+
+    private readonly Dictionary<Guid, LocalizedLabel> keyOverrides = [];
     public string Translate(string key, string? fallback = null) => Language.Resolve(Preferences.Locale, key, fallback);
-    public bool SetTextKey(Guid id, string key)
+    public bool SetTextKey(Guid id, string key) => SetTextKey(id, key, []);
+    public bool SetTextKey(Guid id, string key, params string[] argumentKeys)
     {
         if (byId.GetValueOrDefault(id)?.Label == null || string.IsNullOrWhiteSpace(key)) return false;
+        if (argumentKeys == null || Array.Exists(argumentKeys, string.IsNullOrWhiteSpace)) return false;
         textOverrides.Remove(id);
-        keyOverrides[id] = key;
+        keyOverrides[id] = new(key, [.. argumentKeys]);
         return true;
     }
     public UiPreferences Preferences { get; }
@@ -35,7 +53,7 @@ public sealed partial class ScreenUi
         // grow vertically and push later siblings before deriving positions and scroll ranges.
         for(int i=treeOrder.Length-1;i>=0;i--)
         {
-            var n=treeOrder[i];n.MeasuredWidth=n.Object.Width;
+            var n=treeOrder[i];n.MeasuredWidth=n.Object.Width*(n.ScaleHorizontal?Preferences.TextScale:1);
             if(n.Layout is not {} l || n.Scroll)continue;
             float w=0;int count=0;
             foreach(var child in n.Children)if(Visible(child)){
@@ -86,11 +104,16 @@ public sealed partial class ScreenUi
             {
                 int a=AnchorIndex(n.Object.GetComponent<UiRectComponent>()?.Anchor??"TopLeft");
                 var delta=n.Object.WorldPosition-(p?.Object.WorldPosition??Vector2.Zero);
+                if (n.ScaleHorizontal) delta.X *= Preferences.TextScale;
                 float h=n.Measured,w=n.MeasuredWidth;
                 n.Box=new(b.X+(b.Width-w)*(a%3)/2+delta.X,b.Y+(b.Height-h)*(a/3)/2+delta.Y,w,h);
             }
             n.Offset=n.Scroll?Math.Clamp(n.Offset,0,Limit(n)):0;
         }
+        hovered = null;
+        if (pointer is {} point)
+            for (int i = nodes.Length - 1; i >= 0; i--)
+                if (Enabled(nodes[i]) && Hit(nodes[i], point.X, point.Y)) { hovered = nodes[i].Object.Id; break; }
         if(focus is Guid id&&(!byId.TryGetValue(id,out var f)||!Enabled(f)||!Visible(f)))SetFocus(null);
     }
     public RectangleF? Bounds(Guid id){Arrange();return byId.GetValueOrDefault(id)?.Box;}
@@ -141,7 +164,7 @@ public sealed partial class ScreenUi
     private string Label(Node n)
     {
         if(textOverrides.TryGetValue(n.Object.Id,out var s))return s;
-        if (keyOverrides.TryGetValue(n.Object.Id, out var dynamicKey)) return Translate(dynamicKey);
+        if (keyOverrides.TryGetValue(n.Object.Id, out var binding)) return binding.Resolve(Language, Preferences.Locale);
         if (n.Label?.TextKey is { Length: > 0 } key) return Translate(key, n.Label.Text);
         var locale=Preferences.Locale;
         if(n.Label?.Translations is {} table)

@@ -47,7 +47,7 @@ internal static class Program
         {
             using var game = new GameSession(SceneDocument.Load(path));
             game.LoadFailed += Console.Error.WriteLine;
-            DesktopHost.Run(Path.GetFileNameWithoutExtension(path), game);
+            DesktopHost.Run(Path.GetFileNameWithoutExtension(path), game, null, null, ShaderPixels.Preview, new GameTextRasterizer());
             return;
         }
         AppBuilder.Configure<EditorApp>().UsePlatformDetect().StartWithClassicDesktopLifetime(args);

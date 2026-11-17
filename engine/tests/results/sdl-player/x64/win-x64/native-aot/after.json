@@ -1,0 +1,11 @@
+{
+  "files": 40,
+  "folder": 17250276,
+  "zip": 6660281,
+  "sha256": "2632dda2e56c8d6548296aa1ff5c849d1a24c0aca62fe9ceb42f648a60bf0a5c",
+  "rid": "win-x64",
+  "mode": "native-aot",
+  "os": "Windows-11-10.0.26100-SP0",
+  "arch": "AMD64",
+  "skia": []
+}

@@ -49,7 +49,7 @@ public sealed partial class SceneDocument
         var localIds = old?.Instances.ToDictionary(p => p.Value,p => p.Key) ?? [];
         var originals = ParentFirst(root).ToArray();
         var copies = originals.ToDictionary(o => o.Id,o => NewCopy(o,localIds.GetValueOrDefault(o.Id,Guid.NewGuid())));
-        var library = OpenScripts(project);
+        var library = ScriptLibrary.Open(project);
         foreach (var obj in originals)
         {
             var copy = copies[obj.Id];
@@ -76,7 +76,7 @@ public sealed partial class SceneDocument
         root.Prefab=Link(id,resolved.Revision,pristine);
     }
 
-    private static PrefabLink RemapLink(PrefabLink link,Dictionary<Guid,SceneObject> copies,ProjectScripts? library)
+    private static PrefabLink RemapLink(PrefabLink link,Dictionary<Guid,SceneObject> copies,ScriptLibrary? library)
     {
         // Keep mappings for removed inherited members: absence is a structural override.
         var ids=link.Instances.ToDictionary(p=>p.Key,p=>copies.TryGetValue(p.Value,out var copy)?copy.Id:p.Value);
@@ -106,7 +106,7 @@ public sealed partial class SceneDocument
 
     private static SceneObject NewCopy(SceneObject o, Guid id) => o.CopyTransform(id);
 
-    private static void CopyFields(SceneObject source, SceneObject dest, Dictionary<Guid, SceneObject> copies, ProjectScripts library,
+    private static void CopyFields(SceneObject source, SceneObject dest, Dictionary<Guid, SceneObject> copies, ScriptLibrary library,
         bool exporting = false, SceneObject? previous = null)
     {
         foreach (var component in source.Components)
@@ -131,10 +131,23 @@ public sealed partial class SceneDocument
             }
             if (component is not ScriptComponent script) { dest.AddComponent(component with { }); continue; }
             var clone = script.Duplicate(copies, library);
+            if (exporting && script.EventLinks != null)
+            {
+                var local = script.EventLinks.Where(l => copies.ContainsKey(script.InstanceId(l.Target)))
+                    .Select(l => l with { Target = copies[script.InstanceId(l.Target)].Id }).ToArray();
+                clone.EventLinks = local.Length == 0 ? null : local;
+            }
+            if (exporting)
+                foreach (var field in library.Get(script.Script).Fields.Where(f => f.IsObjectList && script.Values.ContainsKey(f.Name)))
+                {
+                    var sourceIds = script.ReadReferences(field.Name, true);
+                    clone.WriteReferences(field.Name, sourceIds.Select(id =>
+                        copies.TryGetValue(id, out var local) ? local.Id : Guid.Empty).ToArray());
+                }
             foreach (var field in library.Get(script.Script).Fields.Where(f => f.Type == typeof(Guid)))
             {
                 var id = (Guid?)field.Value(script);
-                if (id != null && copies.ContainsKey(id.Value)) continue;
+                if (id == Guid.Empty || (id != null && copies.ContainsKey(id.Value))) continue;
                 if (exporting) clone.Values.Remove(field.Name);
                 else if (previous?.Components.OfType<ScriptComponent>().FirstOrDefault(s => s.Script == script.Script) is { } old &&
                          old.Values.TryGetValue(field.Name, out var value)) clone.Values[field.Name] = value.Clone();
@@ -200,7 +213,10 @@ public sealed partial class SceneDocument
         return changed;
     }
 
-    public IEnumerable<string> PrefabOverrides(SceneObject root)
+    public IEnumerable<string> PrefabOverrides(SceneObject root) =>
+        PropertyOverrides(root).Select(p => p.ToString()).Concat(StructuralOverrides(root));
+
+    internal IEnumerable<string> StructuralOverrides(SceneObject root)
     {
         if(root.Prefab?.Baseline is not {} baseline)yield break;
         var map=root.Prefab.Instances;
@@ -211,7 +227,7 @@ public sealed partial class SceneDocument
                 yield return $"{value.GetProperty("name").GetString()} (removed object)";
                 continue;
             }
-            foreach(var field in PrefabMerge.Changes(value,obj,obj==root))yield return $"{obj.Name} · {field}";
+            foreach(var field in PrefabMerge.StructuralChanges(value,obj))yield return $"{obj.Name} · {field}";
         }
         var inherited=map.Values.ToHashSet();
         foreach(var obj in ParentFirst(root).Where(o=>!inherited.Contains(o.Id)))yield return $"{obj.Name} (added object)";
@@ -232,7 +248,7 @@ public sealed partial class SceneDocument
     }
 
     private static (Dictionary<Guid,SceneObject> Copies,SceneObject Root) MakeCopies(SceneDocument template,SceneObject? previous,
-        Dictionary<Guid,Guid> ids,Guid rootId,ProjectScripts library)
+        Dictionary<Guid,Guid> ids,Guid rootId,ScriptLibrary library)
     {
         var root=template.Objects.Single(o=>o.Parent==null);
         var copies=template.Objects.ToDictionary(o=>o.Id,o=>NewCopy(o,o==root?rootId:ids.GetValueOrDefault(o.Id,InheritedId(rootId,o.Id))));
@@ -254,7 +270,7 @@ public sealed partial class SceneDocument
     {
         var prior=previous?.Prefab;
         var ids=prior?.Instances??[];
-        var library=OpenScripts(ProjectDirectory!);
+        var library=ScriptLibrary.Open(ProjectDirectory!);
         var (copies,first)=MakeCopies(source.Document,previous,ids,previous?.Id??Guid.NewGuid(),library);
         var link=Link(id,source.Revision,copies);
         var existing=Objects.ToDictionary(o=>o.Id);
@@ -276,7 +292,7 @@ public sealed partial class SceneDocument
                 if(prior.Revision==source.Revision){inherited.Add(edited);continue;}
                 foreach(var script in copy.Components.OfType<ScriptComponent>())
                     if(edited.Components.OfType<ScriptComponent>().FirstOrDefault(s=>s.Script==script.Script) is {} oldScript)
-                        foreach(var field in library.Get(script.Script).Fields.Where(f=>f.Type==typeof(Guid)))
+                        foreach(var field in library.Get(script.Script).Fields.Where(f=>f.Type==typeof(Guid) || f.IsObjectList))
                             if(!script.Values.ContainsKey(field.Name) && oldScript.Values.TryGetValue(field.Name,out var v))script.Values[field.Name]=v.Clone();
             }
             inherited.Add(copy);

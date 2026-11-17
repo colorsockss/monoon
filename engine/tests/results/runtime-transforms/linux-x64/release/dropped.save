@@ -1,0 +1,58 @@
+version: 2
+values:
+  room: "64fb4cd6-2469-5cec-ba6d-9a49e61f42e7"
+  key: false
+  chest: true
+  coin: false
+  world:
+    version: 2
+    scenes:
+      64fb4cd6-2469-5cec-ba6d-9a49e61f42e7:
+        objects:
+        - id: "bc2c6d9b-c82c-4d72-981c-09e1a6a70d5d"
+          fields: 3
+          removed: false
+          pose:
+            x: 332
+            y: 131
+            angle: 0
+          active: true
+          collider: null
+        - id: "226c5154-4dbb-4f60-91af-14d7147ab88e"
+          fields: 2
+          removed: false
+          pose: null
+          active: false
+          collider: null
+        - id: "ef662731-852a-4934-9ea5-91620f35c949"
+          fields: 3
+          removed: false
+          pose:
+            x: 274
+            y: 146
+            angle: 0
+          active: true
+          collider: null
+        prefabs:
+        - asset: "f53c1a45-ed64-4c21-a158-1f49c2f2251c"
+          parent: null
+          spawnX: 330
+          spawnY: 116
+          members:
+            5cbd6eda-c7f3-44df-b74b-3508b84540b1: "2e0225a8-d656-4490-a7be-4b0bb0f3686e"
+          objects:
+          - id: "2e0225a8-d656-4490-a7be-4b0bb0f3686e"
+            fields: 7
+            removed: false
+            pose:
+              x: 330
+              y: 116
+              angle: 0
+              basis:
+                m11: 1.299038
+                m12: 0.75
+                m21: -0.375
+                m22: 0.649519
+                negativeX: false
+            active: true
+            collider: true

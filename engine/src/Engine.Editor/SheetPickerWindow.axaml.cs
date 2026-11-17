@@ -33,7 +33,7 @@ internal partial class SheetPickerWindow : Window
         SheetScroll.SizeChanged += (_,_) => ScaleSheet();
         Cells.SelectionChanged += UpdateStatus;
         SliceMenu.Click += (_,_) => OpenFrameMenu();
-        Sheets.SelectionChanged += (_,_) => LoadSheet(null);
+        Sheets.SelectionChanged += (_,_) => { if (!changing) LoadSheet(null); };
         foreach (var field in new[] {CellWidth, CellHeight, MarginX, MarginY, GapX, GapY})
             field.PropertyChanged += (_,e) => { if (e.Property == TextBox.TextProperty && !changing) UpdateGrid(); };
         Insert.Click += (_,_) => Finish(false);
@@ -42,9 +42,39 @@ internal partial class SheetPickerWindow : Window
         LoadSheet(region);
     }
 
+    internal void RefreshBitmaps(ClipPng[] images)
+    {
+        if (Sheets.SelectedItem is not ClipPng old) return;
+        var selected = Cells.Regions();
+        var current = images.FirstOrDefault(p => p.Id == old.Id);
+        changing = true;
+        Sheets.ItemsSource = images;
+        Sheets.SelectedItem = current;
+        changing = false;
+        if (old == current) return;
+        bitmap = current == null ? null : bitmapFor(current.Id);
+        ReadSlices();
+        ScaleSheet();
+        UpdateGrid();
+        Cells.RestoreSelection(selected);
+    }
+
     private void LoadSheet(SpriteRegion? region)
     {
         bitmap = Sheets.SelectedItem is ClipPng png ? bitmapFor(png.Id) : null;
+        ReadSlices();
+        ShowGrid.IsChecked = ShowGrid.IsVisible && region == null;
+        changing = true;
+        CellWidth.Text = (region?.Width ?? Math.Min(32, bitmap?.PixelSize.Width ?? 32)).ToString(CultureInfo.InvariantCulture);
+        CellHeight.Text = (region?.Height ?? Math.Min(32, bitmap?.PixelSize.Height ?? 32)).ToString(CultureInfo.InvariantCulture);
+        MarginX.Text = MarginY.Text = GapX.Text = GapY.Text = "0";
+        changing = false;
+        ScaleSheet();
+        UpdateGrid();
+    }
+
+    private void ReadSlices()
+    {
         packed = [];
         sliceError = null;
         if (bitmap != null && Sheets.SelectedItem is ClipPng sheet)
@@ -60,15 +90,7 @@ internal partial class SheetPickerWindow : Window
             { sliceError = ex.Message; packed = []; }
         }
         ShowGrid.IsVisible = packed.Length == 0 && sliceError == null;
-        ShowGrid.IsChecked = ShowGrid.IsVisible && region == null;
         SliceMenu.IsVisible = packed.Length > 0;
-        changing = true;
-        CellWidth.Text = (region?.Width ?? Math.Min(32, bitmap?.PixelSize.Width ?? 32)).ToString(CultureInfo.InvariantCulture);
-        CellHeight.Text = (region?.Height ?? Math.Min(32, bitmap?.PixelSize.Height ?? 32)).ToString(CultureInfo.InvariantCulture);
-        MarginX.Text = MarginY.Text = GapX.Text = GapY.Text = "0";
-        changing = false;
-        ScaleSheet();
-        UpdateGrid();
     }
 
     private void ScaleSheet()

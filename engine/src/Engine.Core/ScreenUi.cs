@@ -19,6 +19,7 @@ public sealed partial record UiRectComponent : SceneComponent
     public string Anchor { get; set; } = "TopLeft";
     public string ShowIf { get; set; } = "";
     public bool InputModeRoot { get; set; }
+    public bool ScaleHorizontalWithText { get; set; }
 }
 
 [DisplayName("UI Image"), YamlObject]
@@ -26,6 +27,7 @@ public sealed partial record UiImageComponent : SceneComponent
 {
     public UiImageComponent() { }
     [YamlConstructor] public UiImageComponent(string color = "#FFFFFF") => Color = color;
+    public UiBorders? Borders { get; set; }
     public Guid? Sprite { get; set; }
     public string Color { get; set; } = "#FFFFFF";
 }
@@ -51,6 +53,7 @@ public sealed partial record UiButtonComponent : SceneComponent
 {
     public UiButtonComponent() { }
     [YamlConstructor] public UiButtonComponent(bool interactable = true) => Interactable = interactable;
+    public string? Style { get; set; }
     public bool Interactable { get; set; } = true;
 }
 
@@ -92,6 +95,7 @@ public interface IGameUi
     UiPreferences Preferences {get;}
     string Translate(string key, string? fallback = null);
     bool SetTextKey(Guid widget, string key);
+    bool SetTextKey(Guid widget, string key, params string[] argumentKeys);
     string? Value(Guid widget);
     float ScrollOffset(Guid widget);
     Guid? ActiveInputMode { get; }
@@ -114,6 +118,8 @@ public sealed partial class ScreenUi : IGameUi
     public static bool IsWidget(SceneObject o) => o.Components.Any(c => c is UiRectComponent or UiImageComponent or UiTextComponent or UiButtonComponent or UiTextFieldComponent or UiLayoutComponent or UiScrollComponent);
     private sealed record Node(SceneObject Object, Node? Parent, int Order, string? Image)
     {
+        internal UiNineSlice? Slice;
+        internal ButtonPaint[]? Palette;
         internal RectangleF Box,Clip;
         internal float Content,Offset,Measured,MeasuredWidth,Cursor;
         internal int Placed;
@@ -129,6 +135,7 @@ public sealed partial class ScreenUi : IGameUi
         internal readonly UiTextComponent? Label = Object.GetComponent<UiTextComponent>();
         internal readonly UiImageComponent? Picture = Object.GetComponent<UiImageComponent>();
         internal readonly UiButtonComponent? Button = Object.GetComponent<UiButtonComponent>();
+        internal readonly bool ScaleHorizontal = Object.GetComponent<UiRectComponent>()?.ScaleHorizontalWithText == true;
         internal readonly string Flag = Object.GetComponent<UiRectComponent>()?.ShowIf ?? "";
     }
     private Node[] treeOrder=[];
@@ -140,7 +147,10 @@ public sealed partial class ScreenUi : IGameUi
     private readonly RectangleF screen;
     private readonly Func<string,bool>? flag;
     private readonly Func<Guid,bool>? active;
-    private Guid? focus, pressed;
+    private readonly UiTheme theme;
+    private Guid? focus, pressed, hovered, activationOwner;
+    private string? activationKey;
+    private PointF? pointer;
     private readonly Queue<Guid> clicks = [];
     private readonly HashSet<string> held = [];
     public IEnumerable<string> Images => nodes.Select(n => n.Image).OfType<string>().Distinct();
@@ -148,6 +158,7 @@ public sealed partial class ScreenUi : IGameUi
     public ScreenUi(SceneDocument scene, ProjectAssets? assets, Func<string,bool>? flag = null, Func<Guid,bool>? active = null,UiPreferences? preferences=null)
     {
         Language = assets != null && scene.ProjectDirectory is {} root ? GameLocalization.Load(root, assets, scene.Settings.Localization) : GameLocalization.Empty;
+        theme = assets != null && scene.ProjectDirectory is {} dir ? UiTheme.Load(dir, assets, scene.Settings.UiTheme) : UiTheme.Empty;
         Preferences=preferences??new(scene.Settings.Accessibility);
         this.flag = flag;
         this.active = active;
@@ -174,6 +185,8 @@ public sealed partial class ScreenUi : IGameUi
             if (obj.GetComponent<UiImageComponent>()?.Sprite is Guid id && assets?.PathFor(id) is { } relative && scene.ProjectDirectory != null)
                 image = Path.Combine(scene.ProjectDirectory, relative);
             var node = new Node(obj, parent, canvas?.Order ?? parent?.Order ?? 0, image);
+            if (node.Button != null) node.Palette = theme.Find(node.Button.Style);
+            if (node.Picture?.Borders is {} borders && image != null) node.Slice = new(borders, SpriteRegion.ReadPngSize(image));
             if(byId.TryGetValue(obj.Id,out var prior))node.Offset=prior.Offset;
             parent?.Children.Add(node);tree.Add(obj.Id, node); ordered.Add(node);
         }

@@ -77,12 +77,14 @@ public sealed partial class ScreenUi
     }
     public void Drag(float x,float y)
     {
+        pointer = new(x, y);
         if(barDrag is not Guid id || !byId.TryGetValue(id,out var n))return;
         bool h=Horizontal(n);var t=Thumb(n);float len=Extent(n)-(h?t.Width:t.Height);
         if(len>0)n.Offset=Math.Clamp(((h?x-n.Box.X:y-n.Box.Y)-barGrab)/len,0,1)*Limit(n);
     }
     public bool Pointer(bool down,float x,float y)
     {
+        pointer = new(x, y);
         Arrange();
         if(down && nodes.LastOrDefault(n=>ReceivesInput(n.Object.Id)&&n.Scroll&&Limit(n)>0&&Hit(n,x,y)&&Track(n).Contains(x,y)) is {} scroll)
         {
@@ -90,7 +92,7 @@ public sealed partial class ScreenUi
             barGrab=t.Contains(x,y)?(h?x-t.X:y-t.Y):(h?t.Width:t.Height)/2;Drag(x,y);pressed=null;return true;
         }
         if(!down&&barDrag!=null){Drag(x,y);barDrag=null;return true;}
-        var target=nodes.LastOrDefault(n=>Enabled(n)&&Hit(n,x,y));
+        var target=hovered is Guid hot ? byId[hot] : null;
         var id=target?.Object.Id;
         if(down){pressed=id;if(id.HasValue || ActiveInputMode==null)SetFocus(id);if(target?.Field!=null)Begin(target);return id.HasValue;}
         bool captured=pressed.HasValue;
@@ -120,14 +122,14 @@ public sealed partial class ScreenUi
         if(next!=null){SetFocus(next.Object.Id);Reveal(next);}
         return true;
     }
-    private bool Activate()
+    private bool Activate(string control)
     {
         if(focus is not Guid id || !byId.TryGetValue(id,out var n)||!Enabled(n))return false;
-        if(n.Field!=null)Begin(n);else clicks.Enqueue(id);return true;
+        if(n.Field!=null)Begin(n);else { activationOwner=id; activationKey=control; clicks.Enqueue(id); }return true;
     }
     public bool Key(string key,bool down,bool reverse=false)
     {
-        if(!down)return held.Remove(key);
+        if(!down){ReleaseActivation(key);return held.Remove(key);}
         if(held.Contains(key))return true;
         Arrange();
         bool used;
@@ -138,7 +140,7 @@ public sealed partial class ScreenUi
         }
         else if(key=="Tab")used=Navigate(key,reverse);
         else if(key is "Up" or "Down" or "Left" or "Right")used=(focus!=null||uiOnly||ActiveInputMode.HasValue)&&Navigate(key);
-        else used=(key is "Return" or "Space")&&Activate();
+        else used=(key is "Return" or "Space")&&Activate(key);
         if(used)held.Add(key);return used;
     }
     private bool uiOnly;
@@ -147,7 +149,7 @@ public sealed partial class ScreenUi
     {
         Arrange();
         if(key=="Pad.East"){if(ActiveInputMode.HasValue||focus==null)return false;SetFocus(null);return true;}
-        if(key=="Pad.South"){if(edit!=null){EndEditing();return true;}return Activate();}
+        if(key=="Pad.South"){if(edit!=null){EndEditing();return true;}return Activate(key);}
         string? dir=key switch
         {
             "Pad.DpadLeft" or "Pad.LeftStickLeft"=>"Left","Pad.DpadRight" or "Pad.LeftStickRight"=>"Right",
@@ -160,6 +162,11 @@ public sealed partial class ScreenUi
         while(clicks.TryDequeue(out var id))if(byId.TryGetValue(id,out var n)&&Enabled(n)&&Visible(n))click(id);
         clicks.Clear();
     }
-    public void ResetInput(){SetFocus(null);pressed=barDrag=null;held.Clear();clicks.Clear();}
-    public void CancelPointer()=>pressed=barDrag=null;
+    internal void ReleaseActivation(string control)
+    {
+        if (activationKey == control) { activationOwner = null; activationKey = null; }
+    }
+    public void ResetInput(){SetFocus(null);CancelPointer();activationOwner=null;activationKey=null;held.Clear();clicks.Clear();}
+    internal event Action? PointerCanceled;
+    public void CancelPointer(){pressed=barDrag=hovered=null;pointer=null;PointerCanceled?.Invoke();}
 }

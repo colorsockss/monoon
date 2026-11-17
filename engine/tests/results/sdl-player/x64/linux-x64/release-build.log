@@ -1,0 +1,19 @@
+HOST Linux-6.1.0-54-cloud-amd64-x86_64-with-glibc2.36 x86_64 usage(total=12468432896, used=10151755776, free=1759068160)
++ dotnet /home/debian/MNSdlPlayer17/cli/MoNoon.Cli.dll build /home/debian/MNSdlPlayer17/samples/KeyRoom release --profile distribution --target linux-x64 --output /home/debian/MNSdlPlayer17/local-after
+Building release (Distribution) for linux-x64 from /home/debian/MNSdlPlayer17/samples/KeyRoom
+Debug symbols: /home/debian/MNSdlPlayer17/local-after/Symbols/KeyRoom/linux-x64/release/a201de2df7424c51a9e590ad71c10e9a
+/home/debian/MNSdlPlayer17/local-after/KeyRoom-linux-x64
+after release {'files': 260, 'folder': 100669693, 'zip': 42796092, 'sha256': 'b1ddac17b7f37887e22b0c781e89552d431299a94f629743a06d85a5700a8cc0', 'rid': 'linux-x64', 'mode': 'release', 'os': 'Linux-6.1.0-54-cloud-amd64-x86_64-with-glibc2.36', 'arch': 'x86_64', 'skia': []}
++ /usr/bin/python3 -u -c import sys,os,runpy;sys.path.insert(0,os.getcwd());sys.argv=['play.py']+sys.argv[1:];runpy.run_path('play.py',run_name='__main__') /home/debian/MNSdlPlayer17/local-after/KeyRoom-linux-x64 /home/debian/MNSdlPlayer17/local-results/release stock
+captured stock (800, 450)
+captured en (800, 450)
+captured ko (800, 450)
+large client (1600, 900)
++ /usr/bin/python3 -u -c import sys,os,runpy;sys.path.insert(0,os.getcwd());sys.argv=['play.py']+sys.argv[1:];runpy.run_path('play.py',run_name='__main__') /home/debian/MNSdlPlayer17/mask-test/release/KeyRoom-linux-x64 /home/debian/MNSdlPlayer17/local-results/release mask
+captured masked (800, 450)
+large client (1600, 900)
++ dotnet /home/debian/MNSdlPlayer17/cli/MoNoon.Cli.dll build /home/debian/MNSdlPlayer17/samples/KeyRoom release --profile distribution --target linux-x64 --output /home/debian/MNSdlPlayer17/local-before
+Building release (Distribution) for linux-x64 from /home/debian/MNSdlPlayer17/samples/KeyRoom
+Debug symbols: /home/debian/MNSdlPlayer17/local-before/Symbols/KeyRoom/linux-x64/release/94449379b23c455fa6490f23dac5d77f
+/home/debian/MNSdlPlayer17/local-before/KeyRoom-linux-x64
+before release {'files': 258, 'folder': 110276583, 'zip': 46853311, 'sha256': '24b27497b5b2c76ecd5b10543ddb6b70af4c4ed439325d4119be4ec140f0ae64', 'rid': 'linux-x64', 'mode': 'release', 'os': 'Linux-6.1.0-54-cloud-amd64-x86_64-with-glibc2.36', 'arch': 'x86_64', 'skia': ['libSkiaSharp.so', 'SkiaSharp.dll']}

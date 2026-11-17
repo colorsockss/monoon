@@ -10,6 +10,7 @@ public sealed partial record GameSettings(int Width = 800, int Height = 450)
 {
     public Guid? ProjectId { get; init; }
     public string? GameTitle { get; init; }
+    public Guid? UiTheme { get; init; }
     public Guid? StartScene { get; init; }
     public Guid[] IncludedScenes { get => field ??= []; set; }
     public string[]? ContentBundles { get; init; }

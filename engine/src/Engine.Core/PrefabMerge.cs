@@ -42,39 +42,15 @@ internal static class PrefabMerge
     }
 
 
-    internal static IEnumerable<string> Changes(JsonElement baseline,SceneObject obj,bool isRoot)
+    internal static IEnumerable<string> StructuralChanges(JsonElement baseline, SceneObject obj)
     {
-        var before=JsonNode.Parse(baseline.GetRawText())!.AsObject();
-        var current=JsonNode.Parse(Snapshot(obj).GetRawText())!.AsObject();
-        if(isRoot)
-            foreach(var key in new[]{"x","y","parentId"}) {before.Remove(key);current.Remove(key);}
-        var old=before["components"]!.AsArray().ToDictionary(ComponentKey);
-        var edited=current["components"]!.AsArray().ToDictionary(ComponentKey);
-        before.Remove("components");current.Remove("components");
-        foreach(var field in ChangedFields(before,current,""))yield return field;
-        foreach(var key in old.Keys.Union(edited.Keys))
-        {
-            string name=key.TrimEnd('/');
-            if(!edited.TryGetValue(key,out var next)){yield return name+" (removed)";continue;}
-            if(!old.TryGetValue(key,out var previous)){yield return name+" (added)";continue;}
-            foreach(var field in ChangedFields(previous!.AsObject(),next!.AsObject(),name+"."))yield return field;
-        }
+        var before = JsonNode.Parse(baseline.GetRawText())!["components"]!.AsArray().Select(ComponentKey).ToHashSet();
+        var current = JsonNode.Parse(Snapshot(obj).GetRawText())!["components"]!.AsArray().Select(ComponentKey).ToHashSet();
+        foreach (var removed in before.Except(current)) yield return removed.TrimEnd('/') + " (removed)";
+        foreach (var added in current.Except(before)) yield return added.TrimEnd('/') + " (added)";
     }
 
-    private static IEnumerable<string> ChangedFields(JsonObject before,JsonObject after,string prefix)
-    {
-        foreach(var key in before.Select(p=>p.Key).Union(after.Select(p=>p.Key)))
-        {
-            if(before.ContainsKey(key)==after.ContainsKey(key) && JsonNode.DeepEquals(before[key],after[key]))continue;
-            if(before[key] is JsonObject original && after[key] is JsonObject next)
-            {
-                foreach(var child in ChangedFields(original,next,prefix+key+"."))yield return child;
-            }
-            else yield return prefix+key;
-        }
-    }
-
-    private static string ComponentKey(JsonNode? node)=>node!["type"]!.ToString()+"/"+node["script"]?.ToString();
+    internal static string ComponentKey(JsonNode? node)=>node!["type"]!.ToString()+"/"+node["script"]?.ToString();
 
     private static void MergeComponents(JsonArray before, JsonArray edited, JsonArray result)
     {

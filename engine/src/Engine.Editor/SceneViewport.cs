@@ -277,11 +277,11 @@ public sealed partial class SceneViewport : Decorator
             }, sounds.PreparePlayback, sounds.Release, shader =>
             {
                 if (native!=null) native.PrepareShader(shader);
-                else shaderSheets.Get(shader,GameColor.White,shader==ShaderClip.LightFalloff);
+                else shaderSheets.Get(shader,GameColor.White,shader.Additive);
             }, shader => { shaderSheets.Release(shader); native?.ReleaseShader(shader); }));
         }
         catch { FrameCapture?.Dispose(); FrameCapture = null; sounds.Dispose(); game.Dispose(); game = null; throw; }
-        input = new(game.Actions, () => game?.InputUi, game.LogicalSize);
+        input = new(game.Actions, () => game?.InputUi, game.LogicalSize, () => game?.InputUi == null ? null : game.Current);
         gamepads = new SdlGamepads();
         loop = new GameLoop(game, game.Actions);
         playDebugger?.TakePausedTicks();
@@ -383,6 +383,8 @@ public sealed partial class SceneViewport : Decorator
     internal Rect CanvasArea => IsPlaying ? new Rect(0, 0, Scene.Settings.Width, Scene.Settings.Height)
         : new Rect(ToWorld(default), ToWorld(new Point(Bounds.Width, Bounds.Height)));
 
+    internal bool PrefabFraming { get; set; }
+
     public void FrameCamera()
     {
         var camera = Selected?.GetComponent<Camera2DComponent>() != null ? Selected : Scene.Camera;
@@ -391,6 +393,11 @@ public sealed partial class SceneViewport : Decorator
         pendingFrame = Bounds.Width <= 0 || Bounds.Height <= 0;
         if (pendingFrame) return;
         var frame = camera?.GetComponent<Camera2DComponent>()?.View(Scene.Settings.Resolution,center).World ?? Scene.Settings.CameraFrame(center,1);
+        if (PrefabFraming && Scene.Objects.Count > 0)
+        {
+            var bounds = Scene.Objects.Select(o => o.Bounds).Aggregate(RectangleF.Union);
+            frame = RectangleF.Inflate(bounds, Math.Max(16, bounds.Width * .12f), Math.Max(16, bounds.Height * .12f));
+        }
         editCenter = new Point(frame.X+frame.Width/2,frame.Y+frame.Height/2);
         editZoom = Math.Clamp(.85 * Math.Min(Bounds.Width / frame.Width, Bounds.Height / frame.Height), .01, 32);
         RefreshScene();
@@ -621,7 +628,7 @@ public sealed partial class SceneViewport : Decorator
         }
         foreach (var obj in Scene.Objects)
             if (obj.GetComponent<PointLight2DComponent>() is {} light)
-                light.Draw(canvas,Vector2.Transform(new(obj.Width*.5f,obj.Height*.5f),obj.WorldMatrix),visible,System.Numerics.Matrix3x2.Identity,0);
+                light.Draw(canvas,ShaderClip.LightFalloff,Vector2.Transform(new(obj.Width*.5f,obj.Height*.5f),obj.WorldMatrix),visible,System.Numerics.Matrix3x2.Identity,0);
         foreach (var camera in Scene.Cameras)
         {
             var center = camera.WorldPosition;

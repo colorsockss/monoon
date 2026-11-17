@@ -1,0 +1,17 @@
+version: 1
+values:
+  buildId: "10c97a0c322841c28ec30018a74a491a"
+  projectId: "64fb4cd6-2469-5cec-ba6d-9a49e61f42e7"
+  game: "KeyRoom"
+  target: "linux-x64"
+  mode: "release"
+  profile: "distribution"
+  playerSha256: "9DAEEA7422CEB74DB0A242A7474B113919B7A5248F849721E9445C5C4240B71C"
+  pdbId/MoNoonPlayer.dll: "ee2bf677-99ab-461c-b7f9-91b6f9a3dada"
+  mvid/MoNoonPlayer.dll: "c3a230d2-8ed2-4d00-9d74-8bdae499afc4"
+  pdbId/Engine.Core.dll: "36c04aa1-c514-4a67-af1a-8ac61850b79d"
+  mvid/Engine.Core.dll: "76e0ab73-cf1e-4c6c-8e5b-1763f9b0121e"
+  pdbId/Engine.Desktop.dll: "c2a899ab-0c6b-49df-9e50-6ae7595d861d"
+  mvid/Engine.Desktop.dll: "595619a2-ef7e-4532-a03f-487989f8f8f8"
+  pdbId/Game/.monoon-compiled/MoNoon.GameScripts.dll: "f5847af8-48a4-4ba6-a136-9ba52c4532b2"
+  mvid/Game/.monoon-compiled/MoNoon.GameScripts.dll: "46521572-20af-406c-83bb-b1f17b7fcfd9"

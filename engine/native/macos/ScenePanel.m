@@ -103,7 +103,7 @@ int BrutalScenePanelAttached(void *handle) {
 
 // A panel can resize independently of its NSWindow. SDL normally updates its
 // drawable on window events; the embedded target must follow its own view.
-int BrutalSizeSceneDrawable(void *handle, void *metalLayer, double *width, double *height) {
+int BrutalSizeSceneDrawable(void *handle, void *metalLayer, double panelWidth, double panelHeight, double *width, double *height) {
     NSView *panel = (__bridge NSView *)handle;
     CAMetalLayer *layer = (__bridge CAMetalLayer *)metalLayer;
     if (!panel.window || !layer || NSIsEmptyRect(panel.bounds)) return 0;
@@ -116,6 +116,16 @@ int BrutalSizeSceneDrawable(void *handle, void *metalLayer, double *width, doubl
     // tag only the embedded SDL drawable, leaving Avalonia's other panels alone.
     CGColorSpaceRef srgb = NSColorSpace.sRGBColorSpace.CGColorSpace;
     if (!layer.colorspace || !CFEqual(layer.colorspace, srgb)) layer.colorspace = srgb;
+    // Avalonia can lay out a smaller Scene before its Cocoa host is attached.
+    // Align the private host and child with the arranged size so neither covers
+    // the adjacent Inspector or intercepts its mouse events.
+    NSSize arranged = NSMakeSize(panelWidth, panelHeight);
+    NSView *host = panel.superview;
+    if (host && host != panel.window.contentView && host.subviews.count == 1 &&
+        !NSEqualSizes(host.frame.size, arranged)) {
+        [host setFrameSize:arranged];
+    }
+    if (!NSEqualSizes(panel.frame.size, arranged)) [panel setFrameSize:arranged];
     NSRect bounds = panel.bounds;
     if (!NSEqualRects(metalView.frame, bounds)) metalView.frame = bounds;
     CGSize pixels = [panel convertRectToBacking:bounds].size;

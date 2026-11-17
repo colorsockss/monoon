@@ -1,6 +1,7 @@
 using Engine.Core;
 using Engine.Desktop;
 
+long entryTime = System.Diagnostics.Stopwatch.GetTimestamp();
 bool smoke = args.FirstOrDefault() == "--smoke-test";
 bool record = args.FirstOrDefault() == "--record-input";
 bool replay = args.FirstOrDefault() == "--replay-input";
@@ -26,6 +27,7 @@ if (playing) AppDomain.CurrentDomain.UnhandledException += (_, e) =>
 };
 try
 {
+    using var trace = playing ? PlayerStartupTrace.Open(entryTime) : null;
     var installed = Path.Combine(AppContext.BaseDirectory, "Game");
     var settings = GameSettings.Load(installed);
     startScene = settings.StartScene;
@@ -90,10 +92,13 @@ try
         }
         return 0;
     }
-    using var content = updates.Open(mods, Console.Error.WriteLine);
+    trace?.Mark("content_begin");
+    using var content = updates.Open(mods, Console.Error.WriteLine, trace == null ? null : trace.BundleRead);
+    trace?.Mounted(content);
     var storage = smoke ? new PlayerStorage(args[1]) : record || replay ? new PlayerStorage(args[2]) : null;
     using var game = Start(content.Root, storage, out string path);
     runningSession = game;
+    trace?.Mark("session_ready");
     if (record || replay)
     {
         game.LoadFailed += message => throw new InvalidDataException(message);
@@ -108,7 +113,7 @@ try
         {
             if (File.Exists(args[1])) throw new IOException($"Recording already exists: {args[1]}");
             var recorder = new InputRecorder(project, settings.StartScene!.Value);
-            DesktopHost.Run(settings.GameTitle ?? "Game", game, recorder);
+            DesktopHost.Run(settings.GameTitle ?? "Game", game, recorder, trace);
             var recording = recorder.Save(args[1]);
             Console.WriteLine($"Recorded {recording.FrameTicks.Length} frames, {recording.Events.Length} events to {args[1]}");
         }
@@ -136,7 +141,7 @@ try
     else
     {
         game.LoadFailed += Console.Error.WriteLine;
-        DesktopHost.Run(settings.GameTitle ?? "Game", game);
+        DesktopHost.Run(settings.GameTitle ?? "Game", game, null, trace);
     }
     return 0;
 }

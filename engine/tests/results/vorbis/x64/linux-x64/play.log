@@ -1,0 +1,9 @@
+Linux monoon-qa 6.1.0-54-amd64 #1 SMP PREEMPT_DYNAMIC Debian 6.1.190-1 (2026-10-16) x86_64 GNU/Linux
+ 0 [Intel          ]: HDA-Intel - HDA Intel
+                      HDA Intel at 0xfebd0000 irq 24
+00-00: Generic Analog : Generic Analog : playback 1
+ALSA playback Master
+Launching release /home/debian/MNAudio78/exports/AudioLab-linux-x64/MoNoonPlayer alsa
+Recorded {'system': 'Linux-6.1.0-54-amd64-x86_64-with-glibc2.36', 'machine': 'x86_64', 'mode': 'release', 'driver': 'alsa', 'playerSha256': '9daeea7422ceb74db0a242a7474b113919b7a5248f849721e9445c5c4240b71c', 'musicSha256': '7b8c4c6b524b4d1f8c4b72553b6adc5b3b2dd5f7e38dcf8ae134b5b4862b5e7e', 'framesBeforeF': 235520, 'capturedFrames': 273920}
+Launching native-aot /home/debian/MNAudio78/exports/NativeAOT/AudioLab-linux-x64/MoNoonPlayer alsa
+Recorded {'system': 'Linux-6.1.0-54-amd64-x86_64-with-glibc2.36', 'machine': 'x86_64', 'mode': 'native-aot', 'driver': 'alsa', 'playerSha256': 'fe41a2a90d22dad45f84af22be975e9932c26f5c55ca7c763d79481b7e2a8020', 'musicSha256': '7b8c4c6b524b4d1f8c4b72553b6adc5b3b2dd5f7e38dcf8ae134b5b4862b5e7e', 'framesBeforeF': 235520, 'capturedFrames': 268800}

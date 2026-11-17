@@ -18,30 +18,66 @@ public partial class MainWindow
     }
     private void CollisionMaskField(uint mask,Action<uint> setMask,Action<string,Control> row)
     {
-        string Label() => mask switch { 0=>"None", uint.MaxValue=>"All layers", _ when BitOperations.IsPow2(mask)=>$"Layer {BitOperations.TrailingZeroCount(mask)}", _=>$"{BitOperations.PopCount(mask)} layers · {mask:X8}" };
-        var button=new Button { Content=Label(),HorizontalAlignment=HorizontalAlignment.Stretch };
-        void Update(uint value) { if (value==mask) return; mask=value; setMask(mask);button.Content=Label(); MarkDirty(); }
-        button.Click+=(_,_)=>
+        row("Mask", MaskPicker(() => [mask], change =>
         {
-            var menu=new MenuFlyout();
-            void Item(ItemsControl parent,string title,Action action)
+            uint next = change(mask);
+            if (mask == next) return;
+            setMask(mask = next);
+            MarkDirty();
+        }));
+    }
+
+    private static Button MaskPicker(Func<uint[]> read, Action<Func<uint, uint>> apply)
+    {
+        string Label(uint[] values)
+        {
+            uint first = values[0];
+            if (values.Any(value => value != first)) return "Mixed";
+            return first switch
             {
-                var item=new MenuItem { Header=title }; item.Click+=(_,_)=>action(); parent.Items.Add(item);
-            }
-            var all=new MenuItem { Header="All layers" }; all.Click+=(_,_)=>Update(uint.MaxValue);menu.Items.Add(all);
-            var none=new MenuItem { Header="None" }; none.Click+=(_,_)=>Update(0);menu.Items.Add(none);
-            for (int group=0;group<32;group+=8)
+                0 => "None",
+                uint.MaxValue => "All layers",
+                _ when BitOperations.IsPow2(first) => $"Layer {BitOperations.TrailingZeroCount(first)}",
+                _ => $"{BitOperations.PopCount(first)} layers · {first:X8}"
+            };
+        }
+        var menu = new MenuFlyout();
+        var button = new Button { Flyout = menu, HorizontalAlignment = HorizontalAlignment.Stretch };
+        Avalonia.Automation.AutomationProperties.SetName(button, "Collision mask");
+        var bits = new List<(uint Bit, MenuItem Item)>();
+        void Refresh()
+        {
+            var values = read();
+            button.Content = Label(values);
+            foreach (var (bit, item) in bits)
             {
-                var section=new MenuItem { Header=$"Layers {group}–{group+7}" };menu.Items.Add(section);
-                for (int i=group;i<group+8;i++)
-                {
-                    uint bit=1u<<i;
-                    Item(section,((mask & bit)!=0?"✓  ":"　　 ")+i,()=>Update(mask^bit));
-                }
+                bool all = values.All(mask => (mask & bit) != 0);
+                bool any = values.Any(mask => (mask & bit) != 0);
+                item.Header = $"{(all ? "✓" : any ? "−" : "　")}  {BitOperations.TrailingZeroCount(bit)}";
             }
-            menu.ShowAt(button);
-        };
-        row("Mask",button);
+        }
+        MenuItem Item(string title, Action change)
+        {
+            var item = new MenuItem { Header = title };
+            item.Click += (_, _) => { change(); Refresh(); };
+            return item;
+        }
+        menu.Items.Add(Item("All layers", () => apply(_ => uint.MaxValue)));
+        menu.Items.Add(Item("None", () => apply(_ => 0)));
+        for (int group = 0; group < 32; group += 8)
+        {
+            var section = new MenuItem { Header = $"Layers {group}–{group + 7}" };
+            menu.Items.Add(section);
+            for (int i = group; i < group + 8; i++)
+            {
+                uint bit = 1u << i;
+                var item = Item("", () => apply(CollisionMaskSelection.ToggleBit(read(), bit)));
+                bits.Add((bit, item));
+                section.Items.Add(item);
+            }
+        }
+        Refresh();
+        return button;
     }
     private void PolygonFields(PolygonCollider2DComponent polygon,Action<string,Control> row)
     {

@@ -1,0 +1,36 @@
+version: 2
+values:
+  room: "64fb4cd6-2469-5cec-ba6d-9a49e61f42e7"
+  key: false
+  chest: true
+  coin: true
+  world:
+    version: 1
+    scenes:
+      64fb4cd6-2469-5cec-ba6d-9a49e61f42e7:
+        objects:
+        - id: "bc2c6d9b-c82c-4d72-981c-09e1a6a70d5d"
+          fields: 3
+          removed: false
+          pose:
+            x: 332
+            y: 131
+            angle: 0
+          active: true
+          collider: null
+        - id: "226c5154-4dbb-4f60-91af-14d7147ab88e"
+          fields: 2
+          removed: false
+          pose: null
+          active: false
+          collider: null
+        - id: "ef662731-852a-4934-9ea5-91620f35c949"
+          fields: 3
+          removed: false
+          pose:
+            x: 382
+            y: 158
+            angle: 0
+          active: true
+          collider: null
+        prefabs: []

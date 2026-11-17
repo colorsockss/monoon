@@ -62,6 +62,8 @@ def main():
                         help="Fail if the runner OS or CPU differs from the requested target")
     parser.add_argument("--upgrade-from-v31", action="store_true",
                         help="Migrate the archived v31 sample with the v35 editor and complete its quest from a v2 slot")
+    parser.add_argument("--slot-recovery", action="store_true",
+                        help="Check damaged-slot recovery and reward reclaims in both built players")
     args = parser.parse_args()
     output, results = args.output.resolve(), args.results.resolve()
     rid = host_rid()
@@ -109,6 +111,9 @@ def main():
                 run(exe, "--replay-input", recording, profile, env=headless)
             check_slot(slot, results / (mode + ".save"), expected)
             print("PASS", rid, mode, "matches the Mac save byte-for-byte", flush=True)
+            if args.slot_recovery:
+                run(sys.executable, Path(__file__).with_name("check_recovery.py"), exe, FIXTURE,
+                    results / (mode + "-recovery"), env=headless)
         if args.upgrade_from_v31 and project_files(project) != original:
             raise ValueError("Building the upgraded players changed the archived project files")
 

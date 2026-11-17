@@ -52,6 +52,12 @@ public sealed partial class SceneDocument
     {
         foreach (var child in Objects.Where(child => child.Parent == obj)) Reparent(child, obj.Parent);
         Objects.Remove(obj);
+        foreach (var script in Objects.SelectMany(o => o.Components).OfType<ScriptComponent>())
+            if (script.EventLinks?.Any(l => l.Target == obj.Id) == true)
+            {
+                var remaining = script.EventLinks.Where(l => l.Target != obj.Id).ToArray();
+                script.EventLinks = remaining.Length == 0 ? null : remaining;
+            }
     }
 
     public bool MoveTo(SceneObject obj, Vector2 world)

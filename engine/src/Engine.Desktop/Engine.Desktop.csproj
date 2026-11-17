@@ -3,9 +3,11 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
+    <InternalsVisibleTo Include="Engine.Authoring"/>
+    <InternalsVisibleTo Include="Engine.Checks"/>
     <ProjectReference Include="../Engine.Core/Engine.Core.csproj" />
-    <PackageReference Include="SkiaSharp" Version="2.88.9"/>
-    <PackageReference Include="SkiaSharp.NativeAssets.Linux" Version="2.88.9"/>
+    <PackageReference Include="StbTrueTypeSharp" Version="1.26.13" GeneratePathProperty="true" />
+    <None Include="$(PkgStbTrueTypeSharp)/stbtruetypesharp.nuspec" Link="Licenses/StbTrueTypeSharp/package.nuspec" CopyToOutputDirectory="PreserveNewest" />
     <PackageReference Include="Ahwoo.BRUTAL.Sdl" Version="2026.10.2" GeneratePathProperty="true" />
     <None Include="$(PkgAhwoo_BRUTAL_Sdl)/LICENSE.txt;$(PkgAhwoo_BRUTAL_Sdl)/NOTICE.txt;$(PkgAhwoo_BRUTAL_Sdl)/CONTRIBUTORS.md"
           Link="Licenses/BRUTAL/%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />

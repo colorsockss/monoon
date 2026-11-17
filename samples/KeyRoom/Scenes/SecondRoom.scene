@@ -1,4 +1,4 @@
-schemaVersion: 23
+schemaVersion: 25
 objects:
 - id: e056689d-dcf0-526d-a1e2-bce145614e5d
   name: North Wall
@@ -165,8 +165,10 @@ objects:
   components:
   - type: uiRect
     anchor: TopRight
+    scaleHorizontalWithText: true
   - type: uiButton
   - type: uiText
+    wrap: true
     text: Controls
     textKey: hud.controls
     insetX: 10
@@ -176,23 +178,33 @@ objects:
     values:
       Hint: "82979001-dcbc-443e-baa1-60ada0400004"
       CheckpointHint: "82979001-dcbc-443e-baa1-60ada0400007"
-- id: 82979001-dcbc-443e-baa1-60ada0400004
+- id: 349ed173-26c3-5125-ad86-0302431f15a9
   parentId: 82979001-dcbc-443e-baa1-60ada0400000
-  name: Controls hint
+  name: Controls panel
   x: 14
   y: -14
-  width: 520
-  height: 26
+  width: 580
+  height: 40
   components:
   - type: uiRect
     anchor: BottomLeft
     showIf: controls
   - type: uiImage
-    color: "#344B60"
+    sprite: 8417743f-7aed-49af-becf-fce814d4d466
+    borders: {left: 8, top: 8, right: 8, bottom: 8}
+  - type: uiLayout
+    padding: 12
+    gap: 4
+- id: 82979001-dcbc-443e-baa1-60ada0400004
+  parentId: 349ed173-26c3-5125-ad86-0302431f15a9
+  name: Controls hint
+  width: 530
+  height: 23
+  components:
+  - type: uiRect
   - type: uiText
     text: "Push crate onto plate. Stand beside it to open the door."
-    insetX: 8
-    insetY: 3
+    wrap: true
 - id: 82979001-dcbc-443e-baa1-60ada0400005
   parentId: 82979001-dcbc-443e-baa1-60ada0400000
   name: Pause indicator
@@ -232,22 +244,15 @@ objects:
       Guide:
         Id: "25fc2224-7695-4e19-a05c-d8524a2ffe50"
 - id: 82979001-dcbc-443e-baa1-60ada0400007
-  parentId: 82979001-dcbc-443e-baa1-60ada0400000
+  parentId: 349ed173-26c3-5125-ad86-0302431f15a9
   name: Checkpoint controls
-  x: 14
-  y: -44
-  width: 380
-  height: 26
+  width: 530
+  height: 23
   components:
   - type: uiRect
-    anchor: BottomLeft
-    showIf: controls
-  - type: uiImage
-    color: "#344B60"
   - type: uiText
     text: "1 / 2: Slot   F5: Save   F9: Load   M: Guide"
-    insetX: 8
-    insetY: 3
+    wrap: true
 - id: 741e3c2c-87c4-41bb-9f5e-646457380004
   parentId: 82979001-dcbc-443e-baa1-60ada0400000
   name: Pressure plate status
@@ -269,8 +274,10 @@ objects:
   components:
   - type: uiRect
     anchor: TopRight
+    scaleHorizontalWithText: true
   - type: uiButton
   - type: uiText
+    wrap: true
     text: "한국어 [L]"
     textKey: ui.language
     insetX: 8

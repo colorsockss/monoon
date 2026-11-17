@@ -57,6 +57,7 @@ internal static class PrefabEditingChecks
         try {reopened.ExportPrefab(Find(chest.Id),sourceFile,true);}
         catch(InvalidDataException){rejected=true;}
         Check(rejected && File.ReadAllBytes(sourceFile).SequenceEqual(original),"cyclic prefab update leaves the source intact");
+        CheckPropertyEditing(reopened, Find(secondId), Find(copyId), "Assets/CheckVariant.prefab");
         var transform=new SelectionTransform([chest,lid]);
         var before=lid.WorldPosition;
         transform.Apply(Matrix3x2.CreateTranslation(16,32));
@@ -64,5 +65,58 @@ internal static class PrefabEditingChecks
         transform.Apply(Matrix3x2.Identity);
         Check(lid.WorldPosition==before,"cancel restores the original affine transform");
     }
+    private static void CheckPropertyEditing(SceneDocument scene, SceneObject first, SceneObject sibling, string relative)
+    {
+        var project = scene.ProjectDirectory!;
+        var stage = SceneDocument.OpenPrefabSource(project, relative);
+        var root = stage.Document.Objects.Single(o => o.Id == stage.RootId);
+        var childId = stage.Document.Objects.Single(o => o.Parent == root).Id;
+        root.Height = 38;
+        SceneDocument.SavePrefabSource(stage);
+        scene.RefreshPrefabs(ProjectAssets.Scan(project));
+        SceneObject Current(Guid id) => scene.Objects.Single(o => o.Id == id);
+        var local = Current(first.Id);
+        var child = Current(local.Prefab!.Instances[childId]);
+        Check(local.Height == 38 && Current(sibling.Id).Height == 38 && child.Parent == local,
+            "isolated variant edits propagate and preserve child identity");
+        child.Width = 45;
+        child.Height = 32;
+        PropertyOverride Field(SceneObject owner, string name) => scene.PropertyOverrides(Current(first.Id))
+            .Single(p => p.SourceId == childId && p.Property.Field == name && p.Owner == owner.Name);
+        scene.EditPrefabProperty(local, Field(child, "width"), true);
+        local = Current(first.Id);
+        child = Current(child.Id);
+        var other = Current(Current(sibling.Id).Prefab!.Instances[childId]);
+        Check(other.Width == 45 && other.Height != 32 && child.Height == 32 && child.Width == 45,
+            "applying a child property updates siblings and preserves unrelated overrides");
+        scene.EditPrefabProperty(local, Field(child, "height"), false);
+        Check(Current(child.Id).Height == other.Height && Current(child.Id).Width == 45,
+            "reverting one property preserves applied values and placement");
+        var saved = Path.Combine(project, "Scenes", "IndividualOverrides.scene");
+        scene.Save(saved);
+        var reloaded = SceneDocument.Load(saved);
+        Check(reloaded.Objects.Single(o => o.Id == child.Id) is { Width:45 } loaded && loaded.Parent?.Id == first.Id &&
+              loaded.Height == other.Height && SceneDocument.ReadAsset(Path.Combine(project,relative)).Objects.Single(o=>o.Id==childId).Width==45,
+            "scene and prefab reopen with matching selected properties");
+        local = Current(first.Id);
+        var script = local.GetComponent<ScriptComponent>()!;
+        PropertyOverride LidField() => scene.PropertyOverrides(Current(first.Id)).Single(p => p.Property.Field == "Lid");
+        script.Values["Lid"] = System.Text.Json.JsonSerializer.SerializeToElement(local.Id);
+        scene.EditPrefabProperty(local, LidField(), true);
+        Check(Current(sibling.Id).GetComponent<ScriptComponent>()!.Values["Lid"].GetGuid() == sibling.Id,
+            "applying a script reference translates the instance ID through the source to each sibling");
+        var sourceBytes = File.ReadAllBytes(Path.Combine(project,relative));
+        local = Current(first.Id);
+        local.GetComponent<ScriptComponent>()!.Values["Lid"] = System.Text.Json.JsonSerializer.SerializeToElement(sibling.Id);
+        bool external = false;
+        try { scene.EditPrefabProperty(local, LidField(), true); } catch (InvalidOperationException) { external = true; }
+        Check(external && sourceBytes.SequenceEqual(File.ReadAllBytes(Path.Combine(project,relative))),
+            "a scene-only object reference cannot leak into a prefab source");
+        bool stale = false;
+        try { SceneDocument.SavePrefabSource(stage); } catch (IOException) { stale = true; }
+        Check(stale && sourceBytes.SequenceEqual(File.ReadAllBytes(Path.Combine(project,relative))),
+            "a stale open source cannot overwrite a newer applied property");
+    }
+
     private static void Check(bool passed,string message){if(!passed)throw new Exception(message);Console.WriteLine("PASS "+message);}
 }

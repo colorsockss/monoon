@@ -4,7 +4,7 @@ using System.Numerics;
 namespace Engine.Core;
 
 // Shared by the Scene panel and the player; UI gets first refusal on activation.
-public sealed class GameInputRouter(InputActions actions, Func<ScreenUi?> ui, Size resolution)
+public sealed class GameInputRouter(InputActions actions, Func<ScreenUi?> ui, Size resolution, Func<SceneGame?>? world = null)
 {
     public void Reset() { actions.Reset(); padDown.Clear();padUsed.Clear();ui()?.ResetInput(); }
     public bool Key(string control,bool down,bool reverse=false,long? timestamp=null)
@@ -22,10 +22,22 @@ public sealed class GameInputRouter(InputActions actions, Func<ScreenUi?> ui, Si
         bool inside=point.X>=0 && point.Y>=0 && point.X<resolution.Width && point.Y<resolution.Height;
         actions.PointerAt(point,inside);
         ui()?.Drag(point.X,point.Y);
-        if(control==null) return;
+        var scene = world?.Invoke();
+        if (control == null)
+        {
+            // The existing input stream represents a window leave with this sentinel.
+            if (point != new Vector2(-1, -1)) scene?.MoveWorldPointer(point);
+            return;
+        }
         if (down && actions.Suppressed(control)) return;
         if(down && inside) actions.NoteDevice(InputDevice.Pointer);
-        bool used=control=="Mouse.Left" && ui()?.Pointer(down,point.X,point.Y)==true;
+        bool used = false;
+        if (control == "Mouse.Left")
+        {
+            if (!down && scene?.ReleaseWorldPointer(point) == true) used = true;
+            else used = ui()?.Pointer(down, point.X, point.Y) == true;
+            if (down && inside && !used) used = scene?.PressWorldPointer(point) == true;
+        }
         if(!down) actions.Release(control);
         else if(inside && !used) actions.Press(control,timestamp);
     }
@@ -59,7 +71,7 @@ public sealed class GameInputRouter(InputActions actions, Func<ScreenUi?> ui, Si
         if(value>=.55f && padDown.Add(control) && ui()?.PadKey(control)==true)
         { padUsed.Add(control);actions.Set(control,0);actions.NoteDevice(InputDevice.Gamepad); }
         bool used=padUsed.Contains(control);
-        if(value<=.25f){padDown.Remove(control);padUsed.Remove(control);}
+        if(value<=.25f){padDown.Remove(control);if(padUsed.Remove(control))ui()?.ReleaseActivation(control);}
         if(!used)
         {
             bool navigationAxis=value>0 && ui() is { OwnsNavigation:true } && control.StartsWith("Pad.LeftStick",StringComparison.Ordinal);

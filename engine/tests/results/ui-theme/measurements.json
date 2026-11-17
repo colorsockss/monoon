@@ -1,0 +1,178 @@
+{
+  "play": {
+    "mode": "play",
+    "states": {
+      "normal": "33566a",
+      "disabled": "343f49",
+      "hover": "437879",
+      "pressed": "1e414b",
+      "focused": "375f86"
+    },
+    "normalPanel": [
+      738,
+      752,
+      1618,
+      1080
+    ],
+    "largePanel": [
+      738,
+      587,
+      1618,
+      1245
+    ],
+    "cornerMatches": [
+      16,
+      16,
+      16,
+      16
+    ],
+    "resizedWindow": [
+      970,
+      715
+    ],
+    "resizedClose": [
+      1046.18779342723,
+      892,
+      1213.3802816901407,
+      959
+    ],
+    "edgeProbes": "4 outside stayed open; inside closed",
+    "text": "방 안내\n열쇠를 주우면 문이\n열립니다.\n•\nE로 상자 열기 • N으로\n동전 이동\n글자 작게\n글자 크게\n닫기",
+    "resizedCornerOffsets": [
+      [
+        6.59,
+        6.59
+      ],
+      [
+        6.59,
+        6.59
+      ],
+      [
+        6.59,
+        6.59
+      ],
+      [
+        6.59,
+        6.59
+      ]
+    ]
+  },
+  "release": {
+    "mode": "release",
+    "states": {
+      "normal": "33566a",
+      "disabled": "343f49",
+      "hover": "437879",
+      "pressed": "1e414b",
+      "focused": "375f86"
+    },
+    "normalPanel": [
+      374,
+      347,
+      1226,
+      665
+    ],
+    "largePanel": [
+      374,
+      188,
+      1226,
+      824
+    ],
+    "cornerMatches": [
+      16,
+      16,
+      16,
+      16
+    ],
+    "resizedWindow": [
+      722,
+      590
+    ],
+    "resizedClose": [
+      869.830985915493,
+      795,
+      1078.9577464788733,
+      878
+    ],
+    "edgeProbes": "4 outside stayed open; inside closed",
+    "text": "방 안내\n열쇠를 주우면 문이\n열립니다.\nE로 상자 열기 • N으로\n동전 이동\n글자 작게\n글자 크게\n닫기",
+    "resizedCornerOffsets": [
+      [
+        6.1,
+        6.66
+      ],
+      [
+        6.1,
+        6.66
+      ],
+      [
+        6.1,
+        6.66
+      ],
+      [
+        6.1,
+        6.66
+      ]
+    ],
+    "panelSHA256": "2f5c93b249f45a2d7781d743a7877d1d5b1de7c1027692458516396d4ccc001b"
+  },
+  "aot": {
+    "mode": "aot",
+    "states": {
+      "normal": "33566a",
+      "disabled": "343f49",
+      "hover": "437879",
+      "pressed": "1e414b",
+      "focused": "375f86"
+    },
+    "normalPanel": [
+      374,
+      355,
+      1226,
+      673
+    ],
+    "largePanel": [
+      374,
+      196,
+      1226,
+      832
+    ],
+    "cornerMatches": [
+      16,
+      16,
+      16,
+      16
+    ],
+    "resizedWindow": [
+      722,
+      590
+    ],
+    "resizedClose": [
+      869.830985915493,
+      799,
+      1078.9577464788733,
+      882
+    ],
+    "edgeProbes": "4 outside stayed open; inside closed",
+    "text": "방 안내\n열쇠를 주우면 문이\n열립니다.\nE로 상자 열기 • N으로\n동전 이동\n글자 작게\n글자 크게\n닫기",
+    "resizedCornerOffsets": [
+      [
+        6.1,
+        6.66
+      ],
+      [
+        6.1,
+        6.66
+      ],
+      [
+        6.1,
+        6.66
+      ],
+      [
+        6.1,
+        6.66
+      ]
+    ],
+    "panelSHA256": "2f5c93b249f45a2d7781d743a7877d1d5b1de7c1027692458516396d4ccc001b"
+  }
+}

@@ -13,7 +13,7 @@ public sealed partial class ScreenUi
         float available=Math.Max(1,n.AllocatedWidth-Math.Max(0,label.InsetX)),size=label.Size*Preferences.TextScale;
         if(n.LineSource==text && n.LineWidth==available && n.LineSize==size && (canvas==null || n.FontBackend==canvas.GetType()))return;
         n.LineSource=text;n.LineWidth=available;n.LineSize=size;n.FontBackend=canvas?.GetType();
-        float Measure(string s)=>canvas?.MeasureText(s,size)??StringInfo.ParseCombiningCharacters(s).Length*size;
+        float Measure(string s)=>canvas?.MeasureText(s,size)??Elements(s).Sum(part => (part[0] < 128 ? .55f : 1f) * size);
         n.Lines=WrapText(text,available,Measure);
     }
     internal static string[] WrapText(string text,float available,Func<string,float> measure)

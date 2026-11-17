@@ -1,0 +1,10 @@
+{
+  "system": "Linux-6.1.0-54-amd64-x86_64-with-glibc2.36",
+  "machine": "x86_64",
+  "mode": "native-aot",
+  "driver": "alsa",
+  "playerSha256": "fe41a2a90d22dad45f84af22be975e9932c26f5c55ca7c763d79481b7e2a8020",
+  "musicSha256": "7b8c4c6b524b4d1f8c4b72553b6adc5b3b2dd5f7e38dcf8ae134b5b4862b5e7e",
+  "framesBeforeF": 235520,
+  "capturedFrames": 268800
+}

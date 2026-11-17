@@ -1,0 +1,184 @@
+{
+  "mac_release": "92ab8e0a54ea407580e4aebc78adc0bc",
+  "assets": {
+    "Assets/KeyRoomText.table": "afdffacc177e3bca7c7e5d4aff6dafd50efd31158d057c4861e47c91c2d13843",
+    "Assets/Fonts/GowunDodum-Regular.ttf": "4900799fc4d1785f05a4d8c39cad5db4906721d346ca16a915edc33c94e3e77a",
+    "Assets/Fonts/GowunDodum-Regular.ttf.license": "a7c73f9521cd646bbdfb6684c99a62311bbd7bce11898dc11ef0b3c69eda1aca",
+    "Assets/Fonts/NanumGothic-Regular.ttf": "76f45ef4a6bcff344c837c95a7dcc26e017e38b5846d5ae0cdcb5b86be2e2d31",
+    "Assets/Fonts/NanumGothic-Regular.ttf.license": "eeacf16032901d0ed0456876ec77b8f0fda6b3fecec7d972f8543eb602e6c30f"
+  },
+  "runs": {
+    "linux-x64/release": {
+      "host": "Linux-6.1.0-54-cloud-amd64-x86_64-with-glibc2.36",
+      "architecture": "x86_64",
+      "buildId": "10c97a0c322841c28ec30018a74a491a",
+      "playerSha256": "9daeea7422ceb74db0a242a7474b113919b7a5248f849721e9445c5c4240b71c",
+      "ocr": {
+        "en": "Inventory옓\nPocket compass / In bag\nQuest / Find Brass key\nManage compass\n한국어 [L]\nClose",
+        "ko": "가방\n휴대용 나침반 / 보관 중\n의뢰/ 황동 열쇠 찾기\n나침반 관리\nEnglish [L]\n닫기",
+        "ko-complete": "가방\n휴대용 나침반 / 보관 중\n의뢰 완료/ 황동 열쇠\n나침반 관리\nEnglish [L]\n닫기",
+        "en-complete": "Inventory옓\nPocket compass / In bag\nQuest complete / Brass key\nManage compass\nClose\n한국어 [L]",
+        "ko-confirm": "확인\n나침반을 장착할까요?\n적용\nEnglish [L]\n취소"
+      },
+      "macTextCorrelation": {
+        "en": {
+          "title": 0.9314,
+          "item": 0.9405,
+          "quest": 0.927
+        },
+        "ko": {
+          "title": 0.9438,
+          "item": 0.9656,
+          "quest": 0.9428
+        },
+        "ko-complete": {
+          "title": 0.9438,
+          "item": 0.9656,
+          "quest": 0.9435
+        },
+        "en-complete": {
+          "title": 0.9314,
+          "item": 0.9405,
+          "quest": 0.9223
+        },
+        "ko-confirm": {
+          "title": 0.9399,
+          "question": 0.9723
+        }
+      }
+    },
+    "linux-x64/native-aot": {
+      "host": "Linux-6.1.0-54-cloud-amd64-x86_64-with-glibc2.36",
+      "architecture": "x86_64",
+      "buildId": "e6023e4142e943f49ae46bd9a2ef202b",
+      "playerSha256": "ee02d5941cbb8f24bde6dd7a92c0c7228c864a2f814ad2e7ebb986e2a5d10c65",
+      "ocr": {
+        "en": "Inventory옓\nPocket compass / In bag\nQuest / Find Brass key\nManage compass\n한국어 [L]\nClose",
+        "ko": "가방\n휴대용 나침반 / 보관 중\n의뢰/ 황동 열쇠 찾기\n나침반 관리\nEnglish [L]\n닫기",
+        "ko-complete": "가방\n휴대용 나침반 / 보관 중\n의뢰 완료/ 황동 열쇠\n나침반 관리\nEnglish [L]\n닫기",
+        "en-complete": "Inventory옓\nPocket compass / In bag\nQuest complete / Brass key\nManage compass\nClose\n한국어 [L]",
+        "ko-confirm": "확인\n나침반을 장착할까요?\n적용\nEnglish [L]\n취소"
+      },
+      "macTextCorrelation": {
+        "en": {
+          "title": 0.9314,
+          "item": 0.9405,
+          "quest": 0.927
+        },
+        "ko": {
+          "title": 0.9438,
+          "item": 0.9656,
+          "quest": 0.9428
+        },
+        "ko-complete": {
+          "title": 0.9438,
+          "item": 0.9656,
+          "quest": 0.9435
+        },
+        "en-complete": {
+          "title": 0.9314,
+          "item": 0.9405,
+          "quest": 0.9223
+        },
+        "ko-confirm": {
+          "title": 0.9399,
+          "question": 0.9723
+        }
+      }
+    },
+    "win-x64/release": {
+      "host": "Windows-11-10.0.26100-SP0",
+      "architecture": "AMD64",
+      "buildId": "d01294c11f9e4ad88eecd419619d1442",
+      "playerSha256": "feb456c8eee0770c9cd12042b9aec3e49644471c986ae019d34538e75e0f9653",
+      "ocr": {
+        "en": "Inventory\nPocket compass / In bag\nQuest / Find Brass key\nManage compass\n한국어 [L]\nClose옓",
+        "ko": "가방\n휴대용 나침반 / 보관 중\n의뢰/ 황동 열쇠 찾기\n나침반 관리\nEnglish [L]\n닫기",
+        "ko-complete": "가방\n휴대용 나침반 / 보관 중\n의뢰 완료/ 황동 열쇠\n나침반 관리\nEnglish [L]\n닫기",
+        "en-complete": "Inventory옓\n한국어 [L]\nPocket compass / In bag\nQuest complete / Brass key\nManage compass\nClose옓",
+        "ko-confirm": "확인\n나침반을 장착할까요?\n적용\nEnglish [L]\n취소"
+      },
+      "macTextCorrelation": {
+        "en": {
+          "title": 0.9854,
+          "item": 0.9904,
+          "quest": 0.9729
+        },
+        "ko": {
+          "title": 0.9792,
+          "item": 0.9674,
+          "quest": 0.9425
+        },
+        "ko-complete": {
+          "title": 0.9792,
+          "item": 0.9674,
+          "quest": 0.9422
+        },
+        "en-complete": {
+          "title": 0.9854,
+          "item": 0.9904,
+          "quest": 0.9719
+        },
+        "ko-confirm": {
+          "title": 0.9353,
+          "question": 0.9792
+        }
+      }
+    },
+    "win-x64/native-aot": {
+      "host": "Windows-11-10.0.26100-SP0",
+      "architecture": "AMD64",
+      "buildId": "a5fa3e9bbc0545b380516294a2244fc2",
+      "playerSha256": "cb85ee001ac334f954f5ee5d155c119e5d8118f1c9d2461756c4506452c743d5",
+      "ocr": {
+        "en": "Inventory\nPocket compass / In bag\nQuest / Find Brass key\nManage compass\n한국어 [L]\nClose옓",
+        "ko": "가방\n휴대용 나침반 / 보관 중\n의뢰/ 황동 열쇠 찾기\n나침반 관리\nEnglish [L]\n닫기",
+        "ko-complete": "가방\n휴대용 나침반 / 보관 중\n의뢰 완료/ 황동 열쇠\n나침반 관리\nEnglish [L]\n닫기",
+        "en-complete": "Inventory옓\n한국어 [L]\nPocket compass / In bag\nQuest complete / Brass key\nManage compass\nClose옓",
+        "ko-confirm": "확인\n나침반을 장착할까요?\n적용\nEnglish [L]\n취소"
+      },
+      "macTextCorrelation": {
+        "en": {
+          "title": 0.9854,
+          "item": 0.9904,
+          "quest": 0.9729
+        },
+        "ko": {
+          "title": 0.9792,
+          "item": 0.9674,
+          "quest": 0.9425
+        },
+        "ko-complete": {
+          "title": 0.9792,
+          "item": 0.9674,
+          "quest": 0.9422
+        },
+        "en-complete": {
+          "title": 0.9854,
+          "item": 0.9904,
+          "quest": 0.9719
+        },
+        "ko-confirm": {
+          "title": 0.9353,
+          "question": 0.9792
+        }
+      }
+    }
+  },
+  "panelMatchesWithinOS": {
+    "linux-x64": {
+      "en": true,
+      "ko": true,
+      "ko-complete": true,
+      "en-complete": true,
+      "ko-confirm": true
+    },
+    "win-x64": {
+      "en": true,
+      "ko": true,
+      "ko-complete": true,
+      "en-complete": true,
+      "ko-confirm": true
+    }
+  }
+}

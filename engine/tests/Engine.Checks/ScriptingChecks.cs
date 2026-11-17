@@ -20,6 +20,17 @@ internal static class ScriptingChecks
                 public int Marker = Defaults.Tick;
                 public ComponentReference<Probe> Peer;
                 public ComponentReference<BoxCollider2DComponent> Collider;
+                public enum Side : short { Left = -2, Right = 19 }
+                public Side Direction = Side.Right;
+                public System.Numerics.Vector2 Shift = new(-3.5f, 7);
+                public System.Numerics.Vector2 Origin = new() { Y = -2 };
+                public SpriteReference[] Frames = [];
+                public PrefabReference[] Prefabs;
+                public TableReference[] Tables;
+                public DataReference[] Items;
+                public SceneReference[] Rooms;
+                public System.Guid[] Targets = [];
+                public System.Guid[] OptionalTargets;
                 public static string Log = "";
                 private string history = "";
                 public string History => history;
@@ -49,20 +60,49 @@ internal static class ScriptingChecks
         var pc = new ScriptComponent { Script="Probe" }; var cc = new ScriptComponent { Script="Probe" };
         pc.Values["Label"]=JsonSerializer.SerializeToElement("P"); cc.Values["Label"]=JsonSerializer.SerializeToElement("C");
         pc.Values["Peer"]=pc.Values["Collider"]=JsonSerializer.SerializeToElement(child.Id);
+        pc.WriteReferences("Targets", [child.Id, Guid.Empty, parent.Id, child.Id]);
         parent.AddComponent(pc); child.AddComponent(cc); child.AddComponent(new BoxCollider2DComponent { IsTrigger=true });
         scene.Objects.AddRange([parent,child]); scene.Reparent(child,parent);
+        var fields = library.Get("Probe").Fields;
+        var direction = fields.Single(f => f.Name == "Direction");
+        Check(direction.EnumNames!.SequenceEqual(["Left","Right"]) && Equals(direction.Default,"Right") &&
+            Equals(fields.Single(f => f.Name == "Shift").Default,new Vector2(-3.5f,7)) &&
+            Equals(fields.Single(f => f.Name == "Origin").Default,new Vector2(0,-2)),
+            "Inspector reflects explicit enum values and Vector2 constructor defaults");
+        Check(fields.Count(f => f.IsAssetList) == 5, "all five script asset reference types support lists");
+        // Even a coincident scene object GUID must remain unchanged in an asset list.
+        foreach (var field in fields.Where(f => f.IsAssetList)) pc.WriteReferences(field.Name, [child.Id,parent.Id]);
+        pc.Values["Direction"] = JsonSerializer.SerializeToElement("Left");
+        pc.Values["Shift"] = GameData.ParseValue("{x: 21.5, y: -9}");
         var colliderField = library.Get("Probe").Fields.Single(f => f.Name=="Collider");
         Check(colliderField.Accepts(child) && !colliderField.Accepts(parent),"filter by required target component");
         var duplicate = scene.DuplicateObject(parent,library);
         var other = scene.Objects.Single(o => o.ParentId==duplicate.Id);
         var dupScript = duplicate.GetComponent<ScriptComponent>()!;
+        Check(dupScript.ReadReferences("Targets", true).SequenceEqual([other.Id, Guid.Empty, duplicate.Id, other.Id]),
+            "duplicating a hierarchy remaps each object reference in order, including repeats and empty slots");
         Check(dupScript.ReadOverride("Peer",Guid.Empty)==other.Id && dupScript.ReadOverride("Collider",Guid.Empty)==other.Id,"duplicate remaps typed refs");
+        Check(dupScript.ReadReferences("Frames",false).SequenceEqual([child.Id,parent.Id]),
+            "duplicating a hierarchy preserves ordered asset IDs");
         scene.RemoveObject(other); scene.RemoveObject(duplicate);
         var assetDir = Directory.CreateDirectory(Path.Combine(root,"Assets"));
         scene.ExportPrefab(parent,Path.Combine(assetDir.FullName,"Pair.prefab"));
         var asset = new PrefabReference(ProjectAssets.Scan(root).IdFor("Assets/Pair.prefab")!.Value);
         var game = new GameSession(scene,library); var world=game.Current;
         var p = world.GetComponent<GameBehaviour>(parent.Id)!; var c = world.GetComponent<GameBehaviour>(child.Id)!;
+        Check(p.GetType().GetField("OptionalTargets")!.GetValue(p) == null,
+            "an unedited public array keeps its C# initializer");
+        var type = p.GetType();
+        foreach (var field in fields.Where(f => f.IsAssetList))
+        {
+            var values = (Array)type.GetField(field.Name)!.GetValue(p)!;
+            var id = field.Type.GetElementType()!.GetProperty("Id")!;
+            Check(values.Cast<object>().Select(v => (Guid)id.GetValue(v)!).SequenceEqual([child.Id,parent.Id]),
+                $"generated factory preserves both {field.Name} asset IDs");
+        }
+        Check(type.GetField("Direction")!.GetValue(p)!.ToString()=="Left" &&
+            (Vector2)type.GetField("Shift")!.GetValue(p)! == new Vector2(21.5f,-9),
+            "generated factory binds ordered assets, enum name and vector");
         string History(GameBehaviour b) => (string)b.GetType().GetProperty("History")!.GetValue(b)!;
         string Log() => (string)p.GetType().GetField("Log")!.GetValue(null)!;
         void Step() => game.FixedUpdate(default(GameInput),1f/60);
@@ -78,6 +118,8 @@ internal static class ScriptingChecks
             var pc2 = world.GetComponent<GameBehaviour>(pair)!;
             var child2=world.Objects.Single(o=>o.ParentId==pair).Id;
             var target = pc2.GetType().GetField("Peer")!.GetValue(pc2)!;
+            Check(((Guid[])pc2.GetType().GetField("Targets")!.GetValue(pc2)!).SequenceEqual([child2, Guid.Empty, pair, child2]),
+                "generated script factory resolves ordered prefab references to runtime instance IDs");
             Check((Guid)target.GetType().GetProperty("ObjectId")!.GetValue(target)! == child2 &&
                 History(pc2)=="C","spawn inactive, runtime prefab remaps typed target");
             world.SetActive(parent.Id,true); world.SetActive(parent.Id,true); Step();

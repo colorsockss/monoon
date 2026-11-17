@@ -12,7 +12,7 @@
     <AvaloniaResource Include="Assets/MoNoon.png" />
     <AvaloniaResource Include="Assets/MoNoon.macOS.png" />
     <ProjectReference Include="../Engine.Core/Engine.Core.csproj" />
-    <ProjectReference Include="../Engine.Desktop/Engine.Desktop.csproj" />
+    <ProjectReference Include="../Engine.Authoring/Engine.Authoring.csproj" />
     <PackageReference Include="Avalonia.Desktop" Version="11.3.23" />
     <PackageReference Include="Avalonia.Themes.Fluent" Version="11.3.23" />
   </ItemGroup>

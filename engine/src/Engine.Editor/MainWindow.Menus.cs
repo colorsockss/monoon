@@ -26,6 +26,20 @@ public partial class MainWindow
     private void InitializeMenus()
     {
         var modifier = OperatingSystem.IsMacOS() ? KeyModifiers.Meta : KeyModifiers.Control;
+        if (prefabSource != null)
+        {
+            saveSceneItem.Header = "Save Prefab";
+            BindMenuAction(saveSceneItem, new KeyGesture(Key.S, modifier), Save);
+            BindMenuAction(undoItem, new KeyGesture(Key.Z, modifier), () => RestoreEdit(false));
+            BindMenuAction(redoItem, new KeyGesture(Key.Z, modifier | KeyModifiers.Shift), () => RestoreEdit(true));
+            var stageMenus = new NativeMenu
+            {
+                new NativeMenuItem("File") { Menu = new NativeMenu { saveSceneItem } },
+                new NativeMenuItem("Edit") { Menu = new NativeMenu { undoItem, redoItem } }
+            };
+            NativeMenu.SetMenu(this, stageMenus);
+            return;
+        }
         BindMenuAction(newProjectItem, new KeyGesture(Key.N, modifier), () => ChooseProject(true));
         BindMenuAction(openProjectItem, new KeyGesture(Key.O, modifier), () => ChooseProject(false));
         BindMenuAction(saveSceneItem, new KeyGesture(Key.S, modifier), Save);
@@ -81,7 +95,7 @@ public partial class MainWindow
         Viewport.Focus();
         if (redo ? history.CanRedo : history.CanUndo)
         {
-            var group=Viewport.Selection.Select(o=>o.Id).ToArray();
+            var group=history.MultiSelection(redo) ?? Viewport.Selection.Select(o=>o.Id).ToArray();
             var fileEdit = history.FileEdit(redo);
             if (fileEdit is ProjectPathEdit moveClip && clipEditor?.RelativePath is {} clipPath &&
                 moveClip.Remap(clipPath, redo) != clipPath && !await clipEditor.RequestClose()) return;

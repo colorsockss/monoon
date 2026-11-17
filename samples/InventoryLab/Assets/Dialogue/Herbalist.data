@@ -10,6 +10,12 @@ values:
     - {text: "의뢰를 알아본다", next: "offer", action: ""}
     - {text: "보상을 문의한다", next: "reward", action: ""}
     - {text: "나중에 온다", next: "farewell", action: ""}
+    - {text: "약초가 자라는 곳을 묻는다", next: "meadow", action: ""}
+  - id: "meadow"
+    speaker: "약초상"
+    text: "약초는 개울 옆 풀밭에서 잘 자라요."
+    choices:
+    - {text: "처음으로 돌아간다", next: "greeting", action: ""}
   - id: "offer"
     speaker: "약초상"
     text: "새 잎이 돋은 약초 세 포기가 필요해요. 모아 주시겠어요?"

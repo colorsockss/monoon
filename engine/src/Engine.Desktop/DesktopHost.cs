@@ -8,7 +8,9 @@ public static class DesktopHost
 {
     public static void Run(string title, IGame2D game) => Run(title, game, null);
 
-    public static unsafe void Run(string title, IGame2D game, InputRecorder? recorder)
+    public static void Run(string title, IGame2D game, InputRecorder? recorder) => Run(title, game, recorder, null);
+
+    public static unsafe void Run(string title, IGame2D game, InputRecorder? recorder, PlayerStartupTrace? trace, Func<ShaderClip, RgbaImage>? previewShader = null, IGameTextRasterizer? textRasterizer = null)
     {
         Sdl.Init.Initialize(SdlInitFlags.Video);
         try
@@ -21,7 +23,7 @@ public static class DesktopHost
             var clip = new SdlRect { w = size.Width, h = size.Height };
             renderer.SetRenderClipRect(&clip);
             renderer.SetRenderVSync(1);
-            RunLoop(game, window, renderer, recorder);
+            RunLoop(game, window, renderer, recorder, trace, previewShader, textRasterizer);
         }
         finally
         {
@@ -29,9 +31,9 @@ public static class DesktopHost
         }
     }
 
-    private static unsafe void RunLoop(IGame2D game,SdlWindow window, SdlRenderer renderer, InputRecorder? recorder)
+    private static unsafe void RunLoop(IGame2D game, SdlWindow window, SdlRenderer renderer, InputRecorder? recorder, PlayerStartupTrace? trace, Func<ShaderClip, RgbaImage>? previewShader, IGameTextRasterizer? textRasterizer)
     {
-        using var canvas = new SdlCanvas(renderer, batchSprites: true) { LogicalSize = game.LogicalSize };
+        using var canvas = new SdlCanvas(renderer, batchSprites: true, previewShader: previewShader, textRasterizer: textRasterizer) { LogicalSize = game.LogicalSize };
         using var sounds = new SdlSounds();
         using var resources = new SceneResources(canvas.Prepare, canvas.InvalidateSprite, sounds.PreparePlayback, sounds.Release, canvas.PrepareShader, canvas.ReleaseShader);
         if (game is GameSession session)
@@ -47,9 +49,13 @@ public static class DesktopHost
         var gameplay = game as GameSession;
         var actions = gameplay?.Actions ?? (game as SceneGame)?.Actions ?? new(game.Bindings);
         var loop = new GameLoop(game, actions);
+        if (trace != null) loop.FirstActionProcessed = action => trace.Mark("first_action", action);
         var input = new GameInputRouter(actions,
-            () => gameplay?.InputUi ?? (game as SceneGame)?.InputUi,game.LogicalSize);
+            () => gameplay?.InputUi ?? (game as SceneGame)?.InputUi, game.LogicalSize,
+            () => gameplay != null ? (gameplay.InputUi == null ? null : gameplay.Current) : game as SceneGame);
         using var capture = SdlFrameCapture.Open();
+        var keyFrames = recorder != null ? Environment.GetEnvironmentVariable("MONOON_KEY_FRAME_DIR") : null;
+        if (!string.IsNullOrEmpty(keyFrames)) Directory.CreateDirectory(keyFrames);
         using var pads = new SdlGamepads();
         var previousTime = Stopwatch.GetTimestamp();
         var focused = true;
@@ -87,8 +93,10 @@ public static class DesktopHost
                 if(area!=bounds){bounds=area;var rect=new SdlRect{x=area.X,y=area.Y,w=area.Width,h=area.Height};window.SetTextInputArea(&rect,0);}
             }
         }
+        trace?.BeginFrames();
         while (true)
         {
+            bool keyPressed = false;
             while (Sdl.Events.PollEvent(out var ev))
             {
                 switch (ev.type)
@@ -124,6 +132,7 @@ public static class DesktopHost
                     case SdlEventType.TextInput when focused:
                         Send(new(ReplayInputKind.Commit, Text: System.Runtime.InteropServices.Marshal.PtrToStringUTF8((nint)ev.text.text) ?? ""), EventTime(ev.text.timestamp)); break;
                     case SdlEventType.KeyDown when focused:
+                        keyPressed |= ev.key.repeat == 0;
                         Send(new(ReplayInputKind.Key, Control: InputControls.KeyName(ev.key.scancode.ToString()), Down: true, Reverse: ((int)ev.key.mod & 3) != 0 ? true : null), EventTime(ev.key.timestamp)); break;
                     case SdlEventType.KeyUp:
                         Send(new(ReplayInputKind.Key, Control: InputControls.KeyName(ev.key.scancode.ToString()), Down: false), EventTime(ev.key.timestamp)); break;
@@ -148,7 +157,10 @@ public static class DesktopHost
             long drawBytes = capture != null ? GC.GetAllocatedBytesForCurrentThread() : 0;
             game.Draw(canvas, focused ? loop.Interpolation : 1f);
             canvas.FlushSprites();
+            if (focused && keyPressed && !string.IsNullOrEmpty(keyFrames))
+                SdlFrameCapture.SaveImage(renderer, Path.Combine(keyFrames, $"{recorder!.FrameCount - 1}.png"));
             renderer.RenderPresent();
+            trace?.Presented();
             capture?.Frame(gameplay?.Current ?? game as SceneGame, canvas.DrawSubmissions - calls, drawBytes);
         }
     }

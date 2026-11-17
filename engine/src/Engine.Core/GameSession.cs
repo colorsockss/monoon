@@ -93,9 +93,9 @@ public sealed partial class GameSession : IGame2D, IDisposable
     public Size LogicalSize => Current.LogicalSize;
     public AudioMixer Mixer=>State.Mixer;
 
-    public GameSession(SceneDocument scene, ProjectScripts? scripts = null) : this(scene, scripts, null) { }
+    public GameSession(SceneDocument scene, ScriptLibrary? scripts = null) : this(scene, scripts, null) { }
 
-    public GameSession(SceneDocument scene, ProjectScripts? scripts, Func<ScriptComponent, GameBehaviour>? compiledScripts, PlayerStorage? storage = null)
+    public GameSession(SceneDocument scene, ScriptLibrary? scripts, Func<ScriptComponent, GameBehaviour>? compiledScripts, PlayerStorage? storage = null)
     {
         this.compiledScripts = compiledScripts;
         project = scene.ProjectDirectory;
@@ -107,7 +107,7 @@ public sealed partial class GameSession : IGame2D, IDisposable
         State.Storage = storage ?? PlayerStorage.ForGame(gameId, editor);
         State.SceneId = scene.AssetId;
         if (compiledScripts == null && System.Runtime.CompilerServices.RuntimeFeature.IsDynamicCodeSupported && project != null)
-            sharedScripts = new ScriptRuntime(scripts ?? new ProjectScripts(project));
+            sharedScripts = new ScriptRuntime(scripts ?? ScriptLibrary.Open(project));
         try { Current = new SceneGame(scene, scripts, State, compiledScripts,sharedScripts,manifest); }
         catch { sharedScripts?.Dispose(); throw; }
         State.LiveWorld = Current;

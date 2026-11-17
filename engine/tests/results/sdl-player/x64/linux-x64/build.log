@@ -1,0 +1,29 @@
+HOST Linux-6.1.0-54-cloud-amd64-x86_64-with-glibc2.36 x86_64 usage(total=12468432896, used=10003628032, free=1907195904)
+after release {'files': 260, 'folder': 100673931, 'zip': 42800336, 'sha256': '60d53d64f6657a41c89563daddb22aff542f3d63952d13909ffd7b7b2f7b3528', 'rid': 'linux-x64', 'mode': 'release', 'os': 'Linux-6.1.0-54-cloud-amd64-x86_64-with-glibc2.36', 'arch': 'x86_64', 'skia': []}
++ /usr/bin/python3 -u -c import sys,os,runpy;sys.path.insert(0,os.getcwd());sys.argv=['play.py']+sys.argv[1:];runpy.run_path('play.py',run_name='__main__') /home/debian/MNSdlPlayer17/after/KeyRoom-linux-x64 /home/debian/MNSdlPlayer17/results/release stock
+captured stock (800, 450)
+captured en (800, 450)
+captured ko (800, 450)
+large client (1600, 900)
++ /usr/bin/python3 -u -c import sys,os,runpy;sys.path.insert(0,os.getcwd());sys.argv=['play.py']+sys.argv[1:];runpy.run_path('play.py',run_name='__main__') /home/debian/MNSdlPlayer17/mask-test/release/KeyRoom-linux-x64 /home/debian/MNSdlPlayer17/results/release mask
+captured masked (800, 450)
+large client (1600, 900)
+before release {'files': 258, 'folder': 110276583, 'zip': 46853312, 'sha256': '3f5af939770c096592eac1da6364b55fc6a064c89dc7ffd5e390f315b0c2a616', 'rid': 'linux-x64', 'mode': 'release', 'os': 'Linux-6.1.0-54-cloud-amd64-x86_64-with-glibc2.36', 'arch': 'x86_64', 'skia': ['libSkiaSharp.so', 'SkiaSharp.dll']}
++ dotnet /home/debian/MNSdlPlayer17/cli/MoNoon.Cli.dll build /home/debian/MNSdlPlayer17/samples/KeyRoom native-aot --profile distribution --target linux-x64 --output /home/debian/MNSdlPlayer17/after
+Building native-aot (Distribution) for linux-x64 from /home/debian/MNSdlPlayer17/samples/KeyRoom
+Debug symbols: /home/debian/MNSdlPlayer17/after/Symbols/KeyRoom/linux-x64/native-aot/bcdd5510d1df4b8e8a89a794da26f136
+/home/debian/MNSdlPlayer17/after/NativeAOT/KeyRoom-linux-x64
+after native-aot {'files': 42, 'folder': 26457656, 'zip': 10670056, 'sha256': 'afc2d86bc6ca914bceb7e6348e009ceb2ac417fe6c7c587036a77969d984f8bf', 'rid': 'linux-x64', 'mode': 'native-aot', 'os': 'Linux-6.1.0-54-cloud-amd64-x86_64-with-glibc2.36', 'arch': 'x86_64', 'skia': []}
++ /usr/bin/python3 -u -c import sys,os,runpy;sys.path.insert(0,os.getcwd());sys.argv=['play.py']+sys.argv[1:];runpy.run_path('play.py',run_name='__main__') /home/debian/MNSdlPlayer17/after/NativeAOT/KeyRoom-linux-x64 /home/debian/MNSdlPlayer17/results/native-aot stock
+captured stock (800, 450)
+captured en (800, 450)
+captured ko (800, 450)
+large client (1600, 900)
++ /usr/bin/python3 -u -c import sys,os,runpy;sys.path.insert(0,os.getcwd());sys.argv=['play.py']+sys.argv[1:];runpy.run_path('play.py',run_name='__main__') /home/debian/MNSdlPlayer17/mask-test/native-aot/KeyRoom-linux-x64 /home/debian/MNSdlPlayer17/results/native-aot mask
+captured masked (800, 450)
+large client (1600, 900)
++ dotnet /home/debian/MNSdlPlayer17/cli/MoNoon.Cli.dll build /home/debian/MNSdlPlayer17/samples/KeyRoom native-aot --profile distribution --target linux-x64 --output /home/debian/MNSdlPlayer17/before
+Building native-aot (Distribution) for linux-x64 from /home/debian/MNSdlPlayer17/samples/KeyRoom
+Debug symbols: /home/debian/MNSdlPlayer17/before/Symbols/KeyRoom/linux-x64/native-aot/694f8b67dc61436190ac89bebe09e479
+/home/debian/MNSdlPlayer17/before/NativeAOT/KeyRoom-linux-x64
+before native-aot {'files': 40, 'folder': 35796869, 'zip': 14626745, 'sha256': '7dff981565839beb2c805d3e66368449e294f6eb8948260fd6503ba8f062c681', 'rid': 'linux-x64', 'mode': 'native-aot', 'os': 'Linux-6.1.0-54-cloud-amd64-x86_64-with-glibc2.36', 'arch': 'x86_64', 'skia': ['libSkiaSharp.so']}

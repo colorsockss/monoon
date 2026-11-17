@@ -54,6 +54,6 @@ public sealed class PlayerMovement : GameBehaviour
 ## 벽, 열쇠, 다음 방
 
 1. Player와 벽에 **Box Collider 2D**를 붙인다. **Is Trigger**가 꺼져 있으면 이동 중의 경로를 검사해 벽에서 멈추거나 벽면을 따라 이동한다. 타일맵에서는 타일셋의 **Solid**를 사용한다.
-2. 열쇠에는 **Is Trigger**를 켜고 스크립트를 붙인다. 트리거 쪽의 `OnTriggerEnter(ScriptContact contact)`에서 `contact.OtherId`를 Inspector로 지정한 Player 참조와 비교한다. 겹친 상태를 유지하면 매 틱 중복 호출되지 않는다.
-3. KeyRoom의 `KeySequence`는 `contact.Session.Set("key")`로 획득 상태를 기록하고, `contact.Deactivate(id)`로 열쇠 그림과 문을 막던 오브젝트를 비활성화한다. `contact.PlayEffect(id)`는 대상의 애니메이션·효과음을 시작한다. 문 카메라로 전환했다가 일정 시간이 지나면 플레이어 카메라로 돌아온다. [KeySequence.cs](../../samples/KeyRoom/Scripts/KeySequence.cs)
+2. 열쇠에는 **Is Trigger**를 켜고 스크립트를 붙인다. 열쇠 스크립트의 `OnTriggerEnter(ScriptContact contact)`에서 `contact.OtherId`를 Inspector로 지정한 Player 참조와 비교한다. 겹친 다음 틱부터는 `OnTriggerStay`, 벗어날 때는 `OnTriggerExit`를 받는다. [양쪽 오브젝트의 접촉 이벤트](collision.md#진입유지이탈-이벤트)
+3. KeyRoom의 `KeySequence`는 `contact.Session.Set("key")`로 획득 상태를 기록하고, 열쇠 그림을 숨긴다. Inspector에서 연결한 `KeyAcquired` 이벤트를 받은 `DoorLock.Unlock`이 열린 PNG로 바꾸고 충돌체를 끈 뒤 열림 애니메이션과 효과음을 재생한다. 문 카메라로 전환했다가 일정 시간이 지나면 플레이어 카메라로 돌아온다. [KeySequence.cs](../../samples/KeyRoom/Scripts/KeySequence.cs)
 4. 출구의 `RoomExit`는 `contact.Session.Has("key")`를 확인하고 전환 문구와 함께 `LoadSceneAsync`로 다음 방을 요청한다. [씬 전환과 리소스 수명](scene-streaming.md)에서 추가 씬과 로딩 화면의 동작도 확인할 수 있다. 세션 플래그는 같은 Play의 씬 전환 동안 유지된다. 새 Play는 새 세션을 시작한다. 배포 시 목적지 씬도 **Included scenes**에 포함한다. [RoomExit.cs](../../samples/KeyRoom/Scripts/RoomExit.cs)

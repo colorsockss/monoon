@@ -30,10 +30,9 @@ public sealed partial class SceneGame
         {
             var copy = copies[source.Id];
             copy.SetParent(source.ParentId is Guid parent ? copies[parent] : null);
-            copy.Components = source.Components.Select(c=>c is Camera2DComponent { Follow: Guid link } cam && ids.TryGetValue(link,out var mapped)
+            copy.Components = source.Components.Select(c=>c is ScriptComponent sc ? sc with { InstanceIds = ids } : c is Camera2DComponent { Follow: Guid link } cam && ids.TryGetValue(link,out var mapped)
                 ? cam with { Follow=mapped } : c is Tilemap2DComponent { StreamTarget: Guid anchor } map && ids.TryGetValue(anchor,out var focus) ? map with { StreamTarget=focus } : c is DistanceJoint2DComponent { Connected: Guid endpoint } joint && ids.TryGetValue(endpoint, out var other)
                     ? joint with { Connected = other } : c).ToImmutableArray();
-            foreach (var script in copy.Components.OfType<ScriptComponent>()) script.InstanceIds = ids;
             if (source.Prefab is {} prefab)
                 copy.Prefab = prefab with { Instances = prefab.Instances.ToDictionary(p => p.Key,p => ids.GetValueOrDefault(p.Value,p.Value)) };
         }

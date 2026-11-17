@@ -17,3 +17,35 @@ Hierarchy에서 월드 오브젝트를 선택하고 Inspector의 **Transform**�
 **따라 해보기:** KeyRoom에서 Chest를 선택해 Rotation을 30, Scale을 (1.5, 0.75), Pivot을 (0.5, 0.5)로 바꾸고 Play한다. Chest Lid의 로컬 회전은 0인데 화면에서는 상자와 함께 기울어진다. Stop 후 Chest Lid를 Wall로 옮겨 보자. 로컬 회전은 30으로 바뀌지만 뚜껑은 같은 위치에 보인다. 원본 예제를 유지하려면 프로젝트 복사본에서 실습한다.
 
 [Mac 에디터의 저장·재열기 검증](../../engine/tests/results/transform-2d/README.md)
+
+## Play 중 변환과 부모 변경
+
+KeyRoom 첫 방에서 **E**로 상자를 열고 **C**로 코인을 든다. 방향키로 걸으면 코인이 플레이어를 따라간다. **C**를 다시 누르면 코인이 그 자리에 같은 각도와 크기로 남는다. 들었을 때와 내려놓았을 때 각각 **F5**로 저장한 뒤 상태를 바꾸고 **F9**를 눌러 보자. 내려놓은 코인에 닿으면 획득한다. 에디터에서 Stop을 누르면 원본 씬의 상자와 계층으로 돌아간다.
+
+스크립트는 `tick.Objects`로 월드 오브젝트의 현재 변환과 부모를 읽고 바꾼다. 아래 예제는 코인을 플레이어의 자식으로 붙이고 손에 들 각도와 크기를 지정한다. 내려놓을 때는 부모를 `null`로 바꾼다.
+
+```csharp
+var objects = tick.Objects;
+if (objects.SetParent(coin, tick.ObjectId, keepWorld: false) &&
+    objects.TryGetLocalTransform(coin, out var local))
+{
+    objects.SetLocalTransform(coin, local with
+    {
+        Position = new Vector2(56, -30),
+        Rotation = 30,
+        Scale = new Vector2(1.5f, 0.75f)
+    });
+}
+
+// 내려놓기 입력을 받았을 때
+objects.SetParent(coin, null, keepWorld: true);
+```
+
+| API | 동작 |
+| --- | --- |
+| `TryGetLocalTransform(id, out local)` | 현재 부모 기준 위치, 시계 방향 각도(도), 두 축의 배율과 기울기를 읽는다. 위치와 피벗은 Inspector와 같은 규칙을 쓴다. |
+| `SetLocalTransform(id, local)` | 같은 틱에 자손의 월드 변환과 충돌 도형도 갱신한다. `with`로 한 필드만 바꾸면 나머지 값이 유지된다. |
+| `TryGetParent(id, out parent)` | 오브젝트가 있으면 `true`를 반환한다. 씬 루트에 있는 오브젝트의 부모는 `null`이다. |
+| `SetParent(id, parent, keepWorld)` | 기본값 `true`는 월드 변환 전체를 보존한다. 새 부모의 축이 반전되거나 비균일하게 확대되면 필요한 로컬 기울기도 계산한다. `false`는 현재 로컬 변환을 새 부모에 그대로 적용한다. |
+
+순환 계층, 다른 씬 소속의 부모, 0배율처럼 역변환할 수 없는 변환을 지정하면 변경 함수는 `false`를 반환하고 기존 상태를 유지한다. 화면 UI 배치는 Rect와 앵커를 사용한다. 게임 저장에 포함할 오브젝트는 `TrackForSave`로 등록한다. [월드 저장](player-data.md#월드와-런타임-프리팹-저장) · [KeyRoom 실행 기록](../../engine/tests/results/runtime-transforms/README.md)

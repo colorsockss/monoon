@@ -1,0 +1,9 @@
+
+Microsoft Windows [Version 10.0.26100.1742]
+Building native-aot (Distribution) for win-x64 from C:\MNAudio78\samples\AudioLab
+Debug symbols: C:\MNAudio78\exports\Symbols\AudioLab\win-x64\native-aot\8d74dacbc59b4afb94878bab73180d19
+C:\MNAudio78\exports\NativeAOT\AudioLab-win-x64
+Launching release C:\MNAudio78\exports\AudioLab-win-x64\MoNoonPlayer.exe wasapi
+Recorded {'system': 'Windows-11-10.0.26100-SP0', 'machine': 'AMD64', 'mode': 'release', 'driver': 'wasapi', 'playerSha256': '51264bc2dc1d2ea2540b03e56520d82611fecd9245b9acb9697c30589461b27e', 'musicSha256': '7b8c4c6b524b4d1f8c4b72553b6adc5b3b2dd5f7e38dcf8ae134b5b4862b5e7e', 'framesBeforeF': 240640, 'capturedFrames': 276992}
+Launching native-aot C:\MNAudio78\exports\NativeAOT\AudioLab-win-x64\MoNoonPlayer.exe wasapi
+Recorded {'system': 'Windows-11-10.0.26100-SP0', 'machine': 'AMD64', 'mode': 'native-aot', 'driver': 'wasapi', 'playerSha256': 'd762e7aea01470732117d6030d01213b4987f58f6715be289abc5a130d26a18b', 'musicSha256': '7b8c4c6b524b4d1f8c4b72553b6adc5b3b2dd5f7e38dcf8ae134b5b4862b5e7e', 'framesBeforeF': 236544, 'capturedFrames': 268800}

@@ -7,10 +7,11 @@ using MoNoon.Dialogue;
 
 public sealed class InventoryWorkbench : GameBehaviour
 {
+    public Guid[] Choices = [];
     public ComponentReference<InventoryContainer> Container;
     public ComponentReference<QuestLog> Quests;
     public ComponentReference<DialoguePlayer> Merchant;
-    public Guid InventoryPanel, DialoguePanel, Speaker, Line, FirstChoice, SecondChoice, ThirdChoice, MoreChoices;
+    public Guid InventoryPanel, DialoguePanel, Speaker, Line, MoreChoices;
     public string QuestId = "herbalist";
     public Guid QuestTitle, QuestProgress, QuestButton;
     public Guid FirstSlot, SecondSlot, ThirdSlot, Selection, Status;
@@ -19,7 +20,6 @@ public sealed class InventoryWorkbench : GameBehaviour
     private QuestJournal journal;
     private CollectionQuest quest;
     private DialogueSession talk;
-    private Guid[] choices;
     private int page;
     private int selected;
 
@@ -29,7 +29,6 @@ public sealed class InventoryWorkbench : GameBehaviour
         journal = Quests.Resolve(life.Objects).Journal;
         quest = journal[QuestId];
         talk = Merchant.Resolve(life.Objects).Session;
-        choices = new[] { FirstChoice, SecondChoice, ThirdChoice };
         labels = new[] { FirstSlot, SecondSlot, ThirdSlot };
         if (bag.Capacity != labels.Length) throw new InvalidDataException("The workbench displays three inventory slots.");
         Show(life.Ui, "보급품을 골라 가방에 담으세요.");
@@ -45,6 +44,7 @@ public sealed class InventoryWorkbench : GameBehaviour
             if (tick.Input.Pressed("AddHerb")) Choose(0, tick.Ui);
             else if (tick.Input.Pressed("AddGem")) Choose(1, tick.Ui);
             else if (tick.Input.Pressed("AddKey")) Choose(2, tick.Ui);
+            else if (tick.Input.Pressed("FourthAnswer")) Choose(3, tick.Ui);
             else if (tick.Input.Pressed("Next")) NextChoices(tick.Ui);
             return;
         }
@@ -67,15 +67,17 @@ public sealed class InventoryWorkbench : GameBehaviour
 
     public void NextChoices(IGameUi ui)
     {
-        if (talk.Current == null || talk.Current.Choices.Count <= choices.Length) return;
-        page = (page + 1) % ((talk.Current.Choices.Count + choices.Length - 1) / choices.Length);
+        if (talk.Current == null || Choices.Length == 0 || talk.Current.Choices.Count <= Choices.Length) return;
+        page = (page + 1) % ((talk.Current.Choices.Count + Choices.Length - 1) / Choices.Length);
         Show(ui,"답변을 선택하세요.");
     }
 
-    public void Choose(int slot, IGameUi ui)
+    public void ChooseButton(Guid button, IGameUi ui) => Choose(Array.IndexOf(Choices, button), ui);
+
+    private void Choose(int slot, IGameUi ui)
     {
-        if (talk.Current == null || (uint)slot >= (uint)choices.Length) return;
-        int index = page * choices.Length + slot;
+        if (talk.Current == null || (uint)slot >= (uint)Choices.Length) return;
+        int index = page * Choices.Length + slot;
         if (index >= talk.Current.Choices.Count) return;
         string message = "";
         bool ok = talk.Choose(index, action =>
@@ -134,10 +136,15 @@ public sealed class InventoryWorkbench : GameBehaviour
     {
         try
         {
-            if (save) WorkbenchSave.Write(storage, bag, journal, talk);
-            else if (!WorkbenchSave.Read(storage, bag, journal, talk)) { Show(ui, "저장 기록이 없습니다."); return; }
-            else page = 0;
-            Show(ui, save ? "진행 상황을 저장했습니다." : "저장한 진행 상황을 불러왔습니다.");
+            if (save)
+            {
+                WorkbenchSave.Write(storage, bag, journal, talk);
+                Show(ui, "진행 상황을 저장했습니다.");
+                return;
+            }
+            if (!WorkbenchSave.Read(storage, bag, journal, talk, out bool recovered)) { Show(ui, "저장 기록이 없습니다."); return; }
+            page = 0;
+            Show(ui, recovered ? "직전 저장을 복구했습니다." : "저장한 진행 상황을 불러왔습니다.");
         }
         catch (Exception e) when (e is IOException or InvalidDataException or UnauthorizedAccessException)
         { Show(ui, "가방 저장 파일을 확인하세요."); }
@@ -152,13 +159,13 @@ public sealed class InventoryWorkbench : GameBehaviour
         {
             ui.SetText(Speaker, node.Speaker);
             ui.SetText(Line, node.Text);
-            for (int i = 0; i < choices.Length; i++)
+            for (int i = 0; i < Choices.Length; i++)
             {
-                int index = page * choices.Length + i;
-                ui.SetVisible(choices[i], index < node.Choices.Count);
-                if (index < node.Choices.Count) ui.SetText(choices[i], $"[{i+1}]   {node.Choices[index].Text}");
+                int index = page * Choices.Length + i;
+                ui.SetVisible(Choices[i], index < node.Choices.Count);
+                if (index < node.Choices.Count) ui.SetText(Choices[i], $"[{i+1}]   {node.Choices[index].Text}");
             }
-            ui.SetVisible(MoreChoices, node.Choices.Count > choices.Length);
+            ui.SetVisible(MoreChoices, Choices.Length > 0 && node.Choices.Count > Choices.Length);
         }
         for (int i = 0; i < labels.Length; i++)
         {

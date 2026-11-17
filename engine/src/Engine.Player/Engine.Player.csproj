@@ -10,6 +10,7 @@
   <Import Project="$(MoNoonGameReferences)" Condition="'$(MoNoonGameReferences)' != ''" />
   <ItemGroup>
     <ProjectReference Include="../Engine.Desktop/Engine.Desktop.csproj"/>
-    <None Update="MoNoonContent.version;MoNoonVorbis.version" CopyToPublishDirectory="PreserveNewest" CopyToOutputDirectory="PreserveNewest"/>
+    <None Update="MoNoonSdlPlayer.version;MoNoonContent.version;MoNoonShaderSheets.version;MoNoonVorbis.version" CopyToPublishDirectory="PreserveNewest" CopyToOutputDirectory="PreserveNewest"/>
   </ItemGroup>
+  <Import Project="PlayerDistribution.targets" />
 </Project>

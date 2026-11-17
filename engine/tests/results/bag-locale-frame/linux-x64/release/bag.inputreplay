@@ -1,0 +1,111 @@
+version: 1
+project: 64fb4cd6-2469-5cec-ba6d-9a49e61f42e7
+startScene: 64fb4cd6-2469-5cec-ba6d-9a49e61f42e7
+frameTicks:
+- 115051
+- 13348622
+- 1957111
+- 320885
+- 284934
+- 684110
+- 1495644
+- 288934
+- 274854
+- 272474
+- 282464
+- 304904
+- 349005
+- 358375
+- 350465
+- 345605
+- 338395
+- 337615
+- 421666
+- 502838
+- 1427772
+- 378546
+- 278344
+- 267054
+- 271564
+- 270084
+- 254944
+- 344085
+- 332225
+- 338175
+- 361015
+- 466747
+- 429946
+- 822693
+- 382326
+- 323495
+- 293004
+- 276204
+- 266564
+- 257424
+- 259874
+- 340575
+- 333795
+- 352925
+- 358645
+- 376466
+events:
+- frame: 0
+  timeTicks: 3993429
+  input:
+    kind: pointer
+    x: 400
+    y: 225
+- frame: 0
+  timeTicks: 4035930
+  input:
+    kind: reset
+- frame: 0
+  timeTicks: 4332773
+  input:
+    kind: reset
+- frame: 0
+  timeTicks: 4350293
+  input:
+    kind: pointer
+    x: -1
+    y: -1
+- frame: 0
+  timeTicks: 20790485
+  input:
+    kind: reset
+- frame: 5
+  timeTicks: 53242728
+  input:
+    kind: key
+    control: I
+    down: true
+- frame: 6
+  timeTicks: 55074265
+  input:
+    kind: key
+    control: I
+    down: false
+- frame: 19
+  timeTicks: 59514587
+  input:
+    kind: key
+    control: L
+    down: true
+- frame: 21
+  timeTicks: 61297086
+  input:
+    kind: key
+    control: L
+    down: false
+- frame: 32
+  timeTicks: 64942704
+  input:
+    kind: key
+    control: L
+    down: true
+- frame: 35
+  timeTicks: 66479119
+  input:
+    kind: key
+    control: L
+    down: false

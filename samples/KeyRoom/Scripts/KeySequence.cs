@@ -1,30 +1,31 @@
 using System;
 using Engine.Core;
+using System.Numerics;
+
+public enum DoorFrame { First, Last }
 
 public sealed class KeySequence : GameBehaviour
 {
-    public Guid Collector, KeyImage, Door, DoorCamera, PlayerCamera;
-    public SpriteReference OpenSprite;
+    public SpriteReference[] Frames = [];
+    public DoorFrame RestFrame = DoorFrame.Last;
+    public Vector2 Offset;
+    public Guid Collector, KeyImage, DoorCamera, PlayerCamera;
+    public event Action KeyAcquired;
     private GameTimer returnToPlayer;
 
-    private void OpenDoor(IGameObjects objects)
-    {
-        if (OpenSprite.Id == Guid.Empty || !objects.SetSprite(Door, OpenSprite) || !objects.SetColliderEnabled(Door, false))
-            throw new InvalidOperationException("KeySequence needs a door with a Sprite Renderer, an open sprite and a collider.");
-        objects.SetActive(KeyImage, false);
-    }
+    public SpriteReference OpenSprite => Frames.Length == 0 ? default : Frames[RestFrame == DoorFrame.First ? 0 : ^1];
 
     public override void OnCreate(ScriptLife life)
     {
-        if (life.Session.Has("key")) OpenDoor(life.Objects);
+        if (life.Session.Has("key")) life.Objects.SetActive(KeyImage, false);
     }
 
     public override void OnTriggerEnter(ScriptContact contact)
     {
         if (contact.OtherId != Collector || !contact.Session.Set("key")) return;
-        OpenDoor(contact.Objects);
-        contact.Objects.Animator(Door)?.PlayThenShowSprite();
-        contact.Objects.Audio.Play(Door);
+        contact.Objects.SetActive(KeyImage, false);
+        contact.Session.Log("Key acquired.");
+        KeyAcquired?.Invoke();
         contact.Cameras.TrySetActive(DoorCamera);
         returnToPlayer = contact.Session.Time.StartTimer(1);
     }

@@ -13,7 +13,7 @@ public partial class MainWindow
         if(project==null && !await Save())return;
         var live=Viewport.PlayWorld?.Ui.Preferences;
         var defaults=Scene.Settings.Accessibility;
-        var dialog=new Window {Title="UI Accessibility",Width=440,MinWidth=340,Height=live==null?410:225,MinHeight=205,WindowStartupLocation=WindowStartupLocation.CenterOwner,ShowInTaskbar=false};
+        var dialog=new Window {Title="UI Accessibility",Width=440,MinWidth=340,Height=live==null?442:225,MinHeight=205,WindowStartupLocation=WindowStartupLocation.CenterOwner,ShowInTaskbar=false};
         var panel=new StackPanel { Margin=new Thickness(14),Spacing=5 };dialog.Content=new ScrollViewer {Content=panel};
         void Row(string title,Control field, StackPanel? container=null)
         {
@@ -40,6 +40,7 @@ public partial class MainWindow
             return picker;
         }
         Guid? SelectedId(ComboBox picker)=>picker.SelectedItem is ObjectReference o && o.Id!=Guid.Empty ? o.Id : null;
+        var theme=Picker(p=>p.EndsWith(GameTable.Extension,StringComparison.Ordinal),Scene.Settings.UiTheme);
         var table=Picker(p=>p.EndsWith(GameTable.Extension,StringComparison.Ordinal),config.Table);
         var fallbackLocale=new TextBox {Text=config.FallbackLocale,MaxLength=64};
         var primary=Picker(GameLocalization.IsFont,config.DefaultFont);
@@ -57,7 +58,7 @@ public partial class MainWindow
         }
         if(live==null)
         {
-            Row("Text table",table);Row("Fallback locale",fallbackLocale);Row("Default font",primary);
+            Row("Button theme",theme);Row("Text table",table);Row("Fallback locale",fallbackLocale);Row("Default font",primary);
             panel.Children.Add(fontRows);
             foreach(var id in config.FallbackFonts??[])AddFallback(id);
             var add=new Button {Content="+ Fallback font"};add.Click+=(_,_)=>AddFallback(null);Row("",add);
@@ -72,6 +73,7 @@ public partial class MainWindow
             {
                 if(live==null)
                 {
+                    UiTheme.Load(project!,ProjectAssets.ReadManifest(project!),SelectedId(theme));
                     var fonts=fallbacks.Select(SelectedId).OfType<Guid>().ToArray();
                     selectedConfig=SelectedId(table)==null && SelectedId(primary)==null && fonts.Length==0 ? null :
                         new LocalizationSettings {Table=SelectedId(table),FallbackLocale=fallbackLocale.Text?.Trim()??"",
@@ -87,6 +89,6 @@ public partial class MainWindow
         if(!await dialog.ShowDialog<bool>(this))return;
         var edited=new UiDefaults(locale.Text!.Trim(),(float)size.Value!.Value/100,contrast.IsChecked==true);
         if(live!=null){live.Locale=edited.Locale;live.TextScale=edited.TextScale;live.HighContrast=edited.HighContrast;}
-        else {var settings=Scene.Settings with { Accessibility=edited, Localization=selectedConfig };settings.Save(project!);Scene.Settings=settings; MarkDirty();Viewport.InvalidateUi();}
+        else {var settings=Scene.Settings with { Accessibility=edited, Localization=selectedConfig, UiTheme=SelectedId(theme) };settings.Save(project!);Scene.Settings=settings; MarkDirty();Viewport.InvalidateUi();}
     }
 }

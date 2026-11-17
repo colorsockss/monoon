@@ -15,4 +15,5 @@ namespace Engine.Core;
 [JsonSerializable(typeof(DataReference))]
 [JsonSerializable(typeof(TableReference))]
 [JsonSerializable(typeof(double))]
+[JsonSerializable(typeof(Guid[]))]
 internal partial class GameJson : JsonSerializerContext;

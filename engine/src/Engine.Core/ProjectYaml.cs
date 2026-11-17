@@ -9,7 +9,10 @@ using VYaml.Serialization;
 namespace Engine.Core;
 
 [YamlObject]
-internal sealed partial record AssetMeta([property: YamlRequired] Guid Id, SheetSlice[]? Slices = null);
+internal sealed partial record AssetMeta([property: YamlRequired] Guid Id, SheetSlice[]? Slices = null, SheetInput[]? Inputs = null);
+
+[YamlObject]
+internal sealed partial record SheetInput(int Cell, Guid Sprite, string Hash);
 
 // The editor and both kinds of player use these same generated VYaml formatters.
 internal static class ProjectYaml

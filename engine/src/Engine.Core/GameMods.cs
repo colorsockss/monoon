@@ -32,7 +32,7 @@ public sealed class GameMods
 
     private static void ValidateId(string id)
     {
-        if (!ProjectImport.ValidName(id) || !id.All(c => char.IsAsciiLetterLower(c) || char.IsAsciiDigit(c) || c is '-' or '_'))
+        if (!ProjectAssets.ValidName(id) || !id.All(c => char.IsAsciiLetterLower(c) || char.IsAsciiDigit(c) || c is '-' or '_'))
             throw new InvalidDataException($"Invalid mod ID '{id}'. Use lowercase letters, digits, hyphens or underscores.");
     }
 
@@ -113,7 +113,7 @@ public sealed class GameMods
         {
             var entry = manifest.FirstOrDefault(e => e.Id == change?.Asset)
                 ?? throw new InvalidDataException($"{file}: unknown exported asset {change?.Asset}.");
-            if (!entry.Path.Split('/').All(ProjectImport.ValidName))
+            if (!entry.Path.Split('/').All(ProjectAssets.ValidName))
                 throw new InvalidDataException($"Invalid mod target in game manifest: {entry.Path}");
             byte[] content = (Path.GetExtension(entry.Path), change.Data, change.Table) switch
             {

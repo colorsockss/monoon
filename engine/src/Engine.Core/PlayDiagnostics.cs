@@ -56,9 +56,7 @@ public sealed partial class SceneGame
     {
         hit=null;
         if (Diagnostics?.Queries!=true || !byId.TryGetValue(origin,out var b) || !b.Active) return false;
-        Body? lens=null;
-        foreach (var c in (playback == null ? overlays.Reverse() : []).Append(ViewCamera))
-            if(c?.Active==true && Sample(c,1).Viewport.Contains((int)MathF.Floor(screen.X),(int)MathF.Floor(screen.Y))) { lens=c;break; }
+        var lens = CameraAt(screen, 1);
         if(lens==null)return false;
         var from=Vector2.Transform(b.Size*.5f,b.MatrixAt(b.Position));
         var delta=Sample(lens,1).ScreenToWorld(screen)-from;

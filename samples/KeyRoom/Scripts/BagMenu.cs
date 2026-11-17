@@ -7,21 +7,21 @@ public sealed class BagMenu : GameBehaviour
     public string Shortcut = "";
     public bool EquipCompass;
     public Guid StatusLabel, QuestionLabel, QuestLabel;
-    private (bool Equipped, bool HasKey, string Locale)? displayed;
+    private (bool Equipped, bool HasKey)? displayed;
 
     public override void UpdateUi(UiTick tick)
     {
         if (StatusLabel != Guid.Empty)
         {
             bool equipped = tick.Session.Has("compass");
-            var state = (Equipped: equipped, HasKey: tick.Session.Has("key"), Locale: tick.Ui.Preferences.Locale);
+            var state = (Equipped: equipped, HasKey: tick.Session.Has("key"));
             if (displayed != state)
             {
                 displayed = state;
                 var ui = tick.Ui;
-                ui.SetText(StatusLabel, string.Format(ui.Translate(equipped ? "bag.equipped" : "bag.stowed"), ui.Translate("item.compass")));
+                ui.SetTextKey(StatusLabel, equipped ? "bag.equipped" : "bag.stowed", "item.compass");
                 ui.SetTextKey(QuestionLabel, equipped ? "bag.stow" : "bag.equip");
-                ui.SetText(QuestLabel, string.Format(ui.Translate(state.HasKey ? "quest.key.done" : "quest.key.active"), ui.Translate("item.key")));
+                ui.SetTextKey(QuestLabel, state.HasKey ? "quest.key.done" : "quest.key.active", "item.key");
             }
         }
         if (Shortcut.Length > 0 && tick.Input.Pressed(Shortcut)) Select(tick.Ui, tick.Session);

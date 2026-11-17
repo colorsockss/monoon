@@ -20,7 +20,7 @@ rows:
 - key: door.open
   cells: ["OPEN", "열림"]
 - key: guide.chest
-  cells: ["Open the chest to find a coin.", "상자를 열어 동전을 찾으세요."]
+  cells: ["Chest: E. Carry/drop: C. Nudge: N.", "상자 E · 동전 들기/놓기 C · 이동 N"]
 - key: guide.key
   cells: ["Pick up the key to open the door.", "열쇠를 주우면 문이 열립니다."]
 - key: guide.title
@@ -81,6 +81,10 @@ rows:
   cells: ["Cancel", "취소"]
 - key: ui.close
   cells: ["Close", "닫기"]
+- key: guide.smaller
+  cells: ["Smaller text", "글자 작게"]
+- key: guide.larger
+  cells: ["Larger text", "글자 크게"]
 - key: ui.confirm
   cells: ["Confirm", "확인"]
 - key: ui.language

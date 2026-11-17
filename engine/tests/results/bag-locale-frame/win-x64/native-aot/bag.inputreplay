@@ -1,0 +1,114 @@
+version: 1
+project: 64fb4cd6-2469-5cec-ba6d-9a49e61f42e7
+startScene: 64fb4cd6-2469-5cec-ba6d-9a49e61f42e7
+frameTicks:
+- 10240
+- 2824440
+- 679800
+- 3043600
+- 2499690
+- 2898900
+- 1932920
+- 1610000
+- 1571770
+- 2343990
+- 3035300
+- 593500
+- 1520160
+- 2329180
+- 2009970
+- 3171750
+- 2272570
+- 204030
+- 1572470
+- 1743980
+- 1709700
+- 1544290
+- 1628390
+- 2019200
+- 1523890
+- 4044850
+- 227640
+- 1867950
+- 1719210
+- 1754370
+- 6447240
+- 223370
+- 638730
+- 1719240
+- 1772760
+- 1727960
+- 1879990
+- 1880540
+- 1715350
+- 1728160
+- 2407870
+events:
+- frame: 0
+  timeTicks: 15006030
+  input:
+    kind: reset
+- frame: 0
+  timeTicks: 15014160
+  input:
+    kind: pointer
+    x: 400
+    y: 249
+- frame: 10
+  timeTicks: 55766210
+  input:
+    kind: pointer
+    x: 115
+    y: 115
+- frame: 10
+  timeTicks: 56724200
+  input:
+    kind: pointer
+    control: Mouse.Left
+    down: true
+    x: 115
+    y: 115
+- frame: 11
+  timeTicks: 58294190
+  input:
+    kind: pointer
+    control: Mouse.Left
+    down: false
+    x: 115
+    y: 115
+- frame: 15
+  timeTicks: 65794300
+  input:
+    kind: key
+    control: I
+    down: true
+- frame: 16
+  timeTicks: 67664200
+  input:
+    kind: key
+    control: I
+    down: false
+- frame: 24
+  timeTicks: 81776180
+  input:
+    kind: key
+    control: L
+    down: true
+- frame: 25
+  timeTicks: 83336190
+  input:
+    kind: key
+    control: L
+    down: false
+- frame: 29
+  timeTicks: 90836180
+  input:
+    kind: key
+    control: L
+    down: true
+- frame: 30
+  timeTicks: 92556300
+  input:
+    kind: key
+    control: L
+    down: false

@@ -4,5 +4,7 @@ obj/
 /editor/
 /player-templates/
 /game-builds/
+/samples/dist/
 .DS_Store
 /.test-env/
+**/.monoon/ide/

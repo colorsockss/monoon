@@ -16,10 +16,9 @@ public sealed partial class SceneDocument
     public const int Width = 800;
     [Obsolete("Use Settings.Height for a project's game resolution.")]
     public const int Height = 450;
-    private const int CurrentVersion = 23;
-    public ProjectScripts OpenScripts(string root) => new(root);
-    internal ProjectScripts ResolveScripts(ProjectScripts? library) => library ??
-        OpenScripts(ProjectDirectory ?? throw new InvalidDataException("Save the project before running scripts."));
+    internal const int CurrentVersion = 25;
+    internal ScriptLibrary ResolveScripts(ScriptLibrary? library) => library ??
+        ScriptLibrary.Open(ProjectDirectory ?? throw new InvalidDataException("Save the project before running scripts."));
 
     [JsonRequired, YamlRequired] public int SchemaVersion { get; set; } = CurrentVersion;
     [JsonRequired, YamlRequired] public List<SceneObject> Objects { get; set; } = [];
@@ -116,20 +115,6 @@ public sealed partial class SceneDocument
         return scene;
     }
 
-    internal static SceneDocument ImportLegacy(JsonObject root, string project, Dictionary<string, string> scripts)
-    {
-        var version = root["schemaVersion"]?.Deserialize(GameJson.Default.Int32);
-        if (version is null or < 1 or > CurrentVersion) throw new InvalidDataException($"Unsupported scene version '{version}'.");
-        if (version < 5)
-            foreach (var item in new LegacySceneUpgrade(project).Convert(root, version.Value)) scripts[item.Key] = item.Value;
-        root["schemaVersion"] = CurrentVersion;
-        var scene = root.Deserialize(GameJson.Default.SceneDocument)!;
-        scene.Validate();
-        if (version < 4) scene.CreateCamera(new Vector2(400, 225));
-        scene.NormalizeCamera();
-        return scene;
-    }
-
     public void Save(string path)
     {
         Validate();
@@ -182,7 +167,7 @@ public sealed partial class SceneDocument
         }
     }
 
-    private void Validate()
+    internal void Validate()
     {
         if (SchemaVersion is < 6 or > CurrentVersion || Objects is null)
             throw new InvalidDataException($"Expected a version {CurrentVersion} scene with an objects list.");
@@ -192,9 +177,17 @@ public sealed partial class SceneDocument
                 !link.Instances.ContainsValue(obj.Id) || link.Instances.Values.Distinct().Count()!=link.Instances.Count ||
                 link.Baseline?.Keys.Any(id=>!link.Instances.ContainsKey(id))==true))
                 throw new InvalidDataException($"{obj.Name} has an invalid prefab object map.");
+        foreach (var script in Objects.SelectMany(o => o.Components).OfType<ScriptComponent>())
+            if (script.EventLinks is {} links && (links.Any(l => l == null || string.IsNullOrWhiteSpace(l.Event) ||
+                l.Target == Guid.Empty || !ScriptLibrary.ValidReference(l.Script) || string.IsNullOrWhiteSpace(l.Method)) ||
+                links.Distinct().Count() != links.Length))
+                throw new InvalidDataException($"{script.Script}: invalid or duplicate game event connection.");
         UpgradeHud();
         // Older readers must reject transformed scenes instead of silently flattening them.
-        SchemaVersion = Objects.Any(o => o.GetComponent<UiTextComponent>()?.TextKey is { Length: > 0 }) ? CurrentVersion :
+        SchemaVersion = Objects.Any(o => o.GetComponent<UiImageComponent>()?.Borders != null || o.GetComponent<UiButtonComponent>()?.Style != null ||
+            o.GetComponent<UiRectComponent>()?.ScaleHorizontalWithText == true) ? CurrentVersion :
+            Objects.SelectMany(o => o.Components).OfType<ScriptComponent>().Any(s => s.EventLinks is { Length: > 0 }) ? 24 :
+            Objects.Any(o => o.GetComponent<UiTextComponent>()?.TextKey is { Length: > 0 }) ? 23 :
             Objects.SelectMany(o => o.Components).Any(c => c is SortingGroup2DComponent or
                 SpriteRendererComponent { SortByY: true } or SpriteRendererComponent { FootOffset: not 0 }) ? 22 :
             Objects.Any(o => o.GetComponent<CutsceneDirectorComponent>() != null) ? 21 :
@@ -264,12 +257,15 @@ public sealed partial class SceneDocument
                     component is UiTextFieldComponent f && (f.MaxLength is <1 or >4096 || f.Value==null || f.Value.Contains('\n')) ||
                     component is UiTextComponent { Translations:{} translations } && translations.Any(p=>string.IsNullOrWhiteSpace(p.Key)||p.Value==null))
                     throw new InvalidDataException($"{obj.Name}: invalid UI layout, text field or translation.");
+                if (component is UiImageComponent { Borders: {} edges } panel && (panel.Sprite == null ||
+                    edges.Left < 0 || edges.Right < 0 || edges.Top < 0 || edges.Bottom < 0))
+                    throw new InvalidDataException($"{obj.Name}: 9-slice needs a PNG and nonnegative borders.");
                 if (component is UiRectComponent rect) ScreenUi.AnchorIndex(rect.Anchor);
                 if (component is UiImageComponent image && !SceneObject.TryColor(image.Color, out _) ||
                     component is UiTextComponent label && (!SceneObject.TryColor(label.Color, out _) || !float.IsFinite(label.Size) ||
                     label.Size is <= 0 or > 1024 || !float.IsFinite(label.InsetX) || !float.IsFinite(label.InsetY)))
                     throw new InvalidDataException($"'{obj.Name}' has an invalid UI color, size or inset.");
-                if (component is ScriptComponent script && (!ProjectScripts.ValidReference(script.Script) || script.Values == null))
+                if (component is ScriptComponent script && (!ScriptLibrary.ValidReference(script.Script) || script.Values == null))
                     throw new InvalidDataException($"'{obj.Name}' has an invalid script component.");
             }
         }

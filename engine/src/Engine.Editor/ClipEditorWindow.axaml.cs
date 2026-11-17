@@ -89,12 +89,6 @@ internal partial class ClipEditorWindow : Window
         AddCells.Click += async (_,_) => await ChooseCells();
         CloseButton.Click += (_,_) => Close(); SaveButton.Click += (_,_) => Save();
         ConfigureShortcuts();
-        Activated += (_,_) =>
-        {
-            try { SetCatalog(ProjectAssets.Scan(root)); }
-            catch (Exception ex) when (ex is IOException or InvalidDataException or UnauthorizedAccessException)
-            { StatusLine.Text = ex.Message; }
-        };
         SizeChanged += (_,_) => LayoutStage();
         StageScroll.SizeChanged += (_,_) => LayoutStage();
         Closing += (_,e) => {
@@ -114,15 +108,24 @@ internal partial class ClipEditorWindow : Window
         var atlases=assets.Entries.Where(e=>e.Path.EndsWith(SpriteAtlas.Extension) && File.Exists(Path.Combine(root,e.Path))).ToArray();
         if (images.SequenceEqual(fresh) && atlasFiles.SequenceEqual(atlases)) return;
         library=assets.Sprites(root); atlasFiles=atlases; sheets.Clear(); framePreview.ClearSprites();
-        if (IsVisible) CommitSeconds();
+
         var index = fresh.ToDictionary(p => p.Id);
         foreach (var id in bitmaps.Keys.Where(id => byId.GetValueOrDefault(id) != index.GetValueOrDefault(id)).ToArray())
         {
             bitmaps.Remove(id,out var stale); stale?.Dispose();
         }
         byId = index; images = fresh;
-        refreshing = true; SpriteBox.ItemsSource = images; refreshing = false;
-        if (IsVisible) { Pause(); Rebuild(); }
+        refreshing = true;
+        SpriteBox.ItemsSource = images;
+        if (selected >= 0) SpriteBox.SelectedItem = byId.GetValueOrDefault(frames[selected].Sprite);
+        refreshing = false;
+        if (IsVisible)
+        {
+            RefreshFrameImages();
+            openPicker?.RefreshBitmaps(images);
+            UpdateStatus();
+            Preview();
+        }
     }
     private void LayoutStage()
     {
@@ -197,6 +200,12 @@ internal partial class ClipEditorWindow : Window
     private void Rebuild()
     {
         axis = new(frames.Select(f => new SpriteFrame(f.Sprite, f.Parse(out var v) ? v : .1f)).ToArray());
+        RefreshFrameImages();
+        Select(selected,commit:false);
+    }
+
+    private void RefreshFrameImages()
+    {
         frameImages = frames.Select(FrameImage).ToArray();
         frameDraws = frames.Select((frame,i) =>
         {
@@ -207,7 +216,6 @@ internal partial class ClipEditorWindow : Window
         }).ToArray();
         Track.SetFrames(axis, frames.Select((f,i) => new ClipTimelineTrack.Cell(FrameName(f) + (f.Event == null ? "" : " · " + f.Event), frameImages[i],
             !f.Parse(out _) || frameImages[i] == null)).ToArray());
-        Select(selected,commit:false);
     }
     private IImage? FrameImage(Frame frame)
     {
@@ -324,13 +332,18 @@ internal partial class ClipEditorWindow : Window
         CommitSeconds(); slot = Math.Clamp(slot,0,frames.Count);
         Change(() => { frames.InsertRange(slot,added); selected = slot; });
     }
+    private SheetPickerWindow? openPicker;
     private async Task ChooseCells()
     {
         CommitSeconds();
         Pause();
         var frame = selected >= 0 ? frames[selected] : null;
         var picker = new SheetPickerWindow(root, images, BitmapFor, frame?.Sprite, frame?.Source);
-        if (await picker.ShowDialog<SheetPickerWindow.Choice?>(this) is not {} choice) return;
+        openPicker = picker;
+        SheetPickerWindow.Choice? choice;
+        try { choice = await picker.ShowDialog<SheetPickerWindow.Choice?>(this); }
+        finally { openPicker = null; }
+        if (choice == null) return;
         Change(() =>
         {
             if (choice.Replace)

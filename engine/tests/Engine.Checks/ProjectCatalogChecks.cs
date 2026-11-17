@@ -23,6 +23,8 @@ internal static class ProjectCatalogChecks
         void Check(bool ok,string msg){if(!ok)throw new Exception(msg);Console.WriteLine("PASS project: "+msg);}
         const string table="Assets/Loot.table",coin="Assets/Coin.prefab",scene="Scenes/KeyRoom.scene",rules="Assets/KeyRoomRules.data";
         var catalog=ProjectCatalog.Inspect(root);
+        Check(catalog.UsedBy("Assets/DoorOpen2.png").Any(l => l.Source == scene && l.Field.EndsWith("KeySequence.Frames[1]")),
+            "a script asset list reports the source field and index");
         Check(!catalog.Problems.Any(),string.Join("; ",catalog.Problems)+"KeyRoom has no unresolved saved references");
         Check(catalog.Uses(scene).Any(l=>l.Target==rules && l.Field.Contains("OpenChest.Rules")) && catalog.UsedBy(table).Any(l=>l.Source==coin && l.Field.Contains("LootTable")),"scene and prefab expose typed dependencies in both directions");
         Check(ProjectCatalog.Search(ProjectCatalog.Files(root),"t:sprite DOOR").Count()==5 && ProjectCatalog.Search(ProjectCatalog.Files(root),"t:script chest").Single()=="Scripts/OpenChest.cs","typed searches span project folders");

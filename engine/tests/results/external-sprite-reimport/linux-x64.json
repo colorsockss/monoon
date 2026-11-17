@@ -1,0 +1,125 @@
+{
+  "before": {
+    "pixels": {},
+    "secondsWaiting": 0.34,
+    "frames": [
+      [
+        "Frame 1 of 4   (0, 0) · 24 × 94 px",
+        "0.11",
+        "Assets/DoorSheet.png"
+      ],
+      [
+        "Frame 2 of 4   (24, 0) · 24 × 64 px",
+        "0.23",
+        "Assets/DoorSheet.png"
+      ],
+      [
+        "Frame 3 of 4   (24, 64) · 24 × 32 px",
+        "0.37",
+        "Assets/DoorSheet.png"
+      ],
+      [
+        "Frame 4 of 4   (0, 94) · 1 × 1 px",
+        "0.49",
+        "Assets/DoorSheet.png"
+      ]
+    ]
+  },
+  "live": {
+    "pixels": {
+      "project": 1024,
+      "scene": 745,
+      "clip": 41004,
+      "timeline": 342
+    },
+    "secondsWaiting": 2.07,
+    "frames": [
+      [
+        "Frame 1 of 4   (0, 0) · 24 × 94 px",
+        "0.11",
+        "Assets/DoorSheet.png"
+      ],
+      [
+        "Frame 2 of 4   (24, 0) · 24 × 64 px",
+        "0.23",
+        "Assets/DoorSheet.png"
+      ],
+      [
+        "Frame 3 of 4   (24, 64) · 24 × 32 px",
+        "0.37",
+        "Assets/DoorSheet.png"
+      ],
+      [
+        "Frame 4 of 4   (0, 94) · 1 × 1 px",
+        "0.49",
+        "Assets/DoorSheet.png"
+      ]
+    ]
+  },
+  "focus": {
+    "pixels": {
+      "project": 1024,
+      "scene": 745,
+      "clip": 41004,
+      "timeline": 342
+    },
+    "secondsWaiting": 0.3,
+    "frames": [
+      [
+        "Frame 1 of 4   (0, 0) · 24 × 94 px",
+        "0.11",
+        "Assets/DoorSheet.png"
+      ],
+      [
+        "Frame 2 of 4   (24, 0) · 24 × 64 px",
+        "0.23",
+        "Assets/DoorSheet.png"
+      ],
+      [
+        "Frame 3 of 4   (24, 64) · 24 × 32 px",
+        "0.37",
+        "Assets/DoorSheet.png"
+      ],
+      [
+        "Frame 4 of 4   (0, 94) · 1 × 1 px",
+        "0.49",
+        "Assets/DoorSheet.png"
+      ]
+    ]
+  },
+  "reopen": {
+    "pixels": {
+      "project": 1024,
+      "scene": 745,
+      "clip": 41004,
+      "timeline": 342
+    },
+    "secondsWaiting": 0.29,
+    "frames": [
+      [
+        "Frame 1 of 4   (0, 0) · 24 × 94 px",
+        "0.11",
+        "Assets/DoorSheet.png"
+      ],
+      [
+        "Frame 2 of 4   (24, 0) · 24 × 64 px",
+        "0.23",
+        "Assets/DoorSheet.png"
+      ],
+      [
+        "Frame 3 of 4   (24, 64) · 24 × 32 px",
+        "0.37",
+        "Assets/DoorSheet.png"
+      ],
+      [
+        "Frame 4 of 4   (0, 94) · 1 × 1 px",
+        "0.49",
+        "Assets/DoorSheet.png"
+      ]
+    ]
+  },
+  "asset": "cc19244c-3e31-5d09-8c09-f934790a4e27",
+  "clipSha256": "c3ad3754e562772a5e0f78fe8a1ae51cc20aff74459cb52fb75954f090c1ec9e",
+  "sceneUnchanged": true,
+  "draftPreserved": true
+}
