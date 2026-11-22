@@ -24,4 +24,18 @@
 
 - 이번 기록은 실제 창의 키보드·패드 이벤트가 아니라 재생 입력이다. 배포 게임 창에서 Esc가 게임을 끝내지 않고 입력 대기를 취소하는 경로와 에디터 Scene 패널에서 Esc를 누르는 경우는 실행하지 않았다.
 - 물리 게임패드는 사용하지 않았다.
-- Windows x64와 Linux x64에서는 실행하지 않았다.
+- Windows x64와 Linux x64 게스트의 에디터 Scene Play는 원래 검사로는 실패했다. 아래 절을 참고한다.
+
+## Windows x64와 Linux x64 게스트
+
+2026-11-23, 이 Mac의 QEMU(TCG) 게스트에서 실행했다. 관찰 스크립트를 붙인 같은 사본을 각 게스트에서 Release와 Native AOT(distribution)로 빌드했다. 에디터는 이 브랜치로 만든 Windows·Linux 패키지다. Linux 에디터는 Xvfb에서 실행했다. [게스트 환경과 실행 방법](../x64-guest-10.2-10.8/README.md)
+
+| 게스트 | Release | Native AOT | 에디터 Scene Play | Scene Play 진단(추가 씬 대기 200 ms) |
+| --- | --- | --- | --- | --- |
+| Windows 11 x64 | 12개 통과 | 12개 통과 | **실패** (2개 통과 후 `C swaps with Carry coin…`) | 12개 통과 |
+| Debian 12 x64 | 12개 통과 | 12개 통과 | **실패** (같은 항목) | 12개 통과 |
+
+- 통과한 여섯 실행의 `rebind.trace`·`restart.trace`·`restored.trace`·`rebind.player.settings`는 위 macOS 기록과 바이트 단위로 같았다. [실행별 해시](x64/runs.tsv)
+- Scene Play 실패는 두 OS에서 같은 기록을 남겼다. 70프레임의 **Enter**와 80프레임의 **C**가 반영되지 않았고, 90프레임의 **Enter**에서야 입력 대기가 시작됐다. **K**(5프레임)로 연 조작키 화면이 그때까지 읽히는 중이었던 것으로 보인다(아래 진단 참고). 이후 C·E 교환 없이 기록이 진행됐다. [Windows 기록](x64/win-x64-scene-play-rebind.trace) · [Linux 기록](x64/linux-x64-scene-play-rebind.trace)
+- 관찰 스크립트는 추가 씬을 읽는 동안 재생 프레임마다 실제 시간 20 ms를 기다린다. 에디터의 재생은 프레임을 연달아 실행하므로 65프레임 동안 약 1.3초를 준다. 에뮬레이션된 에디터에서는 씬을 읽는 데 그보다 오래 걸렸다. 독립 플레이어에서는 같은 대기로 충분했다. 진단을 위해 게스트 사본에서만 대기를 200 ms로 늘리자 두 OS 모두 12개 항목을 통과했고, 기록과 설정 파일이 macOS와 바이트 단위로 같았다. 저장소의 관찰 스크립트는 바꾸지 않았다. 따라서 원래 검사의 Windows·Linux Scene Play는 통과로 기록하지 않는다.
+- 이 실행은 재생 입력이다. 실제 키보드·패드, 물리 GPU, 실제 PC의 에디터 속도는 확인하지 않았다.

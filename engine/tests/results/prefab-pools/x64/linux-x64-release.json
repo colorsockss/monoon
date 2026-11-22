@@ -1,0 +1,38 @@
+{
+  "pool": {
+    "mode": "pool",
+    "ticks": 1800,
+    "fired": 7200,
+    "hits": 2338,
+    "exits": 2338,
+    "active": 503,
+    "created": 587,
+    "reused": 6721,
+    "returned": 6805,
+    "frames": 1199,
+    "mean_us": 2415.0,
+    "p95_us": 3181.0,
+    "max_us": 127449.9,
+    "bytes_per_frame": 57623,
+    "bytes_total": 69090432,
+    "gen0": 8
+  },
+  "instantiate": {
+    "mode": "instantiate",
+    "ticks": 1800,
+    "fired": 7200,
+    "hits": 2338,
+    "exits": 2338,
+    "active": 503,
+    "created": 7308,
+    "reused": 0,
+    "returned": 108,
+    "frames": 1199,
+    "mean_us": 11845.2,
+    "p95_us": 17288.1,
+    "max_us": 41600.3,
+    "bytes_per_frame": 839120,
+    "bytes_total": 1006104336,
+    "gen0": 129
+  }
+}

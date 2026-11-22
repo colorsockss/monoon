@@ -1,0 +1,9 @@
+platform	target	status	rebind.trace	restart.trace	restored.trace	rebind.player.settings	all four equal to macOS
+win-x64	release	pass	00f4ae3b181cb529	4cd05b3bb4089697	b83730c3a35f27aa	05485eb75eb2e0c3	True
+win-x64	native-aot	pass	00f4ae3b181cb529	4cd05b3bb4089697	b83730c3a35f27aa	05485eb75eb2e0c3	True
+win-x64	scene-play	fail	f1c5590acd211321	f3f52fd9871b2d5f	b83730c3a35f27aa	e9a7da08490f0a9a	False
+win-x64	scene-play-wait200	pass	00f4ae3b181cb529	4cd05b3bb4089697	b83730c3a35f27aa	05485eb75eb2e0c3	True
+linux-x64	release	pass	00f4ae3b181cb529	4cd05b3bb4089697	b83730c3a35f27aa	05485eb75eb2e0c3	True
+linux-x64	native-aot	pass	00f4ae3b181cb529	4cd05b3bb4089697	b83730c3a35f27aa	05485eb75eb2e0c3	True
+linux-x64	scene-play	fail	f1c5590acd211321	f3f52fd9871b2d5f	b83730c3a35f27aa	e9a7da08490f0a9a	False
+linux-x64	scene-play-wait200	pass	00f4ae3b181cb529	4cd05b3bb4089697	b83730c3a35f27aa	05485eb75eb2e0c3	True

@@ -19,11 +19,19 @@
 | 환경 | Scene Play | Release | Native AOT |
 | --- | --- | --- | --- |
 | macOS 27.0.1 arm64 | 7/7 | 7/7 | 7/7 |
+| Windows 11 Enterprise LTSC x64 · QEMU | 7/7 | 7/7 | 7/7 |
+| Debian 12 x64 · QEMU | 7/7 | 7/7 | 7/7 |
 
-세 실행 모두 132행의 기록이 같았다. 기록 SHA-256은 `c747efb9…2c1b4`, 결과 파일은 `ae5d49b4…30c42`다. [실행별 해시](runs.tsv). Release와 Native AOT는 배포 프로필로 빌드하고 플레이어의 헤드리스 입력 재생으로 실행했다. 이 실행은 화면을 렌더링하지 않는다. 따라서 그림은 엔진이 그릴 타일 번호(`TileInfo.Display`)로 검사했다. 배포본에는 SkiaSharp 파일이 없었다.
+아홉 실행 모두 132행의 기록이 같았다. 기록 SHA-256은 `c747efb9…2c1b4`, 결과 파일은 `ae5d49b4…30c42`다. [실행별 해시](runs.tsv). Release와 Native AOT는 배포 프로필로 빌드하고 플레이어의 헤드리스 입력 재생으로 실행했다. 이 실행은 화면을 렌더링하지 않는다. 따라서 그림은 엔진이 그릴 타일 번호(`TileInfo.Display`)로 검사했다. 배포본에는 SkiaSharp 파일이 없었다.
 
 Scene Play는 이 브랜치에서 빌드한 `editor/MoNoon.app`으로 실행했다. 먼저 Tileset 창에서 진흙 타일을 `bog` / 9로 저장하고 다시 열어 값을 확인한 뒤 `mud` / 12로 되돌렸다. 380px과 700px 너비에서 **Terrain** 입력의 왼쪽 끝은 **Collision** 선택 상자와 맞았고, **Cost**와 **Save Tileset**은 창 안에 있었다. [380px 화면](tileset-terrain.png)
 
-기존 [SeedLab 배달원 길찾기](../grid-navigation/README.md)의 여섯 경로도 같은 Mac에서 다시 실행했다. Scene Play·Release·Native AOT의 `result.json` SHA-256은 모두 기록된 값 `d80dc873…67295`와 일치했다(160, 100, 148, 100, 108, 120). Windows와 Linux에서는 실행하지 않았다.
+기존 [SeedLab 배달원 길찾기](../grid-navigation/README.md)의 여섯 경로도 같은 Mac에서 다시 실행했다. Scene Play·Release·Native AOT의 `result.json` SHA-256은 모두 기록된 값 `d80dc873…67295`와 일치했다(160, 100, 148, 100, 108, 120). 2026-11-23에는 Windows·Linux 게스트에서도 실행했다. Release와 Native AOT는 각 게스트에서 빌드했다. 여섯 경로의 결과 파일 SHA-256은 네 실행 모두 `d80dc873…67295`였고 기록은 88행이었다. 이번에는 GridNavigation의 Scene Play는 실행하지 않았다.
+
+### Windows x64와 Linux x64 게스트
+
+2026-11-23, 이 Mac의 QEMU(TCG) 게스트에서 Mac에서 준비한 사본을 각 게스트에서 Release와 Native AOT(distribution)로 빌드해 헤드리스로 재생했다. Scene Play는 각 게스트의 패키지 에디터(Linux는 Xvfb)에서 위 Mac과 같은 Tileset 편집 단계를 거쳐 실행했다. 여섯 실행 모두 일곱 경우의 걸음·비용(16/160, 12/450, 10/100, 11/444, 10/108, 14/470, 10/100)과 기록·결과 파일 해시가 macOS와 같았다. [실행별 해시](runs.tsv) · [게스트 환경과 실행 방법](../x64-guest-10.2-10.8/README.md)
+
+두 게스트의 Tileset 창에서도 `bog` / 9 저장·재열기와 `mud` / 12 복원이 끝났다. 380px 너비에서 **Terrain** 입력의 왼쪽 끝이 **Collision** 선택 상자와 맞았고 **Cost**와 **Save Tileset**이 창 안에 있었다. [Windows 380px](x64/win-x64-tileset-380.png) · [Linux 380px](x64/linux-x64-tileset-380.png). 독립 게임은 렌더링하지 않는 헤드리스 재생이고 물리 GPU에서 실행하지 않았다.
 
 엔진 단위 검사는 `./monoon test`의 `tile terrain` 항목이다. 타일셋 저장·재로드, 기본 비용, 음수 비용 거부, 셀 읽기·쓰기, 쓰기 직후의 충돌과 그리드 비용, 걷는 중 재탐색을 확인한다. 스트리밍 청크에서 바꾼 셀의 이웃 연결 그림과 청크를 다시 올렸을 때의 복원도 검사한다. [TileTerrainChecks.cs](../../Engine.Checks/TileTerrainChecks.cs)

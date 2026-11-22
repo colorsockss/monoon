@@ -1,0 +1,2282 @@
+{
+ "host": {
+  "rid": "linux-x64",
+  "platform": "Linux-6.1.0-56-cloud-amd64-x86_64-with-glibc2.36",
+  "machine": "x86_64",
+  "python": "3.11.2"
+ },
+ "rebinding-release": {
+  "status": "pass",
+  "rebind.trace": "00f4ae3b181cb529920d9f3d907ac1c937402085c656334f8b389ef024b29c19",
+  "restart.trace": "4cd05b3bb4089697004dce2ca80313e8f87917436c54b373151c7ada52736faa",
+  "restored.trace": "b83730c3a35f27aa90ab123ee266a1f13675e2fa4c7337859facb9d746c43dce",
+  "rebind.player.settings": "05485eb75eb2e0c31968956efc725ecb4039e33ec70387bbd59e7324e9774359",
+  "restart.player.settings": "622b960d41e3764e34d05c678cf269f35af8d9fa4137c8d5f5d90aba0f2c5dd6",
+  "restored.player.settings": "622b960d41e3764e34d05c678cf269f35af8d9fa4137c8d5f5d90aba0f2c5dd6",
+  "seconds": 49
+ },
+ "rebinding-native-aot": {
+  "status": "pass",
+  "rebind.trace": "00f4ae3b181cb529920d9f3d907ac1c937402085c656334f8b389ef024b29c19",
+  "restart.trace": "4cd05b3bb4089697004dce2ca80313e8f87917436c54b373151c7ada52736faa",
+  "restored.trace": "b83730c3a35f27aa90ab123ee266a1f13675e2fa4c7337859facb9d746c43dce",
+  "rebind.player.settings": "05485eb75eb2e0c31968956efc725ecb4039e33ec70387bbd59e7324e9774359",
+  "restart.player.settings": "622b960d41e3764e34d05c678cf269f35af8d9fa4137c8d5f5d90aba0f2c5dd6",
+  "restored.player.settings": "622b960d41e3764e34d05c678cf269f35af8d9fa4137c8d5f5d90aba0f2c5dd6",
+  "seconds": 466
+ },
+ "rebinding-scene-play": {
+  "status": "fail",
+  "error": "Traceback (most recent call last):\n  File \"/run/keys96/v102/run/guest.py\", line 42, in wrap\n    detail = fn() or {}\n             ^^^^\n  File \"/run/keys96/v102/run/guest.py\", line 111, in _\n    script('KeyRoom.Rebinding', 'editor.py', editor, reb, base / 'probes/EditorProbe.dll', out)\n  File \"/run/keys96/v102/run/guest.py\", line 73, in script\n    runpy.run_path(sys.argv[0], run_name='__main__')\n  File \"<frozen runpy>\", line 291, in run_path\n  File \"<frozen runpy>\", line 98, in _run_module_code\n  File \"<frozen runpy>\", line 88, in _run_code\n  File \"/run/keys96/v102/run/qa/KeyRoom.Rebinding/editor.py\", line 18, in <module>\n    check(out)\n  File \"/run/keys96/v102/run/qa/KeyRoom.Rebinding/verify.py\", line 77, in check\n    expect(any(r['interact'] == 'C,Space,Pad.South' and r['carry'] == 'E' and 'Interact: C' in r['hint'] for _, r in run),\n  File \"/run/keys96/v102/run/qa/KeyRoom.Rebinding/verify.py\", line 69, in expect\n    raise SystemExit('FAIL ' + message)\nSystemExit: FAIL C swaps with Carry coin and the prompt shows C\n",
+  "seconds": 59
+ },
+ "prefab-editor": {
+  "status": "pass",
+  "editor.txt": "edited   source without lock; Chest 1: lock 0, sound 0; Chest 2: lock 1, sound 1; Chest 3: lock 0, sound 0\nlisted   Chest 2 · audioSource (added) | Lock (added object)\napplied  source lock; Chest 1: lock 1, sound 0; Chest 2: lock 1, sound 1; Chest 3: lock 1, sound 0\nundo     source without lock; Chest 1: lock 0, sound 0; Chest 2: lock 1, sound 1; Chest 3: lock 0, sound 0\nredo     source lock; Chest 1: lock 1, sound 0; Chest 2: lock 1, sound 1; Chest 3: lock 1, sound 0\nreopened Chest 2 · audioSource (added)\n",
+  "seconds": 53
+ },
+ "prefab-release": {
+  "status": "pass",
+  "result": {
+   "chests": [
+    {
+     "x": 210,
+     "locks": 1,
+     "sound": 0
+    },
+    {
+     "x": 370,
+     "locks": 1,
+     "sound": 1
+    },
+    {
+     "x": 530,
+     "locks": 1,
+     "sound": 0
+    }
+   ]
+  },
+  "result.json": "15d9e2496a5c18258c33addaa1799191849158a619451cc3bf9251f6bf9f2cfd",
+  "seconds": 36
+ },
+ "prefab-native-aot": {
+  "status": "pass",
+  "result": {
+   "chests": [
+    {
+     "x": 210,
+     "locks": 1,
+     "sound": 0
+    },
+    {
+     "x": 370,
+     "locks": 1,
+     "sound": 1
+    },
+    {
+     "x": 530,
+     "locks": 1,
+     "sound": 0
+    }
+   ]
+  },
+  "result.json": "15d9e2496a5c18258c33addaa1799191849158a619451cc3bf9251f6bf9f2cfd",
+  "seconds": 455
+ },
+ "datalist-release": {
+  "status": "pass",
+  "result": {
+   "selectedBeforeSort": "item-0042",
+   "indexAfterSort": 651,
+   "used": [
+    "item-0042",
+    "item-0162"
+   ],
+   "rowObjects": 11,
+   "items": 1000
+  },
+  "slot-002.save": "8be2deb63a8a8bfdf2a49c2732b24e6765655bd9a8764a6655d5ded242697819",
+  "seconds": 56
+ },
+ "herbalist-release": {
+  "status": "pass",
+  "save": "eed41defcbd7987a527deb677c60da8151ad0de1616c717c646e92b26e70f795",
+  "bytes": 171,
+  "expected": "eed41defcbd7987a527deb677c60da8151ad0de1616c717c646e92b26e70f795",
+  "seconds": 11
+ },
+ "datalist-native-aot": {
+  "status": "pass",
+  "result": {
+   "selectedBeforeSort": "item-0042",
+   "indexAfterSort": 651,
+   "used": [
+    "item-0042",
+    "item-0162"
+   ],
+   "rowObjects": 11,
+   "items": 1000
+  },
+  "slot-002.save": "8be2deb63a8a8bfdf2a49c2732b24e6765655bd9a8764a6655d5ded242697819",
+  "seconds": 471
+ },
+ "herbalist-native-aot": {
+  "status": "pass",
+  "save": "eed41defcbd7987a527deb677c60da8151ad0de1616c717c646e92b26e70f795",
+  "bytes": 171,
+  "expected": "eed41defcbd7987a527deb677c60da8151ad0de1616c717c646e92b26e70f795",
+  "seconds": 4
+ },
+ "terrain-release": {
+  "status": "pass",
+  "trace.txt": "c747efb932efb54ff42229022085e42d6fa190c308ea873bd7fd7b42fbd2c1b4",
+  "result.json": "ae5d49b4615d8153296c43e80c4aa863f4ef0fab289819544ff51c5a23b30c42",
+  "result": {
+   "four-closed": {
+    "steps": 16,
+    "cost": 160,
+    "cells": [
+     [
+      1,
+      4
+     ],
+     [
+      2,
+      4
+     ],
+     [
+      2,
+      3
+     ],
+     [
+      2,
+      2
+     ],
+     [
+      2,
+      1
+     ],
+     [
+      3,
+      1
+     ],
+     [
+      4,
+      1
+     ],
+     [
+      5,
+      1
+     ],
+     [
+      6,
+      1
+     ],
+     [
+      7,
+      1
+     ],
+     [
+      8,
+      1
+     ],
+     [
+      9,
+      1
+     ],
+     [
+      10,
+      1
+     ],
+     [
+      11,
+      1
+     ],
+     [
+      11,
+      2
+     ],
+     [
+      11,
+      3
+     ],
+     [
+      11,
+      4
+     ]
+    ]
+   },
+   "four-painted": {
+    "steps": 12,
+    "cost": 450,
+    "cells": [
+     [
+      1,
+      4
+     ],
+     [
+      2,
+      4
+     ],
+     [
+      3,
+      4
+     ],
+     [
+      4,
+      4
+     ],
+     [
+      5,
+      4
+     ],
+     [
+      5,
+      5
+     ],
+     [
+      6,
+      5
+     ],
+     [
+      7,
+      5
+     ],
+     [
+      7,
+      4
+     ],
+     [
+      8,
+      4
+     ],
+     [
+      9,
+      4
+     ],
+     [
+      10,
+      4
+     ],
+     [
+      11,
+      4
+     ]
+    ]
+   },
+   "four-open-painted": {
+    "steps": 10,
+    "cost": 100,
+    "cells": [
+     [
+      1,
+      4
+     ],
+     [
+      2,
+      4
+     ],
+     [
+      3,
+      4
+     ],
+     [
+      4,
+      4
+     ],
+     [
+      5,
+      4
+     ],
+     [
+      6,
+      4
+     ],
+     [
+      7,
+      4
+     ],
+     [
+      8,
+      4
+     ],
+     [
+      9,
+      4
+     ],
+     [
+      10,
+      4
+     ],
+     [
+      11,
+      4
+     ]
+    ]
+   },
+   "eight-painted": {
+    "steps": 11,
+    "cost": 444,
+    "cells": [
+     [
+      1,
+      4
+     ],
+     [
+      2,
+      4
+     ],
+     [
+      3,
+      4
+     ],
+     [
+      4,
+      4
+     ],
+     [
+      5,
+      4
+     ],
+     [
+      5,
+      5
+     ],
+     [
+      6,
+      5
+     ],
+     [
+      7,
+      5
+     ],
+     [
+      8,
+      4
+     ],
+     [
+      9,
+      4
+     ],
+     [
+      10,
+      4
+     ],
+     [
+      11,
+      4
+     ]
+    ]
+   },
+   "eight-dry-mud": {
+    "steps": 10,
+    "cost": 108,
+    "cells": [
+     [
+      1,
+      4
+     ],
+     [
+      2,
+      4
+     ],
+     [
+      3,
+      4
+     ],
+     [
+      4,
+      4
+     ],
+     [
+      5,
+      5
+     ],
+     [
+      6,
+      5
+     ],
+     [
+      7,
+      5
+     ],
+     [
+      8,
+      4
+     ],
+     [
+      9,
+      4
+     ],
+     [
+      10,
+      4
+     ],
+     [
+      11,
+      4
+     ]
+    ]
+   },
+   "four-live-paint": {
+    "steps": 14,
+    "cost": 470,
+    "cells": [
+     [
+      1,
+      4
+     ],
+     [
+      2,
+      4
+     ],
+     [
+      2,
+      3
+     ],
+     [
+      3,
+      3
+     ],
+     [
+      3,
+      4
+     ],
+     [
+      4,
+      4
+     ],
+     [
+      5,
+      4
+     ],
+     [
+      5,
+      5
+     ],
+     [
+      6,
+      5
+     ],
+     [
+      7,
+      5
+     ],
+     [
+      7,
+      4
+     ],
+     [
+      8,
+      4
+     ],
+     [
+      9,
+      4
+     ],
+     [
+      10,
+      4
+     ],
+     [
+      11,
+      4
+     ]
+    ],
+    "changedAt": [
+     2,
+     3
+    ]
+   },
+   "four-live-door": {
+    "steps": 10,
+    "cost": 100,
+    "cells": [
+     [
+      1,
+      4
+     ],
+     [
+      2,
+      4
+     ],
+     [
+      3,
+      4
+     ],
+     [
+      4,
+      4
+     ],
+     [
+      5,
+      4
+     ],
+     [
+      6,
+      4
+     ],
+     [
+      7,
+      4
+     ],
+     [
+      8,
+      4
+     ],
+     [
+      9,
+      4
+     ],
+     [
+      10,
+      4
+     ],
+     [
+      11,
+      4
+     ]
+    ],
+    "changedAt": [
+     3,
+     4
+    ]
+   }
+  },
+  "seconds": 27
+ },
+ "terrain-native-aot": {
+  "status": "pass",
+  "trace.txt": "c747efb932efb54ff42229022085e42d6fa190c308ea873bd7fd7b42fbd2c1b4",
+  "result.json": "ae5d49b4615d8153296c43e80c4aa863f4ef0fab289819544ff51c5a23b30c42",
+  "result": {
+   "four-closed": {
+    "steps": 16,
+    "cost": 160,
+    "cells": [
+     [
+      1,
+      4
+     ],
+     [
+      2,
+      4
+     ],
+     [
+      2,
+      3
+     ],
+     [
+      2,
+      2
+     ],
+     [
+      2,
+      1
+     ],
+     [
+      3,
+      1
+     ],
+     [
+      4,
+      1
+     ],
+     [
+      5,
+      1
+     ],
+     [
+      6,
+      1
+     ],
+     [
+      7,
+      1
+     ],
+     [
+      8,
+      1
+     ],
+     [
+      9,
+      1
+     ],
+     [
+      10,
+      1
+     ],
+     [
+      11,
+      1
+     ],
+     [
+      11,
+      2
+     ],
+     [
+      11,
+      3
+     ],
+     [
+      11,
+      4
+     ]
+    ]
+   },
+   "four-painted": {
+    "steps": 12,
+    "cost": 450,
+    "cells": [
+     [
+      1,
+      4
+     ],
+     [
+      2,
+      4
+     ],
+     [
+      3,
+      4
+     ],
+     [
+      4,
+      4
+     ],
+     [
+      5,
+      4
+     ],
+     [
+      5,
+      5
+     ],
+     [
+      6,
+      5
+     ],
+     [
+      7,
+      5
+     ],
+     [
+      7,
+      4
+     ],
+     [
+      8,
+      4
+     ],
+     [
+      9,
+      4
+     ],
+     [
+      10,
+      4
+     ],
+     [
+      11,
+      4
+     ]
+    ]
+   },
+   "four-open-painted": {
+    "steps": 10,
+    "cost": 100,
+    "cells": [
+     [
+      1,
+      4
+     ],
+     [
+      2,
+      4
+     ],
+     [
+      3,
+      4
+     ],
+     [
+      4,
+      4
+     ],
+     [
+      5,
+      4
+     ],
+     [
+      6,
+      4
+     ],
+     [
+      7,
+      4
+     ],
+     [
+      8,
+      4
+     ],
+     [
+      9,
+      4
+     ],
+     [
+      10,
+      4
+     ],
+     [
+      11,
+      4
+     ]
+    ]
+   },
+   "eight-painted": {
+    "steps": 11,
+    "cost": 444,
+    "cells": [
+     [
+      1,
+      4
+     ],
+     [
+      2,
+      4
+     ],
+     [
+      3,
+      4
+     ],
+     [
+      4,
+      4
+     ],
+     [
+      5,
+      4
+     ],
+     [
+      5,
+      5
+     ],
+     [
+      6,
+      5
+     ],
+     [
+      7,
+      5
+     ],
+     [
+      8,
+      4
+     ],
+     [
+      9,
+      4
+     ],
+     [
+      10,
+      4
+     ],
+     [
+      11,
+      4
+     ]
+    ]
+   },
+   "eight-dry-mud": {
+    "steps": 10,
+    "cost": 108,
+    "cells": [
+     [
+      1,
+      4
+     ],
+     [
+      2,
+      4
+     ],
+     [
+      3,
+      4
+     ],
+     [
+      4,
+      4
+     ],
+     [
+      5,
+      5
+     ],
+     [
+      6,
+      5
+     ],
+     [
+      7,
+      5
+     ],
+     [
+      8,
+      4
+     ],
+     [
+      9,
+      4
+     ],
+     [
+      10,
+      4
+     ],
+     [
+      11,
+      4
+     ]
+    ]
+   },
+   "four-live-paint": {
+    "steps": 14,
+    "cost": 470,
+    "cells": [
+     [
+      1,
+      4
+     ],
+     [
+      2,
+      4
+     ],
+     [
+      2,
+      3
+     ],
+     [
+      3,
+      3
+     ],
+     [
+      3,
+      4
+     ],
+     [
+      4,
+      4
+     ],
+     [
+      5,
+      4
+     ],
+     [
+      5,
+      5
+     ],
+     [
+      6,
+      5
+     ],
+     [
+      7,
+      5
+     ],
+     [
+      7,
+      4
+     ],
+     [
+      8,
+      4
+     ],
+     [
+      9,
+      4
+     ],
+     [
+      10,
+      4
+     ],
+     [
+      11,
+      4
+     ]
+    ],
+    "changedAt": [
+     2,
+     3
+    ]
+   },
+   "four-live-door": {
+    "steps": 10,
+    "cost": 100,
+    "cells": [
+     [
+      1,
+      4
+     ],
+     [
+      2,
+      4
+     ],
+     [
+      3,
+      4
+     ],
+     [
+      4,
+      4
+     ],
+     [
+      5,
+      4
+     ],
+     [
+      6,
+      4
+     ],
+     [
+      7,
+      4
+     ],
+     [
+      8,
+      4
+     ],
+     [
+      9,
+      4
+     ],
+     [
+      10,
+      4
+     ],
+     [
+      11,
+      4
+     ]
+    ],
+    "changedAt": [
+     3,
+     4
+    ]
+   }
+  },
+  "seconds": 446
+ },
+ "terrain-scene-play": {
+  "status": "pass",
+  "trace.txt": "c747efb932efb54ff42229022085e42d6fa190c308ea873bd7fd7b42fbd2c1b4",
+  "result.json": "ae5d49b4615d8153296c43e80c4aa863f4ef0fab289819544ff51c5a23b30c42",
+  "seconds": 45
+ },
+ "grid-release": {
+  "status": "pass",
+  "trace.txt": "4cc7dc6846c320abb91075ba1cc70d6e45037fc848a65784c059159a82c223d2",
+  "result.json": "d80dc87356a8356f5a2ff0518cbd2249d298a5fe4f9070485fd1f8cdf4d67295",
+  "result": {
+   "four-closed": {
+    "steps": 16,
+    "cost": 160,
+    "cells": [
+     [
+      1,
+      4
+     ],
+     [
+      2,
+      4
+     ],
+     [
+      2,
+      3
+     ],
+     [
+      2,
+      2
+     ],
+     [
+      2,
+      1
+     ],
+     [
+      3,
+      1
+     ],
+     [
+      4,
+      1
+     ],
+     [
+      5,
+      1
+     ],
+     [
+      6,
+      1
+     ],
+     [
+      7,
+      1
+     ],
+     [
+      8,
+      1
+     ],
+     [
+      9,
+      1
+     ],
+     [
+      10,
+      1
+     ],
+     [
+      11,
+      1
+     ],
+     [
+      11,
+      2
+     ],
+     [
+      11,
+      3
+     ],
+     [
+      11,
+      4
+     ]
+    ]
+   },
+   "four-open": {
+    "steps": 10,
+    "cost": 100,
+    "cells": [
+     [
+      1,
+      4
+     ],
+     [
+      2,
+      4
+     ],
+     [
+      3,
+      4
+     ],
+     [
+      4,
+      4
+     ],
+     [
+      5,
+      4
+     ],
+     [
+      6,
+      4
+     ],
+     [
+      7,
+      4
+     ],
+     [
+      8,
+      4
+     ],
+     [
+      9,
+      4
+     ],
+     [
+      10,
+      4
+     ],
+     [
+      11,
+      4
+     ]
+    ]
+   },
+   "eight-closed": {
+    "steps": 14,
+    "cost": 148,
+    "cells": [
+     [
+      1,
+      4
+     ],
+     [
+      2,
+      3
+     ],
+     [
+      2,
+      2
+     ],
+     [
+      2,
+      1
+     ],
+     [
+      3,
+      1
+     ],
+     [
+      4,
+      1
+     ],
+     [
+      5,
+      1
+     ],
+     [
+      6,
+      1
+     ],
+     [
+      7,
+      1
+     ],
+     [
+      8,
+      1
+     ],
+     [
+      9,
+      1
+     ],
+     [
+      10,
+      1
+     ],
+     [
+      10,
+      2
+     ],
+     [
+      10,
+      3
+     ],
+     [
+      11,
+      4
+     ]
+    ]
+   },
+   "eight-open": {
+    "steps": 10,
+    "cost": 100,
+    "cells": [
+     [
+      1,
+      4
+     ],
+     [
+      2,
+      4
+     ],
+     [
+      3,
+      4
+     ],
+     [
+      4,
+      4
+     ],
+     [
+      5,
+      4
+     ],
+     [
+      6,
+      4
+     ],
+     [
+      7,
+      4
+     ],
+     [
+      8,
+      4
+     ],
+     [
+      9,
+      4
+     ],
+     [
+      10,
+      4
+     ],
+     [
+      11,
+      4
+     ]
+    ]
+   },
+   "eight-cheap-mud": {
+    "steps": 10,
+    "cost": 108,
+    "cells": [
+     [
+      1,
+      4
+     ],
+     [
+      2,
+      4
+     ],
+     [
+      3,
+      4
+     ],
+     [
+      4,
+      4
+     ],
+     [
+      5,
+      5
+     ],
+     [
+      6,
+      5
+     ],
+     [
+      7,
+      5
+     ],
+     [
+      8,
+      4
+     ],
+     [
+      9,
+      4
+     ],
+     [
+      10,
+      4
+     ],
+     [
+      11,
+      4
+     ]
+    ]
+   },
+   "four-live-open": {
+    "steps": 12,
+    "cost": 120,
+    "cells": [
+     [
+      1,
+      4
+     ],
+     [
+      2,
+      4
+     ],
+     [
+      2,
+      3
+     ],
+     [
+      3,
+      3
+     ],
+     [
+      3,
+      4
+     ],
+     [
+      4,
+      4
+     ],
+     [
+      5,
+      4
+     ],
+     [
+      6,
+      4
+     ],
+     [
+      7,
+      4
+     ],
+     [
+      8,
+      4
+     ],
+     [
+      9,
+      4
+     ],
+     [
+      10,
+      4
+     ],
+     [
+      11,
+      4
+     ]
+    ],
+    "doorOpenedAt": [
+     2,
+     3
+    ]
+   }
+  },
+  "seconds": 36
+ },
+ "grid-native-aot": {
+  "status": "pass",
+  "trace.txt": "4cc7dc6846c320abb91075ba1cc70d6e45037fc848a65784c059159a82c223d2",
+  "result.json": "d80dc87356a8356f5a2ff0518cbd2249d298a5fe4f9070485fd1f8cdf4d67295",
+  "result": {
+   "four-closed": {
+    "steps": 16,
+    "cost": 160,
+    "cells": [
+     [
+      1,
+      4
+     ],
+     [
+      2,
+      4
+     ],
+     [
+      2,
+      3
+     ],
+     [
+      2,
+      2
+     ],
+     [
+      2,
+      1
+     ],
+     [
+      3,
+      1
+     ],
+     [
+      4,
+      1
+     ],
+     [
+      5,
+      1
+     ],
+     [
+      6,
+      1
+     ],
+     [
+      7,
+      1
+     ],
+     [
+      8,
+      1
+     ],
+     [
+      9,
+      1
+     ],
+     [
+      10,
+      1
+     ],
+     [
+      11,
+      1
+     ],
+     [
+      11,
+      2
+     ],
+     [
+      11,
+      3
+     ],
+     [
+      11,
+      4
+     ]
+    ]
+   },
+   "four-open": {
+    "steps": 10,
+    "cost": 100,
+    "cells": [
+     [
+      1,
+      4
+     ],
+     [
+      2,
+      4
+     ],
+     [
+      3,
+      4
+     ],
+     [
+      4,
+      4
+     ],
+     [
+      5,
+      4
+     ],
+     [
+      6,
+      4
+     ],
+     [
+      7,
+      4
+     ],
+     [
+      8,
+      4
+     ],
+     [
+      9,
+      4
+     ],
+     [
+      10,
+      4
+     ],
+     [
+      11,
+      4
+     ]
+    ]
+   },
+   "eight-closed": {
+    "steps": 14,
+    "cost": 148,
+    "cells": [
+     [
+      1,
+      4
+     ],
+     [
+      2,
+      3
+     ],
+     [
+      2,
+      2
+     ],
+     [
+      2,
+      1
+     ],
+     [
+      3,
+      1
+     ],
+     [
+      4,
+      1
+     ],
+     [
+      5,
+      1
+     ],
+     [
+      6,
+      1
+     ],
+     [
+      7,
+      1
+     ],
+     [
+      8,
+      1
+     ],
+     [
+      9,
+      1
+     ],
+     [
+      10,
+      1
+     ],
+     [
+      10,
+      2
+     ],
+     [
+      10,
+      3
+     ],
+     [
+      11,
+      4
+     ]
+    ]
+   },
+   "eight-open": {
+    "steps": 10,
+    "cost": 100,
+    "cells": [
+     [
+      1,
+      4
+     ],
+     [
+      2,
+      4
+     ],
+     [
+      3,
+      4
+     ],
+     [
+      4,
+      4
+     ],
+     [
+      5,
+      4
+     ],
+     [
+      6,
+      4
+     ],
+     [
+      7,
+      4
+     ],
+     [
+      8,
+      4
+     ],
+     [
+      9,
+      4
+     ],
+     [
+      10,
+      4
+     ],
+     [
+      11,
+      4
+     ]
+    ]
+   },
+   "eight-cheap-mud": {
+    "steps": 10,
+    "cost": 108,
+    "cells": [
+     [
+      1,
+      4
+     ],
+     [
+      2,
+      4
+     ],
+     [
+      3,
+      4
+     ],
+     [
+      4,
+      4
+     ],
+     [
+      5,
+      5
+     ],
+     [
+      6,
+      5
+     ],
+     [
+      7,
+      5
+     ],
+     [
+      8,
+      4
+     ],
+     [
+      9,
+      4
+     ],
+     [
+      10,
+      4
+     ],
+     [
+      11,
+      4
+     ]
+    ]
+   },
+   "four-live-open": {
+    "steps": 12,
+    "cost": 120,
+    "cells": [
+     [
+      1,
+      4
+     ],
+     [
+      2,
+      4
+     ],
+     [
+      2,
+      3
+     ],
+     [
+      3,
+      3
+     ],
+     [
+      3,
+      4
+     ],
+     [
+      4,
+      4
+     ],
+     [
+      5,
+      4
+     ],
+     [
+      6,
+      4
+     ],
+     [
+      7,
+      4
+     ],
+     [
+      8,
+      4
+     ],
+     [
+      9,
+      4
+     ],
+     [
+      10,
+      4
+     ],
+     [
+      11,
+      4
+     ]
+    ],
+    "doorOpenedAt": [
+     2,
+     3
+    ]
+   }
+  },
+  "seconds": 439
+ },
+ "barrage-release": {
+  "status": "pass",
+  "pool": {
+   "mode": "pool",
+   "ticks": 1800,
+   "fired": 7200,
+   "hits": 2338,
+   "exits": 2338,
+   "active": 503,
+   "created": 587,
+   "reused": 6721,
+   "returned": 6805,
+   "frames": 1199,
+   "mean_us": 2415.0,
+   "p95_us": 3181.0,
+   "max_us": 127449.9,
+   "bytes_per_frame": 57623,
+   "bytes_total": 69090432,
+   "gen0": 8
+  },
+  "instantiate": {
+   "mode": "instantiate",
+   "ticks": 1800,
+   "fired": 7200,
+   "hits": 2338,
+   "exits": 2338,
+   "active": 503,
+   "created": 7308,
+   "reused": 0,
+   "returned": 108,
+   "frames": 1199,
+   "mean_us": 11845.2,
+   "p95_us": 17288.1,
+   "max_us": 41600.3,
+   "bytes_per_frame": 839120,
+   "bytes_total": 1006104336,
+   "gen0": 129
+  },
+  "seconds": 78
+ },
+ "barrage-native-aot": {
+  "status": "pass",
+  "pool": {
+   "mode": "pool",
+   "ticks": 1800,
+   "fired": 7200,
+   "hits": 2338,
+   "exits": 2338,
+   "active": 503,
+   "created": 587,
+   "reused": 6721,
+   "returned": 6805,
+   "frames": 1199,
+   "mean_us": 2119.8,
+   "p95_us": 2358.0,
+   "max_us": 26153.5,
+   "bytes_per_frame": 57623,
+   "bytes_total": 69090168,
+   "gen0": 8
+  },
+  "instantiate": {
+   "mode": "instantiate",
+   "ticks": 1800,
+   "fired": 7200,
+   "hits": 2338,
+   "exits": 2338,
+   "active": 503,
+   "created": 7308,
+   "reused": 0,
+   "returned": 108,
+   "frames": 1199,
+   "mean_us": 18233.3,
+   "p95_us": 23975.4,
+   "max_us": 47511.8,
+   "bytes_per_frame": 841221,
+   "bytes_total": 1008623968,
+   "gen0": 128
+  },
+  "seconds": 480
+ },
+ "profiler-release": {
+  "status": "pass",
+  "query_frames": [
+   {
+    "frame": 1,
+    "frame_ms": 1140.778,
+    "query_ms": 122.177,
+    "query_share": 0.1071,
+    "calls": {
+     "Physics.Overlap": 3,
+     "Physics.Raycast": 1,
+     "Physics.Sweep": 1
+    },
+    "script_ms": 0.0,
+    "loading_ms": 0.0,
+    "alloc_bytes": 51480,
+    "gen0": 0,
+    "dropped": 0
+   },
+   {
+    "frame": 4,
+    "frame_ms": 4172.146,
+    "query_ms": 3476.491,
+    "query_share": 0.8333,
+    "calls": {
+     "Physics.Overlap": 1344,
+     "Physics.Raycast": 1344,
+     "Physics.Sweep": 1344
+    },
+    "script_ms": 4070.014,
+    "loading_ms": 0.0,
+    "alloc_bytes": 4092344,
+    "gen0": 2,
+    "dropped": 0
+   },
+   {
+    "frame": 91,
+    "frame_ms": 3147.242,
+    "query_ms": 3070.514,
+    "query_share": 0.9756,
+    "calls": {
+     "Physics.Overlap": 1344,
+     "Physics.Raycast": 1344,
+     "Physics.Sweep": 1344
+    },
+    "script_ms": 3099.017,
+    "loading_ms": 0.0,
+    "alloc_bytes": 3819160,
+    "gen0": 0,
+    "dropped": 0
+   }
+  ],
+  "slowest_after_r": {
+   "frame": 91,
+   "frame_ms": 3147.242,
+   "query_ms": 3070.514,
+   "query_share": 0.9756,
+   "calls": {
+    "Physics.Overlap": 1344,
+    "Physics.Raycast": 1344,
+    "Physics.Sweep": 1344
+   },
+   "script_ms": 3099.017,
+   "loading_ms": 0.0,
+   "alloc_bytes": 3819160,
+   "gen0": 0,
+   "dropped": 0
+  },
+  "seconds": 117
+ },
+ "profiler-native-aot": {
+  "status": "pass",
+  "query_frames": [
+   {
+    "frame": 1,
+    "frame_ms": 19.772,
+    "query_ms": 2.036,
+    "query_share": 0.103,
+    "calls": {
+     "Physics.Overlap": 3,
+     "Physics.Raycast": 1,
+     "Physics.Sweep": 1
+    },
+    "script_ms": 0.0,
+    "loading_ms": 0.0,
+    "alloc_bytes": 117176,
+    "gen0": 0,
+    "dropped": 0
+   },
+   {
+    "frame": 4,
+    "frame_ms": 3610.113,
+    "query_ms": 3488.173,
+    "query_share": 0.9662,
+    "calls": {
+     "Physics.Overlap": 1344,
+     "Physics.Raycast": 1344,
+     "Physics.Sweep": 1344
+    },
+    "script_ms": 3554.293,
+    "loading_ms": 0.0,
+    "alloc_bytes": 4179440,
+    "gen0": 2,
+    "dropped": 0
+   },
+   {
+    "frame": 91,
+    "frame_ms": 3380.078,
+    "query_ms": 3302.689,
+    "query_share": 0.9771,
+    "calls": {
+     "Physics.Overlap": 1344,
+     "Physics.Raycast": 1344,
+     "Physics.Sweep": 1344
+    },
+    "script_ms": 3327.004,
+    "loading_ms": 0.0,
+    "alloc_bytes": 3900152,
+    "gen0": 0,
+    "dropped": 0
+   }
+  ],
+  "slowest_after_r": {
+   "frame": 91,
+   "frame_ms": 3380.078,
+   "query_ms": 3302.689,
+   "query_share": 0.9771,
+   "calls": {
+    "Physics.Overlap": 1344,
+    "Physics.Raycast": 1344,
+    "Physics.Sweep": 1344
+   },
+   "script_ms": 3327.004,
+   "loading_ms": 0.0,
+   "alloc_bytes": 3900152,
+   "gen0": 0,
+   "dropped": 0
+  },
+  "seconds": 914
+ },
+ "profiler-scene-play": {
+  "status": "pass",
+  "slowest": 35,
+  "query_frames": [
+   {
+    "frame": 2,
+    "frame_ms": 842.690976,
+    "alloc_bytes": 412184,
+    "gen0": 1,
+    "dropped": 0,
+    "calls": {
+     "Physics.Overlap": 3,
+     "Physics.Raycast": 1,
+     "Physics.Sweep": 1
+    },
+    "query_ms": 59.135546999999995,
+    "script_ms": 0
+   },
+   {
+    "frame": 33,
+    "frame_ms": 113805.995528,
+    "alloc_bytes": 6335903648,
+    "gen0": 447,
+    "dropped": 0,
+    "calls": {
+     "Physics.Overlap": 1344,
+     "Physics.Raycast": 1344,
+     "Physics.Sweep": 1344
+    },
+    "query_ms": 5671.465144,
+    "script_ms": 5849.807035
+   },
+   {
+    "frame": 35,
+    "frame_ms": 3975.289858,
+    "alloc_bytes": 4507856,
+    "gen0": 0,
+    "dropped": 0,
+    "calls": {
+     "Physics.Overlap": 1344,
+     "Physics.Raycast": 1344,
+     "Physics.Sweep": 1344
+    },
+    "query_ms": 3129.749164,
+    "script_ms": 3221.427454
+   }
+  ],
+  "seconds": 194
+ },
+ "split-release": {
+  "status": "fail",
+  "error": "Traceback (most recent call last):\n  File \"/run/keys96/v102/run/guest.py\", line 42, in wrap\n    detail = fn() or {}\n             ^^^^\n  File \"/run/keys96/v102/run/guest.py\", line 211, in _\n    script('CollisionLab.SplitLoading', 'replay.py', 'run', build(spl, mode, 'development', base / 'products/split'), out, '--runs', '3')\n  File \"/run/keys96/v102/run/guest.py\", line 73, in script\n    runpy.run_path(sys.argv[0], run_name='__main__')\n  File \"<frozen runpy>\", line 291, in run_path\n  File \"<frozen runpy>\", line 98, in _run_module_code\n  File \"<frozen runpy>\", line 88, in _run_code\n  File \"/run/keys96/v102/run/qa/CollisionLab.SplitLoading/replay.py\", line 171, in <module>\n    main()\n  File \"/run/keys96/v102/run/qa/CollisionLab.SplitLoading/replay.py\", line 167, in main\n    run(args.player.resolve(), args.output.resolve(), args.runs)\n  File \"/run/keys96/v102/run/qa/CollisionLab.SplitLoading/replay.py\", line 149, in run\n    raise SystemExit(f\"FAIL: a {scenario} load did not finish within {FRAMES} frames\")\nSystemExit: FAIL: a add load did not finish within 300 frames\n",
+  "seconds": 357
+ },
+ "split-native-aot": {
+  "status": "fail",
+  "error": "Traceback (most recent call last):\n  File \"/run/keys96/v102/run/guest.py\", line 42, in wrap\n    detail = fn() or {}\n             ^^^^\n  File \"/run/keys96/v102/run/guest.py\", line 211, in _\n    script('CollisionLab.SplitLoading', 'replay.py', 'run', build(spl, mode, 'development', base / 'products/split'), out, '--runs', '3')\n  File \"/run/keys96/v102/run/guest.py\", line 73, in script\n    runpy.run_path(sys.argv[0], run_name='__main__')\n  File \"<frozen runpy>\", line 291, in run_path\n  File \"<frozen runpy>\", line 98, in _run_module_code\n  File \"<frozen runpy>\", line 88, in _run_code\n  File \"/run/keys96/v102/run/qa/CollisionLab.SplitLoading/replay.py\", line 171, in <module>\n    main()\n  File \"/run/keys96/v102/run/qa/CollisionLab.SplitLoading/replay.py\", line 167, in main\n    run(args.player.resolve(), args.output.resolve(), args.runs)\n  File \"/run/keys96/v102/run/qa/CollisionLab.SplitLoading/replay.py\", line 140, in run\n    raise SystemExit(f\"FAIL: canceling at frame {cancel} did not return to the starting resources\")\nSystemExit: FAIL: canceling at frame 155 did not return to the starting resources\n",
+  "seconds": 541
+ },
+ "split-scene-play": {
+  "status": "pass",
+  "previous": [
+   {
+    "frames": 114,
+    "total_ms": 17977.177117,
+    "max_ms": 1798.382874,
+    "p95_ms": 156.884945,
+    "commit_ms": 119618.923874,
+    "cancel": true
+   },
+   {
+    "frames": 101,
+    "total_ms": 16646.137351000005,
+    "max_ms": 1800.411148,
+    "p95_ms": 179.480706,
+    "commit_ms": 115547.472991,
+    "cancel": true
+   },
+   {
+    "frames": 109,
+    "total_ms": 15965.108629000002,
+    "max_ms": 1715.70649,
+    "p95_ms": 150.028132,
+    "commit_ms": 101845.626725,
+    "cancel": true
+   }
+  ],
+  "split": [
+   {
+    "frames": 174,
+    "total_ms": 20493.074002000005,
+    "max_ms": 1451.271906,
+    "p95_ms": 134.159087,
+    "commit_ms": 106500.448245,
+    "cancel": true
+   },
+   {
+    "frames": 170,
+    "total_ms": 22385.747664000002,
+    "max_ms": 1532.993037,
+    "p95_ms": 180.407881,
+    "commit_ms": 102421.336721,
+    "cancel": true
+   },
+   {
+    "frames": 174,
+    "total_ms": 19927.287933999996,
+    "max_ms": 1388.877362,
+    "p95_ms": 150.132841,
+    "commit_ms": 104969.952221,
+    "cancel": true
+   }
+  ],
+  "seconds": 1217
+ },
+ "done": "2026-11-22 16:46:42",
+ "rebinding-scene-play-wait200": {
+  "status": "pass",
+  "rebind.trace": "00f4ae3b181cb529920d9f3d907ac1c937402085c656334f8b389ef024b29c19",
+  "restart.trace": "4cd05b3bb4089697004dce2ca80313e8f87917436c54b373151c7ada52736faa",
+  "restored.trace": "b83730c3a35f27aa90ab123ee266a1f13675e2fa4c7337859facb9d746c43dce",
+  "rebind.player.settings": "05485eb75eb2e0c31968956efc725ecb4039e33ec70387bbd59e7324e9774359",
+  "restart.player.settings": "622b960d41e3764e34d05c678cf269f35af8d9fa4137c8d5f5d90aba0f2c5dd6",
+  "restored.player.settings": "622b960d41e3764e34d05c678cf269f35af8d9fa4137c8d5f5d90aba0f2c5dd6",
+  "seconds": 61
+ },
+ "split-long-release": {
+  "status": "pass",
+  "add/previous": {
+   "frames": 180,
+   "total_ms": 11652.692,
+   "max_ms": 2030.072,
+   "p95_ms": 0.262,
+   "committed": true,
+   "resources": {
+    "start": {
+     "resident": "3",
+     "decoded": "0",
+     "textures": "3"
+    },
+    "end": {
+     "resident": "7",
+     "decoded": "0",
+     "textures": "7"
+    }
+   }
+  },
+  "replace/previous": {
+   "frames": 191,
+   "total_ms": 10080.078,
+   "max_ms": 1438.347,
+   "p95_ms": 0.104,
+   "committed": true,
+   "resources": {
+    "start": {
+     "resident": "3",
+     "decoded": "0",
+     "textures": "3"
+    },
+    "end": {
+     "resident": "7",
+     "decoded": "0",
+     "textures": "7"
+    }
+   }
+  },
+  "cancel/previous": {
+   "frames": 177,
+   "total_ms": 7741.256,
+   "max_ms": 1873.339,
+   "p95_ms": 0.267,
+   "committed": false,
+   "resources": {
+    "start": {
+     "resident": "3",
+     "decoded": "0",
+     "textures": "3"
+    },
+    "end": {
+     "resident": "3",
+     "decoded": "0",
+     "textures": "3"
+    }
+   },
+   "cancel_frame": 178,
+   "attempts": 1
+  },
+  "add/split": {
+   "frames": 510,
+   "total_ms": 11126.186,
+   "max_ms": 474.274,
+   "p95_ms": 4.377,
+   "committed": true,
+   "resources": {
+    "start": {
+     "resident": "3",
+     "decoded": "0",
+     "textures": "3"
+    },
+    "end": {
+     "resident": "7",
+     "decoded": "0",
+     "textures": "7"
+    }
+   }
+  },
+  "replace/split": {
+   "frames": 489,
+   "total_ms": 10449.059,
+   "max_ms": 396.675,
+   "p95_ms": 4.146,
+   "committed": true,
+   "resources": {
+    "start": {
+     "resident": "3",
+     "decoded": "0",
+     "textures": "3"
+    },
+    "end": {
+     "resident": "7",
+     "decoded": "0",
+     "textures": "7"
+    }
+   }
+  },
+  "cancel/split": {
+   "frames": 416,
+   "total_ms": 7938.781,
+   "max_ms": 391.25,
+   "p95_ms": 4.283,
+   "committed": false,
+   "resources": {
+    "start": {
+     "resident": "3",
+     "decoded": "0",
+     "textures": "3"
+    },
+    "end": {
+     "resident": "3",
+     "decoded": "0",
+     "textures": "3"
+    }
+   },
+   "cancel_frame": 417,
+   "attempts": 1
+  },
+  "seconds": 295
+ },
+ "split-long-native-aot": {
+  "status": "pass",
+  "add/previous": {
+   "frames": 178,
+   "total_ms": 9530.6,
+   "max_ms": 1404.028,
+   "p95_ms": 0.253,
+   "committed": true,
+   "resources": {
+    "start": {
+     "resident": "3",
+     "decoded": "0",
+     "textures": "3"
+    },
+    "end": {
+     "resident": "7",
+     "decoded": "0",
+     "textures": "7"
+    }
+   }
+  },
+  "replace/previous": {
+   "frames": 152,
+   "total_ms": 8835.486,
+   "max_ms": 1421.662,
+   "p95_ms": 0.076,
+   "committed": true,
+   "resources": {
+    "start": {
+     "resident": "3",
+     "decoded": "0",
+     "textures": "3"
+    },
+    "end": {
+     "resident": "7",
+     "decoded": "0",
+     "textures": "7"
+    }
+   }
+  },
+  "cancel/previous": {
+   "frames": 143,
+   "total_ms": 3029.632,
+   "max_ms": 662.965,
+   "p95_ms": 0.158,
+   "committed": false,
+   "resources": {
+    "start": {
+     "resident": "3",
+     "decoded": "0",
+     "textures": "3"
+    },
+    "end": {
+     "resident": "3",
+     "decoded": "0",
+     "textures": "3"
+    }
+   },
+   "cancel_frame": 144,
+   "attempts": 5
+  },
+  "add/split": {
+   "frames": 412,
+   "total_ms": 8923.909,
+   "max_ms": 382.545,
+   "p95_ms": 4.232,
+   "committed": true,
+   "resources": {
+    "start": {
+     "resident": "3",
+     "decoded": "0",
+     "textures": "3"
+    },
+    "end": {
+     "resident": "7",
+     "decoded": "0",
+     "textures": "7"
+    }
+   }
+  },
+  "replace/split": {
+   "frames": 425,
+   "total_ms": 8852.126,
+   "max_ms": 383.216,
+   "p95_ms": 4.113,
+   "committed": true,
+   "resources": {
+    "start": {
+     "resident": "3",
+     "decoded": "0",
+     "textures": "3"
+    },
+    "end": {
+     "resident": "7",
+     "decoded": "0",
+     "textures": "7"
+    }
+   }
+  },
+  "cancel/split": {
+   "frames": 323,
+   "total_ms": 5654.079,
+   "max_ms": 226.476,
+   "p95_ms": 4.343,
+   "committed": false,
+   "resources": {
+    "start": {
+     "resident": "3",
+     "decoded": "0",
+     "textures": "3"
+    },
+    "end": {
+     "resident": "3",
+     "decoded": "0",
+     "textures": "3"
+    }
+   },
+   "cancel_frame": 324,
+   "attempts": 1
+  },
+  "seconds": 505
+ }
+}

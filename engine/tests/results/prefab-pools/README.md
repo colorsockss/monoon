@@ -41,4 +41,23 @@
 
 기존 스프라이트 풀 검사와 BarrageLab 스프라이트 탄막 검사도 그대로 통과했다.
 
-에디터의 Scene Play와 Windows·Linux에서는 이번에 실행하지 않았다.
+에디터의 Scene Play는 실행하지 않았다. Windows·Linux 게스트 결과는 아래에 있다.
+
+## Windows x64와 Linux x64 게스트
+
+2026-11-23, 이 Mac의 QEMU(TCG) 게스트에서 샘플 BarrageLab을 각 게스트에서 Release와 Native AOT(distribution)로 빌드하고 같은 [재생 실행기](../../BarrageLab.PrefabPools/README.md)로 실행했다. 네 배포본 모두 `PASS same 2338 hits from 7200 bullets; reused 6721 of 7200`이었다. [게스트 환경과 실행 방법](../x64-guest-10.2-10.8/README.md)
+
+| 게스트 | 배포본 | 방식 | 틱 | 발사 | 명중 | Exit | 활성 | 생성 | 재사용 | 프레임당 할당 | Gen0 |
+| --- | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| Windows 11 x64 | Release | `Rent`·`Return` | 1,800 | 7,200 | 2,338 | 2,338 | 503 | 587 | 6,721 | 57,655 B | 8 |
+| Windows 11 x64 | Release | `Instantiate`·`Destroy` | 1,800 | 7,200 | 2,338 | 2,338 | 503 | 7,308 | 0 | 839,508 B | 129 |
+| Windows 11 x64 | Native AOT | `Rent`·`Return` | 1,800 | 7,200 | 2,338 | 2,338 | 503 | 587 | 6,721 | 57,625 B | 8 |
+| Windows 11 x64 | Native AOT | `Instantiate`·`Destroy` | 1,800 | 7,200 | 2,338 | 2,338 | 503 | 7,308 | 0 | 841,664 B | 128 |
+| Debian 12 x64 | Release | `Rent`·`Return` | 1,800 | 7,200 | 2,338 | 2,338 | 503 | 587 | 6,721 | 57,623 B | 8 |
+| Debian 12 x64 | Release | `Instantiate`·`Destroy` | 1,800 | 7,200 | 2,338 | 2,338 | 503 | 7,308 | 0 | 839,120 B | 129 |
+| Debian 12 x64 | Native AOT | `Rent`·`Return` | 1,800 | 7,200 | 2,338 | 2,338 | 503 | 587 | 6,721 | 57,623 B | 8 |
+| Debian 12 x64 | Native AOT | `Instantiate`·`Destroy` | 1,800 | 7,200 | 2,338 | 2,338 | 503 | 7,308 | 0 | 841,221 B | 128 |
+
+- 틱·발사·명중·Exit·활성·생성·재사용·반환 수는 macOS의 네 실행과 모두 같았다.
+- 관리 할당은 macOS와 수십~수천 바이트 다르고 생성·제거 방식의 Gen0 수는 128–129회(macOS 127회)였다. 런타임과 OS가 다르므로 바이트 단위 일치를 기대하는 값이 아니다. 풀 방식의 프레임당 할당은 생성·제거 방식의 약 6.8–6.9%로 macOS와 같은 비율이었다.
+- 업데이트 시간은 에뮬레이션 값이다(예: Linux Release 풀 평균 2,415 µs, 생성·제거 11,845 µs). Mac 시간과 비교하지 않는다. [실행별 값](x64/runs.tsv) · 원본 요약: [Windows Release](x64/win-x64-release.json) · [Windows Native AOT](x64/win-x64-native-aot.json) · [Linux Release](x64/linux-x64-release.json) · [Linux Native AOT](x64/linux-x64-native-aot.json)

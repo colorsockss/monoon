@@ -1,0 +1,5 @@
+platform	target	status	result.json	equal to macOS
+win-x64	Release	pass	{"chests": [{"x": 210, "locks": 1, "sound": 0}, {"x": 370, "locks": 1, "sound": 1}, {"x": 530, "locks": 1, "sound": 0}]}	True
+win-x64	Native AOT	pass	{"chests": [{"x": 210, "locks": 1, "sound": 0}, {"x": 370, "locks": 1, "sound": 1}, {"x": 530, "locks": 1, "sound": 0}]}	True
+linux-x64	Release	pass	{"chests": [{"x": 210, "locks": 1, "sound": 0}, {"x": 370, "locks": 1, "sound": 1}, {"x": 530, "locks": 1, "sound": 0}]}	True
+linux-x64	Native AOT	pass	{"chests": [{"x": 210, "locks": 1, "sound": 0}, {"x": 370, "locks": 1, "sound": 1}, {"x": 530, "locks": 1, "sound": 0}]}	True

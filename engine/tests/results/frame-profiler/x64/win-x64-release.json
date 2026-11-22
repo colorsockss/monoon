@@ -1,0 +1,236 @@
+{
+  "frames": 150,
+  "median_ms": 48.374,
+  "slowest_after_r": {
+    "frame": 91,
+    "frame_ms": 3580.992,
+    "query_ms": 3353.742,
+    "query_share": 0.9365,
+    "calls": {
+      "Physics.Overlap": 1344,
+      "Physics.Raycast": 1344,
+      "Physics.Sweep": 1344
+    },
+    "script_ms": 3529.056,
+    "loading_ms": 0.0,
+    "alloc_bytes": 3819152,
+    "gen0": 0,
+    "dropped": 0,
+    "tree": [
+      [
+        0,
+        "Frame",
+        1,
+        3580992.0,
+        290.0
+      ],
+      [
+        1,
+        "Profiler.Write",
+        1,
+        253.0,
+        253.0
+      ],
+      [
+        1,
+        "UI.Layout",
+        1,
+        89.0,
+        89.0
+      ],
+      [
+        1,
+        "UpdateUi",
+        1,
+        2014.0,
+        1950.0
+      ],
+      [
+        2,
+        "UI.Input",
+        1,
+        17.0,
+        17.0
+      ],
+      [
+        2,
+        "FieldSelector.UpdateUi",
+        1,
+        19.0,
+        19.0
+      ],
+      [
+        2,
+        "QueryField.UpdateUi",
+        1,
+        14.0,
+        14.0
+      ],
+      [
+        2,
+        "MoveMarker.UpdateUi",
+        1,
+        14.0,
+        14.0
+      ],
+      [
+        1,
+        "Simulate",
+        1,
+        3578346.0,
+        3574.0
+      ],
+      [
+        2,
+        "Tiles.Streaming",
+        2,
+        28.0,
+        28.0
+      ],
+      [
+        2,
+        "FieldSelector.FixedUpdate",
+        1,
+        33.0,
+        33.0
+      ],
+      [
+        2,
+        "QueryField.FixedUpdate",
+        1,
+        3529056.0,
+        175314.0
+      ],
+      [
+        3,
+        "Physics.Overlap",
+        1344,
+        1160342.0,
+        1160342.0
+      ],
+      [
+        3,
+        "Physics.Raycast",
+        1344,
+        1095539.0,
+        1095539.0
+      ],
+      [
+        3,
+        "Physics.Sweep",
+        1344,
+        1097861.0,
+        1097861.0
+      ],
+      [
+        2,
+        "MoveMarker.FixedUpdate",
+        1,
+        19.0,
+        19.0
+      ],
+      [
+        2,
+        "Animation",
+        1,
+        14.0,
+        14.0
+      ],
+      [
+        2,
+        "Effects",
+        1,
+        13.0,
+        13.0
+      ],
+      [
+        2,
+        "Physics.Contacts",
+        1,
+        45556.0,
+        45556.0
+      ],
+      [
+        2,
+        "Cameras",
+        1,
+        28.0,
+        28.0
+      ],
+      [
+        2,
+        "Audio",
+        1,
+        25.0,
+        25.0
+      ]
+    ]
+  },
+  "loading": {
+    "frame": 3,
+    "frame_ms": 4383.306,
+    "query_ms": 0.0,
+    "query_share": 0.0,
+    "calls": {
+      "Physics.Overlap": 0,
+      "Physics.Raycast": 0,
+      "Physics.Sweep": 0
+    },
+    "script_ms": 0.0,
+    "loading_ms": 4161.094,
+    "alloc_bytes": 79654816,
+    "gen0": 10,
+    "dropped": 0
+  },
+  "query_frames": [
+    {
+      "frame": 1,
+      "frame_ms": 1225.008,
+      "query_ms": 118.291,
+      "query_share": 0.0966,
+      "calls": {
+        "Physics.Overlap": 3,
+        "Physics.Raycast": 1,
+        "Physics.Sweep": 1
+      },
+      "script_ms": 0.0,
+      "loading_ms": 0.0,
+      "alloc_bytes": 52888,
+      "gen0": 0,
+      "dropped": 0
+    },
+    {
+      "frame": 4,
+      "frame_ms": 3778.865,
+      "query_ms": 3343.067,
+      "query_share": 0.8847,
+      "calls": {
+        "Physics.Overlap": 1344,
+        "Physics.Raycast": 1344,
+        "Physics.Sweep": 1344
+      },
+      "script_ms": 3676.132,
+      "loading_ms": 0.0,
+      "alloc_bytes": 4093288,
+      "gen0": 2,
+      "dropped": 0
+    },
+    {
+      "frame": 91,
+      "frame_ms": 3580.992,
+      "query_ms": 3353.742,
+      "query_share": 0.9365,
+      "calls": {
+        "Physics.Overlap": 1344,
+        "Physics.Raycast": 1344,
+        "Physics.Sweep": 1344
+      },
+      "script_ms": 3529.056,
+      "loading_ms": 0.0,
+      "alloc_bytes": 3819152,
+      "gen0": 0,
+      "dropped": 0
+    }
+  ],
+  "distribution_capture": false
+}

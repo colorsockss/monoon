@@ -1,0 +1,343 @@
+{
+ "add/previous": {
+  "frames": 173,
+  "first": 3,
+  "end": 175,
+  "committed": true,
+  "total_ms": 10347.831,
+  "work_total_ms": 7661.283,
+  "max_ms": 1710.669,
+  "p95_ms": 0.93,
+  "slowest_frame": 174,
+  "slowest_gen0": 0,
+  "slowest_tree": [
+   [
+    "Frame",
+    1710.669
+   ],
+   [
+    "UpdateUi",
+    1710.22
+   ],
+   [
+    "Scene.Loading",
+    1710.069
+   ],
+   [
+    "Scene.Upload",
+    1710.029
+   ]
+  ],
+  "work_ms": {
+   "Scene.Loading": 7518.002,
+   "Scene.Instantiate": 0.0,
+   "Scene.Upload": 6643.862,
+   "Scene.Commit": 257.237
+  },
+  "upload_frames": [
+   168,
+   169,
+   170,
+   171,
+   172,
+   173,
+   174
+  ],
+  "resources": {
+   "start": {
+    "resident": "3",
+    "decoded": "0",
+    "textures": "3"
+   },
+   "end": {
+    "resident": "7",
+    "decoded": "0",
+    "textures": "7"
+   }
+  }
+ },
+ "replace/previous": {
+  "frames": 175,
+  "first": 3,
+  "end": 177,
+  "committed": true,
+  "total_ms": 9965.705,
+  "work_total_ms": 7177.8,
+  "max_ms": 1646.227,
+  "p95_ms": 0.168,
+  "slowest_frame": 175,
+  "slowest_gen0": 0,
+  "slowest_tree": [
+   [
+    "Frame",
+    1646.227
+   ],
+   [
+    "UpdateUi",
+    1646.15
+   ],
+   [
+    "Scene.Loading",
+    1646.118
+   ],
+   [
+    "Scene.Upload",
+    1646.071
+   ]
+  ],
+  "work_ms": {
+   "Scene.Loading": 7105.829,
+   "Scene.Instantiate": 0.0,
+   "Scene.Upload": 6492.839,
+   "Scene.Commit": 16.073
+  },
+  "upload_frames": [
+   170,
+   171,
+   172,
+   173,
+   174,
+   175,
+   176
+  ],
+  "resources": {
+   "start": {
+    "resident": "3",
+    "decoded": "0",
+    "textures": "3"
+   },
+   "end": {
+    "resident": "7",
+    "decoded": "0",
+    "textures": "7"
+   }
+  }
+ },
+ "cancel/previous": {
+  "frames": 170,
+  "first": 3,
+  "end": 172,
+  "committed": false,
+  "total_ms": 5236.53,
+  "work_total_ms": 2527.687,
+  "max_ms": 1847.351,
+  "p95_ms": 0.632,
+  "slowest_frame": 172,
+  "slowest_gen0": 0,
+  "slowest_tree": [
+   [
+    "Frame",
+    1847.351
+   ],
+   [
+    "UpdateUi",
+    1846.588
+   ],
+   [
+    "Scene.Loading",
+    1846.386
+   ],
+   [
+    "Scene.Upload",
+    1846.345
+   ]
+  ],
+  "work_ms": {
+   "Scene.Loading": 2438.567,
+   "Scene.Instantiate": 0.0,
+   "Scene.Upload": 1846.394,
+   "Scene.Commit": 0.0
+  },
+  "upload_frames": [
+   169,
+   170,
+   171,
+   172
+  ],
+  "resources": {
+   "start": {
+    "resident": "3",
+    "decoded": "0",
+    "textures": "3"
+   },
+   "end": {
+    "resident": "3",
+    "decoded": "0",
+    "textures": "3"
+   }
+  },
+  "cancel_frame": 171,
+  "attempts": 1
+ },
+ "add/split": {
+  "frames": 549,
+  "first": 3,
+  "end": 551,
+  "committed": true,
+  "total_ms": 10687.438,
+  "work_total_ms": 2924.866,
+  "max_ms": 296.855,
+  "p95_ms": 4.814,
+  "slowest_frame": 551,
+  "slowest_gen0": 1,
+  "slowest_tree": [
+   [
+    "Frame",
+    296.855
+   ],
+   [
+    "UpdateUi",
+    251.215
+   ],
+   [
+    "Scene.Loading",
+    251.07
+   ],
+   [
+    "Scene.Commit",
+    251.031
+   ],
+   [
+    "Simulate",
+    45.578
+   ],
+   [
+    "Physics.Contacts",
+    43.375
+   ]
+  ],
+  "work_ms": {
+   "Scene.Loading": 2563.68,
+   "Scene.Instantiate": 1147.886,
+   "Scene.Upload": 1093.56,
+   "Scene.Commit": 251.031
+  },
+  "upload_frames": [
+   393,
+   478,
+   548,
+   549,
+   550
+  ],
+  "resources": {
+   "start": {
+    "resident": "3",
+    "decoded": "0",
+    "textures": "3"
+   },
+   "end": {
+    "resident": "7",
+    "decoded": "0",
+    "textures": "7"
+   }
+  }
+ },
+ "replace/split": {
+  "frames": 568,
+  "first": 3,
+  "end": 570,
+  "committed": true,
+  "total_ms": 10764.396,
+  "work_total_ms": 2492.823,
+  "max_ms": 288.192,
+  "p95_ms": 4.282,
+  "slowest_frame": 496,
+  "slowest_gen0": 0,
+  "slowest_tree": [
+   [
+    "Frame",
+    288.192
+   ],
+   [
+    "UpdateUi",
+    288.115
+   ],
+   [
+    "Scene.Loading",
+    288.081
+   ],
+   [
+    "Scene.Upload",
+    288.025
+   ]
+  ],
+  "work_ms": {
+   "Scene.Loading": 2381.252,
+   "Scene.Instantiate": 1197.636,
+   "Scene.Upload": 1094.63,
+   "Scene.Commit": 16.645
+  },
+  "upload_frames": [
+   408,
+   496,
+   567,
+   568,
+   569
+  ],
+  "resources": {
+   "start": {
+    "resident": "3",
+    "decoded": "0",
+    "textures": "3"
+   },
+   "end": {
+    "resident": "7",
+    "decoded": "0",
+    "textures": "7"
+   }
+  }
+ },
+ "cancel/split": {
+  "frames": 470,
+  "first": 3,
+  "end": 472,
+  "committed": false,
+  "total_ms": 8058.798,
+  "work_total_ms": 1504.846,
+  "max_ms": 205.119,
+  "p95_ms": 4.841,
+  "slowest_frame": 395,
+  "slowest_gen0": 3,
+  "slowest_tree": [
+   [
+    "Frame",
+    205.119
+   ],
+   [
+    "UpdateUi",
+    204.65
+   ],
+   [
+    "Scene.Loading",
+    204.425
+   ],
+   [
+    "Scene.Instantiate",
+    168.503
+   ]
+  ],
+  "work_ms": {
+   "Scene.Loading": 1222.997,
+   "Scene.Instantiate": 1150.267,
+   "Scene.Upload": 0.178,
+   "Scene.Commit": 0.0
+  },
+  "upload_frames": [
+   396
+  ],
+  "resources": {
+   "start": {
+    "resident": "3",
+    "decoded": "0",
+    "textures": "3"
+   },
+   "end": {
+    "resident": "3",
+    "decoded": "0",
+    "textures": "3"
+   }
+  },
+  "cancel_frame": 471,
+  "attempts": 1
+ }
+}

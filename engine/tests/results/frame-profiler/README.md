@@ -1,6 +1,6 @@
 # CollisionLab 느린 프레임 작업 분석
 
-2026-11-22 · macOS 27.0.1 (26A434) · Apple M4 Max · .NET SDK 10.0.101. 같은 소스로 플레이어 템플릿, 패키징한 에디터, CollisionLab의 개발용·배포용 빌드를 만들었다. Windows·Linux에서는 실행하지 않았다. [실행 방법](../../CollisionLab.FrameProfiler/README.md)
+2026-11-22 · macOS 27.0.1 (26A434) · Apple M4 Max · .NET SDK 10.0.101. 같은 소스로 플레이어 템플릿, 패키징한 에디터, CollisionLab의 개발용·배포용 빌드를 만들었다. Windows·Linux 게스트 결과는 [아래](#windows-x64와-linux-x64-게스트)에 있다. [실행 방법](../../CollisionLab.FrameProfiler/README.md)
 
 QueryField는 충돌체 1만 개 씬에 들어올 때와 **R**을 누를 때 한 고정 틱 안에서 겹침·레이캐스트·스윕을 각각 1,344회 실행한다. 세 실행 모두 이 프레임의 작업 표에 정확히 1,344회씩 기록됐고, 다른 프레임에는 시작 씬 Probe의 질의 5회만 있었다.
 
@@ -57,6 +57,24 @@ QueryField는 충돌체 1만 개 씬에 들어올 때와 **R**을 누를 때 한
 - 링 버퍼는 최신 프레임을 순서대로 보관하고, 번호로 고른 프레임과 가장 느린 프레임이 일치한다. 깊이 제한을 넘은 호출, 열린 샘플 안의 프레임 종료, 다른 스레드의 호출을 처리한다.
 - 정상 상태에서 샘플 20,000개와 프레임 20개, CSV 50프레임 기록의 관리 할당이 0바이트다.
 - 빌드 영수증이 없거나 배포용이면 프로파일러를 설치하지 않고 파일을 만들지 않는다. 개발용 CSV의 행 순서, 부모 번호, 기록 시간 샘플을 확인한다.
+
+## Windows x64와 Linux x64 게스트
+
+2026-11-23, 이 Mac의 QEMU(TCG) 게스트에서 샘플 CollisionLab을 각 게스트에서 개발용·배포용 Release와 Native AOT로 빌드하고 같은 [replay.py](../../CollisionLab.FrameProfiler/replay.py)로 재생했다. 에디터 Scene Play는 각 게스트의 패키지 에디터(Linux는 Xvfb)에서 [editor.py](../../CollisionLab.FrameProfiler/editor.py)로 실행했다. 여섯 실행 모두 `PASS`였다. 아래 시간은 에뮬레이션 값이며 Mac과 비교하지 않는다. [게스트 환경과 실행 방법](../x64-guest-10.2-10.8/README.md)
+
+| 게스트 | 실행 | 질의 1,344회×3 프레임 | 프레임 시간 (TCG) | 질의 비율 | R 이후 최장 |
+| --- | --- | --- | ---: | ---: | --- |
+| Windows 11 x64 | 개발용 Release | 4 · 91 | 3,778.9 · 3,581.0 ms | 88.5% · 93.7% | 91 |
+| Windows 11 x64 | 개발용 Native AOT | 4 · 91 | 4,561.6 · 4,536.4 ms | 94.8% · 94.7% | 91 |
+| Windows 11 x64 | 에디터 Scene Play | 32 · 34 | 110,561.1 · 5,537.5 ms | 4.8% · 77.0% | 34 |
+| Debian 12 x64 | 개발용 Release | 4 · 91 | 4,172.1 · 3,147.2 ms | 83.3% · 97.6% | 91 |
+| Debian 12 x64 | 개발용 Native AOT | 4 · 91 | 3,610.1 · 3,380.1 ms | 96.6% · 97.7% | 91 |
+| Debian 12 x64 | 에디터 Scene Play | 33 · 35 | 113,806.0 · 3,975.3 ms | 5.0% · 78.7% | 35 |
+
+- 헤드리스 재생 네 실행은 1–150번 프레임을 모두 기록했다. 종류별 1,344회 질의가 기록된 프레임은 macOS와 같은 4번과 91번이었다. 다른 질의는 1번 프레임 Probe의 겹침 3·레이 1·스윕 1회뿐이었다. 씬 전환 프레임은 3번이었다.
+- 배포용 플레이어 네 개는 `MONOON_FRAME_PROFILE is ignored: frame profiling needs a development-profile build.` 한 줄만 출력하고 CSV를 만들지 않았다. `SPATIAL` 줄의 대상 ID 해시와 후보 수는 개발용과 같았고, macOS 개발용 로그와도 같았다.
+- 에디터에서는 1만 개 씬을 만든 프레임(Windows 32, Linux 33)에 씬 진입 측정이 함께 기록됐다. 이 프레임이 110–114초로 매우 길어서 질의 비율은 5% 정도였다. 이 프레임의 UI 스레드 할당은 약 6.34 GB로 macOS(6.39 GB)와 비슷했다. **R** 다음의 최장 프레임은 두 OS 모두 1,344회×3 질의 프레임이었고, 작업 표의 세 질의 행이 같은 호출 수를 표시했다. 1400px과 820px에서 열 위치 차이는 0px이었다. [Windows 820px](x64/win-x64-profiler-820.png) · [Linux 820px](x64/linux-x64-profiler-820.png)
+- 원본: [Windows Release](x64/win-x64-release.json) · [Windows Native AOT](x64/win-x64-native-aot.json) · [Windows 에디터](x64/win-x64-scene-play.json) · [Linux Release](x64/linux-x64-release.json) · [Linux Native AOT](x64/linux-x64-native-aot.json) · [Linux 에디터](x64/linux-x64-scene-play.json). 플레이어 로그는 `x64/*-development.log`, `x64/*-distribution.log`다.
 
 ## 원본
 

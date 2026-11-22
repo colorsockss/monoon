@@ -1,0 +1,7 @@
+0|hint=Move: Left / Right   Interact: E   Help: H   Pause: P|interact=E,Space,Pad.South|carry=C|guide=M,Pad.North|capturing=|chest=False
+90|hint=Move: Left / Right   Interact: E   Help: H   Pause: P|interact=E,Space,Pad.South|carry=C|guide=M,Pad.North|capturing=Interact|chest=False
+100|hint=Move: Left / Right   Interact: E   Help: H   Pause: P|interact=E,Space,Pad.South|carry=C|guide=M,Pad.North|capturing=|chest=False
+110|hint=Move: Left / Right   Interact: E   Help: H   Pause: P|interact=E,Space,Pad.South|carry=C|guide=M,Pad.North|capturing=Interact|chest=False
+116|hint=Move: DpadLeft / DpadRight   Interact: North   Help: Start   Pause: Back|interact=E,Space,Pad.North|carry=C|guide=M,Pad.South|capturing=|chest=False
+130|hint=Move: Left / Right   Interact: E   Help: H   Pause: P|interact=E,Space,Pad.North|carry=C|guide=M,Pad.South|capturing=|chest=False
+151|hint=Move: Left / Right   Interact: E   Help: H   Pause: P|interact=E,Space,Pad.North|carry=C|guide=M,Pad.South|capturing=|chest=True

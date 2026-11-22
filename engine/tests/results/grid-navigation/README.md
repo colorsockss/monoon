@@ -24,3 +24,5 @@
 각 OS에서 패키지 에디터의 Play 버튼으로 시작했다. Debian 에디터는 Xvfb에서 실행했다. 독립 게임은 각 OS에서 배포 프로필로 빌드하고 플레이어의 헤드리스 입력 재생으로 검사했다. 아홉 실행 모두 입력 전환과 좌표를 기록한 88개 행이 같았다. 여섯 경로를 담은 결과 파일의 SHA-256도 일치했다. [실행별 결과 해시](runs.tsv)
 
 Mac에서 관찰 스크립트 없는 배포 게임의 SDL 창에도 키를 보냈다. [Release에서 닫힌 문을 우회하는 계획](door-closed.png) · [Native AOT에서 문을 열고 도착한 화면](door-open.png) · [재현 방법](../../SeedLab.GridNavigation/README.md)
+
+2026-11-23 roadmap 10.6 검증 때 Windows·Linux 게스트에서 같은 소스로 Release와 Native AOT를 다시 빌드해 실행했다. 네 실행 모두 6/6, 88행, 결과 파일 SHA-256 `d80dc873…67295`였다. Scene Play는 이때 다시 실행하지 않았다. [재실행 해시](../tile-terrain/runs.tsv)

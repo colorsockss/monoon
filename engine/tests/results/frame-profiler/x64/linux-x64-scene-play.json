@@ -1,0 +1,288 @@
+{
+  "frames": 75,
+  "median_ms": 348.21495,
+  "slowest": 35,
+  "slowest_ms": 3975.289858,
+  "load": {
+    "frame": 33,
+    "frame_ms": 113805.995528,
+    "alloc_bytes": 6335903648,
+    "top": [
+      {
+        "name": "Frame",
+        "depth": 0,
+        "total_ms": 113805.995528,
+        "self_ms": 83706.241216
+      },
+      {
+        "name": "UpdateUi",
+        "depth": 1,
+        "total_ms": 1.992918,
+        "self_ms": 1.971918
+      },
+      {
+        "name": "Simulate",
+        "depth": 1,
+        "total_ms": 16810.273873,
+        "self_ms": 63.979429
+      },
+      {
+        "name": "FieldSelector.FixedUpdate",
+        "depth": 2,
+        "total_ms": 2.784887,
+        "self_ms": 2.784887
+      },
+      {
+        "name": "Physics.Contacts",
+        "depth": 2,
+        "total_ms": 458.66787,
+        "self_ms": 458.66787
+      },
+      {
+        "name": "Scene.Loading",
+        "depth": 2,
+        "total_ms": 10430.798819,
+        "self_ms": 10429.254881
+      },
+      {
+        "name": "QueryField.FixedUpdate",
+        "depth": 2,
+        "total_ms": 5849.807035,
+        "self_ms": 178.341891
+      },
+      {
+        "name": "MoveMarker.FixedUpdate",
+        "depth": 2,
+        "total_ms": 3.179873,
+        "self_ms": 3.179873
+      },
+      {
+        "name": "Editor",
+        "depth": 1,
+        "total_ms": 13122.623563,
+        "self_ms": 13122.623563
+      },
+      {
+        "name": "Render",
+        "depth": 1,
+        "total_ms": 164.863958,
+        "self_ms": 28.811119
+      },
+      {
+        "name": "Render.World",
+        "depth": 2,
+        "total_ms": 114.363502,
+        "self_ms": 114.363502
+      },
+      {
+        "name": "UI.Draw",
+        "depth": 2,
+        "total_ms": 21.689337,
+        "self_ms": 18.491434
+      }
+    ]
+  },
+  "title": "Selected frame 35   \u00B7   3975.29 ms   \u00B7   4402.2 KiB",
+  "table": [
+    [
+      "Frame",
+      "1",
+      "3975.290",
+      "40.518"
+    ],
+    [
+      "Simulate",
+      "12",
+      "3906.028",
+      "27.188"
+    ],
+    [
+      "QueryField.FixedUpdate",
+      "12",
+      "3221.427",
+      "91.678"
+    ],
+    [
+      "Physics.Overlap",
+      "1,344",
+      "1107.578",
+      "1107.578"
+    ],
+    [
+      "Physics.Raycast",
+      "1,344",
+      "1031.923",
+      "1031.923"
+    ],
+    [
+      "Physics.Sweep",
+      "1,344",
+      "990.248",
+      "990.248"
+    ],
+    [
+      "Physics.Contacts",
+      "12",
+      "655.581",
+      "655.581"
+    ],
+    [
+      "FieldSelector.FixedUpdate",
+      "12",
+      "0.669",
+      "0.669"
+    ],
+    [
+      "Cameras",
+      "12",
+      "0.620",
+      "0.620"
+    ],
+    [
+      "Audio",
+      "12",
+      "0.305",
+      "0.305"
+    ],
+    [
+      "MoveMarker.FixedUpdate",
+      "12",
+      "0.117",
+      "0.117"
+    ],
+    [
+      "Tiles.Streaming",
+      "24",
+      "0.067",
+      "0.067"
+    ],
+    [
+      "Effects",
+      "12",
+      "0.038",
+      "0.038"
+    ],
+    [
+      "Animation",
+      "12",
+      "0.015",
+      "0.015"
+    ],
+    [
+      "Render",
+      "1",
+      "23.401",
+      "0.614"
+    ],
+    [
+      "Render.World",
+      "1",
+      "18.747",
+      "18.747"
+    ],
+    [
+      "UI.Draw",
+      "1",
+      "4.040",
+      "3.671"
+    ],
+    [
+      "UI.Layout",
+      "1",
+      "0.369",
+      "0.369"
+    ],
+    [
+      "UpdateUi",
+      "2",
+      "3.573",
+      "3.499"
+    ],
+    [
+      "FieldSelector.UpdateUi",
+      "2",
+      "0.041",
+      "0.041"
+    ],
+    [
+      "UI.Input",
+      "2",
+      "0.015",
+      "0.015"
+    ],
+    [
+      "QueryField.UpdateUi",
+      "2",
+      "0.010",
+      "0.010"
+    ],
+    [
+      "MoveMarker.UpdateUi",
+      "2",
+      "0.008",
+      "0.008"
+    ],
+    [
+      "Editor",
+      "2",
+      "1.770",
+      "1.770"
+    ]
+  ],
+  "query_frames": [
+    {
+      "frame": 2,
+      "frame_ms": 842.690976,
+      "alloc_bytes": 412184,
+      "gen0": 1,
+      "dropped": 0,
+      "calls": {
+        "Physics.Overlap": 3,
+        "Physics.Raycast": 1,
+        "Physics.Sweep": 1
+      },
+      "query_ms": 59.135546999999995,
+      "script_ms": 0
+    },
+    {
+      "frame": 33,
+      "frame_ms": 113805.995528,
+      "alloc_bytes": 6335903648,
+      "gen0": 447,
+      "dropped": 0,
+      "calls": {
+        "Physics.Overlap": 1344,
+        "Physics.Raycast": 1344,
+        "Physics.Sweep": 1344
+      },
+      "query_ms": 5671.465144,
+      "script_ms": 5849.807035
+    },
+    {
+      "frame": 35,
+      "frame_ms": 3975.289858,
+      "alloc_bytes": 4507856,
+      "gen0": 0,
+      "dropped": 0,
+      "calls": {
+        "Physics.Overlap": 1344,
+        "Physics.Raycast": 1344,
+        "Physics.Sweep": 1344
+      },
+      "query_ms": 3129.749164,
+      "script_ms": 3221.427454
+    }
+  ],
+  "alignment": [
+    {
+      "width": 1400,
+      "drift": 0,
+      "right": 1160
+    },
+    {
+      "width": 820,
+      "drift": 0,
+      "right": 580
+    }
+  ]
+}

@@ -1,0 +1,22 @@
+{
+ "previous": [
+  {
+   "frames": 38,
+   "total_ms": 19205.957000000002,
+   "max_ms": 1762.14,
+   "p95_ms": 1684.318,
+   "commit_ms": 96767.648,
+   "cancel": true
+  }
+ ],
+ "split": [
+  {
+   "frames": 74,
+   "total_ms": 29859.877,
+   "max_ms": 1531.021,
+   "p95_ms": 1092.465,
+   "commit_ms": 96313.026,
+   "cancel": true
+  }
+ ]
+}

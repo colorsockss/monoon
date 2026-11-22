@@ -1,6 +1,6 @@
 # 큰 방을 나눠 읽기
 
-2026-11-22 · macOS 27.0.1 (26A434) · Apple M4 Max · .NET SDK 10.0.101. 같은 소스로 플레이어 템플릿, CollisionLab 개발용 Release·Native AOT 빌드, 패키징한 에디터를 만들었다. Windows·Linux에서는 실행하지 않았다. [실행 방법](../../CollisionLab.SplitLoading/README.md) · [사용법](../../../../docs/manual/scene-streaming.md#큰-방을-여러-프레임에-나눠-읽기)
+2026-11-22 · macOS 27.0.1 (26A434) · Apple M4 Max · .NET SDK 10.0.101. 같은 소스로 플레이어 템플릿, CollisionLab 개발용 Release·Native AOT 빌드, 패키징한 에디터를 만들었다. Windows·Linux 게스트 결과는 [아래](#windows-x64와-linux-x64-게스트)에 있다. [실행 방법](../../CollisionLab.SplitLoading/README.md) · [사용법](../../../../docs/manual/scene-streaming.md#큰-방을-여러-프레임에-나눠-읽기)
 
 측정한 방은 CollisionLab의 충돌체 1만 개 방에 4096×4096 배경 PNG 네 장을 더한 방이다. 실험실 방에는 스프라이트 세 개가 상주한다. 방이 연결되면 상주 파일이 일곱 개가 된다. 예산 0은 이전 방식이다. 준비를 시작한 업데이트에서 오브젝트를 모두 만들고, 업데이트마다 파일 하나를 게임 스레드에서 디코딩·업로드한다. 예산 4 ms는 오브젝트 생성과 업로드에 업데이트당 4 ms를 쓰고, PNG는 워커 스레드에서 디코딩한다.
 
@@ -68,6 +68,53 @@ SDL Scene 패널에서 **4**로 방을 추가했다. 로딩 구간은 연결 프
 - 오브젝트 생성 중과 디코딩·업로드 중에 취소하면 업로드한 파일, 디코딩한 버퍼, 추가된 오브젝트가 시작 상태로 돌아온다. 취소한 방을 다시 추가하고 제거할 수 있다.
 
 기존 씬 전환 검사(`SceneStreamingChecks`)도 통과했다. `./monoon ci`로 InventoryLab을 Release·Native AOT 배포용으로 다시 빌드했고 `./monoon test replay`를 통과했다. 입력 재생 저장 파일의 SHA-256은 기존 기록과 같은 `EED41DEF…E70F795`였다. 두 배포본에 SkiaSharp, Avalonia, 에디터·빌드 도구 어셈블리가 없었다.
+
+## Windows x64와 Linux x64 게스트
+
+2026-11-23, 이 Mac의 QEMU(TCG) 게스트에서 Mac에서 `prepare`로 만든 같은 사본을 각 게스트에서 개발용 Release와 Native AOT로 빌드했다. 모든 시간은 에뮬레이션 값이며 Mac과 비교하지 않는다. [게스트 환경과 실행 방법](../x64-guest-10.2-10.8/README.md)
+
+### 헤드리스 재생: 원래 검사(300프레임, 3회)는 네 배포본 모두 실패
+
+| 게스트 | 배포본 | 결과 | 첫 실패 |
+| --- | --- | --- | --- |
+| Windows 11 x64 | Release | **실패** | 1회차 예산 0 취소. 230·228·226번째 프레임 시도 모두 취소 전에 방이 연결됨 |
+| Windows 11 x64 | Native AOT | **실패** | 2회차 예산 0 취소. 196·194·192번째 프레임 시도 모두 연결됨. 1회차의 4 ms 추가·교체는 298프레임 안에 연결되지 않음 |
+| Debian 12 x64 | Release | **실패** | 3회 모두 진행. 4 ms 추가·교체 6번 모두 298프레임 안에 연결되지 않아 `a add load did not finish within 300 frames` |
+| Debian 12 x64 | Native AOT | **실패** | 1회차 예산 0 취소. 161·159·157번째 프레임 시도 모두 연결됨 |
+
+- 에뮬레이션에서는 키를 누른 뒤 첫 업로드까지 약 170프레임(약 3초)이 걸렸다. 1/60초 간격으로 진행하는 재생에서 예산 0 로딩은 150–250프레임(macOS 14프레임), 예산 4 ms 로딩은 400–640프레임이 걸렸다. 그래서 4 ms 로딩은 300프레임짜리 기록 안에 끝나지 않았다. 이때 검사기는 업로드가 없으므로 마지막 프레임 직전에 Backspace를 넣는다. 따라서 그 “취소”는 취소 경로를 검사하지 못한다.
+- 예산 0 취소는 같은 입력이라도 실행마다 연결 프레임이 10프레임 이상 달랐다. 검사기는 2프레임씩 세 번 앞당겨 다시 시도하므로 위 세 실행에서 취소 시점을 찾지 못했다. 취소가 연결 전에 들어간 예산 0 실행(Linux Release 3회, Windows Native AOT 1회차)은 모두 상주 3 · 디코딩 0 · SDL 텍스처 3으로 돌아왔다.
+- 검사기의 Release 대 4 ms 최장 프레임 비교까지는 도달하지 못했다. 저장소의 검사기는 바꾸지 않았다.
+
+### 진단 실행: 1,200프레임, 1회
+
+게스트 스크립트에서 같은 `replay()`와 `window()`를 사용하되 입력 기록을 1,200프레임으로 늘렸다. 취소 재시도는 8프레임씩 최대 8번으로 바꿨다. [진단 실행 코드](../x64-guest-10.2-10.8/guest.py)
+
+| 게스트 | 배포본 | 추가 예산 0: 프레임 / 최장 | 추가 4 ms: 프레임 / 최장 | 교체 예산 0 | 교체 4 ms | 취소 프레임 (예산 0 / 4 ms) |
+| --- | --- | --- | --- | --- | --- | --- |
+| Windows 11 x64 | Release | 203 / 1,724.7 ms | 613 / 939.6 ms | 247 / 1,769.9 ms | 637 / 328.5 ms | 193(2번째 시도) / 525 |
+| Windows 11 x64 | Native AOT | 173 / 1,710.7 ms | 549 / 296.9 ms | 175 / 1,646.2 ms | 568 / 288.2 ms | 171 / 471 |
+| Debian 12 x64 | Release | 180 / 2,030.1 ms | 510 / 474.3 ms | 191 / 1,438.3 ms | 489 / 396.7 ms | 178 / 417 |
+| Debian 12 x64 | Native AOT | 178 / 1,404.0 ms | 412 / 382.5 ms | 152 / 1,421.7 ms | 425 / 383.2 ms | 144(5번째 시도) / 324 |
+
+- 추가와 교체 16번이 모두 연결됐고 상주 7 · 디코딩 0 · SDL 텍스처 7이 됐다. 4 ms 로딩의 최장 프레임은 모든 경우에 예산 0보다 짧았다. 예산 0의 최장 프레임 8개 중 7개는 macOS처럼 배경 한 장을 게임 스레드에서 디코딩·업로드한 프레임(Scene.Upload)이었다. Linux Release 추가는 Scene.Loading 자체 시간이 가장 길었다.
+- 여덟 번의 취소 모두 방이 연결되지 않았고 상주 3 · 디코딩 0 · SDL 텍스처 3으로 돌아왔다. Linux Native AOT 예산 0 취소(144번째 프레임)는 업로드가 시작되기 전에 들어갔다. 나머지 예산 0 취소는 업로드 중에 들어갔다. 4 ms 취소는 오브젝트 생성(Scene.Instantiate) 뒤 업로드가 기록된 프레임이 1–3개 지난 시점이었다.
+- 원본: [Windows Release](x64/win-x64-long-release.json) · [Windows Native AOT](x64/win-x64-long-native-aot.json) · [Linux Release](x64/linux-x64-long-release.json) · [Linux Native AOT](x64/linux-x64-long-native-aot.json) · [원래 검사 Linux Release 요약](x64/linux-x64-release.json). 실패한 나머지 세 실행은 요약을 만들기 전에 끝났다. 첫 예외와 로그는 [게스트 요약](../x64-guest-10.2-10.8/README.md)에 있다.
+
+### 에디터 Scene Play: 두 OS 통과
+
+[editor.py](../../CollisionLab.SplitLoading/editor.py)를 그대로 실행했다(Linux는 3회 한 번에, Windows는 평가판 강제 종료 때문에 1회씩 세 번). 에디터는 프레임 수 제한 없이 연결될 때까지 기다린다.
+
+| 게스트 | 예산 | 구간 프레임 (1 / 2 / 3회) | 최장 프레임 ms (1 / 2 / 3회) | 연결 프레임 |
+| --- | ---: | --- | --- | --- |
+| Windows 11 x64 | 0 | 38 / 25 / 36 | 1,762.1 / 1,639.3 / 2,187.9 | 96.8–117.7초 |
+| Windows 11 x64 | 4 ms | 74 / 66 / 64 | 1,531.0 / 1,728.9 / 1,691.6 | 96.3–114.2초 |
+| Debian 12 x64 | 0 | 114 / 101 / 109 | 1,798.4 / 1,800.4 / 1,715.7 | 101.8–119.6초 |
+| Debian 12 x64 | 4 ms | 174 / 170 / 174 | 1,451.3 / 1,533.0 / 1,388.9 | 102.4–106.5초 |
+
+- 12번의 취소 모두 상주 3 · 디코딩 0으로 돌아왔다. Windows·Linux 에디터의 Scene 패널은 SDL 캔버스를 쓰지 않으므로 검사기가 SDL 텍스처 수를 읽지 못했다(`null`). 이 항목은 확인하지 못했다.
+- 4 ms의 최장 프레임 중앙값은 Windows 1,691.6 ms(예산 0 1,762.1 ms), Linux 1,451.3 ms(1,798.4 ms)였다. Windows 2회차는 4 ms 쪽이 더 길었다. 연결 프레임 약 100초에는 macOS와 같이 Play Hierarchy를 다시 만드는 시간이 포함된다.
+- 원본: [Windows 1회](x64/win-x64-scene-play1.json) · [2회](x64/win-x64-scene-play2.json) · [3회](x64/win-x64-scene-play3.json) · [Linux](x64/linux-x64-scene-play.json)
 
 ## 원본
 

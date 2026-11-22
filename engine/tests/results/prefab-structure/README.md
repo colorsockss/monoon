@@ -20,4 +20,15 @@
 
 엔진 전체 회귀 `./monoon test`도 통과했다. 구조 검사는 추가 자식·삭제 자식·추가 컴포넌트·삭제 컴포넌트를 하나씩 적용하고 복원한다. Undo에 해당하는 원본·씬 복원, 저장 후 다시 열기, 씬 전용 참조를 가진 컴포넌트의 적용 거부도 확인한다. [회귀 검사](../../Engine.Checks/PrefabStructureChecks.cs)
 
-Windows와 Linux에서는 실행하지 않았다. Scene 뷰포트(SDL 패널)의 화면은 캡처하지 않았다.
+Scene 뷰포트(SDL 패널)의 화면은 캡처하지 않았다.
+
+## Windows x64와 Linux x64 게스트
+
+2026-11-23, 이 Mac의 QEMU(TCG) 게스트에서 같은 순서로 실행했다. 각 게스트의 패키지 에디터(Linux는 Xvfb)에서 검사기가 사본을 수정·저장했고, 저장한 사본을 같은 게스트에서 Release와 Native AOT(distribution)로 빌드했다. [게스트 환경과 실행 방법](../x64-guest-10.2-10.8/README.md)
+
+| 게스트 | 에디터 단계 | Release | Native AOT |
+| --- | --- | --- | --- |
+| Windows 11 x64 | 통과. 단계별 상태가 [macOS의 editor.txt](editor.txt)와 같음 | `210 1 0` · `370 1 1` · `530 1 0` | 같음 |
+| Debian 12 x64 | 통과. 단계별 상태가 macOS와 같음 | `210 1 0` · `370 1 1` · `530 1 0` | 같음 |
+
+네 플레이어의 `result.json`은 macOS [release.json](release.json)과 바이트 단위로 같았다. [실행별 결과](x64/runs.tsv). Overrides 창 캡처: Windows [구조 행](x64/win-x64-overrides.png) · [작은 창](x64/win-x64-compact.png), Linux [구조 행](x64/linux-x64-overrides.png) · [작은 창](x64/linux-x64-compact.png). Windows의 작은 창 캡처는 macOS처럼 350px이었고 긴 행과 세 버튼이 창 안에 있었다. Linux(Xvfb, 창 관리자 없음)의 작은 창 캡처는 435px 그대로여서 최소 너비 배치는 확인하지 못했다. 검사기는 이 너비를 판정하지 않고 캡처만 남긴다. 독립 게임은 헤드리스 재생이며 물리 GPU에서 실행하지 않았다.

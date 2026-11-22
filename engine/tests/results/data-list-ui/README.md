@@ -25,4 +25,18 @@
 
 - 에디터의 Scene Play와 SDL 게임 창의 화면 캡처는 이번에 확인하지 않았다. 독립 플레이어는 헤드리스 입력 재생으로만 검사했다.
 - 실제 게임패드 장치는 사용하지 않았다. 패드 입력은 입력 기록의 패드 이벤트로 재생했다.
-- Windows·Linux는 실행하지 않았다.
+- Windows·Linux 게스트에서는 Release·Native AOT 헤드리스 재생만 실행했다. 에디터 Scene Play는 실행하지 않았다. 아래 절을 참고한다.
+
+## Windows x64와 Linux x64 게스트
+
+2026-11-23, 이 Mac의 QEMU(TCG) 게스트에서 샘플 InventoryLab을 각 게스트에서 Release와 Native AOT(distribution)로 빌드하고 같은 검사기로 재생했다. [게스트 환경과 실행 방법](../x64-guest-10.2-10.8/README.md)
+
+| 게스트 | 실행 대상 | 정렬 전 선택 | 정렬 후 위치 | 사용한 ID | 행 객체 / 아이템 | 약초상 입력 재생 저장 |
+| --- | --- | --- | ---: | --- | --- | --- |
+| Windows 11 x64 | Release | `item-0042` | 651번 | `item-0042`, `item-0162` | 11 / 1,000 | `EED41DEF…E70F795` |
+| Windows 11 x64 | Native AOT | `item-0042` | 651번 | `item-0042`, `item-0162` | 11 / 1,000 | `EED41DEF…E70F795` |
+| Debian 12 x64 | Release | `item-0042` | 651번 | `item-0042`, `item-0162` | 11 / 1,000 | `EED41DEF…E70F795` |
+| Debian 12 x64 | Native AOT | `item-0042` | 651번 | `item-0042`, `item-0162` | 11 / 1,000 | `EED41DEF…E70F795` |
+
+- 네 실행의 `result.json`은 macOS 결과와 같았다. 저장 슬롯 2의 SHA-256도 모두 [catalog.save](catalog.save)와 같은 `8be2deb6…697819`였다. [실행별 값](x64/runs.tsv)
+- 기존 약초상 회귀는 같은 빌드로 확인했다. 각 플레이어를 빈 프로필에서 [공통 입력](../../fixtures/InventoryLab/Herbalist.inputreplay)으로 헤드리스 재생하고, 슬롯 1을 [Mac 기준 저장](../../fixtures/InventoryLab/Herbalist.save)과 바이트 단위로 비교했다. 네 저장 모두 171바이트, SHA-256 `EED41DEFCBD7987A527DEB677C60DA8151AD0DE1616C717C646E92B26E70F795`였다. 이 비교는 `build_guest.py`처럼 게스트에서 Release 템플릿과 CLI를 소스로 다시 컴파일하지 않았다. Mac에서 만든 템플릿으로 게스트에서 빌드한 배포본을 사용했다.
