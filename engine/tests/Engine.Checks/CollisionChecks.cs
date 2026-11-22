@@ -9,6 +9,7 @@ internal static class CollisionChecks
     private static PhysicsHit Hit(PhysicsHit? h) => h??throw new Exception("Missing physics hit");
     internal static void Run(string repository)
     {
+        CheckSpatialGrid();
         var path=Path.Combine(repository,"samples","CollisionLab","Scenes","CollisionLab.scene");
         var scene=SceneDocument.Load(path);
         var obj=scene.Objects.Single(o=>o.Name=="Ramp"); var poly=obj.GetComponent<PolygonCollider2DComponent>()!;
@@ -63,6 +64,78 @@ internal static class CollisionChecks
         }
         Console.WriteLine("PASS collision geometry: shape casts, tangent/endpoint, overlap, filters, affine circle, sensor crossing, YAML validation and legacy defaults");
     }
+    private static void CheckSpatialGrid()
+    {
+        var scene = SceneDocument.Empty(new());
+        SceneObject Box(float x, float y, float width, float height, int layer, Guid? id = null)
+        {
+            var obj = new SceneObject { Id = id ?? Guid.NewGuid(), X = x, Y = y, Width = width, Height = height };
+            obj.AddComponent(new BoxCollider2DComponent { Layer = layer, Mask = 0 });
+            scene.Objects.Add(obj);
+            return obj;
+        }
+
+        var parent = new SceneObject();
+        scene.Objects.Add(parent);
+        var last = Box(-128, -64, 128, 48, 2, new Guid("ffffffff-0000-0000-0000-000000000001"));
+        var first = Box(-128, -64, 128, 48, 2, new Guid("00000001-0000-0000-0000-000000000002"));
+        scene.Reparent(first, parent, false);
+        var huge = Box(-16000, 3000, 64000, 20, 3);
+        for (int i = 0; i < 40; i++) Box(4000 + i * 100, 8000, 8, 8, 1);
+
+        using var game = new SceneGame(scene);
+        var filter = new PhysicsFilter(1u << 2);
+        var diagnostics = game.QueryDiagnostics;
+        void ExpectAt(Vector2 point, params Guid[] ids)
+        {
+            var area = Shape2D.Box(new RectangleF(point.X - 2, point.Y - 2, 4, 4));
+            foreach (bool indexed in new[] { false, true })
+            {
+                diagnostics.UseSpatialIndex = indexed;
+                Check(game.Overlap(area, filter).Select(t => t.ObjectId).SequenceEqual(ids),
+                    $"grid overlap at {point}, indexed={indexed}");
+                if (indexed) Check(diagnostics.LastColliderCandidates < 8, "local query selected nearby buckets");
+            }
+        }
+        var oldPosition = new Vector2(-64, -40);
+        ExpectAt(oldPosition, first.Id, last.Id);
+        var wide = Shape2D.Box(new RectangleF(-145, -80, 170, 80));
+        var nearTie = game.Overlap(wide, filter);
+        Check(nearTie.Count == 2 && nearTie[0].ObjectId == first.Id, "multi-cell owners visited once");
+        foreach (bool indexed in new[] { false, true })
+        {
+            diagnostics.UseSpatialIndex = indexed;
+            var hit = Hit(game.Raycast(new(-192, -40), Vector2.UnitX, 64, filter));
+            Check(hit.Target.ObjectId == first.Id && hit.Distance == 64, "closed cell edge and equal-fraction tie");
+            var area = Shape2D.Box(new RectangleF(-40000, -100, 100000, 140));
+            Check(game.Overlap(area, filter).SequenceEqual(nearTie), "wide query linear fallback");
+            Check(game.Overlap(Shape2D.Circle(new(40000, 3010), 2), new(1u << 3)).Single().ObjectId == huge.Id,
+                "oversized collider remains a candidate");
+        }
+
+        Check(game.TryMoveStep(parent.Id, new(0, 256)), "move colliders with hierarchy");
+        ExpectAt(oldPosition, last.Id);
+        ExpectAt(oldPosition + new Vector2(0, 256), first.Id);
+        Check(game.SetLocalTransform(parent.Id, new(new(950, 500), 90, new(2, .5f))), "rotate and rescale hierarchy");
+        Check(game.TryGetWorldMatrix(first.Id, out var pose), "get transformed child");
+        var center = Vector2.Transform(new Vector2(64, 24), pose);
+        ExpectAt(oldPosition + new Vector2(0, 256));
+        ExpectAt(center, first.Id);
+        Check(game.SetColliderEnabled(first.Id, false), "disable indexed collider");
+        ExpectAt(center);
+        game.SetColliderEnabled(first.Id, true);
+        game.SetActive(parent.Id, false);
+        ExpectAt(center);
+        game.SetActive(parent.Id, true);
+        Check(game.SetParent(first.Id, null), "reparent indexed collider");
+        ExpectAt(center, first.Id);
+        Check(game.Destroy(first.Id), "remove indexed collider");
+        ExpectAt(center);
+        game.FixedUpdate(Vector2.Zero, 1f / 60);
+        ExpectAt(center);
+        Console.WriteLine("PASS spatial grid: ordered ties, cell edges, overflow, hierarchy transforms, reparent, enable and removal");
+    }
+
     internal static void Tiles(string root,Guid tileset)
     {
         foreach (var layout in new[]{TileGrid.Orthogonal,TileGrid.Isometric,TileGrid.HexPointy,TileGrid.HexFlat})

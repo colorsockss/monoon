@@ -1,0 +1,17 @@
+{
+  "rid": "linux-x64",
+  "os": "Linux-6.1.0-56-cloud-amd64-x86_64-with-glibc2.36",
+  "architecture": "x86_64",
+  "cold": 8,
+  "rebuilt": 1,
+  "reused": 7,
+  "files": 21,
+  "contentSha256": "6ec51d1e05e2b12a03b4ffd5f180ec79271c0ca46dbf8f207d97dfb47ab4e212",
+  "inputSha256": "22638c8c350a7679ce2d44cb6682b9530f636f1bf4e09e85ba567fe8f4b5aa70",
+  "saves": {
+    "incremental": "eed41defcbd7987a527deb677c60da8151ad0de1616c717c646e92b26e70f795",
+    "full": "eed41defcbd7987a527deb677c60da8151ad0de1616c717c646e92b26e70f795"
+  },
+  "dependencyRebuilds": 5,
+  "repairedCacheFiles": 1
+}

@@ -1,0 +1,10 @@
+version: 1
+values:
+  buildId: "acd19ce07dca49b1b58f265ac30324bd"
+  projectId: "64fb4cd6-2469-5cec-ba6d-9a49e61f42e7"
+  game: "KeyRoom"
+  target: "osx-arm64"
+  mode: "native-aot"
+  profile: "distribution"
+  playerSha256: "0903BC00721EE1A0363D28C6ABFFB931BB12ACE22C916A2B02950A3AB280B5D8"
+  nativeUuid: "4be35511-7a23-3a1f-b368-22cbb4a0a6a0"

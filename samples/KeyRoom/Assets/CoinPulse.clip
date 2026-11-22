@@ -1,0 +1,21 @@
+frames:
+- seconds: 1
+  sprite: 909cfb8c-893f-41a9-8e82-6d8ef5c2abb6
+loop: true
+tracks:
+- property: Tint
+  keys:
+  - time: 0
+    value: "#FFFFFF"
+  - time: 0.5
+    value: "#3FC39F"
+  - time: 1
+    value: "#FFFFFF"
+- property: Opacity
+  keys:
+  - time: 0
+    value: "1"
+  - time: 0.5
+    value: "0.2"
+  - time: 1
+    value: "1"

@@ -35,7 +35,7 @@ public partial class MainWindow
         var bundles = new TextBox { AcceptsReturn = true, MaxHeight = 80, MinHeight = 40,
             Text = string.Join(Environment.NewLine, settings.ContentBundles ?? []),
             Watermark = "One Assets or Scenes folder per line" };
-        var grid = new Grid { ColumnDefinitions = new("78,*"), RowDefinitions = new("Auto,Auto,Auto,Auto"), ColumnSpacing = 4, RowSpacing = 4 };
+        var grid = new Grid { ColumnDefinitions = new("78,*"), RowDefinitions = new("Auto,Auto,Auto,Auto,Auto"), ColumnSpacing = 4, RowSpacing = 4 };
         void Row(int index, string text, Control value)
         {
             var label = new TextBlock { Text = text, VerticalAlignment = VerticalAlignment.Center };
@@ -44,7 +44,8 @@ public partial class MainWindow
             grid.Children.Add(label); grid.Children.Add(value);
         }
         Row(0, "Start scene", start); Row(1, "Platform", target); Row(2, "Build type", modePicker);
-        Row(3, "Bundles", bundles); rows.Children.Add(grid);
+        var fullContent = new CheckBox { Content = "Rebuild all content" };
+        Row(3, "Bundles", bundles); Row(4, "Content", fullContent); rows.Children.Add(grid);
         rows.Children.Add(new TextBlock { Text = "Included scenes" });
         var scenesPanel = new StackPanel();
         foreach (var choice in choices) scenesPanel.Children.Add(choice);
@@ -75,8 +76,11 @@ public partial class MainWindow
         }
         var native = (string?)modePicker.SelectedItem == aot;
         Status.Text = $"Building {rid} ({modePicker.SelectedItem})…";
-        var output = await Task.Run(() => Engine.Desktop.DesktopBuild.Export(root, settings, rid, destination, native));
+        bool full = fullContent.IsChecked == true;
+        var buildResult = await Task.Run(() => Engine.Desktop.DesktopBuild.Export(root, settings, rid, destination, native, BuildProfile.Distribution, full));
+        foreach (var decision in buildResult.ContentDecisions) WriteLog(new(GameLogLevel.Info, decision, null, 0));
+        WriteLog(new(GameLogLevel.Info, $"Content report: {buildResult.ContentReport}", null, 0));
         settings.Save(root); Scene.Settings = settings; MarkDirty();
-        Status.Text = $"Built {output}";
+        Status.Text = $"Built {buildResult.Product}";
     }
 }

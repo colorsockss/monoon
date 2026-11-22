@@ -8,6 +8,8 @@ internal static class TransformChecks
         var scene = SceneDocument.Load(Path.Combine(root,"Scenes","KeyRoom.scene"));
         var chest = scene.Objects.Single(o => o.Name == "Chest");
         var lid = scene.Objects.Single(o => o.Name == "Chest Lid");
+        // This fixture tests the authored (and reparented) basis without a clip driving it.
+        if (lid.GetComponent<SpriteAnimatorComponent>() is {} animator) animator.PlayOnStart = false;
         Require(chest.ScaleX == 1 && chest.ScaleY == 1 && lid.WorldPosition == new Vector2(332,126),"legacy defaults");
         chest.Rotation = 90; chest.ScaleX = 2; chest.ScaleY = .5f; chest.PivotX = chest.PivotY = .5f;
         // Calculated directly: scale and rotate the lid origin around the chest's (17,10.5).

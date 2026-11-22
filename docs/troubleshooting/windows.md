@@ -46,3 +46,8 @@ $env:RestoreSources = "$tools\feed"
 Set-Location C:\InventoryReplay
 & "$tools\python\python.exe" engine/tests/InventoryLab.Replay/build_guest.py exports results-next
 ```
+
+
+## 빌드 중 셰이더 시트 생성이 중단될 때
+
+시작 로그가 `Building release`이고 예외가 `0xC000001D`와 `SkiaSharp.SKCanvas.DrawRect → ShaderPixels.Bake`를 가리키면 Windows 빌드 도구의 셰이더 생성 경로를 확인한다. 기존 x64 VM에서 SkiaSharp 2.88.9의 CPU 표면이 이 위치에서 종료됐다. 현재 에디터와 CLI는 Windows의 D3D11 WARP 장치에서 ANGLE 오프스크린 표면을 만들고 셰이더 프레임을 PNG로 저장한다. Windows CLI 배포 폴더에는 `av_libglesv2.dll`이 있어야 한다. 게임 플레이어는 완성된 PNG를 SDL로 그린다. [ANGLE의 D3D11·WARP 장치 정의](https://raw.githubusercontent.com/google/angle/main/include/EGL/eglext_angle.h) · [Windows 빌드 검증](../../engine/tests/results/incremental-content/README.md)

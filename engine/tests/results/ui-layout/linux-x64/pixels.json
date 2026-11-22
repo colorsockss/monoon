@@ -1,0 +1,78 @@
+[
+  {
+    "resolution": [
+      800,
+      450
+    ],
+    "panelPixels": [
+      243,
+      195,
+      935,
+      585
+    ],
+    "closePixels": [
+      786,
+      516,
+      917,
+      566
+    ],
+    "maxEdgeErrorPixels": 1.35
+  },
+  {
+    "resolution": [
+      640,
+      360
+    ],
+    "panelPixels": [
+      259,
+      205,
+      919,
+      575
+    ],
+    "closePixels": [
+      731,
+      489,
+      896,
+      552
+    ],
+    "maxEdgeErrorPixels": 1.1
+  },
+  {
+    "resolution": [
+      1024,
+      768
+    ],
+    "panelPixels": [
+      228,
+      110,
+      950,
+      670
+    ],
+    "closePixels": [
+      833,
+      617,
+      935,
+      656
+    ],
+    "maxEdgeErrorPixels": 1.55
+  },
+  {
+    "resolution": [
+      480,
+      720
+    ],
+    "panelPixels": [
+      429,
+      94,
+      749,
+      686
+    ],
+    "closePixels": [
+      617,
+      625,
+      733,
+      669
+    ],
+    "maxEdgeErrorPixels": 0.94
+  }
+]

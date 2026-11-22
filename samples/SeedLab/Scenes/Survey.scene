@@ -22,6 +22,9 @@ objects:
   height: 1
   components:
   - type: camera2D
+  - type: script
+    script: RouteSceneSwitch
+    values: {Destination: {Id: "fecb609a-9302-5710-a253-9ccc6e859b64"}}
 - id: 68ff8fa6-fc50-5ef4-9101-687ffdc0462b
   name: Canvas
   x: 0
@@ -35,7 +38,7 @@ objects:
   parentId: 68ff8fa6-fc50-5ef4-9101-687ffdc0462b
   x: 24
   y: 15
-  width: 232
+  width: 175
   height: 39
   components:
   - type: uiRect
@@ -73,6 +76,16 @@ objects:
     text: "Turn 0   (1, 1)"
     size: 15
     color: "#78DBCA"
+- id: 898c8dbb-3522-5181-85a1-f1fc04d60311
+  name: Courier lab shortcut
+  parentId: 68ff8fa6-fc50-5ef4-9101-687ffdc0462b
+  x: 648
+  y: 24
+  width: 144
+  height: 24
+  components:
+  - {type: uiRect}
+  - {type: uiText, text: "G   Courier lab", size: 15, color: "#78DBCA", insetX: 0, insetY: 0}
 - id: bd8a1d3e-f1eb-5954-ac97-2ce8567ffded
   name: Seed label
   parentId: 68ff8fa6-fc50-5ef4-9101-687ffdc0462b

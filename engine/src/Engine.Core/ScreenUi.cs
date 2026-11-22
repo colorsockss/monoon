@@ -18,6 +18,11 @@ public sealed partial record UiRectComponent : SceneComponent
         => (Anchor, ShowIf) = (anchor, showIf);
     public string Anchor { get; set; } = "TopLeft";
     public string ShowIf { get; set; } = "";
+    public float? Left { get; set; }
+    public float? Right { get; set; }
+    public float? Top { get; set; }
+    public float? Bottom { get; set; }
+    internal bool HasPins => Left.HasValue || Right.HasValue || Top.HasValue || Bottom.HasValue;
     public bool InputModeRoot { get; set; }
     public bool ScaleHorizontalWithText { get; set; }
 }
@@ -49,12 +54,10 @@ public sealed partial record UiTextComponent : SceneComponent
 }
 
 [DisplayName("UI Button"), YamlObject]
-public sealed partial record UiButtonComponent : SceneComponent
+public sealed partial record UiButtonComponent : UiControlComponent
 {
     public UiButtonComponent() { }
     [YamlConstructor] public UiButtonComponent(bool interactable = true) => Interactable = interactable;
-    public string? Style { get; set; }
-    public bool Interactable { get; set; } = true;
 }
 
 public sealed partial class SceneDocument
@@ -72,6 +75,9 @@ public sealed partial class SceneDocument
             obj.AddComponent(new UiRectComponent());
             switch (kind)
             {
+                case "Slider": obj.AddComponent(new UiSliderComponent()); break;
+                case "Toggle": obj.AddComponent(new UiToggleComponent()); break;
+                case "Dropdown": obj.AddComponent(new UiDropdownComponent()); break;
                 case "Button": obj.AddComponent(new UiButtonComponent()); obj.AddComponent(new UiTextComponent { Text = "Button", InsetX = 8, InsetY = 5 }); break;
                 case "Text": obj.AddComponent(new UiTextComponent()); break;
                 case "Image": obj.AddComponent(new UiImageComponent()); break;
@@ -97,6 +103,13 @@ public interface IGameUi
     bool SetTextKey(Guid widget, string key);
     bool SetTextKey(Guid widget, string key, params string[] argumentKeys);
     string? Value(Guid widget);
+    float? SliderValue(Guid widget);
+    bool? ToggleValue(Guid widget);
+    int? SelectedIndex(Guid widget);
+    bool SetSliderValue(Guid widget, float value);
+    bool SetToggleValue(Guid widget, bool value);
+    bool SetSelectedIndex(Guid widget, int index);
+    bool FocusWidget(Guid widget);
     float ScrollOffset(Guid widget);
     Guid? ActiveInputMode { get; }
     bool PushInputMode(Guid root);
@@ -108,6 +121,7 @@ public interface IGameUi
     bool SetVisible(Guid widget, bool visible);
     bool SetInteractable(Guid widget, bool interactable);
 }
+public readonly record struct UiValueChanged(Guid ObjectId, float Value, SessionState Session, IGameUi Ui, IGameObjects Objects);
 public readonly record struct UiClick(Guid ObjectId, SessionState Session, IGameUi Ui, IGameObjects Objects);
 
 /// <summary>One layout for painting, picking and keyboard navigation, in game resolution units.</summary>
@@ -115,7 +129,7 @@ public sealed partial class ScreenUi : IGameUi
 {
     public static IReadOnlyList<string> Anchors { get; } = Array.AsReadOnly(new[] {
         "TopLeft", "TopCenter", "TopRight", "MiddleLeft", "Center", "MiddleRight", "BottomLeft", "BottomCenter", "BottomRight" });
-    public static bool IsWidget(SceneObject o) => o.Components.Any(c => c is UiRectComponent or UiImageComponent or UiTextComponent or UiButtonComponent or UiTextFieldComponent or UiLayoutComponent or UiScrollComponent);
+    public static bool IsWidget(SceneObject o) => o.Components.Any(c => c is UiRectComponent or UiImageComponent or UiTextComponent or UiControlComponent or UiTextFieldComponent or UiLayoutComponent or UiScrollComponent);
     private sealed record Node(SceneObject Object, Node? Parent, int Order, string? Image)
     {
         internal UiNineSlice? Slice;
@@ -134,7 +148,9 @@ public sealed partial class ScreenUi : IGameUi
         internal readonly bool Canvas=Object.GetComponent<UiCanvasComponent>()!=null;
         internal readonly UiTextComponent? Label = Object.GetComponent<UiTextComponent>();
         internal readonly UiImageComponent? Picture = Object.GetComponent<UiImageComponent>();
-        internal readonly UiButtonComponent? Button = Object.GetComponent<UiButtonComponent>();
+        internal readonly UiControlComponent? Control = Object.GetComponent<UiControlComponent>();
+        internal float ControlValue;
+        internal readonly UiRectComponent? Rect = Object.GetComponent<UiRectComponent>();
         internal readonly bool ScaleHorizontal = Object.GetComponent<UiRectComponent>()?.ScaleHorizontalWithText == true;
         internal readonly string Flag = Object.GetComponent<UiRectComponent>()?.ShowIf ?? "";
     }
@@ -151,7 +167,7 @@ public sealed partial class ScreenUi : IGameUi
     private Guid? focus, pressed, hovered, activationOwner;
     private string? activationKey;
     private PointF? pointer;
-    private readonly Queue<Guid> clicks = [];
+    private readonly Queue<(Guid Id, float? Value)> controlEvents = [];
     private readonly HashSet<string> held = [];
     public IEnumerable<string> Images => nodes.Select(n => n.Image).OfType<string>().Distinct();
 
@@ -185,7 +201,12 @@ public sealed partial class ScreenUi : IGameUi
             if (obj.GetComponent<UiImageComponent>()?.Sprite is Guid id && assets?.PathFor(id) is { } relative && scene.ProjectDirectory != null)
                 image = Path.Combine(scene.ProjectDirectory, relative);
             var node = new Node(obj, parent, canvas?.Order ?? parent?.Order ?? 0, image);
-            if (node.Button != null) node.Palette = theme.Find(node.Button.Style);
+            if (node.Control is {} control)
+            {
+                node.Palette = theme.Find(control.Style);
+                var old = byId.GetValueOrDefault(obj.Id);
+                node.ControlValue = control.Normalize(old?.Control?.GetType() == control.GetType() ? old.ControlValue : control.DefaultValue);
+            }
             if (node.Picture?.Borders is {} borders && image != null) node.Slice = new(borders, SpriteRegion.ReadPngSize(image));
             if(byId.TryGetValue(obj.Id,out var prior))node.Offset=prior.Offset;
             parent?.Children.Add(node);tree.Add(obj.Id, node); ordered.Add(node);
@@ -201,6 +222,12 @@ public sealed partial class ScreenUi : IGameUi
         foreach (var id in interactOverrides.Keys.Where(id => !tree.ContainsKey(id)).ToArray()) interactOverrides.Remove(id);
         if (focus is Guid f && !tree.ContainsKey(f)) focus = null;
         if (pressed is Guid capture && !tree.ContainsKey(capture)) pressed = null;
+        if (dropdownId is Guid open)
+        {
+            if (tree.GetValueOrDefault(open)?.Control is UiDropdownComponent menu)
+                optionCursor = (int)menu.Normalize(optionCursor);
+            else CloseOptions();
+        }
         ValidateInputModes();
         OrderModeLayers();
     }

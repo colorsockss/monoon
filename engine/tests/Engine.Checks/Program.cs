@@ -4,6 +4,12 @@ using System.Text.Json;
 using System.Text.RegularExpressions;
 using Engine.Core;
 
+if (args is ["--render-candidates", var collisionLab, var evidence])
+{
+    RenderCandidateChecks.Run(Path.GetFullPath(collisionLab), Path.GetFullPath(evidence));
+    return;
+}
+
 var repository = Path.GetFullPath(args.FirstOrDefault() ?? ".");
 if (File.Exists(Path.Combine(repository, "MoNoonEngine.slnx"))) repository = Directory.GetParent(repository)!.FullName;
 var project = Path.Combine(repository, "samples", "KeyRoom");
@@ -54,6 +60,8 @@ try
         return;
     }
     if (args is [_, "--contacts-only"]) { ContactChecks.Run(project); return; }
+    TileContactChecks.Run();
+    GridNavigationChecks.Run();
     ContentBundleChecks.Run(scratch);
     GameModChecks.Run(scratch);
     ContentUpdateChecks.Run(scratch);
@@ -98,6 +106,7 @@ try
     var spriteRoot=Path.Combine(scratch,"SpriteTest");
     SpriteChecks.Run(spriteRoot,repository); Directory.Delete(spriteRoot,true);
     ScriptingChecks.Run(scratch);
+    ScriptFieldRenameChecks.Run(scratch);
     SceneScriptDebugChecks.Run(scratch);
     InputMapChecks.Run(scratch);
     InputModeChecks.Run(project);
@@ -123,12 +132,15 @@ try
     SceneStreamingChecks.Run(scratch, scene);
     PlayerDataChecks.Run(scratch, scene);
     WorldCheckpointChecks.Run(scene);
+    ComponentKeyChecks.Run(scene.ProjectDirectory!);
     RuntimeTransformChecks.Run(scene);
     TimeChecks.Run(scene);
     TransformChecks.Run(scratch);
     UiChecks.Run(scene, scratch);
     AccessibilityChecks.Run();
+    UiPinChecks.Run(project);
     UiThemeChecks.Run(project);
+    UiControlChecks.Run();
     MultiInspectorChecks.Run(scratch);
     PrefabEditingChecks.Run(scratch);
     GameEventChecks.Run(scratch);
@@ -333,6 +345,11 @@ static void Check(bool ok, string label)
 sealed class CaptureCanvas : ICanvas2D
 {
     public List<(string Path, RectangleF Rect, SpriteRegion? Source)> Images { get; } = [];
+    public bool DrawAffine(string? path, RectangleF local, Matrix3x2 matrix, Color tint, SpriteRegion? source = null, string layout = TileGrid.Orthogonal)
+    {
+        if (path != null && path != SpriteAssets.SquarePath) Images.Add((path,Affine2D.Bounds(local,matrix),source));
+        return true;
+    }
     public void Clear(Color color) => Images.Clear();
     public void FillRectangle(RectangleF rectangle, Color color) { }
     public bool DrawTile(string path, RectangleF rect, SpriteRegion source, string layout) => DrawSprite(path,rect,source);

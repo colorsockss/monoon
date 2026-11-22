@@ -1,0 +1,264 @@
+schemaVersion: 15
+objects:
+- id: 1e55dd40-9aac-55ad-8462-7019bce135dd
+  name: Camera
+  x: 400
+  y: 225
+  width: 1
+  height: 1
+  components:
+  - type: camera2D
+    output: Primary
+    showViews: true
+    order: 0
+    halfLife: 0
+    zoom: 1
+  - type: script
+    script: MovementWorkshop
+    values:
+      Destination:
+        Id: "64fb4cd6-2469-5cec-ba6d-9a49e61f42e7"
+  rotation: 0
+  scaleX: 1
+  scaleY: 1
+  pivotX: 0
+  pivotY: 0
+  shear: 0
+- id: f0c04d31-2319-53bd-a4f3-964b14b43ae3
+  name: Canvas
+  x: 0
+  y: 0
+  width: 800
+  height: 450
+  components:
+  - type: uiCanvas
+    order: 0
+  rotation: 0
+  scaleX: 1
+  scaleY: 1
+  pivotX: 0
+  pivotY: 0
+  shear: 0
+- id: 5628850b-0b88-5a32-a8ab-82fcbf1e41fe
+  parentId: f0c04d31-2319-53bd-a4f3-964b14b43ae3
+  name: Title
+  x: 32
+  y: 24
+  width: 730
+  height: 40
+  components:
+  - type: uiRect
+    anchor: TopLeft
+    showIf: ""
+    inputModeRoot: false
+    scaleHorizontalWithText: false
+  - type: uiText
+    text: Player movement
+    size: 28
+    color: "#FFFFFF"
+    wrap: false
+    insetX: 0
+    insetY: 0
+  rotation: 0
+  scaleX: 1
+  scaleY: 1
+  pivotX: 0
+  pivotY: 0
+  shear: 0
+- id: e1e67e5a-1fe7-5622-b8f4-ca1cd123da7e
+  parentId: f0c04d31-2319-53bd-a4f3-964b14b43ae3
+  name: Controls
+  x: 32
+  y: 74
+  width: 740
+  height: 28
+  components:
+  - type: uiRect
+    anchor: TopLeft
+    showIf: ""
+    inputModeRoot: false
+    scaleHorizontalWithText: false
+  - type: uiText
+    text: Arrows / WASD   Move both players     F3   Back to KeyRoom
+    size: 16
+    color: "#FFFFFF"
+    wrap: false
+    insetX: 0
+    insetY: 0
+  rotation: 0
+  scaleX: 1
+  scaleY: 1
+  pivotX: 0
+  pivotY: 0
+  shear: 0
+- id: 635f8cfd-09f2-5596-9211-afd1a8897d15
+  parentId: f0c04d31-2319-53bd-a4f3-964b14b43ae3
+  name: Inherited label
+  x: 32
+  y: 142
+  width: 700
+  height: 28
+  components:
+  - type: uiRect
+    anchor: TopLeft
+    showIf: ""
+    inputModeRoot: false
+    scaleHorizontalWithText: false
+  - type: uiText
+    text: Prefab speed
+    size: 16
+    color: "#FFFFFF"
+    wrap: false
+    insetX: 0
+    insetY: 0
+  rotation: 0
+  scaleX: 1
+  scaleY: 1
+  pivotX: 0
+  pivotY: 0
+  shear: 0
+- id: 3d264f5a-45f1-59d3-a085-dbee1fd08d15
+  parentId: f0c04d31-2319-53bd-a4f3-964b14b43ae3
+  name: Override label
+  x: 32
+  y: 272
+  width: 700
+  height: 28
+  components:
+  - type: uiRect
+    anchor: TopLeft
+    showIf: ""
+    inputModeRoot: false
+    scaleHorizontalWithText: false
+  - type: uiText
+    text: Instance override
+    size: 16
+    color: "#FFFFFF"
+    wrap: false
+    insetX: 0
+    insetY: 0
+  rotation: 0
+  scaleX: 1
+  scaleY: 1
+  pivotX: 0
+  pivotY: 0
+  shear: 0
+- id: 881a0cf1-cd39-4158-b994-b1e79c457bf1
+  prefab:
+    assetId: 2bd90e74-edd0-5b2b-835a-7298032a6b25
+    instances:
+      5688ecd8-6823-5b10-aa26-94d62e150d53: 881a0cf1-cd39-4158-b994-b1e79c457bf1
+    revision: DCDF049D0EA042380CAB4C2E0E37A9ED659FC9133FD7730B9FDB256E70549872
+    baseline:
+      5688ecd8-6823-5b10-aa26-94d62e150d53:
+        id: "881a0cf1-cd39-4158-b994-b1e79c457bf1"
+        name: "Player"
+        x: 0
+        y: 0
+        width: 28
+        height: 28
+        components:
+        - type: "spriteRenderer"
+          sortingLayer: 0
+          order: 1
+          sortByY: false
+          footOffset: 0
+          flipX: false
+          flipY: false
+          pixelSnap: false
+          squareColor: "#63E6C1"
+        - type: "script"
+          script: "PlayerMovement"
+          values:
+            MoveSpeed: 240
+        rotation: 0
+        scaleX: 1
+        scaleY: 1
+        pivotX: 0
+        pivotY: 0
+        shear: 0
+  name: Inherited player
+  x: 88
+  y: 182
+  width: 28
+  height: 28
+  components:
+  - type: spriteRenderer
+    sortingLayer: 0
+    order: 1
+    sortByY: false
+    footOffset: 0
+    flipX: false
+    flipY: false
+    pixelSnap: false
+    squareColor: "#63E6C1"
+  - type: script
+    script: PlayerMovement
+    values:
+      MoveSpeed: 240
+  rotation: 0
+  scaleX: 1
+  scaleY: 1
+  pivotX: 0
+  pivotY: 0
+  shear: 0
+- id: ebad749d-cd9a-4972-aeab-9fcfed2c3ceb
+  prefab:
+    assetId: 2bd90e74-edd0-5b2b-835a-7298032a6b25
+    instances:
+      5688ecd8-6823-5b10-aa26-94d62e150d53: ebad749d-cd9a-4972-aeab-9fcfed2c3ceb
+    revision: DCDF049D0EA042380CAB4C2E0E37A9ED659FC9133FD7730B9FDB256E70549872
+    baseline:
+      5688ecd8-6823-5b10-aa26-94d62e150d53:
+        id: "ebad749d-cd9a-4972-aeab-9fcfed2c3ceb"
+        name: "Player"
+        x: 0
+        y: 0
+        width: 28
+        height: 28
+        components:
+        - type: "spriteRenderer"
+          sortingLayer: 0
+          order: 1
+          sortByY: false
+          footOffset: 0
+          flipX: false
+          flipY: false
+          pixelSnap: false
+          squareColor: "#63E6C1"
+        - type: "script"
+          script: "PlayerMovement"
+          values:
+            MoveSpeed: 240
+        rotation: 0
+        scaleX: 1
+        scaleY: 1
+        pivotX: 0
+        pivotY: 0
+        shear: 0
+  name: Overridden player
+  x: 88
+  y: 312
+  width: 28
+  height: 28
+  components:
+  - type: spriteRenderer
+    sortingLayer: 0
+    order: 1
+    sortByY: false
+    footOffset: 0
+    flipX: false
+    flipY: false
+    pixelSnap: false
+    squareColor: "#63E6C1"
+  - type: script
+    script: PlayerMovement
+    values:
+      MoveSpeed: 320
+  rotation: 0
+  scaleX: 1
+  scaleY: 1
+  pivotX: 0
+  pivotY: 0
+  shear: 0
+defaultCameraId: 1e55dd40-9aac-55ad-8462-7019bce135dd

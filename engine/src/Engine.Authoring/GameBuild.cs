@@ -63,7 +63,10 @@ public static class GameBuild
         => Export(project, template, rid, destination, settings, profile, validateShader, null);
 
     public static GameBuildResult Export(string project, string template, string rid, string destination, GameSettings settings, BuildProfile profile, Action<ShaderClip>? validateShader, Action<ShaderClip, string>? bakeShader)
-        => ExportCore(project, template, rid, destination, settings, false, profile, validateShader, bakeShader);
+        => Export(project, template, rid, destination, settings, profile, validateShader, bakeShader, false);
+
+    public static GameBuildResult Export(string project, string template, string rid, string destination, GameSettings settings, BuildProfile profile, Action<ShaderClip>? validateShader, Action<ShaderClip, string>? bakeShader, bool fullContent)
+        => ExportCore(project, template, rid, destination, settings, false, profile, validateShader, bakeShader, fullContent);
 
     public static string ExportNativeAot(string project, string baseDirectory, string rid, string destination, GameSettings settings, Action<ShaderClip>? validateShader = null)
         => ExportNativeAot(project, baseDirectory, rid, destination, settings, BuildProfile.Distribution, validateShader).Product;
@@ -72,16 +75,19 @@ public static class GameBuild
         => ExportNativeAot(project, baseDirectory, rid, destination, settings, profile, validateShader, null);
 
     public static GameBuildResult ExportNativeAot(string project, string baseDirectory, string rid, string destination, GameSettings settings, BuildProfile profile, Action<ShaderClip>? validateShader, Action<ShaderClip, string>? bakeShader)
+        => ExportNativeAot(project, baseDirectory, rid, destination, settings, profile, validateShader, bakeShader, false);
+
+    public static GameBuildResult ExportNativeAot(string project, string baseDirectory, string rid, string destination, GameSettings settings, BuildProfile profile, Action<ShaderClip>? validateShader, Action<ShaderClip, string>? bakeShader, bool fullContent)
     {
         if (rid != System.Runtime.InteropServices.RuntimeInformation.RuntimeIdentifier)
             throw new PlatformNotSupportedException($"Build the {rid} Native AOT player on a matching host.");
         var kit = Path.Combine(TemplateRoot(baseDirectory), "native-aot", "src", "Engine.Player", "Engine.Player.csproj");
         if (!File.Exists(kit))
             throw new FileNotFoundException($"Missing Native AOT build kit at {kit}. Run engine/scripts/build-native-aot-kit.sh.");
-        return ExportCore(project, kit, rid, destination, settings, true, profile, validateShader, bakeShader);
+        return ExportCore(project, kit, rid, destination, settings, true, profile, validateShader, bakeShader, fullContent);
     }
 
-    private static GameBuildResult ExportCore(string project, string template, string rid, string destination, GameSettings settings, bool nativeAot, BuildProfile profile, Action<ShaderClip>? validateShader, Action<ShaderClip, string>? bakeShader)
+    private static GameBuildResult ExportCore(string project, string template, string rid, string destination, GameSettings settings, bool nativeAot, BuildProfile profile, Action<ShaderClip>? validateShader, Action<ShaderClip, string>? bakeShader, bool fullContent)
     {
         var executable = PlayerExecutable(rid);
         if (!nativeAot && !File.Exists(Path.Combine(template, executable))) throw new FileNotFoundException($"Missing {rid} player template in {template}.");
@@ -89,6 +95,7 @@ public static class GameBuild
             throw new InvalidDataException("Include the start scene in the build.");
         var assets = SpriteSheetImporter.Scan(project);
         var sheets = new ShaderSheetBuild();
+        bool needsComponentKeys = false;
         var dependencies = new HashSet<string>(StringComparer.Ordinal);
         var audioAssets = new HashSet<Guid>();
         var theme = UiTheme.Load(project, assets, settings.UiTheme, dependencies);
@@ -174,7 +181,7 @@ public static class GameBuild
                         Add(path);
                         AudioFile.Read(Path.Combine(project, path));
                     }
-                    if (obj.GetComponent<UiButtonComponent>() is {} button) theme.Find(button.Style);
+                    if (obj.GetComponent<UiControlComponent>() is {} button) theme.Find(button.Style);
                     if (obj.GetComponent<UiImageComponent>() is { Sprite: Guid uiSprite } image)
                     {
                         if (assets.PathFor(uiSprite) is not { } path || !SpriteAssets.IsPng(path))
@@ -192,9 +199,10 @@ public static class GameBuild
                             var clipPath = assets.PathFor(clip)!;
                             if (!clipPath.EndsWith(ProjectAssets.Clip)) throw new InvalidDataException($"Expected a clip at {clipPath}.");
                             var animation = SpriteClip.Load(Path.Combine(project,clipPath));
+                            needsComponentKeys |= animation.Tracks is { Length: > 0 } || animation.Frames.Any(f => f.UseRenderer);
                             _ = animation.ResolveFrames(clipPath,project,assets,imageSizes);
                             foreach (var frame in animation.Frames)
-                                if (frame.Source != null || !Pack(frame.Sprite)) Asset(frame.Sprite);
+                                if (!frame.UseRenderer && (frame.Source != null || !Pack(frame.Sprite))) Asset(frame.Sprite);
                         }
                     }
                     foreach (var script in obj.Components.OfType<ScriptComponent>())
@@ -276,6 +284,17 @@ public static class GameBuild
         if (dependencies.Any(path => path.EndsWith(".ogg", StringComparison.OrdinalIgnoreCase)) &&
             !File.Exists(Path.Combine(markerRoot, "MoNoonVorbis.version")))
             throw new InvalidDataException($"Update the player template or Native AOT kit at {markerRoot} to stream Ogg Vorbis.");
+        if (!File.Exists(Path.Combine(markerRoot, "MoNoonUiControls.version")) &&
+            bakedDocuments.Values.SelectMany(scene => scene.Objects).Any(o => o.GetComponent<UiControlComponent>() is UiSliderComponent or UiToggleComponent or UiDropdownComponent))
+            throw new InvalidDataException($"Update the player template or Native AOT kit at {markerRoot} to use UI value controls.");
+        if (bakedDocuments.Values.Any(scene => scene.Objects.Any(o => o.Tag != null || o.Groups != null)) && !File.Exists(Path.Combine(markerRoot, "MoNoonObjectGroups.version")))
+            throw new InvalidDataException($"Update the player template or Native AOT kit at {markerRoot} to use object tags and groups.");
+        if (bakedDocuments.Values.Any(scene => scene.SchemaVersion >= 28) && !File.Exists(Path.Combine(markerRoot, "MoNoonUiPins.version")))
+            throw new InvalidDataException($"Update the player template or Native AOT kit at {markerRoot} to use pinned UI edges.");
+        if (needsComponentKeys && !File.Exists(Path.Combine(markerRoot, "MoNoonComponentKeys.version")))
+            throw new InvalidDataException($"Update the player template or Native AOT kit at {markerRoot} to use component animation keys.");
+        if (palettes.Values.Any(p => p.Tiles.Values.Any(t => t.Collision != null)) && !File.Exists(Path.Combine(markerRoot, "MoNoonTileCollision.version")))
+            throw new InvalidDataException($"Update the player template or Native AOT kit at {markerRoot} to use tile collision shapes.");
         bool cookShaders = sheets.HasEffects;
         bakeShader ??= global::Engine.Desktop.ShaderPixels.WritePng;
         if (cookShaders && !File.Exists(Path.Combine(markerRoot, ShaderSheetBuild.Capability)))
@@ -296,6 +315,8 @@ public static class GameBuild
             BuildProfile.Development => null,
             _ => throw new ArgumentOutOfRangeException(nameof(profile))
         };
+        var cache = new ContentBuildCache(destination, settings.ProjectId ?? start, rid, mode, profile, fullContent);
+        var assetHashes = assets.Entries.ToDictionary(e => e.Path, e => e.Hash, StringComparer.Ordinal);
         if (profile == BuildProfile.Development) destination = Path.Combine(destination, "Development");
         if (nativeAot) destination = Path.Combine(destination, "NativeAOT");
         Directory.CreateDirectory(destination);
@@ -356,14 +377,16 @@ public static class GameBuild
                     foreach (var obj in scene.Objects)
                         if (obj.GetComponent<Tilemap2DComponent>() is {StreamRadius:not null} map)
                         {
-                            map.ChunkFiles = TileWorld.Bake(map, map.Tileset is Guid id ? palettes[id] : null, Path.Combine(game,TileWorld.Folder));
+                            map.ChunkFiles = TileChunkBuild.Write(cache, $"{relative}/{obj.Id}", map,
+                                map.Tileset is Guid id ? palettes[id] : null,
+                                map.Tileset is Guid set ? assetHashes[assets.PathFor(set)!] : "", Path.Combine(game,TileWorld.Folder));
                             map.Chunks = [];
                         }
                     ProjectAssets.Write(path, scene);
                 }
                 else Copy(Path.Combine(project, relative), path);
             }
-            global::Engine.Desktop.FontGlyphBuild.Write(project, game, localization, bakedDocuments.Values);
+            global::Engine.Desktop.FontGlyphBuild.Write(project, game, localization, bakedDocuments.Values, cache, dependencies);
             File.WriteAllText(Path.Combine(game, ".monoon-player"), cookShaders ? BakedShaderSheets.Marker : "1");
             var manifest = assets.Entries.Where(e => dependencies.Contains(e.Path)).Select(entry =>
             {
@@ -373,9 +396,10 @@ public static class GameBuild
                     throw new IOException($"Asset changed during export: {entry.Path}. Save and build again.");
                 return entry with { Hash = hash };
             }).ToArray();
-            if (cookShaders) manifest = sheets.Write(game, manifest, bakeShader);
+            if (cookShaders) manifest = sheets.Write(game, manifest, bakeShader, cache);
             ProjectAssets.Write(Path.Combine(game, ProjectAssets.Manifest), manifest);
-            ContentBundle.Pack(game, settings.ContentBundles ?? [], manifest);
+            ContentBundle.Pack(game, settings.ContentBundles ?? [], manifest, (folder, members, archive, write) =>
+                cache.Generate("bundle " + folder, members.ToDictionary(p => p.Key, p => p.Value.Hash, StringComparer.Ordinal), archive, write));
             GameMods.Export(project, bin, settings.ProjectId ?? start, manifest);
             (settings with { GameTitle = name, ProjectId = settings.ProjectId ?? start }).Save(game);
             if (rid == "osx-arm64")
@@ -403,7 +427,12 @@ public static class GameBuild
                     previous = Path.Combine(destination, ".monoon-previous-" + buildId);
                     Directory.Move(output, previous);
                 }
-                try { Directory.Move(stage, output); }
+                try
+                {
+                    Directory.Move(stage, output);
+                    try { cache.Publish(); }
+                    catch { Directory.Move(output, stage); throw; }
+                }
                 catch
                 {
                     if (previous != null) Directory.Move(previous, output);
@@ -416,7 +445,7 @@ public static class GameBuild
                 throw;
             }
             if (previous != null) Directory.Delete(previous, true);
-            return new(output, symbolDirectory);
+            return new(output, symbolDirectory) { ContentReport = cache.Report, ContentDecisions = cache.Decisions };
         }
         finally { if (Directory.Exists(work)) Directory.Delete(work, true); }
     }
@@ -436,7 +465,7 @@ public static class GameBuild
         File.CreateSymbolicLink(alias.FullName, sdl.Name);
     }
 
-    private static readonly string[] TemplateMarkers = ["MoNoonSdlPlayer.version", "MoNoonContent.version", "MoNoonVorbis.version", ShaderSheetBuild.Capability];
+    private static readonly string[] TemplateMarkers = ["MoNoonSdlPlayer.version", "MoNoonContent.version", "MoNoonVorbis.version", "MoNoonUiControls.version", "MoNoonObjectGroups.version", "MoNoonUiPins.version", "MoNoonComponentKeys.version", "MoNoonTileCollision.version", ShaderSheetBuild.Capability];
 
     private static void Copy(string from, string to)
     {

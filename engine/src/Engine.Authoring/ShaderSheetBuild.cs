@@ -24,8 +24,18 @@ internal sealed class ShaderSheetBuild
         }
     }
 
-    internal AssetEntry[] Write(string game, AssetEntry[] manifest, Action<ShaderClip, string> bake)
+    internal AssetEntry[] Write(string game, AssetEntry[] manifest, Action<ShaderClip, string> bake, ContentBuildCache? cache = null)
     {
+        void WriteSheet(ShaderClip clip, string source, string output)
+        {
+            if (cache == null) { bake(clip, output); return; }
+            string name = Path.GetRelativePath(game, output).Replace('\\', '/');
+            bool standard = bake == global::Engine.Desktop.ShaderPixels.WritePng;
+            var inputs = new Dictionary<string,string> { [source] = ContentBuildCache.Digest(ProjectYaml.Encode(clip)) };
+            if (!standard) inputs.Add("baker", "custom");
+            cache.Generate("shader " + name, inputs, output, file => bake(clip, file), reusable: standard);
+        }
+
         var paths = manifest.Select(e => e.Path).ToHashSet(StringComparer.OrdinalIgnoreCase);
         var ids = manifest.Select(e => e.Id).ToHashSet();
         var result = new List<AssetEntry>(manifest.Length + shaders.Count);
@@ -40,7 +50,7 @@ internal sealed class ShaderSheetBuild
             if (!paths.Add(relative) || !ids.Add(id))
                 throw new InvalidDataException($"Generated shader sheet conflicts with another build asset: {relative}");
             string sheet = Path.Combine(game, relative);
-            bake(clip, sheet);
+            WriteSheet(clip, entry.Path, sheet);
             ProjectYaml.Write(descriptor, clip with { Source = null, Sheet = id });
             result.Add(entry with { Hash = BundleMountCache.Digest(descriptor) });
             result.Add(new(id, relative, BundleMountCache.Digest(sheet)));
@@ -49,8 +59,8 @@ internal sealed class ShaderSheetBuild
         if (light || particles)
         {
             string directory = Directory.CreateDirectory(Path.Combine(game, Builtins)).FullName;
-            if (light) bake(ShaderClip.LightFalloff, Path.Combine(directory, Light));
-            if (particles) bake(ShaderClip.Puff, Path.Combine(directory, Particle));
+            if (light) WriteSheet(ShaderClip.LightFalloff, "built-in light", Path.Combine(directory, Light));
+            if (particles) WriteSheet(ShaderClip.Puff, "built-in particles", Path.Combine(directory, Particle));
         }
         return result.OrderBy(e => e.Path, StringComparer.Ordinal).ToArray();
     }

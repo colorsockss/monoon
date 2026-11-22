@@ -81,6 +81,22 @@ def named_windows(visible):
     return set(result.stdout.splitlines())
 
 
+def locate_editor(window, proc, existing):
+    if window.locate():
+        return True
+    if isinstance(window, X11Window):
+        # Some X11 clients omit _NET_WM_PID. Only accept a single new,
+        # visible MoNoon window and never target a different process ID.
+        candidates = named_windows(True) - existing
+        if len(candidates) == 1:
+            handle = candidates.pop()
+            owner = subprocess.run(["xdotool", "getwindowpid", handle], capture_output=True, text=True)
+            if owner.returncode or owner.stdout.strip() == str(proc.pid):
+                window.handle = handle
+                return True
+    return False
+
+
 def compare_save(path, reference):
     actual = path.read_bytes()
     digest = hashlib.sha256(actual).hexdigest()
@@ -105,19 +121,7 @@ def exercise(executable, project, output, edit, reference):
     def locate():
         if proc.poll() is not None:
             raise RuntimeError(f"Editor exited ({proc.returncode}). See {log.name}")
-        if window.locate():
-            return True
-        if isinstance(window, X11Window):
-            # Some X11 clients omit _NET_WM_PID. Only accept a single new,
-            # visible MoNoon window and never target a different process ID.
-            candidates = named_windows(True) - existing
-            if len(candidates) == 1:
-                handle = candidates.pop()
-                owner = subprocess.run(["xdotool", "getwindowpid", handle], capture_output=True, text=True)
-                if owner.returncode or owner.stdout.strip() == str(proc.pid):
-                    window.handle = handle
-                    return True
-        return False
+        return locate_editor(window, proc, existing)
 
     def play(expected, name):
         window.click(*button)

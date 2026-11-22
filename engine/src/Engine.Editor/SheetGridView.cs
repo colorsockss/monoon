@@ -28,6 +28,9 @@ internal sealed class SheetGridView : Control
     private readonly SortedSet<(int Row, int Col)> selected = [];
     private static readonly IBrush Back = Brush.Parse("#252B32"), Tint = Brush.Parse("#4668C5A9");
     private static readonly Pen Line = new(Brush.Parse("#A8BEC9D4"), 1), SelectedLine = new(Brush.Parse("#9EDAC9"), 2);
+    private TileCollision? collision;
+    private static readonly Pen ShapeLine = new(Brushes.Gold, 2);
+    internal void SetCollision(TileCollision? value) { collision = value; InvalidateVisual(); }
     internal bool SingleSelection { get; set; }
     public int Count => selected.Count;
     public SpriteRegion[] Regions() => selected.Select(c => slices == null ? grid!.Region(c.Col, c.Row) : slices[c.Col].Source).ToArray();
@@ -125,6 +128,19 @@ internal sealed class SheetGridView : Control
         {
             var r = grid.Region(col,row);
             context.DrawRectangle(Tint,SelectedLine,new Rect(x(r.X),y(r.Y),scale*r.Width,scale*r.Height));
+            if (collision == null) continue;
+            Point Vertex(ColliderVertex p) => new(x(r.X)+p.X*scale*r.Width, y(r.Y)+p.Y*scale*r.Height);
+            var points = collision.Vertices;
+            int edges = collision.OneWay ? 1 : points.Length;
+            for (int i=0; i<edges; i++)
+                context.DrawLine(ShapeLine, Vertex(points[i]), Vertex(points[(i+1)%points.Length]));
+            if (collision.OneWay)
+            {
+                var a = Vertex(points[0]); var b = Vertex(points[1]);
+                var delta = new Vector(b.X-a.X,b.Y-a.Y);
+                var middle = a + delta*.5;
+                context.DrawLine(ShapeLine, middle, middle + new Vector(delta.Y,-delta.X) * (Math.Min(13,delta.Length*.3)/delta.Length));
+            }
         }
     }
 

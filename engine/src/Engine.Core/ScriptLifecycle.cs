@@ -13,10 +13,15 @@ public sealed partial class SceneGame
         if (body.Behaviours.Length != 0) notifications.Enqueue((body, change));
     }
 
-    private void RegisterLife(IEnumerable<Body> ordered)
+    private void RegisterLife(IEnumerable<Body> ordered, bool initializeAnimation = true)
     {
         // Every object in the batch is already addressable. Create all instances before enabling any.
-        foreach (var body in ordered) { BindEventEndpoints(body); QueueLife(body, LifeEvent.Create); }
+        foreach (var body in ordered)
+        {
+            if (initializeAnimation && body.Active && body.Animation != null) ApplyAnimationPose(body);
+            BindEventEndpoints(body);
+            QueueLife(body, LifeEvent.Create);
+        }
         foreach (var body in ordered) if (body.Active) QueueLife(body, LifeEvent.Enable);
     }
 
@@ -65,6 +70,8 @@ public sealed partial class SceneGame
     {
         if (closing) return;
         closing = true;
+        foreach (var list in roles.Values) list.ClearMembers();
+        roles.Clear();
         try
         {
             if (!started) return; // Never played, e.g. a replacement scene failed asset preloading.

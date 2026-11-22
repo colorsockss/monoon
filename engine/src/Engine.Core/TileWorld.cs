@@ -33,22 +33,27 @@ internal sealed class TileWorld : IDisposable
         var refs = new List<TileChunkRef>();
         foreach (var chunk in source.Chunks)
         {
-            var variants = new List<TileCell>();
-            foreach (var cell in chunk.Cells)
-            {
-                if (palette == null || !palette.Tiles.ContainsKey(cell.Tile))
-                    throw new InvalidDataException($"Unknown tile #{cell.Tile} in ({chunk.X},{chunk.Y}).");
-                var point = new Point(chunk.X*32+(cell.Index&31), chunk.Y*32+(cell.Index>>5));
-                int id = source.DisplayTile(palette,point,cell.Tile);
-                if (id != cell.Tile) variants.Add(new(cell.Index,id));
-            }
-            var bytes = ProjectYaml.Encode(new TilePage(chunk,variants.ToArray()));
+            var bytes = BakePage(source, palette, chunk);
             var hash = Convert.ToHexString(SHA256.HashData(bytes));
             var path = Path.Combine(directory,hash+".chunk");
             if (!File.Exists(path)) ProjectYaml.WriteBytes(path,bytes);
             refs.Add(new(chunk.X,chunk.Y,hash));
         }
         return refs.ToArray();
+    }
+
+    internal static byte[] BakePage(Tilemap2DComponent source, TilePalette? palette, TileChunk chunk)
+    {
+        var variants = new List<TileCell>();
+        foreach (var cell in chunk.Cells)
+        {
+            if (palette == null || !palette.Tiles.ContainsKey(cell.Tile))
+                throw new InvalidDataException($"Unknown tile #{cell.Tile} in ({chunk.X},{chunk.Y}).");
+            var point = new Point(chunk.X*32+(cell.Index&31), chunk.Y*32+(cell.Index>>5));
+            int id = source.DisplayTile(palette,point,cell.Tile);
+            if (id != cell.Tile) variants.Add(new(cell.Index,id));
+        }
+        return ProjectYaml.Encode(new TilePage(chunk,variants.ToArray()));
     }
 
     internal TileWorld(Tilemap2DComponent source, TilePalette? palette, string? project)

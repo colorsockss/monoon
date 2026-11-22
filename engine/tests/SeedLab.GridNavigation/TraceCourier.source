@@ -1,0 +1,21 @@
+using System;
+using System.Globalization;
+using System.IO;
+using System.Numerics;
+using Engine.Core;
+
+// Attached to the courier only in the test copy. Observe transforms and inputs independently of the planner.
+public sealed class TraceCourier : GameBehaviour
+{
+    private Vector2? previous;
+    public override void FixedUpdate(ScriptTick tick)
+    {
+        string path = Environment.GetEnvironmentVariable("MONOON_ROUTE_TRACE");
+        if (string.IsNullOrEmpty(path) || !tick.Objects.TryGetLocalTransform(tick.ObjectId, out var local)) return;
+        string action = tick.Input.Pressed("Rebuild") ? "reset" : tick.Input.Pressed("ToggleGate") ? "gate" :
+            tick.Input.Pressed("RouteDirections") ? "directions" : tick.Input.Pressed("MudCost") ? "mud" : "-";
+        if (previous == local.Position && action == "-") return;
+        previous = local.Position;
+        File.AppendAllText(path, string.Create(CultureInfo.InvariantCulture, $"{action} {local.Position.X} {local.Position.Y}\n"));
+    }
+}

@@ -1,0 +1,266 @@
+{
+  "os": "macOS-27.0.1-arm64-arm-64bit",
+  "machine": "arm64",
+  "stages": {
+    "resized": {
+      "client": [
+        720,
+        540
+      ],
+      "viewport": [
+        0,
+        68,
+        720,
+        472
+      ],
+      "button": [
+        411,
+        338,
+        626,
+        377
+      ],
+      "outside": [
+        [
+          408,
+          357
+        ],
+        [
+          628,
+          357
+        ],
+        [
+          518,
+          335
+        ],
+        [
+          518,
+          379
+        ],
+        [
+          518,
+          34
+        ]
+      ],
+      "inside": [
+        [
+          414,
+          341
+        ],
+        [
+          622,
+          373
+        ]
+      ],
+      "counter": 2
+    },
+    "fullscreen": {
+      "client": [
+        2056,
+        1290
+      ],
+      "viewport": [
+        0,
+        67,
+        2056,
+        1223
+      ],
+      "button": [
+        1172,
+        838,
+        1788,
+        950
+      ],
+      "outside": [
+        [
+          1169,
+          894
+        ],
+        [
+          1790,
+          894
+        ],
+        [
+          1480,
+          835
+        ],
+        [
+          1480,
+          952
+        ],
+        [
+          1480,
+          33
+        ]
+      ],
+      "inside": [
+        [
+          1175,
+          841
+        ],
+        [
+          1784,
+          946
+        ]
+      ],
+      "counter": 4
+    },
+    "fullscreen-reopened": {
+      "client": [
+        2056,
+        1290
+      ],
+      "viewport": [
+        0,
+        67,
+        2056,
+        1223
+      ],
+      "button": [
+        1172,
+        838,
+        1788,
+        950
+      ],
+      "outside": [
+        [
+          1169,
+          894
+        ],
+        [
+          1790,
+          894
+        ],
+        [
+          1480,
+          835
+        ],
+        [
+          1480,
+          952
+        ],
+        [
+          1480,
+          33
+        ]
+      ],
+      "inside": [
+        [
+          1175,
+          841
+        ],
+        [
+          1784,
+          946
+        ]
+      ],
+      "counter": 2
+    },
+    "returned": {
+      "client": [
+        720,
+        540
+      ],
+      "viewport": [
+        0,
+        68,
+        720,
+        472
+      ],
+      "button": [
+        411,
+        338,
+        626,
+        377
+      ],
+      "outside": [
+        [
+          408,
+          357
+        ],
+        [
+          628,
+          357
+        ],
+        [
+          518,
+          335
+        ],
+        [
+          518,
+          379
+        ],
+        [
+          518,
+          34
+        ]
+      ],
+      "inside": [
+        [
+          414,
+          341
+        ],
+        [
+          622,
+          373
+        ]
+      ],
+      "counter": 4
+    },
+    "windowed-reopened": {
+      "client": [
+        720,
+        540
+      ],
+      "viewport": [
+        0,
+        68,
+        720,
+        472
+      ],
+      "button": [
+        411,
+        338,
+        626,
+        377
+      ],
+      "outside": [
+        [
+          408,
+          357
+        ],
+        [
+          628,
+          357
+        ],
+        [
+          518,
+          335
+        ],
+        [
+          518,
+          379
+        ],
+        [
+          518,
+          34
+        ]
+      ],
+      "inside": [
+        [
+          414,
+          341
+        ],
+        [
+          622,
+          373
+        ]
+      ],
+      "counter": 2
+    }
+  },
+  "saved": {
+    "new": "version: 1\nvalues:\n  width: 720\n  height: 540\n  fullscreen: true\n  vsync: false\n",
+    "fullscreen-reopened": "version: 1\nvalues:\n  width: 720\n  height: 540\n  fullscreen: false\n  vsync: true\n",
+    "windowed-reopened": "version: 1\nvalues:\n  width: 720\n  height: 540\n  fullscreen: false\n  vsync: true\n"
+  }
+}

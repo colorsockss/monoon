@@ -1,0 +1,163 @@
+{
+  "os": "Linux-6.1.0-54-cloud-amd64-x86_64-with-glibc2.36",
+  "machine": "x86_64",
+  "stages": {
+    "resized": {
+      "client": [
+        720,
+        540
+      ],
+      "viewport": [
+        0,
+        67,
+        720,
+        472
+      ],
+      "button": [
+        410,
+        337,
+        626,
+        377
+      ],
+      "outside": [
+        [
+          407,
+          357
+        ],
+        [
+          628,
+          357
+        ],
+        [
+          518,
+          334
+        ],
+        [
+          518,
+          379
+        ],
+        [
+          518,
+          33
+        ]
+      ],
+      "inside": [
+        [
+          413,
+          340
+        ],
+        [
+          622,
+          373
+        ]
+      ],
+      "counter": 2
+    },
+    "rejected-windowed": {
+      "client": [
+        720,
+        540
+      ],
+      "viewport": [
+        0,
+        67,
+        720,
+        472
+      ],
+      "button": [
+        410,
+        337,
+        626,
+        377
+      ],
+      "outside": [
+        [
+          407,
+          357
+        ],
+        [
+          628,
+          357
+        ],
+        [
+          518,
+          334
+        ],
+        [
+          518,
+          379
+        ],
+        [
+          518,
+          33
+        ]
+      ],
+      "inside": [
+        [
+          413,
+          340
+        ],
+        [
+          622,
+          373
+        ]
+      ],
+      "counter": 4
+    },
+    "windowed-reopened": {
+      "client": [
+        720,
+        540
+      ],
+      "viewport": [
+        0,
+        67,
+        720,
+        472
+      ],
+      "button": [
+        410,
+        337,
+        626,
+        377
+      ],
+      "outside": [
+        [
+          407,
+          357
+        ],
+        [
+          628,
+          357
+        ],
+        [
+          518,
+          334
+        ],
+        [
+          518,
+          379
+        ],
+        [
+          518,
+          33
+        ]
+      ],
+      "inside": [
+        [
+          413,
+          340
+        ],
+        [
+          622,
+          373
+        ]
+      ],
+      "counter": 2
+    }
+  },
+  "saved": {
+    "new": "version: 1\nvalues:\n  width: 720\n  height: 540\n  fullscreen: false\n  vsync: false\n",
+    "windowed-reopened": "version: 1\nvalues:\n  width: 720\n  height: 540\n  fullscreen: false\n  vsync: false\n"
+  }
+}

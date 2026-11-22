@@ -1,0 +1,20 @@
+using System;
+using System.Globalization;
+using System.IO;
+using Engine.Core;
+
+public sealed class TraceSpeeds : GameBehaviour
+{
+    public Guid Inherited, Overridden;
+    private float first, second;
+
+    public override void FixedUpdate(ScriptTick tick)
+    {
+        if (!tick.Input.Pressed("MoveRight") && !tick.Input.Released("MoveRight")) return;
+        if (!tick.Objects.TryGetPosition(Inherited, out var a) || !tick.Objects.TryGetPosition(Overridden, out var b))
+            throw new InvalidOperationException("Missing movement player");
+        if (tick.Input.Pressed("MoveRight")) { first = a.X; second = b.X; }
+        else File.AppendAllText(Environment.GetEnvironmentVariable("MONOON_RENAME_TRACE"),
+            string.Create(CultureInfo.InvariantCulture, $"{a.X-first:F4} {b.X-second:F4}\n"));
+    }
+}

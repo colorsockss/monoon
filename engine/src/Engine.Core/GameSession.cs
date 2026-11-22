@@ -96,7 +96,14 @@ public sealed partial class GameSession : IGame2D, IDisposable
     public GameSession(SceneDocument scene, ScriptLibrary? scripts = null) : this(scene, scripts, null) { }
 
     public GameSession(SceneDocument scene, ScriptLibrary? scripts, Func<ScriptComponent, GameBehaviour>? compiledScripts, PlayerStorage? storage = null)
+        : this(scene, scripts, compiledScripts, storage, null) { }
+
+    private readonly GameSettings? settingsOverride;
+    internal GameSession(SceneDocument scene, ScriptLibrary? scripts, Func<ScriptComponent, GameBehaviour>? compiledScripts,
+        PlayerStorage? storage, GameSettings? settingsOverride)
     {
+        this.settingsOverride = settingsOverride;
+        if (settingsOverride != null) scene = scene.WithSettings(settingsOverride);
         this.compiledScripts = compiledScripts;
         project = scene.ProjectDirectory;
         manifest = project == null ? null : ProjectAssets.Scan(project);

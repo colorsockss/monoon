@@ -1,0 +1,22 @@
+using System;
+using System.Globalization;
+using System.IO;
+using Engine.Core;
+
+// Attached only to the verification copy. Read the completed fixed tick before this tick advances.
+public sealed class PoseObserver : GameBehaviour
+{
+    public string Label = "";
+    private int elapsed;
+    public override void FixedUpdate(ScriptTick tick)
+    {
+        int frame = elapsed++;
+        if (frame > 60 || frame % 15 != 0) return;
+        if (!tick.Objects.TryGetLocalTransform(tick.ObjectId,out var t) || !tick.Objects.TryGetSpriteColor(tick.ObjectId,out var color))
+            throw new InvalidOperationException("Missing rendered component");
+        string path = Environment.GetEnvironmentVariable("MONOON_POSE_REPORT");
+        if (string.IsNullOrEmpty(path)) return;
+        File.AppendAllText(path, string.Create(CultureInfo.InvariantCulture,
+            $"{Label} {frame} {MathF.Round(t.Rotation,3):0.000} {t.Scale.X:0.000} {t.Scale.Y:0.000} {color.ToArgb():X8}\n"));
+    }
+}

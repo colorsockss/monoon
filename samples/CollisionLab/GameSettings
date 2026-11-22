@@ -5,6 +5,8 @@ gameTitle: CollisionLab
 startScene: 5750e5bb-1700-5a5b-94c2-b6bd02a0356c
 includedScenes:
 - 5750e5bb-1700-5a5b-94c2-b6bd02a0356c
+- 2fe2804d-e1df-55de-8adb-fcf5a0f4217d
+- ae245142-c47c-52aa-8b4f-5c867bdef887
 input:
   actions:
   - name: MoveLeft
@@ -36,3 +38,11 @@ input:
     - E
     - Space
     - Pad.South
+  - name: SmallField
+    controls: ["1"]
+  - name: LargeField
+    controls: ["2"]
+  - name: ReturnToLab
+    controls: ["0"]
+  - name: RepeatQueries
+    controls: ["R"]

@@ -1,0 +1,11 @@
+schemaVersion: 14
+objects:
+- id: 5688ecd8-6823-5b10-aa26-94d62e150d53
+  name: Player
+  x: 0
+  y: 0
+  width: 28
+  height: 28
+  components:
+  - {type: spriteRenderer, squareColor: "#63E6C1", order: 1}
+  - {type: script, script: PlayerMovement, values: {MoveSpeed: 240}}

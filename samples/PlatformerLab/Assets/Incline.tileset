@@ -1,0 +1,31 @@
+image: 258296f7-6dbd-5601-9762-995ddecacd4c
+tileSize: {width: 38, height: 90}
+margin: 0
+spacing: 0
+nextId: 6
+tiles:
+- id: 1
+  source: {x: 0, y: 0, width: 38, height: 90}
+  solid: true
+  collision:
+    vertices: [{x: 0, y: 1}, {x: 1, y: 0.8}, {x: 1, y: 1}]
+- id: 2
+  source: {x: 38, y: 0, width: 38, height: 90}
+  solid: true
+  collision:
+    vertices: [{x: 0, y: 0.8}, {x: 1, y: 0.6}, {x: 1, y: 1}, {x: 0, y: 1}]
+- id: 3
+  source: {x: 76, y: 0, width: 38, height: 90}
+  solid: true
+  collision:
+    vertices: [{x: 0, y: 0.6}, {x: 1, y: 0.4}, {x: 1, y: 1}, {x: 0, y: 1}]
+- id: 4
+  source: {x: 114, y: 0, width: 38, height: 90}
+  solid: true
+  collision:
+    vertices: [{x: 0, y: 0.4}, {x: 1, y: 0.2}, {x: 1, y: 1}, {x: 0, y: 1}]
+- id: 5
+  source: {x: 152, y: 0, width: 38, height: 90}
+  solid: true
+  collision:
+    vertices: [{x: 0, y: 0.2}, {x: 1, y: 0}, {x: 1, y: 1}, {x: 0, y: 1}]

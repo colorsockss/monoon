@@ -16,14 +16,23 @@ public static class DesktopHost
         try
         {
             var size = game.LogicalSize;
-            using var window = Sdl.Video.CreateWindow(title, size.Width, size.Height,
+            var state = (game as GameSession)?.State ?? (game as SceneGame)?.State;
+            var preferences = SdlDesktopDisplay.Read(state, size);
+            using var window = Sdl.Video.CreateWindow(title, preferences.WindowSize.Width, preferences.WindowSize.Height,
                 SdlWindowFlags.Resizable | SdlWindowFlags.HighPixelDensity);
             using var renderer = Sdl.Render.CreateRenderer(window, null!);
             renderer.SetRenderLogicalPresentation(size.Width, size.Height, SdlRendererLogicalPresentation.Letterbox);
             var clip = new SdlRect { w = size.Width, h = size.Height };
             renderer.SetRenderClipRect(&clip);
-            renderer.SetRenderVSync(1);
-            RunLoop(game, window, renderer, recorder, trace, previewShader, textRasterizer);
+            var display = new SdlDesktopDisplay(window, renderer, state, preferences);
+            display.Restore();
+            if (state != null) state.Display = display;
+            try { RunLoop(game, window, renderer, display, recorder, trace, previewShader, textRasterizer); }
+            finally
+            {
+                if (state != null) state.Display = null;
+                display.Save();
+            }
         }
         finally
         {
@@ -31,7 +40,7 @@ public static class DesktopHost
         }
     }
 
-    private static unsafe void RunLoop(IGame2D game, SdlWindow window, SdlRenderer renderer, InputRecorder? recorder, PlayerStartupTrace? trace, Func<ShaderClip, RgbaImage>? previewShader, IGameTextRasterizer? textRasterizer)
+    private static unsafe void RunLoop(IGame2D game, SdlWindow window, SdlRenderer renderer, SdlDesktopDisplay display, InputRecorder? recorder, PlayerStartupTrace? trace, Func<ShaderClip, RgbaImage>? previewShader, IGameTextRasterizer? textRasterizer)
     {
         using var canvas = new SdlCanvas(renderer, batchSprites: true, previewShader: previewShader, textRasterizer: textRasterizer) { LogicalSize = game.LogicalSize };
         using var sounds = new SdlSounds();
@@ -103,8 +112,12 @@ public static class DesktopHost
                 {
                     case SdlEventType.Quit:
                     case SdlEventType.WindowCloseRequested:
-                    case SdlEventType.KeyDown when ev.key.scancode == SdlScancode.Escape && Ui()?.Editing==null:
+                    case SdlEventType.KeyDown when ev.key.scancode == SdlScancode.Escape && Ui()?.Editing==null && Ui()?.DropdownOpen!=true:
                         return;
+                    case SdlEventType.WindowResized:
+                        // Read live dimensions: queued resize events can predate a fullscreen transition.
+                        display.RememberWindowSize();
+                        break;
                     case SdlEventType.WindowFocusLost:
                     case SdlEventType.WindowFocusGained:
                         focused = ev.type == SdlEventType.WindowFocusGained;

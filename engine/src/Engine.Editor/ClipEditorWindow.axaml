@@ -28,6 +28,19 @@
             <TextBlock Grid.Row="3" Classes="fieldLabel" Text="Preview" VerticalAlignment="Center"/>
             <ComboBox x:Name="ZoomBox" Grid.Row="3" Grid.Column="1" HorizontalAlignment="Stretch" AutomationProperties.Name="Preview zoom"/>
           </Grid>
+          <ToggleButton x:Name="KeySection" Content="Component keys" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left"/>
+            <Grid x:Name="KeyFields" IsVisible="{Binding IsChecked, ElementName=KeySection}" ColumnDefinitions="60,*" RowDefinitions="Auto,Auto,Auto,Auto" ColumnSpacing="5" RowSpacing="4">
+              <TextBlock Classes="fieldLabel" Text="Property" VerticalAlignment="Center"/>
+              <ComboBox x:Name="KeyProperty" Grid.Column="1" HorizontalAlignment="Stretch"/>
+              <TextBlock Grid.Row="1" Classes="fieldLabel" Text="Time (s)" VerticalAlignment="Center"/>
+              <TextBox x:Name="KeyTime" Grid.Row="1" Grid.Column="1" AutomationProperties.Name="Key time"/>
+              <TextBlock Grid.Row="2" Classes="fieldLabel" Text="Value" VerticalAlignment="Center"/>
+              <TextBox x:Name="KeyValue" Grid.Row="2" Grid.Column="1" AutomationProperties.Name="Key value"/>
+              <StackPanel Grid.Row="3" Grid.Column="1" Spacing="4" Orientation="Horizontal">
+                <Button x:Name="WriteKey" Content="Set Key"/>
+                <Button x:Name="DeleteKey" Content="Remove"/>
+              </StackPanel>
+            </Grid>
         </StackPanel>
       </Grid>
     </ScrollViewer>
@@ -45,6 +58,7 @@
           <MenuFlyout>
             <MenuItem x:Name="Add" Header="Add PNG…"/>
             <MenuItem x:Name="AddCells" Header="Sheet cells…"/>
+            <MenuItem x:Name="AddRenderer" Header="Use object renderer"/>
           </MenuFlyout>
         </Button.Flyout>
       </Button>

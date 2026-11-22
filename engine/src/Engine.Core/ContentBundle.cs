@@ -51,7 +51,8 @@ public sealed class ContentBundle : IDisposable
         return members;
     }
 
-    internal static void Pack(string game, string[] folders, AssetEntry[] manifest)
+    internal static void Pack(string game, string[] folders, AssetEntry[] manifest,
+        Action<string, Dictionary<string, AssetEntry>, string, Action<string>>? cook = null)
     {
         if (folders.Length == 0) return;
         ValidateFolders(folders);
@@ -62,8 +63,9 @@ public sealed class ContentBundle : IDisposable
             var members = Members(folder, manifest);
             string archive = Path.Combine(directory, folder + ".bundle");
             Directory.CreateDirectory(Path.GetDirectoryName(archive)!);
-            using (var zip = ZipFile.Open(archive, ZipArchiveMode.Create))
+            void Write(string pathToZip)
             {
+                using var zip = ZipFile.Open(pathToZip, ZipArchiveMode.Create);
                 foreach (string path in members.Keys.Order(StringComparer.Ordinal))
                 {
                     var entry = zip.CreateEntry(path, CompressionLevel.Optimal);
@@ -73,6 +75,7 @@ public sealed class ContentBundle : IDisposable
                     input.CopyTo(output);
                 }
             }
+            if (cook == null) Write(archive); else cook(folder, members, archive, Write);
             using var file = File.OpenRead(archive);
             catalog.Set(folder, Convert.ToHexString(SHA256.HashData(file)));
             foreach (string path in members.Keys) File.Delete(Path.Combine(game, path));

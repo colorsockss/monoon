@@ -1,0 +1,34 @@
+{
+  "platform": "macOS 27.0.1",
+  "architecture": "Arm64",
+  "fixedHz": 60,
+  "ticks": 6,
+  "displacementFirstAndSixTicks": {
+    "slow": [
+      4,
+      24
+    ],
+    "fast": [
+      5.333336,
+      32.000015
+    ],
+    "discarded": [
+      4,
+      24
+    ],
+    "selective": [
+      5.333336,
+      32.000015
+    ],
+    "persisted": [
+      5.333336,
+      32.000015
+    ]
+  },
+  "initialX": 274,
+  "unselectedX": 280,
+  "savedX": 274,
+  "selectedSpeedSaved": 320,
+  "restoredSpeed": 240,
+  "undoSteps": 1
+}

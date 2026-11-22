@@ -141,3 +141,23 @@ Rider 등 .NET IDE에서는 솔루션을 열고 메뉴 상태줄의 MoNoon PID�
 기존의 일반 `Guid` 오브젝트 참조와 `FixedUpdate`, 트리거, UI 콜백은 그대로 쓸 수 있다. 이전에 서로 다른 폴더에 같은 이름의 **전역 클래스**를 두었다면, 각각 다른 C# 네임스페이스에 넣어 전체 타입 이름을 구분한다. 파일 경로를 유지하면 기존 씬·프리팹의 스크립트 ID를 바꿀 필요가 없다.
 
 일반 Release는 `Game/.monoon-compiled/MoNoon.GameScripts.dll` 하나에 프로젝트 스크립트를 담는다. Native AOT는 같은 소스와 생성된 필드 연결 코드를 실행 파일에 정적으로 컴파일한다. 새로 내보낼 때는 현재 빌더와 같은 엔진 버전의 템플릿·AOT 키트를 사용한다. 콘텐츠 버전이 같아도 이전 Release 템플릿에 새 스크립팅 API가 없을 수 있다. 소스에서 업데이트한 경우 저장소 루트에서 `./engine/scripts/build-players.sh`로 템플릿과 키트를 함께 갱신한다. [버전 확인과 업그레이드 절차](upgrade.md)
+
+## Inspector 필드 이름 바꾸기
+
+C# 공개 필드의 이름을 변경할 때 새 필드에 `[FormerlySerializedAs("이전이름")]`을 붙인다. 같은 타입의 Inspector 필드에 저장한 값과 오브젝트·에셋 참조가 유지된다. C#에서 해당 필드를 사용하는 다른 스크립트도 새 이름을 쓰도록 변경한다.
+
+```csharp
+using Engine.Core;
+
+public sealed class PlayerMovement : GameBehaviour
+{
+    [FormerlySerializedAs("Speed")]
+    public float MoveSpeed = 240f;
+}
+```
+
+기존 씬이나 프리팹을 열면 Inspector에는 **MoveSpeed**가 표시된다. 해당 씬이나 프리팹을 저장하면 YAML의 필드 이름과 프리팹 비교에 쓰는 기준값도 새 이름으로 기록된다. 여러 에셋을 한꺼번에 저장할 필요는 없다. 원본을 먼저 저장한 뒤 예전 씬을 열어도 인스턴스의 개별 값이 유지된다.
+
+필드 이름이 여러 번 바뀌었다면 가장 최근에 사용한 이름부터 특성을 하나씩 선언한다. 파일에 현재 이름이 있으면 그 값을 우선하고, 현재 이름이 없으면 선언 순서대로 처음 발견한 값을 쓴다. 동일한 컴포넌트의 두 필드가 현재 이름이나 이전 이름을 공유하면 Inspector와 빌드에서 충돌한 이름을 알려준다. 이 특성은 필드 이름을 이전하는 기능이며, 값의 타입을 바꿀 때는 별도의 데이터 변환이 필요하다.
+
+KeyRoom에서 **F3**을 누르면 **MovementWorkshop**이 열린다. 위쪽 플레이어는 **MovementPlayer.prefab**의 240을 상속하고 아래쪽 플레이어는 320으로 설정돼 있다. 방향키나 WASD로 두 플레이어를 함께 움직인다. 다시 **F3**을 누르면 첫 방으로 돌아온다. [샘플 씬](../../samples/KeyRoom/Scenes/MovementWorkshop.scene) · [저장·재열기와 이동 검증](../../engine/tests/results/script-field-renames/README.md)

@@ -39,6 +39,8 @@ input:
   - name: Fade
     controls:
     - F
+  - name: FocusMixer
+    controls: [Pad.Start]
   - name: MasterMute
     controls:
     - M

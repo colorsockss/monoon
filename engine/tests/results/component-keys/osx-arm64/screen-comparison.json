@@ -1,0 +1,35 @@
+[
+  {
+    "release": 497,
+    "nativeAot": 812,
+    "rect": [
+      768,
+      252,
+      44,
+      44
+    ],
+    "rgbSha256": "4a952739bc01706d15af35e51d8bae910fbc71aa1294e64df9a32f76bf4fdca1"
+  },
+  {
+    "release": 456,
+    "nativeAot": 771,
+    "rect": [
+      768,
+      252,
+      44,
+      44
+    ],
+    "rgbSha256": "d9f61b77dcd47febdc649113776593b8aae37d10149763f37dc137c80fc41eba"
+  },
+  {
+    "release": 743,
+    "nativeAot": 691,
+    "rect": [
+      768,
+      252,
+      44,
+      44
+    ],
+    "rgbSha256": "e24bcbaee98ba30ab17de945866de2e12e10f7429c2a56c7c64421d5a38607f3"
+  }
+]

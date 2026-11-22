@@ -40,12 +40,18 @@ public sealed partial class ScreenUi
             if(ModeClosed(p)||hidden.Contains(p.Object.Id)||active?.Invoke(p.Object.Id)==false||p.Flag.Length>0&&flag?.Invoke(p.Flag)==false)return false;
         return true;
     }
-    private bool Enabled(Node n)=>ReceivesInput(n.Object.Id)&&(n.Button!=null||n.Field!=null)&&interactOverrides.GetValueOrDefault(n.Object.Id,n.Button?.Interactable??true);
-    private bool Shown(Node n)=>Visible(n)&&n.Box.IntersectsWith(n.Clip);
+    private bool Enabled(Node n)=>ReceivesInput(n.Object.Id)&&(n.Control!=null||n.Field!=null)&&interactOverrides.GetValueOrDefault(n.Object.Id,n.Control?.Interactable??true);
+    private bool Shown(Node n)=>n.Box.Width>0 && n.Box.Height>0 && Visible(n) && n.Box.IntersectsWith(n.Clip);
     private static bool Horizontal(Node n)=>n.Layout?.Axis=="Horizontal";
     private static float Extent(Node n)=>Horizontal(n)?n.Box.Width:n.Box.Height;
     private static float Limit(Node n)=>Math.Max(0,n.Content-Extent(n));
-    private float Height(Node n)=>Math.Max(n.Object.Height,n.Label==null&&n.Field==null?0:Math.Max(0,n.Label?.InsetY??3)+(n.Label?.Size??16)*Preferences.TextScale*1.4f*Math.Max(1,n.Lines.Length));
+    private float Height(Node n)=>Math.Max(n.Object.Height,n.Label==null&&n.Field==null&&n.Control is not UiDropdownComponent?0:Math.Max(0,n.Label?.InsetY??3)+(n.Label?.Size??16)*Preferences.TextScale*1.4f*Math.Max(1,n.Lines.Length));
+    private static float PinnedSize(float parent, float measured, float? start, float? end) =>
+        start is float near && end is float far ? Math.Max(0, parent - near - far) : measured;
+
+    private static float PinnedStart(float parent, float size, float? start, float? end, float anchor, float offset) =>
+        start ?? (end is float far ? parent - far - size : (parent - size) * anchor + offset);
+
     private void Arrange(ICanvas2D? metrics=null)
     {
         ValidateInputModes();
@@ -65,8 +71,11 @@ public sealed partial class ScreenUi
         foreach(var n in treeOrder)
         {
             var p=n.Parent;
-            n.AllocatedWidth=n.Canvas?screen.Width:p!=null && (p.Layout!=null || p.Scroll) && !Horizontal(p) && (p.Layout?.Stretch??true)?
-                Math.Max(0,p.AllocatedWidth-2*(p.Layout?.Padding??0)):n.MeasuredWidth;
+            if (n.Canvas) n.AllocatedWidth = screen.Width;
+            else if (p != null && (p.Layout != null || p.Scroll))
+                n.AllocatedWidth = !Horizontal(p) && (p.Layout?.Stretch ?? true)
+                    ? Math.Max(0, p.AllocatedWidth - 2 * (p.Layout?.Padding ?? 0)) : n.MeasuredWidth;
+            else n.AllocatedWidth = PinnedSize(p?.AllocatedWidth ?? screen.Width, n.MeasuredWidth, n.Rect?.Left, n.Rect?.Right);
             MeasureLines(n,metrics);
         }
         for(int i=treeOrder.Length-1;i>=0;i--)
@@ -102,11 +111,13 @@ public sealed partial class ScreenUi
             }
             else
             {
-                int a=AnchorIndex(n.Object.GetComponent<UiRectComponent>()?.Anchor??"TopLeft");
+                int a=AnchorIndex(n.Rect?.Anchor??"TopLeft");
                 var delta=n.Object.WorldPosition-(p?.Object.WorldPosition??Vector2.Zero);
                 if (n.ScaleHorizontal) delta.X *= Preferences.TextScale;
-                float h=n.Measured,w=n.MeasuredWidth;
-                n.Box=new(b.X+(b.Width-w)*(a%3)/2+delta.X,b.Y+(b.Height-h)*(a/3)/2+delta.Y,w,h);
+                float w = n.AllocatedWidth, h = PinnedSize(b.Height, n.Measured, n.Rect?.Top, n.Rect?.Bottom);
+                float x = PinnedStart(b.Width, w, n.Rect?.Left, n.Rect?.Right, (a % 3) * .5f, delta.X);
+                float y = PinnedStart(b.Height, h, n.Rect?.Top, n.Rect?.Bottom, (a / 3) * .5f, delta.Y);
+                n.Box = new(b.X + x, b.Y + y, w, h);
             }
             n.Offset=n.Scroll?Math.Clamp(n.Offset,0,Limit(n)):0;
         }
@@ -114,6 +125,7 @@ public sealed partial class ScreenUi
         if (pointer is {} point)
             for (int i = nodes.Length - 1; i >= 0; i--)
                 if (Enabled(nodes[i]) && Hit(nodes[i], point.X, point.Y)) { hovered = nodes[i].Object.Id; break; }
+        if (pressed is Guid captured && (!byId.TryGetValue(captured, out var down) || !Enabled(down) || !Visible(down))) pressed = null;
         if(focus is Guid id&&(!byId.TryGetValue(id,out var f)||!Enabled(f)||!Visible(f)))SetFocus(null);
     }
     public RectangleF? Bounds(Guid id){Arrange();return byId.GetValueOrDefault(id)?.Box;}
@@ -133,7 +145,13 @@ public sealed partial class ScreenUi
     }
     public bool Wheel(float x,float y,float delta)
     {
-        Arrange();var n=nodes.LastOrDefault(o=>ReceivesInput(o.Object.Id)&&Hit(o,x,y));
+        Arrange();
+        if (dropdownId is Guid open && byId[open].Control is UiDropdownComponent dropdown)
+        {
+            optionCursor = Math.Clamp(optionCursor - Math.Sign(delta), 0, dropdown.Options.Length - 1);
+            return true;
+        }
+        var n=nodes.LastOrDefault(o=>ReceivesInput(o.Object.Id)&&Hit(o,x,y));
         for(;n!=null;n=n.Parent)
         {
             if(!ReceivesInput(n.Object.Id))break;
@@ -151,7 +169,7 @@ public sealed partial class ScreenUi
     }
     public bool SetInteractable(Guid id,bool enabled)
     {
-        if(byId.GetValueOrDefault(id) is not {} n || n.Button==null&&n.Field==null)return false;
+        if(byId.GetValueOrDefault(id) is not {} n || n.Control==null&&n.Field==null)return false;
         interactOverrides[id]=enabled;Arrange();return true;
     }
     public bool SetText(Guid id,string text)

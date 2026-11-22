@@ -262,6 +262,13 @@
             <CheckBox Margin="0,0,8,0" x:Name="FrameDebug" Content="Profiler" AutomationProperties.Name="Frame profiler"/>
             <Button x:Name="ConsoleDebug" Classes="quiet" Content="Console…" AutomationProperties.Name="Open console"/>
           </WrapPanel>
+          <Grid x:Name="RoleQueryRow" IsVisible="False" ColumnDefinitions="Auto,*,*" ColumnSpacing="5">
+            <ComboBox x:Name="RoleKindPicker" SelectedIndex="0" AutomationProperties.Name="Object query type">
+              <ComboBoxItem Content="Group"/><ComboBoxItem Content="Tag"/>
+            </ComboBox>
+            <TextBox x:Name="RoleQuery" Grid.Column="1" Watermark="Exact name" AutomationProperties.Name="Object query name"/>
+            <TextBlock x:Name="RoleMatches" Grid.Column="2" Classes="fieldLabel" TextTrimming="CharacterEllipsis" AutomationProperties.Name="Matching objects"/>
+          </Grid>
           <TextBlock x:Name="PhysicsCaption" Classes="label" TextTrimming="CharacterEllipsis"/>
           <Grid x:Name="FramePanel" RowDefinitions="Auto,38,Auto" ColumnDefinitions="*,Auto" RowSpacing="3">
             <TextBlock x:Name="FrameSummary" TextTrimming="CharacterEllipsis" VerticalAlignment="Center"/>
@@ -276,6 +283,9 @@
           <Border Classes="panelHeader">
             <Grid ColumnDefinitions="*,Auto" ColumnSpacing="5">
               <TextBlock x:Name="InspectorTitle" Classes="panel" Text="Inspector" VerticalAlignment="Center"/>
+              <Button x:Name="ApplyPlayValues" Grid.Column="1" Classes="quiet" Content="Apply selected" IsVisible="False"
+                      Height="21" MinHeight="0" Padding="5,0" Click="ApplySelectedPlayValues"
+                      ToolTip.Tip="Apply checked fields to the edited scene in one Undo step. A previously saved, clean scene is saved immediately."/>
               <Button x:Name="OverridesButton" Grid.Column="1" Classes="quiet" Content="Overrides…" IsVisible="False"
                       Height="21" MinHeight="0" Padding="5,0" ToolTip.Tip="Inspect prefab property overrides"/>
             </Grid>
@@ -297,6 +307,7 @@
                 </local:ComponentSection>
                 <local:ComponentSection x:Name="TransformSection" Header="Transform" HasSettings="False">
                   <StackPanel Spacing="2">
+                    <StackPanel x:Name="LiveTransform" IsVisible="False" Spacing="2"/>
                     <Grid x:Name="PositionRow" ColumnDefinitions="56,*,*" ColumnSpacing="5">
                       <TextBlock x:Name="PositionRowLabel" Text="Position" Classes="fieldLabel"/>
                       <Grid Grid.Column="1" ColumnDefinitions="9,*" ColumnSpacing="2">
@@ -320,11 +331,11 @@
                       </Grid>
                     </Grid>
                     <StackPanel x:Name="AffineRows" Spacing="2">
-                      <Grid ColumnDefinitions="56,*,*" ColumnSpacing="5">
+                      <Grid x:Name="RotationRow" ColumnDefinitions="56,*,*" ColumnSpacing="5">
                         <TextBlock Text="Rotation" Classes="fieldLabel" ToolTip.Tip="Clockwise degrees in parent space"/>
                         <NumericUpDown Grid.Column="1" Grid.ColumnSpan="2" x:Name="ObjRotation" AutomationProperties.Name="Rotation degrees"/>
                       </Grid>
-                      <Grid ColumnDefinitions="56,*,*" ColumnSpacing="5">
+                      <Grid x:Name="ScaleRow" ColumnDefinitions="56,*,*" ColumnSpacing="5">
                         <TextBlock Text="Scale" Classes="fieldLabel"/>
                         <Grid Grid.Column="1" ColumnDefinitions="9,*" ColumnSpacing="2">
                           <TextBlock Text="X" Classes="fieldLabel"/>
@@ -349,11 +360,20 @@
                     </StackPanel>
                   </StackPanel>
                 </local:ComponentSection>
+                <local:ComponentSection x:Name="RoleSection" Header="Tags &amp; groups" HasSettings="False">
+                  <Grid ColumnDefinitions="56,*" RowDefinitions="Auto,Auto" RowSpacing="2" ColumnSpacing="5">
+                    <TextBlock Text="Tag" Classes="fieldLabel"/>
+                    <TextBox Grid.Column="1" x:Name="ObjectTag" AutomationProperties.Name="Object tag"/>
+                    <TextBlock Grid.Row="1" Text="Groups" Classes="fieldLabel"/>
+                    <TextBox Grid.Row="1" Grid.Column="1" x:Name="ObjectGroups" AutomationProperties.Name="Object groups"
+                             ToolTip.Tip="Separate group names with commas."/>
+                  </Grid>
+                </local:ComponentSection>
                 <ItemsControl x:Name="AttachedComponents">
                   <ItemsControl.ItemTemplate>
                     <DataTemplate>
                       <local:ComponentSection Header="{Binding Name}" HasSettings="{Binding Editable}" Foldout="{Binding Foldout}">
-                        <ContentControl Content="{Binding Fields}" IsEnabled="{Binding Editable}" HorizontalContentAlignment="Stretch"/>
+                        <ContentControl Content="{Binding Fields}" IsEnabled="{Binding FieldsEnabled}" HorizontalContentAlignment="Stretch"/>
                       </local:ComponentSection>
                     </DataTemplate>
                   </ItemsControl.ItemTemplate>

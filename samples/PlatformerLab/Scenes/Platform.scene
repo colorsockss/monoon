@@ -84,12 +84,29 @@ objects:
   width: 190
   height: 90
   components:
-  - type: spriteRenderer
-    asset: "Assets/Incline.png"
-    assetId: "258296f7-6dbd-5601-9762-995ddecacd4c"
+  - type: tilemap2D
+    tileset: f8fa9ccd-cd95-4406-925a-c1b89092c2e8
+    cellSize: {width: 38, height: 90}
     order: 2
-  - type: polygonCollider2D
-    points: [{"x": 0, "y": 1}, {"x": 1, "y": 0}, {"x": 1, "y": 1}]
+    chunks:
+    - x: 0
+      y: 0
+      cells: [{index: 0, tile: 1}, {index: 1, tile: 2}, {index: 2, tile: 3}, {index: 3, tile: 4}, {index: 4, tile: 5}]
+- id: a2f7dad5-3289-4f71-80ad-0658ff909109
+  name: Jump-through ledge
+  x: 54
+  y: 288
+  width: 16
+  height: 6
+  components:
+  - type: tilemap2D
+    tileset: 04a6e926-3487-575d-a5e8-83908efd75c5
+    cellSize: {width: 16, height: 6}
+    order: 2
+    chunks:
+    - x: 0
+      y: 0
+      cells: [{index: 0, tile: 16}, {index: 1, tile: 16}, {index: 2, tile: 16}, {index: 3, tile: 16}]
 - id: dca7a1cf-eb5c-5e42-9a79-fed6de1bc12e
   name: Upper deck
   x: 370

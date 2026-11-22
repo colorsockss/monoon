@@ -49,7 +49,7 @@ public sealed partial class SceneGame
             if (body.Stream is {} stream && incoming.ownedWorlds.Remove(stream)) ownedWorlds.Add(stream);
             body.SceneOwner = sceneId;
             BindFrameEvents(body);
-            byId.Add(body.Id, body);
+            RegisterBody(body);
             world.Objects.Add(body.Source);
         }
         Reindex();
@@ -68,7 +68,7 @@ public sealed partial class SceneGame
             // deliberately created by teardown callbacks belong to the remaining world.
             foreach (var body in parentFirst.Reverse().Where(b => b.SceneOwner == sceneId))
             {
-                if (!removed.Add(body.Id)) continue;
+                if (!MarkRemoved(body.Source)) continue;
                 if (body.Active) QueueLife(body, LifeEvent.Disable);
                 body.Active = false;
                 Silence(body);

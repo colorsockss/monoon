@@ -25,6 +25,8 @@ public class ScriptLibrary
         return context.LoadFromStream(assembly, symbols);
     }
 
+    internal virtual void NormalizeFields(SceneDocument scene) { }
+
     public virtual string RelativePath(string id) => $"Scripts/{id}.cs";
     public virtual ScriptDefinition Get(string name) =>
         throw new InvalidDataException($"Script field descriptions for {name} require the source project.");

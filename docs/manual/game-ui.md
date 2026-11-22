@@ -10,6 +10,24 @@
 
 UI 좌표는 게임 해상도 단위다. 앵커는 가로·세로 세 지점을 조합한 9개 위치 중 하나를 선택한다. 자식은 부모 영역에 맞춰 배치되고 버튼 그림과 클릭 판정은 같은 영역을 사용한다. 카메라가 이동해도 화면 UI는 화면에 고정된다. 여러 Canvas가 겹치면 **Order**가 큰 Canvas가 위에 그려진다.
 
+## 가장자리 고정과 해상도 미리보기
+
+**UI Rect → Left · Right · Top · Bottom**에서 고정할 변을 체크한다. 처음 체크하면 현재 위치에서 부모의 해당 변까지 거리가 입력된다. 값은 논리 픽셀이며 음수는 부모 바깥으로 나가는 여백이다.
+
+| 한 축에서 고정한 변 | 부모 크기가 달라질 때 |
+| --- | --- |
+| 없음 | 기존 Anchor, Transform의 Offset과 Size를 사용한다. |
+| 한쪽 | 해당 변의 여백과 위젯 크기를 유지한다. |
+| 양쪽 | 양쪽 여백을 유지하며 가운데 영역이 늘거나 줄어든다. 두 여백의 합이 부모보다 크면 해당 축의 크기는 0이 된다. |
+
+Scene에서 위젯을 드래그하면 고정된 변의 여백도 갱신된다. **UI Layout** 또는 **Scroll View**의 직계 자식은 부모의 자동 배치 규칙을 따른다. 자동 배치 영역 자체를 늘리려면 그 영역의 UI Rect에 변을 고정한다.
+
+1. KeyRoom의 Hierarchy에서 **Interface → Inventory**를 선택한다. 가방의 좌우 여백은 각각 64, 상하 여백은 각각 36이다.
+2. **Scene → UI Layout Preview…**에서 Width, Height, Language, Text (%)를 바꾸고 **Preview**를 누른다. 예를 들어 **480 × 720**, **ko**, **200**으로 설정하면 세로 화면에서 한글 줄바꿈을 볼 수 있다. 하단 상태 표시줄에 미리보기 설정이 나온다.
+3. **Play → I**로 가방을 열고 **나침반 관리**와 **닫기**를 눌러 본다. 하위 확인창도 같은 패널 영역을 채운다. **Stop → Scene → UI Layout Preview… → Use Project**로 원래 표시 설정을 복원한다.
+
+미리보기는 현재 에디터 창의 Scene 편집과 Play에 적용된다. 배포 기본값을 바꿀 때에는 **Project → Game Resolution…**과 **Project → UI Accessibility…**에서 저장한다. [KeyRoom 검증 기록](../../engine/tests/results/ui-layout/README.md)
+
 ## Controls로 안내 열기와 닫기
 
 1. Canvas 아래에 **UI → Group**을 추가하고 그 아래에 **UI → Text**를 둔다. 안내 문구를 입력하고 Group의 **UI Rect → Show if**를 `controls`로 지정한다. 편집 중에는 배치를 볼 수 있고, Play에서는 세션에 해당 플래그가 있을 때 자식까지 함께 보인다.
@@ -89,3 +107,27 @@ KeyRoom에서 **I**로 가방을 열고 **L** 또는 언어 버튼으로 영어�
 포커스 링으로 현재 위젯을 표시한다. 비활성·숨김 항목은 건너뛴다. 게임플레이가 있는 씬에서는 먼저 Tab이나 클릭으로 UI에 포커스를 주고, UI 전용 씬에서는 방향키·패드로 바로 탐색할 수 있다. [AccessLab 프로젝트](../../samples/AccessLab/)에는 한국어·일본어·영어로 바꿀 수 있는 설정 화면과 [저장 버튼 스크립트](../../samples/AccessLab/Scripts/PlayerOptions.cs)가 있다.
 
 인벤토리 위에 확인창을 겹쳐 열고 각 단계의 입력과 포커스를 관리하려면 UI Rect에서 **Input mode root**를 켠다. [입력 모드 전환과 복귀](input-actions.md#입력-모드-전환과-복귀)
+
+## 슬라이더·토글·드롭다운
+
+**Hierarchy → 우클릭 → UI**에서 **Slider**, **Toggle**, **Dropdown**을 추가한다. Canvas 아래 배치하고 **UI Rect**와 Transform에서 공통 위치와 크기를 조절한다. Inspector의 **Style**은 버튼과 같은 테마 테이블을 사용한다. **Interactable**을 끄면 포커스와 입력을 받지 않는다.
+
+| 위젯 | Inspector 설정 | 마우스 | 키보드·게임패드 |
+| --- | --- | --- | --- |
+| Slider | Minimum, Maximum, Step, Value | 트랙을 클릭하거나 손잡이를 끈다. | 포커스 후 좌우 방향키·D-pad·왼쪽 스틱으로 한 단계씩 바꾼다. |
+| Toggle | Default | 클릭해 켜거나 끈다. | Enter·Space 또는 패드 아래쪽 버튼으로 전환한다. |
+| Dropdown | Options에 한 줄당 항목 하나, Index에 0부터 시작하는 기본 순번 | 클릭해 목록을 열고 원하는 항목에서 놓는다. 바깥을 누르면 닫힌다. | Enter 또는 패드 아래쪽 버튼으로 열고 위아래로 고른 뒤 같은 버튼으로 확정한다. Esc 또는 패드 오른쪽 버튼으로 취소한다. |
+
+게임 스크립트는 `IGameUi`의 `SliderValue(id)`, `ToggleValue(id)`, `SelectedIndex(id)`로 현재 값을 읽는다. `SetSliderValue`, `SetToggleValue`, `SetSelectedIndex`는 실행 중 값만 바꾼다. 슬라이더는 지정한 간격에 맞추고 드롭다운은 범위 밖 인덱스를 거부한다.
+
+위젯에 붙인 컴포넌트는 `OnUiValueChanged(UiValueChanged change)`에서 사용자의 변경을 받는다. `change.Value`는 슬라이더의 수치, 토글의 0 또는 1, 드롭다운의 선택 인덱스다. 저장값을 복원하는 스크립트 호출은 이 이벤트를 발생시키지 않는다. 게임은 필요한 값만 플레이어 설정에 저장한다. [AudioLab의 믹서 연결](../../samples/AudioLab/Scripts/ListeningWalk.cs) · [플레이어 저장](player-data.md)
+
+## 데스크톱 화면 설정
+
+[DisplayLab](../../samples/DisplayLab/)을 열고 **Save & Run**으로 독립 게임 창을 실행한다. 창 크기를 바꾼 뒤 **Borderless fullscreen**을 켰다가 끄면 이전 창 크기로 돌아온다. **Vertical sync**로 VSync를 바꿀 수 있다. **Clicks** 버튼은 누를 때마다 횟수를 표시한다. 여백을 눌렀을 때도 숫자가 그대로인지 직접 확인할 수 있다.
+
+게임 스크립트는 `Session.Display`에서 독립 창의 상태를 읽는다. Scene 패널과 헤드리스 실행에서는 이 값이 `null`이다. `SetFullscreen(bool)`과 `SetVSync(bool)`는 적용 성공 여부를 반환한다. 게임은 `Fullscreen`과 `VSync`에서 실제 적용값을 읽어 위젯을 갱신할 수 있다. 창 관리자나 렌더러가 요청을 거절하면 DisplayLab은 안내 문구와 현재 상태를 표시한다. [DisplayLab 스크립트](../../samples/DisplayLab/Scripts/DisplayOption.cs)
+
+엔진은 게임별 프로필의 `display.settings`에 창 모드의 콘텐츠 너비·높이, 전체 화면 여부, VSync를 저장한다. 크기 단위는 SDL 창 좌표다. 논리 해상도와 화면 비율은 게임 프로젝트가 정하며, 크기가 다른 창에서는 레터박스를 적용한다.
+
+전체 화면은 현재 디스플레이 모드를 유지하는 SDL의 기본 테두리 없는 전체 화면을 사용한다. VSync는 렌더러에서 읽어 온 동기화 간격으로 확인한다. [SDL 전체 화면 API](https://wiki.libsdl.org/SDL3/SDL_SetWindowFullscreen) · [SDL VSync API](https://wiki.libsdl.org/SDL3/SDL_SetRenderVSync)

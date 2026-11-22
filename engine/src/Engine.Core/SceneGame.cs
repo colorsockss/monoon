@@ -41,6 +41,18 @@ public sealed partial class SceneGame : IGameObjects, IGame2D, IGameCameras, IDi
         public bool AutoStarted;
         public AudioPlayback? Playback;
         public AnimationPlayer? Animation;
+        public ComponentPose AppliedPose, BeforeAnimation;
+        public SceneAppearance DisplayAppearance
+        {
+            get
+            {
+                var result = Appearance;
+                if (Animation?.Appearance is {} frame)
+                    result = result.Image == null ? frame : result with { Image = frame.Image, Source = frame.Source,
+                        Canvas = frame.Canvas, Color = Renderer?.Tint == null ? Color.White : result.Color };
+                return AppliedPose.Tint == null && AppliedPose.Opacity == null ? result : result with { Color = AppliedPose.Paint(result.Color) };
+            }
+        }
         public Action<AnimationMarker>? FrameEvent;
         public readonly Collider2DComponent? ColliderConfig = obj.GetComponent<Collider2DComponent>();
         public bool ColliderEnabled = true;
@@ -56,7 +68,12 @@ public sealed partial class SceneGame : IGameObjects, IGame2D, IGameCameras, IDi
         public IReadOnlyList<WalkPoint> WalkPreview=[];
         public Body? MotionOwner, Support;
         public Vector2 GroundNormal = -Vector2.UnitY;
-        public float Angle, StartAngle;
+        public ColliderGrid? QueryGrid;
+        public int ColliderOrdinal;
+        public RenderGrid? RenderGrid;
+        public int RenderOrdinal;
+        public float Angle { get; private set; }
+        public float StartAngle;
         public float? WalkSpeed;
         public Vector2 Velocity;
         public float Spin, InvMass, InvInertia, MinGroundCos;
@@ -80,6 +97,8 @@ public sealed partial class SceneGame : IGameObjects, IGame2D, IGameCameras, IDi
                 InvInertia = 12 * InvMass / (bounds.Width * bounds.Width + bounds.Height * bounds.Height);
             }
             BeginStep();
+            QueryGrid?.Update(ColliderOrdinal);
+            RenderGrid?.Mark(RenderOrdinal);
         }
         public Matrix3x2 MatrixAt(Vector2 origin) => MatrixAt(origin, Angle);
         public Matrix3x2 MatrixAt(Vector2 origin, float angle)
@@ -103,10 +122,13 @@ public sealed partial class SceneGame : IGameObjects, IGame2D, IGameCameras, IDi
             translations.Clear();
         }
 
-        public void Translate(MotionPath translation)
+        public void Translate(MotionPath translation, float rotation = 0)
         {
             translations.Add(translation);
+            RenderGrid?.Mark(RenderOrdinal);
             Position += translation.End;
+            Angle += rotation;
+            if (translation.End != Vector2.Zero || rotation != 0) QueryGrid?.Update(ColliderOrdinal);
         }
 
         public Vector2 At(float time)
@@ -134,6 +156,7 @@ public sealed partial class SceneGame : IGameObjects, IGame2D, IGameCameras, IDi
     private Body? camera;
     private readonly Body? defaultCamera;
     private Body? requestedCamera;
+    private RenderGrid? renderGrid;
     private WorldDrawOrder drawOrder = null!;
     private Matrix3x2 DrawMatrix(int index, float interpolation)
     {
@@ -201,7 +224,7 @@ public sealed partial class SceneGame : IGameObjects, IGame2D, IGameCameras, IDi
         assets = manifest ?? (scene.ProjectDirectory == null ? null : ProjectAssets.Scan(scene.ProjectDirectory));
         try
         {
-            foreach (var obj in world.Objects) byId.Add(obj.Id, CreateBody(obj));
+            foreach (var obj in world.Objects) RegisterBody(CreateBody(obj));
             if (scene.Camera is { } cam) camera = defaultCamera = byId[cam.Id];
             else if (!additive && !scene.Cameras.Any() && !scene.IsUiOnly) throw new InvalidOperationException("Add a camera with Scene → Create Camera before playing.");
             Ui = new ScreenUi(world, assets, State.Has, id => byId.TryGetValue(id, out var b) && b.Active, State.UiPreferences??=new(settings.Accessibility));
@@ -349,17 +372,22 @@ public sealed partial class SceneGame : IGameObjects, IGame2D, IGameCameras, IDi
         FlushLife();
         UpdateDialogue(input);
         if (modalFrame) input = default;
-        Ui.Dispatch(id =>
+        Ui.Dispatch(id => NotifyControl(id, null), (id, value) => NotifyControl(id, value));
+        void NotifyControl(Guid id, float? value)
         {
             var button = Array.Find(bodies, b => b.Id == id)!;
             using var scope = EnterScene(button);
             foreach (var behaviour in button.Behaviours)
             {
                 if (!button.Active || revision != Ui.InputModeRevision) break;
-                try { behaviour.OnUiClick(new UiClick(id, State, Ui, this)); }
-                catch (Exception ex) { throw ScriptFailure(behaviour, nameof(GameBehaviour.OnUiClick), ex); }
+                try
+                {
+                    if (value.HasValue) behaviour.OnUiValueChanged(new(id, value.Value, State, Ui, this));
+                    else behaviour.OnUiClick(new UiClick(id, State, Ui, this));
+                }
+                catch (Exception ex) { throw ScriptFailure(behaviour, value.HasValue ? nameof(GameBehaviour.OnUiValueChanged) : nameof(GameBehaviour.OnUiClick), ex); }
             }
-        });
+        }
         foreach (var body in parentFirst)
         {
             using var scope = EnterScene(body);
@@ -398,7 +426,10 @@ public sealed partial class SceneGame : IGameObjects, IGame2D, IGameCameras, IDi
                 catch (Exception ex) { throw ScriptFailure(behaviour, nameof(GameBehaviour.FixedUpdate), ex); }
             }
             if (body.Active && body.Animation is {} animation)
+            {
                 animation.Step(seconds,body.FrameEvent);
+                ApplyAnimationPose(body);
+            }
             if (body.Active && body.Tween is {Playing:true} tween)
             {
                 var parent = body.Source.ParentId is Guid id ? byId[id] : null;
@@ -428,7 +459,7 @@ public sealed partial class SceneGame : IGameObjects, IGame2D, IGameCameras, IDi
     {
         canvas.UseFonts(Ui.Language.Fonts);
         SetPointerFrame(interpolation);
-        drawOrder.Sample(interpolation);
+        PrepareCameraDraw(interpolation);
         canvas.Clear(Background);
         if (ViewCamera is { Active:true } lens) DrawCamera(canvas,lens,interpolation);
         if (playback is {} p) { DrawDialogue(canvas,p); return; }
@@ -436,7 +467,18 @@ public sealed partial class SceneGame : IGameObjects, IGame2D, IGameCameras, IDi
         Ui.Draw(canvas);
     }
 
-    private void DrawCamera(ICanvas2D canvas,Body lens,float interpolation)
+    internal bool UseRenderGrid { get; set; } = true;
+
+    internal void PrepareCameraDraw(float interpolation)
+    {
+        drawOrder.Sample(interpolation);
+        if (UseRenderGrid) renderGrid?.Sample(interpolation);
+    }
+
+    internal int DrawCamera(ICanvas2D canvas, Guid cameraId, float interpolation, List<Guid>? spriteOrder = null)
+        => DrawCamera(canvas, byId[cameraId], interpolation, spriteOrder);
+
+    private int DrawCamera(ICanvas2D canvas, Body lens, float interpolation, List<Guid>? spriteOrder = null)
     {
         var shot=Sample(lens,interpolation);
         var port=shot.Viewport;
@@ -447,8 +489,11 @@ public sealed partial class SceneGame : IGameObjects, IGame2D, IGameCameras, IDi
         var frame=shot.World;
         var view=Matrix3x2.CreateTranslation(-frame.X,-frame.Y)*Matrix3x2.CreateScale(shot.Zoom)*Matrix3x2.CreateTranslation(port.X,port.Y);
         double effectTime=Math.Max(0,Time.GameSeconds-(1-interpolation)*effectStep);
-        foreach (var item in drawOrder.Items)
+        var ranks = UseRenderGrid ? renderGrid?.Ranks(frame, drawOrder) : null;
+        int count = ranks?.Count ?? drawOrder.Items.Length;
+        for (int i = 0; i < count; i++)
         {
+            var item = drawOrder.Items[ranks == null ? i : ranks[i]];
             var body = bodies[item.Index];
             if (!body.Active || body.Interface) continue;
             var matrix = DrawMatrix(item.Index, interpolation);
@@ -461,11 +506,8 @@ public sealed partial class SceneGame : IGameObjects, IGame2D, IGameCameras, IDi
             body.SpritePool?.Draw(canvas, frame, view, interpolation);
             if (frame.IntersectsWith(Affine2D.Bounds(local,matrix)))
             {
-                var appearance = body.Appearance;
-                if (body.Animation?.Appearance is {} anim)
-                    appearance = appearance.Image == null ? anim : appearance with { Image = anim.Image, Source = anim.Source, Canvas = anim.Canvas,
-                        Color = body.Renderer?.Tint == null ? Color.White : appearance.Color };
-                if (body.SpritePool == null) appearance.Draw(canvas, local, matrix * view);
+                if (spriteOrder != null && body.Renderer != null) spriteOrder.Add(body.Id);
+                if (body.SpritePool == null) body.DisplayAppearance.Draw(canvas, local, matrix * view);
                 if (body.Shader is {} shader) canvas.DrawShader(shader,shader.FrameAt(effectTime),local,matrix*view,Color.White,false);
             }
             body.Skeleton?.Draw(canvas,matrix,view,frame,interpolation);
@@ -483,6 +525,8 @@ public sealed partial class SceneGame : IGameObjects, IGame2D, IGameCameras, IDi
             foreach (var extra in overlays)
                 if (extra.Active && extra.Camera!.Output==Camera2DComponent.Extra) OutlineView(extra,Color.LightSkyBlue);
         }
+        return count;
+
         void OutlineView(Body other,Color color)
         {
             var f=Sample(other,interpolation).World;

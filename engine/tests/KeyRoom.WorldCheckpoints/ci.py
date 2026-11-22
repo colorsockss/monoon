@@ -25,7 +25,8 @@ def check_runtime_package(product, mode):
     unexpected = [p.name for p in product.rglob("*.dll") if p.name.startswith(tools)]
     unexpected += [p.name for p in product.rglob("*") if "skiasharp" in p.name.lower()]
     unexpected += [name for name in (STALE_TEMPLATE_FILE, "MoNoonPlayer.files", "MoNoonContent.version",
-                                     "MoNoonSdlPlayer.version", "MoNoonVorbis.version", "MoNoonShaderSheets.version") if (product / name).exists()]
+                                     "MoNoonSdlPlayer.version", "MoNoonVorbis.version", "MoNoonShaderSheets.version",
+                                     "MoNoonUiControls.version", "MoNoonObjectGroups.version", "MoNoonUiPins.version", "MoNoonComponentKeys.version", "MoNoonTileCollision.version") if (product / name).exists()]
     if mode == "release":
         dependencies = json.loads((product / "MoNoonPlayer.deps.json").read_text())["libraries"]
         unexpected += [name for name in dependencies if name.startswith(tools)]

@@ -20,12 +20,12 @@ internal sealed record ClipPng(Guid Id, string Path, string Hash)
 
 internal partial class ClipEditorWindow : Window
 {
-    private sealed record Frame(Guid Sprite, string Seconds, SpriteRegion? Source = null, SpriteCanvas? Canvas = null, string? Event = null)
+    private sealed record Frame(Guid Sprite, string Seconds, SpriteRegion? Source = null, SpriteCanvas? Canvas = null, string? Event = null, bool UseRenderer = false)
     {
         public bool Parse(out float value) => float.TryParse(Seconds, NumberStyles.Float, CultureInfo.InvariantCulture, out value)
             && float.IsFinite(value) && value > 0;
     }
-    private sealed record Snapshot(Frame[] Frames, bool Loop, int Selected);
+    private sealed record Snapshot(Frame[] Frames, ComponentTrack[] Tracks, bool Loop, int Selected);
     private IImage?[] frameImages = [];
     private SceneAppearance?[] frameDraws = [];
     private readonly SceneViewport framePreview = new(spritePreview:true) { IsHitTestVisible=false };
@@ -40,6 +40,9 @@ internal partial class ClipEditorWindow : Window
     private readonly SpriteCache<Bitmap> sheets = new(p=>new Bitmap(p));
     private readonly Dictionary<Guid,Bitmap?> bitmaps = [];
     private List<Frame> frames;
+    private ComponentTrack[] tracks;
+    private ComponentCurves? curves;
+    private string? curveError;
     private int selected;
     private bool loop, refreshing, approved, asking;
     private Snapshot saved;
@@ -56,12 +59,20 @@ internal partial class ClipEditorWindow : Window
         InitializeComponent();
         PreviewHost.Child = framePreview;
 
-        frames = clip.Frames.Select(f => new Frame(f.Sprite, f.Seconds.ToString("R", CultureInfo.InvariantCulture), f.Source, f.Canvas, f.Event)).ToList();
+        frames = clip.Frames.Select(f => new Frame(f.Sprite, f.Seconds.ToString("R", CultureInfo.InvariantCulture), f.Source, f.Canvas, f.Event, f.UseRenderer)).ToList();
+        tracks = clip.Tracks ?? [];
         selected = frames.Count == 0 ? -1 : 0; loop = clip.Loop;
         saved = Capture(); savedName = relative == null ? "Animation" : Path.GetFileNameWithoutExtension(relative);
         ClipName.Text = savedName; ClipName.IsReadOnly = relative != null;
         SetCatalog(ProjectAssets.Scan(root)); ZoomBox.ItemsSource = new[]{"Fit", "1×", "2×", "4×"}; ZoomBox.SelectedIndex = 0;
 
+        KeyProperty.ItemsSource = ComponentCurves.Properties;
+        KeyProperty.SelectedIndex = 0;
+        KeyProperty.SelectionChanged += (_,_) => RefreshKey();
+        KeySection.IsChecked = tracks.Length != 0;
+        WriteKey.Click += (_,_) => EditKey(false);
+        DeleteKey.Click += (_,_) => EditKey(true);
+        AddRenderer.Click += (_,_) => Change(() => { selected++; frames.Insert(selected, new(Guid.Empty,"1",UseRenderer:true)); });
         Track.SelectFrame = Select; Track.Scrub = Seek; Track.MoveFrame = Move;
         DragDrop.SetAllowDrop(Track,true);
         Track.AddHandler(DragDrop.DragOverEvent, FileDrop);
@@ -81,7 +92,7 @@ internal partial class ClipEditorWindow : Window
         ClipName.PropertyChanged += (_,e) => { if (!refreshing && e.Property == TextBox.TextProperty) UpdateStatus(); };
         LoopBox.IsCheckedChanged += (_,_) => { if (!refreshing && loop != (LoopBox.IsChecked == true)) Change(() => loop = LoopBox.IsChecked == true); };
         SpriteBox.SelectionChanged += (_,_) => { if (!refreshing && selected >= 0 && SpriteBox.SelectedItem is ClipPng p && frames[selected].Sprite != p.Id)
-            Change(() => frames[selected] = frames[selected] with { Sprite = p.Id, Source = null, Canvas = null }); };
+            Change(() => frames[selected] = frames[selected] with { Sprite = p.Id, Source = null, Canvas = null, UseRenderer = false }); };
         Left.Click += (_,_) => Move(selected, selected-1); Right.Click += (_,_) => Move(selected, selected+2);
         Duplicate.Click += (_,_) => { if (selected >= 0) Change(() => { frames.Insert(selected+1, frames[selected]); selected++; }); };
         Remove.Click += (_,_) => { if (selected >= 0) Change(() => { frames.RemoveAt(selected); selected = Math.Min(selected,frames.Count-1); }); };
@@ -130,7 +141,7 @@ internal partial class ClipEditorWindow : Window
     private void LayoutStage()
     {
         bool narrow = ClientSize.Width > 0 && ClientSize.Width < 565;
-        Stage.Height = narrow || StageScroll.Bounds.Height <= 0 ? double.NaN : StageScroll.Bounds.Height;
+        Stage.MinHeight = narrow ? 0 : StageScroll.Bounds.Height;
         if (narrow == (Grid.GetRow(Properties) == 1)) return;
         Stage.ColumnDefinitions = new(narrow ? "*" : "*,240");
         Stage.RowDefinitions = new(narrow ? "115,Auto" : "*");
@@ -164,8 +175,8 @@ internal partial class ClipEditorWindow : Window
         };
     }
 
-    private Snapshot Capture() => new(frames.ToArray(),loop,selected);
-    private bool Dirty => saved.Loop != loop || !saved.Frames.SequenceEqual(frames) || ClipName.Text != savedName ||
+    private Snapshot Capture() => new(frames.ToArray(),tracks,loop,selected);
+    private bool Dirty => saved.Tracks != tracks || saved.Loop != loop || !saved.Frames.SequenceEqual(frames) || ClipName.Text != savedName ||
         (selected >= 0 && (SecondsBox.Text != frames[selected].Seconds || (EventBox.Text ?? "").Trim() != (frames[selected].Event ?? "")));
     private void Change(Action change)
     {
@@ -184,7 +195,7 @@ internal partial class ClipEditorWindow : Window
         CommitSeconds();
         var src = forward ? redo : undo; var dst = forward ? undo : redo;
         if (!src.TryPop(out var s)) return;
-        Pause(); dst.Push(Capture()); frames = s.Frames.ToList(); loop = s.Loop; selected = s.Selected; Rebuild();
+        Pause(); dst.Push(Capture()); frames = s.Frames.ToList(); tracks = s.Tracks; loop = s.Loop; selected = s.Selected; Rebuild();
     }
     private Bitmap? BitmapFor(Guid id)
     {
@@ -200,6 +211,8 @@ internal partial class ClipEditorWindow : Window
     private void Rebuild()
     {
         axis = new(frames.Select(f => new SpriteFrame(f.Sprite, f.Parse(out var v) ? v : .1f)).ToArray());
+        try { curves = new ComponentCurves(tracks,axis.Duration); curveError = null; }
+        catch (InvalidDataException ex) { curves = null; curveError = ex.Message; }
         RefreshFrameImages();
         Select(selected,commit:false);
     }
@@ -209,13 +222,14 @@ internal partial class ClipEditorWindow : Window
         frameImages = frames.Select(FrameImage).ToArray();
         frameDraws = frames.Select((frame,i) =>
         {
+            if (frame.UseRenderer) return new SceneAppearance(SpriteAssets.SquarePath,System.Drawing.Color.White);
             if (frameImages[i]==null || !byId.TryGetValue(frame.Sprite,out var png)) return (SceneAppearance?)null;
             var packed=frame.Source==null && frame.Canvas==null ? library?.Find(frame.Sprite) : null;
             return new SceneAppearance(Path.Combine(root,packed?.Sheet ?? png.Path),System.Drawing.Color.White,
                 packed?.Entry.Source ?? frame.Source,packed?.Entry.Canvas ?? frame.Canvas);
         }).ToArray();
         Track.SetFrames(axis, frames.Select((f,i) => new ClipTimelineTrack.Cell(FrameName(f) + (f.Event == null ? "" : " · " + f.Event), frameImages[i],
-            !f.Parse(out _) || frameImages[i] == null)).ToArray());
+            !f.Parse(out _) || !f.UseRenderer && frameImages[i] == null)).ToArray());
     }
     private IImage? FrameImage(Frame frame)
     {
@@ -230,6 +244,7 @@ internal partial class ClipEditorWindow : Window
 
     private string FrameName(Frame frame)
     {
+        if (frame.UseRenderer) return "Object renderer";
         var name = byId.TryGetValue(frame.Sprite,out var png) ? Path.GetFileName(png.Path) : "Missing PNG";
         return frame.Source is {} cell ? $"{name} [{cell.X}, {cell.Y}]" : name;
     }
@@ -255,7 +270,7 @@ internal partial class ClipEditorWindow : Window
         SecondsBox.Text = f?.Seconds ?? ""; LoopBox.IsChecked = loop;
         FrameActions.IsEnabled = SpriteBox.IsEnabled = SecondsBox.IsEnabled = Remove.IsEnabled = Duplicate.IsEnabled = f != null;
         Left.IsEnabled = selected > 0; Right.IsEnabled = selected >= 0 && selected+1 < frames.Count;
-        refreshing = false; UpdateStatus(); Preview();
+        refreshing = false; RefreshKey(); UpdateStatus(); Preview();
     }
     private void Move(int from,int slot)
     {
@@ -267,7 +282,7 @@ internal partial class ClipEditorWindow : Window
     private void Seek(double t)
     {
         CommitSeconds(); Pause();
-        position = axis.Position(t,loop);
+        position = axis.Position(t,false);
         selected = axis.FrameAt(position); ShowSelection();
     }
     private void Pause()
@@ -277,7 +292,7 @@ internal partial class ClipEditorWindow : Window
     private void TogglePlayback()
     {
         CommitSeconds();
-        if (watch.IsRunning) { Tick(); Pause(); return; }
+        if (watch.IsRunning) { Tick(); Seek(position); return; }
         if (Problem() != null) return;
         if (position >= axis.Duration) position = 0;
         playStart = position; PreviewPlay.Content = "Pause"; watch.Restart(); timer.Start(); Preview();
@@ -286,14 +301,14 @@ internal partial class ClipEditorWindow : Window
     {
         if (!watch.IsRunning) return;
         position = axis.Position(playStart + watch.Elapsed.TotalSeconds, loop);
-        if (!loop && position >= axis.Duration) Pause();
+        if (!loop && position >= axis.Duration) { Seek(position); return; }
         Preview();
     }
     private void Preview()
     {
         var i = axis.FrameAt(position);
         var img = i < 0 ? null : frameImages[i];
-        framePreview.ShowFrame(i<0 ? null : frameDraws[i]);
+        framePreview.ShowFrame(i<0 ? null : frameDraws[i], curves?.Sample(position) ?? default);
         int zoom = ZoomBox.SelectedIndex;
         framePreview.Width = zoom <= 0 || img == null ? double.NaN : img.Size.Width * (1 << (zoom-1));
         framePreview.Height = zoom <= 0 || img == null ? double.NaN : img.Size.Height * (1 << (zoom-1));
@@ -304,12 +319,14 @@ internal partial class ClipEditorWindow : Window
 
     private string? Problem()
     {
-        if (frames.Count == 0) return "Add a PNG to create the first frame.";
+        if (frames.Count == 0) return "Add a PNG or an object renderer frame.";
+        if (curveError != null) return curveError;
         for (int i = 0; i < frames.Count; i++)
         {
             var f = frames[i];
             if (i == selected && !refreshing) f = f with { Seconds = SecondsBox.Text ?? "" };
             if (!f.Parse(out _)) return $"Frame {i+1}: enter a positive duration in seconds.";
+            if (f.UseRenderer) continue;
             if (BitmapFor(f.Sprite) is not {} bitmap) return $"Frame {i+1}: choose an available PNG.";
             if (f.Source != null && !f.Source.Fits(bitmap.PixelSize.Width, bitmap.PixelSize.Height))
                 return $"Frame {i+1}: cell is outside the sheet. Choose a replacement cell.";
@@ -347,7 +364,7 @@ internal partial class ClipEditorWindow : Window
         Change(() =>
         {
             if (choice.Replace)
-                frames[selected] = frames[selected] with { Sprite = choice.Sheet, Source = choice.Slices[0].Source, Canvas = choice.Slices[0].Canvas };
+                frames[selected] = frames[selected] with { Sprite = choice.Sheet, UseRenderer = false, Source = choice.Slices[0].Source, Canvas = choice.Slices[0].Canvas };
             else
             {
                 selected++;
@@ -406,11 +423,11 @@ internal partial class ClipEditorWindow : Window
             if (RelativePath == null && File.Exists(file)) throw new IOException("A clip with this name already exists.");
             var data = frames.Select((f,i) => {
                 var png = catalog.PathFor(f.Sprite);
-                if (png == null || !SpriteAssets.IsPng(png) || !File.Exists(Path.Combine(root,png))) throw new IOException($"Frame {i+1}: missing PNG.");
-                f.Parse(out float seconds); return new SpriteFrame(f.Sprite,seconds,f.Source,f.Canvas,f.Event);
+                if (!f.UseRenderer && (png == null || !SpriteAssets.IsPng(png) || !File.Exists(Path.Combine(root,png)))) throw new IOException($"Frame {i+1}: missing PNG.");
+                f.Parse(out float seconds); return new SpriteFrame(f.Sprite,seconds,f.Source,f.Canvas,f.Event,f.UseRenderer);
             }).ToArray();
             Directory.CreateDirectory(Path.GetDirectoryName(file)!);
-            ProjectAssets.Write(file,new SpriteClip(data,loop));
+            ProjectAssets.Write(file,new SpriteClip(data,loop, tracks.Length == 0 ? null : tracks));
             RelativePath = path; saved = Capture(); savedName = stem; ClipName.Text = stem; ClipName.IsReadOnly = true;
             ProjectAssets.Scan(root); Saved?.Invoke(path); UpdateStatus(); StatusLine.Text = "Saved " + Path.GetFileName(path); return true;
         }

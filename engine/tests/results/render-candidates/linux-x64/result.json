@@ -1,0 +1,221 @@
+{
+  "rid": "linux-x64",
+  "os": "Debian GNU/Linux 12 (bookworm)",
+  "renderer": "software",
+  "totalObjects": 10010,
+  "warmup": 24,
+  "samples": 160,
+  "compositeRgba": "8FDAE295AC48EDC5F358A365EE39D8F83AE7CEC5587D46FA6380B00292DFFF76",
+  "checks": [
+    {
+      "camera": "primary",
+      "pose": "behind",
+      "path": "scan",
+      "candidates": 10010,
+      "visible": 227,
+      "rgba": "F29C453362E00F901D318F27ED089BC954033C0113AFF58CD722CA8738DB54BE",
+      "order": "5370D8FDB0F81A9C6079B320DE78CF45D1C87B059EC4D59C77B4799AF5C47C6E"
+    },
+    {
+      "camera": "primary",
+      "pose": "behind",
+      "path": "grid",
+      "candidates": 270,
+      "visible": 227,
+      "rgba": "F29C453362E00F901D318F27ED089BC954033C0113AFF58CD722CA8738DB54BE",
+      "order": "5370D8FDB0F81A9C6079B320DE78CF45D1C87B059EC4D59C77B4799AF5C47C6E"
+    },
+    {
+      "camera": "minimap",
+      "pose": "behind",
+      "path": "scan",
+      "candidates": 10010,
+      "visible": 450,
+      "rgba": "8E7BE0506427685591B7372C79AE7B7430022E17BCBF0442C5B32A17C22D815F",
+      "order": "EF8970976C7C15DB52C0BF097CD30E256003650C27B34583262D3F6D32A83121"
+    },
+    {
+      "camera": "minimap",
+      "pose": "behind",
+      "path": "grid",
+      "candidates": 520,
+      "visible": 450,
+      "rgba": "8E7BE0506427685591B7372C79AE7B7430022E17BCBF0442C5B32A17C22D815F",
+      "order": "EF8970976C7C15DB52C0BF097CD30E256003650C27B34583262D3F6D32A83121"
+    },
+    {
+      "camera": "primary",
+      "pose": "tie",
+      "path": "scan",
+      "candidates": 10010,
+      "visible": 227,
+      "rgba": "403F775E1AED3367EFE7CB2B9A271B40B99CDF5B2936F9F90834375CA0DFF5BF",
+      "order": "5370D8FDB0F81A9C6079B320DE78CF45D1C87B059EC4D59C77B4799AF5C47C6E"
+    },
+    {
+      "camera": "primary",
+      "pose": "tie",
+      "path": "grid",
+      "candidates": 270,
+      "visible": 227,
+      "rgba": "403F775E1AED3367EFE7CB2B9A271B40B99CDF5B2936F9F90834375CA0DFF5BF",
+      "order": "5370D8FDB0F81A9C6079B320DE78CF45D1C87B059EC4D59C77B4799AF5C47C6E"
+    },
+    {
+      "camera": "minimap",
+      "pose": "tie",
+      "path": "scan",
+      "candidates": 10010,
+      "visible": 450,
+      "rgba": "D582D52FCE20A848408D16BAD3EDEF8F401C69483496995B58C5CE0A8C12C928",
+      "order": "EF8970976C7C15DB52C0BF097CD30E256003650C27B34583262D3F6D32A83121"
+    },
+    {
+      "camera": "minimap",
+      "pose": "tie",
+      "path": "grid",
+      "candidates": 520,
+      "visible": 450,
+      "rgba": "D582D52FCE20A848408D16BAD3EDEF8F401C69483496995B58C5CE0A8C12C928",
+      "order": "EF8970976C7C15DB52C0BF097CD30E256003650C27B34583262D3F6D32A83121"
+    },
+    {
+      "camera": "primary",
+      "pose": "front",
+      "path": "scan",
+      "candidates": 10010,
+      "visible": 227,
+      "rgba": "A987FA9B05FB2BC51294CA812F560F9DFB889AB5BAA8E32B28574B1568D74E8F",
+      "order": "39D5BCF51A8326233516A4B715493375255F4CA875F80107363187366EA5B732"
+    },
+    {
+      "camera": "primary",
+      "pose": "front",
+      "path": "grid",
+      "candidates": 270,
+      "visible": 227,
+      "rgba": "A987FA9B05FB2BC51294CA812F560F9DFB889AB5BAA8E32B28574B1568D74E8F",
+      "order": "39D5BCF51A8326233516A4B715493375255F4CA875F80107363187366EA5B732"
+    },
+    {
+      "camera": "minimap",
+      "pose": "front",
+      "path": "scan",
+      "candidates": 10010,
+      "visible": 450,
+      "rgba": "64E14B6077934C9104B77B9163F6D798DAADFB267DBB20104566CD90E925E888",
+      "order": "2617B925F21842AA838B9BD863FED8984896F54817059446A52CD14FC9A3CD97"
+    },
+    {
+      "camera": "minimap",
+      "pose": "front",
+      "path": "grid",
+      "candidates": 520,
+      "visible": 450,
+      "rgba": "64E14B6077934C9104B77B9163F6D798DAADFB267DBB20104566CD90E925E888",
+      "order": "2617B925F21842AA838B9BD863FED8984896F54817059446A52CD14FC9A3CD97"
+    },
+    {
+      "camera": "primary",
+      "pose": "minimap-only",
+      "path": "scan",
+      "candidates": 10010,
+      "visible": 226,
+      "rgba": "197DBA2E3FA17911D917E08877D002D45F540BBEFAD0A610DC152EE4C4502B2D",
+      "order": "23CD673043E119F26E7A06AB98E7509C9128011B7D248A15572875D988E712C9"
+    },
+    {
+      "camera": "primary",
+      "pose": "minimap-only",
+      "path": "grid",
+      "candidates": 269,
+      "visible": 226,
+      "rgba": "197DBA2E3FA17911D917E08877D002D45F540BBEFAD0A610DC152EE4C4502B2D",
+      "order": "23CD673043E119F26E7A06AB98E7509C9128011B7D248A15572875D988E712C9"
+    },
+    {
+      "camera": "minimap",
+      "pose": "minimap-only",
+      "path": "scan",
+      "candidates": 10010,
+      "visible": 450,
+      "rgba": "988B64EA8608894AAC58183AF5702ABFC18C0E215D86C615AAD0FBB93B7D4470",
+      "order": "2617B925F21842AA838B9BD863FED8984896F54817059446A52CD14FC9A3CD97"
+    },
+    {
+      "camera": "minimap",
+      "pose": "minimap-only",
+      "path": "grid",
+      "candidates": 520,
+      "visible": 450,
+      "rgba": "988B64EA8608894AAC58183AF5702ABFC18C0E215D86C615AAD0FBB93B7D4470",
+      "order": "2617B925F21842AA838B9BD863FED8984896F54817059446A52CD14FC9A3CD97"
+    },
+    {
+      "camera": "primary",
+      "pose": "outside",
+      "path": "scan",
+      "candidates": 10010,
+      "visible": 226,
+      "rgba": "197DBA2E3FA17911D917E08877D002D45F540BBEFAD0A610DC152EE4C4502B2D",
+      "order": "23CD673043E119F26E7A06AB98E7509C9128011B7D248A15572875D988E712C9"
+    },
+    {
+      "camera": "primary",
+      "pose": "outside",
+      "path": "grid",
+      "candidates": 269,
+      "visible": 226,
+      "rgba": "197DBA2E3FA17911D917E08877D002D45F540BBEFAD0A610DC152EE4C4502B2D",
+      "order": "23CD673043E119F26E7A06AB98E7509C9128011B7D248A15572875D988E712C9"
+    },
+    {
+      "camera": "minimap",
+      "pose": "outside",
+      "path": "scan",
+      "candidates": 10010,
+      "visible": 449,
+      "rgba": "3A027646D3A76A94AF92FFBE6CD771A21296AF7FAF4AE0D088DC338AF048718F",
+      "order": "2AC4F314C4A9ABD66795845DA00805A87C939718D8939CB55A72B6A1C655110A"
+    },
+    {
+      "camera": "minimap",
+      "pose": "outside",
+      "path": "grid",
+      "candidates": 519,
+      "visible": 449,
+      "rgba": "3A027646D3A76A94AF92FFBE6CD771A21296AF7FAF4AE0D088DC338AF048718F",
+      "order": "2AC4F314C4A9ABD66795845DA00805A87C939718D8939CB55A72B6A1C655110A"
+    }
+  ],
+  "measurements": [
+    {
+      "camera": "primary",
+      "path": "scan",
+      "candidates": 10010,
+      "renderP95Ms": 11.523,
+      "sharedPrepareP95Ms": 0.6261
+    },
+    {
+      "camera": "primary",
+      "path": "grid",
+      "candidates": 270,
+      "renderP95Ms": 5.8505,
+      "sharedPrepareP95Ms": 0.6231
+    },
+    {
+      "camera": "minimap",
+      "path": "scan",
+      "candidates": 10010,
+      "renderP95Ms": 10.4095,
+      "sharedPrepareP95Ms": 0.6521
+    },
+    {
+      "camera": "minimap",
+      "path": "grid",
+      "candidates": 520,
+      "renderP95Ms": 4.6437,
+      "sharedPrepareP95Ms": 0.6551
+    }
+  ]
+}

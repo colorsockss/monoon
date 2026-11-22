@@ -92,6 +92,7 @@ public sealed class ProjectCatalog
                         catch (InvalidDataException e) { compilerError=e.Message; }
                     if (compilerError!=null) { Problem(F(script.Script),path,"Cannot inspect fields: "+compilerError); continue; }
                     if (!definitions!.TryGetValue(script.Script,out var def)) { Problem(F("Script"),path,"No matching component"); continue; }
+                    ProjectScripts.NormalizeValues(script.Values, def);
                     foreach (var error in script.EventErrors(def, scene.Objects, definitions))
                         Problem(F(script.Script), "Event connection", error);
                     foreach(var field in def.Fields)
@@ -140,7 +141,7 @@ public sealed class ProjectCatalog
                     case ProjectAssets.Scene: case ProjectAssets.Prefab: Objects(SceneDocument.ReadAsset(file)); break;
                     case ProjectAssets.Clip:
                         var frames=SpriteClip.OpenForEditing(file).Frames;
-                        for(int i=0;i<frames.Length;i++) Id($"Frame {i+1}",frames[i].Sprite,".png");
+                        for(int i=0;i<frames.Length;i++) if (!frames[i].UseRenderer) Id($"Frame {i+1}",frames[i].Sprite,".png");
                         break;
                     case AnimationController.Extension:
                         var controller=AnimationController.Read(file); controller.Validate(path);

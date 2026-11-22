@@ -218,6 +218,7 @@ public partial class MainWindow
                 var anchor = new ComboBox { ItemsSource = ScreenUi.Anchors, SelectedItem = rect.Anchor, HorizontalAlignment = HorizontalAlignment.Stretch };
                 anchor.SelectionChanged += (_, _) => { if (anchor.SelectedItem is string a) { rect.Anchor = a; MarkDirty(); } };
                 Row("Anchor", anchor);
+                if (Selected is {} widget) UiPinFields(widget, rect, Row);
                 var scaleWidth = new CheckBox { Content="Scale width and X with text", IsChecked=rect.ScaleHorizontalWithText };
                 scaleWidth.IsCheckedChanged += (_,_) => { rect.ScaleHorizontalWithText=scaleWidth.IsChecked==true; MarkDirty(); };
                 Row("",scaleWidth);
@@ -271,7 +272,34 @@ public partial class MainWindow
                 Number("Inset X", label.InsetX, -16384, 16384, n => label.InsetX = n);
                 Number("Inset Y", label.InsetY, -16384, 16384, n => label.InsetY = n);
                 break;
-            case UiButtonComponent button:
+            case UiControlComponent button:
+                if (button is UiSliderComponent slider)
+                {
+                    Number("Minimum", slider.Minimum, -1000000, 1000000, v => slider.Minimum = v);
+                    Number("Maximum", slider.Maximum, -1000000, 1000000, v => slider.Maximum = v);
+                    Number("Step", slider.Step, .0001m, 1000000, v => slider.Step = v);
+                    Number("Value", slider.Initial, -1000000, 1000000, v => slider.Initial = v);
+                }
+                if (button is UiToggleComponent toggle)
+                {
+                    var check = new CheckBox { Content = "On", IsChecked = toggle.Initial };
+                    check.IsCheckedChanged += (_, _) => { toggle.Initial = check.IsChecked == true; MarkDirty(); };
+                    Row("Default", check);
+                }
+                if (button is UiDropdownComponent dropdown)
+                {
+                    var options = new TextBox { AcceptsReturn = true, MinHeight = 28, MaxHeight = 110,
+                        Text = string.Join("\n", dropdown.Options) };
+                    options.TextChanged += (_, _) => {
+                        var items = (options.Text ?? "").Split('\n', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
+                        if (items.Length == 0) return;
+                        dropdown.Options = items;
+                        dropdown.Initial = Math.Min(dropdown.Initial, items.Length - 1);
+                        MarkDirty(options);
+                    };
+                    Row("Options", options);
+                    Number("Index", dropdown.Initial, 0, int.MaxValue, v => dropdown.Initial = Math.Clamp((int)v, 0, dropdown.Options.Length - 1));
+                }
                 var names = new List<string> { "button" };
                 if (project != null && Scene.Settings.UiTheme != null)
                 {

@@ -21,6 +21,7 @@ public partial class MainWindow
     private readonly NativeMenuItem buildItem = new("Build Game…");
     private readonly NativeMenuItem resolutionItem = new() { Header = "Game Resolution…" };
     private readonly NativeMenuItem createCameraItem = new() { Header = "Create Camera" };
+    private readonly NativeMenuItem uiPreviewItem = new("UI Layout Preview…");
     private readonly NativeMenuItem frameCameraItem = new() { Header = "Frame Camera" };
 
     private void InitializeMenus()
@@ -51,6 +52,7 @@ public partial class MainWindow
 
         resolutionItem.Click += (_, _) => RunAction(EditGameSettings);
         createCameraItem.Click += (_, _) => CreateCamera();
+        uiPreviewItem.Click += (_, _) => RunAction(EditUiPreview);
         frameCameraItem.Click += (_, _) => Viewport.FrameCamera();
         var menus = new NativeMenu();
         menus.Add(new NativeMenuItem("File") { Menu = new NativeMenu
@@ -81,7 +83,7 @@ public partial class MainWindow
         InitializeWorkspace(((NativeMenuItem)menus.Items[0]).Menu!, projectMenu);
         menus.Add(new NativeMenuItem("Project") { Menu = projectMenu });
         InitializePrefabMenus();
-        menus.Add(new NativeMenuItem("Scene") { Menu = new NativeMenu { createCameraItem, frameCameraItem,new NativeMenuItemSeparator(),createPrefabItem,createVariantItem,inspectPrefabItem,applyPrefabItem,revertPrefabItem } });
+        menus.Add(new NativeMenuItem("Scene") { Menu = new NativeMenu { createCameraItem, frameCameraItem, uiPreviewItem,new NativeMenuItemSeparator(),createPrefabItem,createVariantItem,inspectPrefabItem,applyPrefabItem,revertPrefabItem } });
         var profiler=new NativeMenuItem("Frame Profiler");
         profiler.Click+=(_,_)=>SetProfiler(FrameDebug.IsChecked!=true);
         menus.Add(new NativeMenuItem("Run") { Menu = new NativeMenu { playItem, runGameItem, new NativeMenuItemSeparator(),profiler } });
@@ -141,6 +143,7 @@ public partial class MainWindow
         preferencesItem.IsEnabled = runGameItem.IsEnabled = resolutionItem.IsEnabled = edit;
         buildItem.IsEnabled = createCameraItem.IsEnabled = edit;
         mixerItem.IsEnabled=!busy;
+        uiPreviewItem.IsEnabled = edit;
         frameCameraItem.IsEnabled = edit && Scene.Camera != null;
         playItem.Header = Viewport.IsPlaying ? "Stop" : "Play";
         playItem.IsEnabled = PlayButton.IsEnabled = !busy;

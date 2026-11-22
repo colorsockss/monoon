@@ -43,6 +43,13 @@ internal sealed class WorldDrawOrder
     private readonly List<Entry>[] movingScopes;
     private readonly Entry[] movingEntries;
     private readonly Func<int, float, Matrix3x2> matrixAt;
+    private readonly int[] spriteRanks, tileRanks;
+    internal void AddRanks(int body, List<int> ranks)
+    {
+        ranks.Add(spriteRanks[body]);
+        if (tileRanks[body] >= 0) ranks.Add(tileRanks[body]);
+    }
+
     public Item[] Items { get; }
 
     public WorldDrawOrder(IReadOnlyList<SceneObject> objects, Func<int, float, Matrix3x2> matrixAt)
@@ -86,6 +93,9 @@ internal sealed class WorldDrawOrder
         movingEntries = moving.ToArray();
         movingScopes = scopes.ToArray();
         Items = new Item[itemCount];
+        spriteRanks = new int[objects.Count];
+        tileRanks = new int[objects.Count];
+        Array.Fill(tileRanks, -1);
         roots.Sort();
         foreach (var members in groups.Values) members.Sort();
         Flatten();
@@ -117,7 +127,12 @@ internal sealed class WorldDrawOrder
         {
             foreach (var entry in scope)
                 if (entry.Children is {} nested) Write(nested);
-                else Items[index++] = entry.Item;
+                else
+                {
+                    var item = entry.Item;
+                    (item.Map == null ? spriteRanks : tileRanks)[item.Index] = index;
+                    Items[index++] = item;
+                }
         }
         Write(roots);
     }

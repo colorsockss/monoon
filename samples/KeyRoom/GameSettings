@@ -7,6 +7,7 @@ includedScenes:
 - 97ae2562-6e93-5e7a-be3b-45ec603896c6
 - 25fc2224-7695-4e19-a05c-d8524a2ffe50
 - c1676878-57dc-5d9d-b1e0-508e0a525a08
+- 98b900c4-6465-5df6-b547-6f8744d7123f
 input:
   actions:
   - name: MoveLeft
@@ -39,6 +40,8 @@ input:
     controls: [F7]
   - name: LoadGame
     controls: ["F9"]
+  - name: MovementWorkshop
+    controls: [F3]
   - name: PointerWorkshop
     controls: [F8]
   - name: RoomGuide

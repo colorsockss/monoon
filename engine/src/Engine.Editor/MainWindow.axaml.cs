@@ -27,6 +27,9 @@ public partial class MainWindow : Window
         if (world != inspectedWorld || (world != null && world.HierarchyRevision != inspectedRevision))
         {
             var id = world == null ? editSelection : Selected?.Id;
+            if (inspectedWorld != world) playEdits.Clear();
+            else if (world != null)
+                foreach (var key in playEdits.Keys.Where(k => !world.Objects.Contains(k.Owner)).ToArray()) playEdits.Remove(key);
             inspectedWorld = world;
             inspectedRevision = world?.HierarchyRevision ?? 0;
             var objects = world?.Objects ?? Scene.Objects;
@@ -99,6 +102,7 @@ public partial class MainWindow : Window
         InitializeSpriteDrops();
         foreach (var field in new[] { PosX, PosY, ObjWidth, ObjHeight, ObjRotation, ObjScaleX, ObjScaleY, ObjPivotX, ObjPivotY })
             field.ValueChanged += (_, _) => ChangeBounds(field);
+        InitializeObjectRoles();
         ObjectName.LostFocus += (_, _) => CommitText();
         ObjectName.TextChanged += (_, _) => UpdateMenuState();
         AddHandler(GotFocusEvent, (_, _) => history.EndGroup(), RoutingStrategies.Tunnel);
@@ -253,6 +257,7 @@ public partial class MainWindow : Window
         EndFileDrag();
         if (project != root)
         {
+            Viewport.SetUiPreview(null);
             browserFolder = "";
             AssetSearch.Text="";
             WatchCatalog(root);
@@ -285,7 +290,8 @@ public partial class MainWindow : Window
     {
         if (prefabSource != null)
         {
-            if (history.IsDirty)
+            Scene.NormalizeScriptFields();
+            if (history.IsDirty || Scene.MigratedScriptFields)
             {
                 savePrefabSource!(prefabSource);
                 prefabSource = SceneDocument.OpenPrefabSource(project!, sceneName) with { Document = Scene };
@@ -405,6 +411,7 @@ public partial class MainWindow : Window
     {
         refreshing = true;
         RefreshLiveInspector();
+        foreach (var sync in refreshPlayNumbers) sync();
         MultiInspector.IsVisible = Viewport.Selection.Count > 1;
         Inspector.IsVisible = Selected != null && !MultiInspector.IsVisible;
         EmptyInspector.IsVisible = Selected == null;
@@ -413,12 +420,17 @@ public partial class MainWindow : Window
         if (Inspector.IsVisible && Selected is { } obj)
         {
             ObjectName.Text = obj.Name;
-            PositionRow.IsVisible = obj.GetComponent<UiCanvasComponent>() == null;
+            RefreshRoleFields(obj);
+            bool canvas = obj.GetComponent<UiCanvasComponent>() != null;
+            bool widget = ScreenUi.IsWidget(obj);
+            bool live = Viewport.IsPlaying && !canvas && !widget;
+            PositionRow.IsVisible = !canvas && !live;
             PositionRowLabel.Text = ScreenUi.IsWidget(obj) ? "Offset" : obj.Parent == null ? "Position" : "Local pos.";
             SizeRow.IsVisible = obj.GetComponent<SpriteRendererComponent>() != null || obj.GetComponent<SortingGroup2DComponent>() != null || obj.GetComponent<Collider2DComponent>() != null || ScreenUi.IsWidget(obj);
-            AffineRows.IsVisible = !ScreenUi.IsWidget(obj) && obj.GetComponent<UiCanvasComponent>() == null;
-            var local = Viewport.PlayWorld is { } world && world.TryGetLocalTransform(obj.Id, out var live)
-                ? live : new LocalTransform2D(new(obj.X, obj.Y), obj.Rotation, new(obj.ScaleX, obj.ScaleY), obj.Shear);
+            AffineRows.IsVisible = !widget && !canvas;
+            RotationRow.IsVisible = ScaleRow.IsVisible = !live;
+            var local = Viewport.PlayWorld is { } world && world.TryGetLocalTransform(obj.Id, out var pose)
+                ? pose : new LocalTransform2D(new(obj.X, obj.Y), obj.Rotation, new(obj.ScaleX, obj.ScaleY), obj.Shear);
             ObjRotation.Value = decimal.CreateSaturating(local.Rotation);
             ObjScaleX.Value = decimal.CreateSaturating(local.Scale.X);
             ObjScaleY.Value = decimal.CreateSaturating(local.Scale.Y);
@@ -439,6 +451,12 @@ public partial class MainWindow : Window
         inspectorSourceStamp = null;
         RefreshMultiComponents();
         if (Viewport.Selection.Count > 1) owner = null;
+        refreshPlayNumbers.Clear();
+        LiveTransform.Children.Clear();
+        bool liveTransform = Viewport.PlayWorld != null && owner != null && !ScreenUi.IsWidget(owner) && owner.GetComponent<UiCanvasComponent>() == null;
+        LiveTransform.IsVisible = liveTransform;
+        if (liveTransform) BuildPlayTransform(Viewport.PlayWorld!, owner!);
+        RefreshApplyButton();
         TransformSection.Foldout = owner == null ? null : FoldoutFor(owner, null);
         AttachedComponents.ItemsSource = owner?.Components.Select(c => new AttachedComponent(c, project, owner, FoldoutFor(owner, c), () =>
         {
@@ -469,7 +487,7 @@ public partial class MainWindow : Window
     private bool AttachComponent(SceneObject owner, SceneComponent component)
     {
         if (Viewport.IsPlaying || Selected != owner || !owner.AddComponent(component)) return false;
-        if (component is UiImageComponent or UiTextComponent or UiButtonComponent or UiLayoutComponent or UiScrollComponent or UiTextFieldComponent) owner.AddComponent(new UiRectComponent());
+        if (component is UiImageComponent or UiTextComponent or UiControlComponent or UiLayoutComponent or UiScrollComponent or UiTextFieldComponent) owner.AddComponent(new UiRectComponent());
         Select(owner);
         AddComponentButton.Focus();
         MarkDirty();
@@ -484,7 +502,8 @@ public partial class MainWindow : Window
         var menu = new MenuFlyout { Placement = PlacementMode.BottomEdgeAlignedRight };
         var builtIns = new MenuItem { Header = "Built-in components" };
         foreach (var choice in ComponentChoice.Registered.Values.OrderBy(c => c.Name, StringComparer.Ordinal))
-            AddChoice(builtIns, choice.Name, owner.Components.Any(c => c.GetType() == choice.Type || c is Collider2DComponent && typeof(Collider2DComponent).IsAssignableFrom(choice.Type)), choice.Create);
+            AddChoice(builtIns, choice.Name, owner.Components.Any(c => c.GetType() == choice.Type || c is Collider2DComponent && typeof(Collider2DComponent).IsAssignableFrom(choice.Type) ||
+                c is UiControlComponent && typeof(UiControlComponent).IsAssignableFrom(choice.Type)), choice.Create);
 
         var projectScripts = new MenuItem { Header = "Project scripts" };
         foreach (var name in AttachableScripts())
@@ -662,7 +681,7 @@ public partial class MainWindow : Window
     {
         RefreshDiagnostics(true);
         bool edit = !Viewport.IsPlaying;
-        ObjectName.IsReadOnly = !edit;
+        ObjectName.IsReadOnly = ObjectTag.IsReadOnly = ObjectGroups.IsReadOnly = !edit;
         AffineRows.IsEnabled = PositionRow.IsEnabled = SizeRow.IsEnabled = edit;
         AddComponentButton.IsVisible = edit;
         AssetSearch.IsEnabled = ProjectBrowser.IsEnabled = ProjectActions.IsEnabled = edit;

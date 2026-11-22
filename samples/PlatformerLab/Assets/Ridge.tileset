@@ -53,3 +53,6 @@ tiles:
 - id: 16
   source: {x: 24, y: 24, width: 8, height: 8}
   solid: true
+  collision:
+    oneWay: true
+    vertices: [{x: 0, y: 0}, {x: 1, y: 0}]

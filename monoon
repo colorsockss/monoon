@@ -10,7 +10,7 @@ run_project() {
 usage() {
     cat <<'HELP'
 MoNoon Engine
-  monoon build <project> <release|native-aot> [--profile <development|distribution>] [--target <rid>] [--output <directory>]
+  monoon build <project> <release|native-aot> [--profile <development|distribution>] [--target <rid>] [--output <directory>] [--content <incremental|full>]
   monoon crash explain <report.crash> <build symbol directory>
   monoon content-update pack <exported Game directory> <replacement directory> <output.bundle>
   monoon test                                  Run the full engine regression suite

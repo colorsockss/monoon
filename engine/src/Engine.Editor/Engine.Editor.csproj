@@ -16,5 +16,10 @@
     <PackageReference Include="Avalonia.Desktop" Version="11.3.23" />
     <PackageReference Include="Avalonia.Themes.Fluent" Version="11.3.23" />
   </ItemGroup>
+  <ItemGroup Condition="'$(RuntimeIdentifier)' == '' or $(RuntimeIdentifier.StartsWith('linux'))">
+    <AvaloniaResource Include="../../../samples/KeyRoom/Assets/Fonts/NanumGothic-Regular.ttf" Link="Assets/Fonts/NanumGothic-Regular.ttf" />
+    <None Include="../../../samples/KeyRoom/Assets/Fonts/NanumGothic-Regular.ttf.license" Link="Licenses/NanumGothic.txt"
+          CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
+  </ItemGroup>
   <Import Project="MacScene.targets" Condition="$([MSBuild]::IsOSPlatform('OSX')) and ('$(RuntimeIdentifier)' == 'osx-arm64' or ('$(RuntimeIdentifier)' == '' and '$(NETCoreSdkRuntimeIdentifier)' == 'osx-arm64'))" />
 </Project>

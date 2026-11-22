@@ -1,0 +1,17 @@
+{
+  "rid": "osx-arm64",
+  "os": "macOS-27.0.1-arm64-arm-64bit",
+  "architecture": "arm64",
+  "cold": 8,
+  "rebuilt": 1,
+  "reused": 7,
+  "files": 21,
+  "contentSha256": "377ad61654150121bc6b9d1da3656bd5edac330299ecd41ed10e6b55fb081740",
+  "inputSha256": "22638c8c350a7679ce2d44cb6682b9530f636f1bf4e09e85ba567fe8f4b5aa70",
+  "saves": {
+    "incremental": "eed41defcbd7987a527deb677c60da8151ad0de1616c717c646e92b26e70f795",
+    "full": "eed41defcbd7987a527deb677c60da8151ad0de1616c717c646e92b26e70f795"
+  },
+  "dependencyRebuilds": 5,
+  "repairedCacheFiles": 1
+}

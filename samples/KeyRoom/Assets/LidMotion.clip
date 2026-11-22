@@ -1,0 +1,25 @@
+frames:
+- seconds: 1
+  useRenderer: true
+loop: true
+tracks:
+- property: Rotation
+  keys:
+  - time: 0
+    value: "0"
+  - time: 0.5
+    value: "-24"
+  - time: 1
+    value: "0"
+- property: ScaleY
+  keys:
+  - time: 0
+    value: "1"
+  - time: 0.5
+    value: "1.4"
+  - time: 1
+    value: "1"
+- property: Tint
+  keys:
+  - time: 0
+    value: "#EBB854"

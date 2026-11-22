@@ -50,7 +50,6 @@ internal sealed class AnimatorWindow : Window
     private readonly Stopwatch elapsed = new();
     private readonly DispatcherTimer timer = new() { Interval=TimeSpan.FromSeconds(GameTime.FixedStep) };
     private AnimationPlayer? player;
-    private SceneAppearance? shown;
     private double accumulator;
     private int eventCount;
     private ListBox stateList = null!, parameterList = null!, transitionList = null!;
@@ -272,7 +271,7 @@ internal sealed class AnimatorWindow : Window
     }
     private void StartPreview()
     {
-        StopPreview(); status.Text=""; previewState.Text=""; previewImage.ShowFrame(null); shown=null;
+        StopPreview(); status.Text=""; previewState.Text=""; previewImage.ShowFrame(null);
         recent.Clear(); eventCount=0; previewEvents.Text=""; previewControls.Children.Clear(); previewImage.ClearSprites();
         try
         {
@@ -316,9 +315,8 @@ internal sealed class AnimatorWindow : Window
             }
             previewState.Text=$"{player.State}   ·   Frame {player.Frame+1}";
             var frame=player.Appearance;
-            if (frame==shown) return;
-            shown=frame;
-            previewImage.ShowFrame(frame);
+            if (frame == null && player.Frame >= 0) frame = new SceneAppearance(SpriteAssets.SquarePath,System.Drawing.Color.White);
+            previewImage.ShowFrame(frame,player.Pose);
         }
         catch (Exception ex) { StopPreview(); status.Text=ex.Message; }
     }

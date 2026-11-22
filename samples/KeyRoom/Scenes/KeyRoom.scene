@@ -1,4 +1,4 @@
-schemaVersion: 25
+schemaVersion: 28
 objects:
 - id: ef662731-852a-4934-9ea5-91620f35c949
   name: Player
@@ -178,6 +178,9 @@ objects:
   - type: spriteRenderer
     order: 1
     squareColor: "#EBB854"
+  - type: spriteAnimator
+    clip: a035d2c0-22b0-4dc1-b601-fa828b99d308
+    playOnStart: true
 - id: e7d14387-bb53-442f-aa4d-aa3b91ff59ae
   name: Key
   x: 174
@@ -272,6 +275,9 @@ objects:
   components:
   - type: camera2D
     zoom: 1
+  - type: script
+    script: MovementWorkshop
+    values: {Destination: {Id: "98b900c4-6465-5df6-b547-6f8744d7123f"}}
   - type: script
     script: PointerWorkshop
     values:
@@ -518,6 +524,10 @@ objects:
   height: 150
   components:
   - type: uiRect
+    left: 64
+    right: 64
+    top: 36
+    bottom: 36
     anchor: Center
     inputModeRoot: true
   - type: uiImage
@@ -528,8 +538,23 @@ objects:
     size: 22
     insetX: 18
     insetY: 13
-- id: cbe0f906-a75c-5c2a-8aae-8b99fb2883c9
+- id: b9bb97a9-e5ad-42d8-ae63-4a3a42677052
   parentId: 81219816-44aa-59c3-97aa-2346740f68c3
+  name: Inventory details
+  width: 284
+  height: 80
+  components:
+  - type: uiRect
+    left: 18
+    right: 18
+    top: 84
+    bottom: 80
+  - type: uiLayout
+    gap: 4
+    padding: 0
+  - type: uiScroll
+- id: cbe0f906-a75c-5c2a-8aae-8b99fb2883c9
+  parentId: b9bb97a9-e5ad-42d8-ae63-4a3a42677052
   name: Inventory item
   x: 18
   y: 54
@@ -538,6 +563,7 @@ objects:
   components:
   - type: uiRect
   - type: uiText
+    wrap: true
     text: "Pocket compass  /  In bag"
     size: 16
     insetX: 0
@@ -551,6 +577,9 @@ objects:
   height: 32
   components:
   - type: uiRect
+    left: 18
+    right: 158
+    bottom: 18
   - type: uiButton
   - type: uiText
     text: "Manage compass"
@@ -567,10 +596,12 @@ objects:
   name: Close inventory
   x: 192
   y: 100
-  width: 110
+  width: 128
   height: 32
   components:
   - type: uiRect
+    right: 18
+    bottom: 18
   - type: uiButton
   - type: uiText
     text: "Close"
@@ -592,6 +623,10 @@ objects:
   height: 150
   components:
   - type: uiRect
+    left: 0
+    right: 0
+    top: 0
+    bottom: 0
     anchor: Center
     inputModeRoot: true
   - type: uiImage
@@ -611,7 +646,11 @@ objects:
   height: 30
   components:
   - type: uiRect
+    left: 18
+    right: 18
+    top: 86
   - type: uiText
+    wrap: true
     text: "Equip the pocket compass?"
     size: 16
     insetX: 0
@@ -625,6 +664,9 @@ objects:
   height: 32
   components:
   - type: uiRect
+    left: 18
+    right: 158
+    bottom: 18
   - type: uiButton
   - type: uiText
     text: "Apply"
@@ -642,10 +684,12 @@ objects:
   name: Cancel compass
   x: 192
   y: 100
-  width: 110
+  width: 128
   height: 32
   components:
   - type: uiRect
+    right: 18
+    bottom: 18
   - type: uiButton
   - type: uiText
     text: "Cancel"
@@ -683,16 +727,18 @@ objects:
   parentId: 81219816-44aa-59c3-97aa-2346740f68c3
   x: -18
   y: 14
-  width: 102
+  width: 150
   height: 28
   components:
   - type: uiRect
+    right: 18
+    top: 14
     anchor: TopRight
   - type: uiButton
   - type: uiText
     wrap: true
-    text: "한국어 [L]"
-    textKey: ui.language
+    text: "한국어"
+    textKey: ui.languageName
     insetX: 8
     insetY: 4
   - type: script
@@ -702,23 +748,25 @@ objects:
   parentId: 78501a61-6ef7-5566-aa40-7ea88ed55f9a
   x: -18
   y: 14
-  width: 102
+  width: 150
   height: 28
   components:
   - type: uiRect
+    right: 18
+    top: 14
     anchor: TopRight
   - type: uiButton
   - type: uiText
     wrap: true
-    text: "한국어 [L]"
-    textKey: ui.language
+    text: "한국어"
+    textKey: ui.languageName
     insetX: 8
     insetY: 4
   - type: script
     script: GameLanguageButton
 - id: 9e77730f-bb5a-5e3e-a533-63d4ff4bb294
   name: Key quest
-  parentId: 81219816-44aa-59c3-97aa-2346740f68c3
+  parentId: b9bb97a9-e5ad-42d8-ae63-4a3a42677052
   x: 18
   y: 77
   width: 284
@@ -726,6 +774,7 @@ objects:
   components:
   - type: uiRect
   - type: uiText
+    wrap: true
     text: ""
     size: 15
 defaultCameraId: edf9e38f-512b-4cce-93b6-76280f7403a6

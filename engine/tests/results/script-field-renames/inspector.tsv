@@ -1,0 +1,10 @@
+platform	phase	field	prefab	inherited instance	overridden instance
+osx-arm64	before rename	Speed	240	240	320
+osx-arm64	after prefab save	MoveSpeed	240	240	320
+osx-arm64	after scene save and reopen	MoveSpeed	240	240	320
+win-x64	before rename	Speed	240	240	320
+win-x64	after prefab save	MoveSpeed	240	240	320
+win-x64	after scene save and reopen	MoveSpeed	240	240	320
+linux-x64	before rename	Speed	240	240	320
+linux-x64	after prefab save	MoveSpeed	240	240	320
+linux-x64	after scene save and reopen	MoveSpeed	240	240	320

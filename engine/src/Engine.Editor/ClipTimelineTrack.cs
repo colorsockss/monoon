@@ -16,6 +16,8 @@ internal sealed class ClipTimelineTrack : Control
     private static readonly Pen Divider = new(Brush.Parse("#52606D"), 1), Head = new(Accent, 2);
     private SpriteClipTimeline axis = new([]);
     private Cell[] cells = [];
+    private double[] keys = [];
+    public void SetKeys(double[] times) { keys = times; InvalidateVisual(); }
     private int selected, insertion = -1, pressed = -1;
     private double cursor, origin;
     private bool scrubbing;
@@ -89,6 +91,11 @@ internal sealed class ClipTimelineTrack : Control
                     if (selected == i) c.FillRectangle(Accent, new Rect(left, 22, width, 2));
                 }
             }
+            foreach (double key in keys)
+            {
+                double x = Math.Clamp(X(key),3,Math.Max(3,Bounds.Width-3));
+                c.FillRectangle(Accent,new Rect(x-3,15,6,6));
+            }
             double head = Math.Clamp(X(cursor), 1, Math.Max(1, Bounds.Width-1));
             c.DrawLine(Head, new(head, 12), new(head, Bounds.Height));
         }
@@ -104,7 +111,13 @@ internal sealed class ClipTimelineTrack : Control
         if (cells.Length == 0 || !e.GetCurrentPoint(this).Properties.IsLeftButtonPressed) return;
         var p = e.GetPosition(this); Focus(); origin = p.X; scrubbing = p.Y < 22;
         pointer = e.Pointer; pointer.Capture(this);
-        if (scrubbing) Scrub?.Invoke(Time(p.X));
+        if (scrubbing)
+        {
+            double at = Time(p.X);
+            if (p.Y >= 12)
+                foreach (double key in keys) if (Math.Abs(X(key)-p.X) <= 5) { at = key; break; }
+            Scrub?.Invoke(at);
+        }
         else { pressed = axis.FrameAt(Time(p.X)); SelectFrame?.Invoke(pressed); }
         e.Handled = true;
     }

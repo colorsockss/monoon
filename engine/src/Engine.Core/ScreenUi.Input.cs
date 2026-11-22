@@ -21,7 +21,7 @@ public sealed partial class ScreenUi
         var groups=StringInfo.ParseCombiningCharacters(t);return groups.Length>max?t[..groups[max]]:t;
     }
     private void EndEditing(){edit=null;Preedit="";caret=0;}
-    private void SetFocus(Guid? id){if(edit!=id)EndEditing();focus=id;}
+    private void SetFocus(Guid? id){if(edit!=id)EndEditing();if(dropdownId!=id)CloseOptions();focus=id;}
     private void Begin(Node n){SetFocus(n.Object.Id);edit=focus;caret=Value(edit!.Value)!.Length;Preedit="";}
     public bool Compose(string text)
     {
@@ -78,6 +78,8 @@ public sealed partial class ScreenUi
     public void Drag(float x,float y)
     {
         pointer = new(x, y);
+        if ((x != -1 || y != -1) && pressed is Guid sliding && byId.TryGetValue(sliding, out var slider) && slider.Control is UiSliderComponent && Enabled(slider) && Visible(slider))
+            Slide(slider, x);
         if(barDrag is not Guid id || !byId.TryGetValue(id,out var n))return;
         bool h=Horizontal(n);var t=Thumb(n);float len=Extent(n)-(h?t.Width:t.Height);
         if(len>0)n.Offset=Math.Clamp(((h?x-n.Box.X:y-n.Box.Y)-barGrab)/len,0,1)*Limit(n);
@@ -86,6 +88,21 @@ public sealed partial class ScreenUi
     {
         pointer = new(x, y);
         Arrange();
+        if (popupPointer && !down)
+        {
+            if (dropdownId is Guid menu && byId.TryGetValue(menu, out var open) && pressedOption >= 0 && OptionAt(open, x, y) == pressedOption)
+                Change(open, pressedOption);
+            popupPointer = false;
+            CloseOptions();
+            return true;
+        }
+        if (down && dropdownId is Guid openId)
+        {
+            popupPointer = true;
+            pressedOption = OptionAt(byId[openId], x, y);
+            if (pressedOption < 0) CloseOptions();
+            return true;
+        }
         if(down && nodes.LastOrDefault(n=>ReceivesInput(n.Object.Id)&&n.Scroll&&Limit(n)>0&&Hit(n,x,y)&&Track(n).Contains(x,y)) is {} scroll)
         {
             var t=Thumb(scroll);bool h=Horizontal(scroll);barDrag=scroll.Object.Id;
@@ -94,9 +111,11 @@ public sealed partial class ScreenUi
         if(!down&&barDrag!=null){Drag(x,y);barDrag=null;return true;}
         var target=hovered is Guid hot ? byId[hot] : null;
         var id=target?.Object.Id;
-        if(down){pressed=id;if(id.HasValue || ActiveInputMode==null)SetFocus(id);if(target?.Field!=null)Begin(target);return id.HasValue;}
+        if(down){pressed=id;if(id.HasValue || ActiveInputMode==null)SetFocus(id);if(target?.Field!=null)Begin(target);
+            else if (target?.Control is UiSliderComponent) Slide(target, x);
+            return id.HasValue;}
         bool captured=pressed.HasValue;
-        if(target?.Button!=null && target.Field==null && id==pressed)clicks.Enqueue(id!.Value);
+        if(target?.Control!=null && target.Field==null && id==pressed)UseControl(target);
         pressed=null;return captured;
     }
     private bool Navigate(string key,bool reverse=false)
@@ -125,7 +144,7 @@ public sealed partial class ScreenUi
     private bool Activate(string control)
     {
         if(focus is not Guid id || !byId.TryGetValue(id,out var n)||!Enabled(n))return false;
-        if(n.Field!=null)Begin(n);else { activationOwner=id; activationKey=control; clicks.Enqueue(id); }return true;
+        if(n.Field!=null)Begin(n);else { activationOwner=id; activationKey=control; UseControl(n); }return true;
     }
     public bool Key(string key,bool down,bool reverse=false)
     {
@@ -138,6 +157,7 @@ public sealed partial class ScreenUi
             used=EditKey(key);
             if(key is "Backspace" or "Delete" or "Left" or "Right")return used;
         }
+        else if(ControlKey(key))used=true;
         else if(key=="Tab")used=Navigate(key,reverse);
         else if(key is "Up" or "Down" or "Left" or "Right")used=(focus!=null||uiOnly||ActiveInputMode.HasValue)&&Navigate(key);
         else used=(key is "Return" or "Space")&&Activate(key);
@@ -148,25 +168,30 @@ public sealed partial class ScreenUi
     public bool PadKey(string key)
     {
         Arrange();
+        if(key=="Pad.East" && ControlKey("Escape"))return true;
         if(key=="Pad.East"){if(ActiveInputMode.HasValue||focus==null)return false;SetFocus(null);return true;}
-        if(key=="Pad.South"){if(edit!=null){EndEditing();return true;}return Activate(key);}
+        if(key=="Pad.South"){if(edit!=null){EndEditing();return true;}return ControlKey("Return") || Activate(key);}
         string? dir=key switch
         {
             "Pad.DpadLeft" or "Pad.LeftStickLeft"=>"Left","Pad.DpadRight" or "Pad.LeftStickRight"=>"Right",
             "Pad.DpadUp" or "Pad.LeftStickUp"=>"Up","Pad.DpadDown" or "Pad.LeftStickDown"=>"Down",_=>null
         };
-        return dir!=null&&(focus!=null||uiOnly||ActiveInputMode.HasValue)&&Navigate(dir);
+        return dir!=null&&(focus!=null||uiOnly||ActiveInputMode.HasValue)&&(ControlKey(dir)||Navigate(dir));
     }
-    internal void Dispatch(Action<Guid> click)
+    internal void Dispatch(Action<Guid> click, Action<Guid,float>? changed = null)
     {
-        while(clicks.TryDequeue(out var id))if(byId.TryGetValue(id,out var n)&&Enabled(n)&&Visible(n))click(id);
-        clicks.Clear();
+        while (controlEvents.TryDequeue(out var e))
+        {
+            if (!byId.TryGetValue(e.Id, out var n) || !Enabled(n) || !Visible(n)) continue;
+            if (e.Value is float value) changed?.Invoke(e.Id, value);
+            else click(e.Id);
+        }
     }
     internal void ReleaseActivation(string control)
     {
         if (activationKey == control) { activationOwner = null; activationKey = null; }
     }
-    public void ResetInput(){SetFocus(null);CancelPointer();activationOwner=null;activationKey=null;held.Clear();clicks.Clear();}
+    public void ResetInput(){SetFocus(null);CancelPointer();activationOwner=null;activationKey=null;held.Clear();controlEvents.Clear();}
     internal event Action? PointerCanceled;
-    public void CancelPointer(){pressed=barDrag=hovered=null;pointer=null;PointerCanceled?.Invoke();}
+    public void CancelPointer(){CloseOptions();popupPointer=false;pressed=barDrag=hovered=null;pointer=null;PointerCanceled?.Invoke();}
 }

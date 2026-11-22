@@ -98,6 +98,7 @@ public sealed partial class SceneDocument
         var current = ResolveTemplate(project, assets, source.Id, []);
         if (current.Revision != source.Revision)
             throw new IOException("The prefab or an inherited source changed on disk. Reopen it before saving.");
+        doc.NormalizeScriptFields();
         doc.Validate();
         if (doc.Objects.Count(o => o.Parent == null) != 1 || doc.Objects.Single(o => o.Parent == null).Id != source.RootId)
             throw new InvalidDataException("Keep the original prefab root and place all children beneath it.");
@@ -105,6 +106,7 @@ public sealed partial class SceneDocument
             ResolveTemplate(project, assets, link.AssetId, [source.Id]);
         doc.ResolveAssets(assets);
         ProjectYaml.Write(Path.Combine(project, assets.PathFor(source.Id)!), doc);
+        doc.MigratedScriptFields = false;
     }
 
     private static JsonObject PropertyNode(JsonElement value) => JsonNode.Parse(value.GetRawText())!.AsObject();

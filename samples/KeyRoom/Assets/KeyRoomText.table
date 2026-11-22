@@ -89,3 +89,5 @@ rows:
   cells: ["Confirm", "확인"]
 - key: ui.language
   cells: ["한국어 [L]", "English [L]"]
+- key: ui.languageName
+  cells: ["한국어", "English"]

@@ -1,0 +1,82 @@
+{
+  "os": "macOS 27.0.1",
+  "architecture": "Arm64",
+  "koreanScale": 2,
+  "parentResizeAndUndo": true,
+  "projectRestored": true,
+  "cameraFreePreview": true,
+  "results": [
+    {
+      "width": 800,
+      "height": 450,
+      "panel": [
+        64,
+        36,
+        672,
+        378
+      ],
+      "close": [
+        590,
+        346.2,
+        128,
+        49.8
+      ],
+      "outsideMisses": 4,
+      "insideClicks": 4
+    },
+    {
+      "width": 640,
+      "height": 360,
+      "panel": [
+        64,
+        36,
+        512,
+        288
+      ],
+      "close": [
+        430,
+        256.2,
+        128,
+        49.8
+      ],
+      "outsideMisses": 4,
+      "insideClicks": 4
+    },
+    {
+      "width": 1024,
+      "height": 768,
+      "panel": [
+        64,
+        36,
+        896,
+        696
+      ],
+      "close": [
+        814,
+        664.2,
+        128,
+        49.8
+      ],
+      "outsideMisses": 4,
+      "insideClicks": 4
+    },
+    {
+      "width": 480,
+      "height": 720,
+      "panel": [
+        64,
+        36,
+        352,
+        648
+      ],
+      "close": [
+        270,
+        616.2,
+        128,
+        49.8
+      ],
+      "outsideMisses": 4,
+      "insideClicks": 4
+    }
+  ]
+}

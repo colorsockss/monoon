@@ -6,7 +6,11 @@ namespace Engine.Core;
 
 public enum BuildProfile { Development, Distribution }
 
-public sealed record GameBuildResult(string Product, string? SymbolDirectory);
+public sealed record GameBuildResult(string Product, string? SymbolDirectory)
+{
+    public string? ContentReport { get; init; }
+    public IReadOnlyList<string> ContentDecisions { get; init; } = [];
+}
 
 internal static class BuildSymbols
 {

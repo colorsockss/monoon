@@ -37,6 +37,8 @@ public partial class MainWindow
     }
     private void RefreshDiagnostics(bool force=false)
     {
+        if (Viewport.IsPlaying && DebugButton.IsChecked == true) RefreshRoleQuery();
+        else queryWorld = null;
         var now=Environment.TickCount64;
         if(!force && now<nextDiagnostics)return;
         nextDiagnostics=now+200;
@@ -44,6 +46,7 @@ public partial class MainWindow
         bool physics=Viewport.IsPlaying && (debug.Colliders||debug.Queries);
         bool profile=FrameDebug.IsChecked==true;
         bool tools=Viewport.IsPlaying && DebugButton.IsChecked==true;
+        RoleQueryRow.IsVisible = tools;
         DiagnosticsTools.IsVisible=tools;
         DiagnosticsDock.IsVisible=physics||profile||tools; FramePanel.IsVisible=profile;
         PhysicsCaption.IsVisible=physics;

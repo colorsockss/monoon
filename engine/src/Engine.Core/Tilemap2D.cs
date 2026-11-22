@@ -12,6 +12,7 @@ public sealed partial record TileSize(int Width, int Height);
 public sealed partial record TileDefinition(int Id, SpriteRegion Source, bool Solid)
 {
     // A terrain brush uses 16 (square) or 64 (axial) sheet cells in mask order.
+    public TileCollision? Collision { get; init; }
     public int AutoEdges { get; init; }
 }
 [YamlObject]
@@ -32,8 +33,11 @@ public sealed partial record Tileset(Guid Image, TileSize TileSize, int Margin, 
             throw new InvalidDataException($"{name}: invalid tile slicing settings or empty palette.");
         var tiles = new Dictionary<int, TileDefinition>();
         foreach (var tile in Tiles)
+        {
             if (tile == null || tile.Id <= 0 || tile.Source?.Fits(size.Width, size.Height) != true || !tiles.TryAdd(tile.Id, tile))
                 throw new InvalidDataException($"{name}: duplicate or invalid tile #{tile?.Id} in {image}.");
+            tile.Collision?.Validate(name, tile.Id);
+        }
         var palette = new TilePalette(path, tiles);
         var regions = tiles.Values.DistinctBy(t => t.Source).ToDictionary(t => t.Source, t => t.Id);
         int dx = TileSize.Width + Spacing, dy = TileSize.Height + Spacing;

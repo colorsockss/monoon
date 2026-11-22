@@ -65,7 +65,7 @@ public partial class MainWindow
             {
                 var line = new StackPanel { Orientation = Orientation.Horizontal, Spacing = 5 };
                 if (bitmap != null && tile != null) line.Children.Add(new Image { Width = 20, Height = 20, Source = new SpriteCellImage(bitmap, tile.Source) });
-                line.Children.Add(new TextBlock { Text = $"#{tile?.Id}{(tile?.AutoEdges > 0 ? " · Terrain" : "")}{(tile?.Solid == true ? " · Solid" : "")}", VerticalAlignment = VerticalAlignment.Center });
+                line.Children.Add(new TextBlock { Text = $"#{tile?.Id}{(tile?.AutoEdges > 0 ? " · Terrain" : "")}{(tile?.Collision is {} shape ? shape.OneWay ? " · One-way" : " · Polygon" : tile?.Solid == true ? " · Solid" : "")}", VerticalAlignment = VerticalAlignment.Center });
                 return line;
             })
         };

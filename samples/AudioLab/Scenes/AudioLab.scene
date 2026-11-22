@@ -1,4 +1,4 @@
-schemaVersion: 13
+schemaVersion: 26
 objects:
 - id: 2b0d9352-a0f9-5b8e-9a82-36ff1d28e3b0
   name: Tide
@@ -32,6 +32,9 @@ objects:
       Music: "2b0d9352-a0f9-5b8e-9a82-36ff1d28e3b0"
       Beacon: "45a0bc60-61c2-5d57-bd9e-9c8b0a98ea7f"
       Levels: "237d412b-ab64-568b-85f4-fd0c9c4c3e93"
+      MusicSlider: "f8ccbd50-52be-53a9-892d-50a4e1bd0580"
+      EffectsList: "c7374793-0a6a-552d-aad5-7b4f43652ed7"
+      MasterMute: "0ca0f5df-4701-5f62-ba20-c46e2844ddce"
       Readout: "20c3d31e-94a6-59e3-ac9d-a9ec83896432"
 - id: 45a0bc60-61c2-5d57-bd9e-9c8b0a98ea7f
   name: Beacon
@@ -183,7 +186,7 @@ objects:
 - id: 504b15fd-7f37-59de-a17d-9304878f9a69
   name: Subhead
   x: 32
-  y: 75
+  y: 54
   width: 730
   height: 26
   parentId: c8404033-aaef-521e-8513-9076bdc9941a
@@ -263,5 +266,81 @@ objects:
   - type: uiRect
   - type: uiText
     size: 15
-    text: "A/D: walk    Space: beacon    W/S: music / effects level    F: fade music    M: master mute"
+    text: "Tab / Pad Start: mixer    Arrows / D-pad: adjust    A/D: walk    Space: beacon    F: fade"
+- id: 1bdc1687-3eed-52c8-8e3c-31e79a419d22
+  name: Music volume label
+  x: 32
+  y: 84
+  width: 130
+  height: 28
+  parentId: c8404033-aaef-521e-8513-9076bdc9941a
+  components:
+  - type: uiRect
+  - type: uiText
+    size: 16
+    insetY: 3
+    text: Music volume
+- id: f8ccbd50-52be-53a9-892d-50a4e1bd0580
+  name: MusicSlider
+  x: 170
+  y: 84
+  width: 240
+  height: 28
+  parentId: c8404033-aaef-521e-8513-9076bdc9941a
+  components:
+  - type: uiRect
+  - type: uiSlider
+    minimum: 0
+    maximum: 100
+    step: 5
+    initial: 80
+- id: a8ab020c-496c-566f-a56a-441936af3aad
+  name: Effects level label
+  x: 32
+  y: 120
+  width: 130
+  height: 28
+  parentId: c8404033-aaef-521e-8513-9076bdc9941a
+  components:
+  - type: uiRect
+  - type: uiText
+    size: 16
+    insetY: 3
+    text: Effects level
+- id: c7374793-0a6a-552d-aad5-7b4f43652ed7
+  name: EffectsList
+  x: 170
+  y: 120
+  width: 240
+  height: 28
+  parentId: c8404033-aaef-521e-8513-9076bdc9941a
+  components:
+  - type: uiRect
+  - type: uiDropdown
+    options: ["Quiet (37.5%)", "Normal (75%)", "Full (100%)"]
+    initial: 1
+- id: d1da58a4-b796-571f-9174-951cea96f4be
+  name: Mute master label
+  x: 32
+  y: 156
+  width: 130
+  height: 28
+  parentId: c8404033-aaef-521e-8513-9076bdc9941a
+  components:
+  - type: uiRect
+  - type: uiText
+    size: 16
+    insetY: 3
+    text: Mute master
+- id: 0ca0f5df-4701-5f62-ba20-c46e2844ddce
+  name: MasterMute
+  x: 170
+  y: 156
+  width: 240
+  height: 28
+  parentId: c8404033-aaef-521e-8513-9076bdc9941a
+  components:
+  - type: uiRect
+  - type: uiToggle
+    initial: false
 defaultCameraId: 8241f05a-bc2e-54c8-9922-756347112139

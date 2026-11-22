@@ -1,6 +1,7 @@
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using RectangleF = System.Drawing.RectangleF;
+using Matrix3x2 = System.Numerics.Matrix3x2;
 using Vector2 = System.Numerics.Vector2;
 using Avalonia;
 using Avalonia.Controls;
@@ -65,7 +66,7 @@ public sealed partial class SceneViewport : Decorator
         using var png = pixels.Encode(SkiaSharp.SKEncodedImageFormat.Png,100);
         using var stream = png.AsStream();
         return new Bitmap(stream);
-    });
+    }) { TintCacheCapacity = 32 };
     private readonly ShaderSheets<Bitmap> shaderSheets=new((clip,tint,_) =>
     {
         using var pixels=ShaderPixels.Bake(clip,tint);
@@ -85,16 +86,49 @@ public sealed partial class SceneViewport : Decorator
     private readonly Engine.Desktop.SdlSounds sounds = new();
     private GameSession? game;
     private ScreenUi? previewUi;
+    internal sealed record UiPreview(int Width, int Height, string Locale, float TextScale);
+    internal UiPreview? Preview { get; private set; }
+    private GameSettings? previewSource, previewSettings;
+    internal GameSettings LayoutSettings
+    {
+        get
+        {
+            if (Preview is not {} preview) return Scene.Settings;
+            if (previewSettings == null || !ReferenceEquals(previewSource, Scene.Settings))
+            {
+                previewSource = Scene.Settings;
+                previewSettings = previewSource with { Width = preview.Width, Height = preview.Height,
+                    Accessibility = previewSource.Accessibility with { Locale = preview.Locale, TextScale = preview.TextScale } };
+            }
+            return previewSettings;
+        }
+    }
+    internal void SetUiPreview(UiPreview? preview)
+    {
+        Preview = preview;
+        previewSettings = null;
+        InvalidateUi();
+    }
+
+    internal (RectangleF Box, RectangleF Parent) UiPlacement(SceneObject obj)
+    {
+        var ui = PreviewUi;
+        var box = ui.Bounds(obj.Id) ?? RectangleF.Empty;
+        for (var parent = obj.Parent; parent != null; parent = parent.Parent)
+            if (ui.Bounds(parent.Id) is {} bounds) return (box, bounds);
+        return (box, new RectangleF(0, 0, LayoutSettings.Width, LayoutSettings.Height));
+    }
     private ScreenUi PreviewUi
     {
         get
         {
             if (previewUi == null)
             {
-                try { previewUi = new(Scene, Scene.ProjectDirectory is { } root ? ProjectAssets.ReadManifest(root) : null); }
+                var document = Preview == null ? Scene : Scene.WithSettings(LayoutSettings);
+                try { previewUi = new(document, Scene.ProjectDirectory is { } root ? ProjectAssets.ReadManifest(root) : null); }
                 catch (Exception ex) when (ex is InvalidDataException or IOException or UnauthorizedAccessException)
                 {
-                    previewUi = new(Scene, null);
+                    previewUi = new(document, null);
                     if (spriteErrors.Add(ex.Message)) PlayFailed?.Invoke(ex.Message);
                 }
             }
@@ -107,13 +141,13 @@ public sealed partial class SceneViewport : Decorator
     {
         if (Scene.Camera is {} camera)
         {
-            var shot=camera.GetComponent<Camera2DComponent>()!.View(Scene.Settings.Resolution,camera.WorldPosition);
+            var shot=camera.GetComponent<Camera2DComponent>()!.View(LayoutSettings.Resolution,camera.WorldPosition);
             var pos=shot.ScreenToWorld(Vector2.Zero);
-            return (new(pos.X,pos.Y,Scene.Settings.Width/shot.Zoom,Scene.Settings.Height/shot.Zoom),shot.Zoom);
+            return (new(pos.X,pos.Y,LayoutSettings.Width/shot.Zoom,LayoutSettings.Height/shot.Zoom),shot.Zoom);
         }
         const float zoom=1;
-        var center = Scene.Camera?.WorldPosition ?? new Vector2(Scene.Settings.Width / 2f, Scene.Settings.Height / 2f);
-        return (Scene.Settings.CameraFrame(center, zoom), zoom);
+        var center = Scene.Camera?.WorldPosition ?? new Vector2(LayoutSettings.Width / 2f, LayoutSettings.Height / 2f);
+        return (LayoutSettings.CameraFrame(center, zoom), zoom);
     }
     private Point EditUiPoint(Point world)
     {
@@ -123,7 +157,9 @@ public sealed partial class SceneViewport : Decorator
     private bool draggingUi;
     private SceneObject? dragging;
     private bool movedDuringDrag;
-    private Vector grabOffset;
+    private Point dragUiOrigin;
+    private Point dragTransform;
+    private UiRectComponent? dragPins;
     private long lastTick;
     private GameLoop? loop;
     internal GameTime? PlayTime => game?.Time;
@@ -151,9 +187,11 @@ public sealed partial class SceneViewport : Decorator
     private SceneAppearance? previewFrame;
     private readonly Dictionary<string,System.Drawing.Size> previewSizes = [];
 
-    internal void ShowFrame(SceneAppearance? frame)
+    private ComponentPose previewPose;
+    internal void ShowFrame(SceneAppearance? frame, ComponentPose pose = default)
     {
-        if (previewFrame == frame) return;
+        if (previewFrame == frame && previewPose == pose) return;
+        previewPose = pose;
         previewFrame = frame;
         RefreshScene();
     }
@@ -257,7 +295,7 @@ public sealed partial class SceneViewport : Decorator
         playDebugger = System.Diagnostics.Debugger.IsAttached ? null : debugger;
         var scripts = Scene.ProjectDirectory is {} root
             ? ProjectScripts.ForScenePlay(root, playDebugger != null ? playDebugger.Instrument : null) : null;
-        game = new GameSession(Scene, scripts);
+        game = new GameSession(Scene, scripts, null, null, Preview == null ? null : LayoutSettings);
         Profile.Reset();
         game.Current.Diagnostics=PhysicsDebug;
         game.State.Logged+=EmitLog;
@@ -374,13 +412,13 @@ public sealed partial class SceneViewport : Decorator
         var p=ToWorld(point); input?.Wheel(new((float)p.X,(float)p.Y),(float)steps);
     }
     internal double Scale => spritePreview ? 1 : IsPlaying
-        ? Math.Max(double.Epsilon, Math.Min(Bounds.Width / Scene.Settings.Width, Bounds.Height / Scene.Settings.Height))
+        ? Math.Max(double.Epsilon, Math.Min(Bounds.Width / LayoutSettings.Width, Bounds.Height / LayoutSettings.Height))
         : editZoom;
     internal Point Origin => spritePreview ? default : IsPlaying
-        ? new((Bounds.Width - Scene.Settings.Width * Scale) / 2, (Bounds.Height - Scene.Settings.Height * Scale) / 2)
+        ? new((Bounds.Width - LayoutSettings.Width * Scale) / 2, (Bounds.Height - LayoutSettings.Height * Scale) / 2)
         : new(Bounds.Width / 2 - editCenter.X * Scale, Bounds.Height / 2 - editCenter.Y * Scale);
     internal Point ToWorld(Point point) => new((point.X - Origin.X) / Scale, (point.Y - Origin.Y) / Scale);
-    internal Rect CanvasArea => IsPlaying ? new Rect(0, 0, Scene.Settings.Width, Scene.Settings.Height)
+    internal Rect CanvasArea => IsPlaying ? new Rect(0, 0, LayoutSettings.Width, LayoutSettings.Height)
         : new Rect(ToWorld(default), ToWorld(new Point(Bounds.Width, Bounds.Height)));
 
     internal bool PrefabFraming { get; set; }
@@ -392,7 +430,8 @@ public sealed partial class SceneViewport : Decorator
         editCenter = new Point(center.X, center.Y);
         pendingFrame = Bounds.Width <= 0 || Bounds.Height <= 0;
         if (pendingFrame) return;
-        var frame = camera?.GetComponent<Camera2DComponent>()?.View(Scene.Settings.Resolution,center).World ?? Scene.Settings.CameraFrame(center,1);
+        var frame = camera?.GetComponent<Camera2DComponent>()?.View(LayoutSettings.Resolution,center).World
+            ?? (Scene.IsUiOnly ? UiFrame().Frame : LayoutSettings.CameraFrame(center,1));
         if (PrefabFraming && Scene.Objects.Count > 0)
         {
             var bounds = Scene.Objects.Select(o => o.Bounds).Aggregate(RectangleF.Union);
@@ -474,7 +513,9 @@ public sealed partial class SceneViewport : Decorator
         if(Selection.Count>1){dragging=null;return;}
         if (dragging != null)
         {
-            grabOffset = u - new Point(dragging.X, dragging.Y);
+            dragUiOrigin = u;
+            dragTransform = new(dragging.X, dragging.Y);
+            dragPins = dragging.GetComponent<UiRectComponent>() is {} rect ? rect with { } : null;
         }
         else BeginPan(point);
     }
@@ -517,10 +558,20 @@ public sealed partial class SceneViewport : Decorator
         if (dragging is null || IsPlaying) return;
         if (draggingUi)
         {
-            var pos = EditUiPoint(ToWorld(point)) - grabOffset;
-            var x = (float)Math.Round(pos.X); var y = (float)Math.Round(pos.Y);
-            if (dragging.X == x && dragging.Y == y) return;
-            dragging.X = x; dragging.Y = y; movedDuringDrag = true;
+            var delta = EditUiPoint(ToWorld(point)) - dragUiOrigin;
+            float dx = (float)Math.Round(delta.X), dy = (float)Math.Round(delta.Y);
+            var rect = dragging.GetComponent<UiRectComponent>();
+            if (rect != null && dragPins != null)
+            {
+                rect.Left = dragPins.Left + dx;
+                rect.Right = dragPins.Right - dx;
+                rect.Top = dragPins.Top + dy;
+                rect.Bottom = dragPins.Bottom - dy;
+            }
+            if (rect?.Left == null && rect?.Right == null)
+                dragging.X = (float)dragTransform.X + dx / (rect?.ScaleHorizontalWithText == true ? PreviewUi.Preferences.TextScale : 1);
+            if (rect?.Top == null && rect?.Bottom == null) dragging.Y = (float)dragTransform.Y + dy;
+            movedDuringDrag |= dx != 0 || dy != 0;
             InvalidateUi(); Moved?.Invoke(); return;
         }
 
@@ -595,7 +646,11 @@ public sealed partial class SceneViewport : Decorator
                 previewSizes.TryGetValue(path,out var cached) ? cached : previewSizes[path] = SpriteRegion.ReadPngSize(path);
             float scale = (float)Math.Min(Bounds.Width/size.Width,Bounds.Height/size.Height);
             float width=size.Width*scale, height=size.Height*scale;
-            frame.Draw(canvas,new((float)(Bounds.Width-width)/2,(float)(Bounds.Height-height)/2,width,height));
+            var pivot = new Vector2((float)Bounds.Width/2,(float)Bounds.Height/2);
+            var transform = Matrix3x2.CreateScale(previewPose.ScaleX ?? 1,previewPose.ScaleY ?? 1,pivot)
+                * Matrix3x2.CreateRotation(float.DegreesToRadians(previewPose.Rotation ?? 0),pivot);
+            (frame with { Color = previewPose.Paint(frame.Color) }).Draw(canvas,
+                new((float)(Bounds.Width-width)/2,(float)(Bounds.Height-height)/2,width,height),transform);
             return;
         }
         if (game != null)
@@ -633,7 +688,7 @@ public sealed partial class SceneViewport : Decorator
         {
             var center = camera.WorldPosition;
             var lens=camera.GetComponent<Camera2DComponent>()!;
-            var frame=lens.View(Scene.Settings.Resolution,center).World;
+            var frame=lens.View(LayoutSettings.Resolution,center).World;
             if (camera==Selected && lens.Bounds is {} box)
                 Outline(canvas,new RectangleF(box.X,box.Y,box.Width,box.Height),unit,FrameColor);
             var color = camera == Selected ? SelectionColor : camera == Scene.Camera ? GameColor.FromArgb(135, 150, 158) : FrameColor;
@@ -644,7 +699,9 @@ public sealed partial class SceneViewport : Decorator
         }
         DrawTileGuide(canvas,visible,unit);
         var (uiFrame, zoom) = UiFrame();
-        PreviewUi.Draw(canvas, uiFrame.X, uiFrame.Y, 1 / zoom);
+        using (Preview == null ? null : canvas.PushClip(uiFrame))
+            PreviewUi.Draw(canvas, uiFrame.X, uiFrame.Y, 1 / zoom);
+        if (Preview != null) Outline(canvas, uiFrame, unit, FrameColor);
         DrawSelection(canvas,unit);
     }
 
@@ -701,7 +758,8 @@ public sealed partial class SceneViewport : Decorator
         public bool DrawFiltered(SpriteFilter filter, RectangleF r,System.Numerics.Matrix3x2 m,GameColor tint)
         {
             using var transform = context.PushTransform(new Matrix(m.M11,m.M12,m.M21,m.M22,m.M31,m.M32));
-            var image = variants.Get(filter,tint);
+            var image = variants.Get(filter,GameColor.FromArgb(255,tint));
+            using var opacity = context.PushOpacity(tint.A/255.0);
             Submissions++;SpriteCellImage.DrawPixels(context,image,new Rect(image.PixelSize.ToSize(1)),new Rect(r.X,r.Y,r.Width,r.Height));
             return true;
         }

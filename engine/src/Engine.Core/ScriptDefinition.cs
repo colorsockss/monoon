@@ -5,6 +5,7 @@ namespace Engine.Core;
 
 public sealed record ScriptField(string Name, Type Type, object? Default, string? TargetScript = null, Type? TargetBuiltIn = null, string[]? EnumNames = null)
 {
+    public string[] FormerNames { get; init; } = [];
     public bool TypedReference => TargetScript != null || TargetBuiltIn != null;
     public bool IsObjectList => Type == typeof(Guid[]);
     internal static readonly Dictionary<Type, string> AssetExtensions = new()

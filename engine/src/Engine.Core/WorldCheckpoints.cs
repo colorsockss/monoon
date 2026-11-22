@@ -252,7 +252,7 @@ public sealed partial class SceneGame
         }
         // Queue creation only for survivors and let OnCreate see the final hierarchy and values.
         notifications.Clear();
-        RegisterLife(parentFirst);
+        RegisterLife(parentFirst, initializeAnimation: false);
         UpdateTileWorlds();
         HasRestoredWorld = worldTracked = true;
     }

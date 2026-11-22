@@ -82,3 +82,22 @@ public override void OnAnimationEvent(ScriptAnimationEvent frame)
 ```
 
 `SetFloat`, `SetTrigger`도 같은 핸들에서 호출한다. `Play()`는 진입 상태부터 재생을 시작한다. 같은 컨트롤러를 연결한 여러 오브젝트는 각자 자신의 파라미터와 현재 프레임을 가진다. [AnimatorLab 샘플](../../samples/AnimatorLab) · [Mac 검증 화면](../../engine/tests/results/animator/README.md)
+
+
+## 컴포넌트 속성 키프레임
+
+1. Project에서 KeyRoom의 **Assets/LidMotion.clip**을 더블클릭한다. **Component keys → Property → Rotation**을 고르면 타임라인 눈금에 회전 키가 표시된다.
+2. **Time (s)**에 `0.25`, **Value**에 `-18`을 입력하고 **Set Key**를 누른다. 눈금에서 해당 키를 누르면 그 시점으로 이동한다. 같은 시각에 다시 설정하면 기존 값을 바꾼다. **Remove**로 선택한 속성의 해당 키만 지운다. **Cmd+Z** 또는 **Ctrl+Z**로 되돌릴 수 있다.
+3. **Save Clip**을 누르고 다시 열어 변경한 값을 확인한다. 샘플을 원래대로 돌리려면 추가한 0.25초 키를 지우고 저장한다.
+4. Scene Play에서 닫힌 상자의 뚜껑을 본 뒤 **E**로 연다. 뚜껑은 열기 전까지 회전하고 세로로 늘어난다. 상자에서 나온 코인은 **CoinPulse.clip**에 따라 흰색에서 청록색으로 변하면서 흐려졌다가 다시 밝아진다.
+
+| 속성 | 입력값 | 적용 대상 |
+| --- | --- | --- |
+| Rotation | 시계 방향 각도(도) | 오브젝트의 로컬 회전 |
+| ScaleX · ScaleY | 0을 제외한 배율 | 로컬 X축 또는 Y축 스케일 |
+| Tint | `#RRGGBB` | Sprite Renderer의 RGB 색 |
+| Opacity | 0~1 | Sprite Renderer의 알파 |
+
+속성마다 독립된 시간에 키를 둘 수 있다. 두 키 사이는 선형으로 보간하고 첫 키 앞과 마지막 키 뒤에서는 끝값을 유지한다. **Loop**는 클립 길이에서 처음으로 돌아간다. 끊김 없이 반복하려면 시작과 끝에 같은 값을 둔다. 한 축의 스케일은 클립 안에서 같은 부호를 유지해야 한다.
+
+**Add → Use object renderer**는 오브젝트의 기존 스프라이트를 그대로 사용하는 프레임을 만든다. 프레임의 **Seconds**로 길이를 정한 뒤 PNG 없이도 속성 키를 넣을 수 있다. 오브젝트가 지정되지 않은 클립 창에서는 기본 사각형으로 미리 본다. Scene Play에서는 대상의 스프라이트와 피벗을 사용한다. 기존 PNG 프레임과 시트 셀 위에도 같은 속성 트랙을 추가할 수 있다.

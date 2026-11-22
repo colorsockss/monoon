@@ -63,7 +63,9 @@ public partial class MainWindow
         return field;
     }
 
-    private void UpdateResolution() => ResolutionLabel.Text = $"{Scene.Settings.Width} × {Scene.Settings.Height}";
+    private void UpdateResolution() => ResolutionLabel.Text = Viewport.Preview is {} preview
+        ? $"Preview {preview.Width} × {preview.Height} · {preview.Locale} {preview.TextScale:P0}"
+        : $"{Scene.Settings.Width} × {Scene.Settings.Height}";
 
     private void CreateCamera()
     {

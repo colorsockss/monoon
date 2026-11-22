@@ -16,7 +16,7 @@ public sealed partial class SceneDocument
     public const int Width = 800;
     [Obsolete("Use Settings.Height for a project's game resolution.")]
     public const int Height = 450;
-    internal const int CurrentVersion = 25;
+    internal const int CurrentVersion = 28;
     internal ScriptLibrary ResolveScripts(ScriptLibrary? library) => library ??
         ScriptLibrary.Open(ProjectDirectory ?? throw new InvalidDataException("Save the project before running scripts."));
 
@@ -46,6 +46,7 @@ public sealed partial class SceneDocument
         restored.Validate();
         Objects = restored.Objects;
         DefaultCameraId = restored.DefaultCameraId;
+        NormalizeScriptFields();
     }
 
     public SceneObject CreateCamera(Vector2 center)
@@ -115,12 +116,21 @@ public sealed partial class SceneDocument
         return scene;
     }
 
+    internal bool MigratedScriptFields { get; set; }
+
+    internal void NormalizeScriptFields()
+    {
+        if (ProjectDirectory != null) ScriptLibrary.Open(ProjectDirectory).NormalizeFields(this);
+    }
+
     public void Save(string path)
     {
         Validate();
         var project = ProjectForScene(path);
+        ScriptLibrary.Open(project).NormalizeFields(this);
         ResolveAssets(ProjectAssets.Scan(project));
         ProjectYaml.Write(path, this);
+        MigratedScriptFields = false;
         ProjectDirectory = project;
     }
 
@@ -167,6 +177,15 @@ public sealed partial class SceneDocument
         }
     }
 
+    private static bool InvalidPin(float? value) => value.HasValue && !float.IsFinite(value.Value);
+
+    internal SceneDocument WithSettings(GameSettings settings)
+    {
+        var view = (SceneDocument)MemberwiseClone();
+        view.Settings = settings;
+        return view;
+    }
+
     internal void Validate()
     {
         if (SchemaVersion is < 6 or > CurrentVersion || Objects is null)
@@ -184,8 +203,11 @@ public sealed partial class SceneDocument
                 throw new InvalidDataException($"{script.Script}: invalid or duplicate game event connection.");
         UpgradeHud();
         // Older readers must reject transformed scenes instead of silently flattening them.
-        SchemaVersion = Objects.Any(o => o.GetComponent<UiImageComponent>()?.Borders != null || o.GetComponent<UiButtonComponent>()?.Style != null ||
-            o.GetComponent<UiRectComponent>()?.ScaleHorizontalWithText == true) ? CurrentVersion :
+        SchemaVersion = Objects.Any(o => o.GetComponent<UiRectComponent>() is { HasPins: true }) ? CurrentVersion :
+            Objects.Any(o => o.Tag != null || o.Groups != null) ? 27 :
+            Objects.Any(o => o.GetComponent<UiControlComponent>() is UiSliderComponent or UiToggleComponent or UiDropdownComponent) ? 26 :
+            Objects.Any(o => o.GetComponent<UiImageComponent>()?.Borders != null || o.GetComponent<UiButtonComponent>()?.Style != null ||
+            o.GetComponent<UiRectComponent>()?.ScaleHorizontalWithText == true) ? 25 :
             Objects.SelectMany(o => o.Components).OfType<ScriptComponent>().Any(s => s.EventLinks is { Length: > 0 }) ? 24 :
             Objects.Any(o => o.GetComponent<UiTextComponent>()?.TextKey is { Length: > 0 }) ? 23 :
             Objects.SelectMany(o => o.Components).Any(c => c is SortingGroup2DComponent or
@@ -220,6 +242,7 @@ public sealed partial class SceneDocument
             {
                 if (component is null || !types.Add(component.Kind))
                     throw new InvalidDataException($"'{obj.Name}' must have one entry per attached component type.");
+                if (component is UiControlComponent control) control.Validate(obj.Name);
                 if (component is CutsceneDirectorComponent && obj.GetComponent<Camera2DComponent>() is { Output: not Camera2DComponent.Primary })
                     throw new InvalidDataException($"{obj.Name}: a cutscene shot requires a primary camera.");
                 if (component is PositionTween2DComponent tween) tween.Validate(obj);
@@ -260,7 +283,12 @@ public sealed partial class SceneDocument
                 if (component is UiImageComponent { Borders: {} edges } panel && (panel.Sprite == null ||
                     edges.Left < 0 || edges.Right < 0 || edges.Top < 0 || edges.Bottom < 0))
                     throw new InvalidDataException($"{obj.Name}: 9-slice needs a PNG and nonnegative borders.");
-                if (component is UiRectComponent rect) ScreenUi.AnchorIndex(rect.Anchor);
+                if (component is UiRectComponent rect)
+                {
+                    ScreenUi.AnchorIndex(rect.Anchor);
+                    if (InvalidPin(rect.Left) || InvalidPin(rect.Right) || InvalidPin(rect.Top) || InvalidPin(rect.Bottom))
+                        throw new InvalidDataException($"{obj.Name}: UI edge offsets must be finite.");
+                }
                 if (component is UiImageComponent image && !SceneObject.TryColor(image.Color, out _) ||
                     component is UiTextComponent label && (!SceneObject.TryColor(label.Color, out _) || !float.IsFinite(label.Size) ||
                     label.Size is <= 0 or > 1024 || !float.IsFinite(label.InsetX) || !float.IsFinite(label.InsetY)))
@@ -299,6 +327,26 @@ public sealed partial class SceneObject
 
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)] public PrefabLink? Prefab { get; set; }
     public string Name { get; set; } = "GameObject";
+    private string? tag;
+    private string[]? groups;
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public string? Tag
+    {
+        get => tag;
+        set => tag = string.IsNullOrWhiteSpace(value) ? null : value.Trim();
+    }
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public string[]? Groups
+    {
+        get => groups;
+        set
+        {
+            var names = value?.SelectMany(name => (name ?? "").Split(',', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries))
+                .Distinct(StringComparer.Ordinal).ToArray();
+            groups = names is { Length: > 0 } ? names : null;
+        }
+    }
+
     public float X { get; set; }
     public float Y { get; set; }
     public float Width { get; set; } = 40;

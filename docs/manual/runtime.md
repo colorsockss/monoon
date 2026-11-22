@@ -31,18 +31,19 @@ Transform은 모든 오브젝트가 가진 기본 정보다. 이동, 열쇠 획�
 
 ## 이동과 입력 스크립트
 
-`Scripts/PlayerMovement.cs`처럼 파일명과 같은 이름의 공개 클래스가 `GameBehaviour`를 상속한다. [프로젝트 스크립팅](scripting.md)에서 공용 타입, 생명주기, 타입 참조를 확인할 수 있다. 아래 스크립트를 붙이고 Inspector의 **Speed**를 바꾸면 고정 업데이트에서 초당 이동 거리가 달라진다.
+`Scripts/PlayerMovement.cs`처럼 파일명과 같은 이름의 공개 클래스가 `GameBehaviour`를 상속한다. [프로젝트 스크립팅](scripting.md)에서 공용 타입, 생명주기, 타입 참조를 확인할 수 있다. 아래 스크립트를 붙이고 Inspector의 **MoveSpeed**를 바꾸면 고정 업데이트에서 초당 이동 거리가 달라진다.
 
 ```csharp
 using Engine.Core;
 
 public sealed class PlayerMovement : GameBehaviour
 {
-    public float Speed = 240f;
+    [FormerlySerializedAs("Speed")]
+    public float MoveSpeed = 240f;
 
     public override void FixedUpdate(ScriptTick tick)
     {
-        tick.Move(tick.Input.Move * Speed * tick.DeltaTime);
+        tick.Move(tick.Input.Move * MoveSpeed * tick.DeltaTime);
     }
 }
 ```
@@ -53,7 +54,7 @@ public sealed class PlayerMovement : GameBehaviour
 
 ## 벽, 열쇠, 다음 방
 
-1. Player와 벽에 **Box Collider 2D**를 붙인다. **Is Trigger**가 꺼져 있으면 이동 중의 경로를 검사해 벽에서 멈추거나 벽면을 따라 이동한다. 타일맵에서는 타일셋의 **Solid**를 사용한다.
+1. Player와 벽에 **Box Collider 2D**를 붙인다. **Is Trigger**가 꺼져 있으면 이동 중의 경로를 검사해 벽에서 멈추거나 벽면을 따라 이동한다. 타일맵에서는 타일셋의 **Collision**에서 도형을 지정한다.
 2. 열쇠에는 **Is Trigger**를 켜고 스크립트를 붙인다. 열쇠 스크립트의 `OnTriggerEnter(ScriptContact contact)`에서 `contact.OtherId`를 Inspector로 지정한 Player 참조와 비교한다. 겹친 다음 틱부터는 `OnTriggerStay`, 벗어날 때는 `OnTriggerExit`를 받는다. [양쪽 오브젝트의 접촉 이벤트](collision.md#진입유지이탈-이벤트)
 3. KeyRoom의 `KeySequence`는 `contact.Session.Set("key")`로 획득 상태를 기록하고, 열쇠 그림을 숨긴다. Inspector에서 연결한 `KeyAcquired` 이벤트를 받은 `DoorLock.Unlock`이 열린 PNG로 바꾸고 충돌체를 끈 뒤 열림 애니메이션과 효과음을 재생한다. 문 카메라로 전환했다가 일정 시간이 지나면 플레이어 카메라로 돌아온다. [KeySequence.cs](../../samples/KeyRoom/Scripts/KeySequence.cs)
 4. 출구의 `RoomExit`는 `contact.Session.Has("key")`를 확인하고 전환 문구와 함께 `LoadSceneAsync`로 다음 방을 요청한다. [씬 전환과 리소스 수명](scene-streaming.md)에서 추가 씬과 로딩 화면의 동작도 확인할 수 있다. 세션 플래그는 같은 Play의 씬 전환 동안 유지된다. 새 Play는 새 세션을 시작한다. 배포 시 목적지 씬도 **Included scenes**에 포함한다. [RoomExit.cs](../../samples/KeyRoom/Scripts/RoomExit.cs)

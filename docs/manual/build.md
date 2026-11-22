@@ -128,6 +128,28 @@ InventoryLab에서는 **T → 1 → 1 → S**로 의뢰를 받고 저장한다. 
 
 이미 빌드된 InventoryLab에서는 `./monoon test replay game-builds/InventoryLab` 한 줄로 저장소의 기록을 재생한다. Release·Native AOT가 각각 만든 저장 파일 전체를 실제 기록 시점의 저장 파일과 대조하고, 다르면 종료 코드 1을 반환한다. `./monoon ci`에도 이 검사가 포함된다. [기준 입력](../../engine/tests/fixtures/InventoryLab/Herbalist.inputreplay) · [기준 저장](../../engine/tests/fixtures/InventoryLab/Herbalist.save) · [이 Mac의 검증 기록](../../engine/tests/results/input-replay/README.md) · [Windows·Linux x64 게스트의 네 배포본 검증](../../engine/tests/results/input-replay-x64/README.md)
 
+## 콘텐츠 증분 빌드와 재빌드 사유
+
+같은 프로젝트를 같은 출력 폴더로 다시 빌드하면 에디터와 CLI가 글리프, 셰이더 프레임 시트, 스트리밍 타일 청크, 콘텐츠 번들을 재사용한다. **Build → Build Game…**에서 빌드한 뒤 **Console**을 열면 각 항목의 `build` 또는 `reuse`와 이유가 표시된다. **Rebuild all content**를 선택하면 모든 항목을 다시 생성한다.
+
+| 생성물 | 다시 만드는 입력 |
+| --- | --- |
+| 폰트별 `.glyphs` | 폰트 파일 또는 해당 폰트가 처리할 문자 집합. UI·번역표·데이터 에셋·테이블의 문자열을 수집하고 앞선 폰트가 이미 처리한 문자를 제외한다. |
+| 셰이더 프레임 시트 | 셰이더 소스·프레임 수·크기·FPS. 내장 빛과 파티클 시트도 각각 추적한다. |
+| 타일 청크 | 해당 청크의 셀, 인접 청크와 접하는 한 셀 너비의 경계, 타일셋 정의, 그리드 레이아웃. 이웃 청크의 오토타일 연결도 반영한다. |
+| 콘텐츠 번들 | 포함한 파일의 경로와 배포 바이트 해시. 변경 이유에 추가·수정·제거된 경로가 표시된다. |
+
+CLI 기본값은 `--content incremental`이다. 다음 명령을 실행하고 InventoryLab의 약초상 인사말을 수정한 뒤 첫 번째 명령을 반복해 본다. `Assets/Dialogue` 번들의 변경 이유에 `Assets/Dialogue/Herbalist.data`가 나타난다. 두 번째 명령은 같은 소스로 전체 빌드를 만든다.
+
+```sh
+./monoon build samples/InventoryLab release --output game-builds/InventoryLab
+./monoon build samples/InventoryLab release --output game-builds/InventoryLab --content full
+```
+
+캐시는 출력 폴더 아래 `.monoon-build-cache`에 저장한다. 프로젝트 ID, 빌드 호스트, 대상 플랫폼, Release·Native AOT, 프로필별로 구분한다. 생성기 버전도 입력에 포함한다. 재사용할 파일의 SHA-256이 기록과 다르거나 파일이 없으면 다시 생성한다. 성공한 마지막 빌드의 `report.yaml` 경로는 CLI와 에디터 Console에 표시된다. 모든 빌드가 끝난 뒤 캐시 폴더를 삭제하면 다음 빌드가 처음부터 생성한다.
+
+플레이어 스테이징, 스크립트 컴파일, 참조 검사와 배포 교체는 빌드마다 실행한다. 따라서 생성물 재사용 개수는 해당 빌드가 건너뛴 콘텐츠 생성 작업의 수다. [글리프·셰이더·청크를 포함한 InventoryLab 실습](../../engine/tests/InventoryLab.Incremental/README.md) · [플랫폼별 검증](../../engine/tests/results/incremental-content/README.md)
+
 ## 콘텐츠 번들
 
 **Build → Build Game… → Bundles**에 프로젝트 루트 기준 폴더 경로를 한 줄에 하나씩 입력한다. **Save Settings**로 저장하면 에디터와 CLI의 Release·Native AOT 빌드에 함께 적용된다. 비워 두면 에셋을 기존 폴더 구조로 내보낸다. InventoryLab의 설정은 다음과 같다.

@@ -26,7 +26,7 @@ internal static class SceneStreamingChecks
         // A camera-less physics sector with a colliding authored object ID. Spawning
         // an unparented prefab in OnCreate checks script ownership across unload.
         var sectorPath = Path.Combine(root, "Scenes", "TestSector.scene");
-        var sector = new SceneDocument { Objects = [new() { Id = player, Name = "Sector wall", X = 334, Y = 100, Width = 30, Height = 80 }] };
+        var sector = new SceneDocument { Objects = [new() { Id = player, Name = "Sector wall", Tag = "Obstacle", Groups = ["Sector", " Sector "], X = 334, Y = 100, Width = 30, Height = 80 }] };
         sector.Objects[0].AddComponent(new BoxCollider2DComponent());
         sector.Objects[0].AddComponent(new SpriteRendererComponent());
         sector.Objects[0].AddComponent(new ScriptComponent { Script = "SectorProbe" });
@@ -41,9 +41,17 @@ internal static class SceneStreamingChecks
                     life.Session.Set("sectorCreated");
                     var asset = new DataReference(new Guid("ce012864-520c-4767-a2df-dd59fbdb5234"));
                     if (life.Objects.ReadData(asset).GetBool("reloaded")) life.Session.Set("sectorDataReloaded");
-                    life.Objects.Instantiate(new PrefabReference(new Guid("f53c1a45-ed64-4c21-a158-1f49c2f2251c")),new Vector2(650,220));
+                    var coins = life.Objects.FindByGroup("수집품");
+                    var id = life.Objects.Instantiate(new PrefabReference(new Guid("f53c1a45-ed64-4c21-a158-1f49c2f2251c")),new Vector2(650,220));
+                    if (coins.Count == 1 && coins[0] == id && life.Objects.FindByGroup("Sector").Count == 1 &&
+                        life.Objects.FindByTag("Obstacle")[0] == life.ObjectId) life.Session.Set("groupsCreated");
                 }
-                public override void OnDestroy(ScriptLife life) => life.Session.Set("sectorDestroyed");
+                public override void OnDestroy(ScriptLife life)
+                {
+                    life.Session.Set("sectorDestroyed");
+                    if (life.Objects.FindByGroup("수집품").Count == 0 && life.Objects.FindByTag("Obstacle").Count == 0)
+                        life.Session.Set("groupsDetached");
+                }
             }
             """);
         string sectorData = Path.Combine(root, "Assets", "SectorProbe.data");
@@ -97,6 +105,7 @@ internal static class SceneStreamingChecks
                 original.Objects.Any(o => o.Name=="Coin"), "camera-less sector uses the host collision world, remaps duplicate IDs and spawns its own prefab");
             state.UnloadScene(sectorId); Wait(game);
             for (int i=0; i<12; i++) game.FixedUpdate(Vector2.UnitX,1f/60);
+            Check(state.Has("groupsCreated") && state.Has("groupsDetached"), "group and tag indices are current inside additive lifecycle callbacks");
             Check(state.Has("sectorDestroyed") && original.TryGetPosition(player,out var continued) && continued.X > 334 &&
                 !original.Objects.Any(o=>o.Name is "Coin" or "Sector wall"), "unload removes sector collision and unparented runtime children, preserving player state");
 
@@ -112,7 +121,8 @@ internal static class SceneStreamingChecks
                 throw new Exception("Expected rejected prefab texture");
             }
             catch (InvalidDataException) { }
-            Check(!original.Objects.Any(o => o.Name=="Coin"), "failed runtime prefab preparation leaves no half-spawned object");
+            Check(!original.Objects.Any(o => o.Name=="Coin") && original.FindByGroup("수집품").Count == 0,
+                "failed runtime prefab preparation leaves no half-spawned object or group member");
             var failed = state.AddSceneAsync(guide); Wait(game);
             Check(failed.Status == SceneStatus.Failed && failed.Error!.Contains("upload") && !state.IsSceneLoaded(guide) &&
                 original.Ui.Bounds(close.Id)==null && !released.Contains("Key.png"), "failed native preparation preserves active UI, scene, and shared resources");

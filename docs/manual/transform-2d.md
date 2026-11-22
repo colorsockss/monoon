@@ -1,6 +1,6 @@
 # Transform 2D
 
-Hierarchy에서 월드 오브젝트를 선택하고 Inspector의 **Transform**을 펼친다. 편집 중에는 값을 바꾸고 Undo할 수 있으며, Play 중에는 읽기 전용이다.
+Hierarchy에서 월드 오브젝트를 선택하고 Inspector의 **Transform**을 펼친다. 편집 중에는 값을 바꾸고 Undo할 수 있다. Play 중에는 로컬 위치·회전·스케일을 조정하고 원하는 필드만 원본 씬에 적용할 수 있다. [Play Inspector 사용법](play-diagnostics.md#play-중-값-조정과-선택-적용)
 
 | 필드 | 의미 |
 | --- | --- |

@@ -20,6 +20,13 @@ internal static class PlayerDataChecks
         Recovery(Path.Combine(scratch, "slot-recovery"));
         string root = Path.Combine(scratch, "profile");
         var store = new PlayerStorage(root);
+        var logicalSize = new System.Drawing.Size(800, 450);
+        var preferred = new DesktopPreferences(new(720, 540), true, false);
+        Check(store.LoadDisplay(logicalSize) == new DesktopPreferences(logicalSize, false, true),
+            "new desktop profile uses the logical resolution, windowed mode and VSync");
+        store.SaveDisplay(preferred);
+        Check(store.LoadDisplay(logicalSize) == preferred && store.LoadSettings(1) == null,
+            "desktop options round trip independently of game settings");
         var data = GameData.Parse("version: 1\nvalues:\n  list: [1, false]\n  nested: {name: test}\n");
         data.Set("name", "007");
         data.Set("sound", true);

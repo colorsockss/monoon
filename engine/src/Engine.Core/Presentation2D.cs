@@ -52,10 +52,18 @@ public sealed partial record HudComponent : SceneComponent
 }
 
 [YamlObject]
-public sealed partial record SpriteFrame(Guid Sprite, float Seconds, SpriteRegion? Source = null, SpriteCanvas? Canvas = null, string? Event = null);
-[YamlObject]
-public sealed partial record SpriteClip(SpriteFrame[] Frames, bool Loop)
+[method: YamlConstructor]
+public sealed partial record SpriteFrame(Guid Sprite, float Seconds, SpriteRegion? Source = null, SpriteCanvas? Canvas = null, string? Event = null, bool UseRenderer = false)
 {
+    public SpriteFrame(Guid sprite,float seconds,SpriteRegion? source,SpriteCanvas? canvas,string? marker)
+        : this(sprite,seconds,source,canvas,marker,false) { }
+}
+[YamlObject]
+[method: YamlConstructor]
+public sealed partial record SpriteClip(SpriteFrame[] Frames, bool Loop, ComponentTrack[]? Tracks = null)
+{
+    public SpriteClip(SpriteFrame[] frames,bool loop) : this(frames,loop,null) { }
+
     // Authoring can repair empty clips, missing sprites and invalid durations.
     public static SpriteClip OpenForEditing(string file)
     {
@@ -77,6 +85,7 @@ public sealed partial record SpriteClip(SpriteFrame[] Frames, bool Loop)
         for (int i = 0; i < Frames.Length; i++)
         {
             var frame = Frames[i];
+            if (frame.UseRenderer) continue;
             var relative = assets.PathFor(frame.Sprite);
             var label = $"{file}, frame {i + 1}";
             var packed = frame.Source == null && frame.Canvas == null ? assets.Sprites(root).Find(frame.Sprite) : null;
@@ -107,8 +116,9 @@ public sealed partial record SpriteClip(SpriteFrame[] Frames, bool Loop)
 
     internal void Validate(string file)
     {
-        if (Frames is not { Length: > 0 } || Frames.Any(f => f == null || f.Sprite == Guid.Empty || !float.IsFinite(f.Seconds) || f.Seconds <= 0 || f.Event != null && !AnimationController.ValidName(f.Event)))
+        if (Frames is not { Length: > 0 } || Frames.Any(f => f == null || (f.UseRenderer ? f.Sprite != Guid.Empty || f.Source != null || f.Canvas != null : f.Sprite == Guid.Empty) || !float.IsFinite(f.Seconds) || f.Seconds <= 0 || f.Event != null && !AnimationController.ValidName(f.Event)))
             throw new InvalidDataException($"Invalid animation frames in {file}.");
+        if (Tracks is { Length: > 0 }) _ = new ComponentCurves(Tracks, new SpriteClipTimeline(Frames).Duration);
     }
 }
 

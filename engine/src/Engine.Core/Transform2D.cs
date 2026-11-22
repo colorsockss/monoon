@@ -67,7 +67,7 @@ public sealed partial class SceneObject
         SetOrigin(m.Translation);
     }
     internal SceneObject RuntimeCopy() => (SceneObject)MemberwiseClone();
-    internal SceneObject CopyTransform(Guid id) => new() { Id = id, Name = Name, X = X, Y = Y,
+    internal SceneObject CopyTransform(Guid id) => new() { Id = id, Name = Name, Tag = Tag, Groups = Groups, X = X, Y = Y,
         Width = Width, Height = Height, Rotation = Rotation, ScaleX = ScaleX, ScaleY = ScaleY,
         PivotX = PivotX, PivotY = PivotY, Shear = Shear };
 }

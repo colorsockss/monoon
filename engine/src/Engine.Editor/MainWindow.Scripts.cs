@@ -61,9 +61,19 @@ public partial class MainWindow
             ToolTip.SetTip(panel, scripts.RelativePath(component.Script));
             inspectorSourceStamp = scripts.ChangeStamp();
             var definition = scripts.Get(component.Script);
+            if (ProjectScripts.NormalizeValues(component.Values, definition) && !Viewport.IsPlaying) Scene.MigratedScriptFields = true;
             AddGameEvents(panel, definition, component);
+            var world = Viewport.PlayWorld;
+            var owner = Selected;
+            var instance = owner != null && world != null
+                ? owner.Components.OfType<ScriptComponent>().Zip(world.LiveScripts(owner.Id))
+                    .FirstOrDefault(p => ReferenceEquals(p.First, component)).Second : null;
             foreach (var field in definition.Fields)
+            {
+                if (world != null && owner != null && AddLiveScriptNumber(panel, world, owner, component, instance, field)) continue;
                 AddScriptField(panel, field, component);
+                if (world != null) panel.Children[^1].IsEnabled = false;
+            }
         }
         catch (Exception ex)
         {
@@ -203,7 +213,14 @@ public partial class MainWindow
         if (busy || Viewport.IsPlaying || filePress != null) return;
         RefreshProjectFiles();
         if (inspectorSourceStamp != null && scripts != null)
-            try { if (inspectorSourceStamp != scripts.ChangeStamp()) RefreshComponentList(); }
+            try
+            {
+                if (inspectorSourceStamp != scripts.ChangeStamp())
+                {
+                    Scene.NormalizeScriptFields();
+                    RefreshComponentList();
+                }
+            }
             catch (Exception ex) when (ex is IOException or InvalidDataException or UnauthorizedAccessException) { Status.Text = ex.Message; }
     }
 

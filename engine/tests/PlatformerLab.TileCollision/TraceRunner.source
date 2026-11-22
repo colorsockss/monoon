@@ -1,0 +1,17 @@
+using System;
+using System.Globalization;
+using System.IO;
+using Engine.Core;
+
+// Attached only in the disposable test project. Each row observes the preceding physics step.
+public sealed class TraceRunner : GameBehaviour
+{
+    private int frame;
+    public override void FixedUpdate(ScriptTick tick)
+    {
+        var path = Environment.GetEnvironmentVariable("MONOON_TILE_TRACE");
+        if (string.IsNullOrEmpty(path) || !tick.Objects.Motion.TryGetMotion(tick.ObjectId,out var motion)) return;
+        File.AppendAllText(path, string.Create(CultureInfo.InvariantCulture,
+            $"{frame++} {tick.Position.X:F4} {tick.Position.Y:F4} {motion.Velocity.Y:F3} {motion.Support} {motion.GroundNormal.X:F4} {motion.GroundNormal.Y:F4}\n"));
+    }
+}

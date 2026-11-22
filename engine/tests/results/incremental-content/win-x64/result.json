@@ -1,0 +1,15 @@
+{
+  "rid": "win-x64",
+  "os": "Windows-11-10.0.26100-SP0",
+  "architecture": "amd64",
+  "cold": 8,
+  "rebuilt": 1,
+  "reused": 7,
+  "files": 21,
+  "contentSha256": "2f61a5a5c8fcf326e3dbfd2943c855aff681427b39f9afa9dce7fc054ea6a037",
+  "inputSha256": "22638c8c350a7679ce2d44cb6682b9530f636f1bf4e09e85ba567fe8f4b5aa70",
+  "saves": {
+    "incremental": "eed41defcbd7987a527deb677c60da8151ad0de1616c717c646e92b26e70f795",
+    "full": "eed41defcbd7987a527deb677c60da8151ad0de1616c717c646e92b26e70f795"
+  }
+}

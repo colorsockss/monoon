@@ -92,7 +92,15 @@ public sealed partial class SceneGame
                 if(!b.Active || b.Palette==null)continue;
                 var m=b.MatrixAt(b.At(fraction));var map=b.Map!;
                 foreach(var (cell,id) in map.InView(Vector2.Zero,Affine2D.Bounds(shot.World,Affine2D.Inverse(m))))
-                    if(b.Palette.Tiles[id].Solid)Shape(CollisionGeometry.Tile(map.Bounds(Vector2.Zero,cell),map.Layout,m),Color.SpringGreen);
+                    if (TileCollision.WorldShape(b.Palette.Tiles[id], map.Bounds(Vector2.Zero,cell), map.Layout, m) is {} tile)
+                    {
+                        Shape(tile, Color.SpringGreen);
+                        if (tile.FaceNormal != default)
+                        {
+                            var middle = (tile.Vertices![0] + tile.Vertices[1]) * .5f;
+                            Line(middle, middle + tile.FaceNormal * (8 / shot.Zoom), Color.Gold);
+                        }
+                    }
             }
         }
         if(!debug.Queries)return;

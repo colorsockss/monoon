@@ -9,6 +9,7 @@ internal static class CameraChecks
     private static CameraView Read(SceneGame g,Guid id) => g.TryGetView(id,out var view)?view:throw new Exception("Missing camera view");
     internal static void Run(string repository,string scratch)
     {
+        CheckRenderGrid();
         var path=Path.Combine(repository,"samples","CameraLab","Scenes","CameraLab.scene");
         var scene=SceneDocument.Load(path);
         var main=scene.Camera!;var extra=scene.Objects.Single(o=>o.Name=="Partner Camera");var map=scene.Objects.Single(o=>o.Name=="Map Camera");
@@ -78,6 +79,57 @@ internal static class CameraChecks
         }
         Console.WriteLine("PASS camera tracking, fixed/render interpolation, bounds/zoom, split/overlay/HUD order, odd viewports, reference remapping, validation and YAML");
     }
+    private static void CheckRenderGrid()
+    {
+        var scene = SceneDocument.Empty(new());
+        var camera = scene.Camera!;
+        var wide = scene.CreateCamera(new(400, 225));
+        wide.GetComponent<Camera2DComponent>()!.Zoom = Camera2DComponent.MinZoom;
+        var root = new SceneObject { Name = "Offscreen group", X = -2400, Y = 50 };
+        root.AddComponent(new SortingGroup2DComponent { SortByY = true });
+        var child = new SceneObject { Name = "Child", X = 1200 };
+        child.AddComponent(new SpriteRendererComponent());
+        child.SetParent(root);
+        scene.Objects.AddRange([root, child]);
+        for (int i = 0; i < 160; i++)
+            scene.Objects.Add(new SceneObject { Name = $"Distant {i}", X = 5000 + i * 64 });
+        using var game = new SceneGame(scene);
+        var canvas = new DrawCapture();
+        void VisibleAt(float fraction, bool visible)
+        {
+            var expected = new List<Guid>();
+            var actual = new List<Guid>();
+            game.UseRenderGrid = false;
+            game.PrepareCameraDraw(fraction);
+            int full = game.DrawCamera(canvas, camera.Id, fraction, expected);
+            game.UseRenderGrid = true;
+            game.PrepareCameraDraw(fraction);
+            int reduced = game.DrawCamera(canvas, camera.Id, fraction, actual);
+            Check(reduced < full && actual.SequenceEqual(expected) && actual.Contains(child.Id) == visible,
+                $"group visibility at interpolation {fraction}");
+        }
+        // The child crosses the entire lens within one tick. Its parent remains offscreen
+        // when the child is visible, and both endpoints of the child's path are offscreen.
+        Check(game.TryMoveStep(root.Id, new(2400, 0)), "move render group");
+        VisibleAt(0, false);
+        VisibleAt(.6f, true);
+        VisibleAt(1, false);
+        VisibleAt(.55f, true);
+        game.FixedUpdate(Vector2.Zero, 1f / 60);
+        VisibleAt(0, false);
+
+        // The pool was created after indexing. A visible instance has an offscreen owner.
+        var pool = game.CreateSpritePool(child.Id, 2);
+        Check(pool.TrySpawn(new(84, 84), Vector2.Zero, Color.FromArgb(0x52, 0xe4, 0xb5)), "spawn pool instance");
+        game.PrepareCameraDraw(1);
+        game.DrawCamera(canvas, camera.Id, 1);
+        Check(canvas.Green.Count == 1, "offscreen pool owner");
+
+        // An extreme zoom falls back to the original ordered walk.
+        game.PrepareCameraDraw(1);
+        Check(game.DrawCamera(canvas, wide.Id, 1) == scene.Objects.Count, "large camera fallback");
+    }
+
     private sealed class DrawCapture : ICanvas2D
     {
         public List<RectangleF> Clips=[], Green=[];

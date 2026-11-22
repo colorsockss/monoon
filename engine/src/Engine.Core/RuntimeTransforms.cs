@@ -22,6 +22,26 @@ public sealed partial class SceneGame
         return true;
     }
 
+    private void ApplyAnimationPose(Body body)
+    {
+        var pose = body.Animation!.Pose;
+        var previous = body.AppliedPose;
+        body.AppliedPose = pose;
+        if (pose.Rotation == null && pose.ScaleX == null && pose.ScaleY == null &&
+            previous.Rotation == null && previous.ScaleX == null && previous.ScaleY == null) return;
+        if (!TryGetLocalTransform(body.Id, out var local)) return;
+        var basis = body.BeforeAnimation;
+        if (previous.Rotation == null) basis = basis with { Rotation = local.Rotation };
+        if (previous.ScaleX == null) basis = basis with { ScaleX = local.Scale.X };
+        if (previous.ScaleY == null) basis = basis with { ScaleY = local.Scale.Y };
+        body.BeforeAnimation = basis;
+        float rotation = pose.Rotation ?? (previous.Rotation.HasValue ? basis.Rotation!.Value : local.Rotation);
+        var scale = new Vector2(pose.ScaleX ?? (previous.ScaleX.HasValue ? basis.ScaleX!.Value : local.Scale.X),
+            pose.ScaleY ?? (previous.ScaleY.HasValue ? basis.ScaleY!.Value : local.Scale.Y));
+        if (rotation != local.Rotation || scale != local.Scale)
+            SetLocalTransform(body.Id, local with { Rotation = rotation, Scale = scale });
+    }
+
     public bool TryGetParent(Guid id, out Guid? parent)
     {
         parent = null;
@@ -81,6 +101,17 @@ public sealed partial class SceneGame
     {
         if (!Invertible(target)) return false;
         var delta = Affine2D.Inverse(root.MatrixAt(root.Position)) * target;
+        if (!dirty && root.Index < parentFirst.Length && parentFirst[root.Index] == root)
+        {
+            // Animated hierarchies usually keep the same membership across ticks.
+            var members = Subtree(root);
+            foreach (var member in members[1..])
+                if (!Invertible(member.MatrixAt(member.Position) * delta)) return false;
+            root.SetWorldPose(target, root.Angle);
+            foreach (var member in members[1..])
+                member.SetWorldPose(member.MatrixAt(member.Position) * delta, member.Angle);
+            return true;
+        }
         var poses = new List<(Body Body, Matrix3x2 World)>();
         foreach (var obj in world.ParentFirst(root.Source))
         {

@@ -86,6 +86,7 @@ public sealed partial class GameSession
         var path = manifest.PathFor(id);
         if (path?.EndsWith(ProjectAssets.Scene) != true) throw new InvalidDataException($"Missing scene asset {id}.");
         var doc = SceneDocument.Load(Path.Combine(project, path), manifest);
+        if (settingsOverride != null) doc.Settings = settingsOverride;
         doc.CheckReferences(manifest);
         return doc;
     }

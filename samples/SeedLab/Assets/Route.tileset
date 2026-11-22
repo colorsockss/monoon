@@ -1,0 +1,24 @@
+image: 115d3012-cfec-59a1-8f3f-ba98235d678f
+tileSize: {width: 8, height: 8}
+margin: 0
+spacing: 0
+nextId: 10
+tiles:
+- id: 1
+  source: {x: 0, y: 0, width: 8, height: 8}
+- id: 2
+  source: {x: 8, y: 0, width: 8, height: 8}
+- id: 3
+  source: {x: 16, y: 0, width: 8, height: 8}
+- id: 4
+  source: {x: 24, y: 0, width: 8, height: 8}
+- id: 5
+  source: {x: 32, y: 0, width: 8, height: 8}
+- id: 6
+  source: {x: 40, y: 0, width: 8, height: 8}
+- id: 7
+  source: {x: 48, y: 0, width: 8, height: 8}
+- id: 8
+  source: {x: 56, y: 0, width: 8, height: 8}
+- id: 9
+  source: {x: 64, y: 0, width: 8, height: 8}

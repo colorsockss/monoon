@@ -153,9 +153,11 @@ internal static class LocalizationChecks
         if (File.Exists(Path.Combine(folder, "Assets/Broken.ttf"))) throw new Exception("Partial font import.");
     }
 
-    private sealed class Labels : ICanvas2D
+    private sealed class Labels : ICanvas2D, IDisposable
     {
         public readonly List<string> Drawn = [];
+        public IDisposable PushClip(RectangleF area) => this;
+        public void Dispose() { }
         public IReadOnlyList<string> Fonts { get; private set; } = [];
         public void UseFonts(IReadOnlyList<string> paths) => Fonts = paths;
         public void DrawText(string text, float x, float y, float size, Color color) => Drawn.Add(text);

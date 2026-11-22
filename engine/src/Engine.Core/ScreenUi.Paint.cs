@@ -9,7 +9,7 @@ public sealed partial class ScreenUi
     {
         canvas.UseFonts(Language.Fonts);
         Arrange(canvas);
-        if (inputModes.Count == 0) { DrawLayer(canvas, x, y, scale, nodes); return; }
+        if (inputModes.Count == 0) { DrawLayer(canvas, x, y, scale, nodes); DrawOptions(canvas, x, y, scale); return; }
         // Paint each panel, including its scrollbars, before painting the panel above it.
         for (int start = 0; start < nodes.Length;)
         {
@@ -18,6 +18,7 @@ public sealed partial class ScreenUi
             DrawLayer(canvas, x, y, scale, nodes.AsSpan(start, end - start));
             start = end;
         }
+        DrawOptions(canvas, x, y, scale);
     }
 
     private void DrawLayer(ICanvas2D canvas, float x, float y, float scale, ReadOnlySpan<Node> widgets)
@@ -29,7 +30,7 @@ public sealed partial class ScreenUi
             using var clip=n.Clip!=screen?canvas.PushClip(At(n.Clip)):null;
             var box=At(n.Box);var id=n.Object.Id;
             ButtonPaint? paint = null;
-            if(n.Button!=null||n.Field!=null)
+            if(n.Control!=null||n.Field!=null)
             {
                 var state = !Enabled(n) ? ButtonState.Disabled :
                     (pressed == id && hovered == id || activationOwner == id && focus == id) ? ButtonState.Pressed :
@@ -83,12 +84,13 @@ public sealed partial class ScreenUi
                         canvas.FillRectangle(new(cursor,ty,scale,size*1.15f),Color.White);
                     }
                 }
-                bool clipText=n.Field!=null || n.Parent?.Layout!=null || Preferences.TextScale!=1;
+                bool clipText=n.Field!=null || n.Rect?.HasPins==true || n.Parent?.Layout!=null || Preferences.TextScale!=1;
                 using var textClip=clipText?canvas.PushClip(box):null;
                 if(label?.Wrap==true && n.Field==null)
                     foreach(var line in n.Lines){canvas.DrawText(line,tx,ty,size,ink);ty+=size*1.4f;}
                 else canvas.DrawText(text,tx,ty,size,ink);
             }
+            DrawControl(canvas, n, box, scale, paint);
             if(Enabled(n)&&focus==id)
             {
                 var ring=Preferences.HighContrast?Color.Yellow:Color.LightSkyBlue;var u=scale*(Preferences.HighContrast?2:1);

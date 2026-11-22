@@ -90,6 +90,7 @@ objects:
   height: 1
   components:
   - type: camera2D
+  - {type: script, script: FieldSelector, values: {Small: {Id: "2fe2804d-e1df-55de-8adb-fcf5a0f4217d"}, Large: {Id: "ae245142-c47c-52aa-8b4f-5c867bdef887"}, Lab: {Id: "5750e5bb-1700-5a5b-94c2-b6bd02a0356c"}}}
 - id: 38c04c97-d92c-5d23-be0a-5111ea8522ba
   name: Canvas
   x: 0
@@ -121,7 +122,7 @@ objects:
   - type: uiRect
   - type: uiText
     size: 18
-    text: "Right / D   Send the probe through the sensor and both gates."
+    text: "Right / D: probe     1: 1,000 colliders     2: 10,000 colliders"
 - id: 1df6d94e-a39e-5238-a756-adb80b296184
   name: Tags
   x: 78

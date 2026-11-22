@@ -21,6 +21,15 @@ class X11Window:
         self.title = title
         self.process = process
         self.handle = None
+        self.x11 = ctypes.CDLL("libX11.so.6")
+        self.x11.XOpenDisplay.argtypes = [ctypes.c_char_p]
+        self.x11.XOpenDisplay.restype = ctypes.c_void_p
+        self.x11.XDefaultRootWindow.argtypes = [ctypes.c_void_p]
+        self.x11.XDefaultRootWindow.restype = ctypes.c_ulong
+        self.x11.XTranslateCoordinates.argtypes = [ctypes.c_void_p, ctypes.c_ulong, ctypes.c_ulong,
+            ctypes.c_int, ctypes.c_int, ctypes.POINTER(ctypes.c_int), ctypes.POINTER(ctypes.c_int),
+            ctypes.POINTER(ctypes.c_ulong)]
+        self.x11.XCloseDisplay.argtypes = [ctypes.c_void_p]
 
     @staticmethod
     def command(*args):
@@ -46,15 +55,34 @@ class X11Window:
         self.command("windowmove", self.handle, 16, 40)
         self.command("windowsize", "--sync", self.handle, width, height)
 
-    def click(self, x, y):
+    def move_pointer(self, x, y):
         if self.command("getwindowfocus") != self.handle:
             raise RuntimeError("KeyRoom lost mouse focus")
-        self.command("mousemove", "--window", self.handle, x, y)
+        left, top = self.client_origin()
+        self.command("mousemove", left + x, top + y)
+
+    def click(self, x, y):
+        self.move_pointer(x, y)
         self.command("click", "1")
+
+    def client_origin(self):
+        # With a reparenting window manager, xdotool includes the decoration offset twice.
+        display = self.x11.XOpenDisplay(None)
+        if not display:
+            raise RuntimeError("Cannot open the X11 display")
+        try:
+            left, top, child = ctypes.c_int(), ctypes.c_int(), ctypes.c_ulong()
+            if not self.x11.XTranslateCoordinates(display, int(self.handle), self.x11.XDefaultRootWindow(display),
+                    0, 0, ctypes.byref(left), ctypes.byref(top), ctypes.byref(child)):
+                raise RuntimeError("Cannot locate the game's X11 client area")
+            return left.value, top.value
+        finally:
+            self.x11.XCloseDisplay(display)
 
     def capture(self):
         geometry = dict(line.split("=", 1) for line in self.command("getwindowgeometry", "--shell", self.handle).splitlines())
-        x, y, w, h = (int(geometry[key]) for key in ("X", "Y", "WIDTH", "HEIGHT"))
+        w, h = int(geometry["WIDTH"]), int(geometry["HEIGHT"])
+        x, y = self.client_origin()
         return ImageGrab.grab(bbox=(x, y, x + w, y + h), xdisplay=os.environ["DISPLAY"]).convert("RGB")
 
 
@@ -134,7 +162,7 @@ class WindowsWindow:
         return ImageGrab.grab(bbox=(point.x, point.y, point.x + rect.right, point.y + rect.bottom),
                               all_screens=True).convert("RGB")
 
-    def click(self, x, y):
+    def move_pointer(self, x, y):
         self.focus()
         point = self.wt.POINT(x, y)
         if not self.api.ClientToScreen(self.handle, ctypes.byref(point)) or not self.api.SetCursorPos(point.x, point.y):
@@ -146,6 +174,9 @@ class WindowsWindow:
         self.api.WindowFromPoint.restype = self.wt.HWND
         if self.api.WindowFromPoint(point) != self.handle.value:
             raise RuntimeError("Click is not over KeyRoom")
+
+    def click(self, x, y):
+        self.move_pointer(x, y)
         self.api.mouse_event(2, 0, 0, 0, 0)
         try:
             time.sleep(.10)

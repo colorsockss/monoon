@@ -1,0 +1,12 @@
+version: 3
+values:
+  capacity: 3
+  item0: "herb"
+  count0: 3
+  item1: "gem"
+  count1: 1
+  quests:
+    herbalist:
+      collected: 3
+      claimed: true
+  dialogue: "paid"

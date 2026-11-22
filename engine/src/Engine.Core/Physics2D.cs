@@ -10,8 +10,11 @@ public readonly struct Shape2D
     internal readonly Vector2 Offset;
     internal readonly float Radius;
     internal readonly RectangleF Bounds;
-    private Shape2D(Vector2[]? vertices, Vector2 offset, float radius, RectangleF bounds)
-        => (Vertices,Offset,Radius,Bounds)=(vertices,offset,radius,bounds);
+    internal readonly Vector2 FaceNormal;
+    private Shape2D(Vector2[]? vertices, Vector2 offset, float radius, RectangleF bounds, Vector2 faceNormal = default)
+        => (Vertices,Offset,Radius,Bounds,FaceNormal)=(vertices,offset,radius,bounds,faceNormal);
+    internal static Shape2D Face(Vector2 a, Vector2 b, Vector2 normal) => new([a,b],default,0,
+        RectangleF.FromLTRB(Math.Min(a.X,b.X),Math.Min(a.Y,b.Y),Math.Max(a.X,b.X),Math.Max(a.Y,b.Y)),normal);
     internal static Shape2D PointAt(Vector2 p) => new(null,p,0,new(p.X,p.Y,0,0));
     public static Shape2D Circle(Vector2 center, float radius)
     {
@@ -34,7 +37,7 @@ public readonly struct Shape2D
         foreach (var v in p) { min=Vector2.Min(v,min); max=Vector2.Max(v,max); }
         return new(p,Vector2.Zero,0,RectangleF.FromLTRB(min.X,min.Y,max.X,max.Y));
     }
-    internal Shape2D Translated(Vector2 t) { var b=Bounds; b.Offset(t.X,t.Y); return new(Vertices,Offset+t,Radius,b); }
+    internal Shape2D Translated(Vector2 t) { var b=Bounds; b.Offset(t.X,t.Y); return new(Vertices,Offset+t,Radius,b,FaceNormal); }
     internal static bool Finite(Vector2 p) => float.IsFinite(p.X) && float.IsFinite(p.Y);
     internal void Check() { if (Vertices==null && Radius==0) throw new ArgumentException("Use a Shape2D factory."); }
 }
@@ -44,8 +47,16 @@ public sealed record PhysicsFilter(uint Mask = uint.MaxValue, bool IncludeTrigge
 public readonly record struct PhysicsTarget(Guid ObjectId, int Layer, bool IsTrigger, Point? Tile);
 /// <summary>Fraction is in [0,1]. Normal points out of the target. Initial overlap returns zero distance.</summary>
 public readonly record struct PhysicsHit(PhysicsTarget Target, float Fraction, float Distance, Vector2 Point, Vector2 Normal);
+/// <summary>Broad-phase diagnostics for one world. Tile cells are queried separately.</summary>
+public sealed class PhysicsQueryDiagnostics
+{
+    public bool UseSpatialIndex { get; set; } = true;
+    public int LastColliderCandidates { get; internal set; }
+}
+
 public interface IPhysics2D
 {
+    PhysicsQueryDiagnostics QueryDiagnostics { get; }
     IReadOnlyList<PhysicsTarget> Overlap(Shape2D shape, PhysicsFilter? filter = null);
     PhysicsHit? Raycast(Vector2 origin, Vector2 direction, float distance, PhysicsFilter? filter = null);
     PhysicsHit? Sweep(Shape2D shape, Vector2 displacement, PhysicsFilter? filter = null);

@@ -1,6 +1,7 @@
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Styling;
+using Avalonia.Media;
 using Avalonia.Markup.Xaml.Styling;
 using Avalonia.Themes.Fluent;
 using Engine.Core;
@@ -50,7 +51,19 @@ internal static class Program
             DesktopHost.Run(Path.GetFileNameWithoutExtension(path), game, null, null, ShaderPixels.Preview, new GameTextRasterizer());
             return;
         }
-        AppBuilder.Configure<EditorApp>().UsePlatformDetect().StartWithClassicDesktopLifetime(args);
+        var builder = AppBuilder.Configure<EditorApp>().UsePlatformDetect();
+        if (OperatingSystem.IsLinux())
+        {
+            builder.With(new FontManagerOptions
+            {
+                FontFallbacks = [new FontFallback
+                {
+                    FontFamily = new FontFamily("avares://MoNoon/Assets/Fonts#NanumGothic"),
+                    UnicodeRange = UnicodeRange.Parse("U+1100-11FF,U+3130-318F,U+A960-A97F,U+AC00-D7FF")
+                }]
+            });
+        }
+        builder.StartWithClassicDesktopLifetime(args);
     }
 }
 

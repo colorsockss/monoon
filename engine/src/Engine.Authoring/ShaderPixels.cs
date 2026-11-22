@@ -45,6 +45,8 @@ public static class ShaderPixels
 
     public static SKBitmap Bake(ShaderClip clip, Color tint)
     {
+        if (OperatingSystem.IsWindows())
+            return WindowsShaderContext.Bake(graphics => Bake(clip, tint, graphics));
         if (OperatingSystem.IsLinux())
             return LinuxShaderContext.Bake(graphics => Bake(clip, tint, graphics));
         using var mac = OperatingSystem.IsMacOS() ? new MacShaderContext() : null;

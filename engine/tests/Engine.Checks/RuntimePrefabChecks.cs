@@ -14,9 +14,16 @@ internal static class RuntimePrefabChecks
         using var game = new SceneGame(scene);
         var before = scene.CaptureObjects();
         IEnumerable<SceneObject> Coins() => game.Objects.Where(o => o.Name == "Coin");
-        Require(!Coins().Any(), "no preplaced coin");
+        var collectibles = game.FindByGroup("수집품");
+        var tagged = game.FindByTag("Coin");
+        Require(!Coins().Any() && collectibles.Count == 0 && tagged.Count == 0, "no preplaced coin");
         game.FixedUpdate(new GameInput(Vector2.Zero, true), Step);
         var coin = Coins().Single();
+        Require(collectibles.Single() == coin.Id && tagged.Single() == coin.Id &&
+            game.FindByGroup("Coin").Count == 0 && game.FindByTag("coin").Count == 0, "live prefab group and exact tag");
+        game.SetActive(coin.Id, false);
+        Require(collectibles.Single() == coin.Id && !game.IsActive(coin.Id), "inactive members retain their classification");
+        game.SetActive(coin.Id, true);
         Require(coin.GetComponent<BoxCollider2DComponent>()?.IsTrigger == true &&
             game.TryGetPosition(coin.Id, out var at) && at == new Vector2(384,126), "spawned trigger transform");
         game.FixedUpdate(new GameInput(Vector2.Zero, true), Step);
@@ -24,6 +31,14 @@ internal static class RuntimePrefabChecks
         for (int i = 0; i < 30; i++) game.FixedUpdate(Vector2.UnitX, Step);
         Require(!Coins().Any() && game.State.Has("coin") && !game.TryGetPosition(coin.Id, out _) &&
             !game.Destroy(coin.Id), "pickup removed runtime object once");
+        Require(collectibles.Count == 0 && tagged.Count == 0, "held lists update on pickup");
+        var reference = new PrefabReference(ProjectAssets.Scan(scene.ProjectDirectory!).IdFor("Assets/Coin.prefab")!.Value);
+        var first = game.Instantiate(reference, new(700, 230));
+        var second = game.Instantiate(reference, new(710, 230));
+        Require(collectibles.SequenceEqual(new[] { first, second }), "spawn order before the next tick");
+        foreach (var id in collectibles)
+            Require(game.Destroy(id) && !tagged.Contains(id), "destroy while iterating removes the tag immediately");
+        Require(collectibles.Count == 0, "destroy while iterating removes both group members");
         Require(before == scene.CaptureObjects(), "Play did not modify authored objects");
         Console.WriteLine("PASS KeyRoom chest spawns one trigger; player collects it; scene unchanged");
     }

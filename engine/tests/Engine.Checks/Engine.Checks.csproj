@@ -1,5 +1,5 @@
 <Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup><OutputType>Exe</OutputType></PropertyGroup>
+  <PropertyGroup><OutputType>Exe</OutputType><AllowUnsafeBlocks>true</AllowUnsafeBlocks></PropertyGroup>
   <ItemGroup>
     <Compile Include="../../../samples/InventoryLab/Scripts/Dialogue/*.cs" Link="Packages/%(Filename)%(Extension)"/>
     <Compile Include="../../../samples/CardLab/Scripts/Decks/CardDeck.cs" Link="Packages/CardDeck.cs"/>

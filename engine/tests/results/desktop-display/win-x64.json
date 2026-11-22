@@ -1,0 +1,266 @@
+{
+  "os": "Windows-11-10.0.26100-SP0",
+  "machine": "AMD64",
+  "stages": {
+    "resized": {
+      "client": [
+        720,
+        540
+      ],
+      "viewport": [
+        0,
+        67,
+        720,
+        472
+      ],
+      "button": [
+        410,
+        337,
+        626,
+        377
+      ],
+      "outside": [
+        [
+          407,
+          357
+        ],
+        [
+          628,
+          357
+        ],
+        [
+          518,
+          334
+        ],
+        [
+          518,
+          379
+        ],
+        [
+          518,
+          33
+        ]
+      ],
+      "inside": [
+        [
+          413,
+          340
+        ],
+        [
+          622,
+          373
+        ]
+      ],
+      "counter": 2
+    },
+    "fullscreen": {
+      "client": [
+        1280,
+        800
+      ],
+      "viewport": [
+        0,
+        40,
+        1280,
+        760
+      ],
+      "button": [
+        730,
+        520,
+        1114,
+        590
+      ],
+      "outside": [
+        [
+          727,
+          555
+        ],
+        [
+          1116,
+          555
+        ],
+        [
+          922,
+          517
+        ],
+        [
+          922,
+          592
+        ],
+        [
+          922,
+          20
+        ]
+      ],
+      "inside": [
+        [
+          733,
+          523
+        ],
+        [
+          1110,
+          586
+        ]
+      ],
+      "counter": 4
+    },
+    "fullscreen-reopened": {
+      "client": [
+        1280,
+        800
+      ],
+      "viewport": [
+        0,
+        40,
+        1280,
+        760
+      ],
+      "button": [
+        730,
+        520,
+        1114,
+        590
+      ],
+      "outside": [
+        [
+          727,
+          555
+        ],
+        [
+          1116,
+          555
+        ],
+        [
+          922,
+          517
+        ],
+        [
+          922,
+          592
+        ],
+        [
+          922,
+          20
+        ]
+      ],
+      "inside": [
+        [
+          733,
+          523
+        ],
+        [
+          1110,
+          586
+        ]
+      ],
+      "counter": 2
+    },
+    "returned": {
+      "client": [
+        720,
+        540
+      ],
+      "viewport": [
+        0,
+        67,
+        720,
+        472
+      ],
+      "button": [
+        410,
+        337,
+        626,
+        377
+      ],
+      "outside": [
+        [
+          407,
+          357
+        ],
+        [
+          628,
+          357
+        ],
+        [
+          518,
+          334
+        ],
+        [
+          518,
+          379
+        ],
+        [
+          518,
+          33
+        ]
+      ],
+      "inside": [
+        [
+          413,
+          340
+        ],
+        [
+          622,
+          373
+        ]
+      ],
+      "counter": 4
+    },
+    "windowed-reopened": {
+      "client": [
+        720,
+        540
+      ],
+      "viewport": [
+        0,
+        67,
+        720,
+        472
+      ],
+      "button": [
+        410,
+        337,
+        626,
+        377
+      ],
+      "outside": [
+        [
+          407,
+          357
+        ],
+        [
+          628,
+          357
+        ],
+        [
+          518,
+          334
+        ],
+        [
+          518,
+          379
+        ],
+        [
+          518,
+          33
+        ]
+      ],
+      "inside": [
+        [
+          413,
+          340
+        ],
+        [
+          622,
+          373
+        ]
+      ],
+      "counter": 2
+    }
+  },
+  "saved": {
+    "new": "version: 1\nvalues:\n  width: 720\n  height: 540\n  fullscreen: true\n  vsync: false\n",
+    "fullscreen-reopened": "version: 1\nvalues:\n  width: 720\n  height: 540\n  fullscreen: false\n  vsync: true\n",
+    "windowed-reopened": "version: 1\nvalues:\n  width: 720\n  height: 540\n  fullscreen: false\n  vsync: true\n"
+  }
+}

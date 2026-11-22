@@ -1,0 +1,45 @@
+{
+  "platform": "Debian GNU/Linux 12 (bookworm)",
+  "architecture": "X64",
+  "group": "\uC218\uC9D1\uD488",
+  "tag": "Coin",
+  "prefabReopened": true,
+  "reachedScene": "97ae2562-6e93-5e7a-be3b-45ec603896c6",
+  "input": "Interact, Right; restart, Interact, CarryCoin, Left, Right",
+  "changes": [
+    {
+      "stage": "before-open",
+      "count": 0,
+      "ids": []
+    },
+    {
+      "stage": "spawn-tick",
+      "count": 1,
+      "ids": [
+        "46a532b3-6f69-463f-93f8-2909feffce8b"
+      ]
+    },
+    {
+      "stage": "pickup-tick",
+      "count": 0,
+      "ids": []
+    },
+    {
+      "stage": "leaving-with-coin",
+      "count": 1,
+      "ids": [
+        "7eff6e3f-49aa-4a96-b367-49f91464aa1d"
+      ]
+    },
+    {
+      "stage": "old-room-after-exit",
+      "count": 0,
+      "ids": []
+    },
+    {
+      "stage": "second-room",
+      "count": 0,
+      "ids": []
+    }
+  ]
+}

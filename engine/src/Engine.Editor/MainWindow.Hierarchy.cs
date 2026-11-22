@@ -143,7 +143,7 @@ public partial class MainWindow
         tilemap.Click += (_,_)=>CreateTilemap(parent);
         menu.Items.Add(tilemap);
         var ui = new MenuItem { Header = "UI" };
-        foreach (var kind in new[] { "Canvas", "Group", "Layout", "Scroll View", "Text", "Text Field", "Image", "Button" })
+        foreach (var kind in new[] { "Canvas", "Group", "Layout", "Scroll View", "Text", "Text Field", "Image", "Button", "Slider", "Toggle", "Dropdown" })
         {
             var option = new MenuItem { Header = kind };
             option.Click += (_, _) =>

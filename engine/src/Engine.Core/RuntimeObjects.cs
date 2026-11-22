@@ -22,11 +22,14 @@ public interface IGameObjects
     CutsceneExit? LastCutsceneExit { get; }
     bool TryGetBonePose(Guid id,string bone,out BonePose2D pose);
     bool SetSprite(Guid id, SpriteReference sprite);
+    bool TryGetSpriteColor(Guid id, out Color color) { color = default; return false; }
     bool SetSpriteTint(Guid id, string? tint);
     bool SetColliderEnabled(Guid id, bool enabled);
     bool IsColliderEnabled(Guid id);
     bool SetActive(Guid id, bool active);
     bool IsActive(Guid id);
+    IReadOnlyList<Guid> FindByTag(string tag);
+    IReadOnlyList<Guid> FindByGroup(string group);
     bool TryGetPosition(Guid id, out Vector2 position);
     bool TryGetWorldMatrix(Guid id, out Matrix3x2 transform);
     bool TryGetLocalTransform(Guid id, out LocalTransform2D transform);
@@ -69,7 +72,9 @@ public sealed partial class SceneGame
             body.Interface || body.Appearance.Image == null)
             throw new InvalidOperationException("A sprite pool requires a live world object with a Sprite Renderer.");
         if (body.SpritePool != null) throw new InvalidOperationException("This object already owns a sprite pool.");
-        return body.SpritePool = new(capacity, body.Size, body.Appearance);
+        body.SpritePool = new(capacity, body.Size, body.Appearance);
+        body.RenderGrid?.Mark(body.RenderOrdinal);
+        return body.SpritePool;
     }
 
     public SpritePoolStats PoolStatistics(out int unbatchedPools)
@@ -183,7 +188,12 @@ public sealed partial class SceneGame
         // Runtime prefab resources can be absent from the scene's initial asset list.
         // Prepare this batch before publishing IDs or running creation callbacks.
         PreparingBodies?.Invoke(staged.Values);
-        foreach (var body in staged.Values) { byId.Add(body.Id, body); world.Objects.Add(body.Source); added.Add(body); }
+        foreach (var body in staged.Values)
+        {
+            RegisterBody(body);
+            world.Objects.Add(body.Source);
+            added.Add(body);
+        }
         dirty = true;
         RegisterLife(staged.Values);
         FlushLife();
@@ -195,7 +205,7 @@ public sealed partial class SceneGame
         if (closing || !byId.TryGetValue(id, out var root) || removed.Contains(id)) return false;
         foreach (var obj in world.ParentFirst(root.Source).Reverse())
         {
-            if (!removed.Add(obj.Id)) continue;
+            if (!MarkRemoved(obj)) continue;
             var body = byId[obj.Id];
             if (body.Active) QueueLife(body,LifeEvent.Disable);
             body.Active = false;
@@ -247,6 +257,14 @@ public sealed partial class SceneGame
         body.Renderer = next;
         if (body.SpritePool != null) body.SpritePool.Appearance = appearance;
         AssetsChanged?.Invoke();
+        return true;
+    }
+
+    public bool TryGetSpriteColor(Guid id, out Color color)
+    {
+        color = default;
+        if (removed.Contains(id) || !byId.TryGetValue(id, out var body) || body.Renderer == null) return false;
+        color = body.DisplayAppearance.Color;
         return true;
     }
 
@@ -318,8 +336,20 @@ public sealed partial class SceneGame
             if (parentFirst[i].Source.ParentId is Guid id)
                 byId[id].SubtreeEnd = Math.Max(byId[id].SubtreeEnd, parentFirst[i].SubtreeEnd);
         colliders = bodies.Where(b => b.ColliderConfig != null).ToArray();
+        queryGrid = colliders.Length >= 32 ? new ColliderGrid(colliders) : null;
+        for (int i = 0; i < colliders.Length; i++)
+        {
+            colliders[i].ColliderOrdinal = i;
+            colliders[i].QueryGrid = queryGrid;
+        }
         solids = colliders.Where(b => !b.ColliderConfig!.IsTrigger).ToArray();
         drawOrder = new WorldDrawOrder(world.Objects, DrawMatrix);
+        renderGrid = bodies.Length >= 128 ? new RenderGrid(bodies) : null;
+        for (int i = 0; i < bodies.Length; i++)
+        {
+            bodies[i].RenderGrid = renderGrid;
+            bodies[i].RenderOrdinal = i;
+        }
         foreach (var b in parentFirst)
             b.MotionOwner = b.Rigid != null ? b : b.Source.ParentId is Guid parent ? byId[parent].MotionOwner : null;
         rigidBodies = parentFirst.Where(b => b.Rigid != null).ToArray();

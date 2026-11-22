@@ -1,0 +1,3 @@
+execution	initial upper X	initial lower X	final upper X	final lower X	upper delta (screen px)	lower delta (screen px)
+Release	288	288	592	693	304	405
+NativeAOT	288	288	584	683	296	395

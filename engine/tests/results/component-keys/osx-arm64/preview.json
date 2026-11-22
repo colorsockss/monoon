@@ -1,0 +1,82 @@
+[
+  {
+    "label": "lid",
+    "tick": 0,
+    "rotation": 0,
+    "scaleX": 1,
+    "scaleY": 1,
+    "argb": "FFEBB854"
+  },
+  {
+    "label": "lid",
+    "tick": 15,
+    "rotation": -12,
+    "scaleX": 1,
+    "scaleY": 1.2,
+    "argb": "FFEBB854"
+  },
+  {
+    "label": "lid",
+    "tick": 30,
+    "rotation": -24,
+    "scaleX": 1,
+    "scaleY": 1.4,
+    "argb": "FFEBB854"
+  },
+  {
+    "label": "lid",
+    "tick": 45,
+    "rotation": -12,
+    "scaleX": 1,
+    "scaleY": 1.2,
+    "argb": "FFEBB854"
+  },
+  {
+    "label": "lid",
+    "tick": 60,
+    "rotation": 0,
+    "scaleX": 1,
+    "scaleY": 1,
+    "argb": "FFEBB854"
+  },
+  {
+    "label": "coin",
+    "tick": 0,
+    "rotation": 0,
+    "scaleX": 1,
+    "scaleY": 1,
+    "argb": "FFFFFFFF"
+  },
+  {
+    "label": "coin",
+    "tick": 15,
+    "rotation": 0,
+    "scaleX": 1,
+    "scaleY": 1,
+    "argb": "999FE1CF"
+  },
+  {
+    "label": "coin",
+    "tick": 30,
+    "rotation": 0,
+    "scaleX": 1,
+    "scaleY": 1,
+    "argb": "333FC39F"
+  },
+  {
+    "label": "coin",
+    "tick": 45,
+    "rotation": 0,
+    "scaleX": 1,
+    "scaleY": 1,
+    "argb": "999FE1CF"
+  },
+  {
+    "label": "coin",
+    "tick": 60,
+    "rotation": 0,
+    "scaleX": 1,
+    "scaleY": 1,
+    "argb": "FFFFFFFF"
+  }
+]

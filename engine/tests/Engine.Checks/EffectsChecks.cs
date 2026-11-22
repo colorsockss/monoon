@@ -44,6 +44,8 @@ internal static class EffectsChecks
                 light.GetPixel(0,0).Alpha==0,"point light fades from its center to zero outside the radius");
         using (var puff=ShaderPixels.Bake(ShaderClip.Puff,Color.White))
             Check(puff.GetPixel(6,6).Alpha==255 && puff.GetPixel(0,0).Alpha==0,"dust has a transparent soft edge");
+        // This scenario measures one dust burst on flat ground while the runner moves away.
+        scene.Objects.Remove(scene.Objects.Single(o => o.Name == "Jump-through ledge"));
         using var game=new GameSession(scene);
         var canvas=new Canvas();
         const float dt=1f/60;

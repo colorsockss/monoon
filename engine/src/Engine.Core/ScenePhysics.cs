@@ -6,12 +6,20 @@ namespace Engine.Core;
 public sealed partial class SceneGame : IPhysics2D
 {
     public IPhysics2D Physics => this;
+    public PhysicsQueryDiagnostics QueryDiagnostics { get; } = new();
+    private ColliderGrid? queryGrid;
     private readonly record struct Obstacle(Shape2D Shape, PhysicsTarget Target);
     private IEnumerable<Obstacle> Candidates(RectangleF bounds,uint mask,bool triggersIncluded,Guid? ignore,
-        int first=-1,int last=-1,int movingLayer=-1,Body? ignoreOwner=null)
+        int first=-1,int last=-1,int movingLayer=-1,Body? ignoreOwner=null,bool measure=false)
     {
-        foreach (var body in triggersIncluded?colliders:solids)
+        var indices = QueryDiagnostics.UseSpatialIndex ? queryGrid?.Find(bounds) : null;
+        var source = triggersIncluded ? colliders : solids;
+        int count = indices?.Count ?? source.Length;
+        if (measure) QueryDiagnostics.LastColliderCandidates = count;
+        for (int i = 0; i < count; i++)
         {
+            var body = indices != null ? colliders[indices[i]] : source[i];
+            if (indices != null && !triggersIncluded && body.ColliderConfig!.IsTrigger) continue;
             if (body.Collider is not {} c || !Allows(body,c.Layer,c.Mask,mask,ignore,first,last,movingLayer,ignoreOwner)) continue;
             var shape=body.ShapeAt(body.Position);
             if (BoundsMeet(bounds,shape.Bounds)) yield return new(shape,new(body.Id,c.Layer,c.IsTrigger,null));
@@ -43,8 +51,7 @@ public sealed partial class SceneGame : IPhysics2D
             local.Inflate(.001f,.001f);
             foreach (var (cell,id) in map.InView(Vector2.Zero,local))
             {
-                if (!body.Palette.Tiles[id].Solid) continue;
-                var shape=CollisionGeometry.Tile(map.Bounds(Vector2.Zero,cell),map.Layout,m);
+                if (TileCollision.WorldShape(body.Palette.Tiles[id], map.Bounds(Vector2.Zero,cell), map.Layout, m) is not {} shape) continue;
                 if (BoundsMeet(search,shape.Bounds)) yield return new(shape,new(body.Id,map.CollisionLayer,false,cell));
             }
         }
@@ -72,7 +79,7 @@ public sealed partial class SceneGame : IPhysics2D
     {
         shape.Check();
         var found=new List<PhysicsTarget>();
-        foreach (var o in Candidates(shape.Bounds,filter?.Mask??uint.MaxValue,filter?.IncludeTriggers??false,filter?.Ignore))
+        foreach (var o in Candidates(shape.Bounds,filter?.Mask??uint.MaxValue,filter?.IncludeTriggers??false,filter?.Ignore,measure:true))
             if (CollisionGeometry.Overlap(shape,o.Shape)) found.Add(o.Target);
         found.Sort(Compare);
         if(Diagnostics is {Queries:true} debug)debug.Record(new(Time.TickCount,QueryKind.Overlap,shape,default,found.Count,found.Count>0?found[0]:null,null));
@@ -94,7 +101,7 @@ public sealed partial class SceneGame : IPhysics2D
     private PhysicsHit? QueryCast(Shape2D shape,Vector2 travel,PhysicsFilter? filter,QueryKind kind)
     {
         PhysicsHit? best=null;
-        foreach (var o in Candidates(SweptBounds(shape,travel),filter?.Mask??uint.MaxValue,filter?.IncludeTriggers??false,filter?.Ignore))
+        foreach (var o in Candidates(SweptBounds(shape,travel),filter?.Mask??uint.MaxValue,filter?.IncludeTriggers??false,filter?.Ignore,measure:true))
         {
             var hit=CollisionGeometry.Cast(shape,travel,o.Shape,true,false);
             if (hit is not {} h || best is {} b && (h.Time>b.Fraction || h.Time==b.Fraction && Compare(o.Target,b.Target)>=0)) continue;

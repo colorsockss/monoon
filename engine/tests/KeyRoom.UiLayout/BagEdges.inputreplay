@@ -1,0 +1,53 @@
+version: 1
+project: 64fb4cd6-2469-5cec-ba6d-9a49e61f42e7
+startScene: 64fb4cd6-2469-5cec-ba6d-9a49e61f42e7
+frameTicks: [166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667]
+events:
+- frame: 1
+  timeTicks: 166667
+  input: {kind: key, control: "2", down: true}
+- frame: 2
+  timeTicks: 333334
+  input: {kind: key, control: "2", down: false}
+- frame: 3
+  timeTicks: 500001
+  input: {kind: key, control: "I", down: true}
+- frame: 4
+  timeTicks: 666668
+  input: {kind: key, control: "I", down: false}
+- frame: 5
+  timeTicks: 833335
+  input: {kind: key, control: "L", down: true}
+- frame: 6
+  timeTicks: 1000002
+  input: {kind: key, control: "L", down: false}
+- frame: 7
+  timeTicks: 1166669
+  input: {kind: pointer, control: Mouse.Left, x: 721, y: 380, down: true}
+- frame: 8
+  timeTicks: 1333336
+  input: {kind: pointer, control: Mouse.Left, x: 721, y: 380, down: false}
+- frame: 9
+  timeTicks: 1500003
+  input: {kind: key, control: "F5", down: true}
+- frame: 10
+  timeTicks: 1666670
+  input: {kind: key, control: "F5", down: false}
+- frame: 11
+  timeTicks: 1833337
+  input: {kind: pointer, control: Mouse.Left, x: 715, y: 380, down: true}
+- frame: 12
+  timeTicks: 2000004
+  input: {kind: pointer, control: Mouse.Left, x: 715, y: 380, down: false}
+- frame: 13
+  timeTicks: 2166671
+  input: {kind: key, control: "1", down: true}
+- frame: 14
+  timeTicks: 2333338
+  input: {kind: key, control: "1", down: false}
+- frame: 15
+  timeTicks: 2500005
+  input: {kind: key, control: "F5", down: true}
+- frame: 16
+  timeTicks: 2666672
+  input: {kind: key, control: "F5", down: false}

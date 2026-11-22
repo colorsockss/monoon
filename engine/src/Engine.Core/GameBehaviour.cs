@@ -16,6 +16,15 @@ public sealed partial record ScriptComponent : SceneComponent
     internal IReadOnlyDictionary<Guid, Guid>? InstanceIds { get; set; }
     internal Guid InstanceId(Guid id) => InstanceIds?.GetValueOrDefault(id, id) ?? id;
 
+    // Also used by the statically generated factory when a player loads older content.
+    public string SerializedFieldName(string current, params ReadOnlySpan<string> formerNames)
+    {
+        if (!Values.ContainsKey(current))
+            foreach (var name in formerNames)
+                if (Values.ContainsKey(name)) return name;
+        return current;
+    }
+
     internal Guid[] ReadReferences(string name, bool sceneObjects)
     {
         if (!Values.TryGetValue(name, out var stored)) return [];
@@ -111,6 +120,7 @@ public abstract partial class GameBehaviour
     public virtual void UpdateUi(UiTick tick) { }
     public virtual void FixedUpdate(ScriptTick tick) { }
     public virtual void OnAnimationEvent(ScriptAnimationEvent frame) { }
+    public virtual void OnUiValueChanged(UiValueChanged change) { }
     public virtual void OnUiClick(UiClick click) { }
     public virtual void OnTriggerEnter(ScriptContact contact) { }
     public virtual void OnTriggerStay(ScriptContact contact) { }

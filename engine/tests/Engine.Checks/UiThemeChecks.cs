@@ -50,6 +50,21 @@ internal static class UiThemeChecks
             probe.Slices[0].Dest.Right==probe.Slices[1].Dest.Left,"undersized destinations do not overlap");
         try { _=new UiNineSlice(new(8,1,8,1),new(16,16)); throw new Exception("overlapping source borders accepted"); }
         catch(InvalidDataException) { }
+        var controls = guide.CreateUi("Canvas", null);
+        controls.GetComponent<UiCanvasComponent>()!.Order = 100;
+        foreach (var (kind, y) in new[] { ("Slider", 40), ("Toggle", 80), ("Dropdown", 120) })
+        {
+            var widget = guide.CreateUi(kind, controls);
+            widget.X = 200; widget.Y = y;
+            widget.GetComponent<UiControlComponent>()!.Style = "button";
+            ui = new ScreenUi(guide, assets);
+            Paint(widget.Id, "#33566A");
+            ui.FocusWidget(widget.Id);
+            Paint(widget.Id, "#365F86");
+            ui.SetInteractable(widget.Id, false);
+            Paint(widget.Id, "#343F49");
+        }
+
     }
 
     private static void Check(bool ok,string title)

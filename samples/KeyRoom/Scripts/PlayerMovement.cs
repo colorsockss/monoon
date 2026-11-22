@@ -1,15 +1,18 @@
 using System;
 using System.Numerics;
+using System.Linq;
 using Engine.Core;
+using KeyRoom.Rules;
 
 public sealed class PlayerMovement : GameBehaviour
 {
-    public float Speed = 240f;
+    [FormerlySerializedAs("Speed")]
+    public float MoveSpeed = 240f;
 
     public override void FixedUpdate(ScriptTick tick)
     {
         if (tick.Input.Pressed("CarryCoin")) ToggleCoin(tick);
-        tick.Move(tick.Direction * (Speed * tick.DeltaTime));
+        tick.Move(tick.Direction * (MoveSpeed * tick.DeltaTime));
     }
 
     private static void ToggleCoin(ScriptTick tick)
@@ -18,10 +21,11 @@ public sealed class PlayerMovement : GameBehaviour
         var reach = Shape2D.Circle(tick.Position, 128);
         Guid? nearest = null;
         float distance = float.PositiveInfinity;
+        var collectibles = objects.FindByGroup(LootRules.Collectibles);
         foreach (var hit in objects.Physics.Overlap(reach, new PhysicsFilter(IncludeTriggers: true)))
         {
             var coin = hit.ObjectId;
-            if (objects.GetComponent<CollectCoin>(coin) == null || !objects.TryGetParent(coin, out var parent)) continue;
+            if (!collectibles.Contains(coin) || !objects.TryGetParent(coin, out var parent)) continue;
             if (parent == tick.ObjectId)
             {
                 objects.SetParent(coin, null, keepWorld: true);

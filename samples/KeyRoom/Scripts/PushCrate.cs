@@ -26,6 +26,6 @@ public sealed class PushCrate : GameBehaviour
         var offset = tick.Position - player;
         if (Math.Abs(offset.X) <= Math.Abs(offset.Y) || offset.X * horizontal <= 0) return;
         if (Player.Resolve(tick.Objects) is {} movement)
-            tick.Objects.TryMoveStep(tick.ObjectId, new Vector2(horizontal * movement.Speed * tick.DeltaTime, 0));
+            tick.Objects.TryMoveStep(tick.ObjectId, new Vector2(horizontal * movement.MoveSpeed * tick.DeltaTime, 0));
     }
 }

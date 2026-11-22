@@ -124,13 +124,13 @@ public sealed partial class SceneGame : IBodyMotion2D
             if (member.MotionOwner == root) member.Translate(path);
     }
 
-    private PhysicsHit? CastBody(Body root, Vector2 delta, Body? skip = null, bool floorOnly = false)
+    private PhysicsHit? CastBody(Body root, Vector2 delta, Body? skip = null, bool floorOnly = false, float lift = 0)
     {
         PhysicsHit? best = null;
         foreach (var member in Subtree(root))
         {
             if (member.MotionOwner != root || !member.Active || member.Collider is not { IsTrigger: false } collider) continue;
-            var shape = member.ShapeAt(member.Position);
+            var shape = member.ShapeAt(member.Position - new Vector2(0, lift));
             foreach (var obstacle in Candidates(SweptBounds(shape, delta), collider.Mask, false, null, movingLayer: collider.Layer, ignoreOwner: root))
             {
                 var targetBody = byId[obstacle.Target.ObjectId];
@@ -198,14 +198,15 @@ public sealed partial class SceneGame : IBodyMotion2D
                 var point = Vector2.Transform(member.Position, turn);
                 var next = member.ShapeAt(point, member.Angle + step);
                 foreach (var obstacle in Candidates(next.Bounds, c.Mask, false, null, movingLayer: c.Layer, ignoreOwner: b))
-                    if (CollisionGeometry.Overlap(next, obstacle.Shape)) { b.Spin = 0; return; }
+                    if (CollisionGeometry.Overlap(next, obstacle.Shape) && (obstacle.Shape.FaceNormal == default ||
+                        CollisionGeometry.FaceGap(member.ShapeAt(member.Position), obstacle.Shape) >= -.0001f))
+                    { b.Spin = 0; return; }
             }
             foreach (var member in group)
             {
                 if (member.MotionOwner != b) continue;
                 var delta = Vector2.Transform(member.Position, turn) - member.Position;
-                member.Translate(new(default, default, 0, delta, 1));
-                member.Angle += step;
+                member.Translate(new(default, default, 0, delta, 1), step);
             }
         }
     }
@@ -273,17 +274,24 @@ public sealed partial class SceneGame : IBodyMotion2D
                 if (prior != null) b.Velocity.Y = -speed * b.GroundNormal.X / b.GroundNormal.Y;
             }
             if (b.Motor == null || prior == null) b.Velocity.Y += b.Rigid!.Gravity * dt;
+            // A descending motor can acquire upward tangent velocity on first contact with a ramp.
+            // Preserve its eligibility for the ground probe across that collision response.
+            bool descendingMotor = b.Motor != null && b.Velocity.Y >= 0;
             SweepBody(b, b.Velocity * dt + b.Displacement, true);
             RotateBody(b, b.Spin * dt);
             var snap = b.Motor != null && prior != null ? Math.Max(.08f, b.Motor.GroundSnap) : .08f;
-            var floor = (prior != null || b.Velocity.Y >= -.01f) ? CastBody(b, new(0, snap), floorOnly: true) : null;
+            // Recover rounding on both sides of a resting surface instead of accumulating
+            // tiny penetrations that can expose a neighboring tile's internal edge.
+            float lift = b.Motor != null && prior != null ? .002f : 0;
+            var floor = (prior != null || descendingMotor || b.Velocity.Y >= -.01f)
+                ? CastBody(b, new(0, snap + lift), floorOnly: true, lift: lift) : null;
             b.Support = floor is {} grounded ? byId[grounded.Target.ObjectId] : null;
             if (floor is {} ground)
             {
                 b.GroundNormal = ground.Normal;
                 if (b.Motor != null)
                 {
-                    TranslateGroup(b, new(0, ground.Distance));
+                    TranslateGroup(b, new(0, ground.Distance - lift));
                     b.Velocity.Y = 0;
                 }
             }

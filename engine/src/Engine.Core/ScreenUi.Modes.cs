@@ -58,7 +58,7 @@ public sealed partial class ScreenUi
     {
         InputModeRevision++;
         InputModeChanged?.Invoke();
-        clicks.Clear();
+        controlEvents.Clear();
         CancelPointer();
         SetFocus(null);
         OrderModeLayers();

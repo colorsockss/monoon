@@ -3,7 +3,7 @@ gameTitle: SeedLab
 width: 800
 height: 450
 startScene: 0cfbf6ac-2359-53aa-abc6-f603bdf4dbee
-includedScenes: [0cfbf6ac-2359-53aa-abc6-f603bdf4dbee]
+includedScenes: [0cfbf6ac-2359-53aa-abc6-f603bdf4dbee, fecb609a-9302-5710-a253-9ccc6e859b64]
 input:
   actions:
   - name: MoveLeft
@@ -28,3 +28,11 @@ input:
     controls: ["J"]
   - name: SaveReplay
     controls: ["K"]
+  - name: SwitchLab
+    controls: ["G"]
+  - name: ToggleGate
+    controls: ["O"]
+  - name: RouteDirections
+    controls: ["V"]
+  - name: MudCost
+    controls: ["M"]

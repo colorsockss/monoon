@@ -1,3 +1,4 @@
+using System.Globalization;
 using Avalonia.Controls;
 using Avalonia.Media.Imaging;
 using Engine.Core;
@@ -13,7 +14,9 @@ internal partial class TilesetWindow : Window
     private readonly SceneDocument scene;
     private readonly SpriteCache<Bitmap> images = new(p => new Bitmap(p));
     private readonly Dictionary<SpriteRegion, int> terrain = [];
-    private readonly Dictionary<SpriteRegion, bool> solids = [];
+    private sealed record CollisionDraft(int Mode, string Points);
+    private readonly Dictionary<SpriteRegion, CollisionDraft> collisions = [];
+    private static readonly CollisionDraft Empty = new(0, "");
     private readonly Dictionary<int, SpriteRegion> replacements = [];
     private readonly Dictionary<SpriteRegion, TileDefinition> sliced = [];
     private int nextId, missingId;
@@ -37,13 +40,27 @@ internal partial class TilesetWindow : Window
         CellW.Value = original?.TileSize.Width ?? 16; CellH.Value = original?.TileSize.Height ?? 16;
         MarginBox.Value = original?.Margin ?? 0; Gap.Value = original?.Spacing ?? 0;
         Cells.SingleSelection = true;
-        foreach (var tile in original?.Tiles ?? []) { solids[tile.Source] = tile.Solid; terrain[tile.Source] = tile.AutoEdges; }
+        foreach (var tile in original?.Tiles.DistinctBy(t => t.Source) ?? [])
+        {
+            collisions[tile.Source] = new(tile.Collision is {} shape ? shape.OneWay ? 3 : 2 : tile.Solid ? 1 : 0,
+                string.Join("  ", (tile.Collision?.Vertices ?? []).Select(p => FormattableString.Invariant($"{p.X:R},{p.Y:R}"))));
+            terrain[tile.Source] = tile.AutoEdges;
+        }
         foreach (var field in new[] { CellW, CellH, MarginBox, Gap }) field.ValueChanged += (_, _) => Slice();
         Images.SelectionChanged += (_, _) => Slice();
         Cells.SelectionChanged += Describe;
-        Solid.IsCheckedChanged += (_, _) =>
+        ShapeMode.SelectionChanged += (_, _) =>
         {
-            if (!updating && Selected is { } tile) solids[tile.Source] = Solid.IsChecked == true;
+            if (updating || Selected is not {} tile) return;
+            int mode = ShapeMode.SelectedIndex;
+            collisions[tile.Source] = new(mode, mode == 3 ? "0,0  1,0" : mode == 2 ? "0,1  1,0  1,1" : "");
+            Describe();
+        };
+        PointsBox.PropertyChanged += (_, change) =>
+        {
+            if (updating || change.Property != TextBox.TextProperty || Selected is not {} tile) return;
+            collisions[tile.Source] = new(ShapeMode.SelectedIndex, PointsBox.Text ?? "");
+            PreviewCollision(tile);
         };
         TerrainMode.SelectionChanged += (_, _) => {
             if (!updating && Selected is {} tile) terrain[tile.Source] = TerrainMode.SelectedIndex switch { 1 => 4, 2 => 6, _ => 0 };
@@ -60,14 +77,49 @@ internal partial class TilesetWindow : Window
     {
         var tile = Selected;
         updating = true;
-        Solid.IsEnabled = tile != null;
-        Solid.IsChecked = tile != null && solids.GetValueOrDefault(tile.Source);
+        var draft = tile == null ? Empty : collisions.GetValueOrDefault(tile.Source, Empty);
+        ShapeMode.IsEnabled = tile != null;
+        ShapeMode.SelectedIndex = draft.Mode;
+        VerticesRow.IsVisible = draft.Mode >= 2;
+        PointsBox.Text = draft.Points;
         TerrainMode.IsEnabled = tile != null;
         TerrainMode.SelectedIndex = (tile == null ? 0 : terrain.GetValueOrDefault(tile.Source)) switch { 4 => 1, 6 => 2, _ => 0 };
         updating = false;
         if (missingId == 0) Info.Text = tile == null ? $"{sliced.Count} tiles · Select a cell" : $"Tile #{tile.Id} · ({tile.Source.X}, {tile.Source.Y})";
         Replace.IsEnabled = tile != null;
+        PreviewCollision(tile);
     }
+    private TileDefinition WithCollision(TileDefinition tile)
+    {
+        var draft = collisions.GetValueOrDefault(tile.Source, Empty);
+        TileCollision? collision = null;
+        if (draft.Mode >= 2)
+        {
+            var vertices = new List<ColliderVertex>();
+            foreach (var pair in draft.Points.Split((char[]?)null, StringSplitOptions.RemoveEmptyEntries))
+            {
+                var xy = pair.Split(',');
+                if (xy.Length != 2 || !float.TryParse(xy[0], NumberStyles.Float, CultureInfo.InvariantCulture, out float x) ||
+                    !float.TryParse(xy[1], NumberStyles.Float, CultureInfo.InvariantCulture, out float y))
+                    throw new InvalidDataException($"Tile #{tile.Id}: enter x,y pairs separated by spaces.");
+                vertices.Add(new(x,y));
+            }
+            collision = new(vertices.ToArray(), draft.Mode == 3);
+            collision.Validate("Tileset",tile.Id);
+        }
+        return tile with { Solid = draft.Mode != 0, Collision = collision };
+    }
+
+    private void PreviewCollision(TileDefinition? tile)
+    {
+        try
+        {
+            Cells.SetCollision(tile == null ? null : WithCollision(tile).Collision);
+            if (tile != null && missingId == 0) Info.Text = $"Tile #{tile.Id} · ({tile.Source.X}, {tile.Source.Y})";
+        }
+        catch (InvalidDataException ex) { Cells.SetCollision(null); Info.Text = ex.Message; }
+    }
+
     private void Slice()
     {
         SheetWindowLayout.UpdateGridButton(ShowGrid, (int)(CellW.Value ?? 0), (int)(CellH.Value ?? 0));
@@ -103,14 +155,14 @@ internal partial class TilesetWindow : Window
             if (relative == null && (name.StartsWith('.') || name.IndexOfAny("<>:\"|?*".ToCharArray()) >= 0))
                 throw new IOException("Choose a visible filename that works on all platforms.");
             if (relative == null && File.Exists(file)) throw new IOException("A tileset with this name already exists.");
-            var tiles = sliced.Values.Select(t => t with { Solid = solids.GetValueOrDefault(t.Source), AutoEdges = terrain.GetValueOrDefault(t.Source) }).ToList();
+            var tiles = sliced.Values.Select(t => WithCollision(t) with { AutoEdges = terrain.GetValueOrDefault(t.Source) }).ToList();
             var retained = tiles.Select(t => t.Id).ToHashSet();
             foreach (var old in original?.Tiles ?? [])
             {
                 if (retained.Contains(old.Id)) continue;
                 // Keep explicit replacements as stable IDs. No scene/prefab rewrites are needed.
                 var dest = replacements.GetValueOrDefault(old.Id, old.Source);
-                if (sliced.ContainsKey(dest)) tiles.Add(old with { Source=dest, Solid=solids.GetValueOrDefault(dest) });
+                if (sliced.ContainsKey(dest)) tiles.Add(WithCollision(old with { Source = dest }));
             }
             var ids = tiles.Select(t => t.Id).ToHashSet();
             if (original != null && original.Tiles.Any(t => !ids.Contains(t.Id)) && assets.IdFor(relative!) is Guid id)

@@ -5,7 +5,7 @@ namespace Engine.Core;
 
 // World shapes are convex polygons, true circles, or a zero-radius point for raycasts.
 // Linear casts use continuous SAT for polygons and analytic face / vertex times for round features.
-internal static class CollisionGeometry
+internal static partial class CollisionGeometry
 {
     private const double Eps = 1e-5;
     private static double Dot(Vector2 a, Vector2 b) => (double)a.X*b.X+(double)a.Y*b.Y;
@@ -115,10 +115,13 @@ internal static class CollisionGeometry
         normal=face<=0 || nearest<Eps*Eps ? faceNormal : Vector2.Normalize(radial);
         return face<=0 ? face : Math.Sqrt(nearest);
     }
-    internal static bool Overlap(Shape2D a,Shape2D b) => Cast(a,Vector2.Zero,b,false,false) != null;
+    internal static bool Overlap(Shape2D a,Shape2D b) => b.FaceNormal == default
+        ? Cast(a,Vector2.Zero,b,false,false) != null
+        : Cast(Shape2D.PointAt(b.Offset + b.Vertices![0]), b.Vertices[1] - b.Vertices[0], a, true, false) != null;
     // query=true includes an initial touch and contact at the endpoint; a trigger needs interior overlap.
     internal static Contact? Cast(Shape2D a,Vector2 travel,Shape2D b,bool query,bool movement)
     {
+        if (b.FaceNormal != default) return CastFace(a, travel, b, query);
         if (a.Vertices!=null && b.Vertices!=null) return Polygons(a,travel,b,query,movement);
         if (a.Vertices!=null)
         {
@@ -197,7 +200,13 @@ internal static class CollisionGeometry
         var offset=a.Offset-b.Offset;
         double speed = Math.Sqrt(Dot(travel, travel));
         double velocityEps = 1e-6 * speed;
-        double simultaneous = movement ? Eps / Math.Max(1e-8, speed) : 0;
+        // World transforms and motor steps arrive as floats. At a tile seam a few ulps
+        // below a shared tangent must not turn the next tile's internal side into a wall.
+        var bounds = a.Bounds;
+        float magnitude = Math.Max(Math.Max(Math.Abs(bounds.Left), Math.Abs(bounds.Right)),
+            Math.Max(Math.Abs(bounds.Top), Math.Abs(bounds.Bottom)));
+        double tangentSlop = movement ? Math.Max(Eps, 4d * (MathF.BitIncrement(magnitude) - magnitude)) : Eps;
+        double simultaneous = movement ? tangentSlop / Math.Max(1e-8, speed) : 0;
         bool Test(Vector2[] edges)
         {
             for (int i=0;i<edges.Length;i++)
@@ -216,7 +225,7 @@ internal static class CollisionGeometry
                 double vAxis=Dot(travel,axis);
                 if (Math.Abs(vAxis)<=velocityEps)
                 {
-                    if (query ? pen < -Eps : pen <= Eps) return false;
+                    if (query ? pen < -Eps : pen <= tangentSlop) return false;
                     continue;
                 }
                 double t1=-left/vAxis,t2=right/vAxis,from=Math.Min(t1,t2);

@@ -1,0 +1,45 @@
+{
+  "platform": "Microsoft Windows 10.0.26100",
+  "architecture": "X64",
+  "group": "\uC218\uC9D1\uD488",
+  "tag": "Coin",
+  "prefabReopened": true,
+  "reachedScene": "97ae2562-6e93-5e7a-be3b-45ec603896c6",
+  "input": "Interact, Right; restart, Interact, CarryCoin, Left, Right",
+  "changes": [
+    {
+      "stage": "before-open",
+      "count": 0,
+      "ids": []
+    },
+    {
+      "stage": "spawn-tick",
+      "count": 1,
+      "ids": [
+        "11363865-6e83-4bfd-894f-1fe9248558d0"
+      ]
+    },
+    {
+      "stage": "pickup-tick",
+      "count": 0,
+      "ids": []
+    },
+    {
+      "stage": "leaving-with-coin",
+      "count": 1,
+      "ids": [
+        "c23aa83c-12cf-48db-a914-43c1d00eee0a"
+      ]
+    },
+    {
+      "stage": "old-room-after-exit",
+      "count": 0,
+      "ids": []
+    },
+    {
+      "stage": "second-room",
+      "count": 0,
+      "ids": []
+    }
+  ]
+}

@@ -46,6 +46,7 @@ public sealed partial class SceneDocument
     private void WriteTemplate(SceneObject root,string path,PrefabLink? old,PrefabLink? baseLink,ProjectAssets assets,bool variant=false)
     {
         var project = ProjectDirectory ?? throw new InvalidOperationException("Save the project first.");
+        NormalizeScriptFields();
         var localIds = old?.Instances.ToDictionary(p => p.Value,p => p.Key) ?? [];
         var originals = ParentFirst(root).ToArray();
         var copies = originals.ToDictionary(o => o.Id,o => NewCopy(o,localIds.GetValueOrDefault(o.Id,Guid.NewGuid())));
@@ -191,6 +192,7 @@ public sealed partial class SceneDocument
 
     private bool RefreshLinks(ProjectAssets assets,HashSet<Guid> active,StringBuilder? dependencies)
     {
+        NormalizeScriptFields(); // Migrate all three sides before merging source revisions.
         bool changed=false;
         var resolved=new Dictionary<Guid,ResolvedPrefab>();
         // An outer template owns its inherited nested roots. Locally added prefab

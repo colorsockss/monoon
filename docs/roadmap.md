@@ -67,6 +67,32 @@
 | 8.3 | Inspector 다중 편집 | 구현 완료. 공통 컴포넌트의 서로 다른 값은 Mixed로 표시한다. KeyRoom의 WallWorkshop 씬에서 벽 10개의 충돌 마스크를 함께 편집하고 Undo 한 번으로 각 인스턴스의 값과 프리팹 오버라이드를 복원한다. [사용법](manual/editor.md#inspector에서-충돌-마스크-함께-편집하기) · [검증 기록](../engine/tests/results/inspector-multi-edit/README.md) |
 | 8.4 | 월드 오브젝트 클릭·드래그 | 구현 완료. KeyRoom의 PointerWorkshop에서 겹친 상자 중 앞의 상자만 움직인다. 드래그를 시작한 카메라와 잡은 지점을 유지하며 UI 버튼이 뒤의 상자 입력을 차단한다. macOS arm64와 Windows·Linux x64 배포 에디터에서 확인했다. [사용법](manual/input-actions.md#월드-오브젝트-클릭과-드래그) · [검증 기록](../engine/tests/results/world-pointer/README.md) |
 | 8.5 | 플레이어 저장 슬롯 복구 | 구현 완료. 슬롯별 직전 정상본을 보존하고 최신 파일이 누락되거나 손상되면 불러올 때 복구한다. InventoryLab에서 약초 의뢰 보상 수령 후 서로 다른 두 저장을 만들고, 직전 저장의 수량·수령 상태 복원과 보상 재청구를 검사한다. [사용법](manual/player-data.md#직전-저장으로-복구하기) · [검증 기록](../engine/tests/results/slot-recovery/README.md) |
-| 8.6 | 인게임 설정 위젯 | 테마와 키보드·패드 탐색을 지원하는 슬라이더·토글·드롭다운을 제공한다. AudioLab에서 마우스·방향키·패드로 음악 볼륨을 같은 값에 맞추고, 효과음 볼륨과 재실행 후 설정값을 확인한다. |
-| 8.7 | 데스크톱 화면 설정 | 창 모드·테두리 없는 전체 화면·VSync를 선택하고 재실행 후 복원한다. macOS·Windows·Linux에서 전체 화면을 나왔을 때 이전 창 크기, 16:9 화면 비율, 버튼의 클릭 영역을 확인한다. |
-| 8.8 | 대형 씬의 물리 질의 최적화 | CollisionLab에서 충돌체 1천 개와 1만 개를 배치해 공간 인덱스 적용 전후에 같은 질의를 실행한다. 적중 대상·순서를 대조하고 검사한 후보 수와 95백분위 질의 시간을 비교한다. |
+| 8.6 | 인게임 공통 UI 위젯 | 구현 완료. 슬라이더·토글·드롭다운이 테마와 마우스·키보드·게임패드 탐색을 공유한다. AudioLab에서 세 입력으로 음악을 60%로 맞추고 효과음 75% 유지와 재실행 후 복원을 macOS arm64·Windows x64·Linux x64에서 확인했다. [위젯 사용법](manual/game-ui.md#슬라이더토글드롭다운) · [세 OS 검증 기록](../engine/tests/results/ui-controls/README.md) |
+| 8.7 | 데스크톱 화면 설정 | 구현 완료. DisplayLab에서 창 모드·테두리 없는 전체 화면과 VSync를 바꾸고 재실행 후 복원한다. macOS arm64와 Windows·Linux x64에서 전체 화면을 나왔을 때 720×540 창 크기, 16:9 게임 영역, 버튼 안팎 클릭을 확인했다. [사용법](manual/game-ui.md#데스크톱-화면-설정) · [플랫폼별 검증 현황](../engine/tests/results/desktop-display/README.md) |
+| 8.8 | 대형 씬의 물리 질의 최적화 | 구현 완료. 공간 격자로 겹침·레이캐스트·스윕 후보를 줄인다. CollisionLab의 충돌체 1천 개·1만 개 씬에서 전체 순회와 적중 대상·순서를 대조한다. [샘플 조작법](manual/collision.md#대형-씬의-공간-인덱스) · [세 OS의 후보 수와 p95](../engine/tests/results/spatial-queries/README.md) |
+
+## 9. 게임 제작 반복 작업과 대형 씬 개선
+
+| 순서 | 기능 | 범위와 완료 기준 |
+| --- | --- | --- |
+| 9.1 | Play Inspector 실시간 편집과 선택 적용 | 구현 완료. Play 중 스크립트 숫자와 로컬 Transform을 조정한다. KeyRoom에서 Speed 240→320을 시험하고 Stop하면 240으로 돌아온다. Speed만 선택 적용하면 320이 씬에 저장되고 Undo 한 번으로 복원된다. [사용법](manual/play-diagnostics.md#play-중-값-조정과-선택-적용) · [배포 에디터 검증](../engine/tests/results/play-inspector/README.md) |
+| 9.2 | 태그·그룹 기반 오브젝트 조회 | 구현 완료. Inspector에서 태그와 그룹을 지정하고, 스크립트와 Play의 Debug 패널에서 멤버를 조회한다. KeyRoom의 코인이 생성되면 수집품 목록에 들어오고 획득·씬 이탈 시 빠진다. [사용법](manual/runtime-prefabs.md#태그그룹으로-오브젝트-찾기) · [배포 에디터 검증](../engine/tests/results/object-groups/README.md) |
+| 9.3 | 카메라별 렌더링 후보 축소 | 구현 완료. 카메라별 공간 격자에서 후보를 골라 기존 Y 정렬과 그룹 순서로 그린다. CollisionLab의 1만 개 필드에 기본 카메라와 미니맵을 배치했다. [샘플 조작법](manual/cameras.md#대형-씬에서-두-카메라-확인하기) · [화면 대조와 CPU 측정](../engine/tests/results/render-candidates/README.md) |
+| 9.4 | 콘텐츠 증분 빌드와 재빌드 사유 | 구현 완료. 글리프·셰이더 시트·타일 청크·번들의 입력을 추적해 다시 만든 이유를 표시한다. InventoryLab 대사 한 줄 변경 후 전체 빌드의 콘텐츠 해시와 약초 의뢰 리플레이를 대조한다. [사용법](manual/build.md#콘텐츠-증분-빌드와-재빌드-사유) · [검증 기록](../engine/tests/results/incremental-content/README.md) |
+| 9.5 | 부모 크기에 맞춰 늘어나는 UI와 해상도 미리보기 | 구현 완료. UI Rect에서 네 변의 여백을 각각 고정하고 Scene 편집·Play에서 해상도와 언어·글자 배율을 미리 본다. KeyRoom 가방으로 부모 폭 변경과 한글 200%에서의 클릭 경계를 검사한다. [사용법](manual/game-ui.md#가장자리-고정과-해상도-미리보기) · [검증 기록](../engine/tests/results/ui-layout/README.md) |
+| 9.6 | 컴포넌트 속성 키프레임 애니메이션 | 구현 완료. 타임라인에서 로컬 회전·X/Y 스케일·색·불투명도 키를 편집한다. KeyRoom의 상자 뚜껑과 코인을 각 클립의 다섯 시점에서 비교한다. [사용법](manual/sprites.md#컴포넌트-속성-키프레임) · [검증 기록](../engine/tests/results/component-keys/README.md) |
+| 9.7 | 타일별 충돌 도형과 단방향 발판 | 구현 완료. 타일별 볼록 다각형과 방향이 있는 선분을 편집한다. PlatformerLab에서 경사 타일 5개를 왕복하고 발판 아래에서 뛰어올라 착지한다. [사용법](manual/tilemaps.md#타일별-충돌-도형과-단방향-발판) · [검증 기록](../engine/tests/results/tile-collision/README.md) |
+| 9.8 | 탑다운 그리드 길찾기와 이동 비용 | 구현 완료. 4·8방향 A* 탐색과 칸별 진입 비용을 지원한다. SeedLab 배달원이 진흙을 우회하고, 이동 중 문을 열면 현재 칸에서 지름길을 다시 찾는다. [샘플 조작법](manual/navigation.md#탑다운-그리드-길찾기) · [검증 기록](../engine/tests/results/grid-navigation/README.md) |
+
+## 10. 프로젝트 데이터 보존과 제작·실행 개선
+
+| 순서 | 기능 | 범위와 완료 기준 |
+| --- | --- | --- |
+| 10.1 | 스크립트 필드 이름 변경 시 데이터 보존 | 구현 완료. 이전 이름을 선언하면 씬·프리팹과 인스턴스 오버라이드가 새 필드로 이어진다. KeyRoom의 원본 240과 개별 설정 320을 저장·재열기와 데스크톱 3종의 Scene Play·Release·Native AOT에서 확인했다. [사용법](manual/scripting.md#inspector-필드-이름-바꾸기) · [검증 기록](../engine/tests/results/script-field-renames/README.md) |
+| 10.2 | 플레이어 조작키 설정과 영구 저장 | 게임 안에서 키·패드 바인딩을 교환·취소·복원한다. KeyRoom을 재실행해 상자 열기 입력과 안내가 선택한 바인딩을 함께 따르는지 확인한다. |
+| 10.3 | 느린 프레임의 원인을 찾는 프로파일러 | 프레임을 선택해 스크립트·물리·UI 작업의 호출 수와 시간을 읽는다. CollisionLab의 질의 부하를 Scene Play와 개발용 게임에서 추적한다. |
+| 10.4 | 프리팹 구조 변경의 개별 적용·복원 | 자식·컴포넌트 추가와 삭제를 하나씩 원본에 적용하거나 복원한다. KeyRoom에서 자물쇠만 적용하고 효과음은 해당 상자에 남기는 동작과 Undo를 확인한다. |
+| 10.5 | 데이터로 채우는 인게임 목록 UI | 데이터와 행 모양을 연결하고 화면에 보이는 행을 재사용한다. InventoryLab의 아이템 1,000개를 패드로 탐색한 뒤 정렬해도 선택·사용 대상 ID가 유지돼야 한다. |
+| 10.6 | 타일셋 지형 정보와 런타임 셀 편집 | 타일셋에 지형 비용을 저장하고 게임에서 셀을 읽거나 바꾼다. SeedLab에서 진흙을 칠하거나 문 한 칸을 바꾸면 표시와 이동 경로가 함께 갱신돼야 한다. |
+| 10.7 | 큰 에셋 로딩을 여러 프레임에 나누기 | 백그라운드 디코딩과 프레임당 업로드 예산을 적용한다. 방을 읽는 동안 최장·95백분위 프레임 시간, 전체 로딩 시간 및 취소 후 자원 해제를 비교한다. |
+| 10.8 | 충돌체와 스크립트를 가진 프리팹 풀링 | 반환된 프리팹의 소유자·충돌·이벤트 상태를 초기화한다. BarrageLab에서 재사용한 탄환의 명중 횟수와 생성·제거 대비 GC 할당 및 프레임 시간을 비교한다. |

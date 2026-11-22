@@ -13,12 +13,18 @@ namespace Engine.Core;
 [VYaml.Annotations.YamlObject]
 internal sealed partial record ScriptLocation(string ScriptId);
 
-public sealed class ProjectScripts : ScriptLibrary
+public sealed partial class ProjectScripts : ScriptLibrary
 {
     // Register only when an authoring host loads this assembly; the player never references it.
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Usage", "CA2255", Justification = "Installs the source-project provider for authoring hosts.")]
     [System.Runtime.CompilerServices.ModuleInitializer]
-    internal static void RegisterSourceLibrary() => OpenSource = path => new ProjectScripts(path);
+    internal static void RegisterSourceLibrary() => OpenSource = OpenAuthoringProject;
+
+    // Scene and nested prefab loads share one source compilation on the owning thread.
+    // Current() verifies the source contents before reusing it.
+    [ThreadStatic] private static ProjectScripts? lastProject;
+    private static ProjectScripts OpenAuthoringProject(string path) =>
+        lastProject?.root == Path.GetFullPath(path) ? lastProject : lastProject = new ProjectScripts(path);
 
     public ProjectScripts(string project) : base(project) { }
     internal bool ScenePlay { get; private init; }
@@ -205,13 +211,19 @@ public sealed class ProjectScripts : ScriptLibrary
             foreach (var field in fields)
             {
                 var member = "instance.@" + field.Name;
-                var read = $"component.ReadOverride({SymbolDisplay.FormatLiteral(field.Name,true)}, {member}{(field.TypedReference ? ".ObjectId" : "")})";
+                var key = SymbolDisplay.FormatLiteral(field.Name,true);
+                if (field.FormerNames.Length != 0)
+                {
+                    var aliases = string.Join(", ", field.FormerNames.Select(n => SymbolDisplay.FormatLiteral(n,true)));
+                    key = $"component.SerializedFieldName({key}, {aliases})";
+                }
+                var read = $"component.ReadOverride({key}, {member}{(field.TypedReference ? ".ObjectId" : "")})";
                 if (field.IsAssetList)
-                    read = $"component.ReadAssetList({SymbolDisplay.FormatLiteral(field.Name,true)}, {member}, static id => new global::{field.Type.GetElementType()!.FullName}(id))";
+                    read = $"component.ReadAssetList({key}, {member}, static id => new global::{field.Type.GetElementType()!.FullName}(id))";
                 else if (field.EnumNames != null || field.Type == typeof(Vector2))
                 {
                     string method = field.EnumNames != null ? "ReadEnum" : "ReadVector";
-                    read = $"component.{method}({SymbolDisplay.FormatLiteral(field.Name,true)}, {member})";
+                    read = $"component.{method}({key}, {member})";
                 }
                 factory.AppendLine($"{member} = {(field.TypedReference ? "new(" + read + ")" : read)};");
             }
@@ -278,11 +290,19 @@ public sealed class ProjectScripts : ScriptLibrary
             if (field.DeclaringSyntaxReferences.FirstOrDefault()?.GetSyntax() is not VariableDeclaratorSyntax variable) continue;
             var model = compilation.GetSemanticModel(variable.SyntaxTree);
             var expression = variable.Initializer?.Value;
+            void Add(ScriptField description)
+            {
+                var names = field.GetAttributes().Where(a => a.AttributeClass?.ToDisplayString() == typeof(FormerlySerializedAsAttribute).FullName)
+                    .Select(a => a.ConstructorArguments.FirstOrDefault().Value as string).ToArray();
+                if (names.Any(string.IsNullOrWhiteSpace))
+                    throw new InvalidDataException($"{type.Name}.{field.Name}: a former field name cannot be empty.");
+                fields.Add(description with { FormerNames = names.Select(n => n!).ToArray() });
+            }
             if (field.Type is IArrayTypeSymbol { Rank: 1 } array)
             {
                 var element = SymbolEqualityComparer.Default.Equals(array.ElementType, guid) ? typeof(Guid)
                     : AssetType(array.ElementType);
-                if (element != null) fields.Add(new(field.Name, element.MakeArrayType(), Array.Empty<Guid>()));
+                if (element != null) Add(new(field.Name, element.MakeArrayType(), Array.Empty<Guid>()));
                 continue;
             }
             if (field.Type is INamedTypeSymbol { TypeKind: TypeKind.Enum } enumeration)
@@ -292,13 +312,13 @@ public sealed class ProjectScripts : ScriptLibrary
                 if (!constant.HasValue) continue;
                 var initialName = members.FirstOrDefault(m =>
                     Convert.ToDecimal(m.ConstantValue) == Convert.ToDecimal(constant.Value))?.Name;
-                fields.Add(new(field.Name, typeof(string), initialName, EnumNames: members.Select(m => m.Name).ToArray()));
+                Add(new(field.Name, typeof(string), initialName, EnumNames: members.Select(m => m.Name).ToArray()));
                 continue;
             }
             if (field.Type.ToDisplayString() == typeof(Vector2).FullName)
             {
                 if (VectorDefault(expression == null ? null : model.GetOperation(expression)) is Vector2 vector)
-                    fields.Add(new(field.Name, typeof(Vector2), vector));
+                    Add(new(field.Name, typeof(Vector2), vector));
                 continue;
             }
             Type? fieldType = field.Type.SpecialType switch
@@ -328,8 +348,13 @@ public sealed class ProjectScripts : ScriptLibrary
                 if (!constant.HasValue) continue; // Runtime-initialized fields remain the script's own state.
                 initial = Convert.ChangeType(constant.Value, fieldType, CultureInfo.InvariantCulture);
             }
-            fields.Add(new ScriptField(field.Name, fieldType, initial,targetScript,targetBuiltIn));
+            Add(new ScriptField(field.Name, fieldType, initial,targetScript,targetBuiltIn));
         }
+        var owners = fields.ToDictionary(f => f.Name, f => f.Name, StringComparer.Ordinal);
+        foreach (var field in fields)
+        foreach (var old in field.FormerNames)
+            if (!owners.TryAdd(old, field.Name))
+                throw new InvalidDataException($"{type.Name}: serialized name '{old}' is claimed by '{owners[old]}' and '{field.Name}'.");
         return fields;
     }
 }

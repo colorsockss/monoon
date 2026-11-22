@@ -79,6 +79,7 @@ public sealed class AnimationPlayer : IGameAnimator
         public readonly SpriteClip Clip = clip;
         public readonly SceneAppearance[] Images = images;
         public readonly SpriteClipTimeline Axis = new(clip.Frames);
+        public readonly ComponentCurves? Curves = clip.Tracks is { Length: > 0 } ? new(clip.Tracks, new SpriteClipTimeline(clip.Frames).Duration) : null;
         public readonly int[] Markers = Enumerable.Range(0,clip.Frames.Length).Where(i => clip.Frames[i].Event != null).ToArray();
     }
 
@@ -93,8 +94,9 @@ public sealed class AnimationPlayer : IGameAnimator
     private double time;
     public string State { get; private set; }
     public int Frame => started ? Current.Axis.FrameAt(time) : -1;
-    public SceneAppearance? Appearance => started ? Current.Images[Frame] : null;
-    internal IEnumerable<string> Images => tracks.Values.SelectMany(t => t.Images).Select(image => image.Image!).Distinct();
+    public SceneAppearance? Appearance => started && Current.Images[Frame].Image != null ? Current.Images[Frame] : null;
+    public ComponentPose Pose => started ? Current.Curves?.Sample(time) ?? default : default;
+    internal IEnumerable<string> Images => tracks.Values.SelectMany(t => t.Images).Select(image => image.Image).OfType<string>().Distinct();
 
     public AnimationPlayer(AnimationController controller, string root, ProjectAssets assets)
         : this(controller,root,assets,new()) { }
