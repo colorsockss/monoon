@@ -1,0 +1,347 @@
+schemaVersion: 27
+objects:
+- id: 3f0c2a5e-6b1d-5c4e-9a17-0d4b8e2f7a10
+  name: Main Camera
+  x: 400
+  y: 225
+  width: 40
+  height: 40
+  components:
+  - type: camera2D
+    output: Primary
+    showViews: true
+    order: 0
+    halfLife: 0
+    zoom: 1
+  rotation: 0
+  scaleX: 1
+  scaleY: 1
+  pivotX: 0
+  pivotY: 0
+  shear: 0
+- id: 9d6e1b42-7f3a-5e28-b0c5-4a1f8d3e6c21
+  name: Floor
+  x: 100
+  y: 262
+  width: 600
+  height: 20
+  components:
+  - type: spriteRenderer
+    sortingLayer: 0
+    order: 0
+    sortByY: false
+    footOffset: 0
+    flipX: false
+    flipY: false
+    pixelSnap: false
+    squareColor: "#3B4A52"
+  rotation: 0
+  scaleX: 1
+  scaleY: 1
+  pivotX: 0
+  pivotY: 0
+  shear: 0
+- id: 5a2c8e71-4d9b-5f06-8e3a-1b7c6d2f9e32
+  prefab:
+    assetId: e39c7875-4b68-45ac-ab27-f07c70e52132
+    instances:
+      70e2ea2b-8d41-4b99-b1fc-d08353b70cbf: 5a2c8e71-4d9b-5f06-8e3a-1b7c6d2f9e32
+      8cea39c6-b122-46d8-ba42-0a765aaae4d6: 1e7b4c93-2a6f-5d18-9c4e-7f0a3b8d5e43
+    revision: D107B0B90908808AF68BED2CE99A78F3B0EBCDF75E93F46C1AB99C24BADB2A75
+    baseline:
+      70e2ea2b-8d41-4b99-b1fc-d08353b70cbf:
+        id: "5a2c8e71-4d9b-5f06-8e3a-1b7c6d2f9e32"
+        name: "Chest"
+        tag: "Chest"
+        x: 0
+        y: 0
+        width: 60
+        height: 36
+        components:
+        - type: "spriteRenderer"
+          sortingLayer: 0
+          order: 1
+          sortByY: false
+          footOffset: 0
+          flipX: false
+          flipY: false
+          pixelSnap: false
+          squareColor: "#8A5A2B"
+        rotation: 0
+        scaleX: 1
+        scaleY: 1
+        pivotX: 0
+        pivotY: 0
+        shear: 0
+      8cea39c6-b122-46d8-ba42-0a765aaae4d6:
+        id: "1e7b4c93-2a6f-5d18-9c4e-7f0a3b8d5e43"
+        parentId: "5a2c8e71-4d9b-5f06-8e3a-1b7c6d2f9e32"
+        name: "Chest Lid"
+        x: -2
+        y: -10
+        width: 64
+        height: 12
+        components:
+        - type: "spriteRenderer"
+          sortingLayer: 0
+          order: 2
+          sortByY: false
+          footOffset: 0
+          flipX: false
+          flipY: false
+          pixelSnap: false
+          squareColor: "#B07A3E"
+        rotation: 0
+        scaleX: 1
+        scaleY: 1
+        pivotX: 0
+        pivotY: 0
+        shear: 0
+  name: Chest 1
+  tag: Chest
+  x: 210
+  y: 226
+  width: 60
+  height: 36
+  components:
+  - type: spriteRenderer
+    sortingLayer: 0
+    order: 1
+    sortByY: false
+    footOffset: 0
+    flipX: false
+    flipY: false
+    pixelSnap: false
+    squareColor: "#8A5A2B"
+  rotation: 0
+  scaleX: 1
+  scaleY: 1
+  pivotX: 0
+  pivotY: 0
+  shear: 0
+- id: 1e7b4c93-2a6f-5d18-9c4e-7f0a3b8d5e43
+  parentId: 5a2c8e71-4d9b-5f06-8e3a-1b7c6d2f9e32
+  name: Chest Lid
+  x: -2
+  y: -10
+  width: 64
+  height: 12
+  components:
+  - type: spriteRenderer
+    sortingLayer: 0
+    order: 2
+    sortByY: false
+    footOffset: 0
+    flipX: false
+    flipY: false
+    pixelSnap: false
+    squareColor: "#B07A3E"
+  rotation: 0
+  scaleX: 1
+  scaleY: 1
+  pivotX: 0
+  pivotY: 0
+  shear: 0
+- id: cd4c6b08-428e-43dc-ac59-0a4a37863eb7
+  prefab:
+    assetId: e39c7875-4b68-45ac-ab27-f07c70e52132
+    instances:
+      70e2ea2b-8d41-4b99-b1fc-d08353b70cbf: cd4c6b08-428e-43dc-ac59-0a4a37863eb7
+      8cea39c6-b122-46d8-ba42-0a765aaae4d6: 8963c346-42e2-aaf0-9570-81583b5d173b
+    revision: D107B0B90908808AF68BED2CE99A78F3B0EBCDF75E93F46C1AB99C24BADB2A75
+    baseline:
+      70e2ea2b-8d41-4b99-b1fc-d08353b70cbf:
+        id: "cd4c6b08-428e-43dc-ac59-0a4a37863eb7"
+        name: "Chest"
+        tag: "Chest"
+        x: 0
+        y: 0
+        width: 60
+        height: 36
+        components:
+        - type: "spriteRenderer"
+          sortingLayer: 0
+          order: 1
+          sortByY: false
+          footOffset: 0
+          flipX: false
+          flipY: false
+          pixelSnap: false
+          squareColor: "#8A5A2B"
+        rotation: 0
+        scaleX: 1
+        scaleY: 1
+        pivotX: 0
+        pivotY: 0
+        shear: 0
+      8cea39c6-b122-46d8-ba42-0a765aaae4d6:
+        id: "8963c346-42e2-aaf0-9570-81583b5d173b"
+        parentId: "cd4c6b08-428e-43dc-ac59-0a4a37863eb7"
+        name: "Chest Lid"
+        x: -2
+        y: -10
+        width: 64
+        height: 12
+        components:
+        - type: "spriteRenderer"
+          sortingLayer: 0
+          order: 2
+          sortByY: false
+          footOffset: 0
+          flipX: false
+          flipY: false
+          pixelSnap: false
+          squareColor: "#B07A3E"
+        rotation: 0
+        scaleX: 1
+        scaleY: 1
+        pivotX: 0
+        pivotY: 0
+        shear: 0
+  name: Chest 2
+  tag: Chest
+  x: 370
+  y: 226
+  width: 60
+  height: 36
+  components:
+  - type: spriteRenderer
+    sortingLayer: 0
+    order: 1
+    sortByY: false
+    footOffset: 0
+    flipX: false
+    flipY: false
+    pixelSnap: false
+    squareColor: "#8A5A2B"
+  rotation: 0
+  scaleX: 1
+  scaleY: 1
+  pivotX: 0
+  pivotY: 0
+  shear: 0
+- id: 8963c346-42e2-aaf0-9570-81583b5d173b
+  parentId: cd4c6b08-428e-43dc-ac59-0a4a37863eb7
+  name: Chest Lid
+  x: -2
+  y: -10
+  width: 64
+  height: 12
+  components:
+  - type: spriteRenderer
+    sortingLayer: 0
+    order: 2
+    sortByY: false
+    footOffset: 0
+    flipX: false
+    flipY: false
+    pixelSnap: false
+    squareColor: "#B07A3E"
+  rotation: 0
+  scaleX: 1
+  scaleY: 1
+  pivotX: 0
+  pivotY: 0
+  shear: 0
+- id: eef65b00-9fb5-4fba-b7c5-1d7d0f18bc8f
+  prefab:
+    assetId: e39c7875-4b68-45ac-ab27-f07c70e52132
+    instances:
+      70e2ea2b-8d41-4b99-b1fc-d08353b70cbf: eef65b00-9fb5-4fba-b7c5-1d7d0f18bc8f
+      8cea39c6-b122-46d8-ba42-0a765aaae4d6: e208d590-daa6-c7e8-74fd-84e5f56876ee
+    revision: D107B0B90908808AF68BED2CE99A78F3B0EBCDF75E93F46C1AB99C24BADB2A75
+    baseline:
+      70e2ea2b-8d41-4b99-b1fc-d08353b70cbf:
+        id: "eef65b00-9fb5-4fba-b7c5-1d7d0f18bc8f"
+        name: "Chest"
+        tag: "Chest"
+        x: 0
+        y: 0
+        width: 60
+        height: 36
+        components:
+        - type: "spriteRenderer"
+          sortingLayer: 0
+          order: 1
+          sortByY: false
+          footOffset: 0
+          flipX: false
+          flipY: false
+          pixelSnap: false
+          squareColor: "#8A5A2B"
+        rotation: 0
+        scaleX: 1
+        scaleY: 1
+        pivotX: 0
+        pivotY: 0
+        shear: 0
+      8cea39c6-b122-46d8-ba42-0a765aaae4d6:
+        id: "e208d590-daa6-c7e8-74fd-84e5f56876ee"
+        parentId: "eef65b00-9fb5-4fba-b7c5-1d7d0f18bc8f"
+        name: "Chest Lid"
+        x: -2
+        y: -10
+        width: 64
+        height: 12
+        components:
+        - type: "spriteRenderer"
+          sortingLayer: 0
+          order: 2
+          sortByY: false
+          footOffset: 0
+          flipX: false
+          flipY: false
+          pixelSnap: false
+          squareColor: "#B07A3E"
+        rotation: 0
+        scaleX: 1
+        scaleY: 1
+        pivotX: 0
+        pivotY: 0
+        shear: 0
+  name: Chest 3
+  tag: Chest
+  x: 530
+  y: 226
+  width: 60
+  height: 36
+  components:
+  - type: spriteRenderer
+    sortingLayer: 0
+    order: 1
+    sortByY: false
+    footOffset: 0
+    flipX: false
+    flipY: false
+    pixelSnap: false
+    squareColor: "#8A5A2B"
+  rotation: 0
+  scaleX: 1
+  scaleY: 1
+  pivotX: 0
+  pivotY: 0
+  shear: 0
+- id: e208d590-daa6-c7e8-74fd-84e5f56876ee
+  parentId: eef65b00-9fb5-4fba-b7c5-1d7d0f18bc8f
+  name: Chest Lid
+  x: -2
+  y: -10
+  width: 64
+  height: 12
+  components:
+  - type: spriteRenderer
+    sortingLayer: 0
+    order: 2
+    sortByY: false
+    footOffset: 0
+    flipX: false
+    flipY: false
+    pixelSnap: false
+    squareColor: "#B07A3E"
+  rotation: 0
+  scaleX: 1
+  scaleY: 1
+  pivotX: 0
+  pivotY: 0
+  shear: 0
+defaultCameraId: 3f0c2a5e-6b1d-5c4e-9a17-0d4b8e2f7a10

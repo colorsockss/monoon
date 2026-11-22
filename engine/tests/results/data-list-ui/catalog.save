@@ -1,0 +1,6 @@
+version: 1
+values:
+  used: "item-0042,item-0162"
+  order: "이름순"
+  rows: 11
+  items: 1000

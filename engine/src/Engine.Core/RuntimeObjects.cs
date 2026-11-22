@@ -13,6 +13,10 @@ public interface IGameObjects
     bool HasRestoredWorld { get; }
     void TrackForSave(Guid id, WorldSaveFields fields = WorldSaveFields.All);
     bool Destroy(Guid id);
+    // Pooled prefab instances: Return deactivates and resets; Rent reuses one or instantiates a new one.
+    Guid Rent(PrefabReference prefab, Vector2 position, Guid? parent = null);
+    bool Return(Guid id);
+    PrefabPoolStats PoolStats(PrefabReference prefab);
     bool TryMoveStep(Guid id, Vector2 displacement);
     SpritePool2D CreateSpritePool(Guid owner, int capacity);
     bool EmitParticles(Guid id);
@@ -43,6 +47,9 @@ public interface IGameObjects
     IGameAnimator? Animator(Guid id);
     bool TryGetTileStream(Guid layer, out TileStreamState state);
     bool ReplaceTiles(Guid layer, int width, int height, ReadOnlySpan<int> tiles);
+    bool TryGetTile(Guid layer, Point cell, out TileInfo info);
+    bool SetTile(Guid layer, Point cell, int tile);
+    GridNavigation? TileNavigation(Guid layer, Rectangle area);
     bool IsTileChunkLoaded(Guid layer,int x,int y);
     IBodyMotion2D Motion { get; }
     IPhysics2D Physics { get; }
@@ -148,16 +155,7 @@ public sealed partial class SceneGame
         if (!float.IsFinite(position.X) || !float.IsFinite(position.Y)) throw new ArgumentException("Position must be finite.");
         var owner = parent is Guid pid && byId.TryGetValue(pid, out var b) && !removed.Contains(pid) ? b : null;
         if (parent.HasValue && owner == null) throw new ArgumentException("Prefab parent is not in the current scene.");
-        var path = assets?.PathFor(prefab.Id);
-        if (path == null || !path.EndsWith(ProjectAssets.Prefab, StringComparison.OrdinalIgnoreCase))
-            throw new InvalidDataException($"Missing prefab {prefab.Id}.");
-        // Each read owns its mutable components (tile layers, script overrides, etc.).
-        var project=world.ProjectDirectory!;
-        var template = File.Exists(Path.Combine(project,".monoon-player"))
-            ? SceneDocument.ReadAsset(Path.Combine(project,path))
-            : SceneDocument.ReadResolvedPrefab(project,assets!,prefab.Id);
-        template.ResolveAssets(assets!);
-        if (template.Objects.Count(o => o.Parent == null) != 1) throw new InvalidDataException($"{path}: expected one root.");
+        var template = ReadPrefab(prefab, out var path);
         var ids = restoredIds ?? template.Objects.ToDictionary(o => o.Id, _ => Guid.NewGuid());
         if (restoredIds != null && (ids.Count != template.Objects.Count || template.Objects.Any(o => !ids.ContainsKey(o.Id)) ||
             ids.Values.Any(id => id == Guid.Empty || byId.ContainsKey(id)) || ids.Values.Distinct().Count() != ids.Count))
@@ -198,6 +196,21 @@ public sealed partial class SceneGame
         RegisterLife(staged.Values);
         FlushLife();
         return origin.Root;
+    }
+
+    private SceneDocument ReadPrefab(PrefabReference prefab, out string path)
+    {
+        path = assets?.PathFor(prefab.Id)!;
+        if (path == null || !path.EndsWith(ProjectAssets.Prefab, StringComparison.OrdinalIgnoreCase))
+            throw new InvalidDataException($"Missing prefab {prefab.Id}.");
+        // Each read owns its mutable components (tile layers, script overrides, etc.).
+        var project=world.ProjectDirectory!;
+        var template = File.Exists(Path.Combine(project,".monoon-player"))
+            ? SceneDocument.ReadAsset(Path.Combine(project,path))
+            : SceneDocument.ReadResolvedPrefab(project,assets!,prefab.Id);
+        template.ResolveAssets(assets!);
+        if (template.Objects.Count(o => o.Parent == null) != 1) throw new InvalidDataException($"{path}: expected one root.");
+        return template;
     }
 
     public bool Destroy(Guid id)
@@ -306,6 +319,7 @@ public sealed partial class SceneGame
 
     private void CommitChanges()
     {
+        CommitPools();
         if (!dirty) return;
         world.Objects.RemoveAll(o => removed.Contains(o.Id));
         foreach (var id in removed)

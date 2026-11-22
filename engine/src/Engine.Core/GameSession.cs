@@ -46,6 +46,21 @@ public sealed partial class SessionState
     public SceneOperation LoadSceneAsync(Guid id, string? transitionText = "Loading…", double minimumSeconds = 0,
         Action<SessionState>? onEntered = null) => Request(id, SceneChange.Replace, transitionText, minimumSeconds, onEntered);
     public SceneOperation AddSceneAsync(Guid id) => Request(id, SceneChange.Add, null, 0, null);
+    /// <summary>
+    /// Game-thread milliseconds that each update of <see cref="LoadSceneAsync"/> or <see cref="AddSceneAsync"/> may spend creating objects and
+    /// uploading textures and sounds, which worker threads decode meanwhile. 0 stages the scene in one update and uploads one file per update.
+    /// A change applies to the next operation.
+    /// </summary>
+    public double SceneLoadBudgetMilliseconds
+    {
+        get;
+        set => field = double.IsFinite(value) && value >= 0 ? value : throw new ArgumentOutOfRangeException(nameof(value));
+    } = 4;
+    /// <summary>Development players and Scene Play read this variable (milliseconds) to compare budgets without editing scripts.</summary>
+    public const string SceneLoadBudgetVariable = "MONOON_SCENE_LOAD_BUDGET_MS";
+    public static double? SceneLoadBudgetOverride() =>
+        double.TryParse(Environment.GetEnvironmentVariable(SceneLoadBudgetVariable), System.Globalization.NumberStyles.Float,
+            System.Globalization.CultureInfo.InvariantCulture, out double ms) && double.IsFinite(ms) && ms >= 0 ? ms : null;
     public SceneOperation UnloadScene(Guid id) => Request(id, SceneChange.Remove, null, 0, null);
 
     private SceneOperation Request(Guid id, SceneChange change, string? label, double minimum, Action<SessionState>? entered)

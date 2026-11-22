@@ -6,11 +6,15 @@ namespace Engine.Core;
 // Shared by the Scene panel and the player; UI gets first refusal on activation.
 public sealed class GameInputRouter(InputActions actions, Func<ScreenUi?> ui, Size resolution, Func<SceneGame?>? world = null)
 {
-    public void Reset() { actions.Reset(); padDown.Clear();padUsed.Clear();ui()?.ResetInput(); }
+    public void Reset() { actions.Reset(); padDown.Clear();padUsed.Clear();keysDown.Clear();ui()?.ResetInput(); }
+    private readonly HashSet<string> keysDown=[];
     public bool Key(string control,bool down,bool reverse=false,long? timestamp=null)
     {
         control=InputControls.KeyName(control);
+        bool fresh=down && keysDown.Add(control);
+        if(!down) keysDown.Remove(control);
         if (down && actions.Suppressed(control)) return true;
+        if (fresh && actions.TryCapture(control)) return true; // Host key repeats never complete a rebind.
         if(down && InputControls.Supported(control)) actions.NoteDevice(InputDevice.Keyboard);
         bool used=ui()?.Key(control,down,reverse)==true;
         if(!down) return actions.Release(control) || used;
@@ -30,6 +34,7 @@ public sealed class GameInputRouter(InputActions actions, Func<ScreenUi?> ui, Si
             return;
         }
         if (down && actions.Suppressed(control)) return;
+        if (down && actions.TryCapture(control)) return;
         if(down && inside) actions.NoteDevice(InputDevice.Pointer);
         bool used = false;
         if (control == "Mouse.Left")
@@ -68,6 +73,7 @@ public sealed class GameInputRouter(InputActions actions, Func<ScreenUi?> ui, Si
             }
             return;
         }
+        if(value>=.55f && !padDown.Contains(control) && actions.TryCapture(control)) return;
         if(value>=.55f && padDown.Add(control) && ui()?.PadKey(control)==true)
         { padUsed.Add(control);actions.Set(control,0);actions.NoteDevice(InputDevice.Gamepad); }
         bool used=padUsed.Contains(control);

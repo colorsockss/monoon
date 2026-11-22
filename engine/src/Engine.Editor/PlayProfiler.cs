@@ -1,7 +1,9 @@
 using System.Diagnostics;
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Input;
 using Avalonia.Media;
+using Engine.Core;
 
 namespace Engine.Editor;
 
@@ -16,8 +18,10 @@ internal sealed class PlayProfiler
     private double update;
     public int Count {get;private set;}
     public long Sequence {get;private set;}
+    // Same frame boundaries and capacity, so index i here is Work.At(i).
+    public readonly FrameProfiler Work=new(Capacity);
     public FrameSample At(int index)=>frames[(head-Count+index+Capacity)%Capacity];
-    public void Reset(){Count=head=0;Sequence=0;Break();}
+    public void Reset(){Count=head=0;Sequence=0;Break();Work.Clear();}
     public void Break(){previous=0;update=0;}
     public void AddUpdate(long started)=>update+=Stopwatch.GetElapsedTime(started).TotalMilliseconds;
     public void Complete(long start,long calls)
@@ -28,7 +32,9 @@ internal sealed class PlayProfiler
             frames[head]=new(Stopwatch.GetElapsedTime(previous,now).TotalMilliseconds,update,
                 Stopwatch.GetElapsedTime(start,now).TotalMilliseconds,Math.Max(0,bytes-allocated),g0-gen0,g1-gen1,g2-gen2,calls);
             head=(head+1)%Capacity;Count=Math.Min(Count+1,Capacity);Sequence++;
+            Work.EndFrame();
         }
+        else Work.Restart();
         previous=now;allocated=bytes;gen0=g0;gen1=g1;gen2=g2;update=0;
     }
 }
@@ -36,6 +42,17 @@ internal sealed class PlayProfiler
 internal sealed class FrameChart : Control
 {
     internal PlayProfiler? History;
+    internal long? Selected;
+    internal event Action<long>? FrameSelected;
+    private static readonly Pen selection=new(Brushes.Orange,1.4);
+    protected override void OnPointerPressed(PointerPressedEventArgs e)
+    {
+        base.OnPointerPressed(e);
+        if(History is not {Count:>0} history || Bounds.Width<=0)return;
+        int i=(int)Math.Round(e.GetPosition(this).X*(PlayProfiler.Capacity-1)/Bounds.Width)-(PlayProfiler.Capacity-history.Count);
+        FrameSelected?.Invoke(history.Sequence-history.Count+1+Math.Clamp(i,0,history.Count-1));
+        e.Handled=true;
+    }
     private static readonly Pen line=new(Brushes.MediumAquamarine,1.4), budget=new(Brushes.DimGray,1), collection=new(Brushes.Gold,1.4);
     public override void Render(DrawingContext context)
     {
@@ -50,6 +67,7 @@ internal sealed class FrameChart : Control
             var f=history.At(i);double x=(i+PlayProfiler.Capacity-history.Count)*Bounds.Width/(PlayProfiler.Capacity-1);
             var p=new Point(x,Y(f.Interval));if(i!=0)context.DrawLine(line,previous,p);
             if(f.Gen0+f.Gen1+f.Gen2>0)context.DrawLine(collection,new(x,Bounds.Height-5),new(x,Bounds.Height));
+            if(Selected==history.Sequence-history.Count+1+i)context.DrawLine(selection,new(x,0),new(x,Bounds.Height));
             previous=p;
         }
     }

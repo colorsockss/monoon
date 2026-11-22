@@ -77,6 +77,7 @@ public sealed partial class SceneGame : IPhysics2D
     }
     public IReadOnlyList<PhysicsTarget> Overlap(Shape2D shape,PhysicsFilter? filter=null)
     {
+        using var sample = FrameProfiler.Sample(FrameProfiler.Overlap);
         shape.Check();
         var found=new List<PhysicsTarget>();
         foreach (var o in Candidates(shape.Bounds,filter?.Mask??uint.MaxValue,filter?.IncludeTriggers??false,filter?.Ignore,measure:true))
@@ -87,6 +88,7 @@ public sealed partial class SceneGame : IPhysics2D
     }
     public PhysicsHit? Raycast(Vector2 origin,Vector2 direction,float distance,PhysicsFilter? filter=null)
     {
+        using var sample = FrameProfiler.Sample(FrameProfiler.Raycast);
         if (!Shape2D.Finite(origin) || !Shape2D.Finite(direction) || direction==Vector2.Zero || !float.IsFinite(distance) || distance<0)
             throw new ArgumentException("Expected a finite ray with nonzero direction and nonnegative distance.");
         double length=Math.Sqrt((double)direction.X*direction.X+(double)direction.Y*direction.Y);
@@ -94,6 +96,7 @@ public sealed partial class SceneGame : IPhysics2D
     }
     public PhysicsHit? Sweep(Shape2D shape,Vector2 displacement,PhysicsFilter? filter=null)
     {
+        using var sample = FrameProfiler.Sample(FrameProfiler.Sweep);
         shape.Check();
         if (!Shape2D.Finite(displacement)) throw new ArgumentException("Expected a finite displacement.");
         return QueryCast(shape,displacement,filter,QueryKind.Sweep);
@@ -121,7 +124,8 @@ public sealed partial class SceneGame : IPhysics2D
             body.SubtreeEnd == 0 || removed.Contains(id)) return false;
         var group = Subtree(body);
         foreach (var member in group) if (member.Rigid != null) return false;
-        var path = MoveGroup(group, displacement);
+        MotionPath path;
+        using (FrameProfiler.Sample(FrameProfiler.Move)) path = MoveGroup(group, displacement);
         if (path.End != displacement) return false;
         foreach (var member in group) member.Translate(path);
         return true;

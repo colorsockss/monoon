@@ -1,0 +1,51 @@
+150 frames · mean 6.27 ms · p95 3.41 ms · max 147.91 ms
+Slowest: #4 147.91 ms  #3 147.11 ms  #91 131.41 ms  #1 48.64 ms  #55 3.44 ms
+
+Frame 4 · 147.911 ms · alloc 3994.3 KiB · gen0 2
+    Calls   Total ms    Self ms  Work
+        1    147.911      0.244  Frame
+        1    147.544      0.185    Simulate
+        1    141.900     11.165      QueryField.FixedUpdate
+    1,344     44.781     44.781        Physics.Sweep
+    1,344     44.566     44.566        Physics.Overlap
+    1,344     41.388     41.388        Physics.Raycast
+        1      5.330      5.330      Physics.Contacts
+        1      0.126      0.126      MoveMarker.FixedUpdate
+        1      0.001      0.001      FieldSelector.FixedUpdate
+        1      0.001      0.001      Cameras
+        1      0.001      0.001      Audio
+        2      0.001      0.001      Tiles.Streaming
+        1      0.000      0.000      Effects
+        1      0.000      0.000      Animation
+        1      0.110      0.104    UpdateUi
+        1      0.005      0.005      Lifecycle
+        1      0.000      0.000        FieldSelector.OnCreate
+        1      0.000      0.000        QueryField.OnCreate
+        1      0.000      0.000        MoveMarker.OnCreate
+        1      0.000      0.000        FieldSelector.OnEnable
+        1      0.000      0.000        QueryField.OnEnable
+        1      0.000      0.000        MoveMarker.OnEnable
+        1      0.001      0.001      QueryField.UpdateUi
+        1      0.000      0.000      FieldSelector.UpdateUi
+        1      0.000      0.000      MoveMarker.UpdateUi
+        1      0.000      0.000      UI.Input
+        1      0.013      0.013    Profiler.Write
+
+
+Frame 3 · 147.107 ms · alloc 79441.8 KiB · gen0 9
+    Calls   Total ms    Self ms  Work
+        1    147.107     11.032  Frame
+        1    133.052      0.224    Simulate
+        1    132.827    132.796      Scene.Loading
+        1      0.030      0.011        Lifecycle
+        1      0.011      0.011          FieldSelector.OnDisable
+        1      0.008      0.008          FieldSelector.OnDestroy
+        1      0.000      0.000          SensorEntry.OnDisable
+        1      0.000      0.000          SensorEntry.OnDestroy
+        1      0.000      0.000          Probe.OnDisable
+        1      0.000      0.000          Probe.OnDestroy
+        1      0.001      0.001      Physics.Contacts
+        1      0.000      0.000      Probe.FixedUpdate
+        1      0.000      0.000      Cameras
+        1      0.000      0.000      FieldSelector.FixedUpdate
+        1      0.000      0.000      Audio

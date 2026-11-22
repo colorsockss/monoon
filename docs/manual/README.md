@@ -44,7 +44,7 @@ MoNoon에서 게임을 만드는 순서는 프로젝트 열기 → 씬 편집 �
 | --- | --- |
 | [InventoryLab](inventory.md) | 세 칸에 아이템을 쌓고 [약초 수집 의뢰](quests.md)를 완료한다. [약초상의 대사와 선택지](dialogue.md)를 편집하고 저장한 대화에서 이어간다. |
 | [CardLab](decks.md) | 시드로 섞은 덱에서 카드를 뽑아 사용하고, 저장한 손패에서 이어서 플레이한다. |
-| [BarrageLab](sprite-pools.md) | 탄막을 발사·중지하고, 같은 탄막에서 묶음·개별 제출과 슬롯 재사용을 비교한다. |
+| [BarrageLab](sprite-pools.md) | 탄막을 발사·중지하고, 같은 탄막에서 묶음·개별 제출과 슬롯 재사용을 비교한다. 충돌체와 스크립트가 있는 프리팹 탄환을 풀링과 생성·제거로 쏘아 명중 수를 비교한다. |
 | [RhythmLab](rhythm.md) | 음악에 맞춰 Space를 누르고 박 번호와 빠름·정확·늦음 판정을 비교한다. |
 | [KeyRoom.scene](../../samples/KeyRoom/Scenes/KeyRoom.scene) | 열쇠를 먹기 전과 후의 문 충돌, 카메라 전환, Controls 버튼, 다음 방 이동을 확인한다. |
 | [Transform 2D: 상자와 뚜껑](transform-2d.md) | 회전·스케일·피벗, 부모 변경과 월드 좌표 보존을 확인한다. |

@@ -1,0 +1,17 @@
+version: 1
+values:
+  buildId: "d7a6dc97763145b7a41cdf4a27ce8f7b"
+  projectId: "6c5dd0cd-638e-5a00-9d80-744596f3a647"
+  game: "BarrageLab"
+  target: "osx-arm64"
+  mode: "release"
+  profile: "distribution"
+  playerSha256: "C59788F7BEFAB08285BBE4A00987C0C0915A2A3B534199D5EEFF942C058C4957"
+  pdbId/MoNoonPlayer.dll: "9c0cfbb7-7013-489b-8f08-0953a23b056d"
+  mvid/MoNoonPlayer.dll: "801d583d-6bf3-4676-b4d1-028cfbdfe730"
+  pdbId/Engine.Core.dll: "c45eb6b4-f3ac-44de-b1b1-915b901b2d8f"
+  mvid/Engine.Core.dll: "6877416b-40a1-4cdb-acdc-0c8ea48ddbb8"
+  pdbId/Engine.Desktop.dll: "334153d3-2d85-4078-8cc4-44e002e1e282"
+  mvid/Engine.Desktop.dll: "68594079-52db-4865-abd6-d0db228f4a0b"
+  pdbId/Game/.monoon-compiled/MoNoon.GameScripts.dll: "cb92cf13-2fb9-4271-97cf-d4b4102f8f4f"
+  mvid/Game/.monoon-compiled/MoNoon.GameScripts.dll: "e24e7e19-8ab0-4f6b-935b-14ffcb340693"

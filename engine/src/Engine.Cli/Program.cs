@@ -10,6 +10,14 @@ if (args.FirstOrDefault() == "crash")
     try { CrashSymbols.Explain(report, symbols); return 0; }
     catch (Exception ex) { Console.Error.WriteLine(ex.Message); return 1; }
 }
+if (args.FirstOrDefault() == "profile")
+{
+    const string profileUsage = "monoon profile <capture.csv> [--frame <number>]";
+    long? pick = args switch { ["profile", _] => null, ["profile", _, "--frame", var n] when long.TryParse(n, out var v) => v, _ => -1 };
+    if (pick == -1) return UsageError(profileUsage);
+    try { FrameProfileReport.Print(args[1], pick); return 0; }
+    catch (Exception ex) when (ex is IOException or InvalidDataException or FormatException) { Console.Error.WriteLine(ex.Message); return 1; }
+}
 if (args.FirstOrDefault() == "content-update")
 {
     if (args is not ["content-update", "pack", var game, var replacements, var bundle]) return UsageError(updateUsage);

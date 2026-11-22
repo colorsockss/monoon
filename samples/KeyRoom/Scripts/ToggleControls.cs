@@ -16,6 +16,7 @@ public sealed class ToggleControls : GameBehaviour
         try
         {
             settings = life.Session.Storage.LoadSettings(1) ?? new GameData();
+            life.Session.LoadInputBindings(settings); // Controls chosen on the K screen survive a restart.
             if (settings.GetBool("showControls")) life.Session.Set("controls");
             else life.Session.Clear("controls");
         }
@@ -45,8 +46,12 @@ public sealed class ToggleControls : GameBehaviour
     {
         if (!state.Clear("controls")) state.Set("controls");
         if (settings == null) return;
-        settings.Set("showControls", state.Has("controls"));
-        try { state.Storage.SaveSettings(settings); }
+        try
+        {
+            settings = state.Storage.LoadSettings(1) ?? settings; // Keep bindings saved since this scene started.
+            settings.Set("showControls", state.Has("controls"));
+            state.Storage.SaveSettings(settings);
+        }
         catch (Exception ex) when (ex is IOException or InvalidDataException or UnauthorizedAccessException)
         { Console.Error.WriteLine(ex.Message); }
     }

@@ -21,7 +21,7 @@ public sealed partial class ScreenUi
         var groups=StringInfo.ParseCombiningCharacters(t);return groups.Length>max?t[..groups[max]]:t;
     }
     private void EndEditing(){edit=null;Preedit="";caret=0;}
-    private void SetFocus(Guid? id){if(edit!=id)EndEditing();if(dropdownId!=id)CloseOptions();focus=id;}
+    private void SetFocus(Guid? id){if(edit!=id)EndEditing();if(dropdownId!=id)CloseOptions();focus=id;RememberRow(id);}
     private void Begin(Node n){SetFocus(n.Object.Id);edit=focus;caret=Value(edit!.Value)!.Length;Preedit="";}
     public bool Compose(string text)
     {
@@ -120,6 +120,7 @@ public sealed partial class ScreenUi
     }
     private bool Navigate(string key,bool reverse=false)
     {
+        if(ListStep(key))return true;
         var list=nodes.Where(n=>Enabled(n)&&Visible(n)).ToArray();
         if(list.Length==0)return false;
         int index=Array.FindIndex(list,n=>n.Object.Id==focus);Node? next=null;
@@ -138,7 +139,7 @@ public sealed partial class ScreenUi
                 if(cost<best){best=cost;next=candidate;}
             }
         }
-        if(next!=null){SetFocus(next.Object.Id);Reveal(next);}
+        if(next!=null){next=EnterList(next);SetFocus(next.Object.Id);Reveal(next);}
         return true;
     }
     private bool Activate(string control)
@@ -184,7 +185,7 @@ public sealed partial class ScreenUi
         {
             if (!byId.TryGetValue(e.Id, out var n) || !Enabled(n) || !Visible(n)) continue;
             if (e.Value is float value) changed?.Invoke(e.Id, value);
-            else click(e.Id);
+            else click(ClickTarget(e.Id));
         }
     }
     internal void ReleaseActivation(string control)

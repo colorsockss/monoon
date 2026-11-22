@@ -18,6 +18,7 @@
 | PauseGame (일시정지·재개) | P | — | Back |
 | OpenBag (첫 방 인벤토리) | I | Bag [I] 버튼 | West |
 | MenuBack (한 단계 뒤로) | Backspace, I | Cancel / Close 버튼 | East |
+| KeyBindings (조작키 화면 열기·닫기) | K | — | RightShoulder |
 
 **Controls** 버튼을 직접 클릭해도 같은 안내가 열린다. KeyRoom은 [ToggleControls.cs](../../samples/KeyRoom/Scripts/ToggleControls.cs)에서 최근 입력 기기의 첫 바인딩을 표시한다. 그 기기에 해당 액션의 바인딩이 없으면 키보드 바인딩을 표시한다.
 
@@ -37,7 +38,31 @@
 
 ## 실행 중 바꾸기
 
-게임 내 설정 화면에서는 `tick.Session.RebindInput("ShowControls", "J", "Pad.Start")`처럼 이미 정의한 액션의 **전체** 바인딩을 교체한다. `tick.Session.BindingFor("ShowControls", tick.Input.ActiveDevice)`는 해당 기기의 첫 바인딩을, 없으면 null을 반환한다. `InputRevision`이 바뀌면 표시 중인 안내를 갱신할 수 있다. 런타임 변경은 현재 게임의 씬 전환 동안 유지되며 다음 실행의 프로젝트 기본값에는 영향을 주지 않는다.
+게임 내 설정 화면에서는 `tick.Session.RebindInput("ShowControls", "J", "Pad.Start")`처럼 이미 정의한 액션의 **전체** 바인딩을 교체한다. `tick.Session.BindingFor("ShowControls", tick.Input.ActiveDevice)`는 해당 기기의 첫 바인딩을, 없으면 null을 반환한다. `InputRevision`이 바뀌면 표시 중인 안내를 갱신할 수 있다. 런타임 변경은 현재 게임의 씬 전환 동안 유지되며 다음 실행의 프로젝트 기본값에는 영향을 주지 않는다. 플레이어가 고른 값을 다음 실행에도 쓰려면 [플레이어 조작키 설정](#플레이어-조작키-설정과-저장)처럼 설정에 저장한다.
+
+## 플레이어 조작키 설정과 저장
+
+KeyRoom 첫 방에서 **K** 또는 패드 **RightShoulder**를 누르면 조작키 화면이 열린다. 상자 열기·동전 들기·도움말·일시정지의 키보드와 게임패드 첫 바인딩이 표시되고, 첫 칸에 포커스가 있다. [화면 씬](../../samples/KeyRoom/Scenes/KeyBindings.scene) · [스크립트](../../samples/KeyRoom/Scripts/KeyBindingsMenu.cs)
+
+1. 칸을 클릭하거나 **Enter**·패드 **South**로 선택하면 `…`로 바뀌고 입력을 기다린다. 키보드 칸은 다음 키, 게임패드 칸은 다음 패드 버튼·스틱·트리거를 받는다. 선택에 쓴 키를 누르고 있어 생기는 반복 입력은 무시한다.
+2. 다른 액션이 쓰던 입력을 고르면 두 액션의 입력을 교환한다. 상자 열기에 **C**를 지정하면 동전 들기에 E가 연결되고, 상태 줄에 `Open chest: C. Carry coin now uses E.`가 표시된다. 같은 액션의 두 번째 입력을 고르면 첫 번째 입력과 순서만 바뀐다. 나머지 바인딩은 유지된다.
+3. 입력 대기 중 **Esc**를 누르면 취소한다. 키보드 칸에서는 마우스 클릭이나 패드 입력도, 게임패드 칸에서는 키 입력도 취소로 처리한다. Caps Lock처럼 연결할 수 없는 키는 무시하고 계속 기다린다. 취소에 쓴 입력은 게임 액션을 누르지 않는다.
+4. **Restore defaults**를 누르면 모든 액션이 `GameSettings`의 값으로 돌아간다. 다시 **K** 또는 **Close**를 누르면 닫힌다.
+
+변경할 때마다 `player.settings`에 저장되며 두 슬롯이 함께 사용한다. 게임을 다시 실행하면 HUD의 `Interact: C` 안내와 상자를 여는 키가 저장한 값을 따른다. 패드를 쓰면 같은 안내가 패드 바인딩으로 바뀐다. 저장 위치는 [플레이어 저장](player-data.md#파일-위치)과 같다.
+
+| API | 의미 |
+| --- | --- |
+| `tick.Session.BeginRebind("Interact", InputDevice.Keyboard)` | 다음 새 입력으로 해당 기기의 첫 바인딩을 바꾼다. 입력은 게임 UI보다 먼저 처리된다. |
+| `RebindingAction` / `RebindingDevice` | 입력 대기 중인 액션과 기기. 대기 중이 아니면 `null`이다. |
+| `CancelRebind()` | 입력 대기를 취소한다. 대기 중이 아니면 `false`를 반환한다. |
+| `LastRebind` | 마지막 결과. `Control`, 바뀌기 전의 `Previous`, 입력을 내준 액션 목록 `Swapped`, 취소 여부 `Cancelled`를 제공한다. |
+| `SwapBinding(action, device, control)` | 입력 대기 없이 같은 교환 규칙을 적용한다. 다른 기기의 입력이면 `ArgumentException`이 발생한다. |
+| `RestoreDefaultBindings()` | 모든 액션을 프로젝트 기본값으로 되돌린다. |
+| `ControlsFor(action)` | 액션의 현재 입력 전체를 순서대로 반환한다. |
+| `SaveInputBindings(settings)` / `LoadInputBindings(settings)` | 기본값과 다른 액션만 `GameData`의 `inputBindings`에 쓰거나 적용한다. 바뀐 액션이 없으면 키를 지운다. 알 수 없는 액션이나 잘못된 입력은 기본값을 사용한다. |
+
+바인딩이 바뀌면 `InputRevision`이 증가한다. KeyRoom은 `OnCreate`에서 설정을 읽어 `LoadInputBindings`를 호출하고, 조작키 화면이 `InputRevision` 변화를 감지하면 `LoadSettings(1)`로 최신 설정을 다시 읽은 뒤 `SaveInputBindings`와 `SaveSettings`를 호출한다. 같은 파일에 다른 값을 쓰는 스크립트도 저장 직전에 설정을 다시 읽어야 다른 스크립트가 저장한 바인딩을 덮어쓰지 않는다. [ToggleControls.cs](../../samples/KeyRoom/Scripts/ToggleControls.cs) · [검증 기록](../../engine/tests/results/player-rebinding/README.md)
 
 ## 입력 모드 전환과 복귀
 

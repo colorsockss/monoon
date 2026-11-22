@@ -8,6 +8,7 @@ includedScenes:
 - 25fc2224-7695-4e19-a05c-d8524a2ffe50
 - c1676878-57dc-5d9d-b1e0-508e0a525a08
 - 98b900c4-6465-5df6-b547-6f8744d7123f
+- cd60e7de-8966-4519-aabb-7209fb04fe2f
 input:
   actions:
   - name: MoveLeft
@@ -52,6 +53,8 @@ input:
     controls: [Backspace, I, Pad.East]
   - name: ChangeLanguage
     controls: [L]
+  - name: KeyBindings
+    controls: [K, Pad.RightShoulder]
 uiTheme: c08eff10-71b4-4da8-b33f-5482bcc4c531
 localization:
   table: 2c898767-c577-57f0-bb09-2fc866cbc6df

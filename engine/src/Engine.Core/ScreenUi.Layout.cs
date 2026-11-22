@@ -37,7 +37,7 @@ public sealed partial class ScreenUi
     private bool Visible(Node n)
     {
         for(Node? p=n;p!=null;p=p.Parent)
-            if(ModeClosed(p)||hidden.Contains(p.Object.Id)||active?.Invoke(p.Object.Id)==false||p.Flag.Length>0&&flag?.Invoke(p.Flag)==false)return false;
+            if(ModeClosed(p)||hidden.Contains(p.Object.Id)||active?.Invoke(p.Source)==false||p.Flag.Length>0&&flag?.Invoke(p.Flag)==false)return false;
         return true;
     }
     private bool Enabled(Node n)=>ReceivesInput(n.Object.Id)&&(n.Control!=null||n.Field!=null)&&interactOverrides.GetValueOrDefault(n.Object.Id,n.Control?.Interactable??true);
@@ -54,6 +54,7 @@ public sealed partial class ScreenUi
 
     private void Arrange(ICanvas2D? metrics=null)
     {
+        using var sample = FrameProfiler.Sample(FrameProfiler.UiLayout);
         ValidateInputModes();
         // Width is independent of wrapping. Resolve it first so a narrow translated label can
         // grow vertically and push later siblings before deriving positions and scroll ranges.
@@ -95,6 +96,7 @@ public sealed partial class ScreenUi
                 n.Measured=Math.Max(n.Measured,h?cross+2*pad:length);
             }
         }
+        SizeLists();
         foreach(var n in treeOrder)
         {
             var p=n.Parent; var b=p?.Box??screen;
@@ -120,7 +122,9 @@ public sealed partial class ScreenUi
                 n.Box = new(b.X + x, b.Y + y, w, h);
             }
             n.Offset=n.Scroll?Math.Clamp(n.Offset,0,Limit(n)):0;
+            PlaceListRow(n);
         }
+        if(GrowLists()){Arrange(metrics);return;}
         hovered = null;
         if (pointer is {} point)
             for (int i = nodes.Length - 1; i >= 0; i--)

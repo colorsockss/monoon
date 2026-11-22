@@ -60,6 +60,10 @@ try
         return;
     }
     if (args is [_, "--contacts-only"]) { ContactChecks.Run(project); return; }
+    if (args is [_, "--rebinding-only"]) { RebindingChecks.Run(project, scratch); return; }
+    if (args is [_, "--prefab-pool-only"]) { PrefabPoolChecks.Run(repository, scratch); return; }
+    if (args is [_, "--terrain-only"]) { TileTerrainChecks.Run(repository, scratch); return; }
+    FrameProfilerChecks.Run(scratch); if (args is [_, "--profiler-only"]) return;
     TileContactChecks.Run();
     GridNavigationChecks.Run();
     ContentBundleChecks.Run(scratch);
@@ -73,6 +77,7 @@ try
     InventoryChecks.Run(repository, scratch);
     if (args.Contains("--inventory-only")) return;
     SpritePoolChecks.Run(repository);
+    PrefabPoolChecks.Run(repository, scratch);
     if (args.Contains("--pool-only")) return;
     RhythmChecks.Run(repository);
     if (args.Contains("--rhythm-only")) return;
@@ -90,6 +95,7 @@ try
     NavigationChecks.Run(repository,scratch);
     if(args.Contains("--nav-only")) return;
     TileWorldChecks.Run(repository,scratch);
+    TileTerrainChecks.Run(repository,scratch);
     if (args.Contains("--world-only")) return;
     RigidBodyChecks.Run(repository, scratch);
     if (args.Contains("--platformer-only")) return;
@@ -110,6 +116,7 @@ try
     SceneScriptDebugChecks.Run(scratch);
     InputMapChecks.Run(scratch);
     InputModeChecks.Run(project);
+    RebindingChecks.Run(project, scratch);
     SpriteSortingChecks.Run(project, scratch);
     LocalizationChecks.Run(project, scratch);
     InputReplayChecks.CheckRecording(scratch);
@@ -130,6 +137,7 @@ try
     ProjectCatalogChecks.Run(scratch);
     var scene = SceneDocument.Load(sceneFile);
     SceneStreamingChecks.Run(scratch, scene);
+    SplitLoadingChecks.Run(scratch, scene); if (args is [_, "--split-loading-only"]) return;
     PlayerDataChecks.Run(scratch, scene);
     WorldCheckpointChecks.Run(scene);
     ComponentKeyChecks.Run(scene.ProjectDirectory!);
@@ -141,8 +149,10 @@ try
     UiPinChecks.Run(project);
     UiThemeChecks.Run(project);
     UiControlChecks.Run();
+    DataListChecks.Run();
     MultiInspectorChecks.Run(scratch);
     PrefabEditingChecks.Run(scratch);
+    PrefabStructureChecks.Run(scratch);
     GameEventChecks.Run(scratch);
     var original = scene.CaptureObjects();
     var main = scene.Camera!;

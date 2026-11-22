@@ -1,0 +1,3 @@
+BarrageLab bullets mode=pool ticks=27 fired=108 hits=0 exits=0 active=108 created=108 reused=0 returned=0
+BarrageLab bullets mode=instantiate ticks=1800 fired=7200 hits=2338 exits=2338 active=503 created=7308 reused=0 returned=108
+Headless replay completed: 1834 frames, 6 events.

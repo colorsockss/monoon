@@ -36,3 +36,5 @@ input:
     controls: ["V"]
   - name: MudCost
     controls: ["M"]
+  - name: PaintMud
+    controls: ["B"]

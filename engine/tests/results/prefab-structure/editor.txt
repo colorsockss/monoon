@@ -1,0 +1,6 @@
+edited   source without lock; Chest 1: lock 0, sound 0; Chest 2: lock 1, sound 1; Chest 3: lock 0, sound 0
+listed   Chest 2 · audioSource (added) | Lock (added object)
+applied  source lock; Chest 1: lock 1, sound 0; Chest 2: lock 1, sound 1; Chest 3: lock 1, sound 0
+undo     source without lock; Chest 1: lock 0, sound 0; Chest 2: lock 1, sound 1; Chest 3: lock 0, sound 0
+redo     source lock; Chest 1: lock 1, sound 0; Chest 2: lock 1, sound 1; Chest 3: lock 1, sound 0
+reopened Chest 2 · audioSource (added)

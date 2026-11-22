@@ -1,0 +1,2 @@
+0|hint=Move: Left / Right   Interact: E   Help: H   Pause: P|interact=E,Space,Pad.South|carry=C|guide=M,Pad.North|capturing=|chest=False
+11|hint=Move: Left / Right   Interact: E   Help: H   Pause: P|interact=E,Space,Pad.South|carry=C|guide=M,Pad.North|capturing=|chest=True

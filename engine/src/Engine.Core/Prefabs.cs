@@ -216,24 +216,7 @@ public sealed partial class SceneDocument
     }
 
     public IEnumerable<string> PrefabOverrides(SceneObject root) =>
-        PropertyOverrides(root).Select(p => p.ToString()).Concat(StructuralOverrides(root));
-
-    internal IEnumerable<string> StructuralOverrides(SceneObject root)
-    {
-        if(root.Prefab?.Baseline is not {} baseline)yield break;
-        var map=root.Prefab.Instances;
-        var byId=Objects.ToDictionary(o=>o.Id);
-        foreach(var (key,value) in baseline)
-        {
-            if(!byId.TryGetValue(map[key],out var obj)){
-                yield return $"{value.GetProperty("name").GetString()} (removed object)";
-                continue;
-            }
-            foreach(var field in PrefabMerge.StructuralChanges(value,obj))yield return $"{obj.Name} · {field}";
-        }
-        var inherited=map.Values.ToHashSet();
-        foreach(var obj in ParentFirst(root).Where(o=>!inherited.Contains(o.Id)))yield return $"{obj.Name} (added object)";
-    }
+        PropertyOverrides(root).Select(p => p.ToString()).Concat(StructuralOverrides(root).Select(s => s.ToString()));
 
     public SceneObject RevertPrefab(SceneObject root)
     {

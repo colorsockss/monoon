@@ -6,6 +6,7 @@ namespace Engine.Core;
 public sealed partial class SceneGame
 {
     private enum ContactPhase { Enter, Stay, Exit }
+    private static readonly string[] contactMethods = ["OnCollisionEnter", "OnCollisionStay", "OnCollisionExit", "OnTriggerEnter", "OnTriggerStay", "OnTriggerExit"];
 
     // Re-enabling the same collider starts a new contact even when both changes happen between ticks.
     private readonly record struct ContactPair(Body A, Body B, long RevisionA, long RevisionB, bool Trigger)
@@ -66,7 +67,7 @@ public sealed partial class SceneGame
         contactSweep.Clear();
         foreach (var body in colliders)
         {
-            if (!body.Active || body.Collider == null) continue;
+            if (!body.Active || body.Spawning || body.Collider == null) continue;
             body.EndShape = body.ShapeAt(body.Position);
             var bounds = body.EndShape.Bounds;
             if (body.Moved)
@@ -143,6 +144,7 @@ public sealed partial class SceneGame
             foreach (var script in self.Behaviours)
             {
                 if (!self.Active) break;
+                using var sample = FrameProfiler.Script(script, contactMethods[(pair.Trigger ? 3 : 0) + (int)phase]);
                 try
                 {
                     switch (pair.Trigger,phase)

@@ -86,3 +86,33 @@ Scene 편집 화면에는 전체 지형이 표시된다. Play에서는 현재 �
 이 기능은 **타일 레이어 단위**다. 일반 오브젝트나 AI까지 구역별로 교체하려면 [추가 씬 로드](scene-streaming.md)를 사용한다. 청크 파일은 경계를 건너는 틱에 동기적으로 읽으므로, 큰 지형에서는 반경을 정한 뒤 프로파일러로 경계 이동 시간을 확인한다.
 
 PlatformerLab에서 **→ / D**로 경사를 올라 **Chunk 2**가 표시되면 발판에 타기 전에 **← / A**로 돌아온다. HUD와 Play Inspector가 상주 청크 수와 누적 로드·해제 횟수를 보여준다. [세 실행 모드의 화면과 기록](../../engine/tests/results/tile-world/README.md).
+
+## 지형 비용과 실행 중 셀 바꾸기
+
+타일셋 편집기에서 셀을 선택하고 **Terrain**에 지형 이름을, **Cost**에 그리드 길찾기의 진입 비용을 입력한 뒤 **Save Tileset**을 누른다. 0은 통행 불가, 1 이상은 그 칸에 들어갈 때 곱하는 가중치다. **Cost**를 비워 두면 **Collision**이 None인 타일은 1, 충돌이 있는 타일은 0으로 처리한다. 값은 `.tileset`의 타일마다 `terrain`, `moveCost`로 저장되고, 같은 타일을 쓰는 모든 레이어에 적용된다. 프로젝트 타일 목록에도 지형 이름이 함께 표시된다.
+
+![Route 타일셋에서 진흙 타일의 Terrain과 Cost를 편집하는 창](../../engine/tests/results/tile-terrain/tileset-terrain.png)
+
+**SeedLab에서 시험하기.** Play 후 **G**로 **Courier routes**를 연다. **B**를 누르면 북쪽 통로의 다섯 칸이 진흙으로 바뀌고, 점으로 표시된 경로가 남쪽 진흙 세 칸을 건너는 길로 옮겨 간다. **Space**로 걷기 시작한 뒤 **B**나 **O**를 누르면 배달원이 현재 칸에서 다시 경로를 계산한다. **O**는 문 칸 하나를 닫힌 문 타일(충돌, 비용 0)과 열린 문 타일(비용 1)로 바꾸고, **M**은 모든 진흙 칸을 마른 진흙(비용 1)과 진흙(비용 12) 사이에서 바꾼다. 비용은 스크립트가 아닌 [Route 타일셋](../../samples/SeedLab/Assets/Route.tileset)에서 읽는다. 조작 전체는 [탑다운 그리드 길찾기](navigation.md#탑다운-그리드-길찾기)에 있다.
+
+게임 스크립트에서는 타일맵 오브젝트 ID와 셀 좌표로 한 칸을 읽고 바꾼다.
+
+```csharp
+using System.Drawing;
+using Engine.Core;
+
+var grid = tick.Objects.TileNavigation(boardId, new Rectangle(0, 0, 13, 7));
+if (tick.Objects.TryGetTile(boardId, new Point(4, 1), out var cell) && cell.Terrain == "floor")
+    tick.Objects.SetTile(boardId, new Point(4, 1), mudTile);
+var route = grid.FindPath(courierCell, goalCell, GridDirections.Four);
+```
+
+| API | 동작 |
+| --- | --- |
+| `TryGetTile(layer, cell, out info)` | `Tile`(0은 빈 칸), 실제로 그리는 `Display`(오토타일이면 연결 모양), `Terrain`, `MoveCost`, `Solid`를 돌려준다. 레이어가 없거나 스트리밍 레이어의 해당 청크가 올라와 있지 않으면 `false`다. |
+| `SetTile(layer, cell, tile)` | 한 칸을 바꾸고 0이면 비운다. 화면, 이웃 오토타일의 연결 그림, 타일 충돌, 아래 그리드가 같은 틱에 바뀐다. 등록되지 않은 타일 번호는 예외를 낸다. |
+| `TileNavigation(layer, area)` | `area` 안의 셀 비용을 타일셋에서 읽은 `GridNavigation`을 만든다. 그리드의 (0, 0)은 `area`의 왼쪽 위 칸이다. 빈 칸은 0이다. 이후 `SetTile`과 `ReplaceTiles`가 비용을 자동으로 갱신한다. |
+
+비용이 실제로 바뀌면 `GridNavigation.Revision`이 증가한다. 걷는 NPC는 계획할 때의 값을 보관해 두고, 다를 때 현재 칸에서 `FindPath`를 다시 호출한다. 다른 스크립트가 셀을 바꿔도 같은 방식으로 감지한다. 경로 점처럼 비용이 같은 타일로 바꾸면 값은 그대로다.
+
+변경은 실행 중에만 유지되고 Stop을 누르면 씬 원본으로 돌아온다. 저장 슬롯에도 기록되지 않는다. 스트리밍 레이어에서는 상주 청크의 셀만 바꿀 수 있다. 바꾼 셀은 청크가 해제됐다가 다시 올라와도 적용되고, 연결 그림도 다시 계산한다. 단, 이웃 셀의 바깥쪽 변이 아직 올라오지 않은 세 번째 청크를 향하면 그 변은 구워 둔 그림을 유지한다. 스트리밍 레이어에는 `TileNavigation`을 만들 수 없다(`null`). [이 Mac의 Scene Play·Release·Native AOT 기록](../../engine/tests/results/tile-terrain/README.md)

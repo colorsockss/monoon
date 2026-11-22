@@ -1,0 +1,26 @@
+PASS player rebinding: a secondary control of the same action moves to the first slot
+PASS player rebinding: binding a device the action lacked removes the control from its old action
+PASS player rebinding: restore brings back removed controls
+PASS player rebinding: saved map round trips through GameData
+PASS player rebinding: invalid or unknown saved entries fall back to defaults
+PASS player rebinding: another device cancels the capture
+PASS player rebinding: unbindable keys keep waiting
+PASS player rebinding: the captured press does not trigger the action
+PASS player rebinding: default keyboard prompt
+PASS player rebinding: K opens the controls screen on the first keyboard binding
+PASS player rebinding: columns line up inside the panel {X=180,Y=66,Width=440,Height=318}, restore {X=195,Y=334,Width=150,Height=28}
+PASS player rebinding: Return starts capture, key repeat does not finish it
+PASS player rebinding: capturing C swaps it with Carry coin's E
+PASS player rebinding: screen and HUD prompt show the swap
+PASS player rebinding: player.settings stores only changed actions
+PASS player rebinding: Esc cancels a keyboard capture
+PASS player rebinding: a key cancels a pad capture
+PASS player rebinding: pad capture swaps with Room guide and the pad prompt follows
+PASS player rebinding: K closes the controls screen
+PASS player rebinding: the old key no longer opens the chest
+PASS player rebinding: the new key opens the chest
+PASS player rebinding: restart restores the key and its prompt
+PASS player rebinding: after restart E stays on Carry coin
+PASS player rebinding: after restart C opens the chest
+PASS player rebinding: Restore defaults resets every action and clears the saved map
+PASS player rebinding: restored defaults persist across a restart

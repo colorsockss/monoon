@@ -91,3 +91,25 @@ rows:
   cells: ["한국어 [L]", "English [L]"]
 - key: ui.languageName
   cells: ["한국어", "English"]
+- key: action.Interact
+  cells: ["Open chest", "상자 열기"]
+- key: action.CarryCoin
+  cells: ["Carry coin", "동전 들기"]
+- key: action.ShowControls
+  cells: ["Help", "도움말"]
+- key: action.PauseGame
+  cells: ["Pause", "일시정지"]
+- key: rebind.choose
+  cells: ["Choose a control to change.", "바꿀 조작을 선택하세요."]
+- key: rebind.waitKey
+  cells: ["Press a key for {0}. Esc cancels.", "{0}에 쓸 키를 누르세요. Esc: 취소"]
+- key: rebind.waitPad
+  cells: ["Press a pad button for {0}. A key cancels.", "{0}에 쓸 패드 버튼을 누르세요. 키보드: 취소"]
+- key: rebind.done
+  cells: ["{0}: {1}", "{0}: {1}"]
+- key: rebind.swapped
+  cells: ["{0}: {1}. {2} now uses {3}.", "{0}: {1}. {2}에는 {3}을(를) 씁니다."]
+- key: rebind.cancelled
+  cells: ["Cancelled. {0} stays {1}.", "취소했습니다. {0}: {1} 유지"]
+- key: rebind.restored
+  cells: ["Default controls restored.", "기본 조작으로 복원했습니다."]

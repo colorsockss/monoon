@@ -1,0 +1,48 @@
+schemaVersion: 27
+objects:
+- id: 70e2ea2b-8d41-4b99-b1fc-d08353b70cbf
+  name: Chest
+  tag: Chest
+  x: 0
+  y: 0
+  width: 60
+  height: 36
+  components:
+  - type: spriteRenderer
+    sortingLayer: 0
+    order: 1
+    sortByY: false
+    footOffset: 0
+    flipX: false
+    flipY: false
+    pixelSnap: false
+    squareColor: "#8A5A2B"
+  rotation: 0
+  scaleX: 1
+  scaleY: 1
+  pivotX: 0
+  pivotY: 0
+  shear: 0
+- id: 8cea39c6-b122-46d8-ba42-0a765aaae4d6
+  parentId: 70e2ea2b-8d41-4b99-b1fc-d08353b70cbf
+  name: Chest Lid
+  x: -2
+  y: -10
+  width: 64
+  height: 12
+  components:
+  - type: spriteRenderer
+    sortingLayer: 0
+    order: 2
+    sortByY: false
+    footOffset: 0
+    flipX: false
+    flipY: false
+    pixelSnap: false
+    squareColor: "#B07A3E"
+  rotation: 0
+  scaleX: 1
+  scaleY: 1
+  pivotX: 0
+  pivotY: 0
+  shear: 0

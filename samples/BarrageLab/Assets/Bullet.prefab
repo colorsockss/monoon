@@ -1,0 +1,19 @@
+schemaVersion: 27
+objects:
+- id: 6f7b3ed6-6195-4884-94a1-f22866e8e9e1
+  name: Bullet
+  groups:
+  - 탄환
+  width: 6
+  height: 6
+  components:
+  - type: spriteRenderer
+    assetId: 8ab98407-072a-5424-abb4-50f74c65bb21
+    asset: Assets/Pellet.png
+    tint: "#7EEDD0"
+  - type: circleCollider2D
+    isTrigger: true
+    layer: 1
+    mask: 4
+  - type: script
+    script: PooledBullet

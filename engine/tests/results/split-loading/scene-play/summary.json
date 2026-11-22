@@ -1,0 +1,54 @@
+{
+ "previous": [
+  {
+   "frames": 25,
+   "total_ms": 838.375084,
+   "max_ms": 118.138708,
+   "p95_ms": 102.653708,
+   "commit_ms": 5530.455333,
+   "cancel": true
+  },
+  {
+   "frames": 24,
+   "total_ms": 825.527458,
+   "max_ms": 118.100042,
+   "p95_ms": 104.951208,
+   "commit_ms": 5387.196167,
+   "cancel": true
+  },
+  {
+   "frames": 24,
+   "total_ms": 828.431166,
+   "max_ms": 119.035875,
+   "p95_ms": 105.337959,
+   "commit_ms": 5087.427084,
+   "cancel": true
+  }
+ ],
+ "split": [
+  {
+   "frames": 37,
+   "total_ms": 757.911291,
+   "max_ms": 73.553,
+   "p95_ms": 24.18375,
+   "commit_ms": 5626.864375,
+   "cancel": true
+  },
+  {
+   "frames": 37,
+   "total_ms": 765.1361660000002,
+   "max_ms": 72.402542,
+   "p95_ms": 23.93975,
+   "commit_ms": 5466.067167,
+   "cancel": true
+  },
+  {
+   "frames": 35,
+   "total_ms": 711.3855409999999,
+   "max_ms": 70.294042,
+   "p95_ms": 23.569416,
+   "commit_ms": 5414.549584,
+   "cancel": true
+  }
+ ]
+}

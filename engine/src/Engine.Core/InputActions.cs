@@ -89,7 +89,7 @@ public readonly record struct GameInput(Vector2 Move, bool InteractPressed)
     public bool Released(string action) => Samples?.GetValueOrDefault(action).Released ?? false;
 }
 
-public sealed class InputActions
+public sealed partial class InputActions
 {
     private readonly Dictionary<string,string[]> bindings = new(StringComparer.OrdinalIgnoreCase);
     private readonly Dictionary<string,float> controls = new(StringComparer.OrdinalIgnoreCase);
@@ -148,7 +148,7 @@ public sealed class InputActions
     public InputActions(InputBindings map)
     {
         map.Validate();
-        foreach (var a in map.AsMap().Actions!) bindings.Add(a.Name,[..a.Controls]);
+        foreach (var a in map.AsMap().Actions!) { bindings.Add(a.Name,[..a.Controls]); defaults.Add(a.Name,[..a.Controls]); }
     }
     internal void EnableDialogueBindings()
     {

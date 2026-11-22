@@ -7,6 +7,7 @@
 | **Space** | 발사를 멈추거나 다시 시작한다. 멈춘 뒤에도 남아 있는 탄환은 계속 이동한다. 전부 빠져나가면 활성 수는 0이 되고, 재개하면 회수했던 슬롯부터 사용한다. |
 | **B** | 묶음 제출과 개별 제출을 전환한다. 같은 풀과 PNG를 사용해 현재 탄막의 드로우콜을 비교할 수 있다. |
 | **R** | 현재 제출 모드를 유지하고 발사 패턴과 누적 카운터를 처음부터 재시작한다. |
+| **N** | [충돌체와 스크립트가 있는 프리팹 탄환](#충돌체와-스크립트가-있는-프리팹-풀) 씬으로 전환한다. |
 
 ## 다른 게임에서 사용하기
 
@@ -44,3 +45,47 @@ MONOON_FRAME_CAPTURE="$capture_dir/release.csv" game-builds/BarrageLab/BarrageLa
 ```
 
 **draw_calls**는 한 렌더 프레임에서 SDL에 제출한 지오메트리, 사각형, 텍스트의 합이다. **update_bytes**는 직전 렌더부터 누적한 게임 업데이트, **draw_bytes**는 그 프레임의 게임 렌더와 제출 구간에서 실행 스레드가 할당한 관리 메모리다. CSV 기록, 에디터 Inspector 갱신, 백그라운드 스레드와 GPU 메모리는 이 측정에서 제외한다. [Mac 실행 결과와 원본 CSV](../../engine/tests/results/sprite-pools/README.md)
+
+## 충돌체와 스크립트가 있는 프리팹 풀
+
+스프라이트 풀의 탄환은 그림과 이동만 있는 슬롯이다. 탄환이 트리거에 닿거나 스크립트를 실행해야 하면 프리팹 인스턴스를 풀에 보관한다. BarrageLab에서 **Play** 후 **N**을 누르면 왼쪽 포탑이 [Bullet.prefab](../../samples/BarrageLab/Assets/Bullet.prefab)을 틱마다 4발씩 쏜다. 각 탄환에는 Sprite Renderer, **Circle Collider 2D → Is Trigger**, PooledBullet 스크립트가 붙어 있다. 오른쪽에서 위아래로 움직이는 주황색 표적 4개에 닿거나 화면을 벗어나면 탄환이 사라진다. 아래 카운터에서 발사, 명중, 활성, 생성, 재사용 수를 확인한다.
+
+| 키 | 동작 |
+| --- | --- |
+| **Space** | 발사를 멈추거나 다시 시작한다. |
+| **P** | 프리팹 풀(`Rent`·`Return`)과 매번 생성·제거(`Instantiate`·`Destroy`)를 전환하고 처음부터 다시 쏜다. |
+| **R** | 현재 방식을 유지하고 탄환, 표적 위치와 카운터를 처음부터 다시 시작한다. |
+| **N** | 스프라이트 탄막 씬으로 돌아간다. |
+
+P와 R을 누르면 직전 구간의 결과가 Console에 한 줄로 기록된다. 같은 틱 수만큼 쏜 두 방식의 발사·명중·활성 수는 같다. 프리팹 풀에서는 생성 수가 동시에 활성인 최대 탄환 수 근처에서 멈추고 나머지는 재사용으로 집계된다.
+
+```csharp
+public PrefabReference Bullet;
+
+// 발사하는 쪽: 풀에 반환된 인스턴스가 없을 때만 새로 생성한다.
+var id = tick.Objects.Rent(Bullet, spawnPosition);
+tick.Objects.GetComponent<PooledBullet>(id)!.Launch(direction * 260);
+
+// 탄환 쪽: 풀에서 빌린 인스턴스는 반환하고, Instantiate로 만든 인스턴스는 제거한다.
+public override void OnTriggerEnter(ScriptContact contact)
+{
+    if (!contact.Objects.Return(contact.ObjectId)) contact.Objects.Destroy(contact.ObjectId);
+}
+```
+
+`Rent(prefab, position, parent)`의 위치는 `Instantiate`처럼 월드 좌표이고 반환값은 루트 GUID다. 풀은 월드마다 프리팹별로 하나씩 생긴다. `Return(id)`는 풀에서 빌린 루트에만 true를 반환한다. 이미 반환했거나 Instantiate로 만든 오브젝트에는 false를 반환한다. `PoolStats(prefab)`는 활성·대기·생성·재사용·반환 수를 제공한다. 반환한 인스턴스도 `Destroy`로 제거할 수 있으며, 제거된 인스턴스는 다시 대여하지 않는다.
+
+엔진은 반환할 때 다음 상태를 정리한다.
+
+- **수명 콜백**: 각 프리팹 오브젝트의 스크립트에서 `OnReturn`을 먼저 실행한 다음 `OnDisable`을 실행한다. 대여할 때는 `OnEnable` 다음에 `OnRent`를 실행한다. 처음 생성할 때만 `OnCreate`를 실행한다. 스크립트 필드는 엔진이 초기화하지 않으므로 이전 생애의 속도, 타이머, 카운터는 `OnRent`에서 다시 설정한다.
+- **소유자와 변환**: 부모에서 분리해 씬 루트로 옮긴다. 다시 대여하면 지정한 부모 아래 지정한 위치에 놓는다. 루트와 자식의 로컬 위치·회전·크기·기울기, 자식의 활성 상태, 비활성화한 충돌체, 강체 속도는 프리팹에 저장된 값으로 되돌린다.
+- **충돌**: 반환한 인스턴스는 물리 조회와 접촉 계산에서 빠진다. 닿아 있던 상대는 같은 틱 또는 다음 접촉 계산에서 `Exit`를 받는다. 같은 틱에 반환하고 다시 빌려도 이전 접촉은 `Stay`로 이어지지 않는다. 새로 빌린 인스턴스는 새로 생성한 인스턴스처럼 다음 틱부터 `FixedUpdate`와 접촉에 참여하고 `Enter`부터 받는다.
+- **태그·그룹과 이벤트**: 풀에서 대기하는 동안 `FindByTag`·`FindByGroup` 결과에서 빠지고 게임 이벤트를 보내거나 받지 않는다. 프리팹 내부의 이벤트 연결은 다시 대여하면 같은 인스턴스 안에서 그대로 동작한다.
+- **저장**: 반환하면 `TrackForSave` 추적이 해제된다. 다시 대여한 인스턴스를 저장하려면 다시 지정한다.
+
+애니메이션, 트윈, 파티클, 스프라이트 교체(`SetSprite`·`SetSpriteTint`)처럼 다른 컴포넌트에서 바꾼 값은 초기화하지 않는다. 필요하면 `OnRent`에서 다시 설정한다. 처음 대여할 때와 풀이 비었을 때는 `Instantiate`와 같은 비용이 든다. 풀은 크기 제한이 없고 장면이 바뀔 때 함께 사라진다. [풀 구현](../../engine/src/Engine.Core/PrefabPools.cs) · [포탑](../../samples/BarrageLab/Scripts/BulletTurret.cs) · [탄환](../../samples/BarrageLab/Scripts/PooledBullet.cs) · [표적](../../samples/BarrageLab/Scripts/HitTarget.cs)
+
+### 명중 수와 할당 비교
+
+내보낸 게임에서 두 방식을 같은 입력으로 비교하려면 [헤드리스 재생 실행기](../../engine/tests/BarrageLab.PrefabPools/README.md)를 사용한다. 실행기는 각 방식으로 1,800틱을 재생하고 마지막 1,200프레임의 업데이트 시간과 관리 할당을 집계한다. [macOS Release·Native AOT 측정 결과](../../engine/tests/results/prefab-pools/README.md)
+

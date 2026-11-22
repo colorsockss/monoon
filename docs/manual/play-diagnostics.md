@@ -52,3 +52,62 @@ tick.Session.Log("Loot table is empty.", GameLogLevel.Warning);
 | Alloc / GC 0/1/2 | 해당 구간에서 UI·렌더 스레드가 프레임당 할당한 평균 바이트(KiB)와 프로세스의 세대별 GC 횟수다. Inspector·콘솔 등 에디터 작업도 포함한다. |
 
 [이 Mac의 KeyRoom 검증 기록](../../engine/tests/results/play-diagnostics/README.md)
+
+## 느린 프레임의 작업 분석
+
+프로파일러 아래 표는 프레임 하나에서 엔진이 수행한 작업을 호출 관계대로 나눠 보여 준다. 그래프를 클릭하면 해당 프레임이 선택되고 주황 세로선이 표시된다. 선택하지 않았거나 선택한 프레임이 기록 범위를 벗어나면 기록된 프레임 중 가장 느린 프레임을 표시한다. Stop 후에도 마지막 기록에서 프레임을 고를 수 있다.
+
+| 열 | 의미 |
+| --- | --- |
+| Work | 작업 이름. 들여쓴 항목은 위 항목 안에서 호출됐다. 같은 부모 아래의 같은 작업은 한 줄로 합치고 Total이 긴 순서로 나열한다. |
+| Calls | 그 프레임에서 호출된 횟수 |
+| Total ms | 아래 작업을 포함한 시간 |
+| Self ms | Total에서 바로 아래 작업들의 Total을 뺀 시간 |
+
+| 작업 | 측정 범위 |
+| --- | --- |
+| Frame | 완료된 Scene 프레임 사이 전체. Self는 아래 항목에 속하지 않은 시간이다. 에디터 UI의 배치·그리기, GC 일시정지, 다음 프레임까지의 대기가 여기에 들어간다. |
+| UpdateUi · Simulate | 게임 루프의 UI 갱신과 고정 틱. Simulate의 Calls는 그 프레임에서 실행한 고정 틱 수다. |
+| `스크립트.메서드` | `FixedUpdate`, `UpdateUi`, `OnUiClick`, `OnUiValueChanged`, 접촉·트리거 콜백과 `OnCreate` 등의 생명주기 콜백. 스크립트 타입 이름으로 구분한다. |
+| Physics.Overlap · Raycast · Sweep | `IPhysics2D` 질의 한 번이 호출 한 번이다. 엔진 내부의 발 IK 레이도 Raycast로 집계한다. |
+| Physics.Move · Rigidbodies · Contacts | 스크립트 이동과 `TryMoveStep`의 충돌 검사, 리지드바디 단계, 접촉 판정과 접촉 콜백 |
+| UI.Input · UI.Layout · UI.Draw | 화면 UI의 입력 처리, 배치 계산, 그리기 |
+| Render · Render.World · Present | 프레임 그리기 전체, 카메라별 월드 그리기, SDL Present 호출 |
+| Scene.Loading · Tiles.Streaming | 씬 교체·추가 로드, 타일 청크 스트리밍 |
+| Lifecycle · Animation · Effects · Cameras · Audio | 생명주기 콜백 처리와 각 갱신 단계 |
+| Editor | 게임 갱신 직후 에디터의 Hierarchy·Inspector·진단 갱신 |
+| Profiler.Write | 개발용 게임이 직전 프레임을 파일에 쓰는 시간 |
+
+[CollisionLab](../../samples/CollisionLab)에서 Play 후 **2**로 충돌체 1만 개 씬을 열고 **R**을 누른다. 그래프에서 R 직후 솟은 프레임을 클릭하면 `QueryField.FixedUpdate` 아래 Physics.Overlap·Raycast·Sweep이 각각 1,344회(경로 96개 × 14회) 표시된다. 씬 전환 프레임에서는 Scene.Loading 외에 Frame의 Self 시간이 크게 나타난다. 이 시간은 에디터가 1만 개 오브젝트를 표시하는 데 사용한다.
+
+게임 스레드에서 실행된 작업만 기록한다. 다른 스레드에서 호출한 질의는 집계하지 않는다. 시간은 `Stopwatch` 타임스탬프로 측정하며 샘플을 기록할 때 관리 메모리를 할당하지 않는다. 프레임당 노드는 최대 256개, 깊이는 32단계까지 기록한다. 이를 넘은 호출은 제목에 `samples dropped`로 표시된다. 측정 비용은 시간에 포함되며, 이 Mac에서 질의 1회의 p95가 약 0.1 µs 늘었다. GPU 실행 시간은 측정하지 않는다.
+
+### 개발용 게임에서 기록
+
+`--profile development`로 빌드한 플레이어를 `MONOON_FRAME_PROFILE`에 CSV 경로를 지정해 실행하면 모든 프레임의 작업을 기록한다. 창 실행, `--replay-input` 헤드리스 재생, `--smoke-test`에서 사용할 수 있다. 이미 있는 파일을 지정하면 덮어쓰지 않고 오류로 종료한다. `./monoon profile`은 프레임 시간의 평균·p95·최대와 가장 느린 프레임 다섯 개를 출력하고 가장 느린 프레임이나 `--frame`으로 지정한 프레임을 표로 출력한다.
+
+```sh
+./monoon build samples/CollisionLab release --profile development
+MONOON_FRAME_PROFILE=/tmp/collision-frames.csv \
+  game-builds/CollisionLab/Development/CollisionLab.app/Contents/MacOS/MoNoonPlayer
+./monoon profile /tmp/collision-frames.csv
+./monoon profile /tmp/collision-frames.csv --frame 91
+```
+
+플레이어는 실행 파일 옆 `MoNoonBuild`의 프로필이 `development`일 때만 기록한다. 배포용 빌드(에디터의 **Build Game…** 포함)는 경고 한 줄을 출력하고 변수를 무시한다. 이때 프로파일러를 설치하지 않으므로 각 측정 지점의 비용은 null 확인 한 번이다. 작업 표와 그래프는 에디터에만 있으며 게임에는 프로파일러 화면이 없다.
+
+`--replay-input` 헤드리스 재생은 텍스처와 오디오를 준비하지 않는다. `MONOON_REPLAY_OFFSCREEN=1`을 함께 지정하면 창과 오디오 장치 없이 SDL 소프트웨어 렌더러에 텍스처를 올리고, 기록된 프레임 시간에 맞춰 프레임 사이를 기다린다. 기다린 시간은 프로파일에 넣지 않는다. 재생 시작과 끝에 상주 파일·디코딩 버퍼·SDL 텍스처 수를 출력한다. 씬 로딩을 측정할 때 사용한다. [나눠 읽기 측정](../../engine/tests/CollisionLab.SplitLoading/README.md)
+
+### CSV 형식
+
+첫 줄은 열 이름이다. 프레임마다 Frame부터 깊이 우선 순서로 노드 한 개당 한 행을 기록한다. 다른 검사에서 프레임 시간 목록이 필요하면 `node`가 0인 행의 `inclusive_us`를 읽는다.
+
+| 열 | 값 |
+| --- | --- |
+| `frame` | 1부터 증가하는 프레임 번호 |
+| `node` · `parent` · `depth` | 프레임 안의 노드 번호와 부모 노드 번호, 깊이. Frame은 0 · -1 · 0이다. |
+| `name` · `calls` | 작업 이름과 호출 수 |
+| `inclusive_us` · `self_us` | Total과 Self 시간(µs, 소수 첫째 자리) |
+| `alloc_bytes` · `gen0` · `dropped` | Frame 행에만 기록한다. 게임 스레드의 관리 할당 바이트, Gen0 수집 횟수, 기록하지 못한 호출 수 |
+
+[CollisionLab의 Scene Play·개발용 게임 검증 기록](../../engine/tests/results/frame-profiler/README.md)

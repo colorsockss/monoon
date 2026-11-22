@@ -127,7 +127,31 @@ public sealed class SdlCanvas(SdlRenderer renderer, Func<ShaderClip, RgbaImage>?
         FlushSprites();
         labels.Draw(renderer, text, x, y, size, color);
     }
+    /// <summary>Sprite textures alive in the renderer.</summary>
+    public int SpriteTextures => sprites.Count;
     public void Prepare(string path) { if (!sprites.TryGet(path, out _)) throw new InvalidDataException($"Could not load sprite {path}."); }
+
+    /// <summary>Reads a PNG into a CPU surface. Safe on worker threads; <see cref="Upload"/> turns it into a texture.</summary>
+    public static unsafe IDisposable Decode(string path)
+    {
+        var surface = Sdl.PInvoke.LoadPNG(path);
+        if (surface == null) throw new InvalidDataException(Sdl.PInvoke.GetError());
+        return new DecodedSurface(surface);
+    }
+
+    private sealed unsafe class DecodedSurface(SdlSurface* surface) : IDisposable
+    {
+        public SdlSurface* Surface { get; private set; } = surface;
+        public void Dispose() { if (Surface != null) Sdl.PInvoke.DestroySurface(Surface); Surface = null; }
+    }
+
+    /// <summary>Creates the texture of a <see cref="Decode"/> result. The caller still disposes the surface.</summary>
+    public unsafe void Upload(string path, IDisposable decoded)
+    {
+        if (sprites.Contains(path)) return;
+        try { sprites.Add(path, FromSurface(renderer, ((DecodedSurface)decoded).Surface, path)); }
+        catch (InvalidDataException ex) { throw new InvalidDataException($"Could not load sprite {path}.", ex); }
+    }
 
     public static unsafe Size ReadPngSize(string path)
     {
@@ -141,6 +165,12 @@ public sealed class SdlCanvas(SdlRenderer renderer, Func<ShaderClip, RgbaImage>?
     {
         var surface = Sdl.PInvoke.LoadPNG(path);
         if (surface == null) throw new InvalidDataException(Sdl.PInvoke.GetError());
+        try { return FromSurface(renderer, surface, path); }
+        finally { Sdl.PInvoke.DestroySurface(surface); }
+    }
+
+    private static unsafe SpriteTexture FromSurface(SdlRenderer renderer, SdlSurface* surface, string path)
+    {
         try
         {
             var texture = renderer.CreateTextureFromSurface(surface);
@@ -149,7 +179,6 @@ public sealed class SdlCanvas(SdlRenderer renderer, Func<ShaderClip, RgbaImage>?
             throw new InvalidDataException(Sdl.PInvoke.GetError());
         }
         catch (SdlException ex) { throw new InvalidDataException($"Could not create texture for '{path}'.", ex); }
-        finally { Sdl.PInvoke.DestroySurface(surface); }
     }
 
     public void DrawSpriteInstances(SceneAppearance sprite, ReadOnlySpan<SpriteInstance2D> instances, Matrix3x2 view, bool batched)

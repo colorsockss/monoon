@@ -1,0 +1,209 @@
+{
+  "budget_ms": 0,
+  "baseline": {
+    "resident": 3,
+    "decoded": 0,
+    "textures": 3
+  },
+  "add": {
+    "loading": {
+      "frames": 25,
+      "total_ms": 838.375084,
+      "max_ms": 118.138708,
+      "p95_ms": 102.653708,
+      "loading_ms": 415.43679199999997,
+      "slowest": {
+        "frame": 50,
+        "alloc_bytes": 47316256,
+        "gen0": 6,
+        "top": [
+          {
+            "name": "Frame",
+            "depth": 0,
+            "total_ms": 118.138708,
+            "self_ms": 16.267251
+          },
+          {
+            "name": "UpdateUi",
+            "depth": 1,
+            "total_ms": 101.566583,
+            "self_ms": 0.006458
+          },
+          {
+            "name": "Scene.Loading",
+            "depth": 2,
+            "total_ms": 101.55925,
+            "self_ms": 101.556875
+          }
+        ]
+      }
+    },
+    "commit": {
+      "frames": 1,
+      "total_ms": 5530.455333,
+      "max_ms": 5530.455333,
+      "p95_ms": 5530.455333,
+      "loading_ms": 30.625375,
+      "slowest": {
+        "frame": 57,
+        "alloc_bytes": 6350475880,
+        "gen0": 448,
+        "top": [
+          {
+            "name": "Frame",
+            "depth": 0,
+            "total_ms": 5530.455333,
+            "self_ms": 4521.941082
+          },
+          {
+            "name": "UpdateUi",
+            "depth": 1,
+            "total_ms": 30.637959,
+            "self_ms": 0.010627
+          },
+          {
+            "name": "Scene.Loading",
+            "depth": 2,
+            "total_ms": 30.625375,
+            "self_ms": 0.117875
+          },
+          {
+            "name": "Scene.Commit",
+            "depth": 3,
+            "total_ms": 30.5075,
+            "self_ms": 30.5075
+          },
+          {
+            "name": "Simulate",
+            "depth": 1,
+            "total_ms": 54.463917,
+            "self_ms": 5.136202
+          },
+          {
+            "name": "Physics.Contacts",
+            "depth": 2,
+            "total_ms": 49.180584,
+            "self_ms": 49.047667
+          },
+          {
+            "name": "Editor",
+            "depth": 1,
+            "total_ms": 919.77575,
+            "self_ms": 919.77575
+          },
+          {
+            "name": "Render",
+            "depth": 1,
+            "total_ms": 3.219625,
+            "self_ms": 1.005459
+          },
+          {
+            "name": "Render.World",
+            "depth": 2,
+            "total_ms": 1.124625,
+            "self_ms": 1.124625
+          },
+          {
+            "name": "UI.Draw",
+            "depth": 2,
+            "total_ms": 1.089541,
+            "self_ms": 1.074875
+          }
+        ]
+      }
+    },
+    "after_commit": {
+      "frames": 2,
+      "total_ms": 163.938333,
+      "max_ms": 92.670625,
+      "p95_ms": 92.670625,
+      "loading_ms": 0,
+      "slowest": {
+        "frame": 58,
+        "alloc_bytes": 2240032,
+        "gen0": 1,
+        "top": [
+          {
+            "name": "Frame",
+            "depth": 0,
+            "total_ms": 92.670625,
+            "self_ms": 2.051749
+          },
+          {
+            "name": "UpdateUi",
+            "depth": 1,
+            "total_ms": 3.948834,
+            "self_ms": 3.945959
+          },
+          {
+            "name": "Simulate",
+            "depth": 1,
+            "total_ms": 84.860416,
+            "self_ms": 7.350538
+          },
+          {
+            "name": "Physics.Contacts",
+            "depth": 2,
+            "total_ms": 77.486834,
+            "self_ms": 77.485875
+          },
+          {
+            "name": "Editor",
+            "depth": 1,
+            "total_ms": 1.124167,
+            "self_ms": 1.124167
+          }
+        ]
+      }
+    },
+    "counts": {
+      "resident": 7,
+      "decoded": 0,
+      "textures": 7
+    }
+  },
+  "cancel": {
+    "start": {
+      "resident": 3,
+      "decoded": 0,
+      "textures": 3
+    },
+    "end": {
+      "resident": 3,
+      "decoded": 0,
+      "textures": 3
+    },
+    "window": {
+      "frames": 12,
+      "total_ms": 237.33249999999998,
+      "max_ms": 45.656667,
+      "p95_ms": 24.304208,
+      "loading_ms": 29.205293,
+      "slowest": {
+        "frame": 99,
+        "alloc_bytes": 47178152,
+        "gen0": 6,
+        "top": [
+          {
+            "name": "Frame",
+            "depth": 0,
+            "total_ms": 45.656667,
+            "self_ms": 16.354043
+          },
+          {
+            "name": "UpdateUi",
+            "depth": 1,
+            "total_ms": 29.188834,
+            "self_ms": 0.006167
+          },
+          {
+            "name": "Scene.Loading",
+            "depth": 2,
+            "total_ms": 29.181667,
+            "self_ms": 29.179834
+          }
+        ]
+      }
+    }
+  }
+}

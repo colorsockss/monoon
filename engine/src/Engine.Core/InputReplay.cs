@@ -76,7 +76,7 @@ public sealed partial record InputReplay([property: YamlRequired] int Version, [
         return this;
     }
 
-    public void Play(GameSession game, Guid project)
+    public void Play(GameSession game, Guid project, Action<int>? frameEnded = null)
     {
         Validate();
         if (Project != project || StartScene != game.SceneId)
@@ -95,6 +95,7 @@ public sealed partial record InputReplay([property: YamlRequired] int Version, [
             }
             loop.Advance(TimeSpan.FromTicks(FrameTicks[frame]).TotalSeconds);
             game.Current.SetPointerFrame(loop.Interpolation);
+            frameEnded?.Invoke(frame);
         }
     }
 }

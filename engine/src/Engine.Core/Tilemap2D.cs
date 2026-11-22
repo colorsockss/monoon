@@ -14,6 +14,10 @@ public sealed partial record TileDefinition(int Id, SpriteRegion Source, bool So
     // A terrain brush uses 16 (square) or 64 (axial) sheet cells in mask order.
     public TileCollision? Collision { get; init; }
     public int AutoEdges { get; init; }
+    // Gameplay terrain kind and grid navigation weight. Unset cost: 1, or 0 (blocked) for solid tiles.
+    public string? Terrain { get; init; }
+    public int? MoveCost { get; init; }
+    public int EntryCost() => MoveCost ?? (Solid ? 0 : 1);
 }
 [YamlObject]
 public sealed partial record Tileset(Guid Image, TileSize TileSize, int Margin, int Spacing, TileDefinition[] Tiles)
@@ -37,6 +41,8 @@ public sealed partial record Tileset(Guid Image, TileSize TileSize, int Margin, 
             if (tile == null || tile.Id <= 0 || tile.Source?.Fits(size.Width, size.Height) != true || !tiles.TryAdd(tile.Id, tile))
                 throw new InvalidDataException($"{name}: duplicate or invalid tile #{tile?.Id} in {image}.");
             tile.Collision?.Validate(name, tile.Id);
+            if (tile.MoveCost < 0 || tile.Terrain is { Length: > 64 })
+                throw new InvalidDataException($"{name}: tile #{tile.Id} needs a nonnegative move cost and a terrain name of at most 64 characters.");
         }
         var palette = new TilePalette(path, tiles);
         var regions = tiles.Values.DistinctBy(t => t.Source).ToDictionary(t => t.Source, t => t.Id);
@@ -150,21 +156,33 @@ public sealed partial record Tilemap2DComponent : SceneComponent
     {
         if (visuals.TryGetValue(new(cell.X >> 5,cell.Y >> 5), out var baked))
             return baked.GetValueOrDefault(Index(cell),brush);
+        return Variant(palette,cell,brush,_ => true,brush);
+    }
+    // Edges toward unknown cells keep their bit from the previous art, when it is a variant of the same brush.
+    internal int Variant(TilePalette palette, Point cell, int brush, Func<Point,bool> known, int previous)
+    {
         if (!palette.Variants.TryGetValue(brush,out var variants)) return brush;
         bool hex = TileGrid.IsHex(Layout);
         if (variants.Length != (hex ? 64 : 16)) return brush;
-        int mask = 0;
+        int old = Array.IndexOf(variants,previous), mask = 0;
         for (int i=0; i<(hex ? 6 : 4); i++)
         {
             var d = (hex ? HexEdges : SquareEdges)[i];
             long x = (long)cell.X+d.X, y = (long)cell.Y+d.Y;
-            if (x is >= int.MinValue and <= int.MaxValue && y is >= int.MinValue and <= int.MaxValue && Get(new((int)x,(int)y)) == brush)
-                mask |= 1 << i;
+            if (x is < int.MinValue or > int.MaxValue || y is < int.MinValue or > int.MaxValue) continue;
+            Point n = new((int)x,(int)y);
+            if (known(n) ? Get(n) == brush : old >= 0 && (old >> i & 1) != 0) mask |= 1 << i;
         }
         return variants[mask];
     }
-    private static readonly Point[] SquareEdges = [new(0,-1),new(1,0),new(0,1),new(-1,0)];
-    private static readonly Point[] HexEdges = [new(1,0),new(0,1),new(-1,1),new(-1,0),new(0,-1),new(1,-1)];
+    internal void SetVisual(Point cell, int display, int brush)
+    {
+        var key = new Point(cell.X >> 5,cell.Y >> 5);
+        var baked = visuals.GetValueOrDefault(key,ImmutableDictionary<int,int>.Empty);
+        visuals = visuals.SetItem(key,display == brush ? baked.Remove(Index(cell)) : baked.SetItem(Index(cell),display));
+    }
+    internal static readonly Point[] SquareEdges = [new(0,-1),new(1,0),new(0,1),new(-1,0)];
+    internal static readonly Point[] HexEdges = [new(1,0),new(0,1),new(-1,1),new(-1,0),new(0,-1),new(1,-1)];
 
     public Point CellAt(Vector2 origin, double x, double y) =>
         TileGrid.Pick(Layout,(x-origin.X)/CellSize.Width,(y-origin.Y)/CellSize.Height);

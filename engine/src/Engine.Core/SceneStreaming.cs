@@ -1,3 +1,5 @@
+using System.Diagnostics;
+
 namespace Engine.Core;
 
 public enum SceneChange { Replace, Add, Remove }
@@ -27,16 +29,21 @@ public sealed partial class GameSession
     private readonly ProjectAssets? manifest;
     private SceneResources? resources;
     private HashSet<SceneResources.Asset> live = [];
-    private sealed class Loading(SceneRequest request, Task<SceneDocument> read)
+    private sealed class Loading(SceneRequest request, Task<SceneDocument> read, double budget)
     {
         public readonly SceneRequest Request = request;
         public SceneOperation Operation => Request.Operation!;
         public readonly Task<SceneDocument> Read = read;
+        // Main-thread milliseconds per update; 0 keeps the previous one-step staging.
+        public readonly double Budget = budget;
         public SceneGame? Stage;
         public SceneResources.Asset[] Assets = [];
+        public SceneResources.Prefetch? Decoding;
         public int Prepared;
         public double Elapsed;
     }
+    private static readonly int instantiating = FrameProfiler.Marker("Scene.Instantiate"),
+        uploading = FrameProfiler.Marker("Scene.Upload"), committing = FrameProfiler.Marker("Scene.Commit");
     private Loading? loading;
     private bool Blocking => loading?.Request.Change == SceneChange.Replace;
     public ScreenUi? InputUi => Blocking ? null : Current.InputUi;
@@ -91,21 +98,29 @@ public sealed partial class GameSession
         return doc;
     }
 
-    private SceneGame Stage(SceneDocument doc, bool add, SceneRequest request)
+    private SceneGame Stage(SceneDocument doc, bool add, SceneRequest request, bool staged = false)
     {
         if (add) Current.ResolveAdditiveIds(doc);
-        var stage = new SceneGame(doc, null, State, compiledScripts, sharedScripts, manifest, additive: add);
+        var stage = new SceneGame(doc, null, State, compiledScripts, sharedScripts, manifest, additive: add, staged: staged);
+        if (staged) return stage;
         try
         {
-            if (!add && State.WorldForEntry(request) is {} saved) stage.RestoreWorld(saved);
+            Restore(stage, request);
             return stage;
         }
         catch { stage.Dispose(); throw; }
     }
 
+    private void Restore(SceneGame stage, SceneRequest request)
+    {
+        if (request.Change != SceneChange.Add && State.WorldForEntry(request) is {} saved) stage.RestoreWorld(saved);
+    }
+
     private void PumpScenes(double seconds)
     {
         if (loading?.Operation.Status == SceneStatus.Canceled) DiscardLoading();
+        if (State.Requested == null && loading == null) return;
+        using var sample = FrameProfiler.Sample(FrameProfiler.SceneLoading);
         if (State.Requested is {} request)
         {
             State.Requested = null;
@@ -116,30 +131,54 @@ public sealed partial class GameSession
         active.Elapsed += seconds;
         var op = active.Operation;
         if (!active.Read.IsCompleted) return;
+        bool split = active.Budget > 0;
+        long deadline = Stopwatch.GetTimestamp() + (long)(active.Budget * Stopwatch.Frequency / 1000);
+        bool Spent() => Stopwatch.GetTimestamp() >= deadline;
         try
         {
             if (active.Stage == null)
             {
-                active.Stage = Stage(active.Read.GetAwaiter().GetResult(), op.Change == SceneChange.Add, active.Request);
-                active.Assets = resources == null ? [] : SceneResources.Required(active.Stage).ToArray();
+                active.Stage = Stage(active.Read.GetAwaiter().GetResult(), op.Change == SceneChange.Add, active.Request, staged: split);
                 op.Status = SceneStatus.Preparing;
-                op.Progress = .5f;
+                op.Progress = split ? .1f : .5f;
+                if (!split) active.Assets = resources == null ? [] : SceneResources.Required(active.Stage).ToArray();
+                else if (Spent()) return;
             }
-            // Native uploads and user component construction run on the game thread.
-            // Bound uploads per UI frame so large batches leave time to present.
-            if (active.Prepared < active.Assets.Length)
+            // User component construction and native uploads run on the game thread. A split load
+            // spends at most the budget per update on them (and at least one object or file).
+            if (!active.Stage.IsBuilt)
             {
-                resources!.Acquire(active.Assets[active.Prepared]);
+                bool built;
+                using (FrameProfiler.Sample(instantiating)) built = active.Stage.Build(Spent);
+                var (done, total) = active.Stage.BuildProgress;
+                op.Progress = .1f + .4f * done / Math.Max(1, total);
+                if (!built) return;
+                Restore(active.Stage, active.Request);
+                active.Assets = resources == null ? [] : SceneResources.Required(active.Stage).ToArray();
+                active.Decoding = resources?.StartDecoding(active.Assets);
+                op.Progress = .5f;
+                if (Spent()) return;
+            }
+            while (active.Prepared < active.Assets.Length)
+            {
+                var asset = active.Assets[active.Prepared];
+                // Leave the frame to the game while a worker thread decodes the next file.
+                if (active.Decoding?.IsReady(asset) == false) return;
+                using (FrameProfiler.Sample(uploading)) resources!.Acquire(asset, active.Decoding);
                 active.Prepared++;
                 op.Progress = .5f + .45f * active.Prepared / active.Assets.Length;
-                return;
+                // The previous path uploads one file per update.
+                if (!split || Spent()) return;
             }
             if (active.Elapsed < op.MinimumSeconds) return;
             prepare?.Invoke(active.Stage);
         }
         catch (Exception ex) { Reject(active.Request,ex); return; }
 
+        using var commit = FrameProfiler.Sample(committing);
         var stage = active.Stage!;
+        active.Decoding?.Dispose();
+        active.Decoding = null;
         if (op.Change == SceneChange.Add)
         {
             try { Current.Attach(op.SceneId, stage); }
@@ -178,7 +217,7 @@ public sealed partial class GameSession
                 op.Status = SceneStatus.Reading;
                 op.Progress = .05f;
                 // Only immutable manifest + independent YAML/scene objects cross threads.
-                loading = new(request, Task.Run(() => ReadScene(request.Id)));
+                loading = new(request, Task.Run(() => ReadScene(request.Id)), State.SceneLoadBudgetMilliseconds);
                 return;
             }
             else
@@ -231,6 +270,7 @@ public sealed partial class GameSession
     {
         if (loading is not {} active) return;
         loading = null;
+        active.Decoding?.Dispose();
         active.Stage?.Dispose();
         // A canceled read owns no runtime or SDL objects. Observe a late I/O failure.
         _ = active.Read.ContinueWith(t => { _ = t.Exception; }, CancellationToken.None,

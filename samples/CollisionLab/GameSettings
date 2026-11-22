@@ -46,3 +46,10 @@ input:
     controls: ["0"]
   - name: RepeatQueries
     controls: ["R"]
+  - name: LoadFieldInSteps
+    controls: ["3"]
+  - name: AddField
+    controls: ["4"]
+  - name: CancelLoad
+    controls:
+    - Backspace

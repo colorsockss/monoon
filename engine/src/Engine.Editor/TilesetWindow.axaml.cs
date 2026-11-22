@@ -14,6 +14,8 @@ internal partial class TilesetWindow : Window
     private readonly SceneDocument scene;
     private readonly SpriteCache<Bitmap> images = new(p => new Bitmap(p));
     private readonly Dictionary<SpriteRegion, int> terrain = [];
+    // Gameplay terrain name and navigation cost, separate from the auto-terrain brush above.
+    private readonly Dictionary<SpriteRegion, (string? Name, int? Cost)> ground = [];
     private sealed record CollisionDraft(int Mode, string Points);
     private readonly Dictionary<SpriteRegion, CollisionDraft> collisions = [];
     private static readonly CollisionDraft Empty = new(0, "");
@@ -45,6 +47,7 @@ internal partial class TilesetWindow : Window
             collisions[tile.Source] = new(tile.Collision is {} shape ? shape.OneWay ? 3 : 2 : tile.Solid ? 1 : 0,
                 string.Join("  ", (tile.Collision?.Vertices ?? []).Select(p => FormattableString.Invariant($"{p.X:R},{p.Y:R}"))));
             terrain[tile.Source] = tile.AutoEdges;
+            ground[tile.Source] = (tile.Terrain, tile.MoveCost);
         }
         foreach (var field in new[] { CellW, CellH, MarginBox, Gap }) field.ValueChanged += (_, _) => Slice();
         Images.SelectionChanged += (_, _) => Slice();
@@ -65,6 +68,16 @@ internal partial class TilesetWindow : Window
         TerrainMode.SelectionChanged += (_, _) => {
             if (!updating && Selected is {} tile) terrain[tile.Source] = TerrainMode.SelectedIndex switch { 1 => 4, 2 => 6, _ => 0 };
         };
+        TerrainName.PropertyChanged += (_, change) =>
+        {
+            if (!updating && change.Property == TextBox.TextProperty && Selected is {} tile)
+                ground[tile.Source] = (string.IsNullOrWhiteSpace(TerrainName.Text) ? null : TerrainName.Text.Trim(), ground.GetValueOrDefault(tile.Source).Cost);
+        };
+        MoveCostBox.ValueChanged += (_, _) =>
+        {
+            if (!updating && Selected is {} tile)
+                ground[tile.Source] = (ground.GetValueOrDefault(tile.Source).Name, MoveCostBox.Value is decimal v ? (int)v : null);
+        };
         SaveAsset.Click += (_, _) => Save();
         Cancel.Click += (_, _) => Close();
         Replace.Click += (_, _) => { if (missingId > 0 && Selected is { } tile) { replacements[missingId] = tile.Source; Save(); } };
@@ -84,6 +97,10 @@ internal partial class TilesetWindow : Window
         PointsBox.Text = draft.Points;
         TerrainMode.IsEnabled = tile != null;
         TerrainMode.SelectedIndex = (tile == null ? 0 : terrain.GetValueOrDefault(tile.Source)) switch { 4 => 1, 6 => 2, _ => 0 };
+        var (name, cost) = tile == null ? default : ground.GetValueOrDefault(tile.Source);
+        TerrainName.IsEnabled = MoveCostBox.IsEnabled = tile != null;
+        TerrainName.Text = name;
+        MoveCostBox.Value = cost;
         updating = false;
         if (missingId == 0) Info.Text = tile == null ? $"{sliced.Count} tiles · Select a cell" : $"Tile #{tile.Id} · ({tile.Source.X}, {tile.Source.Y})";
         Replace.IsEnabled = tile != null;
@@ -155,7 +172,8 @@ internal partial class TilesetWindow : Window
             if (relative == null && (name.StartsWith('.') || name.IndexOfAny("<>:\"|?*".ToCharArray()) >= 0))
                 throw new IOException("Choose a visible filename that works on all platforms.");
             if (relative == null && File.Exists(file)) throw new IOException("A tileset with this name already exists.");
-            var tiles = sliced.Values.Select(t => WithCollision(t) with { AutoEdges = terrain.GetValueOrDefault(t.Source) }).ToList();
+            var tiles = sliced.Values.Select(t => WithCollision(t) with { AutoEdges = terrain.GetValueOrDefault(t.Source),
+                Terrain = ground.GetValueOrDefault(t.Source).Name, MoveCost = ground.GetValueOrDefault(t.Source).Cost }).ToList();
             var retained = tiles.Select(t => t.Id).ToHashSet();
             foreach (var old in original?.Tiles ?? [])
             {

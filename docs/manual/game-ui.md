@@ -122,6 +122,26 @@ KeyRoom에서 **I**로 가방을 열고 **L** 또는 언어 버튼으로 영어�
 
 위젯에 붙인 컴포넌트는 `OnUiValueChanged(UiValueChanged change)`에서 사용자의 변경을 받는다. `change.Value`는 슬라이더의 수치, 토글의 0 또는 1, 드롭다운의 선택 인덱스다. 저장값을 복원하는 스크립트 호출은 이 이벤트를 발생시키지 않는다. 게임은 필요한 값만 플레이어 설정에 저장한다. [AudioLab의 믹서 연결](../../samples/AudioLab/Scripts/ListeningWalk.cs) · [플레이어 저장](player-data.md)
 
+## 데이터로 채우는 목록
+
+[InventoryLab](../../samples/InventoryLab/)을 열고 **Save & Run**으로 실행한 뒤 가방 화면에서 **C**를 누른다. 보관함 목록에 아이템 1,000개가 표시된다. 방향키·D-pad·왼쪽 스틱으로 아이템을 고르고 **R** 또는 패드 위쪽 버튼(Y)으로 번호순·이름순·수량순을 전환한다. Enter·Space·패드 아래쪽 버튼 또는 클릭으로 선택한 아이템을 하나 사용한다. 정렬 후에도 선택한 아이템이 그대로 선택되고, 사용 대상도 그 아이템의 ID다. **B** 또는 패드 Back 버튼으로 가방 화면으로 돌아간다. [보관함 씬](../../samples/InventoryLab/Scenes/Catalog.scene)
+
+**UI → Scroll View** 아래 첫 번째 자식이 행 템플릿이다. 버튼과 텍스트로 한 행의 모양을 만들고 텍스트에 `{name}`, `{count}`처럼 필드 이름을 중괄호로 넣는다. 게임을 실행하기 전에는 템플릿 한 줄만 보인다. 실행 중에 데이터를 연결하면 템플릿이 숨겨지고 화면을 채울 만큼의 복사본만 만들어진다. 스크롤해도 화면 밖으로 나간 행에 다음 아이템을 다시 채우므로 행 수가 늘지 않는다. 보관함의 346 높이 목록은 아이템 수와 관계없이 행 11개를 사용한다. 테마 스타일, 9-slice, 번역 키도 템플릿 설정을 그대로 따른다.
+
+게임 스크립트는 `IUiListSource`를 구현한다. `Count`는 현재 순서의 항목 수, `ItemId(index)`는 정렬해도 바뀌지 않는 ID, `Field(index, name)`은 중괄호 안의 필드 값을 반환한다. Scroll View 오브젝트에서 다음을 호출한다.
+
+| 호출 | 동작 |
+| --- | --- |
+| `BindList(list, source)` | 데이터를 연결한다. 세로 Scroll View에 행 템플릿이 있어야 한다. |
+| `RefreshList(list)` | 정렬·필터·수량 변경 후 화면을 다시 채운다. 선택한 ID가 남아 있으면 새 위치로 스크롤하고 포커스도 옮긴다. 빠졌으면 같은 순번의 이웃을 선택한다. |
+| `SelectedItem(list)` · `SelectItem(list, id)` | 선택한 ID를 읽거나 스크립트로 선택한다. |
+| `FocusWidget(list)` | 선택한 아이템, 없으면 첫 아이템의 행에 포커스를 준다. |
+| `ListRowCount(list)` | 만들어진 행 수를 반환한다. |
+
+위아래 이동은 화면의 행이 아니라 데이터 순서를 따르고, 포커스가 뷰 밖으로 나가면 목록이 따라 스크롤한다. 첫 항목에서 위, 마지막 항목에서 아래로 가면 주변 위젯으로 포커스가 나간다. 다른 위젯에서 목록으로 돌아오거나 휠로 멀리 스크롤한 뒤 방향 입력을 하면 마지막에 선택한 아이템으로 돌아온다. 행을 클릭하거나 패드로 누르면 Scroll View에 붙인 스크립트의 `OnUiClick`이 호출되고 `click.ObjectId`는 목록 오브젝트다. 사용 대상은 `click.Ui.SelectedItem(click.ObjectId)`로 읽는다. [보관함 스크립트](../../samples/InventoryLab/Scripts/Catalog/CatalogScreen.cs)
+
+지금은 세로 목록만 지원하며 모든 행의 높이가 같다고 가정한다. 행 간격은 템플릿 높이와 **UI Layout → Gap**으로 정한다.
+
 ## 데스크톱 화면 설정
 
 [DisplayLab](../../samples/DisplayLab/)을 열고 **Save & Run**으로 독립 게임 창을 실행한다. 창 크기를 바꾼 뒤 **Borderless fullscreen**을 켰다가 끄면 이전 창 크기로 돌아온다. **Vertical sync**로 VSync를 바꿀 수 있다. **Clicks** 버튼은 누를 때마다 횟수를 표시한다. 여백을 눌렀을 때도 숫자가 그대로인지 직접 확인할 수 있다.

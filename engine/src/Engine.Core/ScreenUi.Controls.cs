@@ -27,6 +27,7 @@ public sealed partial class ScreenUi
     public bool FocusWidget(Guid id)
     {
         Arrange();
+        if (lists.ContainsKey(id)) return FocusList(id);
         if (!byId.TryGetValue(id, out var n) || !Enabled(n) || !Visible(n)) return false;
         SetFocus(id);
         Reveal(n);

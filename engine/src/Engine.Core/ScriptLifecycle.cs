@@ -2,7 +2,8 @@ namespace Engine.Core;
 
 public sealed partial class SceneGame
 {
-    private enum LifeEvent { Create, Enable, Disable, Destroy }
+    private enum LifeEvent { Create, Enable, Disable, Destroy, Rent, Return }
+    private static readonly string[] lifeMethods = ["OnCreate", "OnEnable", "OnDisable", "OnDestroy", "OnRent", "OnReturn"];
     private readonly Queue<(Body Body, LifeEvent Event)> notifications = new();
     private bool started, dispatching, closing;
 
@@ -28,6 +29,7 @@ public sealed partial class SceneGame
     private void FlushLife()
     {
         if (!started || dispatching || notifications.Count == 0) return;
+        using var sample = FrameProfiler.Sample(FrameProfiler.Lifecycle);
         dispatching = true;
         try
         {
@@ -46,9 +48,12 @@ public sealed partial class SceneGame
                     if (!item.Body.NotifiedActive) continue;
                     item.Body.NotifiedActive = false;
                 }
+                else if (item.Event == LifeEvent.Rent && !item.Body.Active) continue;
                 using var scope = EnterScene(item.Body);
                 var life = new ScriptLife(item.Body.Id, State, this, Ui);
                 foreach (var script in item.Body.Behaviours)
+                {
+                    using var call = FrameProfiler.Script(script, lifeMethods[(int)item.Event]);
                     try
                     {
                         switch (item.Event)
@@ -57,10 +62,13 @@ public sealed partial class SceneGame
                             case LifeEvent.Enable: script.OnEnable(life); break;
                             case LifeEvent.Disable: script.OnDisable(life); break;
                             case LifeEvent.Destroy: script.OnDestroy(life); break;
+                            case LifeEvent.Rent: script.OnRent(life); break;
+                            case LifeEvent.Return: script.OnReturn(life); break;
                         }
                     }
                     catch (Exception ex) { throw ScriptFailure(script,"On"+item.Event,ex); }
                     finally { if (item.Event == LifeEvent.Destroy) script.Endpoint = null; }
+                }
             }
         }
         finally { dispatching = false; }

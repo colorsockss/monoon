@@ -252,13 +252,13 @@ public sealed partial class SceneGame : IBodyMotion2D
     {
         foreach (var b in rigidBodies)
         {
-            if (!b.Active || b.Rigid!.BodyType != BodyType2D.Kinematic) continue;
+            if (!b.Active || b.Spawning || b.Rigid!.BodyType != BodyType2D.Kinematic) continue;
             MovePlatform(b, b.Velocity * dt + b.Displacement);
             RotateBody(b, b.Spin * dt);
         }
         foreach (var b in rigidBodies)
         {
-            if (!b.Active || b.InvMass == 0) continue;
+            if (!b.Active || b.Spawning || b.InvMass == 0) continue;
             var prior = b.Support;
             if (prior != null && !prior.Active) prior = b.Support = null;
             if (prior?.MotionOwner is { Rigid.BodyType: BodyType2D.Kinematic } platform)

@@ -109,10 +109,13 @@ internal sealed class MacSceneHost : NativeControlHost
                 w = (int)Math.Round(area.Width * viewport.Scale * px), h = (int)Math.Round(area.Height * viewport.Scale * py) };
             renderer.SetRenderClipRect(&clip);
         }
-        viewport.DrawWorld(new WorldCanvas(canvas, origin.X * px, origin.Y * py, viewport.Scale * px, viewport.Scale * py, area));
-        canvas.FlushSprites();
+        using (FrameProfiler.Sample(FrameProfiler.Render))
+        {
+            viewport.DrawWorld(new WorldCanvas(canvas, origin.X * px, origin.Y * py, viewport.Scale * px, viewport.Scale * py, area));
+            canvas.FlushSprites();
+        }
         if (viewport.IsPlaying) renderer.SetRenderClipRect(null);
-        renderer.RenderPresent();
+        using (FrameProfiler.Sample(FrameProfiler.Present)) renderer.RenderPresent();
         viewport.FrameCapture?.Frame(viewport.PlayWorld, canvas.DrawSubmissions - calls, bytes);
         if(viewport.IsPlaying)viewport.Profile.Complete(started,canvas.DrawSubmissions-calls);
         // AppKit delivers the editor's input; never poll SDL's application-wide event pump.
@@ -173,6 +176,11 @@ internal sealed class MacSceneHost : NativeControlHost
     internal void Prepare(string path)
     {
         if (canvas != null) canvas.Prepare(path);
+        else SdlCanvas.ReadPngSize(path);
+    }
+    internal void Upload(string path, IDisposable decoded)
+    {
+        if (canvas != null) canvas.Upload(path, decoded);
         else SdlCanvas.ReadPngSize(path);
     }
     internal void ClearSprites() => canvas?.ClearSprites();

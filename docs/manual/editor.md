@@ -83,9 +83,22 @@ KeyRoom 첫 방에서 다음 순서로 두 나무의 상속을 비교할 수 있
 
 1. Project에서 `Oak.prefab`을 검색해 더블클릭한다. **Transform → Size → H**를 98에서 112로 바꾸고 저장한다. 씬의 **Oak tree**는 높이 112가 되고, **Courtyard oak**는 자체 높이 70을 유지한다.
 2. Hierarchy에서 **Courtyard oak**를 선택하고 Inspector 상단 **Overrides…**를 연다. **width** 행의 **Source**는 102, **Instance**는 76이다. **Apply to Source**를 누르면 두 나무 모두 너비 76이 된다. **Done**으로 닫은 뒤 **Cmd+Z** 한 번으로 원본과 씬을 함께 되돌릴 수 있다.
-3. 너비를 적용한 상태에서 **height → Revert Property**를 누르면 **Courtyard oak**도 높이 112를 상속한다. 이름과 위치는 유지된다. **Done → Cmd+S**로 씬을 저장하고 다시 열면 이 나무의 오버라이드 목록에는 이름만 남는다.
+3. 너비를 적용한 상태에서 **height → Revert**를 누르면 **Courtyard oak**도 높이 112를 상속한다. 이름과 위치는 유지된다. **Done → Cmd+S**로 씬을 저장하고 다시 열면 이 나무의 오버라이드 목록에는 이름만 남는다.
 
-자식·컴포넌트 추가와 삭제는 같은 목록에 표시된다. 구조 전체를 반영하려면 기존 **Scene → Apply to Prefab**을 사용한다. 씬에만 존재하는 오브젝트 참조는 인스턴스에 설정할 수 있으며, 프리팹 원본에 적용할 수 있는 대상은 해당 프리팹 안의 오브젝트다.
+씬에만 존재하는 오브젝트 참조는 인스턴스에 설정할 수 있다. 프리팹 원본에 적용할 수 있는 참조 대상은 해당 프리팹 안의 오브젝트다.
+
+### 자식·컴포넌트 추가와 삭제의 개별 적용
+
+인스턴스에서 추가하거나 삭제한 자식과 컴포넌트도 **Overrides…** 목록에 한 행씩 표시된다. 행 이름 끝에 **(added object)**, **(removed object)**, **(added)**, **(removed)**가 붙는다. 자식을 추가하거나 삭제하면 그 하위 트리가 한 행이 된다. 행을 고르고 **Apply to Source**를 누르면 그 변경만 원본에 들어가 다른 인스턴스에도 반영된다. **Revert**는 선택한 인스턴스에서만 그 변경을 되돌린다. 삭제한 자식을 복원하면 원래 ID와 부모로 돌아간다. 각 동작은 Undo 한 번으로 되돌릴 수 있다. 원본과 씬은 함께 복원된다. 구조 전체를 한 번에 반영하려면 **Scene → Apply to Prefab**을 사용한다.
+
+KeyRoom의 `Scenes/PrefabWorkshop.scene`에서 자물쇠만 원본에 적용하고 효과음은 한 상자에 남겨 보자.
+
+1. Hierarchy에서 **Chest 2**를 우클릭해 **Add Child Square**를 선택한다. 새 자식의 이름을 **Lock**으로 바꾼다.
+2. **Chest 2**를 다시 선택하고 **Add Component → Audio Source**를 추가한다. **Sound**에 `Assets/Unlock.wav`를 지정한다.
+3. Inspector 상단 **Overrides…**를 연다. **Lock (added object)**를 선택하고 **Apply to Source**를 누른다. 세 상자 모두 Lock을 갖게 된다. 목록에는 **Chest 2 · audioSource (added)**만 남고, 효과음은 Chest 2에만 있다.
+4. **Done**으로 닫고 **Cmd+Z**를 한 번 누른다. `Chest.prefab`과 Chest 1·3에서 Lock이 빠지고 Chest 2의 두 오버라이드가 다시 나타난다. **Cmd+Shift+Z**로 다시 적용한 뒤 **Cmd+S**로 씬을 저장한다. 다시 열어도 Chest 2에는 효과음 오버라이드가 남아 있다.
+
+자식을 삭제했지만 그 아래의 자식이 다른 위치에 남아 있으면 삭제를 적용할 수 없다. 남은 자식의 부모 변경을 먼저 적용하거나 되돌린다. 원본 오브젝트를 하위에 둔 추가 자식도 적용하거나 되돌리기 전에 원본 오브젝트를 밖으로 옮겨야 한다. 씬 전용 참조를 가진 컴포넌트는 원본에 적용할 수 없다. [검증 기록](../../engine/tests/results/prefab-structure/README.md)
 
 ## 컴포넌트와 외부 에디터
 

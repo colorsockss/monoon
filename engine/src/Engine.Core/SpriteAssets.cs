@@ -82,6 +82,16 @@ public sealed class SpriteCache<T>(Func<string, T> load) : IDisposable where T :
         }
     }
 
+    public bool Contains(string path) => images.ContainsKey(path);
+    public int Count => images.Count;
+
+    /// <summary>Stores an image loaded elsewhere, e.g. decoded on a worker thread.</summary>
+    public void Add(string path, T image)
+    {
+        missing.Remove(path);
+        images.Add(path, image);
+    }
+
     public void Clear()
     {
         foreach (var image in images.Values) image.Dispose();

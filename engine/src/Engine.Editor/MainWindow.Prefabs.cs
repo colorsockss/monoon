@@ -97,7 +97,7 @@ public partial class MainWindow
         {
             ItemTemplate = new FuncDataTemplate<object>((item, _) =>
             {
-                var label = item is PropertyOverride change ? $"{change.Property.Label} · {change.Owner}" : item as string;
+                var label = item is PropertyOverride change ? $"{change.Property.Label} · {change.Owner}" : item?.ToString();
                 var text = new TextBlock { Text = label, TextTrimming = TextTrimming.CharacterEllipsis };
                 ToolTip.SetTip(text, label);
                 return text;
@@ -107,7 +107,7 @@ public partial class MainWindow
         var details = new TextBlock { TextWrapping = TextWrapping.Wrap, MaxHeight = 64 };
         var status = new TextBlock { TextWrapping = TextWrapping.Wrap, IsVisible = false };
         var apply = new Button { Content = "Apply to Source" };
-        var revert = new Button { Content = "Revert Property" };
+        var revert = new Button { Content = "Revert" };
         var done = new Button { Content = "Done" };
         var buttons = new StackPanel { Orientation = Orientation.Horizontal, Spacing = 6,
             HorizontalAlignment = HorizontalAlignment.Right, Children = { revert, apply, done } };
@@ -118,10 +118,14 @@ public partial class MainWindow
         SceneObject Root() => Scene.Objects.Single(o => o.Id == rootId);
         void Describe()
         {
-            var change = list.SelectedItem as PropertyOverride;
-            revert.IsEnabled = apply.IsEnabled = change != null;
-            details.Text = change == null ? (list.ItemCount == 0 ? "No overrides" : "Use the Scene menu for whole-instance changes.")
-                : $"Source   {change.SourceValue}\nInstance   {change.LocalValue}";
+            revert.IsEnabled = apply.IsEnabled = list.SelectedItem != null;
+            details.Text = list.SelectedItem switch
+            {
+                PropertyOverride change => $"Source   {change.SourceValue}\nInstance   {change.LocalValue}",
+                StructuralOverride { Kind: StructureChange.AddedObject or StructureChange.AddedComponent } => "Source   (none)\nInstance   added",
+                StructuralOverride => "Source   present\nInstance   removed",
+                _ => list.ItemCount == 0 ? "No overrides" : "Use the Scene menu for whole-instance changes."
+            };
             ToolTip.SetTip(details, details.Text);
         }
         void Reload()
@@ -133,14 +137,19 @@ public partial class MainWindow
         }
         void Edit(bool toSource)
         {
-            if (list.SelectedItem is not PropertyOverride change) return;
+            var selected = list.SelectedItem;
+            if (selected == null) return;
+            void Change(bool apply)
+            {
+                if (selected is PropertyOverride property) Scene.EditPrefabProperty(Root(), property, apply);
+                else Scene.EditPrefabStructure(Root(), (StructuralOverride)selected, apply);
+            }
             try
             {
-                if (toSource)
-                    RecordPrefabAssetChange(Path.Combine(project, relative), () => Scene.EditPrefabProperty(Root(), change, true));
+                if (toSource) RecordPrefabAssetChange(Path.Combine(project, relative), () => Change(true));
                 else
                 {
-                    Scene.EditPrefabProperty(Root(), change, false);
+                    Change(false);
                     FinishObjectChange(Root());
                 }
                 status.IsVisible = false;

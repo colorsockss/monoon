@@ -1,0 +1,25 @@
+using System;
+using System.Globalization;
+using System.IO;
+using System.Linq;
+using Engine.Core;
+
+// Copied into a disposable project only: records each chest's locks and sound once.
+public sealed class TraceChests : GameBehaviour
+{
+    private bool written;
+
+    public override void FixedUpdate(ScriptTick tick)
+    {
+        if (written) return;
+        written = true;
+        var locks = tick.Objects.FindByTag("Lock").Select(id => tick.Objects.TryGetParent(id, out var parent) ? parent : null).ToArray();
+        var rows = tick.Objects.FindByTag("Chest").Select(id =>
+        {
+            tick.Objects.TryGetPosition(id, out var at);
+            return string.Create(CultureInfo.InvariantCulture,
+                $"{at.X:F0} {locks.Count(p => p == id)} {(tick.Objects.GetComponent<AudioSourceComponent>(id) != null ? 1 : 0)}");
+        }).OrderBy(r => float.Parse(r.Split(' ')[0], CultureInfo.InvariantCulture));
+        File.WriteAllLines(Environment.GetEnvironmentVariable("MONOON_CHEST_TRACE")!, rows);
+    }
+}

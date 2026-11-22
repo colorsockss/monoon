@@ -40,7 +40,7 @@ tick.Objects.TrackForSave(id);
 contact.Objects.Destroy(contact.ObjectId);
 ```
 
-생성 위치는 부모 유무와 관계없이 월드 좌표다. 프리팹의 각 오브젝트는 새 GUID를 받고, 프리팹 내부의 오브젝트 참조는 같은 인스턴스의 자식을 가리킨다. 생성된 오브젝트의 렌더링과 Hierarchy는 현재 고정 업데이트 끝에 갱신되며, 스크립트와 충돌은 다음 업데이트부터 실행된다. `SetActive(id, false)`는 하위 트리를 숨기고 충돌·스크립트를 중지한다. `Destroy(id)`는 하위 트리를 제거한다. Play 중 생성한 인스턴스는 Inspector에서 숫자 필드와 로컬 변환을 시험할 수 있다. 이 인스턴스의 변경은 Stop하면 사라진다. [Play Inspector 사용법](play-diagnostics.md#play-중-값-조정과-선택-적용)
+생성 위치는 부모 유무와 관계없이 월드 좌표다. 프리팹의 각 오브젝트는 새 GUID를 받고, 프리팹 내부의 오브젝트 참조는 같은 인스턴스의 자식을 가리킨다. 생성된 오브젝트의 렌더링과 Hierarchy는 현재 고정 업데이트 끝에 갱신되며, 스크립트와 충돌은 다음 업데이트부터 실행된다. `SetActive(id, false)`는 하위 트리를 숨기고 충돌·스크립트를 중지한다. `Destroy(id)`는 하위 트리를 제거한다. 자주 생성·제거하는 탄환이나 효과는 [프리팹 풀](sprite-pools.md#충돌체와-스크립트가-있는-프리팹-풀)의 `Rent`·`Return`으로 재사용한다. Play 중 생성한 인스턴스는 Inspector에서 숫자 필드와 로컬 변환을 시험할 수 있다. 이 인스턴스의 변경은 Stop하면 사라진다. [Play Inspector 사용법](play-diagnostics.md#play-중-값-조정과-선택-적용)
 
 빌드할 때 엔진은 Inspector에 연결한 프리팹을 따라가서 그 안의 PNG·클립·오디오·타일셋과 스크립트까지 수집한다. 프리팹에서만 쓰는 스크립트도 Release에서는 컴파일된 어셈블리에, Native AOT에서는 게임 실행 파일에 포함된다. 코드에서 GUID만 만들어 참조하는 방식으로는 빌드 의존성을 선언할 수 없다. 스크립트가 있는 프로젝트를 새로 빌드할 때는 현재 빌더와 같은 버전의 템플릿·AOT 키트를 준비한다. [프로젝트 업그레이드](upgrade.md)
 

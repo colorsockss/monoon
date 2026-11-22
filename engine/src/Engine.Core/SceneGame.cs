@@ -36,6 +36,7 @@ public sealed partial class SceneGame : IGameObjects, IGame2D, IGameCameras, IDi
         public TileWorld? Stream;
         public Tilemap2DComponent? Map = obj.GetComponent<Tilemap2DComponent>();
         public TilePalette? Palette;
+        public List<(GridNavigation Grid, System.Drawing.Point Origin)>? Grids;
         public string? Sound;
         public readonly AudioSourceComponent? AudioSource=obj.GetComponent<AudioSourceComponent>();
         public bool AutoStarted;
@@ -82,6 +83,7 @@ public sealed partial class SceneGame : IGameObjects, IGame2D, IGameCameras, IDi
             CollisionGeometry.ForObject(Source, MatrixAt(Vector2.Zero, angle)).Translated(origin);
         public float AngleAt(float time) => StartAngle + (Angle - StartAngle) * time;
         public bool Active = true, ActiveSelf = true, NotifiedActive;
+        public bool Spawning; // Rented from a prefab pool during this tick.
         private Matrix3x2 Basis = obj.WorldMatrix;
         public readonly Guid? InitialParent = obj.ParentId;
         public bool EditedBasis;
@@ -154,7 +156,7 @@ public sealed partial class SceneGame : IGameObjects, IGame2D, IGameCameras, IDi
     private readonly bool ownsScripts;
     public event Action<Guid, Guid>? TriggerEntered;
     private Body? camera;
-    private readonly Body? defaultCamera;
+    private Body? defaultCamera;
     private Body? requestedCamera;
     private RenderGrid? renderGrid;
     private WorldDrawOrder drawOrder = null!;
@@ -184,7 +186,7 @@ public sealed partial class SceneGame : IGameObjects, IGame2D, IGameCameras, IDi
     public Size LogicalSize => settings.Resolution;
     public static readonly Color Background = Color.FromArgb(24, 33, 45);
 
-    public ScreenUi Ui { get; }
+    public ScreenUi Ui { get; private set; } = null!;
     public SessionState State { get; }
     public SceneGame(SceneDocument scene, ScriptLibrary? library = null, SessionState? state = null)
         : this(scene, library, state, null)
@@ -194,7 +196,8 @@ public sealed partial class SceneGame : IGameObjects, IGame2D, IGameCameras, IDi
     }
 
     internal SceneGame(SceneDocument scene, ScriptLibrary? library, SessionState? state,
-        Func<ScriptComponent, GameBehaviour>? compiledScripts, ScriptRuntime? sharedScripts = null, ProjectAssets? manifest = null, bool additive = false)
+        Func<ScriptComponent, GameBehaviour>? compiledScripts, ScriptRuntime? sharedScripts = null, ProjectAssets? manifest = null, bool additive = false,
+        bool staged = false)
     {
         scripts = sharedScripts;
         ownsScripts = sharedScripts == null;
@@ -222,20 +225,44 @@ public sealed partial class SceneGame : IGameObjects, IGame2D, IGameCameras, IDi
         settings = scene.Settings;
         State.UseInput(settings.Input);
         assets = manifest ?? (scene.ProjectDirectory == null ? null : ProjectAssets.Scan(scene.ProjectDirectory));
-        try
-        {
-            foreach (var obj in world.Objects) RegisterBody(CreateBody(obj));
-            if (scene.Camera is { } cam) camera = defaultCamera = byId[cam.Id];
-            else if (!additive && !scene.Cameras.Any() && !scene.IsUiOnly) throw new InvalidOperationException("Add a camera with Scene → Create Camera before playing.");
-            Ui = new ScreenUi(world, assets, State.Has, id => byId.TryGetValue(id, out var b) && b.Active, State.UiPreferences??=new(settings.Accessibility));
-            Ui.InputModeChanged += Actions.ChangeInputMode;
-            Ui.PointerCanceled += CancelWorldPointer;
-            Reindex();
-            UpdateTileWorlds();
-            RegisterLife(parentFirst);
-        }
+        cameraId = scene.Camera?.Id;
+        cameraMissing = cameraId == null && !additive && !scene.Cameras.Any() && !scene.IsUiOnly;
+        if (staged) return; // The caller builds the bodies over several updates and disposes a partial world.
+        try { Build(null); }
         catch { foreach (var stream in ownedWorlds) stream.Dispose(); if (ownsScripts) scripts?.Dispose(); throw; }
     }
+
+    private readonly Guid? cameraId;
+    private readonly bool cameraMissing;
+    private int built; // Objects with bodies; -1 once the world is complete.
+    internal bool IsBuilt => built < 0;
+
+    /// <summary>
+    /// Creates bodies in authored order until <paramref name="stop"/> returns true (at least one per call). A later call,
+    /// or the same one if time is left, indexes the complete world in one step.
+    /// </summary>
+    internal bool Build(Func<bool>? stop)
+    {
+        if (built < 0) return true;
+        while (built < world.Objects.Count)
+        {
+            RegisterBody(CreateBody(world.Objects[built++]));
+            if (stop?.Invoke() == true) return false;
+        }
+        if (cameraId is { } cam) camera = defaultCamera = byId[cam];
+        else if (cameraMissing) throw new InvalidOperationException("Add a camera with Scene → Create Camera before playing.");
+        Ui = new ScreenUi(world, assets, State.Has, id => byId.TryGetValue(id, out var b) && b.Active, State.UiPreferences??=new(settings.Accessibility));
+        Ui.InputModeChanged += Actions.ChangeInputMode;
+        Ui.PointerCanceled += CancelWorldPointer;
+        Reindex();
+        UpdateTileWorlds();
+        RegisterLife(parentFirst);
+        built = -1;
+        return true;
+    }
+
+    /// <summary>Bodies created so far and the total, for loading progress.</summary>
+    internal (int Done, int Total) BuildProgress => (built < 0 ? world.Objects.Count : built, world.Objects.Count);
 
     private Body CreateBody(SceneObject obj)
     {
@@ -372,7 +399,7 @@ public sealed partial class SceneGame : IGameObjects, IGame2D, IGameCameras, IDi
         FlushLife();
         UpdateDialogue(input);
         if (modalFrame) input = default;
-        Ui.Dispatch(id => NotifyControl(id, null), (id, value) => NotifyControl(id, value));
+        using (FrameProfiler.Sample(FrameProfiler.UiInput)) Ui.Dispatch(id => NotifyControl(id, null), (id, value) => NotifyControl(id, value));
         void NotifyControl(Guid id, float? value)
         {
             var button = Array.Find(bodies, b => b.Id == id)!;
@@ -380,6 +407,7 @@ public sealed partial class SceneGame : IGameObjects, IGame2D, IGameCameras, IDi
             foreach (var behaviour in button.Behaviours)
             {
                 if (!button.Active || revision != Ui.InputModeRevision) break;
+                using var sample = FrameProfiler.Script(behaviour, value.HasValue ? nameof(GameBehaviour.OnUiValueChanged) : nameof(GameBehaviour.OnUiClick));
                 try
                 {
                     if (value.HasValue) behaviour.OnUiValueChanged(new(id, value.Value, State, Ui, this));
@@ -394,6 +422,7 @@ public sealed partial class SceneGame : IGameObjects, IGame2D, IGameCameras, IDi
             foreach (var behaviour in body.Behaviours)
             {
                 if (!body.Active) break;
+                using var sample = FrameProfiler.Script(behaviour, nameof(GameBehaviour.UpdateUi));
                 try { behaviour.UpdateUi(new UiTick(body.Id, State, Ui, RoutedInput(body, input, revision), seconds)); }
                 catch (Exception ex) { throw ScriptFailure(behaviour, nameof(GameBehaviour.UpdateUi), ex); }
             }
@@ -411,22 +440,24 @@ public sealed partial class SceneGame : IGameObjects, IGame2D, IGameCameras, IDi
         Ui.ValidateInputModes();
         Time.AdvanceGame(seconds);
         started = true;
-        UpdateTileWorlds();
+        using (FrameProfiler.Sample(FrameProfiler.TileStreaming)) UpdateTileWorlds();
         FlushLife();
         foreach (var body in bodies) body.BeginStep();
         foreach (var body in parentFirst)
         {
-            if (!body.Active) continue;
+            if (!body.Active || body.Spawning) continue;
             body.Displacement = Vector2.Zero;
             using var scope = EnterScene(body);
             foreach (var behaviour in body.Behaviours)
             {
                 if (!body.Active) break;
+                using var sample = FrameProfiler.Script(behaviour, nameof(GameBehaviour.FixedUpdate));
                 try { behaviour.FixedUpdate(new ScriptTick(this, body, RoutedInput(body, input, revision), seconds)); }
                 catch (Exception ex) { throw ScriptFailure(behaviour, nameof(GameBehaviour.FixedUpdate), ex); }
             }
             if (body.Active && body.Animation is {} animation)
             {
+                using var sample = FrameProfiler.Sample(FrameProfiler.Animation);
                 animation.Step(seconds,body.FrameEvent);
                 ApplyAnimationPose(body);
             }
@@ -438,21 +469,22 @@ public sealed partial class SceneGame : IGameObjects, IGame2D, IGameCameras, IDi
             if (!body.Active || body.Rigid != null || body.Displacement == Vector2.Zero) continue;
 
             var group = Subtree(body);
-            var translation = MoveGroup(group, body.Displacement);
+            MotionPath translation;
+            using (FrameProfiler.Sample(FrameProfiler.Move)) translation = MoveGroup(group, body.Displacement);
             foreach (var member in group) member.Translate(translation);
         }
-        if (rigidBodies.Length > 0) StepRigidBodies(seconds);
-        foreach (var body in skeletons) if (body.Active) body.Skeleton!.Step(this,body,seconds);
-        StepEffects(seconds);
-        DispatchContacts();
+        if (rigidBodies.Length > 0) using (FrameProfiler.Sample(FrameProfiler.Rigidbodies)) StepRigidBodies(seconds);
+        using (FrameProfiler.Sample(FrameProfiler.Animation)) foreach (var body in skeletons) if (body.Active) body.Skeleton!.Step(this,body,seconds);
+        using (FrameProfiler.Sample(FrameProfiler.Effects)) StepEffects(seconds);
+        using (FrameProfiler.Sample(FrameProfiler.Contacts)) DispatchContacts();
         CommitChanges();
-        StepCameras(seconds);
+        using (FrameProfiler.Sample(FrameProfiler.Cameras)) StepCameras(seconds);
         if (requestedCamera?.Active == true) camera = requestedCamera;
         requestedCamera = null;
         if (camera?.Active != true) camera = defaultCamera?.Active == true ? defaultCamera : bodies.FirstOrDefault(b => b.Active && b.Camera?.Output == Camera2DComponent.Primary);
         FollowPointerCamera();
-        UpdateTileWorlds();
-        SyncAudio();
+        using (FrameProfiler.Sample(FrameProfiler.TileStreaming)) UpdateTileWorlds();
+        using (FrameProfiler.Sample(FrameProfiler.Audio)) SyncAudio();
     }
 
     public void Draw(ICanvas2D canvas, float interpolation)
@@ -461,10 +493,13 @@ public sealed partial class SceneGame : IGameObjects, IGame2D, IGameCameras, IDi
         SetPointerFrame(interpolation);
         PrepareCameraDraw(interpolation);
         canvas.Clear(Background);
-        if (ViewCamera is { Active:true } lens) DrawCamera(canvas,lens,interpolation);
-        if (playback is {} p) { DrawDialogue(canvas,p); return; }
-        foreach (var extra in overlays) if (extra.Active) DrawCamera(canvas,extra,interpolation);
-        Ui.Draw(canvas);
+        using (FrameProfiler.Sample(FrameProfiler.RenderWorld))
+        {
+            if (ViewCamera is { Active:true } lens) DrawCamera(canvas,lens,interpolation);
+            if (playback is {} p) { DrawDialogue(canvas,p); return; }
+            foreach (var extra in overlays) if (extra.Active) DrawCamera(canvas,extra,interpolation);
+        }
+        using (FrameProfiler.Sample(FrameProfiler.UiDraw)) Ui.Draw(canvas);
     }
 
     internal bool UseRenderGrid { get; set; } = true;

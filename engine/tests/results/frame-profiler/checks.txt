@@ -1,0 +1,19 @@
+PASS frame profiler: samples are inert without an installed profiler
+PASS frame profiler: repeated calls merge into one node per caller with their call count
+PASS frame profiler: self time excludes nested samples and inclusive time contains them
+PASS frame profiler: Total sums a marker across the tree
+PASS frame profiler: recursive samples count every call but time only the outermost
+PASS frame profiler: samples deeper than the limit are counted as dropped and stay balanced
+PASS frame profiler: a frame cannot end inside a sample and other threads are ignored
+PASS frame profiler: Uninstall stops sampling
+PASS frame profiler: the ring keeps the newest frames in order
+PASS frame profiler: a frame is selected by number and the slowest frame holds the heavy sample
+PASS frame profiler: Restart discards the frame in progress
+PASS frame profiler: 20,000 samples and 20 frames allocate 0 bytes when installed and 0 when not
+PASS frame profiler: 37 raycasts and 11 overlaps in one script tick appear under that script's FixedUpdate
+PASS frame profiler: a frame with three fixed ticks counts three times the queries
+PASS frame profiler: a player without a build receipt ignores the capture request
+PASS frame profiler: a distribution build installs no profiler and writes no capture
+PASS frame profiler: a development build installs the capture profiler
+PASS frame profiler: streaming 50 more frames to CSV allocates 0 bytes
+PASS frame profiler: CSV rows list each frame's tree depth-first with parents; writing shows up in the next frame

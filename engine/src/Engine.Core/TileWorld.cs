@@ -19,6 +19,8 @@ internal sealed class TileWorld : IDisposable
     internal const string Folder = ".monoon-world";
     private readonly Dictionary<Point,string> index = [];
     private readonly HashSet<Point> resident = [];
+    // Runtime cell edits outlive page eviction and are reapplied on reload. Zero clears a cell.
+    private readonly Dictionary<Point,int> edits = [];
     private readonly string directory;
     private readonly bool temporary;
     internal readonly Tilemap2DComponent Map;
@@ -94,11 +96,41 @@ internal sealed class TileWorld : IDisposable
                 page.Variants.Any(v => palette?.Tiles.ContainsKey(v.Tile)!=true))
                 throw new InvalidDataException($"Invalid world chunk ({x},{y}).");
             Map.Install(page); resident.Add(key); loads++;
+            foreach (var (cell,tile) in edits)
+                if (Key(cell) == key) Map.Set(cell,tile);
+            foreach (var cell in edits.Keys)
+                if (Math.Abs(Key(cell).X-x) <= 1 && Math.Abs(Key(cell).Y-y) <= 1) Refresh(cell,palette);
         }
         foreach (var key in resident.ToArray())
             if (next is not Point p || Math.Abs(key.X-p.X)>radius || Math.Abs(key.Y-p.Y)>radius)
             { Map.Evict(key); resident.Remove(key); unloads++; }
         center = next;
+    }
+
+    private static Point Key(Point cell) => new(cell.X >> 5,cell.Y >> 5);
+
+    internal bool Set(Point cell, int tile, TilePalette? palette)
+    {
+        if (!resident.Contains(Key(cell))) return false;
+        edits[cell] = tile;
+        Map.Set(cell,tile);
+        Refresh(cell,palette);
+        return true;
+    }
+
+    // Re-resolve border art of an edited cell and its resident neighbours.
+    // shortcut: a neighbour's edge toward a third, unloaded page keeps its baked bit; exact unless that page was also edited while unloaded neighbours were absent.
+    private void Refresh(Point cell, TilePalette? palette)
+    {
+        if (palette == null) return;
+        var edges = TileGrid.IsHex(Map.Layout) ? Tilemap2DComponent.HexEdges : Tilemap2DComponent.SquareEdges;
+        for (int i = -1; i < edges.Length; i++)
+        {
+            Point p = i < 0 ? cell : new(cell.X + edges[i].X, cell.Y + edges[i].Y);
+            int brush = Map.Get(p);
+            if (!resident.Contains(Key(p)) || brush == 0) continue;
+            Map.SetVisual(p,Map.Variant(palette,p,brush,n => resident.Contains(Key(n)),Map.DisplayTile(palette,p,brush)),brush);
+        }
     }
 
     public void Dispose()

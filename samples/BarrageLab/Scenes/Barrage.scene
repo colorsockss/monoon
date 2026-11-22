@@ -12,7 +12,7 @@ objects:
     asset: "Assets/Pellet.png"
   - type: script
     script: "SpiralBarrage"
-    values: {"Mode": "3d7a1680-21c1-5854-873a-84253935b97b", "Counters": "3aae8095-b668-56c5-93d3-1d38244a2539"}
+    values: {"Mode": "3d7a1680-21c1-5854-873a-84253935b97b", "Counters": "3aae8095-b668-56c5-93d3-1d38244a2539", "Bullets": {"Id": "12940974-2dc8-472e-af74-dca5b29fdac6"}}
 - id: 679a4e19-59d9-5cc1-afa8-efc85d83d7bb
   name: Emitter core
   x: 393
@@ -118,7 +118,7 @@ objects:
   components:
   - type: uiRect
   - type: uiText
-    text: "Space   발사 / 중지          B   묶음 / 개별 제출          R   처음부터"
+    text: "Space   발사 / 중지          B   묶음 / 개별 제출          R   처음부터          N   프리팹 탄환"
     size: 14
     color: "#AABBC7"
     insetX: 0

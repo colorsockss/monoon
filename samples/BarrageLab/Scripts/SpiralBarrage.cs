@@ -6,6 +6,7 @@ using Engine.Core;
 public sealed class SpiralBarrage : GameBehaviour
 {
     public Guid Counters, Mode;
+    public SceneReference Bullets;
     private const int Capacity = 4096, Arms = 24;
     private static readonly Color Mint = Color.FromArgb(126, 237, 208);
     private static readonly Color Coral = Color.FromArgb(254, 156, 127);
@@ -21,6 +22,11 @@ public sealed class SpiralBarrage : GameBehaviour
 
     public override void FixedUpdate(ScriptTick tick)
     {
+        if (tick.Input.Pressed("Next"))
+        {
+            tick.Session.LoadScene(Bullets.Id);
+            return;
+        }
         if (tick.Input.Pressed("Compare"))
         {
             pool.Batched = !pool.Batched;

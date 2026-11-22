@@ -15,6 +15,8 @@ public sealed class GridNavigation
     private readonly int[] costs;
     public int Width { get; }
     public int Height { get; }
+    /// <summary>Increases whenever an entry cost changes. Walkers compare it to re-plan from their current cell.</summary>
+    public long Revision { get; private set; }
 
     public GridNavigation(int width, int height, ReadOnlySpan<int> entryCosts)
     {
@@ -34,7 +36,9 @@ public sealed class GridNavigation
     {
         if (!Contains(cell)) throw new ArgumentOutOfRangeException(nameof(cell));
         if (cost < 0) throw new ArgumentOutOfRangeException(nameof(cost));
+        if (costs[Index(cell)] == cost) return;
         costs[Index(cell)] = cost;
+        Revision++;
     }
 
     /// <summary>Includes both endpoints. Each step costs 10 (straight) or 14 (diagonal) times the destination weight.</summary>

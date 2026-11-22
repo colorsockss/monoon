@@ -99,6 +99,10 @@ try
     using var game = Start(content.Root, storage, out string path);
     runningSession = game;
     trace?.Mark("session_ready");
+    // Development builds only: MONOON_FRAME_PROFILE=<file.csv> records every frame's call tree.
+    using var frameProfile = FrameProfileWriter.Open(AppContext.BaseDirectory);
+    if (FrameProfileWriter.IsDevelopmentBuild(AppContext.BaseDirectory) && SessionState.SceneLoadBudgetOverride() is {} budget)
+        game.State.SceneLoadBudgetMilliseconds = budget;
     if (record || replay)
     {
         game.LoadFailed += message => throw new InvalidDataException(message);
@@ -106,8 +110,29 @@ try
         if (replay)
         {
             var recording = InputReplay.Load(args[1]);
-            recording.Play(game, project);
+            using var offscreen = OffscreenResources.Open(game);
+            if (offscreen != null) Console.WriteLine($"Replay resources at start: {offscreen.Counts}");
+            using var capture = ReplayCapture.Open(game);
+            var clock = System.Diagnostics.Stopwatch.StartNew();
+            var due = TimeSpan.Zero;
+            recording.Play(game, project, capture == null && frameProfile == null && offscreen == null ? null : frame =>
+            {
+                capture?.Frame(frame);
+                frameProfile?.Profiler.EndFrame();
+                if (offscreen == null) return;
+                // Wait out the recorded frame time like a 60 Hz window; the profile excludes the wait.
+                due += TimeSpan.FromTicks(recording.FrameTicks[frame]);
+                if (due > clock.Elapsed) Thread.Sleep(due - clock.Elapsed);
+                else due = clock.Elapsed;
+                frameProfile?.Profiler.Restart();
+            });
             Console.WriteLine($"Headless replay completed: {recording.FrameTicks.Length} frames, {recording.Events.Length} events.");
+            if (offscreen != null)
+            {
+                // Released decode buffers are freed by a worker continuation after cancellation.
+                for (int i = 0; i < 200 && offscreen.Resources.DecodedCount != 0; i++) Thread.Sleep(5);
+                Console.WriteLine($"Replay resources at end: {offscreen.Counts}");
+            }
         }
         else
         {
@@ -126,6 +151,7 @@ try
         void Tick()
         {
             game.FixedUpdate(game.Actions.Take(), 1f / 60);
+            frameProfile?.Profiler.EndFrame();
             if (loadError != null) throw new InvalidDataException(loadError);
         }
         Tick();

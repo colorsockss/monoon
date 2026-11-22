@@ -1,0 +1,25 @@
+using System;
+using System.IO;
+using System.Threading;
+using Engine.Core;
+
+// Test-only observer copied into a disposable KeyRoom. Records the HUD prompt and the bindings it reads.
+public sealed class TraceBindings : GameBehaviour
+{
+    public Guid Hint;
+    private string last;
+    private int frame;
+
+    public override void UpdateUi(UiTick tick)
+    {
+        var s = tick.Session;
+        // A headless replay runs frames back to back. Give the additive controls screen the real time a window would.
+        if (s.PendingScene != null) Thread.Sleep(20);
+        string line = $"hint={tick.Ui.TextOf(Hint)}|interact={string.Join(",", s.ControlsFor("Interact"))}|carry={string.Join(",", s.ControlsFor("CarryCoin"))}" +
+            $"|guide={string.Join(",", s.ControlsFor("RoomGuide"))}|capturing={s.RebindingAction}|chest={s.Has("chest")}";
+        if (line != last && Environment.GetEnvironmentVariable("MONOON_REBIND_TRACE") is { Length: > 0 } path)
+            File.AppendAllText(path, frame + "|" + line + "\n");
+        last = line;
+        frame++;
+    }
+}

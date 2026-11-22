@@ -1,0 +1,258 @@
+{
+  "frames": 121,
+  "median_ms": 20.984833,
+  "slowest": 81,
+  "slowest_ms": 137.83875,
+  "load": {
+    "frame": 32,
+    "frame_ms": 5488.723042,
+    "alloc_bytes": 6390117720,
+    "top": [
+      {
+        "name": "Frame",
+        "depth": 0,
+        "total_ms": 5488.723042,
+        "self_ms": 4517.881082
+      },
+      {
+        "name": "Simulate",
+        "depth": 1,
+        "total_ms": 371.622334,
+        "self_ms": 0.315792
+      },
+      {
+        "name": "Scene.Loading",
+        "depth": 2,
+        "total_ms": 370.861458,
+        "self_ms": 370.819374
+      },
+      {
+        "name": "Editor",
+        "depth": 1,
+        "total_ms": 595.240667,
+        "self_ms": 595.240667
+      },
+      {
+        "name": "Render",
+        "depth": 1,
+        "total_ms": 3.195167,
+        "self_ms": 1.130375
+      },
+      {
+        "name": "Render.World",
+        "depth": 2,
+        "total_ms": 1.080542,
+        "self_ms": 1.080542
+      }
+    ]
+  },
+  "title": "Selected frame 81   \u00B7   137.84 ms   \u00B7   3914.3 KiB",
+  "table": [
+    [
+      "Frame",
+      "1",
+      "137.839",
+      "17.025"
+    ],
+    [
+      "Simulate",
+      "2",
+      "119.960",
+      "0.241"
+    ],
+    [
+      "QueryField.FixedUpdate",
+      "2",
+      "114.296",
+      "1.998"
+    ],
+    [
+      "Physics.Overlap",
+      "1,344",
+      "37.821",
+      "37.821"
+    ],
+    [
+      "Physics.Sweep",
+      "1,344",
+      "37.270",
+      "37.270"
+    ],
+    [
+      "Physics.Raycast",
+      "1,344",
+      "37.208",
+      "37.208"
+    ],
+    [
+      "Physics.Contacts",
+      "2",
+      "5.421",
+      "5.421"
+    ],
+    [
+      "FieldSelector.FixedUpdate",
+      "2",
+      "0.000",
+      "0.000"
+    ],
+    [
+      "Cameras",
+      "2",
+      "0.000",
+      "0.000"
+    ],
+    [
+      "Tiles.Streaming",
+      "4",
+      "0.000",
+      "0.000"
+    ],
+    [
+      "Audio",
+      "2",
+      "0.000",
+      "0.000"
+    ],
+    [
+      "MoveMarker.FixedUpdate",
+      "2",
+      "0.000",
+      "0.000"
+    ],
+    [
+      "Effects",
+      "2",
+      "0.000",
+      "0.000"
+    ],
+    [
+      "Animation",
+      "2",
+      "0.000",
+      "0.000"
+    ],
+    [
+      "Render",
+      "1",
+      "0.415",
+      "0.036"
+    ],
+    [
+      "UI.Draw",
+      "1",
+      "0.264",
+      "0.263"
+    ],
+    [
+      "UI.Layout",
+      "1",
+      "0.001",
+      "0.001"
+    ],
+    [
+      "Render.World",
+      "1",
+      "0.115",
+      "0.115"
+    ],
+    [
+      "UpdateUi",
+      "1",
+      "0.199",
+      "0.199"
+    ],
+    [
+      "UI.Input",
+      "1",
+      "0.000",
+      "0.000"
+    ],
+    [
+      "FieldSelector.UpdateUi",
+      "1",
+      "0.000",
+      "0.000"
+    ],
+    [
+      "MoveMarker.UpdateUi",
+      "1",
+      "0.000",
+      "0.000"
+    ],
+    [
+      "QueryField.UpdateUi",
+      "1",
+      "0.000",
+      "0.000"
+    ],
+    [
+      "Present",
+      "1",
+      "0.190",
+      "0.190"
+    ],
+    [
+      "Editor",
+      "1",
+      "0.050",
+      "0.050"
+    ]
+  ],
+  "query_frames": [
+    {
+      "frame": 5,
+      "frame_ms": 67.204709,
+      "alloc_bytes": 252664,
+      "gen0": 0,
+      "dropped": 0,
+      "calls": {
+        "Physics.Overlap": 3,
+        "Physics.Raycast": 1,
+        "Physics.Sweep": 1
+      },
+      "query_ms": 2.297334,
+      "script_ms": 0
+    },
+    {
+      "frame": 33,
+      "frame_ms": 364.358833,
+      "alloc_bytes": 6380208,
+      "gen0": 2,
+      "dropped": 0,
+      "calls": {
+        "Physics.Overlap": 1344,
+        "Physics.Raycast": 1344,
+        "Physics.Sweep": 1344
+      },
+      "query_ms": 216.18397299999998,
+      "script_ms": 256.73929
+    },
+    {
+      "frame": 81,
+      "frame_ms": 137.83875,
+      "alloc_bytes": 4008240,
+      "gen0": 0,
+      "dropped": 0,
+      "calls": {
+        "Physics.Overlap": 1344,
+        "Physics.Raycast": 1344,
+        "Physics.Sweep": 1344
+      },
+      "query_ms": 112.298763,
+      "script_ms": 114.296418
+    }
+  ],
+  "alignment": [
+    {
+      "width": 1400,
+      "drift": 0,
+      "right": 1160
+    },
+    {
+      "width": 820,
+      "drift": 0,
+      "right": 580
+    }
+  ]
+}

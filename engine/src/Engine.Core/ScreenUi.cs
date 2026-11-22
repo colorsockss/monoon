@@ -118,8 +118,15 @@ public interface IGameUi
     void ClearFocus();
     string Preedit {get;}
     bool SetText(Guid widget, string text);
+    /// <summary>The label text currently drawn for a text widget, or the value of a text field.</summary>
+    string? TextOf(Guid widget);
     bool SetVisible(Guid widget, bool visible);
     bool SetInteractable(Guid widget, bool interactable);
+    bool BindList(Guid list, IUiListSource source);
+    bool RefreshList(Guid list);
+    string? SelectedItem(Guid list);
+    bool SelectItem(Guid list, string itemId);
+    int ListRowCount(Guid list);
 }
 public readonly record struct UiValueChanged(Guid ObjectId, float Value, SessionState Session, IGameUi Ui, IGameObjects Objects);
 public readonly record struct UiClick(Guid ObjectId, SessionState Session, IGameUi Ui, IGameObjects Objects);
@@ -132,6 +139,7 @@ public sealed partial class ScreenUi : IGameUi
     public static bool IsWidget(SceneObject o) => o.Components.Any(c => c is UiRectComponent or UiImageComponent or UiTextComponent or UiControlComponent or UiTextFieldComponent or UiLayoutComponent or UiScrollComponent);
     private sealed record Node(SceneObject Object, Node? Parent, int Order, string? Image)
     {
+        internal Guid Source = Object.Id; // the authored object behind a pooled list row
         internal UiNineSlice? Slice;
         internal ButtonPaint[]? Palette;
         internal RectangleF Box,Clip;
@@ -211,6 +219,7 @@ public sealed partial class ScreenUi : IGameUi
             if(byId.TryGetValue(obj.Id,out var prior))node.Offset=prior.Offset;
             parent?.Children.Add(node);tree.Add(obj.Id, node); ordered.Add(node);
         }
+        InsertListRows(ordered, tree);
         treeOrder=ordered.ToArray();
         nodes = ordered.OrderBy(n => n.Order).ToArray();
         byId = tree;

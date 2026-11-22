@@ -1,0 +1,392 @@
+schemaVersion: 25
+objects:
+- id: 097a17e1-312a-43f9-858c-be09e5329451
+  name: Key Bindings
+  components:
+  - type: uiCanvas
+    order: 20
+- id: 0c570194-d9ee-4bef-b9c0-6aa96d767223
+  name: Bindings panel
+  parentId: 097a17e1-312a-43f9-858c-be09e5329451
+  width: 440
+  height: 318
+  components:
+  - type: uiRect
+    anchor: Center
+  - type: uiImage
+    sprite: 8417743f-7aed-49af-becf-fce814d4d466
+    borders: {left: 8, top: 8, right: 8, bottom: 8}
+  - type: uiLayout
+    padding: 15
+    gap: 7
+  - type: script
+    script: KeyBindingsMenu
+    values:
+      StatusLabel: "1d1fc62e-1e03-4e68-b987-523b7117c6db"
+      FirstButton: "069c1bd2-2106-4fa6-a95c-b87c8f6f79f1"
+- id: 2108655a-3ce9-47be-b106-ec5c744833b2
+  name: Bindings title
+  parentId: 0c570194-d9ee-4bef-b9c0-6aa96d767223
+  width: 410
+  height: 28
+  components:
+  - type: uiRect
+  - type: uiText
+    text: Controls
+    translations: {"ko": "조작키 설정"}
+    size: 19
+- id: e3fbd05b-7d9b-4ab8-8124-ab03706c994d
+  name: Column headings
+  parentId: 0c570194-d9ee-4bef-b9c0-6aa96d767223
+  width: 410
+  height: 28
+  components:
+  - type: uiRect
+  - type: uiLayout
+    axis: Horizontal
+    gap: 10
+    padding: 0
+    stretch: false
+- id: 7ab8c07c-0a2a-4c85-8f26-d36b686cd1c9
+  name: Action heading
+  parentId: e3fbd05b-7d9b-4ab8-8124-ab03706c994d
+  width: 150
+  height: 28
+  components:
+  - type: uiRect
+  - type: uiText
+    text: Action
+    translations: {"ko": "동작"}
+    size: 13
+    insetX: 8
+    insetY: 6
+- id: 4fa3b205-14a5-4e64-a345-1febc0b6835c
+  name: Keyboard heading
+  parentId: e3fbd05b-7d9b-4ab8-8124-ab03706c994d
+  width: 120
+  height: 28
+  components:
+  - type: uiRect
+  - type: uiText
+    text: Keyboard
+    translations: {"ko": "키보드"}
+    size: 13
+    insetX: 8
+    insetY: 6
+- id: cb7e5a5f-51ab-42a3-8b9a-830a4670499d
+  name: Gamepad heading
+  parentId: e3fbd05b-7d9b-4ab8-8124-ab03706c994d
+  width: 120
+  height: 28
+  components:
+  - type: uiRect
+  - type: uiText
+    text: Gamepad
+    translations: {"ko": "게임패드"}
+    size: 13
+    insetX: 8
+    insetY: 6
+- id: b51542c6-9511-4cac-879f-3fcc0d56b344
+  name: Interact row
+  parentId: 0c570194-d9ee-4bef-b9c0-6aa96d767223
+  width: 410
+  height: 28
+  components:
+  - type: uiRect
+  - type: uiLayout
+    axis: Horizontal
+    gap: 10
+    padding: 0
+    stretch: false
+- id: 1b1f8f52-55e3-4876-bc0f-bc9cecb816fb
+  name: Interact label
+  parentId: b51542c6-9511-4cac-879f-3fcc0d56b344
+  width: 150
+  height: 28
+  components:
+  - type: uiRect
+  - type: uiText
+    text: Open chest
+    translations: {"ko": "상자 열기"}
+    size: 15
+    insetX: 8
+    insetY: 4
+- id: 069c1bd2-2106-4fa6-a95c-b87c8f6f79f1
+  name: Interact keyboard
+  parentId: b51542c6-9511-4cac-879f-3fcc0d56b344
+  width: 120
+  height: 28
+  components:
+  - type: uiRect
+  - type: uiButton
+  - type: uiText
+    text: "—"
+    size: 15
+    insetX: 8
+    insetY: 4
+  - type: script
+    script: RebindButton
+    values:
+      Action: Interact
+      Gamepad: false
+- id: 091d911f-b9cf-4cdb-9364-f5824b8571e0
+  name: Interact gamepad
+  parentId: b51542c6-9511-4cac-879f-3fcc0d56b344
+  width: 120
+  height: 28
+  components:
+  - type: uiRect
+  - type: uiButton
+  - type: uiText
+    text: "—"
+    size: 15
+    insetX: 8
+    insetY: 4
+  - type: script
+    script: RebindButton
+    values:
+      Action: Interact
+      Gamepad: true
+- id: a77ddd97-294f-489a-8bf5-241def0adeca
+  name: CarryCoin row
+  parentId: 0c570194-d9ee-4bef-b9c0-6aa96d767223
+  width: 410
+  height: 28
+  components:
+  - type: uiRect
+  - type: uiLayout
+    axis: Horizontal
+    gap: 10
+    padding: 0
+    stretch: false
+- id: e9a1dfd4-dfb7-4179-974d-b7c999d661db
+  name: CarryCoin label
+  parentId: a77ddd97-294f-489a-8bf5-241def0adeca
+  width: 150
+  height: 28
+  components:
+  - type: uiRect
+  - type: uiText
+    text: Carry coin
+    translations: {"ko": "동전 들기"}
+    size: 15
+    insetX: 8
+    insetY: 4
+- id: 5b8df5b0-5647-45bc-bca4-408dcf4d6546
+  name: CarryCoin keyboard
+  parentId: a77ddd97-294f-489a-8bf5-241def0adeca
+  width: 120
+  height: 28
+  components:
+  - type: uiRect
+  - type: uiButton
+  - type: uiText
+    text: "—"
+    size: 15
+    insetX: 8
+    insetY: 4
+  - type: script
+    script: RebindButton
+    values:
+      Action: CarryCoin
+      Gamepad: false
+- id: bd68481b-516f-456e-8fc4-048996c1c2f8
+  name: CarryCoin gamepad
+  parentId: a77ddd97-294f-489a-8bf5-241def0adeca
+  width: 120
+  height: 28
+  components:
+  - type: uiRect
+  - type: uiButton
+  - type: uiText
+    text: "—"
+    size: 15
+    insetX: 8
+    insetY: 4
+  - type: script
+    script: RebindButton
+    values:
+      Action: CarryCoin
+      Gamepad: true
+- id: 9b831ae3-73bf-4538-bb21-558ebbe142ad
+  name: ShowControls row
+  parentId: 0c570194-d9ee-4bef-b9c0-6aa96d767223
+  width: 410
+  height: 28
+  components:
+  - type: uiRect
+  - type: uiLayout
+    axis: Horizontal
+    gap: 10
+    padding: 0
+    stretch: false
+- id: 41861555-1ac4-48a9-9d8e-f8d6ec26ad5d
+  name: ShowControls label
+  parentId: 9b831ae3-73bf-4538-bb21-558ebbe142ad
+  width: 150
+  height: 28
+  components:
+  - type: uiRect
+  - type: uiText
+    text: Help
+    translations: {"ko": "도움말"}
+    size: 15
+    insetX: 8
+    insetY: 4
+- id: 7d7417ec-c29c-4e32-b40f-083d3477690b
+  name: ShowControls keyboard
+  parentId: 9b831ae3-73bf-4538-bb21-558ebbe142ad
+  width: 120
+  height: 28
+  components:
+  - type: uiRect
+  - type: uiButton
+  - type: uiText
+    text: "—"
+    size: 15
+    insetX: 8
+    insetY: 4
+  - type: script
+    script: RebindButton
+    values:
+      Action: ShowControls
+      Gamepad: false
+- id: 675e5190-058a-4b7c-bb13-8b39df050a06
+  name: ShowControls gamepad
+  parentId: 9b831ae3-73bf-4538-bb21-558ebbe142ad
+  width: 120
+  height: 28
+  components:
+  - type: uiRect
+  - type: uiButton
+  - type: uiText
+    text: "—"
+    size: 15
+    insetX: 8
+    insetY: 4
+  - type: script
+    script: RebindButton
+    values:
+      Action: ShowControls
+      Gamepad: true
+- id: cda7d21c-9dec-47f2-9c6e-75e95cd4bdf8
+  name: PauseGame row
+  parentId: 0c570194-d9ee-4bef-b9c0-6aa96d767223
+  width: 410
+  height: 28
+  components:
+  - type: uiRect
+  - type: uiLayout
+    axis: Horizontal
+    gap: 10
+    padding: 0
+    stretch: false
+- id: e52b2e11-1f77-4ecb-86e6-b63af1421bdb
+  name: PauseGame label
+  parentId: cda7d21c-9dec-47f2-9c6e-75e95cd4bdf8
+  width: 150
+  height: 28
+  components:
+  - type: uiRect
+  - type: uiText
+    text: Pause
+    translations: {"ko": "일시정지"}
+    size: 15
+    insetX: 8
+    insetY: 4
+- id: 455fb4a6-4d57-4948-a0d8-421ddac0a7df
+  name: PauseGame keyboard
+  parentId: cda7d21c-9dec-47f2-9c6e-75e95cd4bdf8
+  width: 120
+  height: 28
+  components:
+  - type: uiRect
+  - type: uiButton
+  - type: uiText
+    text: "—"
+    size: 15
+    insetX: 8
+    insetY: 4
+  - type: script
+    script: RebindButton
+    values:
+      Action: PauseGame
+      Gamepad: false
+- id: fcab727f-e407-4cd5-a197-c8a3fb04412e
+  name: PauseGame gamepad
+  parentId: cda7d21c-9dec-47f2-9c6e-75e95cd4bdf8
+  width: 120
+  height: 28
+  components:
+  - type: uiRect
+  - type: uiButton
+  - type: uiText
+    text: "—"
+    size: 15
+    insetX: 8
+    insetY: 4
+  - type: script
+    script: RebindButton
+    values:
+      Action: PauseGame
+      Gamepad: true
+- id: 1d1fc62e-1e03-4e68-b987-523b7117c6db
+  name: Bindings status
+  parentId: 0c570194-d9ee-4bef-b9c0-6aa96d767223
+  width: 410
+  height: 36
+  components:
+  - type: uiRect
+  - type: uiText
+    text: ""
+    size: 14
+    insetX: 8
+    wrap: true
+- id: a2d7b270-841a-4940-85b2-4eea288904c5
+  name: Bindings actions
+  parentId: 0c570194-d9ee-4bef-b9c0-6aa96d767223
+  width: 410
+  height: 28
+  components:
+  - type: uiRect
+  - type: uiLayout
+    axis: Horizontal
+    gap: 10
+    padding: 0
+    stretch: false
+- id: a8a80fc7-7d6a-40be-bea1-68fd8c59cc09
+  name: Restore defaults
+  parentId: a2d7b270-841a-4940-85b2-4eea288904c5
+  width: 150
+  height: 28
+  components:
+  - type: uiRect
+  - type: uiButton
+  - type: uiText
+    text: Restore defaults
+    translations: {"ko": "기본값 복원"}
+    size: 15
+    insetX: 8
+    insetY: 4
+  - type: script
+    script: RestoreBindings
+- id: b2904425-8684-4a35-9727-73963e6b6fcc
+  name: Close bindings
+  parentId: a2d7b270-841a-4940-85b2-4eea288904c5
+  width: 120
+  height: 28
+  components:
+  - type: uiRect
+  - type: uiButton
+  - type: uiText
+    text: Close
+    textKey: ui.close
+    size: 15
+    insetX: 8
+    insetY: 4
+  - type: script
+    script: CloseGuide
+    values:
+      Guide:
+        Id: "cd60e7de-8966-4519-aabb-7209fb04fe2f"
+id: cd60e7de-8966-4519-aabb-7209fb04fe2f

@@ -1,0 +1,12 @@
+PASS first run starts with the project prompt E
+PASS Return on the first cell starts capture
+PASS C swaps with Carry coin and the prompt shows C
+PASS pad capture swaps North with Room guide and the pad prompt shows North
+PASS Esc cancels instead of binding
+PASS the old E no longer opens the chest
+PASS player.settings stores the changed actions
+PASS restart applies the saved bindings and prompt before any input
+PASS E at frame 10 keeps the chest closed; C at frame 30 opens it (frame 31)
+PASS Restore defaults brings back E and North
+PASS restore removes the saved map
+PASS after another restart E opens the chest again

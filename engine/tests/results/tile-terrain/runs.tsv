@@ -1,0 +1,5 @@
+platform	execution	scenarios	trace rows	trace.txt SHA-256	result.json SHA-256
+osx-arm64	Scene Play	7	132	c747efb932efb54ff42229022085e42d6fa190c308ea873bd7fd7b42fbd2c1b4	ae5d49b4615d8153296c43e80c4aa863f4ef0fab289819544ff51c5a23b30c42
+osx-arm64	Release	7	132	c747efb932efb54ff42229022085e42d6fa190c308ea873bd7fd7b42fbd2c1b4	ae5d49b4615d8153296c43e80c4aa863f4ef0fab289819544ff51c5a23b30c42
+osx-arm64	Native AOT	7	132	c747efb932efb54ff42229022085e42d6fa190c308ea873bd7fd7b42fbd2c1b4	ae5d49b4615d8153296c43e80c4aa863f4ef0fab289819544ff51c5a23b30c42
+osx-arm64	GridNavigation six routes (Scene Play, Release, Native AOT)	6	88	-	d80dc87356a8356f5a2ff0518cbd2249d298a5fe4f9070485fd1f8cdf4d67295

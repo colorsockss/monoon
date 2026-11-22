@@ -112,11 +112,21 @@ objects:
   components:
   - {type: uiRect}
   - {type: uiText, text: "M   Change mud cost", size: 16, color: "#EEF6F4", insetX: 0, insetY: 0}
+- id: 8e2be35d-b1a9-5df4-baa4-8f0a45c3a6f6
+  name: Paint
+  parentId: 473d3bd5-798d-5b61-89a5-c5c72d2f0196
+  x: 572
+  y: 237
+  width: 220
+  height: 28
+  components:
+  - {type: uiRect}
+  - {type: uiText, text: "B   Paint north mud", size: 16, color: "#EEF6F4", insetX: 0, insetY: 0}
 - id: ebb3b0a4-8eca-5f77-8043-87ae22b8c5cb
   name: Restart
   parentId: 473d3bd5-798d-5b61-89a5-c5c72d2f0196
   x: 572
-  y: 237
+  y: 268
   width: 220
   height: 28
   components:
@@ -126,7 +136,7 @@ objects:
   name: Return
   parentId: 473d3bd5-798d-5b61-89a5-c5c72d2f0196
   x: 572
-  y: 268
+  y: 299
   width: 220
   height: 28
   components:

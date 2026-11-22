@@ -296,7 +296,9 @@ public sealed partial class SceneViewport : Decorator
         var scripts = Scene.ProjectDirectory is {} root
             ? ProjectScripts.ForScenePlay(root, playDebugger != null ? playDebugger.Instrument : null) : null;
         game = new GameSession(Scene, scripts, null, null, Preview == null ? null : LayoutSettings);
+        if (SessionState.SceneLoadBudgetOverride() is {} budget) game.State.SceneLoadBudgetMilliseconds = budget;
         Profile.Reset();
+        Profile.Work.Install();
         game.Current.Diagnostics=PhysicsDebug;
         game.State.Logged+=EmitLog;
         sounds.Attach(game.Mixer);
@@ -316,7 +318,12 @@ public sealed partial class SceneViewport : Decorator
             {
                 if (native!=null) native.PrepareShader(shader);
                 else shaderSheets.Get(shader,GameColor.White,shader.Additive);
-            }, shader => { shaderSheets.Release(shader); native?.ReleaseShader(shader); }));
+            }, shader => { shaderSheets.Release(shader); native?.ReleaseShader(shader); })
+            {
+                // The SDL Scene panel uploads PNGs decoded on worker threads; the Skia preview loads on the UI thread.
+                Decode = native == null ? null : (path, sound) => sound ? Engine.Desktop.SdlSounds.Decode(path) : Engine.Desktop.SdlCanvas.Decode(path),
+                Upload = (path, sound, data) => { if (sound) sounds.PreparePlayback(path, data); else native!.Upload(path, data); },
+            });
         }
         catch { FrameCapture?.Dispose(); FrameCapture = null; sounds.Dispose(); game.Dispose(); game = null; throw; }
         input = new(game.Actions, () => game?.InputUi, game.LogicalSize, () => game?.InputUi == null ? null : game.Current);
@@ -332,6 +339,7 @@ public sealed partial class SceneViewport : Decorator
     public void Stop()
     {
         timer.Stop();
+        Profile.Work.Uninstall();
         gamepads?.Dispose(); gamepads=null; input=null;
         var current = game;
         game = null;
@@ -367,6 +375,8 @@ public sealed partial class SceneViewport : Decorator
             return;
         }
         Profile.AddUpdate(updating);
+        // Hierarchy, Inspector and diagnostics refreshes that follow the game update.
+        using var editor=FrameProfiler.Sample(FrameProfiler.Editor);
         if(game!=null && prior!=game.Current){
             ProbeArmed=false;
             EmitLog(new(GameLogLevel.Info,$"Scene loaded: {game.Current.SceneLabel}",null,0));
@@ -629,7 +639,7 @@ public sealed partial class SceneViewport : Decorator
         using var clip = context.PushClip(area);
         var started=Stopwatch.GetTimestamp();
         var canvas=new PreviewCanvas(context, bitmaps, variants, shaderSheets, gameText, area);
-        DrawWorld(canvas);
+        using (FrameProfiler.Sample(FrameProfiler.Render)) DrawWorld(canvas);
         if(IsPlaying)Profile.Complete(started,canvas.Submissions);
     }
 

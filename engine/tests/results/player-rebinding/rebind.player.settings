@@ -1,0 +1,12 @@
+version: 1
+values:
+  inputBindings:
+    Interact:
+    - "C"
+    - "Space"
+    - "Pad.North"
+    CarryCoin:
+    - "E"
+    RoomGuide:
+    - "M"
+    - "Pad.South"

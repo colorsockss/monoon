@@ -460,6 +460,17 @@ objects:
     values:
       Guide:
         Id: "25fc2224-7695-4e19-a05c-d8524a2ffe50"
+- id: be0b6e23-58d7-4ed7-a8a4-19dad1c60dc6
+  name: Key bindings opener
+  width: 1
+  height: 1
+  components:
+  - type: script
+    script: RoomGuide
+    values:
+      Guide:
+        Id: "cd60e7de-8966-4519-aabb-7209fb04fe2f"
+      Action: KeyBindings
 - id: 82979000-dcbc-443e-baa1-60ada0400007
   parentId: 8fcb65a1-aaee-59d8-82cc-1f9a3148b9a3
   name: Checkpoint controls

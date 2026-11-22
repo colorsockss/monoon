@@ -20,7 +20,7 @@ public sealed class GameLoop(IGame2D game, InputActions actions)
     public void Advance(double elapsed)
     {
         if (!double.IsFinite(elapsed) || elapsed < 0) throw new ArgumentOutOfRangeException(nameof(elapsed));
-        game.UpdateUi(actions.TakeUi(), elapsed);
+        using (FrameProfiler.Sample(FrameProfiler.UpdateUi)) game.UpdateUi(actions.TakeUi(), elapsed);
         // Switching modes is a boundary. Wall time and input from the old mode do not carry across it.
         bool changed = clock.PauseRevision != pauseRevision;
         if (changed)
@@ -52,7 +52,7 @@ public sealed class GameLoop(IGame2D game, InputActions actions)
     private void Simulate()
     {
         var input = actions.Take();
-        game.Simulate(input, (float)GameTime.FixedStep);
+        using (FrameProfiler.Sample(FrameProfiler.Simulate)) game.Simulate(input, (float)GameTime.FixedStep);
         if (FirstActionProcessed is not {} observe || input.Samples == null) return;
         foreach (var (action, sample) in input.Samples)
         {

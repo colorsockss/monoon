@@ -1,0 +1,10 @@
+version: 1
+values:
+  buildId: "8469e66345c44ae4a18e17636b45a1cd"
+  projectId: "6c5dd0cd-638e-5a00-9d80-744596f3a647"
+  game: "BarrageLab"
+  target: "osx-arm64"
+  mode: "native-aot"
+  profile: "distribution"
+  playerSha256: "5E92637DA3982E0ECDCD8978ED56DC2E14572895D172FFDFED54FA734FB9A5BF"
+  nativeUuid: "8944bd78-6480-3d39-a538-2478b70a5126"

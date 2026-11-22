@@ -44,7 +44,7 @@ public static class DesktopHost
     {
         using var canvas = new SdlCanvas(renderer, batchSprites: true, previewShader: previewShader, textRasterizer: textRasterizer) { LogicalSize = game.LogicalSize };
         using var sounds = new SdlSounds();
-        using var resources = new SceneResources(canvas.Prepare, canvas.InvalidateSprite, sounds.PreparePlayback, sounds.Release, canvas.PrepareShader, canvas.ReleaseShader);
+        using var resources = Resources(canvas, sounds);
         if (game is GameSession session)
         {
             sounds.Attach(session.Mixer);
@@ -112,7 +112,7 @@ public static class DesktopHost
                 {
                     case SdlEventType.Quit:
                     case SdlEventType.WindowCloseRequested:
-                    case SdlEventType.KeyDown when ev.key.scancode == SdlScancode.Escape && Ui()?.Editing==null && Ui()?.DropdownOpen!=true:
+                    case SdlEventType.KeyDown when ev.key.scancode == SdlScancode.Escape && Ui()?.Editing==null && Ui()?.DropdownOpen!=true && actions.CaptureAction==null:
                         return;
                     case SdlEventType.WindowResized:
                         // Read live dimensions: queued resize events can predate a fullscreen transition.
@@ -168,13 +168,25 @@ public static class DesktopHost
             SyncIme();
             long calls = canvas.DrawSubmissions;
             long drawBytes = capture != null ? GC.GetAllocatedBytesForCurrentThread() : 0;
-            game.Draw(canvas, focused ? loop.Interpolation : 1f);
-            canvas.FlushSprites();
+            using (FrameProfiler.Sample(FrameProfiler.Render))
+            {
+                game.Draw(canvas, focused ? loop.Interpolation : 1f);
+                canvas.FlushSprites();
+            }
             if (focused && keyPressed && !string.IsNullOrEmpty(keyFrames))
                 SdlFrameCapture.SaveImage(renderer, Path.Combine(keyFrames, $"{recorder!.FrameCount - 1}.png"));
-            renderer.RenderPresent();
+            using (FrameProfiler.Sample(FrameProfiler.Present)) renderer.RenderPresent();
             trace?.Presented();
             capture?.Frame(gameplay?.Current ?? game as SceneGame, canvas.DrawSubmissions - calls, drawBytes);
+            FrameProfiler.Current?.EndFrame();
         }
     }
+
+    /// <summary>Scene resources of a game: PNG and audio files decode on worker threads during split scene loading.</summary>
+    public static SceneResources Resources(SdlCanvas canvas, SdlSounds sounds) =>
+        new(canvas.Prepare, canvas.InvalidateSprite, sounds.PreparePlayback, sounds.Release, canvas.PrepareShader, canvas.ReleaseShader)
+        {
+            Decode = (path, sound) => sound ? SdlSounds.Decode(path) : SdlCanvas.Decode(path),
+            Upload = (path, sound, data) => { if (sound) sounds.PreparePlayback(path, data); else canvas.Upload(path, data); },
+        };
 }

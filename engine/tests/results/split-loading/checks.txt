@@ -1,0 +1,13 @@
+PASS split loading: synchronous, one-step async and split loads produce the same objects, poses, OnCreate calls and resident files
+PASS split loading: split replacement reports monotonic progress over 97 updates
+PASS split loading: a split additive load completes
+PASS split loading: object creation stays within 4 ms per update (at most 9 components per update, 97 updates)
+PASS split loading: uploads of 3 ms stop once the 4 ms budget is spent (at most 2 per update)
+PASS split loading: the running room keeps simulating every update while the field loads (274 → 440)
+PASS split loading: files decode on worker threads and every decoded buffer is consumed
+PASS split loading: budget 0 stages the whole scene in one update and uploads one file per update
+PASS split loading: cancel while creating objects releases uploads and 0 decoded buffers back to 7 resident files
+PASS split loading: cancel while decoding and uploading files releases uploads and 5 decoded buffers back to 7 resident files
+PASS split loading: a canceled split load can be started again
+PASS split loading: unloading the field returns to the room's resident files
+All checks passed.

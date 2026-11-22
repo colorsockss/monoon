@@ -1,7 +1,7 @@
 <Window xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:local="using:Engine.Editor" x:Class="Engine.Editor.TilesetWindow"
-        Title="Tileset" WindowStartupLocation="CenterOwner" Width="700" Height="480" MinWidth="365" MinHeight="405">
-  <Grid Margin="12" RowDefinitions="Auto,Auto,Auto,*,Auto,Auto,Auto,Auto">
+        Title="Tileset" WindowStartupLocation="CenterOwner" Width="700" Height="480" MinWidth="365" MinHeight="435">
+  <Grid Margin="12" RowDefinitions="Auto,Auto,Auto,*,Auto,Auto,Auto,Auto,Auto">
     <Grid x:Name="NameRow" Margin="0,0,0,6" ColumnDefinitions="58,*" ColumnSpacing="6">
       <TextBlock Text="Name" Classes="fieldLabel"/>
       <TextBox x:Name="AssetName" Grid.Column="1" AutomationProperties.Name="Tileset name"/>
@@ -44,7 +44,16 @@
       <TextBox x:Name="PointsBox" Grid.Column="1" Watermark="0,1  1,0  1,1" AutomationProperties.Name="Normalized tile points"
                ToolTip.Tip="x,y pairs from 0 to 1, separated by spaces. A left-to-right face blocks from above. Reverse its points to flip it."/>
     </Grid>
-    <Grid Grid.Row="7" x:Name="Footer" Margin="0,6,0,0" RowDefinitions="Auto,Auto" ColumnDefinitions="*,Auto" ColumnSpacing="8">
+    <Grid Grid.Row="7" Margin="0,4,0,0" ColumnDefinitions="58,*,Auto,72" ColumnSpacing="6">
+      <TextBlock Text="Terrain" Classes="fieldLabel"/>
+      <TextBox x:Name="TerrainName" Grid.Column="1" Watermark="floor, mud, water" MaxLength="64" AutomationProperties.Name="Terrain name"
+               ToolTip.Tip="Gameplay kind that scripts read from a cell."/>
+      <TextBlock Grid.Column="2" Text="Cost" Classes="fieldLabel"/>
+      <NumericUpDown x:Name="MoveCostBox" Grid.Column="3" Classes="sheetNumber" VerticalContentAlignment="Center" Minimum="0" Maximum="1000000" Watermark="Auto"
+                     AutomationProperties.Name="Move cost"
+                     ToolTip.Tip="Grid navigation entry weight. 0 blocks. Empty: 1, or 0 for tiles with collision."/>
+    </Grid>
+    <Grid Grid.Row="8" x:Name="Footer" Margin="0,6,0,0" RowDefinitions="Auto,Auto" ColumnDefinitions="*,Auto" ColumnSpacing="8">
       <Grid x:Name="TileStatus" ColumnDefinitions="*,Auto" ColumnSpacing="6">
         <TextBlock x:Name="Info" Classes="label" MaxLines="2" TextWrapping="Wrap" TextTrimming="CharacterEllipsis"
                    ToolTip.Tip="{Binding Text, RelativeSource={RelativeSource Self}}"/>

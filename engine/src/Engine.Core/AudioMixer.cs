@@ -105,6 +105,10 @@ public sealed class AudioMixer : IDisposable
     public bool HasVoices { get { lock(gate)return voices.Count!=0; } }
     internal bool Playing(object owner) { lock(gate)return voices.Exists(v=>ReferenceEquals(v.Owner,owner)); }
     public void Prepare(string path) { lock(gate){ if(!files.ContainsKey(path))files.Add(path,AudioFile.Read(path)); } }
+    // Split scene loading reads (and for WAV decodes) the file on a worker thread, outside the output lock.
+    internal sealed class Decoded(AudioFile file) : IDisposable { public readonly AudioFile File = file; public void Dispose() { } }
+    internal static IDisposable Decode(string path) => new Decoded(AudioFile.Read(path));
+    internal void Prepare(string path, IDisposable decoded) { lock(gate) files.TryAdd(path, ((Decoded)decoded).File); }
     public void Release(string path) { lock(gate)files.Remove(path); }
     internal AudioPlayback Start(object owner,string path,AudioSourceComponent c,Vector2 position,float seconds)
     {

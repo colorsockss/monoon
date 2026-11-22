@@ -15,6 +15,7 @@ public sealed class InventoryWorkbench : GameBehaviour
     public string QuestId = "herbalist";
     public Guid QuestTitle, QuestProgress, QuestButton;
     public Guid FirstSlot, SecondSlot, ThirdSlot, Selection, Status;
+    public SceneReference CatalogScene;
     private Guid[] labels;
     private InventoryBag bag;
     private QuestJournal journal;
@@ -36,6 +37,7 @@ public sealed class InventoryWorkbench : GameBehaviour
 
     public override void FixedUpdate(ScriptTick tick)
     {
+        if (tick.Input.Pressed("Catalog") && CatalogScene.Id != Guid.Empty) { tick.Session.LoadScene(CatalogScene.Id); return; }
         if (tick.Input.Pressed("Save")) { Store(tick.Session.Storage, tick.Ui, true); return; }
         if (tick.Input.Pressed("Load")) { Store(tick.Session.Storage, tick.Ui, false); return; }
         if (tick.Input.Pressed("Talk")) { ToggleTalk(tick.Ui); return; }

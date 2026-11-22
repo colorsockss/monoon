@@ -15,9 +15,19 @@ public sealed unsafe class SdlSounds : IDisposable
     private readonly float[] buffer=new float[512*2];
     private FileStream? trace;
     public void Attach(AudioMixer value)=>mixer=value;
+    public static IDisposable Decode(string path) => AudioMixer.Decode(path);
+    public void PreparePlayback(string path, IDisposable decoded)
+    {
+        mixer!.Prepare(path, decoded);
+        OpenOnce();
+    }
     public void PreparePlayback(string path)
     {
         mixer!.Prepare(path);
+        OpenOnce();
+    }
+    private void OpenOnce()
+    {
         // Validate assets even on a machine without sound. Report the device error when playback starts.
         if(worker==null && failure==null)
             try { Open(); } catch(Exception e) when(e is IOException or SdlException) { failure=e; }

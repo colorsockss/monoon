@@ -270,11 +270,21 @@
             <TextBlock x:Name="RoleMatches" Grid.Column="2" Classes="fieldLabel" TextTrimming="CharacterEllipsis" AutomationProperties.Name="Matching objects"/>
           </Grid>
           <TextBlock x:Name="PhysicsCaption" Classes="label" TextTrimming="CharacterEllipsis"/>
-          <Grid x:Name="FramePanel" RowDefinitions="Auto,38,Auto" ColumnDefinitions="*,Auto" RowSpacing="3">
+          <Grid x:Name="FramePanel" RowDefinitions="Auto,38,Auto,Auto,Auto,120" ColumnDefinitions="*,Auto" RowSpacing="3">
             <TextBlock x:Name="FrameSummary" TextTrimming="CharacterEllipsis" VerticalAlignment="Center"/>
             <Button Grid.Column="1" x:Name="CloseProfiler" Classes="quiet" Padding="5,0" Content="×" AutomationProperties.Name="Close profiler"/>
-            <local:FrameChart Grid.Row="1" Grid.ColumnSpan="2" x:Name="FrameGraph" ToolTip.Tip="Last 180 presented frames · line: frame time · guide: 16.7 ms · gold: GC"/>
+            <local:FrameChart Grid.Row="1" Grid.ColumnSpan="2" x:Name="FrameGraph" ToolTip.Tip="Last 180 presented frames · line: frame time · guide: 16.7 ms · gold: GC · click to select a frame"/>
             <TextBlock Grid.Row="2" Grid.ColumnSpan="2" x:Name="FrameDetail" Classes="label" TextWrapping="Wrap"/>
+            <TextBlock Grid.Row="3" Grid.ColumnSpan="2" x:Name="WorkTitle" TextTrimming="CharacterEllipsis"/>
+            <Grid Grid.Row="4" Grid.ColumnSpan="2" ColumnDefinitions="*,64,72,72" Margin="0,0,14,0">
+              <TextBlock Text="Work" Classes="label"/>
+              <TextBlock Grid.Column="1" Text="Calls" Classes="label" HorizontalAlignment="Right"/>
+              <TextBlock Grid.Column="2" Text="Total ms" Classes="label" HorizontalAlignment="Right"/>
+              <TextBlock Grid.Column="3" Text="Self ms" Classes="label" HorizontalAlignment="Right"/>
+            </Grid>
+            <ScrollViewer Grid.Row="5" Grid.ColumnSpan="2" x:Name="WorkScroll" VerticalScrollBarVisibility="Auto" AllowAutoHide="True" AutomationProperties.Name="Selected frame work">
+              <StackPanel x:Name="WorkRows" Margin="0,0,14,0"/>
+            </ScrollViewer>
           </Grid>
         </StackPanel>
       </Grid>

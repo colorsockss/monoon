@@ -117,6 +117,9 @@ public abstract partial class GameBehaviour
     public virtual void OnEnable(ScriptLife life) { }
     public virtual void OnDisable(ScriptLife life) { }
     public virtual void OnDestroy(ScriptLife life) { }
+    // A pooled prefab instance: after OnEnable on every Rent, before OnDisable on Return.
+    public virtual void OnRent(ScriptLife life) { }
+    public virtual void OnReturn(ScriptLife life) { }
     public virtual void UpdateUi(UiTick tick) { }
     public virtual void FixedUpdate(ScriptTick tick) { }
     public virtual void OnAnimationEvent(ScriptAnimationEvent frame) { }
