@@ -31,6 +31,19 @@ public sealed partial class SceneViewport : Decorator
     private ProjectAssets? sceneAssets;
     private readonly Dictionary<Guid,SkeletonPose> rigPreviews=[];
     private readonly HashSet<string> spriteErrors = [];
+    // Editor-only Scene view state (Hierarchy eye and lock): never saved in the scene and ignored by Play.
+    internal readonly HashSet<Guid> HiddenIds = [], LockedIds = [];
+    internal bool IsHidden(SceneObject obj) => Marked(obj, HiddenIds);
+    internal bool IsPickable(SceneObject obj) => !Marked(obj, HiddenIds) && !Marked(obj, LockedIds);
+    private static bool Marked(SceneObject obj, HashSet<Guid> ids)
+    {
+        for (var node = obj; node != null && ids.Count > 0; node = node.Parent)
+            if (ids.Contains(node.Id)) return true;
+        return false;
+    }
+    // What the edit view draws, in draw order.
+    internal IEnumerable<(SceneObject Owner, Tilemap2DComponent? Map, int Layer, int Order)> EditItems() =>
+        Scene.WorldItems().Where(item => !IsHidden(item.Owner));
     private void DrawSceneSprite(ISceneCanvas canvas,SceneObject obj,RectangleF visible)
     {
         var shaderId=obj.GetComponent<SpriteShader2DComponent>()?.Shader;
@@ -131,6 +144,7 @@ public sealed partial class SceneViewport : Decorator
                     previewUi = new(document, null);
                     if (spriteErrors.Add(ex.Message)) PlayFailed?.Invoke(ex.Message);
                 }
+                foreach (var id in HiddenIds) previewUi.SetVisible(id, false);
             }
             previewUi.PreviewModeFor(Selected?.Id);
             return previewUi;
@@ -223,7 +237,12 @@ public sealed partial class SceneViewport : Decorator
         timer.Tick += (_, _) => Tick();
         PointerExited += (_,_) => { LeaveTiles(); PointerLeft(); };
         LostFocus += (_, _) => ResetInput();
-        DetachedFromVisualTree += (_, _) => { Stop(); bitmaps.Clear(); variants.Dispose(); shaderSheets.Dispose(); gameText.Dispose(); };
+        // A Scene panel moved to another window attaches again before Background work runs; keep its Play session.
+        DetachedFromVisualTree += (_, _) => Dispatcher.UIThread.Post(() =>
+        {
+            if (TopLevel.GetTopLevel(this) != null) return;
+            Stop(); bitmaps.Clear(); variants.Dispose(); shaderSheets.Dispose(); gameText.Dispose();
+        }, DispatcherPriority.Background);
     }
 
     internal void ClearSprites()
@@ -421,8 +440,10 @@ public sealed partial class SceneViewport : Decorator
     {
         var p=ToWorld(point); input?.Wheel(new((float)p.X,(float)p.Y),(float)steps);
     }
+    // Game panel scale: 0 fits the game into the panel, otherwise panel units per game pixel.
+    internal double GameZoom { get; set; }
     internal double Scale => spritePreview ? 1 : IsPlaying
-        ? Math.Max(double.Epsilon, Math.Min(Bounds.Width / LayoutSettings.Width, Bounds.Height / LayoutSettings.Height))
+        ? GameZoom > 0 ? GameZoom : Math.Max(double.Epsilon, Math.Min(Bounds.Width / LayoutSettings.Width, Bounds.Height / LayoutSettings.Height))
         : editZoom;
     internal Point Origin => spritePreview ? default : IsPlaying
         ? new((Bounds.Width - LayoutSettings.Width * Scale) / 2, (Bounds.Height - LayoutSettings.Height * Scale) / 2)
@@ -505,10 +526,11 @@ public sealed partial class SceneViewport : Decorator
         if(!toggle && HitGrip(worldPoint) is var handle && handle!=Grip.None){BeginGesture(worldPoint,handle);return;}
         var u = EditUiPoint(p);
         dragging = PreviewUi.Pick((float)u.X, (float)u.Y);
+        if (dragging != null && !IsPickable(dragging)) dragging = null;
         draggingUi = dragging != null;
         dragging ??= Scene.DrawOrder().LastOrDefault(obj => obj.GetComponent<SpriteRendererComponent>() != null &&
-            obj.ContainsWorldPoint(new((float)p.X, (float)p.Y)));
-        dragging ??= Scene.Cameras.LastOrDefault(camera =>
+            IsPickable(obj) && obj.ContainsWorldPoint(new((float)p.X, (float)p.Y)));
+        dragging ??= Scene.Cameras.LastOrDefault(camera => IsPickable(camera) &&
             Math.Abs(p.X - camera.WorldPosition.X) * Scale <= 8 && Math.Abs(p.Y - camera.WorldPosition.Y) * Scale <= 8);
         if(toggle)
         {
@@ -682,7 +704,7 @@ public sealed partial class SceneViewport : Decorator
                 canvas.FillRectangle(new RectangleF((float)area.Left, (float)(top + i * step), (float)area.Width, unit), GridColor);
         }
         var visible = new RectangleF((float)area.X, (float)area.Y, (float)area.Width, (float)area.Height);
-        foreach (var (obj,map,_,_) in Scene.WorldItems())
+        foreach (var (obj,map,_,_) in EditItems())
         {
             if (map != null)
             {
@@ -692,9 +714,9 @@ public sealed partial class SceneViewport : Decorator
             DrawSceneSprite(canvas,obj,visible);
         }
         foreach (var obj in Scene.Objects)
-            if (obj.GetComponent<PointLight2DComponent>() is {} light)
+            if (obj.GetComponent<PointLight2DComponent>() is {} light && !IsHidden(obj))
                 light.Draw(canvas,ShaderClip.LightFalloff,Vector2.Transform(new(obj.Width*.5f,obj.Height*.5f),obj.WorldMatrix),visible,System.Numerics.Matrix3x2.Identity,0);
-        foreach (var camera in Scene.Cameras)
+        foreach (var camera in Scene.Cameras.Where(camera => !IsHidden(camera)))
         {
             var center = camera.WorldPosition;
             var lens=camera.GetComponent<Camera2DComponent>()!;

@@ -74,10 +74,13 @@ public sealed class EditorApp : Application
         Name = "MoNoon";
         RequestedThemeVariant = ThemeVariant.Dark;
         var theme = new FluentTheme { DensityStyle = DensityStyle.Compact };
-        theme.Palettes[ThemeVariant.Dark] = new ColorPaletteResources { Accent = Avalonia.Media.Color.Parse("#92CDBD") };
-        Styles.Add(theme);
         var styles = new Uri("avares://MoNoon/EditorStyles.axaml");
-        Styles.Add(new StyleInclude(styles) { Source = styles });
+        var editor = new StyleInclude(styles) { Source = styles };
+        // Fluent derives its remaining accent shades from the same token as the editor styles.
+        if (editor.TryGetResource("EditorAccent", ThemeVariant.Dark, out var accent) && accent is Avalonia.Media.ISolidColorBrush brush)
+            theme.Palettes[ThemeVariant.Dark] = new ColorPaletteResources { Accent = brush.Color };
+        Styles.Add(theme);
+        Styles.Add(editor);
     }
 
     public override void OnFrameworkInitializationCompleted()

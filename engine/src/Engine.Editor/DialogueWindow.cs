@@ -9,25 +9,24 @@ using Engine.Core;
 
 namespace Engine.Editor;
 
-internal sealed class DialogueWindow : Window
+internal sealed class DialogueWindow : EditorPanel
 {
     private readonly DialogueGraph graph;
     private readonly ComboBox nodes = new() { HorizontalAlignment = HorizontalAlignment.Stretch };
-    private readonly StackPanel detail = new() { Spacing = 7 };
-    private readonly TextBlock error = new() { IsVisible = false, Foreground = Brushes.LightSalmon, TextWrapping = TextWrapping.Wrap };
+    private readonly StackPanel detail = new() { Spacing = EditorTokens.Gap2 };
+    private readonly TextBlock error = new() { IsVisible = false, Classes = { "error" }, TextWrapping = TextWrapping.Wrap };
     private bool refreshing;
 
     public DialogueWindow(string? path, string? original, Func<string, Action<string,bool>,string> write)
     {
-        Title = "Dialogue"; Width = 645; Height = 530; MinWidth = 430; MinHeight = 320;
-        ShowInTaskbar = false; WindowStartupLocation = WindowStartupLocation.CenterOwner;
+        Title = path == null ? "Dialogue" : $"{Path.GetFileNameWithoutExtension(path)} · Dialogue"; MinWidth = 430; MinHeight = 320;
         graph = original == null ? new DialogueGraph() : DialogueGraph.Read(GameData.Parse(original));
         if (original == null) graph.Nodes.Add(new DialogueNode { Id = "start", Text = "Hello." });
         var name = Box("Asset name", path == null ? "NewDialogue" : Path.GetFileNameWithoutExtension(path));
         name.IsReadOnly = path != null;
-        var layout = new Grid { Margin = new Thickness(12), RowDefinitions = new("Auto,Auto,*,Auto,Auto"), RowSpacing = 7 };
+        var layout = new Grid { Margin = EditorTokens.WindowPadding, RowDefinitions = new("Auto,Auto,*,Auto,Auto"), RowSpacing = EditorTokens.Gap2 };
         layout.Children.Add(Row("Name", name));
-        var bar = new Grid { ColumnDefinitions = new("*,Auto,Auto"), ColumnSpacing = 6 };
+        var bar = new Grid { ColumnDefinitions = new("*,Auto,Auto"), ColumnSpacing = EditorTokens.Gap };
         AutomationProperties.SetName(nodes,"Dialogue node");
         nodes.SelectionChanged += (_,_) => { if (!refreshing && nodes.SelectedIndex >= 0) DrawNode(graph.Nodes[nodes.SelectedIndex]); };
         bar.Children.Add(nodes);
@@ -48,8 +47,8 @@ internal sealed class DialogueWindow : Window
         Put(layout, Row("Node", bar), 1);
         Put(layout, new ScrollViewer { Content = detail, HorizontalScrollBarVisibility = ScrollBarVisibility.Disabled }, 2);
         Put(layout, error, 3);
-        var footer = new StackPanel { Orientation = Orientation.Horizontal, HorizontalAlignment = HorizontalAlignment.Right, Spacing = 6 };
-        var cancel = Button("Cancel", () => Close()); cancel.IsCancel = true; footer.Children.Add(cancel);
+        var footer = new StackPanel { Orientation = Orientation.Horizontal, HorizontalAlignment = HorizontalAlignment.Right, Spacing = EditorTokens.Gap };
+        var cancel = Button("Cancel", () => Close()); footer.Children.Add(cancel);
         var save = Button("Save", () => Attempt(() =>
         {
             var yaml = graph.Capture().ToYaml();
@@ -72,7 +71,7 @@ internal sealed class DialogueWindow : Window
     {
         detail.Children.Clear();
         var id = Box("Node ID", node.Id);
-        var identity = new Grid { ColumnDefinitions = new("*,Auto,Auto"), ColumnSpacing = 6 };
+        var identity = new Grid { ColumnDefinitions = new("*,Auto,Auto"), ColumnSpacing = EditorTokens.Gap };
         identity.Children.Add(id);
         Put(identity, Button("Rename", () => Attempt(() =>
         {
@@ -93,8 +92,8 @@ internal sealed class DialogueWindow : Window
         for (int i = 0; i < node.Choices.Count; i++)
         {
             var option = node.Choices[i];
-            detail.Children.Add(new Border { Height = 1, Background = Brushes.DimGray });
-            var top = new Grid { ColumnDefinitions = new("*,Auto"), ColumnSpacing = 6 };
+            detail.Children.Add(new Border { Classes = { "divider" } });
+            var top = new Grid { ColumnDefinitions = new("*,Auto"), ColumnSpacing = EditorTokens.Gap };
             top.Children.Add(Box($"Choice {i+1} text", option.Text, v => option.Text = v));
             Put(top,Button("Remove", () => { node.Choices.Remove(option); DrawNode(node); }), 0, 1);
             detail.Children.Add(Row($"Choice {i+1}",top));
@@ -117,8 +116,8 @@ internal sealed class DialogueWindow : Window
     }
     private static Control Row(string label, Control field)
     {
-        var grid = new Grid { ColumnDefinitions = new("68,*"), ColumnSpacing = 7 };
-        grid.Children.Add(new TextBlock { Text = label, VerticalAlignment = VerticalAlignment.Center });
+        var grid = new Grid { ColumnDefinitions = EditorTokens.LabelColumns(EditorTokens.DialogLabelWidth), ColumnSpacing = EditorTokens.Gap2 };
+        grid.Children.Add(new TextBlock { Text = label, Classes = { "fieldLabel" } });
         Put(grid, field, 0, 1); return grid;
     }
     private static TextBox Box(string name,string value,Action<string>? change = null)

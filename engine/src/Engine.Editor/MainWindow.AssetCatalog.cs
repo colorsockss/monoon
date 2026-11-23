@@ -117,7 +117,7 @@ public partial class MainWindow
             var title=new TextBlock{Text=path,TextTrimming=TextTrimming.LeadingCharacterEllipsis};
             var sub=new TextBlock{Text=where,Classes={"label"},TextTrimming=TextTrimming.CharacterEllipsis};
             var row=new StackPanel{Spacing=2,Children={title,sub}};
-            if(link.Problem!=null)row.Children.Add(new TextBlock{Text=link.Problem,Foreground=Brushes.LightSalmon,TextWrapping=TextWrapping.Wrap});
+            if(link.Problem!=null)row.Children.Add(new TextBlock{Text=link.Problem,Classes={"error"},TextWrapping=TextWrapping.Wrap});
             ToolTip.SetTip(row,path+"\n"+where);return row;
         });
         void Draw(){

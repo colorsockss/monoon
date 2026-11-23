@@ -1,0 +1,13 @@
+{
+  "os": "linux-x64",
+  "captures": {
+    "restart-1280": "RenderTargetBitmap"
+  },
+  "restart": {
+    "hidden": "Door",
+    "locked": "Wall Top",
+    "folded": "Sprite Renderer",
+    "grid": true,
+    "sha": "FB0C1FD5172C093ED66C85FE5287AC3DA0C412DD8FE0220050E45BA93E715EC8"
+  }
+}

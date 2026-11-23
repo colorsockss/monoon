@@ -1,0 +1,61 @@
+{
+  "os": "win-x64",
+  "captures": {},
+  "screen": [
+    {
+      "Width": 1920,
+      "Height": 1032,
+      "Scaling": 1
+    }
+  ],
+  "restored": "Row[(Hierarchy*,Project) (Scene*,Game) (Inspector*)]",
+  "restored_inspector": 360,
+  "restored_window": [
+    1500,
+    860
+  ],
+  "reset": {
+    "layout": "Row[Column[(Hierarchy*) (Project*)] (Scene*,Game) (Inspector*)]",
+    "slots": {
+      "Hierarchy": [
+        0,
+        88,
+        176,
+        404
+      ],
+      "Project": [
+        0,
+        520,
+        176,
+        319
+      ],
+      "Scene": [
+        180,
+        88,
+        1098,
+        751
+      ],
+      "Inspector": [
+        1282,
+        88,
+        218,
+        751
+      ]
+    }
+  },
+  "closed": "Row[(Project*) (Scene*,Game) (Inspector*)]",
+  "reopened": "Row[Column[(Hierarchy*) (Project*)] (Scene*,Game) (Inspector*)]",
+  "baseline": {
+    "label": "after reset",
+    "window": 1500,
+    "inspector": 218,
+    "rows": 3,
+    "label_x": 1290,
+    "input_x": 1350,
+    "column": 60,
+    "drift": 0,
+    "vertical": 0,
+    "name_width": 142,
+    "inspector_right": 1500
+  }
+}

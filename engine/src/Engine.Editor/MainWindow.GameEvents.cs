@@ -76,7 +76,7 @@ public partial class MainWindow
                          let link = new GameEventLink(name, obj.Id, script.Script, method)
                          where link == editing || !links.Contains(link)
                          select new EventReceiver(obj, script.Script, method)).ToArray();
-        var grid = new Grid { ColumnDefinitions = new("56,*"), RowDefinitions = new("Auto,Auto,Auto"),
+        var grid = new Grid { ColumnDefinitions = EditorTokens.LabelColumns(EditorTokens.FieldLabelWidth), RowDefinitions = new("Auto,Auto,Auto"),
             RowSpacing = 6, ColumnSpacing = 5, Margin = new Thickness(10) };
         var objects = receivers.Select(r => r.Object).Distinct().Select(o => new ObjectReference(o.Id, ObjectPath(o))).ToArray();
         var target = new ComboBox { ItemsSource = objects, PlaceholderText = "No available receivers", HorizontalAlignment = HorizontalAlignment.Stretch };

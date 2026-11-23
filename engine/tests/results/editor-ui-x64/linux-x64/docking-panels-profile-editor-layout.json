@@ -1,0 +1,93 @@
+{
+  "Version": 1,
+  "Layout": {
+    "Split": "Row",
+    "Children": [
+      {
+        "Split": "Column",
+        "Children": [
+          {
+            "Split": null,
+            "Children": null,
+            "Panels": [
+              "Hierarchy"
+            ],
+            "Active": "Hierarchy",
+            "Size": 395
+          },
+          {
+            "Split": null,
+            "Children": null,
+            "Panels": [
+              "Project"
+            ],
+            "Active": "Project",
+            "Size": 316
+          }
+        ],
+        "Panels": null,
+        "Active": null,
+        "Size": 140
+      },
+      {
+        "Split": null,
+        "Children": null,
+        "Panels": [
+          "Profiler",
+          "Clip",
+          "Tileset",
+          "Input Actions",
+          "Dialogue",
+          "Data"
+        ],
+        "Active": "Profiler",
+        "Size": 396
+      },
+      {
+        "Split": null,
+        "Children": null,
+        "Panels": [
+          "Inspector"
+        ],
+        "Active": "Inspector",
+        "Size": 225
+      },
+      {
+        "Split": null,
+        "Children": null,
+        "Panels": [
+          "Game",
+          "Scene"
+        ],
+        "Active": "Scene",
+        "Size": 507
+      }
+    ],
+    "Panels": null,
+    "Active": null,
+    "Size": 0
+  },
+  "Floating": [
+    {
+      "Panel": "Console",
+      "X": 130,
+      "Y": 150,
+      "Width": 520,
+      "Height": 300
+    },
+    {
+      "Panel": "Animator",
+      "X": 330,
+      "Y": 200,
+      "Width": 640,
+      "Height": 420
+    }
+  ],
+  "Custom": null,
+  "CustomFloating": null,
+  "X": 10,
+  "Y": 10,
+  "Width": 1280,
+  "Height": 800,
+  "Maximized": false
+}

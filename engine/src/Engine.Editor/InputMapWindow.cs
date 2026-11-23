@@ -11,11 +11,11 @@ using Engine.Desktop;
 
 namespace Engine.Editor;
 
-internal sealed class InputMapWindow : Window
+internal sealed class InputMapWindow : EditorPanel
 {
     private sealed record Row(TextBox Name,TextBox Controls,Grid Grid);
     private readonly List<Row> rows=[];
-    private readonly StackPanel fields=new() { Spacing=4 };
+    private readonly StackPanel fields=new() { Spacing=EditorTokens.Gap };
     private readonly TextBlock hint=new() { TextWrapping=TextWrapping.Wrap };
     private readonly DispatcherTimer timer=new() { Interval=TimeSpan.FromMilliseconds(16) };
     private SdlGamepads? pads;
@@ -25,15 +25,14 @@ internal sealed class InputMapWindow : Window
 
     internal InputMapWindow(InputBindings bindings)
     {
-        Title="Input Actions"; Width=600; Height=390; MinWidth=435; MinHeight=270;
-        WindowStartupLocation=WindowStartupLocation.CenterOwner; ShowInTaskbar=false;
-        var layout=new Grid { Margin=new Thickness(12), RowDefinitions=new("Auto,*,Auto,Auto"),RowSpacing=7 };
+        Title="Input Actions"; MinWidth=435; MinHeight=270;
+        var layout=new Grid { Margin=EditorTokens.WindowPadding, RowDefinitions=new("Auto,*,Auto,Auto"),RowSpacing=EditorTokens.Gap2 };
         var header=Line(); Put(header,new TextBlock { Text="Action" },0); Put(header,new TextBlock { Text="Controls" },1);
         layout.Children.Add(header);
         var scroll=new ScrollViewer { Content=fields, HorizontalScrollBarVisibility=Avalonia.Controls.Primitives.ScrollBarVisibility.Disabled };
         Grid.SetRow(scroll,1); layout.Children.Add(scroll);
         Grid.SetRow(hint,2); layout.Children.Add(hint);
-        var footer=new Grid { ColumnDefinitions=new("Auto,*,Auto,Auto"),ColumnSpacing=6 };
+        var footer=new Grid { ColumnDefinitions=new("Auto,*,Auto,Auto"),ColumnSpacing=EditorTokens.Gap };
         var add=Button("+ Action","Add action",()=> {
             var row=Add("",""); scroll.ScrollToEnd(); row.Name.Focus();
         });
@@ -62,7 +61,7 @@ internal sealed class InputMapWindow : Window
             if(listening!=null && e.Delta.Y!=0) { e.Handled=true; Capture(e.Delta.Y>0?"Mouse.WheelUp":"Mouse.WheelDown"); }
         },RoutingStrategies.Tunnel);
     }
-    private static Grid Line()=>new() { ColumnDefinitions=new(Columns),ColumnSpacing=6 };
+    private static Grid Line()=>new() { ColumnDefinitions=new(Columns),ColumnSpacing=EditorTokens.Gap };
     private static void Put(Grid grid,Control item,int column) { Grid.SetColumn(item,column);grid.Children.Add(item); }
     private static Button Button(string text,string label,Action click)
     {
@@ -75,8 +74,8 @@ internal sealed class InputMapWindow : Window
         AutomationProperties.SetName(name,"Action name"); AutomationProperties.SetName(controls,"Controls for "+action);
         var row=new Row(name,controls,grid); Put(grid,name,0);Put(grid,controls,1);
         Put(grid,Button("+ Bind","Bind control for "+action,()=>Listen(row)),2);
-        var remove=Button("×","Remove action "+action,()=>{ rows.Remove(row);fields.Children.Remove(grid); });
-        ToolTip.SetTip(remove,"Remove action");Put(grid,remove,3);
+        var remove=EditorTokens.IconButton("IconClose","Remove action "+action);
+        remove.Click+=(_,_)=>{ rows.Remove(row);fields.Children.Remove(grid); };Put(grid,remove,3);
         rows.Add(row);fields.Children.Add(grid);return row;
     }
     private void Listen(Row? row)

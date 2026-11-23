@@ -23,7 +23,7 @@ public partial class MainWindow
         };
         var path = new TextBox { Text = ExternalScriptEditor.Preference, Watermark = "System default for .cs files" };
         AutomationProperties.SetName(path, "External script editor");
-        var error = new TextBlock { Foreground = Brushes.LightSalmon, TextWrapping = TextWrapping.Wrap, IsVisible = false };
+        var error = new TextBlock { Classes = { "error" }, TextWrapping = TextWrapping.Wrap, IsVisible = false };
         var browse = new Button { Content = "Browse…" };
         browse.Click += async (_, _) =>
         {

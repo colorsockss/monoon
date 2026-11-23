@@ -47,6 +47,11 @@ public partial class MainWindow
                     Spacing = 6, Children = { cancel, apply } } }
         };
         if (await dialog.ShowDialog<GameSettings?>(this) is not { } settings) return;
+        ApplyGameSettings(settings);
+    }
+
+    private void ApplyGameSettings(GameSettings settings)
+    {
         settings.Save(project!);
         Scene.Settings = settings;
         MarkDirty();
@@ -63,9 +68,13 @@ public partial class MainWindow
         return field;
     }
 
-    private void UpdateResolution() => ResolutionLabel.Text = Viewport.Preview is {} preview
-        ? $"Preview {preview.Width} × {preview.Height} · {preview.Locale} {preview.TextScale:P0}"
-        : $"{Scene.Settings.Width} × {Scene.Settings.Height}";
+    private void UpdateResolution()
+    {
+        ResolutionLabel.Text = Viewport.Preview is {} preview
+            ? $"Preview {preview.Width} × {preview.Height} · {preview.Locale} {preview.TextScale:P0}"
+            : $"{Scene.Settings.Width} × {Scene.Settings.Height}";
+        SyncResolution();
+    }
 
     private void CreateCamera()
     {

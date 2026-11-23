@@ -71,7 +71,7 @@ public partial class MainWindow
                 dialog.Close(target);
             } catch(Exception ex) { dialog.IsEnabled=true; ShowError(ex); }
         };
-        var grid=new Grid { Margin=new(12),RowDefinitions=new("Auto,*,Auto,Auto"),ColumnDefinitions=new("56,*"),ColumnSpacing=5,RowSpacing=5 };
+        var grid=new Grid { Margin=EditorTokens.WindowPadding,RowDefinitions=new("Auto,*,Auto,Auto"),ColumnDefinitions=EditorTokens.LabelColumns(EditorTokens.FieldLabelWidth),ColumnSpacing=EditorTokens.FieldGap,RowSpacing=EditorTokens.Gap };
         void Add(Control control,int row,int column) { Grid.SetRow(control,row);Grid.SetColumn(control,column);grid.Children.Add(control); }
         Add(new TextBlock { Text="Name",VerticalAlignment=VerticalAlignment.Center },0,0); Add(name,0,1);
         Add(new TextBlock { Text="Sources" },1,0); Add(new ScrollViewer { Content=list },1,1); Add(error,2,1);

@@ -36,9 +36,14 @@ public partial class MainWindow
     private void SyncTimeControls()
     {
         var time = Viewport.PlayTime;
-        TimeControls.IsVisible = time != null;
-        if (time == null) return;
-        PauseButton.Content = time.IsPaused ? "Resume" : "Pause";
+        TimeControls.IsVisible = PauseButton.IsEnabled = time != null;
+        if (time == null) { StepButton.IsEnabled = false; return; }
+        var pause = time.IsPaused ? "Resume" : "Pause";
+        if (Avalonia.Automation.AutomationProperties.GetName(PauseButton) != pause)
+        {
+            Avalonia.Automation.AutomationProperties.SetName(PauseButton, pause);
+            PauseButton.Content = EditorTokens.Icon(time.IsPaused ? "IconPlay" : "IconPause");
+        }
         StepButton.IsEnabled = time.IsPaused;
         if (displayedScale == time.Scale) return;
         displayedScale = time.Scale;

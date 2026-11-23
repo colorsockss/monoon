@@ -1,6 +1,7 @@
 using Avalonia;
 using Avalonia.Automation;
 using Avalonia.Controls;
+using Avalonia.Controls.Templates;
 using Avalonia.Controls.Primitives;
 using Avalonia.Input;
 using Avalonia.Interactivity;
@@ -22,6 +23,7 @@ public partial class MainWindow
     {
         foreach (var row in items.OfType<TreeViewItem>())
         {
+            if (!row.IsVisible) continue;
             if (row.Tag is SceneObject owner) yield return owner;
             if (row.IsExpanded)
                 foreach (var child in VisibleRows(row.Items)) yield return child;
@@ -41,6 +43,92 @@ public partial class MainWindow
         Hierarchy.AddHandler(PointerMovedEvent, HierarchyMoved, RoutingStrategies.Tunnel, handledEventsToo: true);
         Hierarchy.AddHandler(PointerReleasedEvent, HierarchyReleased, RoutingStrategies.Tunnel, handledEventsToo: true);
         Hierarchy.PointerCaptureLost += (_, e) => { if (e.Source == Hierarchy) EndHierarchyDrag(); };
+        HierarchySearch.TextChanged += (_, _) => ApplyHierarchyFilter();
+        HierarchySearch.KeyDown += (_, e) => { if (e.Key == Key.Escape) { HierarchySearch.Text = ""; e.Handled = true; } };
+    }
+
+    // Matching objects stay visible with their parents; the tree is filtered in place so row lookups keep working.
+    private void ApplyHierarchyFilter()
+    {
+        var query = HierarchySearch.Text?.Trim() ?? "";
+        int matches = 0;
+        bool Show(TreeViewItem item)
+        {
+            bool child = false;
+            foreach (var row in item.Items.OfType<TreeViewItem>()) child |= Show(row);
+            bool self = query.Length == 0 || ((SceneObject)item.Tag!).Name.Contains(query, StringComparison.OrdinalIgnoreCase);
+            if (self && query.Length > 0) matches++;
+            if (child && query.Length > 0) item.IsExpanded = true;
+            return item.IsVisible = self || child;
+        }
+        foreach (var row in Hierarchy.Items.OfType<TreeViewItem>()) Show(row);
+        HierarchyNoMatch.IsVisible = query.Length > 0 && matches == 0;
+    }
+
+    // Editor-only marks for the current scene, kept in the user's editor state rather than the scene file.
+    private string? MarksKey => prefabSource == null && project != null ? ScenePath : null;
+
+    private void LoadSceneMarks()
+    {
+        var state = EditorUserState.Current;
+        Viewport.HiddenIds.Clear();
+        Viewport.LockedIds.Clear();
+        Viewport.HiddenIds.UnionWith(EditorUserState.Marks(state.Hidden, MarksKey));
+        Viewport.LockedIds.UnionWith(EditorUserState.Marks(state.Locked, MarksKey));
+        Viewport.InvalidateUi();
+    }
+
+    private void SetSceneMark(SceneObject obj, bool hide, bool on)
+    {
+        var ids = hide ? Viewport.HiddenIds : Viewport.LockedIds;
+        if (!(on ? ids.Add(obj.Id) : ids.Remove(obj.Id))) return;
+        var state = EditorUserState.Current;
+        state.SetMarks(hide ? state.Hidden : state.Locked, MarksKey, ids.Where(id => Scene.Objects.Any(o => o.Id == id)));
+        RefreshRowMarks();
+        if (hide) Viewport.InvalidateUi(); else Viewport.RefreshScene();
+        Status.Text = $"{obj.Name}: {(hide ? on ? "hidden" : "shown" : on ? "locked" : "unlocked")} in the Scene view (editor only).";
+    }
+
+    private void RefreshRowMarks()
+    {
+        foreach (var row in Hierarchy.GetVisualDescendants().OfType<Grid>().Where(g => g.Classes.Contains("hierarchyRow")))
+            if (row.Tag is SceneObject obj) row.Children[1].Opacity = Viewport.PlayWorld == null && Viewport.IsHidden(obj) ? 0.5 : 1;
+    }
+
+    // Icon, name, then the Scene eye and lock. Their columns are always reserved, so hovering or setting them never moves the name.
+    private Control HierarchyRow(SceneObject obj)
+    {
+        // Narrow toggles with no gap between them keep the name column as wide as possible in a 176px panel.
+        var row = new Grid { ColumnDefinitions = new("16,4,*,2,14,14"), Background = Brushes.Transparent, Tag = obj, Classes = { "hierarchyRow" } };
+        row.Children.Add(new PathIcon { Theme = (Avalonia.Styling.ControlTheme)this.FindResource("EditorIcon")!, Data = EditorTokens.ObjectIcon(obj), Foreground = EditorTokens.Brush("EditorMuted") });
+        var name = new TextBlock { Text = obj.Name, TextTrimming = TextTrimming.CharacterEllipsis, VerticalAlignment = Avalonia.Layout.VerticalAlignment.Center,
+            Opacity = Viewport.PlayWorld == null && Viewport.IsHidden(obj) ? 0.5 : 1 };
+        ToolTip.SetTip(name, obj.Name);
+        Grid.SetColumn(name, 2);
+        row.Children.Add(name);
+        if (Viewport.PlayWorld == null)
+        {
+            row.Children.Add(RowToggle(obj, hide: true));
+            row.Children.Add(RowToggle(obj, hide: false));
+        }
+        return row;
+    }
+
+    private ToggleButton RowToggle(SceneObject obj, bool hide)
+    {
+        var toggle = new ToggleButton { Classes = { "rowToggle" }, IsChecked = (hide ? Viewport.HiddenIds : Viewport.LockedIds).Contains(obj.Id) };
+        Grid.SetColumn(toggle, hide ? 4 : 5);
+        AutomationProperties.SetName(toggle, hide ? $"Hide {obj.Name} in Scene" : $"Lock {obj.Name} in Scene");
+        void Show()
+        {
+            bool on = toggle.IsChecked == true;
+            toggle.Content = EditorTokens.Icon(hide ? on ? "IconEyeOff" : "IconEye" : on ? "IconLock" : "IconUnlock");
+            ToolTip.SetTip(toggle, hide ? on ? "Hidden in the Scene view · click to show" : "Hide in the Scene view (editor only)"
+                : on ? "Locked: Scene clicks skip it · click to unlock" : "Lock: Scene clicks skip it (editor only)");
+        }
+        Show();
+        toggle.IsCheckedChanged += (_, _) => { Show(); SetSceneMark(obj, hide, toggle.IsChecked == true); };
+        return toggle;
     }
 
     private void RebuildHierarchy(SceneObject? selected)
@@ -54,7 +142,8 @@ public partial class MainWindow
         foreach (var obj in objects)
         {
             var item = new TreeViewItem { Header = obj.Name, Tag = obj, IsExpanded = !collapsed.Contains(obj.Id),
-                Opacity = Viewport.PlayWorld?.IsActive(obj.Id) == false ? 0.55 : 1 };
+                Opacity = Viewport.PlayWorld?.IsActive(obj.Id) == false ? 0.55 : 1,
+                HeaderTemplate = new FuncDataTemplate<object>((_, _) => HierarchyRow(obj), supportsRecycling: false) };
             AutomationProperties.SetName(item, obj.Name);
             treeItems.Add(obj, item);
         }
@@ -63,6 +152,7 @@ public partial class MainWindow
             var items = obj.Parent == null ? Hierarchy.Items : treeItems[obj.Parent].Items;
             items.Add(treeItems[obj]);
         }
+        ApplyHierarchyFilter();
         refreshing = false;
         Select(selected);
     }

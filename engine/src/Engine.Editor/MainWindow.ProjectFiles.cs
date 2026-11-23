@@ -9,11 +9,14 @@ namespace Engine.Editor;
 
 public partial class MainWindow
 {
-    private sealed record ProjectEntry(string RelativePath, bool IsFolder, bool SearchResult=false)
+    private sealed record ProjectEntry(string RelativePath, bool IsFolder, bool SearchResult=false, string? Root=null)
     {
+        public Avalonia.Media.Imaging.Bitmap? Thumbnail => Root != null && !IsFolder && SpriteAssets.IsPng(RelativePath) ? ProjectThumbnails.Get(Path.Combine(Root, RelativePath)) : null;
+        public bool HasThumbnail => Thumbnail != null;
         public string Directory => ParentPath(RelativePath);
         public string Name => Path.GetFileName(RelativePath);
         public bool IsSource => !IsFolder && Name.EndsWith(".cs", StringComparison.OrdinalIgnoreCase);
+        public Avalonia.Media.Geometry Icon => EditorTokens.AssetIcon(RelativePath, IsFolder);
         public override string ToString() => Name;
     }
 
@@ -67,6 +70,7 @@ public partial class MainWindow
             e.Handled=true;
         },RoutingStrategies.Tunnel);
         ParentFolderButton.Click += (_, _) => UpOneFolder();
+        InitializeProjectView();
         ProjectBrowser.KeyDown += (_, e) =>
         {
             if (prefabSource == null && e.Key == Key.F2 && ProjectBrowser.SelectedItem is ProjectEntry selected && ProjectPathEdit.CanMove(selected.RelativePath, selected.IsFolder))
@@ -112,6 +116,8 @@ public partial class MainWindow
             browserStamp = null;
             ProjectBrowser.ItemsSource = null;
             ParentFolderButton.IsVisible = false;
+            ShowProjectPath(null);
+            FolderTree.Items.Clear();
             ProjectName.Text = "Unsaved";
             ToolTip.SetTip(ProjectName, null);
             EmptyFolder.IsVisible = false;
@@ -131,15 +137,17 @@ public partial class MainWindow
             var stamp = directory.LastWriteTimeUtc;
             var query=AssetSearch.Text?.Trim()??"";
             var changed=Interlocked.Exchange(ref catalogDirty,0)!=0;
+            if (changed || FolderTree.Items.Count == 0) RebuildFolderTree();
             if (!force && stamp == browserStamp && !(changed && query.Length>0)) return;
             if(query.Length>0)
             {
                 if(changed || catalogFiles==null) catalogFiles=ProjectCatalog.Files(project);
-                var hits=ProjectCatalog.Search(catalogFiles,query).Select(p=>new ProjectEntry(p,false,true)).ToArray();
+                var hits=ProjectCatalog.Search(catalogFiles,query).Select(p=>new ProjectEntry(p,false,true,project)).ToArray();
                 var old=ProjectBrowser.SelectedItem as ProjectEntry;
                 ProjectBrowser.ItemsSource=hits;ProjectBrowser.SelectedItem=hits.FirstOrDefault(p=>p==old);
                 EmptyFolder.Text="No matching assets";EmptyFolder.IsVisible=hits.Length==0;
                 ProjectName.Text=$"{hits.Length} found";ToolTip.SetTip(ProjectName,"All project assets and scripts");
+                ShowProjectPath(null);
                 ParentFolderButton.IsVisible=false;browserStamp=stamp;return;
             }
             if(changed) catalogFiles=null;
@@ -150,14 +158,13 @@ public partial class MainWindow
             bool dotnetRoot = browserFolder.Length == 0 && files.Any(file => file.Extension == ".csproj");
             var entries = files.Where(file => !file.Name.StartsWith('.') && !file.Name.EndsWith(".meta") &&
                     !(dotnetRoot && file is DirectoryInfo && file.Name is "bin" or "obj"))
-                .Select(file => new ProjectEntry(Path.GetRelativePath(project, file.FullName).Replace(Path.DirectorySeparatorChar, '/'), file is DirectoryInfo))
+                .Select(file => new ProjectEntry(Path.GetRelativePath(project, file.FullName).Replace(Path.DirectorySeparatorChar, '/'), file is DirectoryInfo, Root: project))
                 .OrderByDescending(entry => entry.IsFolder).ThenBy(entry => entry.Name, StringComparer.OrdinalIgnoreCase)
                 .ThenBy(entry => entry.Name, StringComparer.Ordinal).ToArray();
             ProjectBrowser.ItemsSource = entries;
             ProjectBrowser.SelectedItem = entries.FirstOrDefault(entry => entry == selected);
             browserStamp = stamp;
-            ProjectName.Text = directory.Name;
-            ToolTip.SetTip(ProjectName, directory.FullName);
+            ShowProjectPath(browserFolder);
             ParentFolderButton.IsVisible = browserFolder.Length != 0;
             ParentFolderButton.IsEnabled = ParentFolderButton.IsVisible && !Viewport.IsPlaying;
             EmptyFolder.IsVisible = entries.Length == 0;
@@ -166,8 +173,7 @@ public partial class MainWindow
         {
             ProjectBrowser.ItemsSource = null;
             browserStamp = null;
-            ProjectName.Text = browserFolder.Length == 0 ? new DirectoryInfo(project).Name : Path.GetFileName(browserFolder);
-            ToolTip.SetTip(ProjectName, Path.Combine(project, browserFolder));
+            ShowProjectPath(browserFolder);
             ParentFolderButton.IsVisible = browserFolder.Length > 0;
             ParentFolderButton.IsEnabled = ParentFolderButton.IsVisible && !Viewport.IsPlaying;
             EmptyFolder.IsVisible = false;
@@ -266,6 +272,11 @@ public partial class MainWindow
         string? folder = null;
         if (ParentFolderButton.IsVisible && new Rect(ParentFolderButton.Bounds.Size).Contains(e.GetPosition(ParentFolderButton)))
             folder = ParentPath(browserFolder);
+        else if (ProjectPath.Children.OfType<Button>().FirstOrDefault(b => b.IsEffectivelyVisible && new Rect(b.Bounds.Size).Contains(e.GetPosition(b))) is { Tag: string crumb })
+            folder = crumb;
+        else if (FolderTreePane.IsVisible && FolderTree.InputHitTest(e.GetPosition(FolderTree)) is Visual node &&
+            (node as TreeViewItem ?? node.FindAncestorOfType<TreeViewItem>()) is { Tag: string branch })
+            folder = branch;
         else if (ProjectBrowser.InputHitTest(e.GetPosition(ProjectBrowser)) is Visual hit)
         {
             var row = hit as ListBoxItem ?? hit.FindAncestorOfType<ListBoxItem>();

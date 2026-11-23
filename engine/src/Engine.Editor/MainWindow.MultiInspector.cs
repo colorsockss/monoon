@@ -15,7 +15,7 @@ public partial class MainWindow
 
     private static void InspectorRow(StackPanel fields, string label, Control editor)
     {
-        var row = new Grid { ColumnDefinitions = new("56,*"), ColumnSpacing = 5 };
+        var row = new Grid { ColumnDefinitions = EditorTokens.LabelColumns(EditorTokens.FieldLabelWidth), ColumnSpacing = EditorTokens.FieldGap };
         var title = new TextBlock { Text = label, Classes = { "fieldLabel" }, TextTrimming = TextTrimming.CharacterEllipsis };
         ToolTip.SetTip(title, label);
         row.Children.Add(title);

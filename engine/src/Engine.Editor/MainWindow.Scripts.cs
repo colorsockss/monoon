@@ -78,7 +78,7 @@ public partial class MainWindow
         catch (Exception ex)
         {
             LogError(ex.Message);
-            panel.Children.Add(new TextBlock { Text = ex.Message, TextWrapping = TextWrapping.Wrap, Foreground = Brushes.LightSalmon });
+            panel.Children.Add(new TextBlock { Text = ex.Message, TextWrapping = TextWrapping.Wrap, Classes = { "error" } });
         }
         return panel;
     }
@@ -110,7 +110,7 @@ public partial class MainWindow
             return;
         }
         string Format() => Convert.ToString(field.Value(component), CultureInfo.InvariantCulture) ?? "";
-        var row = new Grid { ColumnDefinitions = new("56,*"), ColumnSpacing = 5 };
+        var row = new Grid { ColumnDefinitions = EditorTokens.LabelColumns(EditorTokens.FieldLabelWidth), ColumnSpacing = EditorTokens.FieldGap };
         row.Children.Add(new TextBlock { Text = field.Name, Classes = { "fieldLabel" },
             TextTrimming = TextTrimming.CharacterEllipsis });
         ToolTip.SetTip(row, field.Name);
@@ -238,7 +238,7 @@ public partial class MainWindow
         var name = new TextBox { Text = initialName };
         var label = shared ? "Type name" : "Component name";
         AutomationProperties.SetName(name, label);
-        var error = new TextBlock { TextWrapping = TextWrapping.Wrap, Foreground = Brushes.LightSalmon, IsVisible = false };
+        var error = new TextBlock { TextWrapping = TextWrapping.Wrap, Classes = { "error" }, IsVisible = false };
         var cancel = new Button { Content = "Cancel", IsCancel = true };
         var create = new Button { Content = attach ? "Create & Add" : "Create Script", IsDefault = true };
         cancel.Click += (_, _) => dialog.Close(null);

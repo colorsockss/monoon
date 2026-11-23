@@ -1,0 +1,17 @@
+{
+  "Version": 1,
+  "Folds": {
+    "SpriteRendererComponent": false
+  },
+  "Hidden": {
+    "C:\\MNUI12C\\results\\panels\\KeyRoom\\Scenes\\KeyRoom.scene": [
+      "9fa91386-59b8-4ddc-890c-875cbec2ae49"
+    ]
+  },
+  "Locked": {
+    "C:\\MNUI12C\\results\\panels\\KeyRoom\\Scenes\\KeyRoom.scene": [
+      "4437f9ae-088a-41a5-b8f2-b3ac231acd26"
+    ]
+  },
+  "ProjectGrid": true
+}

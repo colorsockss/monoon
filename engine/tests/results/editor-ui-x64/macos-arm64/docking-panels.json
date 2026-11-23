@@ -1,0 +1,203 @@
+{
+  "os": "osx-arm64",
+  "captures": {
+    "float-console": "screencapture -l",
+    "float-animator": "screencapture -l",
+    "float-inspector": "screencapture -l",
+    "float-scene": "screencapture -l",
+    "float-game-play": "screencapture -l",
+    "play-game-tab": "screencapture -l"
+  },
+  "screen": [
+    {
+      "Width": 2056,
+      "Height": 1247,
+      "Scaling": 1
+    }
+  ],
+  "opened": [
+    {
+      "panel": "Console",
+      "title": "Console",
+      "editor": null,
+      "layout": "Row[Column[(Hierarchy*) (Project*)] Column[(Scene*,Game) (Console*)] (Inspector*)]"
+    },
+    {
+      "panel": "Profiler",
+      "title": "Profiler",
+      "editor": null,
+      "layout": "Row[Column[(Hierarchy*) (Project*)] Column[(Scene*,Game) (Console,Profiler*)] (Inspector*)]"
+    },
+    {
+      "panel": "Animator",
+      "title": "Animator Controller",
+      "editor": "AnimatorWindow",
+      "layout": "Row[Column[(Hierarchy*) (Project*)] Column[(Scene*,Game) (Console,Profiler,Animator*)] (Inspector*)]"
+    },
+    {
+      "panel": "Clip",
+      "title": "Door \u00B7 Sprite Animation",
+      "editor": "ClipEditorWindow",
+      "layout": "Row[Column[(Hierarchy*) (Project*)] Column[(Scene*,Game) (Console,Profiler,Animator,Clip*)] (Inspector*)]"
+    },
+    {
+      "panel": "Tileset",
+      "title": "New Tileset",
+      "editor": "TilesetWindow",
+      "layout": "Row[Column[(Hierarchy*) (Project*)] Column[(Scene*,Game) (Console,Profiler,Animator,Clip,Tileset*)] (Inspector*)]"
+    },
+    {
+      "panel": "Input Actions",
+      "title": "Input Actions",
+      "editor": "InputMapWindow",
+      "layout": "Row[Column[(Hierarchy*) (Project*)] Column[(Scene*,Game) (Console,Profiler,Animator,Clip,Tileset,Input Actions*)] (Inspector*)]"
+    },
+    {
+      "panel": "Dialogue",
+      "title": "Dialogue",
+      "editor": "DialogueWindow",
+      "layout": "Row[Column[(Hierarchy*) (Project*)] Column[(Scene*,Game) (Console,Profiler,Animator,Clip,Tileset,Input Actions,Dialogue*)] (Inspector*)]"
+    },
+    {
+      "panel": "Data",
+      "title": "KeyRoomRules \u00B7 Data Asset",
+      "editor": "ValuesWindow",
+      "layout": "Row[Column[(Hierarchy*) (Project*)] Column[(Scene*,Game) (Console,Profiler,Animator,Clip,Tileset,Input Actions,Dialogue,Data*)] (Inspector*)]"
+    }
+  ],
+  "replaced": "Loot \u00B7 Data Table",
+  "window_menu": [
+    "Hierarchy",
+    "Project",
+    "Scene",
+    "Game",
+    "Inspector",
+    "Console",
+    "Profiler",
+    "Animator",
+    "Clip",
+    "Tileset",
+    "Input Actions",
+    "Dialogue",
+    "Data"
+  ],
+  "game": {
+    "running": [
+      {
+        "label": "Scene floating, game in Game tab",
+        "same_session": true,
+        "ticks": 72,
+        "draws": 936,
+        "view_kept": true
+      },
+      {
+        "label": "Game floating",
+        "same_session": true,
+        "ticks": 73,
+        "draws": 936,
+        "view_kept": true
+      },
+      {
+        "label": "Game docked again",
+        "same_session": true,
+        "ticks": 72,
+        "draws": 936,
+        "view_kept": true
+      },
+      {
+        "label": "Game at 2\u00D7",
+        "same_session": true,
+        "ticks": 71,
+        "draws": 910,
+        "view_kept": true
+      }
+    ],
+    "stats": "60 fps \u00B7 16.7 ms \u00B7 13 draws",
+    "scale": 2,
+    "resolution": "800 \u00D7 450"
+  },
+  "floats": [
+    {
+      "panel": "Console",
+      "floated": {
+        "window": [
+          738,
+          363,
+          640,
+          420
+        ],
+        "title": "Console"
+      },
+      "docked": "Row[Column[(Hierarchy*) (Project*)] Column[(Scene*,Game) (Profiler,Animator,Clip,Tileset,Input Actions,Dialogue,Data,Console*)] (Inspector*)]"
+    },
+    {
+      "panel": "Animator",
+      "floated": {
+        "window": [
+          738,
+          363,
+          640,
+          420
+        ],
+        "title": "Animator Controller"
+      },
+      "docked": "Row[Column[(Hierarchy*) (Project*)] Column[(Scene*,Game) (Profiler,Clip,Tileset,Input Actions,Dialogue,Data,Console,Animator*)] (Inspector*)]"
+    },
+    {
+      "panel": "Inspector",
+      "sections": 6,
+      "header": 28,
+      "docked": "Row[Column[(Hierarchy*) (Project*)] Column[(Scene*,Game) (Profiler,Clip,Tileset,Input Actions,Dialogue,Data,Console,Animator*)] (Inspector*)]",
+      "baseline": {
+        "label": "Inspector docked again",
+        "window": 1280,
+        "inspector": 320,
+        "rows": 3,
+        "label_x": 968,
+        "input_x": 1028,
+        "column": 60,
+        "drift": 0,
+        "vertical": 0,
+        "name_width": 244,
+        "inspector_right": 1280
+      }
+    },
+    {
+      "panel": "Scene",
+      "docked": "Row[Column[(Hierarchy*) (Project*)] (Profiler,Clip,Tileset,Input Actions,Dialogue,Data,Console,Animator*) (Inspector*) (Game,Scene*)]",
+      "view_kept": true
+    }
+  ],
+  "tools": {
+    "tools": [
+      {
+        "button": "RotateTool",
+        "gizmo": "Rotate"
+      },
+      {
+        "button": "ScaleTool",
+        "gizmo": "Scale"
+      },
+      {
+        "button": "RectTool",
+        "gizmo": "Rect"
+      },
+      {
+        "button": "MoveTool",
+        "gizmo": "Move"
+      }
+    ],
+    "rect": {
+      "width": 40,
+      "widened": 64,
+      "cancelled": 40
+    }
+  },
+  "console_floating": [
+    538,
+    299,
+    520,
+    300
+  ],
+  "layout_before_exit": "Row[Column[(Hierarchy*) (Project*)] (Profiler*,Clip,Tileset,Input Actions,Dialogue,Data) (Inspector*) (Game,Scene*)]"
+}

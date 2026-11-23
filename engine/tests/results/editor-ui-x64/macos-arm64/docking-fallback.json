@@ -1,0 +1,44 @@
+{
+  "os": "osx-arm64",
+  "captures": {},
+  "screen": [
+    {
+      "Width": 2056,
+      "Height": 1247,
+      "Scaling": 1
+    }
+  ],
+  "layout": "Row[Column[(Hierarchy*) (Project*)] (Scene*,Game) (Inspector*)]",
+  "window": {
+    "Width": 1220,
+    "Height": 740,
+    "X": 418,
+    "Y": 159
+  },
+  "slots": {
+    "Hierarchy": [
+      0,
+      56,
+      176,
+      355.5
+    ],
+    "Project": [
+      0,
+      439.5,
+      176,
+      279.5
+    ],
+    "Scene": [
+      180,
+      56,
+      818,
+      663
+    ],
+    "Inspector": [
+      1002,
+      56,
+      218,
+      663
+    ]
+  }
+}

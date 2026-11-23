@@ -16,7 +16,7 @@ public partial class MainWindow : Window
     private ProjectScripts? scripts;
     private string sceneName = "Untitled";
     private readonly SceneHistory history = new();
-    private readonly Dictionary<(Guid Owner, Type? Component, string? Script), ComponentFoldout> foldouts = [];
+    private readonly Dictionary<string, ComponentFoldout> foldouts = [];
     private Guid? editSelection;
     private SceneGame? inspectedWorld;
     private long inspectedRevision, lastInspectorTick;
@@ -33,8 +33,6 @@ public partial class MainWindow : Window
             inspectedWorld = world;
             inspectedRevision = world?.HierarchyRevision ?? 0;
             var objects = world?.Objects ?? Scene.Objects;
-            foreach (var key in foldouts.Keys.Where(k => !Scene.Objects.Any(o => o.Id == k.Owner) && !objects.Any(o => o.Id == k.Owner)).ToArray())
-                foldouts.Remove(key);
             RebuildHierarchy(objects.FirstOrDefault(o => o.Id == id));
         }
         else if (world != null && Selected != null && Environment.TickCount64 - lastInspectorTick >= 100)
@@ -59,6 +57,7 @@ public partial class MainWindow : Window
         prefabSource = source;
         savePrefabSource = saveSource;
         InitializeComponent();
+        InitializeDocking();
         InitializeMenus();
         OverridesButton.Click += (_, _) => RunAction(ShowPrefabOverrides);
         InitializeDiagnostics();
@@ -89,9 +88,7 @@ public partial class MainWindow : Window
         InitializeHierarchy();
         Viewport.Picked += Select;
         Viewport.TogglePicked += ToggleSelection;
-        GizmoPicker.ItemsSource=Enum.GetValues<GizmoTool>();
-        GizmoPicker.SelectedItem=GizmoTool.Move;
-        GizmoPicker.SelectionChanged+=(_,_)=>{if(GizmoPicker.SelectedItem is GizmoTool tool){Viewport.EndDrag();Viewport.Gizmo=tool;Viewport.RefreshScene();}};
+        InitializeGameView();
         GizmoSnap.IsCheckedChanged+=(_,_)=>Viewport.SnapEnabled=GizmoSnap.IsChecked==true;
         Viewport.Moved += RefreshInspector;
         Viewport.MoveFinished += () => MarkDirty();
@@ -110,15 +107,8 @@ public partial class MainWindow : Window
         {
             if (e.Key == Key.Enter) { CommitText(); Viewport.Focus(); }
         };
-        // Handle game navigation before Avalonia moves Tab focus to the Play/Stop button.
-        AddHandler(KeyDownEvent, (_, e) =>
-        {
-            if (Viewport.IsKeyboardFocusWithin && !e.KeyModifiers.HasFlag(KeyModifiers.Meta) && Viewport.RouteUiKey(e, true)) { Viewport.Focus(); e.Handled = true; }
-        }, RoutingStrategies.Tunnel);
-        AddHandler(KeyUpEvent, (_, e) =>
-        {
-            if (Viewport.RouteUiKey(e, false)) e.Handled = true;
-        }, RoutingStrategies.Tunnel);
+        AddHandler(KeyDownEvent, GameKeyDown, RoutingStrategies.Tunnel);
+        AddHandler(KeyUpEvent, GameKeyUp, RoutingStrategies.Tunnel);
         AddHandler(KeyDownEvent, Shortcut, RoutingStrategies.Tunnel);
         Closing += OnClosing;
         Deactivated += (_, _) => { Viewport.ResetInput(); EndFileDrag(); };
@@ -129,7 +119,7 @@ public partial class MainWindow : Window
             spriteMonitor?.Request();
         };
         scriptRefresh.Tick += (_, _) => RefreshChangedScripts();
-        Closed += (_, _) => scriptRefresh.Stop();
+        Closed += (_, _) => { scriptRefresh.Stop(); Viewport.Stop(); };
         if (source != null)
         {
             OpenScene(source.Document.ProjectDirectory, initialProject!, source.Document);
@@ -260,6 +250,8 @@ public partial class MainWindow : Window
             Viewport.SetUiPreview(null);
             browserFolder = "";
             AssetSearch.Text="";
+            HierarchySearch.Text = "";
+            FolderTree.Items.Clear();
             WatchCatalog(root);
         }
         scripts = root == null ? null : document.OpenScripts(root);
@@ -272,6 +264,7 @@ public partial class MainWindow : Window
         if (!savingCurrent) { Viewport.Selected = null; Viewport.FrameCamera(); }
         UpdateResolution();
         Viewport.ClearSprites();
+        if (!savingCurrent) LoadSceneMarks();
         if (!savingCurrent)
         {
             foldouts.Clear();
@@ -323,7 +316,9 @@ public partial class MainWindow : Window
 
     private async Task<bool> CanLeave()
     {
-        if (clipEditor is {} clip && !await clip.RequestClose()) return false;
+        // Open editor panels close first; one with unsaved changes asks, and leaving waits for the next attempt.
+        foreach (var kind in EditorKinds)
+            if (Editor(kind) is {} editor && !await editor.RequestClose()) return false;
         if (!history.IsDirty) return true;
         var dialog = new Window { Title = prefabSource == null ? "Unsaved scene" : "Unsaved prefab", SizeToContent = SizeToContent.WidthAndHeight,
             CanResize = false, WindowStartupLocation = WindowStartupLocation.CenterOwner, ShowInTaskbar = false };
@@ -363,7 +358,7 @@ public partial class MainWindow : Window
         if (closingApproved) return;
         Viewport.EndDrag();
         CommitText();
-        if (!history.IsDirty && !busy && clipEditor == null) return;
+        if (!history.IsDirty && !busy && EditorKinds.All(kind => Editor(kind) == null)) return;
         e.Cancel = true;
         if (busy) return;
         Viewport.Stop();
@@ -393,7 +388,6 @@ public partial class MainWindow : Window
     {
         var obj=selection.LastOrDefault();
         Viewport.Selection=selection;
-        InspectorTitle.Text=selection.Count>1?$"Inspector · {selection.Count} selected":"Inspector";
         foreach(var (owner,row) in treeItems)row.Classes.Set("groupSelected",selection.Count>1 && selection.Contains(owner));
         refreshing = true;
         if (Viewport.TileEditOwner != null && (Viewport.TileEditOwner != obj?.Id || obj?.GetComponent<Tilemap2DComponent>() == null))
@@ -416,6 +410,7 @@ public partial class MainWindow : Window
         Inspector.IsVisible = Selected != null && !MultiInspector.IsVisible;
         EmptyInspector.IsVisible = Selected == null;
         OverridesButton.IsVisible = prefabSource == null && !Viewport.IsPlaying && Viewport.Selection.Count == 1 && Selected?.Prefab != null;
+        RefreshInspectorActions();
         if (MultiInspector.IsVisible) RefreshMultiTransform();
         if (Inspector.IsVisible && Selected is { } obj)
         {
@@ -476,8 +471,8 @@ public partial class MainWindow : Window
 
     private ComponentFoldout FoldoutFor(SceneObject owner, SceneComponent? component)
     {
-        var key = (owner.Id, component?.GetType(), (component as ScriptComponent)?.Script);
-        if (!foldouts.TryGetValue(key, out var foldout)) foldouts.Add(key, foldout = new());
+        var key = component switch { null => "Transform", ScriptComponent script => "Script:" + script.Script, _ => component.GetType().Name };
+        if (!foldouts.TryGetValue(key, out var foldout)) foldouts.Add(key, foldout = new(key));
         return foldout;
     }
 
@@ -684,17 +679,24 @@ public partial class MainWindow : Window
         ObjectName.IsReadOnly = ObjectTag.IsReadOnly = ObjectGroups.IsReadOnly = !edit;
         AffineRows.IsEnabled = PositionRow.IsEnabled = SizeRow.IsEnabled = edit;
         AddComponentButton.IsVisible = edit;
-        AssetSearch.IsEnabled = ProjectBrowser.IsEnabled = ProjectActions.IsEnabled = edit;
+        AssetSearch.IsEnabled = ProjectBrowser.IsEnabled = ProjectActions.IsEnabled = FolderTree.IsEnabled = ProjectPath.IsEnabled = edit;
         ParentFolderButton.IsEnabled = edit && browserFolder.Length > 0;
         AddButton.IsEnabled = edit;
         NewSceneButton.IsEnabled = edit && project != null;
         NewDialogueButton.IsEnabled = NewDataButton.IsEnabled = NewScriptButton.IsEnabled = NewSharedButton.IsEnabled = edit;
         UpdateMenuState();
         SyncTimeControls();
-        GizmoControls.IsVisible=edit;
-        ProjectActions.IsVisible = prefabSource == null;
-        ViewMode.Text = prefabSource != null ? "Prefab" : edit ? "Scene" : "Game";
-        PlayButton.Content = prefabSource != null ? "Save" : edit ? "▶  Play" : "■  Stop";
+        GizmoControls.IsEnabled=edit;
+        ProjectActions.IsVisible = PauseButton.IsVisible = StepButton.IsVisible = prefabSource == null;
+        ShowGameView(!edit);
+        LockEditors();
+        PlayButton.Content = prefabSource != null ? "Save" : new StackPanel
+        {
+            Orientation = Orientation.Horizontal, Spacing = EditorTokens.Gap,
+            Children = { EditorTokens.Icon(edit ? "IconPlay" : "IconStop"), new TextBlock { Text = edit ? "Play" : "Stop", VerticalAlignment = VerticalAlignment.Center } },
+        };
+        // Keep the accessible names that UI tests and assistive tools already use.
+        Avalonia.Automation.AutomationProperties.SetName(PlayButton, prefabSource != null ? "Save" : edit ? "▶  Play" : "■  Stop");
     }
 
     private void Shortcut(object? sender, KeyEventArgs e)
@@ -718,8 +720,8 @@ public partial class MainWindow : Window
         if(!Viewport.IsPlaying && Viewport.IsKeyboardFocusWithin && e.KeyModifiers==KeyModifiers.None)
         {
             if(e.Key==Key.Escape && Viewport.CancelGesture()){e.Handled=true;return;}
-            if(e.Key is Key.W or Key.E or Key.R){
-                GizmoPicker.SelectedItem=e.Key==Key.W?GizmoTool.Move:e.Key==Key.E?GizmoTool.Rotate:GizmoTool.Scale;
+            if(e.Key is Key.W or Key.E or Key.R or Key.T){
+                SetTool(e.Key==Key.W?GizmoTool.Move:e.Key==Key.E?GizmoTool.Rotate:e.Key==Key.R?GizmoTool.Scale:GizmoTool.Rect);
                 e.Handled=true;return;
             }
         }

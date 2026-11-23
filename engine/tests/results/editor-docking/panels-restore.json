@@ -1,0 +1,21 @@
+{
+  "screen": [
+    {
+      "Width": 2056,
+      "Height": 1247,
+      "Scaling": 1
+    }
+  ],
+  "console_restored": [
+    538,
+    299,
+    520,
+    300
+  ],
+  "animator_fallback": {
+    "X": 738,
+    "Y": 363,
+    "Width": 640,
+    "Height": 420
+  }
+}

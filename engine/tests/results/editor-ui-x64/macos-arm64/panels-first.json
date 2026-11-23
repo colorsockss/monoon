@@ -1,0 +1,252 @@
+{
+  "os": "osx-arm64",
+  "captures": {
+    "workspace-1280": "screencapture -l",
+    "marks-before": "screencapture -l",
+    "marks-hidden": "screencapture -l",
+    "project-tree": "screencapture -l",
+    "console-1280": "screencapture -l",
+    "main-1280": "screencapture -l",
+    "main-1600": "screencapture -l",
+    "main-1920": "screencapture -l",
+    "long-name-1280": "screencapture -l"
+  },
+  "hierarchy_search": [
+    {
+      "query": "satchel",
+      "matches": 3,
+      "shown": [
+        "Player",
+        "Satchel",
+        "Satchel flap",
+        "Satchel clasp"
+      ],
+      "no_match_text": false
+    },
+    {
+      "query": "Door",
+      "matches": 2,
+      "shown": [
+        "Wall",
+        "Door",
+        "Door Camera"
+      ],
+      "no_match_text": false
+    },
+    {
+      "query": "zzz",
+      "matches": 0,
+      "shown": [],
+      "no_match_text": true
+    }
+  ],
+  "scene_marks": {
+    "object": "Door",
+    "hidden": {
+      "drawn": false,
+      "picked": "Door Camera",
+      "active_in_play": true
+    },
+    "locked": {
+      "drawn": true,
+      "picked": "Door Camera",
+      "hierarchy_select": true
+    },
+    "parent_hides_child": true,
+    "scene_sha_before": "FB0C1FD5172C093ED66C85FE5287AC3DA0C412DD8FE0220050E45BA93E715EC8",
+    "scene_sha_after": "FB0C1FD5172C093ED66C85FE5287AC3DA0C412DD8FE0220050E45BA93E715EC8"
+  },
+  "project": {
+    "steps": [
+      {
+        "folder": "Assets/Fonts",
+        "crumbs": [
+          "KeyRoom",
+          "Assets",
+          "Fonts"
+        ]
+      },
+      {
+        "clicked": "Assets",
+        "folder": "Assets",
+        "crumbs": [
+          "KeyRoom",
+          "Assets"
+        ]
+      },
+      {
+        "clicked": "Parent folder",
+        "folder": "",
+        "parent_visible": false
+      },
+      {
+        "tree": true,
+        "panel_width": 1280,
+        "folder": "Scripts/Shared"
+      },
+      {
+        "search": "door t:sprite",
+        "hits": [
+          "Assets/Door.png",
+          "Assets/DoorOpen1.png",
+          "Assets/DoorOpen2.png",
+          "Assets/DoorOpen3.png",
+          "Assets/DoorSheet.png"
+        ],
+        "caption": "5 found"
+      }
+    ],
+    "list_row_heights": [
+      21
+    ],
+    "tiles": 23,
+    "thumbnails": 9
+  },
+  "inspector": {
+    "folded": "Sprite Renderer",
+    "shared_by_type": true,
+    "header_icon_x": [
+      1098
+    ],
+    "gear_right": [
+      1272
+    ],
+    "multi_caption": "2 selected",
+    "combos": [
+      {
+        "value": "None",
+        "trims": true,
+        "inside": true,
+        "box_template": true
+      },
+      {
+        "value": "Assets/Door.clip",
+        "trims": true,
+        "inside": true,
+        "box_template": true
+      },
+      {
+        "value": "Assets/Unlock.wav",
+        "trims": true,
+        "inside": true,
+        "box_template": true
+      },
+      {
+        "value": "Effects",
+        "trims": true,
+        "inside": true,
+        "box_template": true
+      }
+    ]
+  },
+  "component_enable": {
+    "qualifying": [],
+    "reason": "No Engine.Core component has an enabled/active property; no runtime field was added."
+  },
+  "console": {
+    "counts": {
+      "infos": 5,
+      "warnings": 2,
+      "errors": 1
+    },
+    "all": 8,
+    "without_info": 3,
+    "collapsed": 2,
+    "collapsed_all": 5,
+    "searched": 1,
+    "detail": "06:22:55   Error\nPanels probe: error\n   at Stack.Frame()\n   at Other.Frame()",
+    "toolbar_centre": [
+      442
+    ]
+  },
+  "alignment": {
+    "rows": [
+      {
+        "label": "window 1280",
+        "window": 1280,
+        "label_x": 1070,
+        "input_x": 1130,
+        "column": 60,
+        "drift": 0,
+        "vertical": 0
+      },
+      {
+        "label": "window 1600",
+        "window": 1600,
+        "label_x": 1390,
+        "input_x": 1450,
+        "column": 60,
+        "drift": 0,
+        "vertical": 0
+      },
+      {
+        "label": "window 1920",
+        "window": 1920,
+        "label_x": 1710,
+        "input_x": 1770,
+        "column": 60,
+        "drift": 0,
+        "vertical": 0
+      },
+      {
+        "label": "long name 1280",
+        "window": 1280,
+        "label_x": 1070,
+        "input_x": 1130,
+        "column": 60,
+        "drift": 0,
+        "vertical": 0
+      }
+    ],
+    "toolbars": [
+      {
+        "name": "Hierarchy 1280",
+        "centre": 69
+      },
+      {
+        "name": "Project 1280",
+        "centre": 486
+      },
+      {
+        "name": "Project path 1280",
+        "centre": 511.5
+      },
+      {
+        "name": "Hierarchy 1600",
+        "centre": 69
+      },
+      {
+        "name": "Project 1600",
+        "centre": 541.5
+      },
+      {
+        "name": "Project path 1600",
+        "centre": 567
+      },
+      {
+        "name": "Hierarchy 1920",
+        "centre": 69
+      },
+      {
+        "name": "Project 1920",
+        "centre": 641.5
+      },
+      {
+        "name": "Project path 1920",
+        "centre": 667
+      }
+    ],
+    "hover": true,
+    "long_name": {
+      "shown": 58,
+      "natural": 383,
+      "trimmed": true,
+      "inside": true
+    }
+  },
+  "scene": {
+    "path": "/Users/paare/codex_project/brutal_engine/.test-env/work/ui12/mac-final3/panels/KeyRoom/Scenes/KeyRoom.scene",
+    "sha": "FB0C1FD5172C093ED66C85FE5287AC3DA0C412DD8FE0220050E45BA93E715EC8",
+    "state": "{\n  \u0022Version\u0022: 1,\n  \u0022Folds\u0022: {\n    \u0022SpriteRendererComponent\u0022: false\n  },\n  \u0022Hidden\u0022: {\n    \u0022/Users/paare/codex_project/brutal_engine/.test-env/work/ui12/mac-final3/panels/KeyRoom/Scenes/KeyRoom.scene\u0022: [\n      \u00229fa91386-59b8-4ddc-890c-875cbec2ae49\u0022\n    ]\n  },\n  \u0022Locked\u0022: {\n    \u0022/Users/paare/codex_project/brutal_engine/.test-env/work/ui12/mac-final3/panels/KeyRoom/Scenes/KeyRoom.scene\u0022: [\n      \u00224437f9ae-088a-41a5-b8f2-b3ac231acd26\u0022\n    ]\n  },\n  \u0022ProjectGrid\u0022: true\n}"
+  }
+}

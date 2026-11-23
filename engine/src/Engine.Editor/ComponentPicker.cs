@@ -22,12 +22,13 @@ internal sealed record AttachedComponent(SceneComponent Component, string? Proje
     Func<ScriptComponent, Avalonia.Controls.Control> ScriptEditor, Func<SceneComponent, Avalonia.Controls.Control> PresentationEditor, bool Editable)
 {
     public string Name => Component is ScriptComponent script ? script.Script : ComponentChoice.Registered[Component.GetType()].Name;
+    public Avalonia.Media.Geometry? Icon => EditorTokens.ComponentIcon(Component);
     public bool FieldsEnabled => Editable || Component is ScriptComponent;
     public object? Fields { get; } = Component switch
     {
         SpriteRendererComponent sprite => new SpriteFields(sprite, Project, Changed),
-        ScriptComponent script => ScriptEditor(script),
-        _ => PresentationEditor(Component)
+        ScriptComponent script => EditorTokens.TrimComboBoxes(ScriptEditor(script)),
+        _ => EditorTokens.TrimComboBoxes(PresentationEditor(Component))
     };
 }
 

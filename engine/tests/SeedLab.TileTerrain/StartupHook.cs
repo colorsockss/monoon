@@ -5,6 +5,7 @@ using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Interactivity;
 using Avalonia.Media.Imaging;
 using Avalonia.Threading;
+using Avalonia.VisualTree;
 using Engine.Core;
 
 // Edits the mud tile's terrain in the Tileset window, restores it, then runs Scene Play with the replay.
@@ -38,7 +39,11 @@ public static class StartupHook
         async Task Edit(string expectName, int expectCost, string name, int cost, bool capture)
         {
             var closing = (Task)main.GetType().GetMethod("EditTileset", Private)!.Invoke(main, ["Assets/Route.tileset"])!;
-            var window = life.Windows.Single(w => w.GetType().Name == "TilesetWindow");
+            // The tileset editor is a dock panel in the main window (roadmap 12.4); it appears after the panel's layout pass.
+            await closing;
+            Visual? found = null;
+            for (int i = 0; i < 200 && (found = main.GetVisualDescendants().SingleOrDefault(c => c.GetType().Name == "TilesetWindow")) == null; i++) await Task.Delay(50);
+            var window = (ContentControl)(found ?? throw new InvalidDataException("Tileset panel did not open"));
             var grid = window.FindControl<Control>("Cells")!;
             grid.GetType().GetMethod("RestoreSelection", Private)!.Invoke(grid, [new[] { mud }]);
             var terrain = window.FindControl<TextBox>("TerrainName")!;
@@ -65,7 +70,8 @@ public static class StartupHook
                 }
             }
             Click(window.FindControl<Button>("SaveAsset")!);
-            Require(closing.IsCompleted || !window.IsVisible, window.FindControl<TextBlock>("Info")!.Text ?? "Save failed");
+            // Saving closes the editor and empties its panel, as it closed the window before.
+            Require(window.GetVisualRoot() == null, window.FindControl<TextBlock>("Info")!.Text ?? "Save failed");
             await closing;
             var saved = Tileset.Load(Path.Combine(project, "Assets/Route.tileset")).Tiles.Single(t => t.Source == mud);
             Require(saved.Terrain == name && saved.MoveCost == cost, $"saved {saved.Terrain} x{saved.MoveCost}");

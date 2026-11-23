@@ -1,7 +1,7 @@
-<Window xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+<local:EditorPanel xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:local="using:Engine.Editor" x:Class="Engine.Editor.TilesetWindow"
-        Title="Tileset" WindowStartupLocation="CenterOwner" Width="700" Height="480" MinWidth="365" MinHeight="435">
-  <Grid Margin="12" RowDefinitions="Auto,Auto,Auto,*,Auto,Auto,Auto,Auto,Auto">
+        Title="Tileset" MinWidth="365" MinHeight="435">
+  <Grid Margin="{StaticResource EditorWindowPadding}" RowDefinitions="Auto,Auto,Auto,*,Auto,Auto,Auto,Auto,Auto">
     <Grid x:Name="NameRow" Margin="0,0,0,6" ColumnDefinitions="58,*" ColumnSpacing="6">
       <TextBlock Text="Name" Classes="fieldLabel"/>
       <TextBox x:Name="AssetName" Grid.Column="1" AutomationProperties.Name="Tileset name"/>
@@ -65,4 +65,4 @@
       </StackPanel>
     </Grid>
   </Grid>
-</Window>
+</local:EditorPanel>

@@ -1,0 +1,165 @@
+<!-- Panel styles of the main window. Floating panel windows include them too, so a torn-off panel looks the same. -->
+<Styles xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="using:Engine.Editor">
+  <Style Selector="TreeViewItem.groupSelected"><Setter Property="Foreground" Value="{DynamicResource EditorAccent}"/></Style>
+  <Style Selector="TreeViewItem.dropTarget"><Setter Property="Foreground" Value="{DynamicResource EditorAccent}"/></Style>
+  <Style Selector="Border.referenceRow"><Setter Property="Background" Value="Transparent"/></Style>
+  <Style Selector="Border.referenceRow.referenceDrop"><Setter Property="Background" Value="{DynamicResource EditorDropTarget}"/></Style>
+  <Style Selector="ToggleButton.drawerHeader:checked PathIcon"><Setter Property="RenderTransform" Value="rotate(90deg)"/></Style>
+  <Style Selector="TextBlock.panel">
+    <Setter Property="FontSize" Value="{StaticResource EditorFontSize}"/><Setter Property="FontWeight" Value="{StaticResource EditorTitleWeight}"/>
+  </Style>
+  <!-- 28px minus the 1px divider leaves 27px: 22px and 24px controls would sit at 2.5 and 1.5, which layout rounding
+       (to even) puts on different centre lines at 100% scale. A 1px bottom padding keeps the content area even. -->
+  <Style Selector="Border.panelHeader">
+    <Setter Property="Height" Value="{StaticResource EditorPanelHeaderHeight}"/>
+    <Setter Property="Padding" Value="{StaticResource EditorPanelHeaderBarPadding}"/>
+    <Setter Property="Background" Value="{DynamicResource EditorPanel}"/>
+    <Setter Property="BorderBrush" Value="{DynamicResource EditorDivider}"/>
+    <Setter Property="BorderThickness" Value="0,0,0,1"/>
+  </Style>
+  <Style Selector="Button.panelAction">
+    <Setter Property="Width" Value="{StaticResource EditorRowHeight}"/><Setter Property="Height" Value="{StaticResource EditorRowHeight}"/>
+    <Setter Property="MinHeight" Value="0"/><Setter Property="Padding" Value="0"/>
+    <Setter Property="HorizontalContentAlignment" Value="Center"/>
+    <Setter Property="VerticalAlignment" Value="Center"/>
+  </Style>
+  <Style Selector="#Inspector TextBox, #Inspector NumericUpDown, #Inspector ComboBox, #Inspector CheckBox, #Inspector Button">
+    <Setter Property="MinHeight" Value="{StaticResource EditorInputHeight}"/>
+    <Setter Property="Padding" Value="{StaticResource EditorInputPadding}"/>
+  </Style>
+  <Style Selector="#Inspector ComboBox"><Setter Property="HorizontalAlignment" Value="Stretch"/></Style>
+  <!-- Slim panel toolbars: a search field fills the row, square actions keep the row height. -->
+  <Style Selector="TextBox.toolbarSearch">
+    <Setter Property="VerticalAlignment" Value="Center"/>
+    <Setter Property="Padding" Value="4,2,6,2"/>
+  </Style>
+  <Style Selector="ToggleButton.panelAction">
+    <Setter Property="Width" Value="{StaticResource EditorRowHeight}"/><Setter Property="Height" Value="{StaticResource EditorRowHeight}"/>
+    <Setter Property="MinHeight" Value="0"/><Setter Property="Padding" Value="0"/>
+    <Setter Property="HorizontalContentAlignment" Value="Center"/><Setter Property="VerticalAlignment" Value="Center"/>
+    <Setter Property="Background" Value="Transparent"/><Setter Property="BorderBrush" Value="Transparent"/>
+    <Setter Property="Foreground" Value="{DynamicResource EditorMuted}"/>
+  </Style>
+  <Style Selector="ToggleButton.panelAction:checked /template/ ContentPresenter#PART_ContentPresenter">
+    <Setter Property="Background" Value="{DynamicResource EditorSelection}"/><Setter Property="Foreground" Value="{DynamicResource EditorAccent}"/>
+    <Setter Property="BorderBrush" Value="Transparent"/>
+  </Style>
+  <!-- Hierarchy eye and lock: always laid out, shown on row hover, while set, or with keyboard focus. -->
+  <Style Selector="ToggleButton.rowToggle">
+    <Setter Property="Width" Value="14"/><Setter Property="Height" Value="16"/><Setter Property="MinHeight" Value="0"/>
+    <Setter Property="Padding" Value="0"/><Setter Property="BorderThickness" Value="0"/>
+    <Setter Property="HorizontalContentAlignment" Value="Center"/><Setter Property="VerticalAlignment" Value="Center"/>
+    <Setter Property="Background" Value="Transparent"/><Setter Property="Foreground" Value="{DynamicResource EditorMuted}"/>
+    <Setter Property="Opacity" Value="0"/>
+  </Style>
+  <Style Selector="Grid.hierarchyRow:pointerover ToggleButton.rowToggle, ToggleButton.rowToggle:checked, ToggleButton.rowToggle:focus-visible">
+    <Setter Property="Opacity" Value="1"/>
+  </Style>
+  <Style Selector="ToggleButton.rowToggle:checked /template/ ContentPresenter#PART_ContentPresenter, ToggleButton.rowToggle:pressed /template/ ContentPresenter#PART_ContentPresenter">
+    <Setter Property="Background" Value="Transparent"/><Setter Property="Foreground" Value="{DynamicResource EditorText}"/><Setter Property="BorderBrush" Value="Transparent"/>
+  </Style>
+  <Style Selector="ToggleButton.rowToggle:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+    <Setter Property="Background" Value="{DynamicResource EditorHover}"/><Setter Property="Foreground" Value="{DynamicResource EditorText}"/><Setter Property="BorderBrush" Value="Transparent"/>
+  </Style>
+  <!-- Project path bar -->
+  <Style Selector="Border.pathBar">
+    <Setter Property="Height" Value="{StaticResource EditorRowHeight}"/><Setter Property="Padding" Value="4,0"/>
+    <Setter Property="BorderBrush" Value="{DynamicResource EditorDivider}"/><Setter Property="BorderThickness" Value="0,0,0,1"/>
+  </Style>
+  <Style Selector="Button.crumb, Button.crumbIcon">
+    <Setter Property="Height" Value="20"/><Setter Property="MinHeight" Value="0"/><Setter Property="Padding" Value="4,0"/>
+    <Setter Property="VerticalAlignment" Value="Center"/><Setter Property="VerticalContentAlignment" Value="Center"/>
+    <Setter Property="Foreground" Value="{DynamicResource EditorMuted}"/>
+  </Style>
+  <Style Selector="Button.crumbIcon"><Setter Property="Width" Value="20"/><Setter Property="Padding" Value="0"/><Setter Property="HorizontalContentAlignment" Value="Center"/></Style>
+  <Style Selector="Button.crumb.current"><Setter Property="Foreground" Value="{DynamicResource EditorText}"/></Style>
+  <!-- Project file area: list rows, or fixed tiles in grid mode so selection never reflows the grid. -->
+  <Style Selector="ListBox#ProjectBrowser ListBoxItem">
+    <Setter Property="Padding" Value="4,1"/><Setter Property="MinHeight" Value="21"/>
+    <Setter Property="VerticalContentAlignment" Value="Center"/><Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+  </Style>
+  <Style Selector="ListBox#ProjectBrowser.grid ListBoxItem">
+    <Setter Property="Width" Value="76"/><Setter Property="Height" Value="76"/><Setter Property="Padding" Value="4"/>
+    <Setter Property="VerticalContentAlignment" Value="Top"/>
+  </Style>
+  <!-- Console -->
+  <Style Selector="ToggleButton.severity">
+    <Setter Property="Height" Value="{StaticResource EditorRowHeight}"/><Setter Property="MinHeight" Value="0"/><Setter Property="Padding" Value="4,0"/>
+    <Setter Property="VerticalAlignment" Value="Center"/><Setter Property="VerticalContentAlignment" Value="Center"/>
+    <Setter Property="Background" Value="Transparent"/><Setter Property="BorderBrush" Value="Transparent"/>
+    <Setter Property="Foreground" Value="{DynamicResource EditorDisabled}"/>
+  </Style>
+  <Style Selector="ToggleButton.severity:checked /template/ ContentPresenter#PART_ContentPresenter">
+    <Setter Property="Background" Value="{DynamicResource EditorControl}"/><Setter Property="Foreground" Value="{DynamicResource EditorText}"/>
+    <Setter Property="BorderBrush" Value="Transparent"/>
+  </Style>
+  <Style Selector="Border.consoleCount">
+    <Setter Property="Background" Value="{DynamicResource EditorControl}"/><Setter Property="CornerRadius" Value="7"/>
+    <Setter Property="Padding" Value="5,0"/><Setter Property="MinWidth" Value="20"/><Setter Property="VerticalAlignment" Value="Center"/>
+  </Style>
+  <Style Selector="NumericUpDown">
+    <Setter Property="VerticalContentAlignment" Value="Center"/>
+    <Setter Property="FormatString" Value="0.##"/>
+    <Setter Property="Increment" Value="1"/>
+    <Setter Property="ShowButtonSpinner" Value="False"/>
+  </Style>
+  <Style Selector="ListBox"><Setter Property="Background" Value="Transparent"/></Style>
+  <Style Selector="Border#InspectorPanel.scriptDrop">
+    <Setter Property="BoxShadow" Value="inset 0 0 0 2 #9EDAC9"/>
+  </Style>
+  <Style Selector="local|ComponentSection.spriteDrop">
+    <Setter Property="BorderBrush" Value="{DynamicResource EditorAccent}"/>
+  </Style>
+  <Style Selector="Border.mainToolbar">
+    <Setter Property="Height" Value="32"/><Setter Property="Padding" Value="8,0"/>
+    <Setter Property="Background" Value="{DynamicResource EditorBase}"/>
+    <Setter Property="BorderBrush" Value="{DynamicResource EditorDivider}"/><Setter Property="BorderThickness" Value="0,0,0,1"/>
+  </Style>
+  <!-- Scene tools: a checked tool only changes colour, so switching tools never moves the strip. -->
+  <Style Selector="ToggleButton.tool">
+    <Setter Property="Width" Value="24"/><Setter Property="Height" Value="21"/><Setter Property="MinHeight" Value="0"/>
+    <Setter Property="Padding" Value="0"/><Setter Property="HorizontalContentAlignment" Value="Center"/>
+    <Setter Property="Background" Value="Transparent"/><Setter Property="BorderBrush" Value="Transparent"/>
+    <Setter Property="Foreground" Value="{DynamicResource EditorMuted}"/>
+  </Style>
+  <Style Selector="ToggleButton.tool:checked /template/ ContentPresenter#PART_ContentPresenter">
+    <Setter Property="Background" Value="{DynamicResource EditorSelection}"/><Setter Property="Foreground" Value="{DynamicResource EditorAccent}"/>
+    <Setter Property="BorderBrush" Value="Transparent"/>
+  </Style>
+  <Style Selector="Border.toolDivider">
+    <Setter Property="Width" Value="1"/><Setter Property="Height" Value="16"/><Setter Property="Margin" Value="4,0"/>
+    <Setter Property="Background" Value="{DynamicResource EditorDivider}"/>
+  </Style>
+  <Style Selector="Border.dockBar"><Setter Property="Background" Value="{DynamicResource EditorBase}"/></Style>
+  <Style Selector="Border.dockSlot"><Setter Property="Background" Value="{DynamicResource EditorPanel}"/></Style>
+  <!-- Only colours change with state, so the active tab never shifts its neighbours. -->
+  <Style Selector="Border.dockTab">
+    <Setter Property="Padding" Value="10,0,4,0"/>
+    <Setter Property="Background" Value="Transparent"/>
+    <Setter Property="Cursor" Value="Hand"/>
+  </Style>
+  <Style Selector="Border.dockTab TextBlock">
+    <Setter Property="FontSize" Value="{DynamicResource EditorFontSize}"/><Setter Property="FontWeight" Value="SemiBold"/>
+    <Setter Property="Foreground" Value="{DynamicResource EditorMuted}"/>
+  </Style>
+  <Style Selector="Border.dockTab:pointerover"><Setter Property="Background" Value="{DynamicResource EditorHover}"/></Style>
+  <Style Selector="Border.dockTab.active"><Setter Property="Background" Value="{DynamicResource EditorPanel}"/></Style>
+  <Style Selector="Border.dockTab.active TextBlock"><Setter Property="Foreground" Value="{DynamicResource EditorText}"/></Style>
+  <Style Selector="Button.dockClose">
+    <Setter Property="Width" Value="16"/><Setter Property="Height" Value="16"/>
+    <Setter Property="MinHeight" Value="0"/><Setter Property="Padding" Value="0"/>
+    <Setter Property="HorizontalContentAlignment" Value="Center"/>
+    <Setter Property="VerticalAlignment" Value="Center"/>
+  </Style>
+  <Style Selector="GridSplitter.dockSplitter">
+    <Setter Property="MinWidth" Value="0"/><Setter Property="MinHeight" Value="0"/>
+    <Setter Property="Background" Value="{DynamicResource EditorBase}"/>
+  </Style>
+  <Style Selector="GridSplitter.dockSplitter:pointerover"><Setter Property="Background" Value="{DynamicResource EditorDivider}"/></Style>
+  <Style Selector="Border.dockPreview">
+    <Setter Property="Background" Value="{DynamicResource EditorAccentOverlay}"/>
+    <Setter Property="BorderBrush" Value="{DynamicResource EditorAccent}"/>
+    <Setter Property="BorderThickness" Value="2"/>
+  </Style>
+</Styles>

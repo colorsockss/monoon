@@ -26,8 +26,8 @@ internal sealed class SheetGridView : Control
     private SheetGrid? grid;
     private SheetSlice[]? slices;
     private readonly SortedSet<(int Row, int Col)> selected = [];
-    private static readonly IBrush Back = Brush.Parse("#252B32"), Tint = Brush.Parse("#4668C5A9");
-    private static readonly Pen Line = new(Brush.Parse("#A8BEC9D4"), 1), SelectedLine = new(Brush.Parse("#9EDAC9"), 2);
+    private static readonly IBrush Back = EditorTokens.Brush("EditorField"), Tint = EditorTokens.Brush("EditorAccentOverlay");
+    private static readonly Pen Line = new(EditorTokens.Brush("EditorGridLine"), 1), SelectedLine = new(EditorTokens.Brush("EditorAccent"), 2);
     private TileCollision? collision;
     private static readonly Pen ShapeLine = new(Brushes.Gold, 2);
     internal void SetCollision(TileCollision? value) { collision = value; InvalidateVisual(); }

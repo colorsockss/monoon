@@ -1,0 +1,29 @@
+PASS save
+PASS first
+  search 'satchel': 3 matches, rows ['Player', 'Satchel', 'Satchel flap', 'Satchel clasp']
+  search 'Door': 2 matches, rows ['Wall', 'Door', 'Door Camera']
+  search 'zzz': 0 matches, rows []
+  eye: {'drawn': False, 'picked': 'Door Camera', 'active_in_play': True} lock: {'drawn': True, 'picked': 'Door Camera', 'hierarchy_select': True}
+PASS eye/lock toggles + save leave the scene file bytes unchanged
+PASS scene saved with Door hidden and Wall Top locked is byte-identical to the untouched save
+PASS marks are stored in the per-user editor-state.json, keyed by scene path
+  Inspector window 1280: label x 1070 input x 1130 column 60 drift 0
+  Inspector window 1920: label x 1710 input x 1770 column 60 drift 0
+  Inspector long name 1280: label x 1070 input x 1130 column 60 drift 0
+  toolbar Hierarchy 1280: centre y 69.5
+  toolbar Project 1280: centre y 486.5
+  toolbar Project path 1280: centre y 511.5
+  toolbar Hierarchy 1920: centre y 69.5
+  toolbar Project 1920: centre y 642
+  toolbar Project path 1920: centre y 667
+  long name: {'shown': 58, 'natural': 383, 'trimmed': True, 'inside': True}
+  project: [{"folder": "Assets/Fonts", "crumbs": ["KeyRoom", "Assets", "Fonts"]}, {"clicked": "Assets", "folder": "Assets", "crumbs": ["KeyRoom", "Assets"]}, {"clicked": "Parent folder", "folder": "", "parent_visible": false}, {"tree": true, "panel_width": 1280, "folder": "Scripts/Shared"}, {"search": "door t:sprite", "hits": ["Assets/Door.png", "Assets/DoorOpen1.png", "Assets/DoorOpen2.png", "Assets/DoorOpen3.png", "Assets/DoorSheet.png"], "caption": "5 found"}]
+  inspector: {"folded": "Sprite Renderer", "shared_by_type": true, "multi_caption": "2 selected", "combos": [{"value": "None", "trims": true, "inside": true, "box_template": true}, {"value": "Assets/Door.clip", "trims": true, "inside": true, "box_template": true}, {"value": "Assets/Unlock.wav", "trims": true, "inside": true, "box_template": true}, {"value": "Effects", "trims": true, "inside": true, "box_template": true}]}
+  console: {"counts": {"infos": 5, "warnings": 2, "errors": 1}, "all": 8, "without_info": 3, "collapsed": 2, "collapsed_all": 5, "searched": 1}
+PASS restart
+PASS after restart (marks restored) the saved scene is still byte-identical
+PASS no editor state file was written into the project
+PASS editor-state.json lives in the user folder
+PASS Release builds before and after the eye/lock session are identical apart from the build id (269 files, changed [])
+PASS Release build has no editor files []
+PASS editor panel details in <결과 폴더>

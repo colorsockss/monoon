@@ -44,7 +44,7 @@ internal sealed class FrameChart : Control
     internal PlayProfiler? History;
     internal long? Selected;
     internal event Action<long>? FrameSelected;
-    private static readonly Pen selection=new(Brushes.Orange,1.4);
+    private static readonly Pen selection=new(EditorTokens.Brush("EditorAccent"),1.4);
     protected override void OnPointerPressed(PointerPressedEventArgs e)
     {
         base.OnPointerPressed(e);
@@ -53,7 +53,7 @@ internal sealed class FrameChart : Control
         FrameSelected?.Invoke(history.Sequence-history.Count+1+Math.Clamp(i,0,history.Count-1));
         e.Handled=true;
     }
-    private static readonly Pen line=new(Brushes.MediumAquamarine,1.4), budget=new(Brushes.DimGray,1), collection=new(Brushes.Gold,1.4);
+    private static readonly Pen line=new(EditorTokens.Brush("EditorMuted"),1.4), budget=new(EditorTokens.Brush("EditorBorder"),1), collection=new(EditorTokens.Brush("EditorWarning"),1.4);
     public override void Render(DrawingContext context)
     {
         base.Render(context);context.FillRectangle(Brushes.Transparent,new Rect(Bounds.Size));

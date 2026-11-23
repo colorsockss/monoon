@@ -5,7 +5,7 @@ using Engine.Core;
 
 namespace Engine.Editor;
 
-internal partial class TilesetWindow : Window
+internal partial class TilesetWindow : EditorPanel
 {
     private readonly string root, folder;
     private readonly string? relative;

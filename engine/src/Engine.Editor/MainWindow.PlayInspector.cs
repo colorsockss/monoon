@@ -27,6 +27,15 @@ public partial class MainWindow
     {
         ApplyPlayValues.IsVisible = Viewport.IsPlaying && Viewport.Selection.Count == 1;
         ApplyPlayValues.IsEnabled = !busy && playEdits.Any(e => e.Key.Owner == Selected && e.Value.Selected);
+        RefreshInspectorActions();
+    }
+
+    // The Inspector tab already names the panel; the action row shows only while it has something to offer.
+    private void RefreshInspectorActions()
+    {
+        int count = Viewport.Selection.Count;
+        InspectorCaption.Text = count > 1 ? $"{count} selected" : "";
+        InspectorActions.IsVisible = count > 1 || ApplyPlayValues.IsVisible || OverridesButton.IsVisible;
     }
 
     private async void ApplySelectedPlayValues(object? sender, Avalonia.Interactivity.RoutedEventArgs args)

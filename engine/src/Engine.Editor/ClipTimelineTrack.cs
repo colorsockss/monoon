@@ -11,9 +11,11 @@ namespace Engine.Editor;
 internal sealed class ClipTimelineTrack : Control
 {
     internal sealed record Cell(string Label, IImage? Image, bool Invalid);
-    private static readonly IBrush Surface = Brush.Parse("#191D23"), Tile = Brush.Parse("#2B323C"),
-        SelectedTile = Brush.Parse("#344B45"), Accent = Brush.Parse("#9EDAC9"), Muted = Brush.Parse("#A6B2C0");
-    private static readonly Pen Divider = new(Brush.Parse("#52606D"), 1), Head = new(Accent, 2);
+    private static readonly IBrush Surface = EditorTokens.Brush("EditorField"), Tile = EditorTokens.Brush("EditorControl"),
+        SelectedTile = EditorTokens.Brush("EditorSelection"), Accent = EditorTokens.Brush("EditorAccent"), Muted = EditorTokens.Brush("EditorMuted"),
+        Text = EditorTokens.Brush("EditorText"), Error = EditorTokens.Brush("EditorError");
+    private static readonly Pen Divider = new(EditorTokens.Brush("EditorBorderHover"), 1), Head = new(Accent, 2);
+    private static readonly double TextSize = EditorTokens.FontSizeSmall;
     private SpriteClipTimeline axis = new([]);
     private Cell[] cells = [];
     private double[] keys = [];
@@ -53,7 +55,7 @@ internal sealed class ClipTimelineTrack : Control
     public void Mark(int slot) { if (insertion != slot) { insertion = slot; InvalidateVisual(); } }
 
     private static void Label(DrawingContext c, string s, double x, double y, IBrush brush) =>
-        c.DrawText(new FormattedText(s, CultureInfo.InvariantCulture, FlowDirection.LeftToRight, Typeface.Default, 11, brush), new Point(x, y));
+        c.DrawText(new FormattedText(s, CultureInfo.InvariantCulture, FlowDirection.LeftToRight, Typeface.Default, TextSize, brush), new Point(x, y));
 
     public override void Render(DrawingContext c)
     {
@@ -87,7 +89,7 @@ internal sealed class ClipTimelineTrack : Control
                         var scale = Math.Min(38 / bitmap.Size.Height, Math.Min(52, width) / bitmap.Size.Width);
                         c.DrawImage(bitmap, new Rect(left + 6, 26, bitmap.Size.Width * scale, bitmap.Size.Height * scale));
                     }
-                    Label(c, $"{i+1}  {cell.Label}", left + 6, 66, cell.Invalid ? Brushes.Salmon : Brushes.White);
+                    Label(c, $"{i+1}  {cell.Label}", left + 6, 66, cell.Invalid ? Error : Text);
                     if (selected == i) c.FillRectangle(Accent, new Rect(left, 22, width, 2));
                 }
             }

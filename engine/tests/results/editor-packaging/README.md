@@ -32,3 +32,7 @@ macOS 27.0.1 arm64에서 Inspector에 값을 입력하고 ⌘S로 씬을 저장�
 | Windows 에디터 ZIP | `040624d8876aa3d39ccafaed0099ffa937f4c5f78a5716be883e198167841314` |
 | Linux 에디터 tar.gz | `46677eaa0a5b51b48b438fa7372f2e5a01f4bf51ccbc8a83523311d8de2bbe17` |
 | 편집용 KeyRoom ZIP | `69f0dc109d4ea97cbf5f03a52752bc5975399c171c0dceead4a8590e4711fb41` |
+
+## 새 패널 구조에서 다시 실행 (로드맵 12.8)
+
+2026-11-23에 도킹·Scene/Game 탭으로 바뀐 에디터로 세 OS에서 같은 조작을 반복했다. Mac(Xcode UI 테스트), Windows 11 LTSC x64, Debian 12 x64 모두 통과했다. 원래 위치 F5는 `key: false`, 편집 직후와 재실행 후 F5는 [collected.save](collected.save)와 바이트 단위로 같고(`dc5135b1…`), 세 OS가 저장한 `KeyRoom.scene`의 SHA-256도 `f2dfa225…c6a42abe`로 같다(샘플이 바뀌어 위 표의 11월 16일 값과 다르다). Play 버튼이 메인 도구 모음 가운데로 옮겨져 Windows·Linux 검사기의 클릭 위치를 다시 잡았고, Windows에서 저장 파일을 쓰는 중 읽을 때 나는 `PermissionError`는 다시 시도하게 했다. [세 OS 결과](../editor-ui-x64/README.md)

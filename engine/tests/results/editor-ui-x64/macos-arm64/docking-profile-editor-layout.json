@@ -1,0 +1,116 @@
+{
+  "Version": 1,
+  "Layout": {
+    "Split": "Row",
+    "Children": [
+      {
+        "Split": "Column",
+        "Children": [
+          {
+            "Split": null,
+            "Children": null,
+            "Panels": [
+              "Hierarchy"
+            ],
+            "Active": "Hierarchy",
+            "Size": 403.5
+          },
+          {
+            "Split": null,
+            "Children": null,
+            "Panels": [
+              "Project"
+            ],
+            "Active": "Project",
+            "Size": 399.5
+          }
+        ],
+        "Panels": null,
+        "Active": null,
+        "Size": 176
+      },
+      {
+        "Split": null,
+        "Children": null,
+        "Panels": [
+          "Scene",
+          "Game"
+        ],
+        "Active": "Scene",
+        "Size": 1098
+      },
+      {
+        "Split": null,
+        "Children": null,
+        "Panels": [
+          "Inspector"
+        ],
+        "Active": "Inspector",
+        "Size": 218
+      }
+    ],
+    "Panels": null,
+    "Active": null,
+    "Size": 0
+  },
+  "Floating": [],
+  "Custom": {
+    "Split": "Row",
+    "Children": [
+      {
+        "Split": null,
+        "Children": null,
+        "Panels": [
+          "Hierarchy"
+        ],
+        "Active": "Hierarchy",
+        "Size": 176
+      },
+      {
+        "Split": null,
+        "Children": null,
+        "Panels": [
+          "Scene",
+          "Game"
+        ],
+        "Active": "Scene",
+        "Size": 878
+      },
+      {
+        "Split": "Column",
+        "Children": [
+          {
+            "Split": null,
+            "Children": null,
+            "Panels": [
+              "Inspector"
+            ],
+            "Active": "Inspector",
+            "Size": 369.5
+          },
+          {
+            "Split": null,
+            "Children": null,
+            "Panels": [
+              "Project"
+            ],
+            "Active": "Project",
+            "Size": 373.5
+          }
+        ],
+        "Panels": null,
+        "Active": null,
+        "Size": 218
+      }
+    ],
+    "Panels": null,
+    "Active": null,
+    "Size": 0
+  },
+  "CustomFloating": [],
+  "X": 418,
+  "Y": 159,
+  "Width": 1500,
+  "Height": 860,
+  "Maximized": false
+}

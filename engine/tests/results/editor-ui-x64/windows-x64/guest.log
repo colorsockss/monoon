@@ -1,0 +1,194 @@
+
+Microsoft Windows [Version 10.0.26100.1742]
+Starting 12.8 
+Python 3.13.9 (tags/v3.13.9:8183fa5, Oct 14 2025, 14:09:13) [MSC v.1944 64 bit (AMD64)] Free space 46222053376
+Extracting 623 entries
+Running C:\MNUI12C\guest.py
+Display {'before': (1280, 800), 'after': (1920, 1080), 'change_code': 0, 'modes': [(1920, 1080)]}
+=== STEP editor68 21:33:57
+Scene toolbar (640, 47)
+PASS edit/edited.save: 107 bytes SHA-256 dc5135b1765858e339c9279219053ff931976ec64c804690fffb14b8d3f3cfd5
+PASS saved Player X=190 and collected key
+Scene toolbar (640, 47)
+PASS reopen/edited.save: 107 bytes SHA-256 dc5135b1765858e339c9279219053ff931976ec64c804690fffb14b8d3f3cfd5
+PASS saved Player X=190 and collected key
+=== PASS editor68
+=== STEP docking-first 21:38:21
+Running C:\MNUI12C\qa\KeyRoom.EditorDocking\editor.py C:\MNUI12C\editor\MoNoon.exe C:\MNUI12C\projects\KeyRoom C:\MNUI12C\probes\DockingProbe.dll C:\MNUI12C\results\docking first
+PASS first
+  Inspector    default window   1280 width 218: label x 1070 input x 1130 column 60 drift 0 vertical 0
+  Inspector    default window   1600 width 218: label x 1390 input x 1450 column 60 drift 0 vertical 0
+  Inspector    default window   1920 width 218: label x 1710 input x 1770 column 60 drift 0 vertical 0
+  Inspector  long name window   1280 width 218: label x 1070 input x 1130 column 60 drift 0 vertical 0
+  splitter {'before': 218, 'wider': 298, 'clamped': 218, 'final': 278}
+  Play {'label': 'after move', 'same_session': True, 'ticks': 721, 'draws': 0, 'view_kept': False}
+  Play {'label': 'split during Play: Row[Column[(Hierarchy,Project*) (Game*)] (Scene*) (Inspector*)]', 'same_session': True, 'ticks': 721, 'draws': 0, 'view_kept': False}
+  Play {'label': 'hidden tab during Play', 'same_session': True, 'ticks': 720, 'draws': 0, 'view_kept': False}
+  Play {'label': 'tab shown again', 'same_session': True, 'ticks': 722, 'draws': 0, 'view_kept': False}
+  Play {'label': 'window edge: Row[(Hierarchy,Project*) (Scene*) (Inspector*) (Game*)]', 'same_session': True, 'ticks': 722, 'draws': 0, 'view_kept': False}
+saved layout: {"Split": "Row", "Children": [{"Split": null, "Children": null, "Panels": ["Hierarchy", "Project"], "Active": "Hierarchy", "Size": 220}, {"Split": null, "Children": null, "Panels": ["Scene", "Game"], "Active": "Scene", "Size": 912}, {"Split": null, "Children": null, "Panels": ["Inspector"], "Active": "Inspector", "Size": 360}], "Panels": null, "Active": null, "Size": 0}
+=== PASS docking-first
+=== STEP docking-restore 21:42:14
+Running C:\MNUI12C\qa\KeyRoom.EditorDocking\editor.py C:\MNUI12C\editor\MoNoon.exe C:\MNUI12C\projects\KeyRoom C:\MNUI12C\probes\DockingProbe.dll C:\MNUI12C\results\docking restore
+PASS restore
+saved layout: {"Split": "Row", "Children": [{"Split": "Column", "Children": [{"Split": null, "Children": null, "Panels": ["Hierarchy"], "Active": "Hierarchy", "Size": 388}, {"Split": null, "Children": null, "Panels": ["Project"], "Active": "Project", "Size": 383}], "Panels": null, "Active": null, "Size": 176}, {"Split": null, "Children": null, "Panels": ["Scene", "Game"], "Active": "Scene", "Size": 1098}, {"Split": null, "Children": null, "Panels": ["Inspector"], "Active": "Inspector", "Size": 218}], "Panels": null, "Active": null, "Size": 0}
+=== PASS docking-restore
+=== STEP docking-fallback 21:43:24
+Running C:\MNUI12C\qa\KeyRoom.EditorDocking\editor.py C:\MNUI12C\editor\MoNoon.exe C:\MNUI12C\projects\KeyRoom C:\MNUI12C\probes\DockingProbe.dll C:\MNUI12C\results\docking fallback
+PASS fallback
+saved layout: {"Split": "Row", "Children": [{"Split": "Column", "Children": [{"Split": null, "Children": null, "Panels": ["Hierarchy"], "Active": "Hierarchy", "Size": 388}, {"Split": null, "Children": null, "Panels": ["Project"], "Active": "Project", "Size": 383}], "Panels": null, "Active": null, "Size": 176}, {"Split": null, "Children": null, "Panels": ["Scene", "Game"], "Active": "Scene", "Size": 1098}, {"Split": null, "Children": null, "Panels": ["Inspector"], "Active": "Inspector", "Size": 218}], "Panels": null, "Active": null, "Size": 0}
+=== PASS docking-fallback
+=== STEP docking-panels 21:44:26
+Running C:\MNUI12C\qa\KeyRoom.EditorDocking\editor.py C:\MNUI12C\editor\MoNoon.exe C:\MNUI12C\projects\KeyRoom C:\MNUI12C\probes\DockingProbe.dll C:\MNUI12C\results\docking panels
+PASS panels
+  panel {'panel': 'Console', 'title': 'Console', 'editor': None, 'layout': 'Row[Column[(Hierarchy*) (Project*)] Column[(Scene*,Game) (Console*)] (Inspector*)]'}
+  panel {'panel': 'Profiler', 'title': 'Profiler', 'editor': None, 'layout': 'Row[Column[(Hierarchy*) (Project*)] Column[(Scene*,Game) (Console,Profiler*)] (Inspector*)]'}
+  panel {'panel': 'Animator', 'title': 'Animator Controller', 'editor': 'AnimatorWindow', 'layout': 'Row[Column[(Hierarchy*) (Project*)] Column[(Scene*,Game) (Console,Profiler,Animator*)] (Inspector*)]'}
+  panel {'panel': 'Clip', 'title': 'Door · Sprite Animation', 'editor': 'ClipEditorWindow', 'layout': 'Row[Column[(Hierarchy*) (Project*)] Column[(Scene*,Game) (Console,Profiler,Animator,Clip*)] (Inspector*)]'}
+  panel {'panel': 'Tileset', 'title': 'New Tileset', 'editor': 'TilesetWindow', 'layout': 'Row[Column[(Hierarchy*) (Project*)] Column[(Scene*,Game) (Console,Profiler,Animator,Clip,Tileset*)] (Inspector*)]'}
+  panel {'panel': 'Input Actions', 'title': 'Input Actions', 'editor': 'InputMapWindow', 'layout': 'Row[Column[(Hierarchy*) (Project*)] Column[(Scene*,Game) (Console,Profiler,Animator,Clip,Tileset,Input Actions*)] (Inspector*)]'}
+  panel {'panel': 'Dialogue', 'title': 'Dialogue', 'editor': 'DialogueWindow', 'layout': 'Row[Column[(Hierarchy*) (Project*)] Column[(Scene*,Game) (Console,Profiler,Animator,Clip,Tileset,Input Actions,Dialogue*)] (Inspector*)]'}
+  panel {'panel': 'Data', 'title': 'KeyRoomRules · Data Asset', 'editor': 'ValuesWindow', 'layout': 'Row[Column[(Hierarchy*) (Project*)] Column[(Scene*,Game) (Console,Profiler,Animator,Clip,Tileset,Input Actions,Dialogue,Data*)] (Inspector*)]'}
+  float {'panel': 'Console', 'floated': {'window': [450, 320, 640, 420], 'title': 'Console'}, 'docked': 'Row[Column[(Hierarchy*) (Project*)] Column[(Scene*,Game) (Profiler,Animator,Clip,Tileset,Input Actions,Dialogue,Data,Console*)] (Inspector*)]'}
+  float {'panel': 'Animator', 'floated': {'window': [450, 320, 640, 420], 'title': 'Animator Controller'}, 'docked': 'Row[Column[(Hierarchy*) (Project*)] Column[(Scene*,Game) (Profiler,Clip,Tileset,Input Actions,Dialogue,Data,Console,Animator*)] (Inspector*)]'}
+  float {'panel': 'Inspector', 'sections': 6, 'header': 28, 'docked': 'Row[Column[(Hierarchy*) (Project*)] Column[(Scene*,Game) (Profiler,Clip,Tileset,Input Actions,Dialogue,Data,Console,Animator*)] (Inspector*)]', 'baseline': {'label': 'Inspector docked again', 'window': 1280, 'inspector': 320, 'rows': 3, 'label_x': 968, 'input_x': 1028, 'column': 60, 'drift': 0, 'vertical': 0, 'name_width': 244, 'inspector_right': 1280}}
+  float {'panel': 'Scene', 'docked': 'Row[Column[(Hierarchy*) (Project*)] (Profiler,Clip,Tileset,Input Actions,Dialogue,Data,Console,Animator*) (Inspector*) (Game,Scene*)]', 'view_kept': None}
+  Play {'label': 'Scene floating, game in Game tab', 'same_session': True, 'ticks': 721, 'draws': 0, 'view_kept': False}
+  Play {'label': 'Game floating', 'same_session': True, 'ticks': 717, 'draws': 0, 'view_kept': False}
+  Play {'label': 'Game docked again', 'same_session': True, 'ticks': 723, 'draws': 0, 'view_kept': False}
+  Play {'label': 'Game at 2×', 'same_session': True, 'ticks': 724, 'draws': 0, 'view_kept': False}
+  tools {'tools': [{'button': 'RotateTool', 'gizmo': 'Rotate'}, {'button': 'ScaleTool', 'gizmo': 'Scale'}, {'button': 'RectTool', 'gizmo': 'Rect'}, {'button': 'MoveTool', 'gizmo': 'Move'}], 'rect': {'width': 40, 'widened': 64, 'cancelled': 40}}
+saved layout: {"Split": "Row", "Children": [{"Split": "Column", "Children": [{"Split": null, "Children": null, "Panels": ["Hierarchy"], "Active": "Hierarchy", "Size": 388}, {"Split": null, "Children": null, "Panels": ["Project"], "Active": "Project", "Size": 383}], "Panels": null, "Active": null, "Size": 176}, {"Split": null, "Children": null, "Panels": ["Scene", "Game"], "Active": "Scene", "Size": 1098}, {"Split": null, "Children": null, "Panels": ["Inspector"], "Active": "Inspector", "Size": 218}], "Panels": null, "Active": null, "Size": 0}
+=== PASS docking-panels
+=== STEP docking-panels-restore 21:49:30
+Running C:\MNUI12C\qa\KeyRoom.EditorDocking\editor.py C:\MNUI12C\editor\MoNoon.exe C:\MNUI12C\projects\KeyRoom C:\MNUI12C\probes\DockingProbe.dll C:\MNUI12C\results\docking panels-restore
+PASS panels-restore
+  Console [250, 270, 520, 300] Animator fallback {'X': 450, 'Y': 320, 'Width': 640, 'Height': 420}
+saved layout: {"Split": "Row", "Children": [{"Split": "Column", "Children": [{"Split": null, "Children": null, "Panels": ["Hierarchy"], "Active": "Hierarchy", "Size": 388}, {"Split": null, "Children": null, "Panels": ["Project"], "Active": "Project", "Size": 383}], "Panels": null, "Active": null, "Size": 176}, {"Split": null, "Children": null, "Panels": ["Scene", "Game"], "Active": "Scene", "Size": 1098}, {"Split": null, "Children": null, "Panels": ["Inspector"], "Active": "Inspector", "Size": 218}], "Panels": null, "Active": null, "Size": 0}
+=== PASS docking-panels-restore
+=== STEP theme 21:50:40
+Running C:\MNUI12C\qa\KeyRoom.EditorTheme\editor.py C:\MNUI12C\editor\MoNoon.exe C:\MNUI12C\projects\KeyRoom C:\MNUI12C\probes\EditorThemeProbe.dll C:\MNUI12C\results\theme
+main-1280: window 1280px, Inspector 218px, 27 rows, label x [8.0], field x [68.0], label width [56], clipped []
+PASS main-1280 measures 27 Inspector rows
+PASS main-1280 labels and fields share one left edge
+PASS main-1280 label and field centers differ by at most 1px (0px)
+PASS main-1280 clipped labels trim with a tooltip []
+PASS main-1280 input fields share one height [24]
+main-1920: window 1920px, Inspector 218px, 27 rows, label x [8.0], field x [68.0], label width [56], clipped []
+PASS main-1920 measures 27 Inspector rows
+PASS main-1920 labels and fields share one left edge
+PASS main-1920 label and field centers differ by at most 1px (0px)
+PASS main-1920 clipped labels trim with a tooltip []
+PASS main-1920 input fields share one height [24]
+main-1280-long-name: window 1280px, Inspector 218px, 27 rows, label x [8.0], field x [68.0], label width [56], clipped []
+PASS main-1280-long-name measures 27 Inspector rows
+PASS main-1280-long-name labels and fields share one left edge
+PASS main-1280-long-name label and field centers differ by at most 1px (0px)
+PASS main-1280-long-name clipped labels trim with a tooltip []
+PASS main-1280-long-name input fields share one height [24]
+PASS long Hierarchy name trims inside the tree with a tooltip (58 of 393px)
+PASS long name keeps the Inspector width (218px)
+PASS captured editor panels and dialogs ['console', 'animator', 'clip', 'sheet-picker', 'input-actions', 'data', 'table', 'dialogue', 'tileset']
+PASS main window, editor panels and dialogs use 12px text {'console': 12, 'animator': 12, 'clip': 12, 'sheet-picker': 12, 'input-actions': 12, 'data': 12, 'table': 12, 'dialogue': 12, 'tileset': 12}
+PASS design tokens {'EditorFontSize': '12', 'EditorFontSizeSmall': '11', 'EditorFieldLabelWidth': '56', 'EditorRowHeight': '22', 'EditorInputHeight': '24', 'EditorPanelPadding': '8,8,8,8'}
+PASS 38 icon geometries, missing []
+PASS editor theme captures in C:\MNUI12C\results\theme
+=== PASS theme
+=== STEP panels 21:53:57
+Running C:\MNUI12C\qa\KeyRoom.EditorPanelsDetail\editor.py C:\MNUI12C\editor\MoNoon.exe C:\MNUI12C\projects\KeyRoom C:\MNUI12C\probes\PanelsDetailProbe.dll C:\MNUI12C\results\panels
+PASS save
+PASS first
+  search 'satchel': 3 matches, rows ['Player', 'Satchel', 'Satchel flap', 'Satchel clasp']
+  search 'Door': 2 matches, rows ['Wall', 'Door', 'Door Camera']
+  search 'zzz': 0 matches, rows []
+  eye: {'drawn': False, 'picked': 'Door Camera', 'active_in_play': True} lock: {'drawn': True, 'picked': 'Door Camera', 'hierarchy_select': True}
+PASS eye/lock toggles + save leave the scene file bytes unchanged
+PASS scene saved with Door hidden and Wall Top locked is byte-identical to the untouched save
+PASS marks are stored in the per-user editor-state.json, keyed by scene path
+  Inspector window 1280: label x 1070 input x 1130 column 60 drift 0
+  Inspector window 1600: label x 1390 input x 1450 column 60 drift 0
+  Inspector window 1920: label x 1710 input x 1770 column 60 drift 0
+  Inspector long name 1280: label x 1070 input x 1130 column 60 drift 0
+  toolbar Hierarchy 1280: centre y 101
+  toolbar Project 1280: centre y 500
+  toolbar Project path 1280: centre y 525
+  toolbar Hierarchy 1600: centre y 101
+  toolbar Project 1600: centre y 556
+  toolbar Project path 1600: centre y 581
+  toolbar Hierarchy 1920: centre y 101
+  toolbar Project 1920: centre y 645
+  toolbar Project path 1920: centre y 670
+  long name: {'shown': 58, 'natural': 393, 'trimmed': True, 'inside': True}
+  project: [{"folder": "Assets/Fonts", "crumbs": ["KeyRoom", "Assets", "Fonts"]}, {"clicked": "Assets", "folder": "Assets", "crumbs": ["KeyRoom", "Assets"]}, {"clicked": "Parent folder", "folder": "", "parent_visible": false}, {"tree": true, "panel_width": 1280, "folder": "Scripts/Shared"}, {"search": "door t:sprite", "hits": ["Assets/Door.png", "Assets/DoorOpen1.png", "Assets/DoorOpen2.png", "Assets/DoorOpen3.png", "Assets/DoorSheet.png"], "caption": "5 found"}]
+  inspector: {"folded": "Sprite Renderer", "shared_by_type": true, "multi_caption": "2 selected", "combos": [{"value": "None", "trims": true, "inside": true, "box_template": true}, {"value": "Assets/Door.clip", "trims": true, "inside": true, "box_template": true}, {"value": "Assets/Unlock.wav", "trims": true, "inside": true, "box_template": true}, {"value": "Effects", "trims": true, "inside": true, "box_template": true}]}
+  console: {"counts": {"infos": 5, "warnings": 2, "errors": 1}, "all": 8, "without_info": 3, "collapsed": 2, "collapsed_all": 5, "searched": 1}
+PASS restart
+PASS after restart (marks restored) the saved scene is still byte-identical
+PASS no editor state file was written into the project
+PASS editor-state.json lives in the user folder
+PASS Release builds before and after the eye/lock session are identical apart from the build id (268 files, changed [])
+PASS Release build has no editor files []
+PASS editor panel details in C:\MNUI12C\results\panels
+=== PASS panels
+=== STEP prefab-editor 22:03:12
+Running C:\MNUI12C\qa\KeyRoom.PrefabStructure\editor.py C:\MNUI12C\editor\MoNoon.exe C:\MNUI12C\projects\prefab\KeyRoom C:\MNUI12C\probes\PrefabStructureProbe.dll C:\MNUI12C\results\prefab-editor
+edited   source without lock; Chest 1: lock 0, sound 0; Chest 2: lock 1, sound 1; Chest 3: lock 0, sound 0
+listed   Chest 2 · audioSource (added) | Lock (added object)
+applied  source lock; Chest 1: lock 1, sound 0; Chest 2: lock 1, sound 1; Chest 3: lock 1, sound 0
+undo     source without lock; Chest 1: lock 0, sound 0; Chest 2: lock 1, sound 1; Chest 3: lock 0, sound 0
+redo     source lock; Chest 1: lock 1, sound 0; Chest 2: lock 1, sound 1; Chest 3: lock 1, sound 0
+reopened Chest 2 · audioSource (added)
+=== PASS prefab-editor
+=== STEP rebinding-scene-play 22:04:10
+Running C:\MNUI12C\qa\KeyRoom.Rebinding\editor.py C:\MNUI12C\editor\MoNoon.exe C:\MNUI12C\projects\rebinding\KeyRoom C:\MNUI12C\probes\EditorProbe.dll C:\MNUI12C\results\rebinding-scene-play
+PASS first run starts with the project prompt E
+PASS Return on the first cell starts capture
+PASS C swaps with Carry coin and the prompt shows C
+PASS pad capture swaps North with Room guide and the pad prompt shows North
+PASS Esc cancels instead of binding
+PASS the old E no longer opens the chest
+PASS player.settings stores the changed actions
+PASS restart applies the saved bindings and prompt before any input
+PASS E at frame 10 keeps the chest closed; C at frame 30 opens it (frame 31)
+Traceback (most recent call last):
+  File "C:\MNUI12C\guest.py", line 79, in wrap
+    detail = fn() or {}
+             ~~^^
+  File "C:\MNUI12C\guest.py", line 186, in _
+    script('KeyRoom.Rebinding', 'editor.py', editor, P / 'rebinding/KeyRoom', base / 'probes/EditorProbe.dll', out)
+    ~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\MNUI12C\guest.py", line 110, in script
+    runpy.run_path(sys.argv[0], run_name='__main__')
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen runpy>", line 287, in run_path
+  File "<frozen runpy>", line 98, in _run_module_code
+  File "<frozen runpy>", line 88, in _run_code
+  File "C:\MNUI12C\qa\KeyRoom.Rebinding\editor.py", line 18, in <module>
+    check(out)
+    ~~~~~^^^^^
+  File "C:\MNUI12C\qa\KeyRoom.Rebinding\verify.py", line 92, in check
+    expect(restart[-1][1]['interact'] == 'E,Space,Pad.South' and 'Interact: E' in restart[-1][1]['hint'] and
+    ~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+           restart[-1][1]['guide'] == 'M,Pad.North', 'Restore defaults brings back E and North')
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\MNUI12C\qa\KeyRoom.Rebinding\verify.py", line 69, in expect
+    raise SystemExit('FAIL ' + message)
+SystemExit: FAIL Restore defaults brings back E and North
+
+=== FAIL rebinding-scene-play
+=== STEP rebinding-scene-play-wait200 22:05:35
+Running C:\MNUI12C\qa\KeyRoom.Rebinding\editor.py C:\MNUI12C\editor\MoNoon.exe C:\MNUI12C\projects\rebinding-wait200\KeyRoom C:\MNUI12C\probes\EditorProbe.dll C:\MNUI12C\results\rebinding-scene-play-wait200
+PASS first run starts with the project prompt E
+PASS Return on the first cell starts capture
+PASS C swaps with Carry coin and the prompt shows C
+PASS pad capture swaps North with Room guide and the pad prompt shows North
+PASS Esc cancels instead of binding
+PASS the old E no longer opens the chest
+PASS player.settings stores the changed actions
+PASS restart applies the saved bindings and prompt before any input
+PASS E at frame 10 keeps the chest closed; C at frame 30 opens it (frame 31)
+PASS Restore defaults brings back E and North
+PASS restore removes the saved map
+PASS after another restart E opens the chest again
+=== PASS rebinding-scene-play-wait200
+SUMMARY {'editor68': 'pass', 'docking-first': 'pass', 'docking-restore': 'pass', 'docking-fallback': 'pass', 'docking-panels': 'pass', 'docking-panels-restore': 'pass', 'theme': 'pass', 'panels': 'pass', 'prefab-editor': 'pass', 'rebinding-scene-play': 'fail', 'rebinding-scene-play-wait200': 'pass'}

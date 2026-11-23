@@ -40,11 +40,13 @@ public static class StartupHook
         var sceneProp = view.GetType().GetProperty("Scene")!;
         while (((SceneDocument)sceneProp.GetValue(view)!).Objects.All(o=>o.Name!="Chest Lid")) await Task.Delay(100);
         var project = Environment.GetEnvironmentVariable("MONOON_QA_PROJECT")!;
-        async Task<Window> Open(string clip)
+        // The clip timeline is a dock panel (roadmap 12.4); Width still narrows it like the former window.
+        async Task<ContentControl> Open(string clip)
         {
             await (Task)Call(main,"EditClip","Assets/"+clip+".clip")!;
-            return Field<Window>(main,"clipEditor");
+            return Field<ContentControl>(main,"clipEditor");
         }
+        void Close(ContentControl editor) => editor.GetType().GetMethod("Close",Type.EmptyTypes)!.Invoke(editor,null);
         var edited = await Open("LidMotion");
         edited.Width = 420;
         await Task.Delay(180);
@@ -78,7 +80,7 @@ public static class StartupHook
         Call(edited,"History",true);
         Check(SpritePose(edited,.25).Rotation == -18, "Redo");
         Click(edited.FindControl<Button>("SaveButton")!);
-        edited.Close();
+        Close(edited);
         edited = await Open("LidMotion");
         Check(SpritePose(edited,.25).Rotation == -18, "Reopened authored key");
         Click(edited.FindControl<Button>("DeleteKey")!);
@@ -87,7 +89,7 @@ public static class StartupHook
         var readings = new List<object>();
         foreach (string label in new[] { "lid","coin" })
         {
-            if (label == "coin") { edited.Close(); edited = await Open("CoinPulse"); }
+            if (label == "coin") { Close(edited); edited = await Open("CoinPulse"); }
             for (int tick=0;tick<=60;tick+=15)
             {
                 var pose=SpritePose(edited,tick/60.0);
@@ -100,7 +102,7 @@ public static class StartupHook
             using var shot=new RenderTargetBitmap(new((int)Math.Ceiling(panel.Bounds.Width),(int)Math.Ceiling(panel.Bounds.Height)));
             shot.Render(panel); shot.Save(Path.Combine(Output,label+"-keys.png"));
         }
-        edited.Close();
+        Close(edited);
         Click(main.FindControl<Button>("PlayButton")!);
         var session = Field<GameSession>(view,"game");
         InputReplay.Load(Path.Combine(Output,"Compare.inputreplay")).Play(session,session.SceneId!.Value);
@@ -110,7 +112,7 @@ public static class StartupHook
         File.WriteAllText(Path.Combine(Output,"preview.json"),JsonSerializer.Serialize(readings,new JsonSerializerOptions { WriteIndented=true }));
     }
 
-    private static ComponentPose SpritePose(Window editor,double time)
+    private static ComponentPose SpritePose(Control editor,double time)
     {
         Call(editor,"Seek",time);
         return Field<ComponentPose>(Field<Control>(editor,"framePreview"),"previewPose");

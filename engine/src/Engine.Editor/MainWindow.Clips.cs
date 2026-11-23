@@ -10,21 +10,20 @@ public partial class MainWindow
     private async Task EditClip(string? relative)
     {
         if (project == null && !await Save()) return;
-        if (clipEditor is {} current)
-        {
-            if (current.RelativePath == relative) { current.Activate(); return; }
-            if (!await current.RequestClose()) return;
-        }
+        if (!await ReplaceEditor("Clip", relative)) return;
         var root = project!;
         var clip = relative == null ? new SpriteClip([],false) : SpriteClip.OpenForEditing(Path.Combine(root,relative));
-        var window = new ClipEditorWindow(root,CreationFolder("Assets"),relative,clip);
-        window.Activated += (_, _) => spriteMonitor?.Request();
+        var window = new ClipEditorWindow(root,CreationFolder("Assets"),relative,clip) { Asset = relative };
+        window.Activated += (_, _) => { spriteMonitor?.Request(); UpdateMenuState(); };
+        window.Deactivated += (_, _) => UpdateMenuState();
         window.Saved += path => {
+            window.Asset = path;
             BrowseFolder(ParentPath(path),path); RefreshComponentList();
             Status.Text = $"Saved {path}.";
         };
-        window.Closed += (_,_) => { clipEditor = null; ProjectBrowser.SelectionMode = SelectionMode.Single; };
+        window.Closed += (_,_) => { if (clipEditor == window) clipEditor = null; ProjectBrowser.SelectionMode = SelectionMode.Single; };
         ProjectBrowser.SelectionMode = SelectionMode.Multiple;
-        clipEditor = window; window.Show(this);
+        clipEditor = window;
+        ShowEditor<object>("Clip", window);
     }
 }

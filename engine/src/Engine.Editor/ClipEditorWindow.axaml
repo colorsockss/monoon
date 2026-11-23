@@ -1,8 +1,7 @@
-<Window xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+<local:EditorPanel xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:local="using:Engine.Editor" x:Class="Engine.Editor.ClipEditorWindow"
-        Width="710" Height="455" MinWidth="375" MinHeight="405" WindowStartupLocation="CenterOwner"
-        Title="Sprite Animation">
-  <Grid Margin="12" RowDefinitions="Auto,*,Auto,Auto,Auto" RowSpacing="6">
+        MinWidth="375" MinHeight="405" Title="Sprite Animation">
+  <Grid Margin="{StaticResource EditorWindowPadding}" RowDefinitions="Auto,*,Auto,Auto,Auto" RowSpacing="{StaticResource EditorGap2}">
     <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="8">
       <TextBlock Classes="fieldLabel" Text="Clip" VerticalAlignment="Center"/>
       <TextBox x:Name="ClipName" Grid.Column="1" AutomationProperties.Name="Clip name"/>
@@ -17,7 +16,7 @@
           </Grid>
         </Border>
         <StackPanel x:Name="Properties" Grid.Column="1" Spacing="5">
-          <TextBlock x:Name="FrameHeading" TextTrimming="CharacterEllipsis" FontWeight="SemiBold" Text="Frame"/>
+          <TextBlock x:Name="FrameHeading" Classes="title" TextTrimming="CharacterEllipsis" Text="Frame"/>
           <Grid ColumnDefinitions="60,*" RowDefinitions="Auto,Auto,Auto,Auto" ColumnSpacing="5" RowSpacing="4">
             <TextBlock Classes="fieldLabel" Text="Sprite" VerticalAlignment="Center"/>
             <ComboBox x:Name="SpriteBox" Grid.Column="1" HorizontalAlignment="Stretch" AutomationProperties.Name="Frame sprite"/>
@@ -83,4 +82,4 @@
       <Button Classes="primary" x:Name="SaveButton" Grid.Column="2" Content="Save Clip"/>
     </Grid>
   </Grid>
-</Window>
+</local:EditorPanel>

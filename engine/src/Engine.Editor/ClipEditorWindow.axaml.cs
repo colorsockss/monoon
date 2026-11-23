@@ -18,7 +18,7 @@ internal sealed record ClipPng(Guid Id, string Path, string Hash)
     public override string ToString() => Path;
 }
 
-internal partial class ClipEditorWindow : Window
+internal partial class ClipEditorWindow : EditorPanel
 {
     private sealed record Frame(Guid Sprite, string Seconds, SpriteRegion? Source = null, SpriteCanvas? Canvas = null, string? Event = null, bool UseRenderer = false)
     {
@@ -130,7 +130,7 @@ internal partial class ClipEditorWindow : Window
         SpriteBox.ItemsSource = images;
         if (selected >= 0) SpriteBox.SelectedItem = byId.GetValueOrDefault(frames[selected].Sprite);
         refreshing = false;
-        if (IsVisible)
+        if (IsShown)
         {
             RefreshFrameImages();
             openPicker?.RefreshBitmaps(images);
@@ -140,7 +140,7 @@ internal partial class ClipEditorWindow : Window
     }
     private void LayoutStage()
     {
-        bool narrow = ClientSize.Width > 0 && ClientSize.Width < 565;
+        bool narrow = Bounds.Width > 0 && Bounds.Width < 565;
         Stage.MinHeight = narrow ? 0 : StageScroll.Bounds.Height;
         if (narrow == (Grid.GetRow(Properties) == 1)) return;
         Stage.ColumnDefinitions = new(narrow ? "*" : "*,240");
@@ -151,21 +151,18 @@ internal partial class ClipEditorWindow : Window
     private void ConfigureShortcuts()
     {
         var mod = OperatingSystem.IsMacOS() ? KeyModifiers.Meta : KeyModifiers.Control;
-        var menu = new NativeMenu(); var edit = new NativeMenu();
-        void Bind(string label, Key key, KeyModifiers mods, Action action)
+        // In the main window its File and Edit menus forward Save, Undo and Redo here while the clip has focus.
+        void Bind(Key key, KeyModifiers mods, Action action)
         {
             var gesture = new KeyGesture(key,mods);
-            var item = new NativeMenuItem(label) { Gesture = gesture };
-            item.Click += (_,_) => action(); edit.Add(item);
             AddHandler(KeyDownEvent, (_,e) => {
-                if (gesture.Matches(e)) { e.Handled = true; action(); }
+                if (gesture.Matches(e) && !(TopLevel.GetTopLevel(this) is {} top && NativeMenu.GetIsNativeMenuExported(top))) { e.Handled = true; action(); }
             }, RoutingStrategies.Tunnel);
         }
-        Bind("Save Clip", Key.S,mod, () => Save());
-        Bind("Undo Clip Edit", Key.Z,mod, () => History(false));
-        Bind("Redo Clip Edit", Key.Z,mod | KeyModifiers.Shift, () => History(true));
-        if (!OperatingSystem.IsMacOS()) Bind("Redo", Key.Y,mod, () => History(true));
-        menu.Add(new NativeMenuItem("Clip") { Menu = edit }); NativeMenu.SetMenu(this,menu);
+        Bind(Key.S,mod, () => Save());
+        Bind(Key.Z,mod, () => History(false));
+        Bind(Key.Z,mod | KeyModifiers.Shift, () => History(true));
+        if (!OperatingSystem.IsMacOS()) Bind(Key.Y,mod, () => History(true));
         Track.KeyDown += (_,e) => {
             if (e.Key == Key.Space) TogglePlayback();
             else if (e.Key == Key.Left) Select(selected-1);
@@ -190,7 +187,7 @@ internal partial class ClipEditorWindow : Window
         var frame = frames[selected] with { Seconds = value, Event = string.IsNullOrEmpty(name) ? null : name };
         if (frames[selected] != frame) Change(() => frames[selected] = frame);
     }
-    private void History(bool forward)
+    internal void History(bool forward)
     {
         CommitSeconds();
         var src = forward ? redo : undo; var dst = forward ? undo : redo;
@@ -358,7 +355,7 @@ internal partial class ClipEditorWindow : Window
         var picker = new SheetPickerWindow(root, images, BitmapFor, frame?.Sprite, frame?.Source);
         openPicker = picker;
         SheetPickerWindow.Choice? choice;
-        try { choice = await picker.ShowDialog<SheetPickerWindow.Choice?>(this); }
+        try { choice = await picker.ShowDialog<SheetPickerWindow.Choice?>(Owner); }
         finally { openPicker = null; }
         if (choice == null) return;
         Change(() =>
@@ -381,7 +378,7 @@ internal partial class ClipEditorWindow : Window
         var panel = new Grid { Margin = new Thickness(10), RowDefinitions = new("*,Auto"), RowSpacing = 6 };
         panel.Children.Add(list); Grid.SetRow(ok,1); panel.Children.Add(ok); dlg.Content = panel;
         ok.Click += (_,_) => dlg.Close(true);
-        if (await dlg.ShowDialog<bool>(this)) Insert(images.Where(p => list.SelectedItems!.Contains(p)), selected+1);
+        if (await dlg.ShowDialog<bool>(Owner)) Insert(images.Where(p => list.SelectedItems!.Contains(p)), selected+1);
     }
     private void FileDrop(object? sender, DragEventArgs e)
     {
@@ -407,7 +404,7 @@ internal partial class ClipEditorWindow : Window
         return valid;
     }
     public void ClearDrop() => Track.Mark(-1);
-    private bool Save()
+    internal bool Save()
     {
         CommitSeconds();
         try
@@ -433,7 +430,7 @@ internal partial class ClipEditorWindow : Window
         }
         catch (Exception ex) { StatusLine.Text = ex.Message; ToolTip.SetTip(StatusLine,ex.Message); return false; }
     }
-    public async Task<bool> RequestClose()
+    public override async Task<bool> RequestClose()
     {
         if (asking) return false;
         CommitSeconds();
@@ -446,7 +443,7 @@ internal partial class ClipEditorWindow : Window
             foreach (var s in new[]{"Cancel","Discard","Save"}) { var b = new Button { Content = s }; b.Click += (_,_) => dlg.Close(s); row.Children.Add(b); }
             dlg.Content = new StackPanel { Margin = new Thickness(14), Spacing = 10, Children = { new TextBlock { Text = $"Save changes to {ClipName.Text}?" }, row } };
             string? choice;
-            try { choice = await dlg.ShowDialog<string?>(this); } finally { asking = false; }
+            try { choice = await dlg.ShowDialog<string?>(Owner); } finally { asking = false; }
             if (choice != "Discard" && (choice != "Save" || !Save())) return false;
         }
         approved = true; Close(); return true;

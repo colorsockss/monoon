@@ -38,14 +38,21 @@ public partial class MainWindow
             write(path,original!=null);
             return target;
         }
-        Window editor = dialogue ? new DialogueWindow(relative,original,Write) : new ValuesWindow(relative,original,table) { Write = Write };
-        if (await editor.ShowDialog<string?>(this) is not {} saved) return;
+        string kind = dialogue ? "Dialogue" : "Data";
+        if (!await ReplaceEditor(kind, relative)) return;
+        EditorPanel editor = dialogue ? new DialogueWindow(relative,original,Write) : new ValuesWindow(relative,original,table) { Write = Write };
+        editor.Asset = relative;
+        ShowEditor<string>(kind, editor, saved => Saved(root, saved, before!));
+    }
+
+    private void Saved(string root, string saved, PrefabFiles before)
+    {
         var assets = ProjectAssets.Scan(root);
         if (saved == assets.PathFor(Scene.Settings.Localization?.Table ?? Guid.Empty) ||
             saved == assets.PathFor(Scene.Settings.UiTheme ?? Guid.Empty))
             Viewport.InvalidateUi();
         var savedPath = Path.Combine(root, saved);
-        var edit = new PrefabFileEdit(savedPath, before!, PrefabFileEdit.Read(savedPath));
+        var edit = new PrefabFileEdit(savedPath, before, PrefabFileEdit.Read(savedPath));
         if (edit.HasChanges) RecordEdit(Selected?.Id, asset: edit);
         BrowseFolder(ParentPath(saved),saved);
         RefreshComponentList();
@@ -53,7 +60,7 @@ public partial class MainWindow
     }
 }
 
-internal sealed class ValuesWindow : Window
+internal sealed class ValuesWindow : EditorPanel
 {
     private sealed class Field(string key,string kind,string text)
     {
@@ -68,21 +75,20 @@ internal sealed class ValuesWindow : Window
     private readonly List<Record> records=[];
     private static readonly string[] DataTypes=["Text","Number","Boolean","YAML"];
     private readonly bool table;
-    private readonly Grid sheet=new() { ColumnSpacing=5, RowSpacing=4, VerticalAlignment=VerticalAlignment.Top };
+    private readonly Grid sheet=new() { ColumnSpacing=EditorTokens.Gap, RowSpacing=EditorTokens.Gap, VerticalAlignment=VerticalAlignment.Top };
     private readonly TextBox assetName, version;
     private readonly TextBox source=new(){AcceptsReturn=true,TextWrapping=TextWrapping.NoWrap,VerticalContentAlignment=VerticalAlignment.Top,FontFamily=FontFamily.Parse("Menlo, Consolas, monospace")};
     private readonly Button mode=new(){Content="Edit YAML"};
     private readonly string? original;
     private string? originalValues;
     private bool raw;
-    private readonly TextBlock error=new(){TextWrapping=TextWrapping.Wrap,Foreground=Brushes.LightSalmon,IsVisible=false};
+    private readonly TextBlock error=new(){TextWrapping=TextWrapping.Wrap,Classes={"error"},IsVisible=false};
     public Func<string,Action<string,bool>,string> Write { private get; set; }=null!;
 
     public ValuesWindow(string? relative,string? text,bool table)
     {
         this.table=table;original=text;
-        Title=table?"Data Table":"Data Asset";Width=table?640:540;Height=370;MinWidth=385;MinHeight=255;
-        WindowStartupLocation=WindowStartupLocation.CenterOwner;ShowInTaskbar=false;
+        Title=(relative==null?"":Path.GetFileNameWithoutExtension(relative)+" · ")+(table?"Data Table":"Data Asset");MinWidth=385;MinHeight=255;
         assetName=Box("Asset name",relative==null?(table?"NewTable":"NewData"):Path.GetFileNameWithoutExtension(relative));
         assetName.IsReadOnly=relative!=null;
         version=Box("Version","1");version.Width=45;
@@ -97,12 +103,12 @@ internal sealed class ValuesWindow : Window
             try { LoadFields(GameData.Parse(text??"version: 1\nvalues: {amount: 1}")); originalValues=BuildData().ToYaml(); }
             catch (InvalidDataException ex) when(text!=null) {raw=true;source.Text=text;ShowError(ex);}
         }
-        var layout=new Grid{Margin=new Thickness(12),RowSpacing=8,RowDefinitions=new("Auto,Auto,*,Auto,Auto")};
-        var nameRow=new Grid{ColumnDefinitions=new(table?"Auto,*":"Auto,*,Auto,Auto"),ColumnSpacing=7};
+        var layout=new Grid{Margin=EditorTokens.WindowPadding,RowSpacing=EditorTokens.Gap2,RowDefinitions=new("Auto,Auto,*,Auto,Auto")};
+        var nameRow=new Grid{ColumnDefinitions=new(table?"Auto,*":"Auto,*,Auto,Auto"),ColumnSpacing=EditorTokens.Gap2};
         Put(nameRow,Label("Name"),0,0);Put(nameRow,assetName,0,1);
         if(!table){Put(nameRow,Label("Version"),0,2);Put(nameRow,version,0,3);}
         Put(layout,nameRow,0,0);
-        var bar=new StackPanel{Orientation=Orientation.Horizontal,Spacing=6};
+        var bar=new StackPanel{Orientation=Orientation.Horizontal,Spacing=EditorTokens.Gap};
         var add=ActionButton(table?"+ Row":"+ Field",()=>{
             if(table) records.Add(new(Unique("row",records.Select(r=>r.Key)),fields.Select(c=>Initial(c.Kind))));
             else fields.Add(new(Unique("field",fields.Select(f=>f.Key)),"Text",""));
@@ -123,7 +129,7 @@ internal sealed class ValuesWindow : Window
             raw=!raw; View();
         });
         Put(layout,error,3,0);
-        var cancel=ActionButton("Cancel",()=>Close());cancel.IsCancel=true;
+        var cancel=ActionButton("Cancel",()=>Close());
         var save=ActionButton("Save",()=>Attempt(()=>{
             Action<string,bool> writer;
             if(table) writer=BuildTable().Save;
@@ -134,7 +140,7 @@ internal sealed class ValuesWindow : Window
             }
             Close(Write(assetName.Text?.Trim()??"",writer));
         }));save.Classes.Add("primary");
-        Put(layout,new StackPanel{Orientation=Orientation.Horizontal,HorizontalAlignment=HorizontalAlignment.Right,Spacing=6,Children={cancel,save}},4,0);
+        Put(layout,new StackPanel{Orientation=Orientation.Horizontal,HorizontalAlignment=HorizontalAlignment.Right,Spacing=EditorTokens.Gap,Children={cancel,save}},4,0);
         Content=layout;Draw();View();
     }
     private static string Unique(string stem,IEnumerable<string> names) {var used=names.ToHashSet();int i=1;while(used.Contains(stem+i))i++;return stem+i;}
@@ -214,7 +220,7 @@ internal sealed class ValuesWindow : Window
         if(change!=null)box.TextChanged+=(_,_)=>change(box.Text??"");return box;
     }
     private static Button ActionButton(string text,Action action){var b=new Button{Content=text};b.Click+=(_,_)=>action();return b;}
-    private static Button Remove(string label,Action action){var b=ActionButton("×",action);AutomationProperties.SetName(b,label);ToolTip.SetTip(b,label);return b;}
+    private static Button Remove(string label,Action action){var b=EditorTokens.IconButton("IconClose",label);b.Click+=(_,_)=>action();return b;}
     private static TextBlock Label(string s)=>new(){Text=s,Classes={"label"}};
     private void ShowError(Exception ex){error.Text=ex.Message;error.IsVisible=true;}
     private void Attempt(Action action){try{error.IsVisible=false;action();}catch(Exception e) when(e is InvalidDataException or IOException or UnauthorizedAccessException or FormatException or JsonException){ShowError(e);}}

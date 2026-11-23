@@ -1,0 +1,58 @@
+## .test-env/work/ui12/mac-final3
+inspector_docking: [["default", 1280, 1070, 1130, 60, 0, 0], ["default", 1600, 1390, 1450, 60, 0, 0], ["default", 1920, 1710, 1770, 60, 0, 0], ["long name", 1280, 1070, 1130, 60, 0, 0]]
+splitter: {"before": 218, "wider": 298, "clamped": 218, "final": 278}
+layout_roundtrip: {"saved": "Row[(Hierarchy*,Project) (Scene*,Game) (Inspector*)]", "restored": "Row[(Hierarchy*,Project) (Scene*,Game) (Inspector*)]", "same": true, "inspector": [360, 360], "window": [[1500, 860], [1500, 860]]}
+panels_opened: ["Console", "Profiler", "Animator", "Clip", "Tileset", "Input Actions", "Dialogue", "Data"]
+window_menu: ["Hierarchy", "Project", "Scene", "Game", "Inspector", "Console", "Profiler", "Animator", "Clip", "Tileset", "Input Actions", "Dialogue", "Data"]
+floating_roundtrip: {"console_saved": [538, 299, 520, 300], "console_restored": [538, 299, 520, 300], "layout_same": true}
+editor-layout.json: {"Width": 1500, "Height": 860, "Floating": [], "Layout": "{\"Split\": \"Row\", \"Children\": [{\"Split\": \"Column\", \"Children\": [{\"Split\": null, \"Children\": null, \"Panels\": [\"Hierarchy\"], \"Active\": \"Hierarchy\", \"Size\": 403.5},"}
+inspector_theme: [["main-1280", 1280, [8], [68], 27, 0], ["main-1920", 1920, [8], [68], 27, 0], ["main-1280-long-name", 1280, [8], [68], 27, 0]]
+theme_windows: ["console", "animator", "clip", "sheet-picker", "input-actions", "data", "table", "dialogue", "tileset"]
+inspector_panels: [["window 1280", 1280, 1070, 1130, 60, 0, 0], ["window 1600", 1600, 1390, 1450, 60, 0, 0], ["window 1920", 1920, 1710, 1770, 60, 0, 0], ["long name 1280", 1280, 1070, 1130, 60, 0, 0]]
+hierarchy_search: {"satchel": 3, "Door": 2, "zzz": 0}
+console: {"counts": {"infos": 5, "warnings": 2, "errors": 1}, "all": 8, "without_info": 3, "collapsed": 2, "collapsed_all": 5, "searched": 1}
+scene_sha: {"save": "FB0C1FD5172C093ED66C85FE5287AC3DA0C412DD8FE0220050E45BA93E715EC8", "marks_before": "FB0C1FD5172C093ED66C85FE5287AC3DA0C412DD8FE0220050E45BA93E715EC8", "marks_after": "FB0C1FD5172C093ED66C85FE5287AC3DA0C412DD8FE0220050E45BA93E715EC8", "first": "FB0C1FD5172C093ED66C85FE5287AC3DA0C412DD8FE0220050E45BA93E715EC8", "restart": "FB0C1FD5172C093ED66C85FE5287AC3DA0C412DD8FE0220050E45BA93E715EC8", "unchanged": true}
+editor68: {"KeyRoom.scene": "53d15ec5cfaf1720605e0f475186209b42ad385d7ab05f59743fc646233e3e0b", "edited.save": null, "reopen.save": null, "baseline.save": null, "reference": "dc5135b1765858e339c9279219053ff931976ec64c804690fffb14b8d3f3cfd5"}
+prefab_editor_same_as_repo_mac: true
+rebinding-scene-play: {"rebind.trace": true, "restart.trace": true, "restored.trace": true, "rebind.player.settings": true}
+## .test-env/work/ui12/windows-results
+status: {"editor68": "pass", "docking-first": "pass", "docking-restore": "pass", "docking-fallback": "pass", "docking-panels": "pass", "docking-panels-restore": "pass", "theme": "pass", "panels": "pass", "prefab-editor": "pass", "rebinding-scene-play": "fail", "rebinding-scene-play-wait200": "pass"}
+host: {"display": {"before": [1280, 800], "after": [1920, 1080], "change_code": 0, "modes": [[1920, 1080]]}, "rid": "win-x64", "platform": "Windows-11-10.0.26100-SP0", "machine": "AMD64", "python": "3.13.9", "slow": "10", "timeout_scale": 15}
+inspector_docking: [["default", 1280, 1070, 1130, 60, 0, 0], ["default", 1600, 1390, 1450, 60, 0, 0], ["default", 1920, 1710, 1770, 60, 0, 0], ["long name", 1280, 1070, 1130, 60, 0, 0]]
+splitter: {"before": 218, "wider": 298, "clamped": 218, "final": 278}
+layout_roundtrip: {"saved": "Row[(Hierarchy*,Project) (Scene*,Game) (Inspector*)]", "restored": "Row[(Hierarchy*,Project) (Scene*,Game) (Inspector*)]", "same": true, "inspector": [360, 360], "window": [[1500, 860], [1500, 860]]}
+panels_opened: ["Console", "Profiler", "Animator", "Clip", "Tileset", "Input Actions", "Dialogue", "Data"]
+window_menu: ["Hierarchy", "Project", "Scene", "Game", "Inspector", "Console", "Profiler", "Animator", "Clip", "Tileset", "Input Actions", "Dialogue", "Data"]
+floating_roundtrip: {"console_saved": [250, 270, 520, 300], "console_restored": [250, 270, 520, 300], "layout_same": true}
+editor-layout.json: {"Width": 1500, "Height": 860, "Floating": [], "Layout": "{\"Split\": \"Row\", \"Children\": [{\"Split\": \"Column\", \"Children\": [{\"Split\": null, \"Children\": null, \"Panels\": [\"Hierarchy\"], \"Active\": \"Hierarchy\", \"Size\": 388}, {"}
+inspector_theme: [["main-1280", 1280, [8], [68], 27, 0], ["main-1920", 1920, [8], [68], 27, 0], ["main-1280-long-name", 1280, [8], [68], 27, 0]]
+theme_windows: ["console", "animator", "clip", "sheet-picker", "input-actions", "data", "table", "dialogue", "tileset"]
+inspector_panels: [["window 1280", 1280, 1070, 1130, 60, 0, 0], ["window 1600", 1600, 1390, 1450, 60, 0, 0], ["window 1920", 1920, 1710, 1770, 60, 0, 0], ["long name 1280", 1280, 1070, 1130, 60, 0, 0]]
+hierarchy_search: {"satchel": 3, "Door": 2, "zzz": 0}
+console: {"counts": {"infos": 5, "warnings": 2, "errors": 1}, "all": 8, "without_info": 3, "collapsed": 2, "collapsed_all": 5, "searched": 1}
+scene_sha: {"save": "FB0C1FD5172C093ED66C85FE5287AC3DA0C412DD8FE0220050E45BA93E715EC8", "marks_before": "FB0C1FD5172C093ED66C85FE5287AC3DA0C412DD8FE0220050E45BA93E715EC8", "marks_after": "FB0C1FD5172C093ED66C85FE5287AC3DA0C412DD8FE0220050E45BA93E715EC8", "first": "FB0C1FD5172C093ED66C85FE5287AC3DA0C412DD8FE0220050E45BA93E715EC8", "restart": "FB0C1FD5172C093ED66C85FE5287AC3DA0C412DD8FE0220050E45BA93E715EC8", "unchanged": true}
+editor68: {"KeyRoom.scene": "f2dfa2250e52a9a16a36083989f5b9dfe4c151782d35fc6b9ec8ccf1c6a42abe", "edited.save": "dc5135b1765858e339c9279219053ff931976ec64c804690fffb14b8d3f3cfd5", "reopen.save": "dc5135b1765858e339c9279219053ff931976ec64c804690fffb14b8d3f3cfd5", "baseline.save": "75bbe69fa563e7ee4d67e490e16ee3d03be2c84a8b1be2418f1ee856deea5e7b", "reference": "dc5135b1765858e339c9279219053ff931976ec64c804690fffb14b8d3f3cfd5"}
+prefab_editor_same_as_repo_mac: true
+rebinding-scene-play: {"rebind.trace": true, "restart.trace": false, "restored.trace": false, "rebind.player.settings": true}
+rebinding-scene-play-wait200: {"rebind.trace": true, "restart.trace": true, "restored.trace": true, "rebind.player.settings": true}
+## .test-env/work/ui12/linux-results
+status: {"editor68": "pass", "docking-first": "pass", "docking-restore": "pass", "docking-fallback": "pass", "docking-panels": "pass", "docking-panels-restore": "pass", "theme": "pass", "panels": "pass", "prefab-editor": "pass", "rebinding-scene-play": "fail", "rebinding-scene-play-wait200": "pass"}
+host: {"display": "Xvfb 2560x1440x24", "rid": "linux-x64", "platform": "Linux-6.1.0-56-cloud-amd64-x86_64-with-glibc2.36", "machine": "x86_64", "python": "3.11.2", "slow": "10", "timeout_scale": 15}
+inspector_docking: [["default", 1280, 1070, 1130, 60, 0, 0], ["default", 1600, 1390, 1450, 60, 0, 0], ["default", 1920, 1710, 1770, 60, 0, 0], ["long name", 1280, 1070, 1130, 60, 0, 0]]
+splitter: {"before": 218, "wider": 298, "clamped": 218, "final": 278}
+layout_roundtrip: {"saved": "Row[(Hierarchy*,Project) (Scene*,Game) (Inspector*)]", "restored": "Row[(Hierarchy*,Project) (Scene*,Game) (Inspector*)]", "same": true, "inspector": [360, 360], "window": [[1500, 860], [1500, 860]]}
+panels_opened: ["Console", "Profiler", "Animator", "Clip", "Tileset", "Input Actions", "Dialogue", "Data"]
+window_menu: ["Hierarchy", "Project", "Scene", "Game", "Inspector", "Console", "Profiler", "Animator", "Clip", "Tileset", "Input Actions", "Dialogue", "Data"]
+floating_roundtrip: {"console_saved": [130, 150, 520, 300], "console_restored": [130, 150, 520, 300], "layout_same": true}
+editor-layout.json: {"Width": 1500, "Height": 860, "Floating": [], "Layout": "{\"Split\": \"Row\", \"Children\": [{\"Split\": \"Column\", \"Children\": [{\"Split\": null, \"Children\": null, \"Panels\": [\"Hierarchy\"], \"Active\": \"Hierarchy\", \"Size\": 388}, {"}
+inspector_theme: [["main-1280", 1280, [8], [68], 27, 0], ["main-1920", 1920, [8], [68], 27, 0], ["main-1280-long-name", 1280, [8], [68], 27, 0]]
+theme_windows: ["console", "animator", "clip", "sheet-picker", "input-actions", "data", "table", "dialogue", "tileset"]
+inspector_panels: [["window 1280", 1280, 1070, 1130, 60, 0, 0], ["window 1600", 1600, 1390, 1450, 60, 0, 0], ["window 1920", 1920, 1710, 1770, 60, 0, 0], ["long name 1280", 1280, 1070, 1130, 60, 0, 0]]
+hierarchy_search: {"satchel": 3, "Door": 2, "zzz": 0}
+console: {"counts": {"infos": 5, "warnings": 2, "errors": 1}, "all": 8, "without_info": 3, "collapsed": 2, "collapsed_all": 5, "searched": 1}
+scene_sha: {"save": "FB0C1FD5172C093ED66C85FE5287AC3DA0C412DD8FE0220050E45BA93E715EC8", "marks_before": "FB0C1FD5172C093ED66C85FE5287AC3DA0C412DD8FE0220050E45BA93E715EC8", "marks_after": "FB0C1FD5172C093ED66C85FE5287AC3DA0C412DD8FE0220050E45BA93E715EC8", "first": "FB0C1FD5172C093ED66C85FE5287AC3DA0C412DD8FE0220050E45BA93E715EC8", "restart": "FB0C1FD5172C093ED66C85FE5287AC3DA0C412DD8FE0220050E45BA93E715EC8", "unchanged": true}
+editor68: {"KeyRoom.scene": "f2dfa2250e52a9a16a36083989f5b9dfe4c151782d35fc6b9ec8ccf1c6a42abe", "edited.save": "dc5135b1765858e339c9279219053ff931976ec64c804690fffb14b8d3f3cfd5", "reopen.save": "dc5135b1765858e339c9279219053ff931976ec64c804690fffb14b8d3f3cfd5", "baseline.save": "75bbe69fa563e7ee4d67e490e16ee3d03be2c84a8b1be2418f1ee856deea5e7b", "reference": "dc5135b1765858e339c9279219053ff931976ec64c804690fffb14b8d3f3cfd5"}
+prefab_editor_same_as_repo_mac: true
+rebinding-scene-play: {"rebind.trace": true, "restart.trace": false, "restored.trace": false, "rebind.player.settings": true}
+rebinding-scene-play-wait200: {"rebind.trace": true, "restart.trace": true, "restored.trace": true, "rebind.player.settings": true}
+editor68: {"KeyRoom.scene": "f2dfa2250e52a9a16a36083989f5b9dfe4c151782d35fc6b9ec8ccf1c6a42abe", "edited.save": "dc5135b1765858e339c9279219053ff931976ec64c804690fffb14b8d3f3cfd5", "reopen.save": "dc5135b1765858e339c9279219053ff931976ec64c804690fffb14b8d3f3cfd5", "baseline.save": "75bbe69fa563e7ee4d67e490e16ee3d03be2c84a8b1be2418f1ee856deea5e7b", "reference": "dc5135b1765858e339c9279219053ff931976ec64c804690fffb14b8d3f3cfd5"}

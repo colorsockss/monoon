@@ -1,0 +1,25 @@
+{
+  "os": "linux-x64",
+  "captures": {
+    "restored-float-console": "RenderTargetBitmap"
+  },
+  "screen": [
+    {
+      "Width": 2560,
+      "Height": 1440,
+      "Scaling": 1
+    }
+  ],
+  "console_restored": [
+    130,
+    150,
+    520,
+    300
+  ],
+  "animator_fallback": {
+    "X": 330,
+    "Y": 200,
+    "Width": 640,
+    "Height": 420
+  }
+}

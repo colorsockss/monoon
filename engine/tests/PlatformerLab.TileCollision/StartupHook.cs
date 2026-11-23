@@ -5,6 +5,7 @@ using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Interactivity;
 using Avalonia.Media.Imaging;
 using Avalonia.Threading;
+using Avalonia.VisualTree;
 using Engine.Core;
 
 public static class StartupHook
@@ -35,7 +36,11 @@ public static class StartupHook
         async Task Edit(string asset, SpriteRegion cell, int mode, string? input, string expected, bool capture)
         {
             var closing = (Task)main.GetType().GetMethod("EditTileset",Private)!.Invoke(main,[asset])!;
-            var window = life.Windows.Single(w => w.GetType().Name == "TilesetWindow");
+            // The tileset editor is a dock panel in the main window (roadmap 12.4); it appears after the panel's layout pass.
+            await closing;
+            Visual? found = null;
+            for (int i = 0; i < 200 && (found = main.GetVisualDescendants().SingleOrDefault(c => c.GetType().Name == "TilesetWindow")) == null; i++) await Task.Delay(50);
+            var window = (ContentControl)(found ?? throw new InvalidDataException("Tileset panel did not open"));
             var grid = window.FindControl<Control>("Cells")!;
             grid.GetType().GetMethod("RestoreSelection",Private)!.Invoke(grid,[new[]{cell}]);
             var select = window.FindControl<ComboBox>("ShapeMode")!;
@@ -65,7 +70,8 @@ public static class StartupHook
                 bitmap.Render(panel); bitmap.Save(Path.Combine(Output, mode==3 ? "face.png" : "polygon.png"));
             }
             Click(window.FindControl<Button>("SaveAsset")!);
-            Require(closing.IsCompleted || !window.IsVisible, window.FindControl<TextBlock>("Info")!.Text ?? "Save failed");
+            // Saving closes the editor and empties its panel, as it closed the window before.
+            Require(window.GetVisualRoot() == null, window.FindControl<TextBlock>("Info")!.Text ?? "Save failed");
             await closing;
         }
         await Edit("Assets/Incline.tileset",new(76,0,38,90),2,"0,0.65  1,0.4  1,1  0,1","0,0.6  1,0.4  1,1  0,1",false);

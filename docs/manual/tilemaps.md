@@ -25,9 +25,9 @@ Hierarchy의 빈 공간에서 우클릭해 **Create Tilemap**을 선택한다. �
 
 1. **Project → + → Import Assets…**로 시트를 가져온 뒤 **New Tileset…**을 연다. **Name**에 이름을 입력하고 **Sheet**에서 PNG를 선택한다. **Grid**에서 셀의 **Width / Height**, 바깥쪽 **Margin**, 셀 사이 **Spacing**을 픽셀 단위로 입력한다. **Grid**를 다시 누르면 설정이 접혀 미리보기가 넓어진다.
 2. 잘라낸 셀을 클릭한다. 이동을 막는 벽은 **Collision → Full cell**, 걸어갈 바닥은 **None**을 선택한다. **Save Tileset**으로 저장한다. 같은 타일 ID를 쓰는 모든 레이어에 이 설정이 적용된다.
-3. 기존 `.tileset`은 Project에서 더블클릭한다. 파일 이름은 창 제목에, 현재 셀 크기는 **Grid** 버튼에 표시된다. 다시 자를 때 이미 쓰는 ID의 영역이 사라지면 편집기가 사용 위치를 표시한다. 대체할 셀을 선택하고 **Use selected tile**로 연결한다.
+3. 기존 `.tileset`은 Project에서 더블클릭한다. 타일셋은 Tileset 패널에 열린다. 파일 이름은 탭 제목에, 현재 셀 크기는 **Grid** 버튼에 표시된다. 다시 자를 때 이미 쓰는 ID의 영역이 사라지면 편집기가 사용 위치를 표시한다. 대체할 셀을 선택하고 **Use selected tile**로 연결한다.
 
-![타일셋 편집 창에서 선택한 경사 타일의 다각형과 꼭짓점 입력 필드](../../engine/tests/results/tile-collision/osx-arm64/polygon.png)
+![타일셋 편집기에서 선택한 경사 타일의 다각형과 꼭짓점 입력 필드](../../engine/tests/results/tile-collision/osx-arm64/polygon.png)
 
 ## 칠하기, 지우기, 되돌리기
 
@@ -91,7 +91,7 @@ PlatformerLab에서 **→ / D**로 경사를 올라 **Chunk 2**가 표시되면 
 
 타일셋 편집기에서 셀을 선택하고 **Terrain**에 지형 이름을, **Cost**에 그리드 길찾기의 진입 비용을 입력한 뒤 **Save Tileset**을 누른다. 0은 통행 불가, 1 이상은 그 칸에 들어갈 때 곱하는 가중치다. **Cost**를 비워 두면 **Collision**이 None인 타일은 1, 충돌이 있는 타일은 0으로 처리한다. 값은 `.tileset`의 타일마다 `terrain`, `moveCost`로 저장되고, 같은 타일을 쓰는 모든 레이어에 적용된다. 프로젝트 타일 목록에도 지형 이름이 함께 표시된다.
 
-![Route 타일셋에서 진흙 타일의 Terrain과 Cost를 편집하는 창](../../engine/tests/results/tile-terrain/tileset-terrain.png)
+![Route 타일셋에서 진흙 타일의 Terrain과 Cost를 편집하는 Tileset 편집기](../../engine/tests/results/tile-terrain/tileset-terrain.png)
 
 **SeedLab에서 시험하기.** Play 후 **G**로 **Courier routes**를 연다. **B**를 누르면 북쪽 통로의 다섯 칸이 진흙으로 바뀌고, 점으로 표시된 경로가 남쪽 진흙 세 칸을 건너는 길로 옮겨 간다. **Space**로 걷기 시작한 뒤 **B**나 **O**를 누르면 배달원이 현재 칸에서 다시 경로를 계산한다. **O**는 문 칸 하나를 닫힌 문 타일(충돌, 비용 0)과 열린 문 타일(비용 1)로 바꾸고, **M**은 모든 진흙 칸을 마른 진흙(비용 1)과 진흙(비용 12) 사이에서 바꾼다. 비용은 스크립트가 아닌 [Route 타일셋](../../samples/SeedLab/Assets/Route.tileset)에서 읽는다. 조작 전체는 [탑다운 그리드 길찾기](navigation.md#탑다운-그리드-길찾기)에 있다.
 

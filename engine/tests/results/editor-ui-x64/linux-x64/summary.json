@@ -1,0 +1,736 @@
+{
+ "host": {
+  "display": "Xvfb 2560x1440x24",
+  "rid": "linux-x64",
+  "platform": "Linux-6.1.0-56-cloud-amd64-x86_64-with-glibc2.36",
+  "machine": "x86_64",
+  "python": "3.11.2",
+  "slow": "10",
+  "timeout_scale": 15
+ },
+ "editor68": {
+  "status": "pass",
+  "KeyRoom.scene": "f2dfa2250e52a9a16a36083989f5b9dfe4c151782d35fc6b9ec8ccf1c6a42abe",
+  "edit/baseline.save": "75bbe69fa563e7ee4d67e490e16ee3d03be2c84a8b1be2418f1ee856deea5e7b",
+  "edit/edited.save": "dc5135b1765858e339c9279219053ff931976ec64c804690fffb14b8d3f3cfd5",
+  "reopen/edited.save": "dc5135b1765858e339c9279219053ff931976ec64c804690fffb14b8d3f3cfd5",
+  "seconds": 158
+ },
+ "docking-first": {
+  "status": "pass",
+  "baselines": [
+   {
+    "label": "default",
+    "window": 1280,
+    "inspector": 218,
+    "rows": 3,
+    "label_x": 1070,
+    "input_x": 1130,
+    "column": 60,
+    "drift": 0,
+    "vertical": 0,
+    "name_width": 142,
+    "inspector_right": 1280
+   },
+   {
+    "label": "default",
+    "window": 1600,
+    "inspector": 218,
+    "rows": 3,
+    "label_x": 1390,
+    "input_x": 1450,
+    "column": 60,
+    "drift": 0,
+    "vertical": 0,
+    "name_width": 142,
+    "inspector_right": 1600
+   },
+   {
+    "label": "default",
+    "window": 1920,
+    "inspector": 218,
+    "rows": 3,
+    "label_x": 1710,
+    "input_x": 1770,
+    "column": 60,
+    "drift": 0,
+    "vertical": 0,
+    "name_width": 142,
+    "inspector_right": 1920
+   },
+   {
+    "label": "long name",
+    "window": 1280,
+    "inspector": 218,
+    "rows": 3,
+    "label_x": 1070,
+    "input_x": 1130,
+    "column": 60,
+    "drift": 0,
+    "vertical": 0,
+    "name_width": 142,
+    "inspector_right": 1280
+   }
+  ],
+  "splitter": {
+   "before": 218,
+   "wider": 298,
+   "clamped": 218,
+   "final": 278
+  },
+  "play": [
+   {
+    "label": "after move",
+    "same_session": true,
+    "ticks": 722,
+    "draws": 0,
+    "view_kept": false
+   },
+   {
+    "label": "split during Play: Row[Column[(Hierarchy,Project*) (Game*)] (Scene*) (Inspector*)]",
+    "same_session": true,
+    "ticks": 721,
+    "draws": 0,
+    "view_kept": false
+   },
+   {
+    "label": "hidden tab during Play",
+    "same_session": true,
+    "ticks": 720,
+    "draws": 0,
+    "view_kept": false
+   },
+   {
+    "label": "tab shown again",
+    "same_session": true,
+    "ticks": 720,
+    "draws": 0,
+    "view_kept": false
+   },
+   {
+    "label": "window edge: Row[(Hierarchy,Project*) (Scene*) (Inspector*) (Game*)]",
+    "same_session": true,
+    "ticks": 720,
+    "draws": 0,
+    "view_kept": false
+   }
+  ],
+  "custom": "Row[(Hierarchy*) (Scene*,Game) Column[(Inspector*) (Project*)]]",
+  "current": "Row[(Hierarchy*,Project) (Scene*,Game) (Inspector*)]",
+  "current_inspector": 360,
+  "window": [
+   1500,
+   860
+  ],
+  "default_slots": {
+   "Hierarchy": [
+    0,
+    88,
+    176,
+    371
+   ],
+   "Project": [
+    0,
+    487,
+    176,
+    292
+   ],
+   "Scene": [
+    180,
+    88,
+    878,
+    691
+   ],
+   "Inspector": [
+    1062,
+    88,
+    218,
+    691
+   ]
+  },
+  "captures": {
+   "play-game-moved": "RenderTargetBitmap"
+  },
+  "screen": [
+   {
+    "Width": 2560,
+    "Height": 1440,
+    "Scaling": 1
+   }
+  ],
+  "seconds": 224
+ },
+ "docking-restore": {
+  "status": "pass",
+  "restored": "Row[(Hierarchy*,Project) (Scene*,Game) (Inspector*)]",
+  "restored_inspector": 360,
+  "restored_window": [
+   1500,
+   860
+  ],
+  "reset": {
+   "layout": "Row[Column[(Hierarchy*) (Project*)] (Scene*,Game) (Inspector*)]",
+   "slots": {
+    "Hierarchy": [
+     0,
+     88,
+     176,
+     404
+    ],
+    "Project": [
+     0,
+     520,
+     176,
+     319
+    ],
+    "Scene": [
+     180,
+     88,
+     1098,
+     751
+    ],
+    "Inspector": [
+     1282,
+     88,
+     218,
+     751
+    ]
+   }
+  },
+  "reopened": "Row[Column[(Hierarchy*) (Project*)] (Scene*,Game) (Inspector*)]",
+  "baseline": {
+   "label": "after reset",
+   "window": 1500,
+   "inspector": 218,
+   "rows": 3,
+   "label_x": 1290,
+   "input_x": 1350,
+   "column": 60,
+   "drift": 0,
+   "vertical": 0,
+   "name_width": 142,
+   "inspector_right": 1500
+  },
+  "seconds": 69
+ },
+ "docking-fallback": {
+  "status": "pass",
+  "layout": "Row[Column[(Hierarchy*) (Project*)] (Scene*,Game) (Inspector*)]",
+  "window": {
+   "Width": 1220,
+   "Height": 740,
+   "X": 10,
+   "Y": 10
+  },
+  "slots": {
+   "Hierarchy": [
+    0,
+    88,
+    176,
+    338
+   ],
+   "Project": [
+    0,
+    454,
+    176,
+    265
+   ],
+   "Scene": [
+    180,
+    88,
+    818,
+    631
+   ],
+   "Inspector": [
+    1002,
+    88,
+    218,
+    631
+   ]
+  },
+  "seconds": 49
+ },
+ "docking-panels": {
+  "status": "pass",
+  "opened": [
+   {
+    "panel": "Console",
+    "title": "Console",
+    "editor": null,
+    "layout": "Row[Column[(Hierarchy*) (Project*)] Column[(Scene*,Game) (Console*)] (Inspector*)]"
+   },
+   {
+    "panel": "Profiler",
+    "title": "Profiler",
+    "editor": null,
+    "layout": "Row[Column[(Hierarchy*) (Project*)] Column[(Scene*,Game) (Console,Profiler*)] (Inspector*)]"
+   },
+   {
+    "panel": "Animator",
+    "title": "Animator Controller",
+    "editor": "AnimatorWindow",
+    "layout": "Row[Column[(Hierarchy*) (Project*)] Column[(Scene*,Game) (Console,Profiler,Animator*)] (Inspector*)]"
+   },
+   {
+    "panel": "Clip",
+    "title": "Door · Sprite Animation",
+    "editor": "ClipEditorWindow",
+    "layout": "Row[Column[(Hierarchy*) (Project*)] Column[(Scene*,Game) (Console,Profiler,Animator,Clip*)] (Inspector*)]"
+   },
+   {
+    "panel": "Tileset",
+    "title": "New Tileset",
+    "editor": "TilesetWindow",
+    "layout": "Row[Column[(Hierarchy*) (Project*)] Column[(Scene*,Game) (Console,Profiler,Animator,Clip,Tileset*)] (Inspector*)]"
+   },
+   {
+    "panel": "Input Actions",
+    "title": "Input Actions",
+    "editor": "InputMapWindow",
+    "layout": "Row[Column[(Hierarchy*) (Project*)] Column[(Scene*,Game) (Console,Profiler,Animator,Clip,Tileset,Input Actions*)] (Inspector*)]"
+   },
+   {
+    "panel": "Dialogue",
+    "title": "Dialogue",
+    "editor": "DialogueWindow",
+    "layout": "Row[Column[(Hierarchy*) (Project*)] Column[(Scene*,Game) (Console,Profiler,Animator,Clip,Tileset,Input Actions,Dialogue*)] (Inspector*)]"
+   },
+   {
+    "panel": "Data",
+    "title": "KeyRoomRules · Data Asset",
+    "editor": "ValuesWindow",
+    "layout": "Row[Column[(Hierarchy*) (Project*)] Column[(Scene*,Game) (Console,Profiler,Animator,Clip,Tileset,Input Actions,Dialogue,Data*)] (Inspector*)]"
+   }
+  ],
+  "replaced": "Loot · Data Table",
+  "floats": [
+   {
+    "panel": "Console",
+    "floated": {
+     "window": [
+      330,
+      200,
+      640,
+      420
+     ],
+     "title": "Console"
+    },
+    "docked": "Row[Column[(Hierarchy*) (Project*)] Column[(Scene*,Game) (Profiler,Animator,Clip,Tileset,Input Actions,Dialogue,Data,Console*)] (Inspector*)]"
+   },
+   {
+    "panel": "Animator",
+    "floated": {
+     "window": [
+      330,
+      200,
+      640,
+      420
+     ],
+     "title": "Animator Controller"
+    },
+    "docked": "Row[Column[(Hierarchy*) (Project*)] Column[(Scene*,Game) (Profiler,Clip,Tileset,Input Actions,Dialogue,Data,Console,Animator*)] (Inspector*)]"
+   },
+   {
+    "panel": "Inspector",
+    "sections": 6,
+    "header": 28,
+    "docked": "Row[Column[(Hierarchy*) (Project*)] Column[(Scene*,Game) (Profiler,Clip,Tileset,Input Actions,Dialogue,Data,Console,Animator*)] (Inspector*)]",
+    "baseline": {
+     "label": "Inspector docked again",
+     "window": 1280,
+     "inspector": 320,
+     "rows": 3,
+     "label_x": 968,
+     "input_x": 1028,
+     "column": 60,
+     "drift": 0,
+     "vertical": 0,
+     "name_width": 244,
+     "inspector_right": 1280
+    }
+   },
+   {
+    "panel": "Scene",
+    "docked": "Row[Column[(Hierarchy*) (Project*)] (Profiler,Clip,Tileset,Input Actions,Dialogue,Data,Console,Animator*) (Inspector*) (Game,Scene*)]",
+    "view_kept": null
+   }
+  ],
+  "game": {
+   "running": [
+    {
+     "label": "Scene floating, game in Game tab",
+     "same_session": true,
+     "ticks": 722,
+     "draws": 0,
+     "view_kept": false
+    },
+    {
+     "label": "Game floating",
+     "same_session": true,
+     "ticks": 721,
+     "draws": 0,
+     "view_kept": false
+    },
+    {
+     "label": "Game docked again",
+     "same_session": true,
+     "ticks": 713,
+     "draws": 0,
+     "view_kept": false
+    },
+    {
+     "label": "Game at 2×",
+     "same_session": true,
+     "ticks": 719,
+     "draws": 0,
+     "view_kept": false
+    }
+   ],
+   "stats": "15 fps · 65.5 ms · 19 draws",
+   "scale": 2,
+   "resolution": "800 × 450"
+  },
+  "tools": {
+   "tools": [
+    {
+     "button": "RotateTool",
+     "gizmo": "Rotate"
+    },
+    {
+     "button": "ScaleTool",
+     "gizmo": "Scale"
+    },
+    {
+     "button": "RectTool",
+     "gizmo": "Rect"
+    },
+    {
+     "button": "MoveTool",
+     "gizmo": "Move"
+    }
+   ],
+   "rect": {
+    "width": 40,
+    "widened": 64,
+    "cancelled": 40
+   }
+  },
+  "console_floating": [
+   130,
+   150,
+   520,
+   300
+  ],
+  "layout_before_exit": "Row[Column[(Hierarchy*) (Project*)] (Profiler*,Clip,Tileset,Input Actions,Dialogue,Data) (Inspector*) (Game,Scene*)]",
+  "captures": {
+   "float-console": "RenderTargetBitmap",
+   "float-animator": "RenderTargetBitmap",
+   "float-inspector": "RenderTargetBitmap",
+   "float-scene": "RenderTargetBitmap",
+   "float-game-play": "RenderTargetBitmap",
+   "play-game-tab": "RenderTargetBitmap"
+  },
+  "seconds": 292
+ },
+ "docking-panels-restore": {
+  "status": "pass",
+  "console_restored": [
+   130,
+   150,
+   520,
+   300
+  ],
+  "animator_fallback": {
+   "X": 330,
+   "Y": 200,
+   "Width": 640,
+   "Height": 420
+  },
+  "captures": {
+   "restored-float-console": "RenderTargetBitmap"
+  },
+  "seconds": 65
+ },
+ "theme": {
+  "status": "pass",
+  "inspections": [
+   {
+    "capture": "main-1280",
+    "window_width": 1280,
+    "inspector_width": 218,
+    "label_x": [
+     8
+    ],
+    "field_x": [
+     68
+    ],
+    "rows": 27
+   },
+   {
+    "capture": "main-1920",
+    "window_width": 1920,
+    "inspector_width": 218,
+    "label_x": [
+     8
+    ],
+    "field_x": [
+     68
+    ],
+    "rows": 27
+   },
+   {
+    "capture": "main-1280-long-name",
+    "window_width": 1280,
+    "inspector_width": 218,
+    "label_x": [
+     8
+    ],
+    "field_x": [
+     68
+    ],
+    "rows": 27
+   }
+  ],
+  "long_name": {
+   "hierarchy": {
+    "trimmed": true,
+    "tip": true,
+    "natural": 445,
+    "shown": 58,
+    "inside": true
+   },
+   "inspector_width_before": 218,
+   "inspector_width_after": 218
+  },
+  "windows": [
+   "console",
+   "animator",
+   "clip",
+   "sheet-picker",
+   "input-actions",
+   "data",
+   "table",
+   "dialogue",
+   "tileset"
+  ],
+  "tokens": {
+   "EditorFontSize": "12",
+   "EditorFontSizeSmall": "11",
+   "EditorFieldLabelWidth": "56",
+   "EditorRowHeight": "22",
+   "EditorInputHeight": "24",
+   "EditorPanelPadding": "8,8,8,8"
+  },
+  "seconds": 175
+ },
+ "panels": {
+  "status": "pass",
+  "scene": "FB0C1FD5172C093ED66C85FE5287AC3DA0C412DD8FE0220050E45BA93E715EC8",
+  "hierarchy_search": [
+   {
+    "query": "satchel",
+    "matches": 3,
+    "shown": [
+     "Player",
+     "Satchel",
+     "Satchel flap",
+     "Satchel clasp"
+    ],
+    "no_match_text": false
+   },
+   {
+    "query": "Door",
+    "matches": 2,
+    "shown": [
+     "Wall",
+     "Door",
+     "Door Camera"
+    ],
+    "no_match_text": false
+   },
+   {
+    "query": "zzz",
+    "matches": 0,
+    "shown": [],
+    "no_match_text": true
+   }
+  ],
+  "alignment": {
+   "rows": [
+    {
+     "label": "window 1280",
+     "window": 1280,
+     "label_x": 1070,
+     "input_x": 1130,
+     "column": 60,
+     "drift": 0,
+     "vertical": 0
+    },
+    {
+     "label": "window 1600",
+     "window": 1600,
+     "label_x": 1390,
+     "input_x": 1450,
+     "column": 60,
+     "drift": 0,
+     "vertical": 0
+    },
+    {
+     "label": "window 1920",
+     "window": 1920,
+     "label_x": 1710,
+     "input_x": 1770,
+     "column": 60,
+     "drift": 0,
+     "vertical": 0
+    },
+    {
+     "label": "long name 1280",
+     "window": 1280,
+     "label_x": 1070,
+     "input_x": 1130,
+     "column": 60,
+     "drift": 0,
+     "vertical": 0
+    }
+   ],
+   "toolbars": [
+    {
+     "name": "Hierarchy 1280",
+     "centre": 101
+    },
+    {
+     "name": "Project 1280",
+     "centre": 500
+    },
+    {
+     "name": "Project path 1280",
+     "centre": 525
+    },
+    {
+     "name": "Hierarchy 1600",
+     "centre": 101
+    },
+    {
+     "name": "Project 1600",
+     "centre": 556
+    },
+    {
+     "name": "Project path 1600",
+     "centre": 581
+    },
+    {
+     "name": "Hierarchy 1920",
+     "centre": 101
+    },
+    {
+     "name": "Project 1920",
+     "centre": 656
+    },
+    {
+     "name": "Project path 1920",
+     "centre": 681
+    }
+   ],
+   "hover": true,
+   "long_name": {
+    "shown": 58,
+    "natural": 445,
+    "trimmed": true,
+    "inside": true
+   }
+  },
+  "console": {
+   "counts": {
+    "infos": 5,
+    "warnings": 2,
+    "errors": 1
+   },
+   "all": 8,
+   "without_info": 3,
+   "collapsed": 2,
+   "collapsed_all": 5,
+   "searched": 1
+  },
+  "project": {
+   "steps": [
+    {
+     "folder": "Assets/Fonts",
+     "crumbs": [
+      "KeyRoom",
+      "Assets",
+      "Fonts"
+     ]
+    },
+    {
+     "clicked": "Assets",
+     "folder": "Assets",
+     "crumbs": [
+      "KeyRoom",
+      "Assets"
+     ]
+    },
+    {
+     "clicked": "Parent folder",
+     "folder": "",
+     "parent_visible": false
+    },
+    {
+     "tree": true,
+     "panel_width": 1280,
+     "folder": "Scripts/Shared"
+    },
+    {
+     "search": "door t:sprite",
+     "hits": [
+      "Assets/Door.png",
+      "Assets/DoorOpen1.png",
+      "Assets/DoorOpen2.png",
+      "Assets/DoorOpen3.png",
+      "Assets/DoorSheet.png"
+     ],
+     "caption": "5 found"
+    }
+   ],
+   "list_row_heights": [
+    21
+   ],
+   "tiles": 23,
+   "thumbnails": 9
+  },
+  "restart_sha": "FB0C1FD5172C093ED66C85FE5287AC3DA0C412DD8FE0220050E45BA93E715EC8",
+  "captures": {
+   "workspace-1280": "RenderTargetBitmap",
+   "marks-before": "RenderTargetBitmap",
+   "marks-hidden": "RenderTargetBitmap",
+   "project-tree": "RenderTargetBitmap",
+   "console-1280": "RenderTargetBitmap",
+   "main-1280": "RenderTargetBitmap",
+   "main-1600": "RenderTargetBitmap",
+   "main-1920": "RenderTargetBitmap",
+   "long-name-1280": "RenderTargetBitmap"
+  },
+  "seconds": 437
+ },
+ "prefab-editor": {
+  "status": "pass",
+  "editor.txt": "edited   source without lock; Chest 1: lock 0, sound 0; Chest 2: lock 1, sound 1; Chest 3: lock 0, sound 0\nlisted   Chest 2 · audioSource (added) | Lock (added object)\napplied  source lock; Chest 1: lock 1, sound 0; Chest 2: lock 1, sound 1; Chest 3: lock 1, sound 0\nundo     source without lock; Chest 1: lock 0, sound 0; Chest 2: lock 1, sound 1; Chest 3: lock 0, sound 0\nredo     source lock; Chest 1: lock 1, sound 0; Chest 2: lock 1, sound 1; Chest 3: lock 1, sound 0\nreopened Chest 2 · audioSource (added)\n",
+  "seconds": 54
+ },
+ "rebinding-scene-play": {
+  "status": "fail",
+  "error": "Traceback (most recent call last):\n  File \"/run/keys96/ui12/run/guest.py\", line 79, in wrap\n    detail = fn() or {}\n             ^^^^\n  File \"/run/keys96/ui12/run/guest.py\", line 186, in _\n    script('KeyRoom.Rebinding', 'editor.py', editor, P / 'rebinding/KeyRoom', base / 'probes/EditorProbe.dll', out)\n  File \"/run/keys96/ui12/run/guest.py\", line 110, in script\n    runpy.run_path(sys.argv[0], run_name='__main__')\n  File \"<frozen runpy>\", line 291, in run_path\n  File \"<frozen runpy>\", line 98, in _run_module_code\n  File \"<frozen runpy>\", line 88, in _run_code\n  File \"/run/keys96/ui12/run/qa/KeyRoom.Rebinding/editor.py\", line 18, in <module>\n    check(out)\n  File \"/run/keys96/ui12/run/qa/KeyRoom.Rebinding/verify.py\", line 92, in check\n    expect(restart[-1][1]['interact'] == 'E,Space,Pad.South' and 'Interact: E' in restart[-1][1]['hint'] and\n  File \"/run/keys96/ui12/run/qa/KeyRoom.Rebinding/verify.py\", line 69, in expect\n    raise SystemExit('FAIL ' + message)\nSystemExit: FAIL Restore defaults brings back E and North\n",
+  "seconds": 81
+ },
+ "rebinding-scene-play-wait200": {
+  "status": "pass",
+  "rebind.trace": "00f4ae3b181cb529920d9f3d907ac1c937402085c656334f8b389ef024b29c19",
+  "restart.trace": "4cd05b3bb4089697004dce2ca80313e8f87917436c54b373151c7ada52736faa",
+  "restored.trace": "b83730c3a35f27aa90ab123ee266a1f13675e2fa4c7337859facb9d746c43dce",
+  "rebind.player.settings": "05485eb75eb2e0c31968956efc725ecb4039e33ec70387bbd59e7324e9774359",
+  "restart.player.settings": "622b960d41e3764e34d05c678cf269f35af8d9fa4137c8d5f5d90aba0f2c5dd6",
+  "restored.player.settings": "622b960d41e3764e34d05c678cf269f35af8d9fa4137c8d5f5d90aba0f2c5dd6",
+  "seconds": 81
+ },
+ "done": "2026-11-22 22:00:26"
+}

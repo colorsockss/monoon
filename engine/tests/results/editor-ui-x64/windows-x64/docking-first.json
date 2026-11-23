@@ -1,0 +1,215 @@
+{
+  "os": "win-x64",
+  "captures": {
+    "play-game-moved": "RenderTargetBitmap"
+  },
+  "screen": [
+    {
+      "Width": 1920,
+      "Height": 1032,
+      "Scaling": 1
+    }
+  ],
+  "default_slots": {
+    "Hierarchy": [
+      0,
+      88,
+      176,
+      371
+    ],
+    "Project": [
+      0,
+      487,
+      176,
+      292
+    ],
+    "Scene": [
+      180,
+      88,
+      878,
+      691
+    ],
+    "Inspector": [
+      1062,
+      88,
+      218,
+      691
+    ]
+  },
+  "baselines": [
+    {
+      "label": "default",
+      "window": 1280,
+      "inspector": 218,
+      "rows": 3,
+      "label_x": 1070,
+      "input_x": 1130,
+      "column": 60,
+      "drift": 0,
+      "vertical": 0,
+      "name_width": 142,
+      "inspector_right": 1280
+    },
+    {
+      "label": "default",
+      "window": 1600,
+      "inspector": 218,
+      "rows": 3,
+      "label_x": 1390,
+      "input_x": 1450,
+      "column": 60,
+      "drift": 0,
+      "vertical": 0,
+      "name_width": 142,
+      "inspector_right": 1600
+    },
+    {
+      "label": "default",
+      "window": 1920,
+      "inspector": 218,
+      "rows": 3,
+      "label_x": 1710,
+      "input_x": 1770,
+      "column": 60,
+      "drift": 0,
+      "vertical": 0,
+      "name_width": 142,
+      "inspector_right": 1920
+    },
+    {
+      "label": "long name",
+      "window": 1280,
+      "inspector": 218,
+      "rows": 3,
+      "label_x": 1070,
+      "input_x": 1130,
+      "column": 60,
+      "drift": 0,
+      "vertical": 0,
+      "name_width": 142,
+      "inspector_right": 1280
+    }
+  ],
+  "drag_tab": {
+    "panel": "Project",
+    "preview": [
+      1062,
+      64,
+      218,
+      715
+    ],
+    "unchanged": true
+  },
+  "drag_split": {
+    "panel": "Hierarchy",
+    "preview": [
+      180,
+      421.5,
+      878,
+      357.5
+    ],
+    "unchanged": true
+  },
+  "moves": [
+    {
+      "panel": "Project",
+      "target": "Scene",
+      "zone": "Left",
+      "layout": "Row[Column[Row[(Project*) (Scene*,Game)] (Hierarchy*)] (Inspector*)]"
+    },
+    {
+      "panel": "Hierarchy",
+      "target": "Inspector",
+      "zone": "Top",
+      "layout": "Row[(Project*) (Scene*,Game) Column[(Hierarchy*) (Inspector*)]]"
+    },
+    {
+      "panel": "Hierarchy",
+      "target": "Inspector",
+      "zone": "Bottom",
+      "layout": "Row[(Project*) (Scene*,Game) Column[(Inspector*) (Hierarchy*)]]"
+    },
+    {
+      "panel": "Project",
+      "target": "Inspector",
+      "zone": "Right",
+      "layout": "Row[(Scene*,Game) Column[Row[(Inspector*) (Project*)] (Hierarchy*)]]"
+    },
+    {
+      "panel": "Hierarchy",
+      "target": null,
+      "zone": "Left",
+      "layout": "Row[(Hierarchy*) (Scene*,Game) (Inspector*) (Project*)]"
+    },
+    {
+      "panel": "Project",
+      "target": "Hierarchy",
+      "zone": "Center",
+      "layout": "Row[(Hierarchy,Project*) (Scene*,Game) (Inspector*)]"
+    }
+  ],
+  "splitter": {
+    "before": 218,
+    "wider": 298,
+    "clamped": 218,
+    "final": 278
+  },
+  "baseline_wide": {
+    "label": "inspector 278",
+    "window": 1280,
+    "inspector": 278,
+    "rows": 3,
+    "label_x": 1010,
+    "input_x": 1070,
+    "column": 60,
+    "drift": 0,
+    "vertical": 0,
+    "name_width": 202,
+    "inspector_right": 1280
+  },
+  "game_moved": "Row[(Hierarchy,Project*) (Scene*) (Game*) (Inspector*)]",
+  "play": [
+    {
+      "label": "after move",
+      "same_session": true,
+      "ticks": 721,
+      "draws": 0,
+      "view_kept": false
+    },
+    {
+      "label": "split during Play: Row[Column[(Hierarchy,Project*) (Game*)] (Scene*) (Inspector*)]",
+      "same_session": true,
+      "ticks": 721,
+      "draws": 0,
+      "view_kept": false
+    },
+    {
+      "label": "hidden tab during Play",
+      "same_session": true,
+      "ticks": 720,
+      "draws": 0,
+      "view_kept": false
+    },
+    {
+      "label": "tab shown again",
+      "same_session": true,
+      "ticks": 722,
+      "draws": 0,
+      "view_kept": false
+    },
+    {
+      "label": "window edge: Row[(Hierarchy,Project*) (Scene*) (Inspector*) (Game*)]",
+      "same_session": true,
+      "ticks": 722,
+      "draws": 0,
+      "view_kept": false
+    }
+  ],
+  "custom": "Row[(Hierarchy*) (Scene*,Game) Column[(Inspector*) (Project*)]]",
+  "current": "Row[(Hierarchy*,Project) (Scene*,Game) (Inspector*)]",
+  "current_inspector": 360,
+  "window": [
+    1500,
+    860
+  ]
+}

@@ -2,6 +2,7 @@ using Engine.Core;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
+using Avalonia.VisualTree;
 
 namespace Engine.Editor;
 
@@ -43,7 +44,8 @@ public partial class MainWindow
         }
         BindMenuAction(newProjectItem, new KeyGesture(Key.N, modifier), () => ChooseProject(true));
         BindMenuAction(openProjectItem, new KeyGesture(Key.O, modifier), () => ChooseProject(false));
-        BindMenuAction(saveSceneItem, new KeyGesture(Key.S, modifier), Save);
+        // With the clip timeline focused, Save, Undo and Redo act on the clip as its own window's menu did.
+        BindMenuAction(saveSceneItem, new KeyGesture(Key.S, modifier), () => FocusedClip is {} clip ? Task.FromResult(clip.Save()) : Save());
         BindMenuAction(undoItem, new KeyGesture(Key.Z, modifier), () => RestoreEdit(false));
         BindMenuAction(redoItem, new KeyGesture(Key.Z, modifier | KeyModifiers.Shift), () => RestoreEdit(true));
         BindMenuAction(preferencesItem, new KeyGesture(Key.OemComma, modifier), EditPreferences);
@@ -89,11 +91,21 @@ public partial class MainWindow
         menus.Add(new NativeMenuItem("Run") { Menu = new NativeMenu { playItem, runGameItem, new NativeMenuItemSeparator(),profiler } });
         buildItem.Click += (_, _) => RunAction(BuildGame);
         menus.Add(new NativeMenuItem("Build") { Menu = new NativeMenu { buildItem } });
+        menus.Add(new NativeMenuItem("Window") { Menu = CreateWindowMenu() });
         NativeMenu.SetMenu(this, menus);
     }
 
+    private ClipEditorWindow? FocusedClip => clipEditor is { IsKeyboardFocusWithin: true } clip ? clip : null;
+
     private async Task RestoreEdit(bool redo)
     {
+        if (FocusedClip is {} clip) { clip.History(redo); return; }
+        // A text field in an editor panel keeps its own undo, as in the former editor windows.
+        if (FocusManager?.GetFocusedElement() is TextBox box && box.FindAncestorOfType<EditorPanel>() != null)
+        {
+            if (redo) box.Redo(); else box.Undo();
+            return;
+        }
         Viewport.Focus();
         if (redo ? history.CanRedo : history.CanUndo)
         {
@@ -136,8 +148,9 @@ public partial class MainWindow
         bool edit = !busy && !Viewport.IsPlaying;
         bool editingName = ObjectName.IsFocused && Selected is { } obj &&
             !string.IsNullOrWhiteSpace(ObjectName.Text) && ObjectName.Text.Trim() != obj.Name;
-        undoItem.IsEnabled = edit && (history.CanUndo || editingName);
-        redoItem.IsEnabled = edit && history.CanRedo && !editingName;
+        bool clip = FocusedClip != null;
+        undoItem.IsEnabled = edit && (clip || history.CanUndo || editingName);
+        redoItem.IsEnabled = edit && (clip || history.CanRedo && !editingName);
         inputItem.IsEnabled = edit;
         newProjectItem.IsEnabled = openProjectItem.IsEnabled = saveSceneItem.IsEnabled = edit;
         preferencesItem.IsEnabled = runGameItem.IsEnabled = resolutionItem.IsEnabled = edit;

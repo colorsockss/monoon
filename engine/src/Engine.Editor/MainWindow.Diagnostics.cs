@@ -29,11 +29,15 @@ public partial class MainWindow
         Viewport.ProbeFinished+=message=>{WriteLog(new(GameLogLevel.Info,message,null,0));Status.Text=message;RefreshDiagnostics(true);};
         Viewport.Logged+=WriteLog;
         Viewport.RuntimeTick+=()=>RefreshDiagnostics();
-        Viewport.KeepSimulationActive=()=>consoleWindow?.IsActive==true;
+        // The main window or a floating panel window in front keeps the game running, as the Console window did.
+        Viewport.KeepSimulationActive=()=>IsActive||Dock.FloatingWindows.Any(w=>w.IsActive);
     }
+    // The profiler is a dock panel; the Debug bar checkbox, Run → Frame Profiler and Window → Profiler open it.
     private void SetProfiler(bool shown)
     {
-        FrameDebug.IsChecked=shown;RefreshDiagnostics(true);
+        FrameDebug.IsChecked=shown;
+        if(shown)OpenPanel("Profiler");else Dock.Close("Profiler");
+        RefreshDiagnostics(true);
         if(Viewport.IsPlaying)Viewport.Focus();
     }
     private void RefreshDiagnostics(bool force=false)
@@ -49,7 +53,7 @@ public partial class MainWindow
         bool tools=Viewport.IsPlaying && DebugButton.IsChecked==true;
         RoleQueryRow.IsVisible = tools;
         DiagnosticsTools.IsVisible=tools;
-        DiagnosticsDock.IsVisible=physics||profile||tools; FramePanel.IsVisible=profile;
+        DiagnosticsDock.IsVisible=physics||tools;
         PhysicsCaption.IsVisible=physics;
         if(physics){
             string query=debug.Latest is {} q ? $"{q.Kind} · "+(q.Count==0?"miss":$"{q.Count} hit · {Viewport.PlayWorld!.ObjectLabel(q.Target!.Value.ObjectId)}") : "Waiting for a query";

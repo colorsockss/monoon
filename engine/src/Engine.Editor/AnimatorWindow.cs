@@ -13,17 +13,20 @@ public partial class MainWindow
     private async Task EditAnimator(string? relative)
     {
         if (project == null && !await Save()) return;
+        if (!await ReplaceEditor("Animator", relative)) return;
         var root = project!;
-        var dialog = new AnimatorWindow(root,relative == null ? CreationFolder("Assets") : ParentPath(relative),relative);
-        if (await dialog.ShowDialog<string?>(this) is not {} saved) return;
-        ProjectAssets.Scan(root);
-        BrowseFolder(ParentPath(saved),saved);
-        RefreshComponentList();
-        Status.Text = $"Saved {saved}.";
+        var dialog = new AnimatorWindow(root,relative == null ? CreationFolder("Assets") : ParentPath(relative),relative) { Asset = relative };
+        ShowEditor<string>("Animator", dialog, saved =>
+        {
+            ProjectAssets.Scan(root);
+            BrowseFolder(ParentPath(saved),saved);
+            RefreshComponentList();
+            Status.Text = $"Saved {saved}.";
+        });
     }
 }
 
-internal sealed class AnimatorWindow : Window
+internal sealed class AnimatorWindow : EditorPanel
 {
     private sealed record ClipOption(Guid Id,string Path)
     {
@@ -58,8 +61,7 @@ internal sealed class AnimatorWindow : Window
     public AnimatorWindow(string root,string folder,string? relative)
     {
         this.root=root; this.folder=folder; this.relative=relative;
-        Title="Animator Controller"; Width=550; Height=490; MinWidth=390; MinHeight=340;
-        WindowStartupLocation=WindowStartupLocation.CenterOwner;
+        Title=relative==null ? "Animator Controller" : $"{Path.GetFileNameWithoutExtension(relative)} · Animator"; MinWidth=390; MinHeight=340;
         var catalog=ProjectAssets.Scan(root);
         clips=catalog.Entries.Where(e => e.Path.EndsWith(ProjectAssets.Clip) && File.Exists(Path.Combine(root,e.Path)))
             .Select(e=>new ClipOption(e.Id,e.Path)).ToArray();
@@ -74,11 +76,6 @@ internal sealed class AnimatorWindow : Window
         var paramTab=EditTab("Parameters",out parameterList,EditParameter);
         var rulesTab=EditTab("Transitions",out transitionList,EditTransition);
         previewTab.Content=PreviewPanel();
-        foreach (var tab in new[]{statesTab,paramTab,rulesTab,previewTab})
-        {
-            tab.FontSize=12;
-            tab.Padding=new Thickness(9,5);
-        }
         tabs.ItemsSource=new[]{statesTab,paramTab,rulesTab,previewTab};
         tabs.SelectionChanged+=(_,e)=>
         {
@@ -87,9 +84,9 @@ internal sealed class AnimatorWindow : Window
         };
         var save=Button("Save Controller",SaveController);
         save.Classes.Add("primary");
-        var footer=new Grid { ColumnDefinitions=new("*,Auto,Auto"),ColumnSpacing=5 };
+        var footer=new Grid { ColumnDefinitions=new("*,Auto,Auto"),ColumnSpacing=EditorTokens.Gap };
         Place(footer,status,0,0); Place(footer,Button("Close",Close),0,1); Place(footer,save,0,2);
-        var main=new Grid { Margin=new(12),RowDefinitions=new("Auto,*,Auto"),RowSpacing=6 };
+        var main=new Grid { Margin=EditorTokens.WindowPadding,RowDefinitions=new("Auto,*,Auto"),RowSpacing=EditorTokens.Gap2 };
         Place(main,Field("Name",name),0,0); Place(main,tabs,1,0); Place(main,footer,2,0);
         Content=main;
         RefreshLists();
@@ -114,11 +111,11 @@ internal sealed class AnimatorWindow : Window
         if (asking) return;
         asking=true;
         var dialog=new Window { Title="Unsaved controller",SizeToContent=SizeToContent.WidthAndHeight,WindowStartupLocation=WindowStartupLocation.CenterOwner };
-        dialog.Content=new StackPanel { Margin=new(12),Spacing=6,Children={
+        dialog.Content=new StackPanel { Margin=EditorTokens.WindowPadding,Spacing=EditorTokens.Gap2,Children={
             new TextBlock { Text="Save changes to the controller?" },
             Actions(Button("Cancel",()=>dialog.Close("cancel")),Button("Discard",()=>dialog.Close("discard")),Button("Save",()=>dialog.Close("save"))) } };
         string? answer;
-        try { answer=await dialog.ShowDialog<string?>(this); } finally { asking=false; }
+        try { answer=await dialog.ShowDialog<string?>(Owner); } finally { asking=false; }
         if (answer=="save") SaveController();
         else if (answer=="discard") { committed=true; Close(); }
     }
@@ -126,15 +123,16 @@ internal sealed class AnimatorWindow : Window
     private TabItem EditTab(string header,out ListBox list,Action<int> edit)
     {
         var items=new ListBox(); list=items;
-        var pane=new Grid { RowDefinitions=new("*,Auto"),RowSpacing=4,Margin=new(0,5) };
+        var pane=new Grid { RowDefinitions=new("*,Auto"),RowSpacing=EditorTokens.Gap,Margin=new(0,EditorTokens.Gap) };
         var remove=Button("Remove",()=>Remove(header,items.SelectedIndex));
         var change=Button("Edit…",()=>edit(items.SelectedIndex));
         var buttons=Actions(Button("Add…",()=>edit(-1)),change,remove);
         if (header=="States") buttons.Children.Add(Button("Set Entry",()=>{ if (items.SelectedIndex is var i && i>=0) { entry=states[i].Name; RefreshLists(i); } }));
         if (header=="Transitions")
         {
-            buttons.Children.Add(Button("↑",()=>MoveRule(items.SelectedIndex,-1)));
-            buttons.Children.Add(Button("↓",()=>MoveRule(items.SelectedIndex,1)));
+            var up=EditorTokens.IconButton("IconArrowUp","Move transition up");up.Click+=(_,_)=>MoveRule(items.SelectedIndex,-1);
+            var down=EditorTokens.IconButton("IconArrowDown","Move transition down");down.Click+=(_,_)=>MoveRule(items.SelectedIndex,1);
+            buttons.Children.Add(up);buttons.Children.Add(down);
         }
         items.SelectionChanged+=(_,_)=>{ change.IsEnabled=remove.IsEnabled=items.SelectedIndex>=0; };
         items.DoubleTapped+=(_,_)=>{ if (items.SelectedIndex>=0) edit(items.SelectedIndex); };
@@ -261,9 +259,9 @@ internal sealed class AnimatorWindow : Window
 
     private Control PreviewPanel()
     {
-        var picture=new Border { Child=previewImage,Padding=new(6),Background=Brush.Parse("#18212D"),MinHeight=64 };
-        var grid=new Grid { RowDefinitions=new("*,Auto,Auto,Auto"),RowSpacing=5,Margin=new(0,5) };
-        var row=new Grid { ColumnDefinitions=new("*,Auto"),ColumnSpacing=5 };
+        var picture=new Border { Child=previewImage,Padding=new(EditorTokens.Gap2),Background=EditorTokens.Brush("EditorField"),MinHeight=64 };
+        var grid=new Grid { RowDefinitions=new("*,Auto,Auto,Auto"),RowSpacing=EditorTokens.Gap,Margin=new(0,EditorTokens.Gap) };
+        var row=new Grid { ColumnDefinitions=new("*,Auto"),ColumnSpacing=EditorTokens.Gap };
         Place(row,previewState,0,0); Place(row,Button("Restart",StartPreview),0,1);
         Place(grid,picture,0,0); Place(grid,row,1,0);
         Place(grid,new ScrollViewer { Content=previewControls,MaxHeight=110 },2,0); Place(grid,previewEvents,3,0);
@@ -343,14 +341,14 @@ internal sealed class AnimatorWindow : Window
     private async Task<bool> Form(string title,Control[] fields,Action apply)
     {
         var dlg=new Window { Title=title,Width=325,MinWidth=270,SizeToContent=SizeToContent.Height,WindowStartupLocation=WindowStartupLocation.CenterOwner };
-        var panel=new StackPanel { Margin=new(12),Spacing=5 };
+        var panel=new StackPanel { Margin=EditorTokens.WindowPadding,Spacing=EditorTokens.Gap };
         foreach (var field in fields) panel.Children.Add(field);
         var error=new TextBlock { TextWrapping=TextWrapping.Wrap,IsVisible=false }; panel.Children.Add(error);
         panel.Children.Add(Actions(Button("Cancel",()=>dlg.Close(false)),Button("Apply",()=>
         {
             try { apply(); dlg.Close(true); } catch (Exception ex) { error.Text=ex.Message; error.IsVisible=true; }
         })));
-        dlg.Content=panel; return await dlg.ShowDialog<bool>(this);
+        dlg.Content=panel; return await dlg.ShowDialog<bool>(Owner);
     }
     private static string Label(TextBox box) => !string.IsNullOrWhiteSpace(box.Text) && !box.Text.Any(char.IsControl)
         ? box.Text.Trim() : throw new InvalidDataException("Enter a name.");
@@ -362,12 +360,12 @@ internal sealed class AnimatorWindow : Window
     }
     private static StackPanel Actions(params Button[] buttons)
     {
-        var row=new StackPanel { Orientation=Orientation.Horizontal,Spacing=4,HorizontalAlignment=HorizontalAlignment.Right };
+        var row=new StackPanel { Orientation=Orientation.Horizontal,Spacing=EditorTokens.Gap,HorizontalAlignment=HorizontalAlignment.Right };
         foreach (var button in buttons) row.Children.Add(button); return row;
     }
     private static Grid Field(string label,Control control)
     {
-        var grid=new Grid { ColumnDefinitions=new("76,*"),ColumnSpacing=5 };
+        var grid=new Grid { ColumnDefinitions=EditorTokens.LabelColumns(EditorTokens.DialogLabelWidth),ColumnSpacing=EditorTokens.Gap2 };
         var text=new TextBlock { Text=label,TextTrimming=TextTrimming.CharacterEllipsis,VerticalAlignment=VerticalAlignment.Center };
         ToolTip.SetTip(text,label); Place(grid,text,0,0); Place(grid,control,0,1); return grid;
     }

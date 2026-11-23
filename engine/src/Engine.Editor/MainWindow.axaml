@@ -16,8 +16,8 @@
                             HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center" Content="{TemplateBinding Content}"/>
         </ControlTemplate>
       </Setter>
-      <Style Selector="^:pointerover"><Setter Property="Background" Value="#2C3138"/></Style>
-      <Style Selector="^:focus-visible"><Setter Property="Background" Value="#353E49"/></Style>
+      <Style Selector="^:pointerover"><Setter Property="Background" Value="{DynamicResource EditorHover}"/></Style>
+      <Style Selector="^:focus-visible"><Setter Property="Background" Value="{DynamicResource EditorActive}"/></Style>
     </ControlTheme>
     <ControlTheme x:Key="{x:Type local:ComponentSection}" TargetType="local:ComponentSection">
       <Setter Property="Margin" Value="0,0,0,1"/>
@@ -27,23 +27,25 @@
         <ControlTemplate>
           <Border BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="0,1,0,0">
             <Grid RowDefinitions="Auto,Auto">
-              <Grid ColumnDefinitions="*,Auto" ColumnSpacing="5" MinHeight="21">
-                <ToggleButton Name="HeaderToggle" Classes="drawerHeader" Theme="{StaticResource DrawerHeader}" MinHeight="21" Padding="0"
+              <Grid ColumnDefinitions="*,Auto" ColumnSpacing="4" MinHeight="{StaticResource EditorRowHeight}">
+                <ToggleButton Name="HeaderToggle" Classes="drawerHeader" Theme="{StaticResource DrawerHeader}" MinHeight="{StaticResource EditorRowHeight}" Padding="0"
                               IsChecked="{Binding Foldout.IsExpanded, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"
                               AutomationProperties.Name="{Binding Header, RelativeSource={RelativeSource TemplatedParent}}"
                               ToolTip.Tip="{Binding Header, RelativeSource={RelativeSource TemplatedParent}}">
-                  <Grid ColumnDefinitions="8,*" ColumnSpacing="5">
+                  <Grid ColumnDefinitions="8,16,*" ColumnSpacing="4">
                     <PathIcon Width="7" Height="7" Data="M1,0 L7,4 L1,8 Z"/>
-                    <TextBlock Grid.Column="1" Text="{Binding Header, RelativeSource={RelativeSource TemplatedParent}}"
+                    <PathIcon Grid.Column="1" Theme="{StaticResource EditorIcon}" Foreground="{DynamicResource EditorMuted}"
+                              Data="{Binding Icon, RelativeSource={RelativeSource TemplatedParent}}"/>
+                    <TextBlock Grid.Column="2" Text="{Binding Header, RelativeSource={RelativeSource TemplatedParent}}"
                                TextTrimming="CharacterEllipsis" VerticalAlignment="Center" FontWeight="SemiBold"/>
                   </Grid>
                 </ToggleButton>
-                <Button Grid.Column="1" IsVisible="{TemplateBinding HasSettings}" Classes="quiet" Padding="2" Width="18" Height="18" MinHeight="0" Background="Transparent"
+                <Button Grid.Column="1" IsVisible="{TemplateBinding HasSettings}" Classes="quiet" Padding="2" Width="20" Height="20" MinHeight="0" Background="Transparent"
                         HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
                         ToolTip.Tip="Component settings"
                         AutomationProperties.Name="{Binding Header, RelativeSource={RelativeSource TemplatedParent}, StringFormat='{}{0} settings'}"
                         Click="ComponentSettingsClick">
-                  <PathIcon Width="12" Height="12" Data="M19.43,12.98 C19.47,12.66 19.5,12.34 19.5,12 C19.5,11.66 19.47,11.34 19.42,11.02 L21.54,9.37 L19.54,5.91 L17.05,6.91 C16.54,6.52 15.98,6.19 15.37,5.94 L15,3.27 H11 L10.61,5.94 C10.01,6.19 9.44,6.52 8.93,6.91 L6.45,5.91 L4.45,9.37 L6.57,11.02 C6.52,11.34 6.5,11.67 6.5,12 C6.5,12.33 6.52,12.66 6.57,12.98 L4.45,14.63 L6.45,18.09 L8.93,17.09 C9.44,17.48 10.01,17.81 10.61,18.06 L11,20.73 H15 L15.37,18.06 C15.98,17.81 16.54,17.48 17.05,17.09 L19.54,18.09 L21.54,14.63 Z M13,9 A3,3 0 1 1 13,15 A3,3 0 1 1 13,9 Z"/>
+                  <PathIcon Theme="{StaticResource EditorIcon}" Data="{StaticResource IconGear}"/>
                 </Button>
               </Grid>
               <ContentPresenter Name="PART_ContentPresenter" Grid.Row="1" Padding="0,2,0,4"
@@ -55,11 +57,31 @@
         </ControlTemplate>
       </Setter>
     </ControlTheme>
+    <DataTemplate x:Key="ProjectListItem">
+      <Grid ColumnDefinitions="16,*" ColumnSpacing="4" ToolTip.Tip="{Binding RelativePath}">
+        <PathIcon Theme="{StaticResource EditorIcon}" Foreground="{DynamicResource EditorMuted}" Data="{Binding Icon}"/>
+        <StackPanel Grid.Column="1" VerticalAlignment="Center">
+          <TextBlock Text="{Binding Name}" TextTrimming="CharacterEllipsis"/>
+          <TextBlock IsVisible="{Binding SearchResult}" Classes="label" Text="{Binding Directory}" TextTrimming="LeadingCharacterEllipsis"/>
+        </StackPanel>
+      </Grid>
+    </DataTemplate>
+    <!-- Grid tile: a PNG shows its pixels, anything else its type icon; the name trims under it. -->
+    <DataTemplate x:Key="ProjectGridItem">
+      <StackPanel Spacing="2" ToolTip.Tip="{Binding RelativePath}">
+        <Panel Width="48" Height="48" HorizontalAlignment="Center">
+          <Image Source="{Binding Thumbnail}" Stretch="Uniform" RenderOptions.BitmapInterpolationMode="None"/>
+          <PathIcon Theme="{StaticResource EditorIcon}" Width="32" Height="32" HorizontalAlignment="Center" Foreground="{DynamicResource EditorMuted}"
+                    Data="{Binding Icon}" IsVisible="{Binding !HasThumbnail}"/>
+        </Panel>
+        <TextBlock Text="{Binding Name}" TextTrimming="CharacterEllipsis" TextAlignment="Center" HorizontalAlignment="Stretch"/>
+      </StackPanel>
+    </DataTemplate>
   </Window.Resources>
   <Window.DataTemplates>
     <DataTemplate DataType="local:SpriteFields">
       <StackPanel Spacing="2">
-        <Grid ColumnDefinitions="56,*" ColumnSpacing="5">
+        <Grid ColumnDefinitions="56,*" ColumnSpacing="{StaticResource EditorFieldGap}">
           <TextBlock Classes="fieldLabel" Text="Sprite"/>
           <Button Grid.Column="1" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch"
                   AutomationProperties.Name="Select sprite" ToolTip.Tip="Drop a PNG here or click to choose a sprite." Click="SpriteMenuClick">
@@ -69,13 +91,13 @@
             </Grid>
           </Button>
         </Grid>
-        <Grid ColumnDefinitions="56,*" RowDefinitions="Auto,Auto" ColumnSpacing="5" RowSpacing="2">
+        <Grid ColumnDefinitions="56,*" RowDefinitions="Auto,Auto" ColumnSpacing="{StaticResource EditorFieldGap}" RowSpacing="2">
           <TextBlock Classes="fieldLabel" Text="Layer"/>
           <NumericUpDown Grid.Column="1" Minimum="-32768" Maximum="32767" Increment="1" Value="{Binding Layer, Mode=TwoWay}"/>
           <TextBlock Grid.Row="1" Classes="fieldLabel" Text="Order"/>
           <NumericUpDown Grid.Row="1" Grid.Column="1" Minimum="-32768" Maximum="32767" Increment="1" Value="{Binding Order, Mode=TwoWay}"/>
         </Grid>
-        <Grid ColumnDefinitions="56,*" RowDefinitions="Auto,Auto" ColumnSpacing="5" RowSpacing="2">
+        <Grid ColumnDefinitions="56,*" RowDefinitions="Auto,Auto" ColumnSpacing="{StaticResource EditorFieldGap}" RowSpacing="2">
           <TextBlock Classes="fieldLabel" Text="Y sort"/>
           <CheckBox Grid.Column="1" Content="Use foot Y" IsChecked="{Binding SortByY, Mode=TwoWay}"/>
           <TextBlock Grid.Row="1" Classes="fieldLabel" Text="Foot ΔY"/>
@@ -83,13 +105,13 @@
                          IsEnabled="{Binding SortByY}" Value="{Binding FootOffset, Mode=TwoWay}"
                          ToolTip.Tip="Local Y offset from the bottom center, in world units."/>
         </Grid>
-        <Grid ColumnDefinitions="56,16,*" ColumnSpacing="5">
+        <Grid ColumnDefinitions="56,16,*" ColumnSpacing="{StaticResource EditorFieldGap}">
           <TextBlock Text="Color" Classes="fieldLabel"/>
           <Border Grid.Column="1" Background="{Binding ColorBrush}" CornerRadius="2"/>
           <TextBox Grid.Column="2" Text="{Binding ColorText, Mode=OneWay}" AutomationProperties.Name="Sprite tint"
                    TextChanged="SquareColorChanged" LostFocus="SquareColorCommitted" KeyDown="SquareColorKeyDown"/>
         </Grid>
-        <Grid ColumnDefinitions="56,*" RowDefinitions="Auto,Auto,Auto" ColumnSpacing="5" RowSpacing="2">
+        <Grid ColumnDefinitions="56,*" RowDefinitions="Auto,Auto,Auto" ColumnSpacing="{StaticResource EditorFieldGap}" RowSpacing="2">
           <TextBlock Classes="fieldLabel" Text="Flip"/>
           <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="8">
             <CheckBox Content="X" IsChecked="{Binding FlipX, Mode=TwoWay}" AutomationProperties.Name="Flip X"/>
@@ -106,55 +128,42 @@
     </DataTemplate>
   </Window.DataTemplates>
   <Window.Styles>
-    <Style Selector="TreeViewItem.groupSelected"><Setter Property="Foreground" Value="{DynamicResource EditorAccent}"/></Style>
-    <Style Selector="TreeViewItem.dropTarget"><Setter Property="Foreground" Value="{DynamicResource EditorAccent}"/></Style>
-    <Style Selector="Border.referenceRow"><Setter Property="Background" Value="Transparent"/></Style>
-    <Style Selector="Border.referenceRow.referenceDrop"><Setter Property="Background" Value="#405551"/></Style>
-    <Style Selector="ToggleButton.drawerHeader:checked PathIcon"><Setter Property="RenderTransform" Value="rotate(90deg)"/></Style>
-    <Style Selector="TextBlock.panel">
-      <Setter Property="FontSize" Value="11.5"/><Setter Property="FontWeight" Value="SemiBold"/>
-    </Style>
-    <Style Selector="Border.panelHeader">
-      <Setter Property="Height" Value="29"/>
-      <Setter Property="Padding" Value="10,0"/>
-      <Setter Property="Background" Value="{DynamicResource EditorPanel}"/>
-      <Setter Property="BorderBrush" Value="{DynamicResource EditorDivider}"/>
-      <Setter Property="BorderThickness" Value="0,0,0,1"/>
-    </Style>
-    <Style Selector="Button.panelAction">
-      <Setter Property="Width" Value="21"/><Setter Property="Height" Value="21"/>
-      <Setter Property="MinHeight" Value="0"/><Setter Property="Padding" Value="0"/>
-      <Setter Property="HorizontalContentAlignment" Value="Center"/>
-      <Setter Property="VerticalAlignment" Value="Center"/>
-    </Style>
-    <Style Selector="#Inspector TextBox, #Inspector NumericUpDown, #Inspector ComboBox, #Inspector CheckBox, #Inspector Button">
-      <Setter Property="MinHeight" Value="21"/>
-      <Setter Property="Padding" Value="4,1"/>
-    </Style>
-    <Style Selector="#Inspector ComboBox"><Setter Property="HorizontalAlignment" Value="Stretch"/></Style>
-    <Style Selector="NumericUpDown">
-      <Setter Property="VerticalContentAlignment" Value="Center"/>
-      <Setter Property="FormatString" Value="0.##"/>
-      <Setter Property="Increment" Value="1"/>
-      <Setter Property="ShowButtonSpinner" Value="False"/>
-    </Style>
-    <Style Selector="ListBox"><Setter Property="Background" Value="Transparent"/></Style>
-    <Style Selector="Border#InspectorPanel.scriptDrop">
-      <Setter Property="BoxShadow" Value="inset 0 0 0 2 #A6E9CE"/>
-    </Style>
-    <Style Selector="local|ComponentSection.spriteDrop">
-      <Setter Property="BorderBrush" Value="#A6E9CE"/>
-    </Style>
+    <StyleInclude Source="avares://MoNoon/PanelStyles.axaml"/>
   </Window.Styles>
-  <Grid RowDefinitions="Auto,*,21">
+  <Grid RowDefinitions="Auto,Auto,*,21">
     <NativeMenuBar/>
-    <Grid Grid.Row="1" ColumnDefinitions="176,*,218">
-      <Border BorderBrush="{DynamicResource EditorDivider}" BorderThickness="0,0,1,0" Background="{DynamicResource EditorPanel}">
-        <Grid RowDefinitions="Auto,1.25*,Auto,*">
+    <!-- Play starts at the centre line; the Play-time options sit just left of it and never move it. -->
+    <Border Grid.Row="1" x:Name="MainToolbar" Classes="mainToolbar">
+      <Grid ColumnDefinitions="*,*">
+        <StackPanel x:Name="TimeControls" Orientation="Horizontal" Spacing="4" Margin="0,0,8,0" HorizontalAlignment="Right" VerticalAlignment="Center" IsVisible="False">
+          <ToggleButton x:Name="DebugButton" Height="21" MinHeight="0" Padding="5,0" Content="Debug" AutomationProperties.Name="Play diagnostics" ToolTip.Tip="Show runtime diagnostics below the game view"/>
+          <ComboBox x:Name="SpeedPicker" Width="68" Height="21" MinHeight="0" Padding="4,0" VerticalContentAlignment="Center"
+                    ToolTip.Tip="Game speed" AutomationProperties.Name="Game speed"/>
+        </StackPanel>
+        <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="4" VerticalAlignment="Center">
+          <Button x:Name="PlayButton" Classes="primary" Width="60" Height="21" MinHeight="0" Padding="4,0" Content="▶  Play" VerticalAlignment="Center"/>
+          <Button x:Name="PauseButton" Focusable="False" Width="24" Height="21" MinHeight="0" Padding="0" HorizontalContentAlignment="Center" IsEnabled="False"
+                  ToolTip.Tip="Pause or resume game time" AutomationProperties.Name="Pause">
+            <PathIcon Theme="{StaticResource EditorIcon}" Data="{StaticResource IconPause}"/>
+          </Button>
+          <Button x:Name="StepButton" Focusable="False" Width="24" Height="21" MinHeight="0" Padding="0" HorizontalContentAlignment="Center" IsEnabled="False"
+                  ToolTip.Tip="Advance one fixed tick" AutomationProperties.Name="Step">
+            <PathIcon Theme="{StaticResource EditorIcon}" Data="{StaticResource IconStep}"/>
+          </Button>
+        </StackPanel>
+      </Grid>
+    </Border>
+    <local:DockHost x:Name="Dock" Grid.Row="2">
+      <Grid local:DockHost.Panel="Hierarchy" MinWidth="140" MinHeight="80" RowDefinitions="Auto,*" Background="{DynamicResource EditorPanel}">
           <Border Classes="panelHeader">
-            <Grid ColumnDefinitions="*,Auto" ColumnSpacing="5">
-              <TextBlock Classes="panel" Text="Hierarchy" VerticalAlignment="Center"/>
-              <Button Classes="panelAction quiet" x:Name="AddButton" Grid.Column="1" Content="+" AutomationProperties.Name="Add object" ToolTip.Tip="Add square sprite" VerticalAlignment="Center"/>
+            <Grid ColumnDefinitions="*,Auto" ColumnSpacing="4">
+              <TextBox x:Name="HierarchySearch" Classes="toolbarSearch" Watermark="Search…" AutomationProperties.Name="Search hierarchy"
+                       ToolTip.Tip="Show objects whose name contains this text, with their parents. Esc clears.">
+                <TextBox.InnerLeftContent><PathIcon Theme="{StaticResource EditorIcon}" Margin="6,0,0,0" Foreground="{DynamicResource EditorMuted}" Data="{StaticResource IconSearch}"/></TextBox.InnerLeftContent>
+              </TextBox>
+              <Button Classes="panelAction quiet" x:Name="AddButton" Grid.Column="1" AutomationProperties.Name="Add object" ToolTip.Tip="Add square sprite" VerticalAlignment="Center">
+                <PathIcon Theme="{StaticResource EditorIcon}" Data="{StaticResource IconAdd}"/>
+              </Button>
             </Grid>
           </Border>
           <TreeView x:Name="Hierarchy" Grid.Row="1" Margin="4,3,4,6" Background="Transparent"
@@ -164,20 +173,26 @@
               <Style Selector="TreeViewItem /template/ ToggleButton#PART_ExpandCollapseChevron">
                 <Setter Property="MinHeight" Value="0"/><Setter Property="Height" Value="20"/><Setter Property="Padding" Value="0"/>
               </Style>
-              <Style Selector="TreeViewItem">
-                <Setter Property="Padding" Value="3,0"/>
-                <Setter Property="HeaderTemplate">
-                  <DataTemplate><TextBlock Text="{Binding}" TextTrimming="CharacterEllipsis" ToolTip.Tip="{Binding}"/></DataTemplate>
-                </Setter>
+              <Style Selector="TreeViewItem"><Setter Property="Padding" Value="3,0"/></Style>
+              <!-- Rows fill the width so the eye and lock sit at the right edge. -->
+              <Style Selector="TreeViewItem /template/ ContentPresenter#PART_HeaderPresenter">
+                <Setter Property="HorizontalAlignment" Value="Stretch"/><Setter Property="HorizontalContentAlignment" Value="Stretch"/>
               </Style>
             </TreeView.Styles>
           </TreeView>
-          <Border Grid.Row="2" Classes="panelHeader" BorderThickness="0,1">
-            <Grid ColumnDefinitions="Auto,*,Auto,Auto" ColumnSpacing="4">
-              <TextBlock Classes="panel" Text="Project" VerticalAlignment="Center"/>
-              <TextBlock x:Name="ProjectName" Grid.Column="1" Margin="2,0,0,0" Classes="label" TextTrimming="LeadingCharacterEllipsis"/>
-              <Button Grid.Column="2" Classes="panelAction quiet" x:Name="ParentFolderButton" Content="↑" ToolTip.Tip="Parent folder" AutomationProperties.Name="Parent folder"/>
-              <Button Grid.Column="3" Classes="panelAction quiet" x:Name="ProjectActions" Content="+" AutomationProperties.Name="Project actions" ToolTip.Tip="Create or import" VerticalAlignment="Center">
+          <TextBlock x:Name="HierarchyNoMatch" Grid.Row="1" Classes="label" Margin="10,8" IsHitTestVisible="False" VerticalAlignment="Top" IsVisible="False" Text="No matching objects"/>
+      </Grid>
+      <Grid local:DockHost.Panel="Project" x:Name="ProjectPanel" MinWidth="140" MinHeight="100" RowDefinitions="Auto,Auto,*" Background="{DynamicResource EditorPanel}">
+          <Border Classes="panelHeader">
+            <Grid ColumnDefinitions="*,Auto,Auto" ColumnSpacing="4">
+              <TextBox x:Name="AssetSearch" Classes="toolbarSearch" Watermark="Search…" AutomationProperties.Name="Search project" ToolTip.Tip="Search all assets and scripts by path, or type (e.g. t:sprite). Esc clears.">
+                <TextBox.InnerLeftContent><PathIcon Theme="{StaticResource EditorIcon}" Margin="6,0,0,0" Foreground="{DynamicResource EditorMuted}" Data="{StaticResource IconSearch}"/></TextBox.InnerLeftContent>
+              </TextBox>
+              <ToggleButton Grid.Column="1" Classes="panelAction" x:Name="ProjectViewToggle" AutomationProperties.Name="Thumbnail grid" ToolTip.Tip="Show thumbnails in a grid">
+                <PathIcon Theme="{StaticResource EditorIcon}" Data="{StaticResource IconViewGrid}"/>
+              </ToggleButton>
+              <Button Grid.Column="2" Classes="panelAction quiet" x:Name="ProjectActions" AutomationProperties.Name="Project actions" ToolTip.Tip="Create or import" VerticalAlignment="Center">
+                <PathIcon Theme="{StaticResource EditorIcon}" Data="{StaticResource IconAdd}"/>
                 <Button.Flyout>
                   <MenuFlyout>
                     <MenuItem x:Name="ImportAssetsButton" Header="Import Assets…"/>
@@ -199,61 +214,92 @@
               </Button>
             </Grid>
           </Border>
-          <Grid Grid.Row="3" RowDefinitions="Auto,*,Auto">
-            <TextBox x:Name="AssetSearch" Margin="6,5,6,0" Watermark="Search project…" AutomationProperties.Name="Search project" ToolTip.Tip="Search all assets and scripts by path, or type (e.g. t:sprite). Esc clears."/>
-            <ListBox Grid.Row="1" x:Name="ProjectBrowser" Margin="4,3" AutomationProperties.Name="Project files"
-                     ScrollViewer.HorizontalScrollBarVisibility="Disabled">
-              <ListBox.Styles>
-                <Style Selector="ListBoxItem"><Setter Property="Padding" Value="4,1"/><Setter Property="MinHeight" Value="21"/>
-                  <Setter Property="VerticalContentAlignment" Value="Center"/><Setter Property="HorizontalContentAlignment" Value="Stretch"/></Style>
-              </ListBox.Styles>
-              <ListBox.ItemTemplate>
-                <DataTemplate>
-                  <Grid ColumnDefinitions="14,*" ColumnSpacing="5" ToolTip.Tip="{Binding RelativePath}">
-                    <PathIcon Width="12" Height="11" VerticalAlignment="Center" Foreground="{DynamicResource EditorMuted}" IsVisible="{Binding IsFolder}"
-                              Data="M1,4 L8,4 10,6 21,6 21,17 1,17 Z"/>
-                    <PathIcon Width="10" Height="11" VerticalAlignment="Center" Foreground="{DynamicResource EditorMuted}" IsVisible="{Binding !IsFolder}"
-                              Data="M4,1 L13,1 19,7 19,21 4,21 Z M13,3 L13,8 17,8 Z"/>
-                    <StackPanel Grid.Column="1" VerticalAlignment="Center">
-                      <TextBlock Text="{Binding Name}" TextTrimming="CharacterEllipsis"/>
-                      <TextBlock IsVisible="{Binding SearchResult}" Classes="label" FontSize="10" Text="{Binding Directory}" TextTrimming="LeadingCharacterEllipsis"/>
-                    </StackPanel>
-                  </Grid>
-                </DataTemplate>
-              </ListBox.ItemTemplate>
-            </ListBox>
-            <Border Grid.Row="2" x:Name="ProjectPreviewPanel" IsVisible="False" BorderBrush="{DynamicResource EditorDivider}"
-                    BorderThickness="0,1,0,0" Padding="6,4">
-              <Image x:Name="ProjectPreview" Height="64" Stretch="Uniform" RenderOptions.BitmapInterpolationMode="None"
-                     AutomationProperties.Name="Selected PNG preview"/>
+          <!-- Path bar: the up arrow (also a drop target for moving files up) and one button per folder of the current path. -->
+          <Border Grid.Row="1" Classes="pathBar">
+            <Grid ColumnDefinitions="Auto,*" ColumnSpacing="2">
+              <Button Classes="crumbIcon quiet" x:Name="ParentFolderButton" ToolTip.Tip="Parent folder" AutomationProperties.Name="Parent folder">
+                <PathIcon Theme="{StaticResource EditorIcon}" Data="{StaticResource IconArrowUp}"/>
+              </Button>
+              <ScrollViewer Grid.Column="1" x:Name="ProjectPathScroll" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Disabled">
+                <StackPanel x:Name="ProjectPath" Orientation="Horizontal" VerticalAlignment="Center" AutomationProperties.Name="Folder path"/>
+              </ScrollViewer>
+              <TextBlock Grid.Column="1" x:Name="ProjectName" Classes="label" VerticalAlignment="Center" Margin="4,0" TextTrimming="LeadingCharacterEllipsis"/>
+            </Grid>
+          </Border>
+          <Grid Grid.Row="2" ColumnDefinitions="Auto,*">
+            <!-- The folder tree appears once the panel is wide enough to keep the file area usable. -->
+            <Border x:Name="FolderTreePane" Width="150" IsVisible="False" BorderBrush="{DynamicResource EditorDivider}" BorderThickness="0,0,1,0">
+              <TreeView x:Name="FolderTree" Margin="2,3,2,6" Background="Transparent" ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                        AutomationProperties.Name="Project folders">
+                <TreeView.Styles>
+                  <Style Selector="TreeViewItem /template/ ToggleButton#PART_ExpandCollapseChevron">
+                    <Setter Property="MinHeight" Value="0"/><Setter Property="Height" Value="20"/><Setter Property="Padding" Value="0"/>
+                  </Style>
+                  <Style Selector="TreeViewItem"><Setter Property="Padding" Value="3,0"/></Style>
+                </TreeView.Styles>
+              </TreeView>
             </Border>
-            <TextBlock Grid.Row="1" x:Name="EmptyFolder" Classes="label" Margin="10,8" IsHitTestVisible="False" VerticalAlignment="Top" Text="Empty folder"/>
+            <Grid Grid.Column="1" RowDefinitions="*,Auto">
+              <ListBox x:Name="ProjectBrowser" Margin="4,3" AutomationProperties.Name="Project files"
+                       ScrollViewer.HorizontalScrollBarVisibility="Disabled" ItemTemplate="{StaticResource ProjectListItem}"/>
+              <Border Grid.Row="1" x:Name="ProjectPreviewPanel" IsVisible="False" BorderBrush="{DynamicResource EditorDivider}"
+                      BorderThickness="0,1,0,0" Padding="6,4">
+                <Image x:Name="ProjectPreview" Height="64" Stretch="Uniform" RenderOptions.BitmapInterpolationMode="None"
+                       AutomationProperties.Name="Selected PNG preview"/>
+              </Border>
+              <TextBlock x:Name="EmptyFolder" Classes="label" Margin="10,8" IsHitTestVisible="False" VerticalAlignment="Top" Text="Empty folder"/>
+            </Grid>
           </Grid>
         </Grid>
-      </Border>
-      <Grid Grid.Column="1" RowDefinitions="Auto,*,Auto">
+      <Grid local:DockHost.Panel="Scene" local:DockHost.Fill="True" MinWidth="240" MinHeight="160" RowDefinitions="Auto,*">
         <Border Classes="panelHeader">
-          <Grid ColumnDefinitions="Auto,*,Auto,Auto" ColumnSpacing="8">
-            <TextBlock x:Name="ViewMode" Classes="label" Text="Scene"/>
-            <TextBlock x:Name="SceneCaption" Grid.Column="1" Classes="panel" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"
+          <Grid ColumnDefinitions="Auto,*" ColumnSpacing="8">
+            <StackPanel x:Name="GizmoControls" Orientation="Horizontal" Spacing="2" VerticalAlignment="Center">
+              <ToggleButton x:Name="MoveTool" Classes="tool" ToolTip.Tip="Move (W)" AutomationProperties.Name="Move tool">
+                <PathIcon Theme="{StaticResource EditorIcon}" Data="{StaticResource IconMove}"/>
+              </ToggleButton>
+              <ToggleButton x:Name="RotateTool" Classes="tool" ToolTip.Tip="Rotate (E)" AutomationProperties.Name="Rotate tool">
+                <PathIcon Theme="{StaticResource EditorIcon}" Data="{StaticResource IconRotate}"/>
+              </ToggleButton>
+              <ToggleButton x:Name="ScaleTool" Classes="tool" ToolTip.Tip="Scale (R)" AutomationProperties.Name="Scale tool">
+                <PathIcon Theme="{StaticResource EditorIcon}" Data="{StaticResource IconScale}"/>
+              </ToggleButton>
+              <ToggleButton x:Name="RectTool" Classes="tool" ToolTip.Tip="Rect: drag the handles to change Width and Height (T)" AutomationProperties.Name="Rect tool">
+                <PathIcon Theme="{StaticResource EditorIcon}" Data="{StaticResource IconRect}"/>
+              </ToggleButton>
+              <Border Classes="toolDivider"/>
+              <ToggleButton x:Name="GizmoSnap" Classes="tool" ToolTip.Tip="Snap · 16 units · 15° · 10%" AutomationProperties.Name="Snap">
+                <PathIcon Theme="{StaticResource EditorIcon}" Data="{StaticResource IconSnap}"/>
+              </ToggleButton>
+            </StackPanel>
+            <TextBlock x:Name="SceneCaption" Grid.Column="1" Classes="panel" VerticalAlignment="Center" HorizontalAlignment="Right" TextTrimming="CharacterEllipsis"
                        ToolTip.Tip="{Binding Text, RelativeSource={RelativeSource Self}}"/>
-            <StackPanel x:Name="GizmoControls" Grid.Column="2" Orientation="Horizontal" Spacing="6" VerticalAlignment="Center">
-              <ComboBox x:Name="GizmoPicker" Width="78" Height="21" MinHeight="0" Padding="4,0" AutomationProperties.Name="Transform tool" ToolTip.Tip="Move (W), Rotate (E), Scale (R)"/>
-              <CheckBox x:Name="GizmoSnap" Content="Snap" FontSize="11" ToolTip.Tip="16 units · 15° · 10%"/>
-            </StackPanel>
-            <StackPanel x:Name="TimeControls" Grid.Column="2" Orientation="Horizontal" Spacing="4" VerticalAlignment="Center" IsVisible="False">
-              <ToggleButton x:Name="DebugButton" Height="21" MinHeight="0" Padding="5,0" Content="Debug" AutomationProperties.Name="Play diagnostics" ToolTip.Tip="Show runtime diagnostics below Scene"/>
-              <Button x:Name="PauseButton" Focusable="False" Width="55" Height="21" MinHeight="0" Padding="3,0" Content="Pause" ToolTip.Tip="Pause or resume game time"/>
-              <Button x:Name="StepButton" Focusable="False" Width="37" Height="21" MinHeight="0" Padding="3,0" Content="Step" ToolTip.Tip="Advance one fixed tick"/>
-              <ComboBox x:Name="SpeedPicker" Width="68" Height="21" MinHeight="0" Padding="4,0" VerticalContentAlignment="Center"
-                        ToolTip.Tip="Game speed" AutomationProperties.Name="Game speed"/>
-            </StackPanel>
-            <Button x:Name="PlayButton" Classes="primary" Grid.Column="3" Width="60" Height="21" MinHeight="0" Padding="4,0"
-                    Content="▶  Play" VerticalAlignment="Center"/>
           </Grid>
         </Border>
-        <local:SceneViewport x:Name="Viewport" Grid.Row="1" AutomationProperties.Name="Scene viewport"
-                             AutomationProperties.HelpText="Shift-click to toggle selection. W, E, R change the transform tool. Drag empty space to pan."/>
+        <!-- One SDL view: it sits here while editing and moves to the Game panel during Play. -->
+        <Decorator x:Name="SceneHost" Grid.Row="1">
+          <local:SceneViewport x:Name="Viewport" AutomationProperties.Name="Scene viewport"
+                               AutomationProperties.HelpText="Shift-click to toggle selection. W, E, R, T change the transform tool. Drag empty space to pan."/>
+        </Decorator>
+        <TextBlock x:Name="SceneAway" Grid.Row="1" Classes="label" IsVisible="False" HorizontalAlignment="Center" VerticalAlignment="Center"
+                   TextWrapping="Wrap" TextAlignment="Center" Margin="16" Text="The game is running in the Game tab. Stop to edit the scene."/>
+      </Grid>
+      <Grid local:DockHost.Panel="Game" MinWidth="240" MinHeight="160" RowDefinitions="Auto,*,Auto" Background="{DynamicResource EditorPanel}">
+        <Border Classes="panelHeader">
+          <Grid ColumnDefinitions="Auto,Auto,*,Auto" ColumnSpacing="6">
+            <ComboBox x:Name="GameResolution" Width="104" Height="21" MinHeight="0" Padding="4,0" VerticalAlignment="Center"
+                      AutomationProperties.Name="Game resolution" ToolTip.Tip="Project game resolution · applies on the next Play"/>
+            <ComboBox x:Name="GameScale" Grid.Column="1" Width="58" Height="21" MinHeight="0" Padding="4,0" VerticalAlignment="Center"
+                      AutomationProperties.Name="Game scale" ToolTip.Tip="Fit the panel, or draw each game pixel at a fixed size"/>
+            <TextBlock x:Name="GameStats" Grid.Column="2" Classes="label" IsVisible="False" HorizontalAlignment="Right" TextTrimming="CharacterEllipsis"
+                       AutomationProperties.Name="Game statistics" ToolTip.Tip="{Binding Text, RelativeSource={RelativeSource Self}}"/>
+            <ToggleButton x:Name="StatsButton" Grid.Column="3" Height="21" MinHeight="0" Padding="6,0" Content="Stats" VerticalAlignment="Center"
+                          AutomationProperties.Name="Game statistics toggle" ToolTip.Tip="Frame time and SDL draw calls"/>
+          </Grid>
+        </Border>
+        <Decorator x:Name="GameHost" Grid.Row="1"/>
+        <TextBlock x:Name="GameIdle" Grid.Row="1" Classes="label" HorizontalAlignment="Center" VerticalAlignment="Center"
+                   TextWrapping="Wrap" TextAlignment="Center" Margin="16" Text="Press Play to run the game here."/>
         <StackPanel Grid.Row="2" x:Name="DiagnosticsDock" IsVisible="False" Margin="8,3" Spacing="3">
           <WrapPanel x:Name="DiagnosticsTools" Orientation="Horizontal">
             <CheckBox Margin="0,0,8,0" x:Name="ColliderDebug" Content="Colliders" AutomationProperties.Name="Collider outlines"/>
@@ -270,29 +316,35 @@
             <TextBlock x:Name="RoleMatches" Grid.Column="2" Classes="fieldLabel" TextTrimming="CharacterEllipsis" AutomationProperties.Name="Matching objects"/>
           </Grid>
           <TextBlock x:Name="PhysicsCaption" Classes="label" TextTrimming="CharacterEllipsis"/>
-          <Grid x:Name="FramePanel" RowDefinitions="Auto,38,Auto,Auto,Auto,120" ColumnDefinitions="*,Auto" RowSpacing="3">
-            <TextBlock x:Name="FrameSummary" TextTrimming="CharacterEllipsis" VerticalAlignment="Center"/>
-            <Button Grid.Column="1" x:Name="CloseProfiler" Classes="quiet" Padding="5,0" Content="×" AutomationProperties.Name="Close profiler"/>
-            <local:FrameChart Grid.Row="1" Grid.ColumnSpan="2" x:Name="FrameGraph" ToolTip.Tip="Last 180 presented frames · line: frame time · guide: 16.7 ms · gold: GC · click to select a frame"/>
-            <TextBlock Grid.Row="2" Grid.ColumnSpan="2" x:Name="FrameDetail" Classes="label" TextWrapping="Wrap"/>
-            <TextBlock Grid.Row="3" Grid.ColumnSpan="2" x:Name="WorkTitle" TextTrimming="CharacterEllipsis"/>
-            <Grid Grid.Row="4" Grid.ColumnSpan="2" ColumnDefinitions="*,64,72,72" Margin="0,0,14,0">
-              <TextBlock Text="Work" Classes="label"/>
-              <TextBlock Grid.Column="1" Text="Calls" Classes="label" HorizontalAlignment="Right"/>
-              <TextBlock Grid.Column="2" Text="Total ms" Classes="label" HorizontalAlignment="Right"/>
-              <TextBlock Grid.Column="3" Text="Self ms" Classes="label" HorizontalAlignment="Right"/>
-            </Grid>
-            <ScrollViewer Grid.Row="5" Grid.ColumnSpan="2" x:Name="WorkScroll" VerticalScrollBarVisibility="Auto" AllowAutoHide="True" AutomationProperties.Name="Selected frame work">
-              <StackPanel x:Name="WorkRows" Margin="0,0,14,0"/>
-            </ScrollViewer>
-          </Grid>
         </StackPanel>
       </Grid>
-      <Border x:Name="InspectorPanel" Grid.Column="2" BorderBrush="{DynamicResource EditorDivider}" BorderThickness="1,0,0,0" Background="{DynamicResource EditorPanel}">
+      <Grid local:DockHost.Panel="Profiler" MinWidth="240" MinHeight="120" Background="{DynamicResource EditorPanel}">
+        <Grid x:Name="FramePanel" Margin="8,4" RowDefinitions="Auto,38,Auto,Auto,Auto,*" ColumnDefinitions="*,Auto" RowSpacing="3">
+          <TextBlock x:Name="FrameSummary" TextTrimming="CharacterEllipsis" VerticalAlignment="Center"/>
+          <Button Grid.Column="1" x:Name="CloseProfiler" Classes="quiet icon" ToolTip.Tip="Close profiler" AutomationProperties.Name="Close profiler">
+            <PathIcon Theme="{StaticResource EditorIcon}" Data="{StaticResource IconClose}"/>
+          </Button>
+          <local:FrameChart Grid.Row="1" Grid.ColumnSpan="2" x:Name="FrameGraph" ToolTip.Tip="Last 180 presented frames · line: frame time · guide: 16.7 ms · gold: GC · click to select a frame"/>
+          <TextBlock Grid.Row="2" Grid.ColumnSpan="2" x:Name="FrameDetail" Classes="label" TextWrapping="Wrap"/>
+          <TextBlock Grid.Row="3" Grid.ColumnSpan="2" x:Name="WorkTitle" TextTrimming="CharacterEllipsis"/>
+          <Grid Grid.Row="4" Grid.ColumnSpan="2" ColumnDefinitions="*,64,72,72" Margin="0,0,14,0">
+            <TextBlock Text="Work" Classes="label"/>
+            <TextBlock Grid.Column="1" Text="Calls" Classes="label" HorizontalAlignment="Right"/>
+            <TextBlock Grid.Column="2" Text="Total ms" Classes="label" HorizontalAlignment="Right"/>
+            <TextBlock Grid.Column="3" Text="Self ms" Classes="label" HorizontalAlignment="Right"/>
+          </Grid>
+          <ScrollViewer Grid.Row="5" Grid.ColumnSpan="2" x:Name="WorkScroll" VerticalScrollBarVisibility="Auto" AllowAutoHide="True" AutomationProperties.Name="Selected frame work">
+            <StackPanel x:Name="WorkRows" Margin="0,0,14,0"/>
+          </ScrollViewer>
+        </Grid>
+      </Grid>
+      <Border x:Name="InspectorPanel" local:DockHost.Panel="Inspector" MinWidth="218" MinHeight="120" Background="{DynamicResource EditorPanel}">
         <Grid RowDefinitions="Auto,*">
-          <Border Classes="panelHeader">
-            <Grid ColumnDefinitions="*,Auto" ColumnSpacing="5">
-              <TextBlock x:Name="InspectorTitle" Classes="panel" Text="Inspector" VerticalAlignment="Center"/>
+          <!-- The tab names the panel; this slim row appears only for selection actions (multi-selection count, Play Apply, prefab overrides). -->
+          <Border x:Name="InspectorActions" Classes="panelHeader" IsVisible="False">
+            <Grid ColumnDefinitions="*,Auto" ColumnSpacing="4">
+              <TextBlock x:Name="InspectorCaption" Classes="label" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"
+                         ToolTip.Tip="{Binding Text, RelativeSource={RelativeSource Self}}"/>
               <Button x:Name="ApplyPlayValues" Grid.Column="1" Classes="quiet" Content="Apply selected" IsVisible="False"
                       Height="21" MinHeight="0" Padding="5,0" Click="ApplySelectedPlayValues"
                       ToolTip.Tip="Apply checked fields to the edited scene in one Undo step. A previously saved, clean scene is saved immediately."/>
@@ -301,11 +353,11 @@
             </Grid>
           </Border>
           <ScrollViewer Grid.Row="1">
-            <StackPanel Margin="9,6">
+            <StackPanel Margin="{StaticResource EditorPanelPadding}">
               <TextBlock x:Name="EmptyInspector" Classes="label" Text="Select an object in the scene." TextWrapping="Wrap"/>
               <StackPanel x:Name="MultiInspector" IsVisible="False"/>
               <StackPanel x:Name="Inspector">
-                <Grid ColumnDefinitions="56,*" ColumnSpacing="5" Margin="0,0,0,4">
+                <Grid ColumnDefinitions="56,*" ColumnSpacing="{StaticResource EditorFieldGap}" Margin="0,0,0,4">
                   <TextBlock Text="Name" Classes="fieldLabel"/>
                   <TextBox Grid.Column="1" x:Name="ObjectName" AutomationProperties.Name="Object name"/>
                 </Grid>
@@ -315,54 +367,54 @@
                     <TextBlock x:Name="ScriptValues" Classes="label" TextWrapping="Wrap"/>
                   </StackPanel>
                 </local:ComponentSection>
-                <local:ComponentSection x:Name="TransformSection" Header="Transform" HasSettings="False">
+                <local:ComponentSection x:Name="TransformSection" Header="Transform" Icon="{StaticResource IconTransform}" HasSettings="False">
                   <StackPanel Spacing="2">
                     <StackPanel x:Name="LiveTransform" IsVisible="False" Spacing="2"/>
-                    <Grid x:Name="PositionRow" ColumnDefinitions="56,*,*" ColumnSpacing="5">
+                    <Grid x:Name="PositionRow" ColumnDefinitions="56,*,*" ColumnSpacing="{StaticResource EditorFieldGap}">
                       <TextBlock x:Name="PositionRowLabel" Text="Position" Classes="fieldLabel"/>
-                      <Grid Grid.Column="1" ColumnDefinitions="9,*" ColumnSpacing="2">
+                      <Grid Grid.Column="1" ColumnDefinitions="12,*" ColumnSpacing="2">
                         <TextBlock Text="X" Classes="fieldLabel"/>
                         <NumericUpDown Grid.Column="1" x:Name="PosX" AutomationProperties.Name="Position X"/>
                       </Grid>
-                      <Grid Grid.Column="2" ColumnDefinitions="9,*" ColumnSpacing="2">
+                      <Grid Grid.Column="2" ColumnDefinitions="12,*" ColumnSpacing="2">
                         <TextBlock Text="Y" Classes="fieldLabel"/>
                         <NumericUpDown Grid.Column="1" x:Name="PosY" AutomationProperties.Name="Position Y"/>
                       </Grid>
                     </Grid>
-                    <Grid x:Name="SizeRow" ColumnDefinitions="56,*,*" ColumnSpacing="5">
+                    <Grid x:Name="SizeRow" ColumnDefinitions="56,*,*" ColumnSpacing="{StaticResource EditorFieldGap}">
                       <TextBlock Text="Size" Classes="fieldLabel"/>
-                      <Grid Grid.Column="1" ColumnDefinitions="9,*" ColumnSpacing="2">
+                      <Grid Grid.Column="1" ColumnDefinitions="12,*" ColumnSpacing="2">
                         <TextBlock Text="W" Classes="fieldLabel"/>
                         <NumericUpDown Grid.Column="1" x:Name="ObjWidth" Minimum="1" AutomationProperties.Name="Width"/>
                       </Grid>
-                      <Grid Grid.Column="2" ColumnDefinitions="9,*" ColumnSpacing="2">
+                      <Grid Grid.Column="2" ColumnDefinitions="12,*" ColumnSpacing="2">
                         <TextBlock Text="H" Classes="fieldLabel"/>
                         <NumericUpDown Grid.Column="1" x:Name="ObjHeight" Minimum="1" AutomationProperties.Name="Height"/>
                       </Grid>
                     </Grid>
                     <StackPanel x:Name="AffineRows" Spacing="2">
-                      <Grid x:Name="RotationRow" ColumnDefinitions="56,*,*" ColumnSpacing="5">
+                      <Grid x:Name="RotationRow" ColumnDefinitions="56,*,*" ColumnSpacing="{StaticResource EditorFieldGap}">
                         <TextBlock Text="Rotation" Classes="fieldLabel" ToolTip.Tip="Clockwise degrees in parent space"/>
                         <NumericUpDown Grid.Column="1" Grid.ColumnSpan="2" x:Name="ObjRotation" AutomationProperties.Name="Rotation degrees"/>
                       </Grid>
-                      <Grid x:Name="ScaleRow" ColumnDefinitions="56,*,*" ColumnSpacing="5">
+                      <Grid x:Name="ScaleRow" ColumnDefinitions="56,*,*" ColumnSpacing="{StaticResource EditorFieldGap}">
                         <TextBlock Text="Scale" Classes="fieldLabel"/>
-                        <Grid Grid.Column="1" ColumnDefinitions="9,*" ColumnSpacing="2">
+                        <Grid Grid.Column="1" ColumnDefinitions="12,*" ColumnSpacing="2">
                           <TextBlock Text="X" Classes="fieldLabel"/>
                           <NumericUpDown Grid.Column="1" x:Name="ObjScaleX" Increment="0.1" AutomationProperties.Name="Scale X"/>
                         </Grid>
-                        <Grid Grid.Column="2" ColumnDefinitions="9,*" ColumnSpacing="2">
+                        <Grid Grid.Column="2" ColumnDefinitions="12,*" ColumnSpacing="2">
                           <TextBlock Text="Y" Classes="fieldLabel"/>
                           <NumericUpDown Grid.Column="1" x:Name="ObjScaleY" Increment="0.1" AutomationProperties.Name="Scale Y"/>
                         </Grid>
                       </Grid>
-                      <Grid ColumnDefinitions="56,*,*" ColumnSpacing="5">
+                      <Grid ColumnDefinitions="56,*,*" ColumnSpacing="{StaticResource EditorFieldGap}">
                         <TextBlock Text="Pivot" Classes="fieldLabel"/>
-                        <Grid Grid.Column="1" ColumnDefinitions="9,*" ColumnSpacing="2">
+                        <Grid Grid.Column="1" ColumnDefinitions="12,*" ColumnSpacing="2">
                           <TextBlock Text="X" Classes="fieldLabel"/>
                           <NumericUpDown Grid.Column="1" x:Name="ObjPivotX" Increment="0.1" Minimum="0" Maximum="1" AutomationProperties.Name="Pivot X"/>
                         </Grid>
-                        <Grid Grid.Column="2" ColumnDefinitions="9,*" ColumnSpacing="2">
+                        <Grid Grid.Column="2" ColumnDefinitions="12,*" ColumnSpacing="2">
                           <TextBlock Text="Y" Classes="fieldLabel"/>
                           <NumericUpDown Grid.Column="1" x:Name="ObjPivotY" Increment="0.1" Minimum="0" Maximum="1" AutomationProperties.Name="Pivot Y"/>
                         </Grid>
@@ -371,7 +423,7 @@
                   </StackPanel>
                 </local:ComponentSection>
                 <local:ComponentSection x:Name="RoleSection" Header="Tags &amp; groups" HasSettings="False">
-                  <Grid ColumnDefinitions="56,*" RowDefinitions="Auto,Auto" RowSpacing="2" ColumnSpacing="5">
+                  <Grid ColumnDefinitions="56,*" RowDefinitions="Auto,Auto" RowSpacing="2" ColumnSpacing="{StaticResource EditorFieldGap}">
                     <TextBlock Text="Tag" Classes="fieldLabel"/>
                     <TextBox Grid.Column="1" x:Name="ObjectTag" AutomationProperties.Name="Object tag"/>
                     <TextBlock Grid.Row="1" Text="Groups" Classes="fieldLabel"/>
@@ -382,7 +434,7 @@
                 <ItemsControl x:Name="AttachedComponents">
                   <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                      <local:ComponentSection Header="{Binding Name}" HasSettings="{Binding Editable}" Foldout="{Binding Foldout}">
+                      <local:ComponentSection Header="{Binding Name}" Icon="{Binding Icon}" HasSettings="{Binding Editable}" Foldout="{Binding Foldout}">
                         <ContentControl Content="{Binding Fields}" IsEnabled="{Binding FieldsEnabled}" HorizontalContentAlignment="Stretch"/>
                       </local:ComponentSection>
                     </DataTemplate>
@@ -395,8 +447,8 @@
           </ScrollViewer>
         </Grid>
       </Border>
-    </Grid>
-    <Border Grid.Row="2" Background="{DynamicResource EditorBase}" BorderBrush="{DynamicResource EditorDivider}" BorderThickness="0,1,0,0" Padding="10,0">
+    </local:DockHost>
+    <Border Grid.Row="3" Background="{DynamicResource EditorBase}" BorderBrush="{DynamicResource EditorDivider}" BorderThickness="0,1,0,0" Padding="10,0">
       <Grid ColumnDefinitions="*,Auto" ColumnSpacing="12">
         <TextBlock x:Name="Status" Classes="label" TextTrimming="CharacterEllipsis" ToolTip.Tip="{Binding Text, RelativeSource={RelativeSource Self}}"/>
         <TextBlock x:Name="ResolutionLabel" Classes="label" Grid.Column="1" ToolTip.Tip="Game resolution · Project → Game Resolution…"/>

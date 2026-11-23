@@ -47,7 +47,7 @@ public partial class MainWindow
         bool applied=false;
         void Row(string name,float value,Func<MixerLevels,float,MixerLevels> set)
         {
-            var grid=new Grid { ColumnDefinitions=new("56,*,36"),ColumnSpacing=5 };
+            var grid=new Grid { ColumnDefinitions=EditorTokens.LabelColumns(EditorTokens.FieldLabelWidth,"*,36"),ColumnSpacing=EditorTokens.FieldGap };
             var f=new Slider { Minimum=0,Maximum=100,Value=value*100,SmallChange=1,LargeChange=10 };
             AutomationProperties.SetName(f,name);
             var pct=new TextBlock { Text=$"{value:P0}",HorizontalAlignment=HorizontalAlignment.Right,VerticalAlignment=VerticalAlignment.Center };

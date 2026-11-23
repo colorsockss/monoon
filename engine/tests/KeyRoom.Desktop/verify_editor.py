@@ -25,7 +25,7 @@ def wait(check, description, timeout=90):
 
 
 def play_button(image):
-    # Find the accent-colored Play control in the Scene toolbar, including hover.
+    # Find the accent-colored Play control, which starts at the centre of the main toolbar, including hover.
     strip = image.crop((image.width // 2, 0, image.width - 215, min(150, image.height)))
     for color in ((158, 218, 201), (176, 232, 217)):
         channels = [band.point([255 if i == target else 0 for i in range(256)])
@@ -127,7 +127,11 @@ def exercise(executable, project, output, edit, reference):
         window.click(*button)
         def save():
             slot = next(profile.rglob("slot-001.save"), None)
-            if slot and re.search(r"^  key: " + expected + "$", slot.read_text(encoding="utf-8"), re.M):
+            try:
+                text = slot.read_text(encoding="utf-8") if slot else ""
+            except PermissionError:  # Windows: the game is replacing the file right now
+                text = ""
+            if re.search(r"^  key: " + expected + "$", text, re.M):
                 return slot
             tap(window, "F5")
             return None
@@ -154,13 +158,14 @@ def exercise(executable, project, output, edit, reference):
         button = wait(lambda: play_button(window.capture()), "Scene toolbar", 120)
         print("Scene toolbar", button, flush=True)
         frame = window.capture()
-        labels = (frame.width - 212, button[1] + 48, frame.width - 155, button[1] + 91)
+        # The docked Inspector (218px) is at the right edge: its label column from Name to Position.
+        labels = (frame.width - 210, button[1] + 50, frame.width - 154, button[1] + 122)
         edit_labels = frame.crop(labels).tobytes()
         if edit:
             play("false", "baseline")
             # KeyRoom opens with Player selected. Position X is the first
-            # numeric field in its Transform section, relative to the toolbar.
-            window.click(button[0] + 134, button[1] + 82)
+            # numeric field in its Transform section, below the Name row.
+            window.click(frame.width - 125, button[1] + 114)
             tap(window, "a", "Control_L")
             if isinstance(window, X11Window):
                 window.command("type", "--delay", 140, "190")

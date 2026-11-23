@@ -7,7 +7,7 @@ using Color = System.Drawing.Color;
 
 namespace Engine.Editor;
 
-internal enum GizmoTool { Move, Rotate, Scale }
+internal enum GizmoTool { Move, Rotate, Scale, Rect }
 
 public sealed partial class SceneViewport
 {
@@ -35,8 +35,12 @@ public sealed partial class SceneViewport
         return Grip.None;
     }
 
+    // Rect: the axis handles change the selected object's Width and Height instead of its scale.
+    private (float Width,float Height)? rectStart;
+
     private void BeginGesture(Vector2 point,Grip handle)
     {
+        rectStart=Gizmo==GizmoTool.Rect && Selection.Count==1 ? (Selection[0].Width,Selection[0].Height) : null;
         gesture=new SelectionTransform(Selection);
         gestureStart=point;grip=handle;
     }
@@ -47,6 +51,14 @@ public sealed partial class SceneViewport
         var d=point-gestureStart;
         if(!movedDuringDrag && d.Length()*Scale<2)return;
         static float Snap(float n,float step)=>MathF.Round(n/step,MidpointRounding.AwayFromZero)*step;
+        if(Gizmo==GizmoTool.Rect && grip is Grip.X or Grip.Y)
+        {
+            if(rectStart is not {} size)return;
+            float change=grip==Grip.X?d.X:-d.Y;
+            if(SnapEnabled)change=Snap(change,16);
+            if(grip==Grip.X)Selection[0].Width=Math.Max(1,size.Width+change);else Selection[0].Height=Math.Max(1,size.Height+change);
+            movedDuringDrag=true;Moved?.Invoke();InvalidateUi();return;
+        }
         var pivot=gesture.Pivot;
         Matrix3x2 delta;
         if(Gizmo==GizmoTool.Rotate)
@@ -78,6 +90,7 @@ public sealed partial class SceneViewport
     {
         if(gesture==null)return false;
         gesture.Apply(Matrix3x2.Identity);gesture=null;movedDuringDrag=false;
+        if(rectStart is {} size && Selection.Count==1){Selection[0].Width=size.Width;Selection[0].Height=size.Height;}
         Moved?.Invoke();InvalidateUi();return true;
     }
 
@@ -112,7 +125,7 @@ public sealed partial class SceneViewport
         else
         {
             canvas.DrawLine(center,x,2*unit,red);canvas.DrawLine(center,y,2*unit,green);
-            if(Gizmo==GizmoTool.Scale){Square(x,8,red);Square(y,8,green);}
+            if(Gizmo is GizmoTool.Scale or GizmoTool.Rect){Square(x,8,red);Square(y,8,green);}
             else
             {
                 foreach(int sign in new[]{-1,1}){

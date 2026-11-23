@@ -52,7 +52,7 @@ public partial class MainWindow
         {
             var assets = extension != null && project != null ? ProjectAssets.ReadManifest(project) : null;
             list.Children.Clear();
-            var heading = new Grid { ColumnDefinitions = new("56,*"), ColumnSpacing = 5 };
+            var heading = new Grid { ColumnDefinitions = EditorTokens.LabelColumns(EditorTokens.FieldLabelWidth), ColumnSpacing = EditorTokens.FieldGap };
             heading.Children.Add(new TextBlock { Text = field.Name, Classes = { "fieldLabel" },
                 TextTrimming = TextTrimming.CharacterEllipsis });
             string hint = extension == null ? "Drop object here" : $"Drop {extension} here";
@@ -70,7 +70,7 @@ public partial class MainWindow
                 var path = assets?.PathFor(ids[index]);
                 string name = obj?.Name ?? (path != null ? Path.GetFileName(path) :
                     ids[index] == Guid.Empty ? "None" : extension == null ? "Missing object" : "Missing asset");
-                var row = new Grid { ColumnDefinitions = new("56,*,Auto"), ColumnSpacing = 5 };
+                var row = new Grid { ColumnDefinitions = EditorTokens.LabelColumns(EditorTokens.FieldLabelWidth, "*,Auto"), ColumnSpacing = EditorTokens.FieldGap };
                 row.Children.Add(new TextBlock { Text = (index + 1).ToString(), Classes = { "fieldLabel" } });
                 var handle = new Button { HorizontalAlignment = HorizontalAlignment.Stretch,
                     HorizontalContentAlignment = HorizontalAlignment.Left,

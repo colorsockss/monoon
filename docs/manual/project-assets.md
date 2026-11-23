@@ -1,6 +1,6 @@
 # Project에서 에셋 찾기와 편집
 
-**Search project…**는 현재 폴더와 관계없이 프로젝트의 에셋, Scripts 아래 C# 파일, GameSettings를 찾는다. 이름이나 경로 일부를 입력한다. 여러 단어는 모두 일치해야 하며 대소문자는 구분하지 않는다. 예를 들어 `door t:sprite`는 Door 이미지, `t:script chest`는 OpenChest.cs, `t:table`은 데이터 테이블을 찾는다. 검색 결과 두 번째 줄은 폴더다. Enter로 첫 결과를 열고 Esc로 검색을 지운다.
+Project 도구 줄의 검색 필드(**Search project**)는 현재 폴더와 관계없이 프로젝트의 에셋, Scripts 아래 C# 파일, GameSettings를 찾는다. 이름이나 경로 일부를 입력한다. 여러 단어는 모두 일치해야 하며 대소문자는 구분하지 않는다. 예를 들어 `door t:sprite`는 Door 이미지, `t:script chest`는 OpenChest.cs, `t:table`은 데이터 테이블을 찾는다. 검색 결과 두 번째 줄은 폴더다. Enter로 첫 결과를 열고 Esc로 검색을 지운다.
 
 ## 임포트와 복구
 
@@ -42,8 +42,8 @@ Project에서 PNG를 선택하면 목록 아래에 이미지가 표시된다. �
 
 **KeyRoom에서 확인하기**
 
-1. Project에서 `Door.clip`을 열고 첫 프레임을 선택한다. 메인 창의 Project에서 `Door.png`를 선택한다.
+1. Project에서 `Door.clip`을 열고 Clip 패널에서 첫 프레임을 선택한다. Project에서 `Door.png`를 선택한다.
 2. 외부 편집기에서 `Assets/Door.png`의 문 색을 바꾸고 같은 경로에 저장한다. Scene의 닫힌 문, Project 미리보기, 클립 첫 프레임과 타임라인 썸네일의 색이 바뀐다.
-3. 클립 창을 다시 선택하거나 프로젝트를 닫았다가 연다. 네 프레임의 시트 GUID, 셀 사각형과 재생 시간은 그대로다. 클립을 저장할 필요는 없다.
+3. Clip 패널을 다시 선택하거나 프로젝트를 닫았다가 연다. 네 프레임의 시트 GUID, 셀 사각형과 재생 시간은 그대로다. 클립을 저장할 필요는 없다.
 
 KeyRoom의 `DoorSheet.png.meta`에는 각 셀에 사용할 원본 PNG의 GUID와 마지막으로 가져온 내용 해시가 연결되어 있다. 원본이 바뀌면 해당 셀의 픽셀만 다시 쓰고, 프레임 순서와 시간은 클립에 남겨 둔다. 이미 잘라낸 셀 바깥까지 그림을 늘리거나 원본 캔버스 크기를 바꾸면 에디터가 맞지 않는 셀을 알려 준다. 올바른 크기로 다시 저장하면 기존 배치로 갱신된다. [시트 셀 사용법](sprites.md#시트의-일부만-프레임으로-쓰기) · [에디터 검증 기록](../../engine/tests/results/external-sprite-reimport/README.md)

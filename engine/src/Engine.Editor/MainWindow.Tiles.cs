@@ -12,12 +12,15 @@ public partial class MainWindow
     private async Task EditTileset(string? relative)
     {
         if (project == null && !await Save()) return;
-        var window = new TilesetWindow(project!, CreationFolder("Assets"), relative, Scene);
-        if (await window.ShowDialog<string?>(this) is not { } saved) return;
-        Viewport.ClearSprites();
-        BrowseFolder(ParentPath(saved), saved);
-        RefreshComponentList();
-        Status.Text = $"Saved {saved}.";
+        if (!await ReplaceEditor("Tileset", relative)) return;
+        var window = new TilesetWindow(project!, CreationFolder("Assets"), relative, Scene) { Asset = relative };
+        ShowEditor<string>("Tileset", window, saved =>
+        {
+            Viewport.ClearSprites();
+            BrowseFolder(ParentPath(saved), saved);
+            RefreshComponentList();
+            Status.Text = $"Saved {saved}.";
+        });
     }
 
     private void CreateTilemap(SceneObject? parent)

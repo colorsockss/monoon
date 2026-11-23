@@ -10,7 +10,7 @@ public partial class MainWindow
 
     private void InitializeObjectRoles()
     {
-        RoleSection.Foldout = new ComponentFoldout();
+        RoleSection.Foldout = new ComponentFoldout("Tags & groups");
         foreach (var box in new[] { ObjectTag, ObjectGroups })
         {
             box.PropertyChanged += (_, e) =>

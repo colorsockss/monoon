@@ -1,0 +1,44 @@
+{
+  "os": "win-x64",
+  "captures": {},
+  "screen": [
+    {
+      "Width": 1920,
+      "Height": 1032,
+      "Scaling": 1
+    }
+  ],
+  "layout": "Row[Column[(Hierarchy*) (Project*)] (Scene*,Game) (Inspector*)]",
+  "window": {
+    "Width": 1220,
+    "Height": 740,
+    "X": 52,
+    "Y": 52
+  },
+  "slots": {
+    "Hierarchy": [
+      0,
+      88,
+      176,
+      338
+    ],
+    "Project": [
+      0,
+      454,
+      176,
+      265
+    ],
+    "Scene": [
+      180,
+      88,
+      818,
+      631
+    ],
+    "Inspector": [
+      1002,
+      88,
+      218,
+      631
+    ]
+  }
+}
