@@ -84,6 +84,7 @@ public sealed partial class GameSession : IGame2D, IDisposable
     public SessionState State { get; } = new();
     private readonly string? project;
     private readonly ScriptRuntime? sharedScripts;
+    internal ScriptRuntime? Scripts => sharedScripts; // Editor script reload swaps its assembly.
     private readonly Func<ScriptComponent, GameBehaviour>? compiledScripts;
     public SceneGame Current { get; private set; }
     public Guid? SceneId { get; private set; }

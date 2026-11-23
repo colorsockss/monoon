@@ -1,0 +1,8 @@
+version: 1
+values:
+  accessibility.locale: "en"
+  accessibility.textScale: 1
+  accessibility.highContrast: false
+  accessibility.shakeScale: 0.25
+  accessibility.flashScale: 0.25
+  accessibility.rumble: true

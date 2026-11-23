@@ -1,0 +1,94 @@
+using System.Diagnostics;
+using System.Numerics;
+using Engine.Core;
+
+// Old (dad0968, managed mixer) vs new (SDL_mixer) AudioMixer on the same inputs, 512-frame blocks.
+string repo = args[0];
+string afterbeat = Path.Combine(repo, "samples/RhythmLab/Assets/Afterbeat.wav");
+string tide = Path.Combine(repo, "samples/AudioLab/Assets/Tide.wav");
+string tideOgg = Path.Combine(repo, "samples/AudioLab/Assets/Tide.ogg");
+string beacon = Path.Combine(repo, "samples/AudioLab/Assets/Beacon.wav");
+var levels = new MixerLevels(.8f, .8f, .75f);
+
+float[] Run(bool old, Action<Func<object, string, AudioSourceComponent, Vector2, float, object>, Action<Vector2>> setup, int frames)
+{
+    var output = new float[frames * 2];
+    if (old)
+    {
+        using var m = new OldAudio.AudioMixer { Levels = levels };
+        setup((o, p, c, pos, s) => m.Start(o, p, c, pos, s), v => m.MoveListener(v));
+        for (int off = 0; off < output.Length; off += 1024) m.Render(output.AsSpan(off, Math.Min(1024, output.Length - off)));
+    }
+    else
+    {
+        using var m = new AudioMixer { Levels = levels };
+        setup((o, p, c, pos, s) => m.Start(o, p, c, pos, s), v => m.MoveListener(v));
+        for (int off = 0; off < output.Length; off += 1024) m.Render(output.AsSpan(off, Math.Min(1024, output.Length - off)));
+    }
+    return output;
+}
+void Compare(string label, Action<Func<object, string, AudioSourceComponent, Vector2, float, object>, Action<Vector2>> setup, int frames, int from)
+{
+    var a = Run(true, setup, frames); var b = Run(false, setup, frames);
+    double best = double.MaxValue; int shift = 0;
+    for (int s = -40; s <= 40; s++)
+    {
+        double e = 0;
+        for (int f = Math.Max(from, 41); f < frames - 64; f++) for (int c = 0; c < 2; c++) { double d = b[2 * f + c] - a[2 * (f - s) + c]; e += d * d; }
+        if (e < best) { best = e; shift = s; }
+    }
+    double energy = 0, maxDiff = 0;
+    for (int f = Math.Max(from, 41); f < frames - 64; f++) for (int c = 0; c < 2; c++) { energy += a[2 * f + c] * a[2 * f + c]; maxDiff = Math.Max(maxDiff, Math.Abs(b[2 * f + c] - a[2 * (f - shift) + c])); }
+    double Pw(float[] x, int ch) { double e = 0; for (int f = from; f < frames; f++) e += x[2 * f + ch] * x[2 * f + ch]; return e; }
+    var runs = new List<string>(); int run = 0, first = Array.FindIndex(b, v => v != 0) / 2;
+    for (int f = first; f < frames; f++) { if (b[2 * f] == 0 && b[2 * f + 1] == 0) run++; else { if (run >= 4) runs.Add($"{f - run}+{run}"); run = 0; } }
+    Console.WriteLine($"  new output: first nonzero frame {first}, silent runs inside the sound: [{string.Join(" ", runs)}]");
+    Console.WriteLine($"{label}: new output = old delayed by {shift} frames; max |diff| {maxDiff:G3}, residual/energy {best / energy:G3}; " +
+        $"power L/R old {Pw(a, 0) / Pw(a, 1):F6} new {Pw(b, 0) / Pw(b, 1):F6}; RMS ratio new/old {Math.Sqrt((Pw(b, 0) + Pw(b, 1)) / (Pw(a, 0) + Pw(a, 1))):F6}");
+}
+
+var music = new AudioSourceComponent { Bus = AudioBus.Music, Loop = true, Volume = .85f };
+Compare("RhythmLab Afterbeat 48 kHz mono, Music loop", (start, _) => start(new object(), afterbeat, music, default, 0), 3 * 48000, 0);
+var tideSource = new AudioSourceComponent { Bus = AudioBus.Music, Loop = true, Volume = .55f };
+Compare("AudioLab Tide.wav 24 kHz stereo, Music loop, from the start", (start, _) => start(new object(), tide, tideSource, default, 0), 3 * 57600, 0);
+Compare("AudioLab Tide.ogg 24 kHz stereo, Music loop, from the start", (start, _) => start(new object(), tideOgg, tideSource, default, 0), 3 * 57600, 0);
+var beaconSource = new AudioSourceComponent { Bus = AudioBus.Effects, Loop = true, Spatial = true, Range = 400, Volume = .8f };
+foreach (var x in new[] { -300f, -100f, 0f, 150f, 390f })
+    Compare($"Beacon 24 kHz mono spatial, listener at x={x}", (start, ear) => { ear(new Vector2(x, 0)); start(new object(), beacon, beaconSource, default, 0); }, 4 * 4800, 4800);
+var fadeSource = new AudioSourceComponent { Bus = AudioBus.Music, Loop = true, Volume = .85f };
+Compare("Tide.wav with 0.4 s fade-in, from the start", (start, _) => start(new object(), tide, tideSource, default, .4f), 3 * 57600, 0);
+Compare("KeyRoom Unlock.wav 22.05 kHz mono one-shot effect", (start, _) => start(new object(), Path.Combine(repo, "samples/KeyRoom/Assets/Unlock.wav"), new AudioSourceComponent(), default, 0), 9600, 0);
+Compare("Afterbeat with 0.4 s fade-in (envelope)", (start, _) => start(new object(), afterbeat, fadeSource, default, .4f), 48000, 0);
+
+// Per-block cost: 16 Tide loops + 16 spatial beacons, 512-frame blocks, alternating old/new.
+double Cost(bool old)
+{
+    var block = new float[1024];
+    var watch = new Stopwatch();
+    const int blocks = 2000;
+    if (old)
+    {
+        using var m = new OldAudio.AudioMixer { Levels = levels };
+        for (int i = 0; i < 16; i++) { m.Start(new object(), tide, tideSource with { }, default, 0); m.Start(new object(), beacon, beaconSource, new Vector2(i * 20, 0), 0); }
+        for (int i = 0; i < 100; i++) m.Render(block);
+        watch.Start(); for (int i = 0; i < blocks; i++) m.Render(block); watch.Stop();
+    }
+    else
+    {
+        using var m = new AudioMixer { Levels = levels };
+        for (int i = 0; i < 16; i++) { m.Start(new object(), tide, tideSource with { }, default, 0); m.Start(new object(), beacon, beaconSource, new Vector2(i * 20, 0), 0); }
+        for (int i = 0; i < 100; i++) m.Render(block);
+        watch.Start(); for (int i = 0; i < blocks; i++) m.Render(block); watch.Stop();
+    }
+    return watch.Elapsed.TotalMicroseconds / blocks;
+}
+var olds = new List<double>(); var news = new List<double>();
+for (int r = 0; r < 5; r++) { olds.Add(Cost(true)); news.Add(Cost(false)); }
+olds.Sort(); news.Sort();
+Console.WriteLine($"32 voices, us per 512-frame block (5 alternating runs): old median {olds[2]:F1} [{olds[0]:F1}-{olds[^1]:F1}], new median {news[2]:F1} [{news[0]:F1}-{news[^1]:F1}]");
+long before = GC.GetAllocatedBytesForCurrentThread();
+using (var m = new AudioMixer()) { var b = new float[1024]; m.Start(new object(), tide, tideSource, default, 0); m.Render(b); before = GC.GetAllocatedBytesForCurrentThread(); for (int i = 0; i < 1000; i++) m.Render(b); }
+Console.WriteLine($"new mixer steady-state managed allocation over 1000 blocks: {GC.GetAllocatedBytesForCurrentThread() - before} bytes");
+before = GC.GetAllocatedBytesForCurrentThread();
+using (var m = new OldAudio.AudioMixer()) { var b = new float[1024]; m.Start(new object(), tide, tideSource, default, 0); m.Render(b); before = GC.GetAllocatedBytesForCurrentThread(); for (int i = 0; i < 1000; i++) m.Render(b); }
+Console.WriteLine($"old mixer steady-state managed allocation over 1000 blocks: {GC.GetAllocatedBytesForCurrentThread() - before} bytes");

@@ -36,3 +36,23 @@ input:
     - E
     - Space
     - Pad.South
+  - name: Impact
+    controls: ["1", Pad.West]
+  - name: Flash
+    controls: ["2", Pad.East]
+  - name: Fade
+    controls: ["3", Pad.LeftShoulder]
+  - name: Grade
+    controls: ["4", Pad.RightShoulder]
+  - name: Comfort
+    controls: ["5", Pad.Back]
+  - name: Buzz
+    controls: ["6", Pad.North]
+  - name: Pointer
+    controls: ["7", Pad.LeftStick]
+  - name: RumbleSetting
+    controls: ["8", Pad.RightStick]
+  - name: Freeze
+    controls: [F, Pad.Start]
+  - name: Step
+    controls: [Period, Pad.RightTrigger]

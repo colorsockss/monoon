@@ -97,13 +97,14 @@ public sealed partial class SceneGame
             var local = member.Source;
             (local.X, local.Y, local.Rotation) = (authored.X, authored.Y, authored.Rotation);
             (local.ScaleX, local.ScaleY, local.Shear) = (authored.ScaleX, authored.ScaleY, authored.Shear);
-            if (i == 0) local.SetOrigin(owner == null ? position : Vector2.Transform(position, Affine2D.Inverse(owner.MatrixAt(owner.Position))));
+            if (i == 0) local.SetOrigin(owner == null ? position : Affine2D.Transform(position, Affine2D.Inverse(owner.MatrixAt(owner.Position))));
             var parent = local.ParentId is Guid p ? byId[p] : null;
             member.SetWorldPose(local.LocalMatrix * (parent?.MatrixAt(parent.Position) ?? Matrix3x2.Identity), parent?.Angle ?? 0);
             member.EditedBasis = false;
             member.ActiveSelf = true;
             member.ColliderEnabled = true;
             member.Displacement = default;
+            member.Trail?.Clear();
             member.Support = null;
             if (member.Rigid is {} rigid)
             {
@@ -145,6 +146,7 @@ public sealed partial class SceneGame
                     body.ContactRevision++;
                     Silence(body);
                     body.Particles?.Reset();
+                    body.Trail?.Clear();
                     QueueLife(body, LifeEvent.Disable);
                 }
                 Ui.ValidateInputModes();

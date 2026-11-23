@@ -1,0 +1,39 @@
+== tar (linux-x64): player, helpers, desktop files
+-rw-r--r--  0 0      0        2117 Nov 23 14:03 KeyRoom-linux-x64/Game/GameSettings
+-rwxr-xr-x  0 0      0       78256 Nov 23 14:03 KeyRoom-linux-x64/MoNoonPlayer
+-rwxr--r--  0 0      0      110248 Nov 23 14:03 KeyRoom-linux-x64/createdump
+-rw-r--r--  0 0      0         109 Nov 23 14:03 KeyRoom-linux-x64/KeyRoom.desktop
+-rw-r--r--  0 0      0         142 Nov 23 14:03 KeyRoom-linux-x64/KeyRoom.png
+-rwxr-xr-x  0 0      0         455 Nov 23 14:03 KeyRoom-linux-x64/install-desktop-entry.sh
+== KeyRoom.desktop
+[Desktop Entry]
+Type=Application
+Name=KeyRoom
+Exec=MoNoonPlayer
+Icon=KeyRoom
+Terminal=false
+Categories=Game;
+== install-desktop-entry.sh
+#!/bin/sh
+# Adds this game to the desktop menu, pointing at this folder.
+set -eu
+here=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
+target="${XDG_DATA_HOME:-$HOME/.local/share}/applications"
+mkdir -p "$target"
+sed -e "s|^Exec=.*|Exec=\"$here/MoNoonPlayer\"|" -e "s|^Icon=.*|Icon=$here/KeyRoom.png|" "$here/KeyRoom.desktop" > "$target/monoon-64fb4cd624695cecba6d9a49e61f42e7.desktop"
+echo "Installed $target/monoon-64fb4cd624695cecba6d9a49e61f42e7.desktop"
+== tar entry count:      286
+== zip (win-x64)
+   162304  11-23-2026 14:01   KeyRoom-win-x64/MoNoonPlayer.exe
+  2840576  11-23-2026 13:39   KeyRoom-win-x64/SDL3.dll
+     2117  11-23-2026 14:03   KeyRoom-win-x64/Game/GameSettings
+ 90959638                     268 files
+== zip (osx-arm64 release, top of Contents)
+    67672  11-23-2026 14:02   KeyRoom.app/Contents/_CodeSignature/CodeResources
+       17  11-23-2026 14:02   KeyRoom.app/Contents/MacOS/Game
+   124640  11-23-2026 14:02   KeyRoom.app/Contents/MacOS/MoNoonPlayer
+     2117  11-23-2026 14:02   KeyRoom.app/Contents/Resources/Game/GameSettings
+      447  11-23-2026 14:02   KeyRoom.app/Contents/Info.plist
+== forbidden files (SkiaSharp, Avalonia, HarfBuzz, Engine.Editor, Engine.Authoring, Roslyn) in folders and packages
+entries scanned:     2580
+PASS no forbidden files

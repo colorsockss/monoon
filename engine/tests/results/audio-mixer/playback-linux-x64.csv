@@ -1,0 +1,3 @@
+codec,mode,loop_frames,fade_in_frames,fade_out_frames,stop_frame,captured_frames,seam_left,seam_right,interior_peak_left,interior_peak_right,max_envelope_error,first_four_loops_sha256,fade_out_source
+ogg,release,57600,19200,28800,259584,288768,0.0028032755944877863,0.006734627764672041,0.006416382442694157,0.007272647228091955,9.533596845967551e-06,ddacda7e39eaedd80c08ff02dee9b27eb7888f22ccc2d53bc9816457bdc8f9e8,measured (Debian 12 x64 QEMU TCG guest)
+ogg,aot,57600,19200,28800,245760,274944,0.0028032755944877863,0.006734627764672041,0.006416382442694157,0.007272647228091955,9.533596845967551e-06,ddacda7e39eaedd80c08ff02dee9b27eb7888f22ccc2d53bc9816457bdc8f9e8,measured (Debian 12 x64 QEMU TCG guest)

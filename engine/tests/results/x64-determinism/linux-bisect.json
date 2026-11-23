@@ -1,0 +1,47 @@
+{
+ "joints v0": {
+  "default": "380202618e48e8b2",
+  "noavx2": "86280b2720904f09",
+  "same": false
+ },
+ "joints v1": {
+  "default": "380202618e48e8b2",
+  "noavx2": "380202618e48e8b2",
+  "same": true
+ },
+ "joints v2": {
+  "default": "380202618e48e8b2",
+  "noavx2": "47703b04ba8746d1",
+  "same": false
+ },
+ "joints fix": {
+  "default": "380202618e48e8b2",
+  "noavx2": "380202618e48e8b2",
+  "same": true
+ },
+ "paths v0": {
+  "default": "1a143d56cfa707d9",
+  "noavx2": "e37de6c0f9c517db",
+  "same": false
+ },
+ "paths v1": {
+  "default": "1a143d56cfa707d9",
+  "noavx2": "e37de6c0f9c517db",
+  "same": false
+ },
+ "paths v2": {
+  "default": "1a143d56cfa707d9",
+  "noavx2": "1a143d56cfa707d9",
+  "same": true
+ },
+ "paths fix": {
+  "default": "1a143d56cfa707d9",
+  "noavx2": "1a143d56cfa707d9",
+  "same": true
+ },
+ "paths v3": {
+  "default": "1a143d56cfa707d9",
+  "noavx2": "1a143d56cfa707d9",
+  "same": true
+ }
+}

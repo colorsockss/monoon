@@ -1,0 +1,86 @@
+joints scene-play vs mac scene-play: DIFFERENT linux 380202618e48e8b2 mac a00b9e4b00b4599d
+joints release vs mac release: DIFFERENT linux 380202618e48e8b2 mac a00b9e4b00b4599d
+joints native-aot vs mac native-aot: DIFFERENT linux 86280b2720904f09 mac a00b9e4b00b4599d
+joints release linux vs mac (positions): rows linux 300 mac 300, differing rows 212, first differing row 84, max |delta| 0.0003 at (row, col) (132, 1)
+joints release linux vs mac (all incl. angles): rows linux 300 mac 300, differing rows 212, first differing row 84, max |delta| 0.0010 at (row, col) (98, 5)
+tiles scene-play trace sha f30ed6864b3cf99f (mac raw f30ed686) IDENTICAL
+tiles release trace sha f30ed6864b3cf99f (mac raw f30ed686) IDENTICAL
+tiles native-aot trace sha f30ed6864b3cf99f (mac raw f30ed686) IDENTICAL
+waits scene-play: IDENTICAL linux 98d74c7894af2159 mac 98d74c7894af2159
+waits release: IDENTICAL linux 98d74c7894af2159 mac 98d74c7894af2159
+waits native-aot: IDENTICAL linux 98d74c7894af2159 mac 98d74c7894af2159
+camlab release record vs mac replay: IDENTICAL linux d56a1838068dfbc2 mac d56a1838068dfbc2
+camlab release record vs mac live verify.py: IDENTICAL linux d56a1838068dfbc2 mac d56a1838068dfbc2
+camlab release first.player.settings vs mac: IDENTICAL linux 91d7cdd52a8acfda mac 91d7cdd52a8acfda
+camlab release restart.player.settings vs mac: IDENTICAL linux 859fe9f5a45535e6 mac 859fe9f5a45535e6
+camlab release first/0005.png: DIFFERENT linux faff5a011dec028f mac 9a3905f5f05a3134 (pixels differing >48: 2.630%)
+camlab release first/0009.png: DIFFERENT linux 4e376209eabb6b6c mac 6e61eaf7783c9666 (pixels differing >48: 2.615%)
+camlab release first/0031.png: DIFFERENT linux fe88539f4d3c7ae0 mac 89ac6821fde33d3e (pixels differing >48: 2.614%)
+camlab release first/0143.png: DIFFERENT linux 8c0a676a28a39523 mac ba9a524c48172838 (pixels differing >48: 1.658%)
+camlab release first/0309.png: DIFFERENT linux 1a96562261855966 mac 1b908bd6cf2f12b7 (pixels differing >48: 2.641%)
+camlab release first/0376.png: DIFFERENT linux dd7fd1f1f6568bfa mac 1ad07b23343ad5ea (pixels differing >48: 1.980%)
+camlab release first/0677.png: DIFFERENT linux 333820ddc9e5b4bb mac 4d04219705e64120 (pixels differing >48: 2.598%)
+camlab release first/0789.png: DIFFERENT linux 9c3d14028fc597a8 mac 608758aab48c830a (pixels differing >48: 2.473%)
+camlab release restart/0005.png: DIFFERENT linux e9ac7e93562e6b37 mac 7333e2df19348ca0 (pixels differing >48: 2.609%)
+camlab native-aot record vs mac replay: IDENTICAL linux d56a1838068dfbc2 mac d56a1838068dfbc2
+camlab native-aot record vs mac live verify.py: IDENTICAL linux d56a1838068dfbc2 mac d56a1838068dfbc2
+camlab native-aot first.player.settings vs mac: IDENTICAL linux 91d7cdd52a8acfda mac 91d7cdd52a8acfda
+camlab native-aot restart.player.settings vs mac: IDENTICAL linux 859fe9f5a45535e6 mac 859fe9f5a45535e6
+camlab native-aot first/0005.png: DIFFERENT linux faff5a011dec028f mac 9a3905f5f05a3134 (pixels differing >48: 2.630%)
+camlab native-aot first/0009.png: DIFFERENT linux 4e376209eabb6b6c mac 6e61eaf7783c9666 (pixels differing >48: 2.615%)
+camlab native-aot first/0031.png: DIFFERENT linux fe88539f4d3c7ae0 mac 89ac6821fde33d3e (pixels differing >48: 2.614%)
+camlab native-aot first/0143.png: DIFFERENT linux 8c0a676a28a39523 mac ba9a524c48172838 (pixels differing >48: 1.658%)
+camlab native-aot first/0309.png: DIFFERENT linux 1a96562261855966 mac 1b908bd6cf2f12b7 (pixels differing >48: 2.641%)
+camlab native-aot first/0376.png: DIFFERENT linux dd7fd1f1f6568bfa mac 1ad07b23343ad5ea (pixels differing >48: 1.980%)
+camlab native-aot first/0677.png: DIFFERENT linux 333820ddc9e5b4bb mac 4d04219705e64120 (pixels differing >48: 2.598%)
+camlab native-aot first/0789.png: DIFFERENT linux 9c3d14028fc597a8 mac 608758aab48c830a (pixels differing >48: 2.473%)
+camlab native-aot restart/0005.png: DIFFERENT linux e9ac7e93562e6b37 mac 7333e2df19348ca0 (pixels differing >48: 2.609%)
+rich scene-play reveal.tsv: IDENTICAL linux 76118c092596d4c2 mac 76118c092596d4c2
+rich release reveal.tsv: IDENTICAL linux 76118c092596d4c2 mac 76118c092596d4c2
+rich native-aot reveal.tsv: IDENTICAL linux 76118c092596d4c2 mac 76118c092596d4c2
+rich release capture 0030.png: DIFFERENT linux 2c47ebb5e1189a2b mac bf94b2aceecc6b4c (pixels differing >48: 0.271%)
+rich release capture 0085.png: DIFFERENT linux 8bb13b7826a84822 mac 22bb3afb833e1b57 (pixels differing >48: 0.337%)
+rich release capture 0120.png: DIFFERENT linux 3a7191196bfd4484 mac 282f098a28a2b78d (pixels differing >48: 0.233%)
+rich release capture 0152.png: DIFFERENT linux 6ed1443015e0b787 mac 125f2320b79b20c6 (pixels differing >48: 0.712%)
+rich release capture 0175.png: DIFFERENT linux 22fb4b31bb9cd088 mac cddd09b45713f38c (pixels differing >48: 0.244%)
+rich release capture 0262.png: DIFFERENT linux 3aaadcb0a3169c3e mac c1800832f46bf058 (pixels differing >48: 0.223%)
+rich release capture 0345.png: DIFFERENT linux 50e4b744de6a0699 mac 93a63471510fa821 (pixels differing >48: 0.294%)
+rich scene-play capture 0030.png: DIFFERENT linux 0b6c934f3fece7b1 mac 1b771d6914380c0f (pixels differing >48: 0.276%)
+rich scene-play capture 0085.png: DIFFERENT linux 026257ae767b87da mac dcc286de87a66f23 (pixels differing >48: 0.341%)
+rich scene-play capture 0120.png: DIFFERENT linux 2ad665005f400aeb mac 6330c3b85a57d322 (pixels differing >48: 0.237%)
+rich scene-play capture 0152.png: DIFFERENT linux f6ff2a09922bd23d mac acd4ba022342f43e (pixels differing >48: 0.716%)
+rich scene-play capture 0175.png: DIFFERENT linux 7b48685fc2402731 mac 006cb707ac820d14 (pixels differing >48: 0.248%)
+rich scene-play capture 0262.png: DIFFERENT linux ff07c6f1cf021a05 mac 763bf4acb56a50e3 (pixels differing >48: 0.227%)
+rich scene-play capture 0345.png: DIFFERENT linux ec588877509a233c mac 38fee2a3468c48ef (pixels differing >48: 0.298%)
+paths scene-play trace sha 1a143d56cfa707d9 (mac 1a143d56cfa707d9) IDENTICAL
+paths scene-play capture 0150: DIFFERENT linux df13d67284cc8979 mac 70c47b74aa5b1699 (pixels differing >48: 2.891%)
+paths scene-play capture 0300: DIFFERENT linux 55c9b902310df346 mac 0b76624bdaac2576 (pixels differing >48: 2.903%)
+paths release trace sha 1a143d56cfa707d9 (mac 1a143d56cfa707d9) IDENTICAL
+paths release capture 0150: DIFFERENT linux df13d67284cc8979 mac 70c47b74aa5b1699 (pixels differing >48: 2.891%)
+paths release capture 0300: DIFFERENT linux 55c9b902310df346 mac 0b76624bdaac2576 (pixels differing >48: 2.903%)
+paths native-aot trace sha e37de6c0f9c517db (mac 1a143d56cfa707d9) DIFFERENT
+paths native-aot capture 0150: DIFFERENT linux df13d67284cc8979 mac 70c47b74aa5b1699 (pixels differing >48: 2.891%)
+paths native-aot capture 0300: DIFFERENT linux 55c9b902310df346 mac 0b76624bdaac2576 (pixels differing >48: 2.903%)
+lines scene-play trace sha 6969a524feb5e837 (mac 6969a524feb5e837) IDENTICAL
+lines scene-play first 60 rows vs mac laser-trace-0-59.tsv IDENTICAL
+lines scene-play capture 0200: DIFFERENT linux 7ad5ce91e25062c6 mac 614001e29d6ed5b4 (pixels differing >48: 1.280%)
+lines scene-play capture 0425: DIFFERENT linux 17271bec9dc12bc0 mac e594f996c061011b (pixels differing >48: 1.321%)
+lines release trace sha 6969a524feb5e837 (mac 6969a524feb5e837) IDENTICAL
+lines release first 60 rows vs mac laser-trace-0-59.tsv IDENTICAL
+lines release capture 0200: DIFFERENT linux 7ad5ce91e25062c6 mac 614001e29d6ed5b4 (pixels differing >48: 1.280%)
+lines release capture 0425: DIFFERENT linux 17271bec9dc12bc0 mac e594f996c061011b (pixels differing >48: 1.321%)
+lines native-aot trace sha 6969a524feb5e837 (mac 6969a524feb5e837) IDENTICAL
+lines native-aot first 60 rows vs mac laser-trace-0-59.tsv IDENTICAL
+lines native-aot capture 0200: DIFFERENT linux 7ad5ce91e25062c6 mac 614001e29d6ed5b4 (pixels differing >48: 1.280%)
+lines native-aot capture 0425: DIFFERENT linux 17271bec9dc12bc0 mac e594f996c061011b (pixels differing >48: 1.321%)
+ase release frames IDENTICAL
+ase native-aot frames IDENTICAL
+ase scene-play frames IDENTICAL
+copy release result.json: IDENTICAL linux d1c251277ca67882 mac d1c251277ca67882
+copy native-aot result.json: IDENTICAL linux d1c251277ca67882 mac d1c251277ca67882
+copy editor.txt: DIFFERENT linux 8d9e6041218873b5 mac da879515a8502193
+reload/reload.json: keys differing from mac: ['broken', 'v2']
+extensions/extensions.json: keys differing from mac: ['extension_compile_error', 'inspector_1280', 'inspector_1600', 'inspector_1920', 'os', 'panel_1280', 'panel_1600', 'panel_1920']
+herbalist release save: IDENTICAL linux eed41defcbd7987a mac eed41defcbd7987a
+herbalist native-aot save: IDENTICAL linux eed41defcbd7987a mac eed41defcbd7987a
+package InventoryLab replay save: IDENTICAL linux eed41defcbd7987a mac eed41defcbd7987a

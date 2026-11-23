@@ -20,7 +20,13 @@ public interface IGameObjects
     bool TryMoveStep(Guid id, Vector2 displacement);
     SpritePool2D CreateSpritePool(Guid owner, int capacity);
     bool EmitParticles(Guid id);
+    // Starts a Position Tween 2D or Path Follower 2D whose Play on start is off.
     bool PlayTween(Guid id);
+    // Line 2D: world points replace the line's points; reading returns the drawn (flattened) points in world space.
+    bool SetLinePoints(Guid id, ReadOnlySpan<Vector2> worldPoints);
+    bool TryGetLinePoints(Guid id, List<Vector2> worldPoints);
+    // Trail 2D: the points recorded on game ticks, oldest first, in world space.
+    bool TryGetTrailPoints(Guid id, List<Vector2> worldPoints);
     bool PlayCutscene(Guid director);
     CutsceneState? Cutscene { get; }
     CutsceneExit? LastCutsceneExit { get; }
@@ -30,6 +36,8 @@ public interface IGameObjects
     bool SetSpriteTint(Guid id, string? tint);
     bool SetColliderEnabled(Guid id, bool enabled);
     bool IsColliderEnabled(Guid id);
+    // Runs steps until their first wait. Stops when the owner is disabled or removed, or the scene ends.
+    ScriptRoutine StartRoutine(Guid owner, IEnumerable<ScriptWait> steps);
     bool SetActive(Guid id, bool active);
     bool IsActive(Guid id);
     IReadOnlyList<Guid> FindByTag(string tag);
@@ -165,14 +173,14 @@ public sealed partial class SceneGame
         foreach (var src in template.ParentFirst())
         {
             var obj = src.CopyTransform(ids[src.Id]);
-            obj.Components = src.Components.Select(c=>c is Camera2DComponent { Follow: Guid link } cam && ids.TryGetValue(link,out var mapped)
-                ? cam with { Follow=mapped } : c is Tilemap2DComponent { StreamTarget: Guid anchor } map && ids.TryGetValue(anchor,out var focus) ? map with { StreamTarget=focus } : c is DistanceJoint2DComponent { Connected: Guid connected } joint && ids.TryGetValue(connected,out var jointTarget)
+            obj.Components = src.Components.Select(Own).Select(c=>c is Camera2DComponent { Follow: Guid link } cam && ids.TryGetValue(link,out var mapped)
+                ? cam with { Follow=mapped } : c is Tilemap2DComponent { StreamTarget: Guid anchor } map && ids.TryGetValue(anchor,out var focus) ? map with { StreamTarget=focus } : c is Joint2DComponent { Connected: Guid connected } joint && ids.TryGetValue(connected,out var jointTarget)
                     ? joint with { Connected=jointTarget } : c).ToImmutableArray();
             var p = src.Parent == null ? owner : staged[src.Parent.Id];
             obj.SetParent(p?.Source);
             if (src.Parent == null)
             {
-                obj.SetOrigin(owner == null ? position : Vector2.Transform(position, Affine2D.Inverse(owner.MatrixAt(owner.Position))));
+                obj.SetOrigin(owner == null ? position : Affine2D.Transform(position, Affine2D.Inverse(owner.MatrixAt(owner.Position))));
             }
             foreach (var script in obj.Components.OfType<ScriptComponent>()) script.InstanceIds = ids;
             var body = CreateBody(obj);
@@ -198,18 +206,48 @@ public sealed partial class SceneGame
         return origin.Root;
     }
 
+    // Templates are parsed once per prefab and shared, so every instance gets its own component records and collections.
+    private static SceneComponent Own(SceneComponent c) => c switch
+    {
+        ScriptComponent s => s with { Values = new(s.Values, s.Values.Comparer), EventLinks = (GameEventLink[]?)s.EventLinks?.Clone() },
+        UiTextComponent t => t with { Icons = t.Icons is {} icons ? new(icons, icons.Comparer) : null,
+            Translations = t.Translations is {} text ? new(text, text.Comparer) : null },
+        UiDropdownComponent d => d with { Options = (string[])d.Options.Clone() },
+        Tilemap2DComponent m => m with { ChunkFiles = (TileChunkRef[]?)m.ChunkFiles?.Clone() }, // Tile chunks are immutable and copied on write.
+        _ => c with { },
+    };
+
+    private sealed record CachedPrefab(string Path, SceneDocument Template, (string File, DateTime Written)[] Files);
+    private readonly Dictionary<Guid, CachedPrefab> prefabTemplates = [];
+
+    // shortcut: a rewrite with the same timestamp is missed; compare content hashes if editors ever write within one tick.
+    private static bool Unchanged((string File, DateTime Written)[] files)
+    {
+        foreach (var (file, written) in files) if (File.GetLastWriteTimeUtc(file) != written) return false;
+        return true;
+    }
+
     private SceneDocument ReadPrefab(PrefabReference prefab, out string path)
     {
         path = assets?.PathFor(prefab.Id)!;
         if (path == null || !path.EndsWith(ProjectAssets.Prefab, StringComparison.OrdinalIgnoreCase))
             throw new InvalidDataException($"Missing prefab {prefab.Id}.");
-        // Each read owns its mutable components (tile layers, script overrides, etc.).
+        if (prefabTemplates.TryGetValue(prefab.Id, out var cached) && cached.Path == path && Unchanged(cached.Files))
+            return cached.Template;
         var project=world.ProjectDirectory!;
-        var template = File.Exists(Path.Combine(project,".monoon-player"))
-            ? SceneDocument.ReadAsset(Path.Combine(project,path))
-            : SceneDocument.ReadResolvedPrefab(project,assets!,prefab.Id);
+        var exported = File.Exists(Path.Combine(project,".monoon-player"));
+        var file = Path.Combine(project,path);
+        var stamps = new List<(string File, DateTime Written)> { (file, File.GetLastWriteTimeUtc(file)) }; // Before the read: a write during it is seen next time.
+        var template = exported ? SceneDocument.ReadAsset(file) : SceneDocument.ReadResolvedPrefab(project,assets!,prefab.Id);
         template.ResolveAssets(assets!);
         if (template.Objects.Count(o => o.Parent == null) != 1) throw new InvalidDataException($"{path}: expected one root.");
+        // Editor Play resolves nested prefabs from their own files; exported prefabs are already flattened.
+        if (!exported)
+            foreach (var obj in template.Objects)
+                if (obj.Prefab?.AssetId is Guid id && assets!.PathFor(id) is {} relative &&
+                    Path.Combine(project,relative) is var nested && !stamps.Exists(s => s.File == nested))
+                    stamps.Add((nested, File.GetLastWriteTimeUtc(nested)));
+        prefabTemplates[prefab.Id] = new(path, template, exported ? [] : stamps.ToArray()); // Exported content never changes while the game runs.
         return template;
     }
 
@@ -309,7 +347,7 @@ public sealed partial class SceneGame
         {
             var body = byId[obj.Id];
             var next = !removed.Contains(obj.Id) && body.ActiveSelf && (obj.ParentId == null || byId[obj.ParentId.Value].Active);
-            if (next != body.Active) { body.Active = next; if (!next) { body.ContactRevision++; Silence(body); body.Particles?.Reset(); } changed.Add(body); }
+            if (next != body.Active) { body.Active = next; if (!next) { body.ContactRevision++; Silence(body); body.Particles?.Reset(); body.Trail?.Clear(); } changed.Add(body); }
         }
         if (!root.Active) { changed.Reverse(); Ui.ValidateInputModes(); }
         foreach (var body in changed) QueueLife(body, body.Active ? LifeEvent.Enable : LifeEvent.Disable);
@@ -329,7 +367,7 @@ public sealed partial class SceneGame
         foreach (var body in added)
         {
             if (removed.Contains(body.Id) || body.Source.ParentId is not Guid parent) continue;
-            body.Position = Vector2.Transform(body.Source.LocalMatrix.Translation, byId[parent].MatrixAt(byId[parent].Position));
+            body.Position = Affine2D.Transform(body.Source.LocalMatrix.Translation, byId[parent].MatrixAt(byId[parent].Position));
             body.BeginStep();
         }
         removed.Clear();
@@ -367,9 +405,10 @@ public sealed partial class SceneGame
         foreach (var b in parentFirst)
             b.MotionOwner = b.Rigid != null ? b : b.Source.ParentId is Guid parent ? byId[parent].MotionOwner : null;
         rigidBodies = parentFirst.Where(b => b.Rigid != null).ToArray();
-        joints = parentFirst.Where(b => b.Joint != null).ToArray();
+        joints = parentFirst.Where(b => b.Joints.Length > 0).ToArray();
         emitters = bodies.Where(b => b.Particles != null && !b.Interface).ToArray();
         lights = bodies.Where(b => b.Light != null && !b.Interface).ToArray();
+        trails = bodies.Where(b => b.Trail != null && !b.Interface).ToArray();
         skeletons=bodies.Where(b=>b.Skeleton!=null && !b.Interface).ToArray();
         foreach (var b in skeletons) if (b.FootIK is {} ik) b.FootFilter=new(ik.Mask,Ignore:b.MotionOwner?.Id??b.Id);
         IndexCameras();

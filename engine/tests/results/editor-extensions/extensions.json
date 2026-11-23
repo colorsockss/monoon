@@ -1,0 +1,245 @@
+{
+  "os": "osx-arm64",
+  "extension_menu": [
+    "Place Coin"
+  ],
+  "window_menu_has_coins": true,
+  "place_coin": {
+    "before": 0,
+    "after": 1,
+    "selected": "Coin",
+    "prefab": true
+  },
+  "inspector_1280": {
+    "window": 1280,
+    "rows": [
+      {
+        "label": "LootTable",
+        "label_x": 1070,
+        "input_x": 1130,
+        "column": 60,
+        "right": 1272,
+        "vertical": 0
+      },
+      {
+        "label": "Coins",
+        "label_x": 1070,
+        "input_x": 1130,
+        "column": 60,
+        "right": 1272,
+        "vertical": 0
+      },
+      {
+        "label": "Place",
+        "label_x": 1070,
+        "input_x": 1130,
+        "column": 60,
+        "right": 1248,
+        "vertical": 0
+      }
+    ],
+    "label_drift": 0,
+    "input_drift": 0,
+    "right_drift": 24,
+    "name_column": 60
+  },
+  "inspector_coin_text": "1 in this scene",
+  "panel_1280": {
+    "window": 1280,
+    "panel": [
+      180,
+      429,
+      878,
+      350
+    ],
+    "rows": [
+      {
+        "label": "In scene",
+        "label_x": 188,
+        "input_x": 248,
+        "column": 60,
+        "right": 1050,
+        "vertical": 0
+      },
+      {
+        "label": "Prefab",
+        "label_x": 188,
+        "input_x": 248,
+        "column": 60,
+        "right": 1050,
+        "vertical": 0
+      },
+      {
+        "label": "Place",
+        "label_x": 188,
+        "input_x": 248,
+        "column": 60,
+        "right": 325,
+        "vertical": 0
+      }
+    ],
+    "input_drift": 0,
+    "padding": 8,
+    "inspector_padding": 8,
+    "inspector_name_column": 60
+  },
+  "inspector_1600": {
+    "window": 1600,
+    "rows": [
+      {
+        "label": "LootTable",
+        "label_x": 1390,
+        "input_x": 1450,
+        "column": 60,
+        "right": 1592,
+        "vertical": 0
+      },
+      {
+        "label": "Coins",
+        "label_x": 1390,
+        "input_x": 1450,
+        "column": 60,
+        "right": 1592,
+        "vertical": 0
+      },
+      {
+        "label": "Place",
+        "label_x": 1390,
+        "input_x": 1450,
+        "column": 60,
+        "right": 1568,
+        "vertical": 0
+      }
+    ],
+    "label_drift": 0,
+    "input_drift": 0,
+    "right_drift": 24,
+    "name_column": 60
+  },
+  "panel_1600": {
+    "window": 1600,
+    "panel": [
+      180,
+      529,
+      1198,
+      350
+    ],
+    "rows": [
+      {
+        "label": "In scene",
+        "label_x": 188,
+        "input_x": 248,
+        "column": 60,
+        "right": 1370,
+        "vertical": 0
+      },
+      {
+        "label": "Prefab",
+        "label_x": 188,
+        "input_x": 248,
+        "column": 60,
+        "right": 1370,
+        "vertical": 0
+      },
+      {
+        "label": "Place",
+        "label_x": 188,
+        "input_x": 248,
+        "column": 60,
+        "right": 325,
+        "vertical": 0
+      }
+    ],
+    "input_drift": 0,
+    "padding": 8,
+    "inspector_padding": 8,
+    "inspector_name_column": 60
+  },
+  "inspector_1920": {
+    "window": 1920,
+    "rows": [
+      {
+        "label": "LootTable",
+        "label_x": 1710,
+        "input_x": 1770,
+        "column": 60,
+        "right": 1912,
+        "vertical": 0
+      },
+      {
+        "label": "Coins",
+        "label_x": 1710,
+        "input_x": 1770,
+        "column": 60,
+        "right": 1912,
+        "vertical": 0
+      },
+      {
+        "label": "Place",
+        "label_x": 1710,
+        "input_x": 1770,
+        "column": 60,
+        "right": 1888,
+        "vertical": 0
+      }
+    ],
+    "label_drift": 0,
+    "input_drift": 0,
+    "right_drift": 24,
+    "name_column": 60
+  },
+  "panel_1920": {
+    "window": 1920,
+    "panel": [
+      180,
+      709,
+      1518,
+      350
+    ],
+    "rows": [
+      {
+        "label": "In scene",
+        "label_x": 188,
+        "input_x": 248,
+        "column": 60,
+        "right": 1690,
+        "vertical": 0
+      },
+      {
+        "label": "Prefab",
+        "label_x": 188,
+        "input_x": 248,
+        "column": 60,
+        "right": 1690,
+        "vertical": 0
+      },
+      {
+        "label": "Place",
+        "label_x": 188,
+        "input_x": 248,
+        "column": 60,
+        "right": 325,
+        "vertical": 0
+      }
+    ],
+    "input_drift": 0,
+    "padding": 8,
+    "inspector_padding": 8,
+    "inspector_name_column": 60
+  },
+  "panel_place": {
+    "after": 2,
+    "shown": "2"
+  },
+  "undo_both": 0,
+  "extension_compile_error": {
+    "Message": "./Editor/Broken.cs(3,13): error CS1525: \uC798\uBABB\uB41C \uC2DD\uC758 \uD56D \u0027;\u0027\uC785\uB2C8\uB2E4.",
+    "File": "$WORK/a36-ext2/KeyRoom/Editor/Broken.cs",
+    "Line": 3,
+    "menu": 0,
+    "panel": false
+  },
+  "extension_restored": [
+    "Place Coin"
+  ]
+}

@@ -13,7 +13,7 @@
 ## Release로 내보내기
 
 1. **Build → Build Game…**에서 **Start scene**을 선택하고 **Included scenes**에 시작 씬과 이동할 모든 씬을 체크한다. KeyRoom에는 **KeyRoom.scene**, **SecondRoom.scene**, **RoomGuide.scene**을 포함한다.
-2. **Platform**에서 `osx-arm64`, `win-x64`, `linux-x64` 중 하나를 고르고 **Build type → Release**를 선택한다. **Save Settings**는 설정만 저장한다. **Build**는 기본 위치에, **Build To…**는 선택한 폴더에 출력한다.
+2. **Platform**에서 `osx-arm64`, `win-x64`, `linux-x64` 중 하나를 고르고 **Build type → Release**를 선택한다. **Save Settings**는 설정만 저장한다. **Build**는 기본 위치에, **Build To…**는 선택한 폴더에 출력한다. 세 버튼 모두 고른 값을 [프로젝트 빌드 설정](#프로젝트-빌드-설정)에 저장하고, 다음에 대화 상자를 열면 그 값으로 시작한다.
 3. 저장소 안 샘플의 기본 출력은 `game-builds/<프로젝트 폴더명>/`이다. 일반 프로젝트에서는 프로젝트와 나란한 `game-builds/` 아래에 생성된다. 실제 게임 이름은 `GameSettings.gameTitle` 또는 프로젝트 폴더명에서 온다.
 4. macOS에서는 게임 `.app` 전체를 옮겨 더블클릭한다. Windows에서는 출력 폴더를 통째로 복사하고 `MoNoonPlayer.exe`를 실행한다. Linux에서는 출력 폴더에서 `./MoNoonPlayer`를 실행한다. 실행 파일 옆 `Game/`에는 포함 씬과 게임 데이터가 있다. Mac에서는 앱 내부 `Contents/MacOS/Game/`에 해당한다.
 
@@ -21,11 +21,33 @@ Release 템플릿은 플랫폼별 .NET 런타임을 포함한 최적화 빌드�
 
 게임별 세이브와 사용자 설정은 운영체제의 사용자 데이터 폴더에 기록한다. 같은 게임의 Release와 Native AOT 사이에서 이어 할 수 있다. [데이터 에셋과 플레이어 저장](player-data.md)
 
+## 프로젝트 빌드 설정
+
+**Build Game…**의 **Platform**, **Build type**, **Profile**, **Package**, **Content**(Rebuild all content)는 프로젝트 루트의 `BuildSettings` 파일에 저장된다. 에디터와 `./monoon build`가 같은 파일을 읽는다. 시작 씬, 포함 씬, 번들, 아이콘은 지금처럼 `GameSettings`에 저장된다. 값은 CLI 인자와 같은 단어를 쓰는 YAML이다.
+
+```yaml
+target: osx-arm64
+type: release
+profile: distribution
+content: incremental
+package: true
+```
+
+파일이 없거나 키가 빠지면 호스트 플랫폼, `release`, `distribution`, `incremental`, 패키지 끔을 사용한다. `BuildSettings`는 빌드할 때만 읽는다. 확장자가 없어 에셋 목록에 들어가지 않고, 게임 데이터(`Game/`)와 배포 패키지에 복사되지 않으며, 플레이어는 이 파일을 읽지 않는다. 다른 OS용 Native AOT가 저장되어 있으면 대화 상자는 Platform을 바꿀 때처럼 **Release**를 표시한다. CLI는 `Build the win-x64 Native AOT player on a matching host.`로 종료 코드 1을 반환한다.
+
+```sh
+./monoon build samples/KeyRoom                       # 저장한 설정 그대로
+./monoon build samples/KeyRoom native-aot            # 이번 실행만 Native AOT
+./monoon build samples/KeyRoom --profile development # 이번 실행만 개발용, 저장된 패키지 설정은 끔
+```
+
+명령줄에 적은 빌드 종류와 옵션은 그 실행에만 저장값 대신 쓰이고, `BuildSettings` 파일은 바꾸지 않는다. `--profile development`만 적으면 대화 상자처럼 패키지를 끈다. `--profile development --package on`은 사용법 오류다. 출력 위치(`--output`, **Build To…**)는 저장하지 않는다. 같은 프로젝트와 설정이면 에디터와 CLI의 결과는 빌드 ID, 서명, Native AOT 링커 UUID를 빼고 바이트 단위로 같다. [검증 기록](../../engine/tests/results/editor-build/README.md)
+
 ## Native AOT로 내보내기
 
 현재 컴퓨터와 같은 OS·아키텍처를 고르면 **Build type → Native AOT**가 나타난다. 사용 중인 C# 스크립트와 필드 연결 코드, VYaml 포매터를 플레이어에 함께 컴파일한다. 배포 데이터는 Release와 같은 YAML을 쓴다. 결과는 `NativeAOT/` 하위에 생성되어 일반 Release와 함께 보관할 수 있다. 빌드하는 컴퓨터에는 .NET 10 SDK와 해당 플랫폼의 네이티브 링커가 필요하다.
 
-macOS arm64의 Native AOT 배포 프로필은 실행 파일을 크기 우선(`OptimizationPreference=Size`)으로 컴파일한다. 배포 게임은 BRUTAL의 SDL3 렌더러로 화면을 그린다. 스프라이트 마스크는 SDL로 읽은 RGBA 픽셀에 적용하고, 셰이더는 빌드 시 생성한 프레임 시트를 사용한다. 프로젝트 글꼴을 지정하면 UI와 번역표에 쓰인 글자의 모양과 너비를 작은 `.glyphs` 파일에 담는다. 새 입력이나 콘텐츠에서 추가된 글자는 원본 TTF·OTF에서 StbTrueTypeSharp로 읽어 SDL 텍스처에 그린다. 글꼴을 교체하면 이전 글리프 데이터는 사용하지 않는다. SkiaSharp는 에디터와 빌드 도구에서만 사용한다. macOS에서 내용이 같은 두 SDL 라이브러리는 상대 심볼릭 링크로 연결한다. ZIP으로 전달할 때는 이 링크와 실행 권한을 보존하도록 다음처럼 압축한다.
+macOS arm64의 Native AOT 배포 프로필은 실행 파일을 크기 우선(`OptimizationPreference=Size`)으로 컴파일한다. 배포 게임은 BRUTAL의 SDL3 렌더러로 화면을 그린다. 스프라이트 마스크는 SDL로 읽은 RGBA 픽셀에 적용하고, 셰이더는 빌드 시 생성한 프레임 시트를 사용한다. 게임 텍스트는 BRUTAL의 SDL_ttf(`Brutal.Sdl.Ttf`, FreeType·HarfBuzz)로 배포한 TTF·OTF에서 실행 중에 그린다. 빌드 때 글리프를 미리 굽지 않으므로 새 입력이나 콘텐츠 업데이트로 추가된 글자도 같은 방식으로 그려진다. 배포본의 `Licenses/BRUTAL/BRUTAL-SDL-TTF-THIRD-PARTY-NOTICES.txt`에 SDL_ttf·FreeType·HarfBuzz·zlib 고지가 들어간다. SkiaSharp는 에디터와 빌드 도구에서만 사용한다. macOS에서 내용이 같은 두 SDL 라이브러리는 상대 심볼릭 링크로 연결한다. ZIP으로 전달할 때는 이 링크와 실행 권한을 보존하도록 다음처럼 압축한다.
 
 ```sh
 ./monoon build samples/KeyRoom native-aot
@@ -37,7 +59,7 @@ ditto -c -k --keepParent KeyRoom.app KeyRoom.zip
 
 ## 개발용·배포용 프로필과 디버그 심볼
 
-CLI의 `--profile`로 심볼을 보관할 위치를 고른다. 두 프로필 모두 최적화된 Release 구성으로 컴파일한다. 기본값은 `distribution`이며 에디터의 **Build Game…**도 이 프로필을 쓴다.
+CLI의 `--profile`로 심볼을 보관할 위치를 고른다. 두 프로필 모두 최적화된 Release 구성으로 컴파일한다. 기본값은 `distribution`이다. 에디터의 **Build Game…**에서는 **Profile**로 고른다.
 
 | 프로필 | macOS Release 앱 | macOS Native AOT 앱 | 심볼 위치 |
 | --- | --- | --- | --- |
@@ -59,6 +81,49 @@ CLI의 `--profile`로 심볼을 보관할 위치를 고른다. 두 프로필 모
 특정 배포본을 진단할 때는 실행 파일 옆의 `MoNoonBuild`에서 `buildId`, `target`, `mode`를 읽고 같은 ID의 심볼 폴더를 연다. Mac 앱의 기록은 `Contents/MacOS/MoNoonBuild`에 있다. 심볼 폴더에도 같은 기록이 들어 있다. 이 파일에는 실행 파일의 SHA-256과 Release DLL에 대응하는 PDB ID가 기록된다.
 
 Release는 엔진·플레이어·게임 스크립트의 portable PDB를 저장한다. macOS Native AOT의 네이티브 주소를 해석할 때는 `MoNoonPlayer.dSYM`을 사용한다. `dwarfdump --uuid`에 실행 파일과 dSYM을 함께 넘겨 두 UUID를 대조할 수 있다. Windows Native AOT의 네이티브 심볼은 `.pdb`, Linux에서는 `.dbg`다. [InventoryLab 심볼과 소스 줄 검증](../../engine/tests/results/build-profiles/README.md)
+
+## 서명과 배포 패키지
+
+배포용 프로필로 빌드한 게임은 서명과 압축 단계를 이어서 실행할 수 있다. CLI에서는 `--package on`을 붙인다. 에디터에서는 **Build Game…**의 **Profile → Distribution**을 고르고 **Package → Sign and package**를 체크한다. 개발용 프로필에서는 이 단계를 실행하지 않는다.
+
+```sh
+./monoon build samples/KeyRoom release --package on
+./monoon build samples/KeyRoom native-aot --package on
+./monoon build samples/KeyRoom release --target win-x64 --package on
+./monoon build samples/KeyRoom release --target linux-x64 --package on
+```
+
+패키지는 게임 폴더나 `.app` 옆에 만든다. Native AOT 패키지는 `NativeAOT/` 아래에 생성된다. 각 단계의 결과와 건너뛴 이유는 CLI 표준 오류와 에디터 Console에 기록된다.
+
+| 대상 | 실행하는 단계 | 결과 |
+| --- | --- | --- |
+| `osx-arm64` | `codesign` 서명(강화된 런타임), 설정한 경우 `notarytool` 공증과 `stapler` | `<게임>-osx-arm64.zip`, `<게임>-osx-arm64.dmg` |
+| `win-x64` | Windows에서 인증서를 설정한 경우 `signtool`로 `MoNoonPlayer.exe` 서명 | `<게임>-win-x64.zip` |
+| `linux-x64` | 실행 권한을 보존한 압축, `.desktop` 항목, 아이콘, 메뉴 등록 스크립트 | `<게임>-linux-x64.tar.gz` |
+
+**macOS.** 서명할 때 `Contents/MacOS`의 `Game`, `EngineAssets`, `Licenses` 폴더를 `Contents/Resources`로 옮기고 같은 이름의 상대 링크를 남긴다. 플레이어가 읽는 경로는 그대로다. 안쪽 dylib·DLL·빌드 기록을 먼저 서명한 뒤 앱 묶음을 서명하고 `codesign --verify --deep --strict`로 확인한다. Release는 CoreCLR JIT를 위해 `com.apple.security.cs.allow-jit` 권한을 받는다. Native AOT는 추가 권한이 필요 없다. Developer ID를 지정하지 않으면 애드혹(`-`)으로 서명한다. 이 경우 팀 ID가 없는 라이브러리를 읽도록 `disable-library-validation`을 추가한다. 애드혹 앱은 빌드한 Mac에서 실행할 수 있다. 다른 Mac에 배포하려면 Developer ID로 서명하고 공증한다. 앱 안의 DLL 서명은 확장 속성에 저장되므로 ZIP은 Finder나 `ditto -x -k`로 풀어야 한다. `unzip`으로 풀면 서명 검사가 실패한다. DMG는 이 문제가 없다.
+
+빌드 기록 `MoNoonBuild`의 `playerSha256`은 서명 전 실행 파일의 값이다. 서명한 빌드에는 `codeSignature`(`macos-adhoc`, `macos-developer-id`, `windows-authenticode`)가 추가된다. 보관한 심볼 폴더의 기록도 같은 내용으로 갱신된다.
+
+**Windows.** 서명은 Windows SDK의 `signtool.exe`가 PATH에 있는 Windows에서만 실행한다. Mac·Linux에서 내보내거나 인증서를 지정하지 않으면 서명하지 않은 ZIP을 만든다. 설치 프로그램은 만들지 않는다. 설치 프로그램 단계를 추가하려면 WiX Toolset 또는 Inno Setup이 빌드 컴퓨터에 설치되어 있어야 한다. 시작 메뉴 바로 가기, 설치 경로, 제거 항목을 정의하고, 생성한 설치 파일에도 같은 인증서로 서명해야 한다.
+
+**Linux.** 압축에는 게임 폴더와 `<게임>.desktop`, `<게임>.png`, `install-desktop-entry.sh`가 들어 있다. 아이콘은 **Build Game… → Icon**에서 프로젝트의 PNG를 고르며 `GameSettings`의 `icon`에 저장된다. 아이콘은 패키지에만 포함되고 게임 데이터에는 들어가지 않는다. 압축을 푼 폴더에서 `./install-desktop-entry.sh`를 실행하면 `~/.local/share/applications/`에 해당 폴더의 절대 경로를 가리키는 메뉴 항목을 등록한다. 게임은 `./MoNoonPlayer`로 바로 실행할 수도 있다.
+
+### 서명 설정과 비밀 정보
+
+서명 설정은 프로젝트가 아닌 사용자 설정 파일에서 읽는다. 기본 위치는 macOS `~/Library/Application Support/MoNoon/signing.yaml`이고, 환경 변수 `MONOON_SIGNING_SETTINGS`로 다른 경로를 지정할 수 있다. 파일이 없으면 애드혹 서명만 실행하고 공증과 `signtool`은 건너뛴다.
+
+```yaml
+macIdentity: "Developer ID Application: Example Games (TEAMID1234)"
+notaryKeychainProfile: monoon-notary
+windowsCertificateThumbprint: 0123456789ABCDEF0123456789ABCDEF01234567
+# 인증서 저장소 대신 PFX를 쓸 때
+windowsPfx: /Users/me/Secrets/game.pfx
+windowsPfxPasswordFile: /Users/me/Secrets/game-pfx-password.txt
+windowsTimestampUrl: http://timestamp.digicert.com
+```
+
+공증 자격 증명은 키체인에 저장하고 프로필 이름만 적는다. `xcrun notarytool store-credentials monoon-notary`로 만든다. PFX 비밀번호는 환경 변수 `MONOON_WINDOWS_PFX_PASSWORD` 또는 `windowsPfxPasswordFile`이 가리키는 파일에서 읽는다. 설정 파일, PFX, 비밀번호 파일이 프로젝트, 프로젝트가 속한 Git 저장소 또는 빌드 출력 폴더 안에 있으면 빌드가 실패한다. 빌더는 도구에 전달한 인수를 기록하지 않는다. 도구 출력에 비밀번호가 나타나면 `********`로 바꾼 뒤 기록한다. [KeyRoom 서명·패키지 검증](../../engine/tests/results/signing-packages/README.md)
 
 ## 크래시 진단
 
@@ -91,18 +156,45 @@ python3 engine/tests/InventoryLab.Crashes/check.py game-builds/InventoryLab
 
 | 하고 싶은 일 | 명령 |
 | --- | --- |
+| 저장한 빌드 설정으로 빌드 | `./monoon build samples/KeyRoom` |
 | Release만 빌드 | `./monoon build samples/InventoryLab release` |
 | Native AOT만 빌드 | `./monoon build samples/InventoryLab native-aot` |
 | 대상과 출력 위치를 지정 | `./monoon build samples/InventoryLab release --target win-x64 --output game-builds/InventoryLab` |
+| 서명하고 배포 패키지 생성 | `./monoon build samples/InventoryLab release --package on` |
 | 이미 만든 두 InventoryLab 빌드 검사 | `./monoon test inventorylab game-builds/InventoryLab` |
 | 기록된 약초 의뢰를 두 빌드에서 창 없이 재생하고 원본 저장과 비교 | `./monoon test replay game-builds/InventoryLab` |
+| 프로젝트의 게임 스크립트 테스트 실행 | `./monoon test project samples/KeyRoom` |
 | 엔진 전체 회귀 검사 | `./monoon test` |
 
-**build**는 저장된 프로젝트의 **GameSettings**에서 시작 씬, 포함 씬과 게임 이름을 읽는다. `--target`을 생략하면 호스트 RID를 사용한다. Release는 대상 플랫폼의 템플릿을 사용하고, Native AOT는 같은 OS·아키텍처에서 빌드한다. 깨끗한 체크아웃에서 개별 빌드 명령을 쓸 때는 먼저 `./engine/scripts/build-players.sh osx-arm64`처럼 필요한 템플릿을 만든다. 전체 회귀 검사는 세 대상의 내보내기까지 검사하므로 처음에는 `./engine/scripts/build-players.sh`로 세 템플릿을 준비한다.
+**build**는 저장된 프로젝트의 **GameSettings**에서 시작 씬, 포함 씬과 게임 이름을 읽고, 빌드 종류와 옵션은 [BuildSettings](#프로젝트-빌드-설정)에서 읽는다. 명령줄에 적은 값이 우선한다. 둘 다 없으면 호스트 RID의 Release 배포용 빌드다. Release는 대상 플랫폼의 템플릿을 사용하고, Native AOT는 같은 OS·아키텍처에서 빌드한다. 깨끗한 체크아웃에서 개별 빌드 명령을 쓸 때는 먼저 `./engine/scripts/build-players.sh osx-arm64`처럼 필요한 템플릿을 만든다. 전체 회귀 검사는 세 대상의 내보내기까지 검사하므로 처음에는 `./engine/scripts/build-players.sh`로 세 템플릿을 준비한다.
 
 **test inventorylab**은 패키지 검사 후 Release와 Native AOT의 실제 실행 파일을 각각 세 번 시작한다. 플레이어의 `--smoke-test` 옵션은 지정한 테스트 폴더를 저장 슬롯으로 사용하고 프로젝트에 바인딩된 키를 고정 60Hz로 누르고 뗀다. 창을 만들지 않고 시작 씬, 내보낸 스크립트와 데이터, 저장·재실행을 검사한다. 같은 단계의 YAML을 예상값과 대조한 뒤 두 빌드의 저장 바이트도 비교한다. 각 실행은 별도 임시 프로필을 사용한다.
 
 소스 체크아웃에서 **monoon**은 macOS·Linux 셸 진입점이다. .NET에서 빌더를 직접 호출할 때는 `dotnet run --project engine/src/Engine.Cli -c Release -- build samples/InventoryLab release`처럼 같은 인자를 사용한다. 성공은 종료 코드 0, 빌드·검사 실패는 1, 잘못된 CLI 사용법은 2다.
+
+## 게임 스크립트 테스트
+
+`./monoon test project <프로젝트 폴더>`는 프로젝트의 `Tests/` 폴더에 있는 C# 테스트를 `Scripts/`의 게임 스크립트와 함께 컴파일한다. 테스트마다 빈 임시 사용자 저장 폴더를 만들고 지정한 씬을 창 없이 연다. 입력은 `.inputreplay` 재생과 같은 입력 라우터로 넣고, 프레임마다 UI 시간 1/60초와 게임 틱 하나를 진행한다. 테스트 작성법은 [게임 스크립트 테스트](scripting.md#게임-스크립트-테스트)에서 설명한다.
+
+```text
+$ ./monoon test project samples/KeyRoom
+PASS ChestTests.InteractSpawnsOneCoin
+...
+PASS DoorTests.OpenDoorLeadsToSecondRoom
+9 passed, 0 failed.
+```
+
+모든 테스트가 통과하면 종료 코드 0, 하나라도 실패하거나 컴파일 오류가 있거나 테스트가 없으면 1을 반환한다. 실패한 테스트는 실패한 프레임 번호(1부터 시작)와 게임 틱, 첫 예외, 프로젝트 파일의 줄 위치, 마지막 게임 로그 다섯 줄을 출력한다. 게임 스크립트에서 난 예외도 같은 형식으로 표시된다. 시간 제한은 기본 3600프레임이며 `[GameTest("Scenes/KeyRoom.scene", MaxFrames = 600)]`처럼 바꾼다.
+
+```text
+FAIL DeliberateFailure.HintAfterFourTenths (Scenes/KeyRoom.scene) at frame 38, tick 38
+  GameTestFailure: the hint is visible 0.4 s after the door opens
+    at DeliberateFailure.HintAfterFourTenths(GameTestRun run)+MoveNext() in ./Tests/DeliberateFailure.cs:line 14
+  log: Key acquired.
+  log: Door received KeyAcquired.
+```
+
+`Tests/`는 게임 빌드에 들어가지 않는다. Release·Native AOT 빌더는 `Scripts/`와 Project 패널에서 옮긴 게임 스크립트만 컴파일하고, `Tests/` 아래의 `.cs`는 `.cs.meta`가 있어도 게임 스크립트로 읽지 않는다. 엔진 전체 회귀 검사 `./monoon test`도 KeyRoom의 테스트를 실행한다. [KeyRoom 테스트 실행과 빌드 출력 검사](../../engine/tests/results/project-tests/README.md)
 
 ## 헤드리스 입력 리플레이
 
@@ -130,11 +222,10 @@ InventoryLab에서는 **T → 1 → 1 → S**로 의뢰를 받고 저장한다. 
 
 ## 콘텐츠 증분 빌드와 재빌드 사유
 
-같은 프로젝트를 같은 출력 폴더로 다시 빌드하면 에디터와 CLI가 글리프, 셰이더 프레임 시트, 스트리밍 타일 청크, 콘텐츠 번들을 재사용한다. **Build → Build Game…**에서 빌드한 뒤 **Console**을 열면 각 항목의 `build` 또는 `reuse`와 이유가 표시된다. **Rebuild all content**를 선택하면 모든 항목을 다시 생성한다.
+같은 프로젝트를 같은 출력 폴더로 다시 빌드하면 에디터와 CLI가 셰이더 프레임 시트, 스트리밍 타일 청크, 콘텐츠 번들을 재사용한다. **Build → Build Game…**에서 빌드한 뒤 **Console**을 열면 각 항목의 `build` 또는 `reuse`와 이유가 표시된다. **Rebuild all content**를 선택하면 모든 항목을 다시 생성한다.
 
 | 생성물 | 다시 만드는 입력 |
 | --- | --- |
-| 폰트별 `.glyphs` | 폰트 파일 또는 해당 폰트가 처리할 문자 집합. UI·번역표·데이터 에셋·테이블의 문자열을 수집하고 앞선 폰트가 이미 처리한 문자를 제외한다. |
 | 셰이더 프레임 시트 | 셰이더 소스·프레임 수·크기·FPS. 내장 빛과 파티클 시트도 각각 추적한다. |
 | 타일 청크 | 해당 청크의 셀, 인접 청크와 접하는 한 셀 너비의 경계, 타일셋 정의, 그리드 레이아웃. 이웃 청크의 오토타일 연결도 반영한다. |
 | 콘텐츠 번들 | 포함한 파일의 경로와 배포 바이트 해시. 변경 이유에 추가·수정·제거된 경로가 표시된다. |
@@ -148,7 +239,7 @@ CLI 기본값은 `--content incremental`이다. 다음 명령을 실행하고 In
 
 캐시는 출력 폴더 아래 `.monoon-build-cache`에 저장한다. 프로젝트 ID, 빌드 호스트, 대상 플랫폼, Release·Native AOT, 프로필별로 구분한다. 생성기 버전도 입력에 포함한다. 재사용할 파일의 SHA-256이 기록과 다르거나 파일이 없으면 다시 생성한다. 성공한 마지막 빌드의 `report.yaml` 경로는 CLI와 에디터 Console에 표시된다. 모든 빌드가 끝난 뒤 캐시 폴더를 삭제하면 다음 빌드가 처음부터 생성한다.
 
-플레이어 스테이징, 스크립트 컴파일, 참조 검사와 배포 교체는 빌드마다 실행한다. 따라서 생성물 재사용 개수는 해당 빌드가 건너뛴 콘텐츠 생성 작업의 수다. [글리프·셰이더·청크를 포함한 InventoryLab 실습](../../engine/tests/InventoryLab.Incremental/README.md) · [플랫폼별 검증](../../engine/tests/results/incremental-content/README.md)
+플레이어 스테이징, 스크립트 컴파일, 참조 검사와 배포 교체는 빌드마다 실행한다. 따라서 생성물 재사용 개수는 해당 빌드가 건너뛴 콘텐츠 생성 작업의 수다. [셰이더·청크를 포함한 InventoryLab 실습](../../engine/tests/InventoryLab.Incremental/README.md) · [플랫폼별 검증](../../engine/tests/results/incremental-content/README.md)
 
 ## 콘텐츠 번들
 
@@ -245,6 +336,7 @@ player=game-builds/InventoryLab/InventoryLab.app/Contents/MacOS/MoNoonPlayer
 | --- | --- |
 | InventoryLab 배포 게임 | Release와 Native AOT에서 약초 의뢰 입력을 재생하고 저장 바이트를 Mac 기준과 대조한다. v31 프로젝트를 v35로 변환하고 기존 v2 슬롯에서 의뢰를 마치는 경우도 재생할 수 있다. [실행 명령](../../engine/tests/InventoryLab.Replay/README.md) |
 | KeyRoom 배포 에디터 | Inspector에서 Player X를 바꾸고 씬을 저장한다. 편집 직후와 다시 연 뒤의 Play에서 F5 저장을 기준 파일과 비교한다. [OS별 조작 회귀 명령](../../engine/tests/KeyRoom.Desktop/README.md#배포-에디터-조작-회귀) |
+| KeyRoom 에디터 빌드 | **Build Game…**의 컨트롤로 설정을 저장하고 Release(패키지 포함)와 Native AOT를 빌드한 뒤, 같은 설정으로 `./monoon build`한 결과와 파일별 SHA-256을 비교한다. [실행 명령](../../engine/tests/KeyRoom.EditorBuild/README.md) |
 | KeyRoom 배포 게임 | Release와 Native AOT에서 코인을 생성하고 저장을 복원한 뒤 획득 상태를 대조한다. [월드 체크포인트 실행 명령](../../engine/tests/KeyRoom.WorldCheckpoints/README.md) |
 | AudioLab 배포 게임 | Release와 Native AOT에서 Ogg 루프를 재생하고 F 키로 정지해 SDL 출력과 페이드 길이를 대조한다. [실행 명령](../../engine/tests/AudioLab.Vorbis/README.md) |
 
@@ -253,7 +345,7 @@ player=game-builds/InventoryLab/InventoryLab.app/Contents/MacOS/MoNoonPlayer
 - 에디터는 [editor](../../editor/)에, 게임 빌드 템플릿은 [player-templates](../../player-templates/)에 있다. 에디터를 옮긴 경우 필요한 템플릿을 담은 `player-templates/`를 앱 옆에 두거나 환경 변수 `MONOON_PLAYERS_DIR`로 상위 폴더를 지정한다.
 - 엔진 소스를 수정했다면 저장소 루트에서 `./engine/scripts/build-editor-mac.sh`로 Mac 에디터를, `./engine/scripts/build-players.sh`로 세 Release 템플릿과 AOT 키트를 갱신한다. 특정 플랫폼만 만들려면 스크립트 뒤에 `osx-arm64` 같은 플랫폼 이름을 준다. AOT 키트만 갱신하는 명령은 `./engine/scripts/build-native-aot-kit.sh`다.
 - 새 격자를 담은 씬은 스키마 9로 저장한다. 이전 직교 타일맵에서 Layout을 생략한 경우 **Orthogonal**로 읽는다. 현재 빌더는 콘텐츠 버전 **35** 템플릿·키트를 확인한다. 구형 템플릿 오류가 나오면 템플릿을 갱신하고 게임도 다시 내보낸다.
-- 이전 JSON 또는 `.clip.yaml` 같은 이중 확장자 프로젝트는 복사본을 **File → Open Project…**로 열어 변환한 뒤 씬 참조와 저장·재열기를 확인한다. 터미널에서 같은 변환은 `editor/MoNoon.app/Contents/MacOS/MoNoon --migrate-project <프로젝트 폴더>`다. 같은 새 경로에 다른 내용이 이미 있으면 양쪽 파일을 확인하고 이름 충돌을 해결한다.
+- 이전 JSON 또는 `.clip.yaml` 같은 이중 확장자 프로젝트는 복사본을 **File → Open Project…**로 열어 변환한 뒤 씬 참조와 저장·재열기를 확인한다. 터미널에서 같은 변환은 `editor/MoNoon.app/Contents/MacOS/MoNoon --migrate-project <프로젝트 폴더>` 또는 에디터 없이 `./monoon migrate <프로젝트 폴더>`다(CI와 Linux에서 사용). 같은 새 경로에 다른 내용이 이미 있으면 양쪽 파일을 확인하고 이름 충돌을 해결한다.
 
 ## 개발 도구와 문제 해결
 

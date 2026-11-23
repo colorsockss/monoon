@@ -1,0 +1,14 @@
+using System;
+using System.IO;
+using Engine.Core;
+
+// Attached to the animated arrow only in the test copy. Records the tick at which each clip frame starts.
+public sealed class TraceFrames : GameBehaviour
+{
+    public override void OnAnimationEvent(ScriptAnimationEvent frame)
+    {
+        string path = Environment.GetEnvironmentVariable("MONOON_FRAME_TRACE");
+        if (!string.IsNullOrEmpty(path))
+            File.AppendAllText(path, $"{frame.Session.Time.TickCount} {frame.Marker.Frame} {frame.Marker.Name}\n");
+    }
+}

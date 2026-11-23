@@ -41,7 +41,7 @@ public sealed partial class SceneGame
     {
         local = default;
         if (!Matrix3x2.Invert(matrix, out var inverse)) return false;
-        local = Vector2.Transform(world, inverse);
+        local = Affine2D.Transform(world, inverse);
         return local.X >= 0 && local.Y >= 0 && local.X < body.Size.X && local.Y < body.Size.Y;
     }
 

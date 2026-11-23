@@ -43,6 +43,7 @@ public sealed class InventoryWorkbench : GameBehaviour
         if (tick.Input.Pressed("Talk")) { ToggleTalk(tick.Ui); return; }
         if (talk.Current != null)
         {
+            if (tick.Input.Pressed("Skip")) tick.Ui.SkipReveal(Line);
             if (tick.Input.Pressed("AddHerb")) Choose(0, tick.Ui);
             else if (tick.Input.Pressed("AddGem")) Choose(1, tick.Ui);
             else if (tick.Input.Pressed("AddKey")) Choose(2, tick.Ui);
@@ -160,7 +161,8 @@ public sealed class InventoryWorkbench : GameBehaviour
         if (node != null)
         {
             ui.SetText(Speaker, node.Speaker);
-            ui.SetText(Line, node.Text);
+            // A line may name a translation table key; other lines are shown as written.
+            ui.SetText(Line, ui.Translate(node.Text, node.Text));
             for (int i = 0; i < Choices.Length; i++)
             {
                 int index = page * Choices.Length + i;

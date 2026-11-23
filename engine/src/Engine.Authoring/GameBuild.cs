@@ -99,7 +99,7 @@ public static class GameBuild
         var dependencies = new HashSet<string>(StringComparer.Ordinal);
         var audioAssets = new HashSet<Guid>();
         var theme = UiTheme.Load(project, assets, settings.UiTheme, dependencies);
-        var localization = GameLocalization.Load(project, assets, settings.Localization, dependencies);
+        GameLocalization.Load(project, assets, settings.Localization, dependencies); // adds the string tables and fonts to the build
         var bakedDocuments = new Dictionary<string, SceneDocument>();
         var projectScripts = new ProjectScripts(project);
         var imageSizes = new Dictionary<string, System.Drawing.Size>(StringComparer.Ordinal);
@@ -187,6 +187,12 @@ public static class GameBuild
                         if (assets.PathFor(uiSprite) is not { } path || !SpriteAssets.IsPng(path))
                             throw new InvalidDataException($"Missing UI sprite {uiSprite}.");
                         image.Borders?.Validate(SpriteRegion.ReadPngSize(Path.Combine(project, path)));
+                        Add(path);
+                    }
+                    foreach (var (name, icon) in obj.GetComponent<UiTextComponent>()?.Icons ?? [])
+                    {
+                        if (assets.PathFor(icon) is not { } path || !SpriteAssets.IsPng(path))
+                            throw new InvalidDataException($"Missing PNG for text icon '{name}' ({icon}).");
                         Add(path);
                     }
                     if (obj.GetComponent<SpriteAnimatorComponent>() is {} animator &&
@@ -295,6 +301,12 @@ public static class GameBuild
             throw new InvalidDataException($"Update the player template or Native AOT kit at {markerRoot} to use component animation keys.");
         if (palettes.Values.Any(p => p.Tiles.Values.Any(t => t.Collision != null)) && !File.Exists(Path.Combine(markerRoot, "MoNoonTileCollision.version")))
             throw new InvalidDataException($"Update the player template or Native AOT kit at {markerRoot} to use tile collision shapes.");
+        // Rigid bodies run on Box2D since roadmap 11.3; an older player would simulate them with the previous solver.
+        if (bakedDocuments.Values.Any(scene => scene.Objects.Any(o => o.Components.Any(c => c is Rigidbody2DComponent or Joint2DComponent or CharacterMotor2DComponent)))
+            && !File.Exists(Path.Combine(markerRoot, "MoNoonBox2D.version")))
+            throw new InvalidDataException($"Update the player template or Native AOT kit at {markerRoot} to simulate rigid bodies and joints with Box2D.");
+        if (bakedDocuments.Values.Any(scene => scene.SchemaVersion >= 30) && !File.Exists(Path.Combine(markerRoot, "MoNoonLines.version")))
+            throw new InvalidDataException($"Update the player template or Native AOT kit at {markerRoot} to draw lines and trails and follow paths.");
         bool cookShaders = sheets.HasEffects;
         bakeShader ??= global::Engine.Desktop.ShaderPixels.WritePng;
         if (cookShaders && !File.Exists(Path.Combine(markerRoot, ShaderSheetBuild.Capability)))
@@ -386,7 +398,6 @@ public static class GameBuild
                 }
                 else Copy(Path.Combine(project, relative), path);
             }
-            global::Engine.Desktop.FontGlyphBuild.Write(project, game, localization, bakedDocuments.Values, cache, dependencies);
             File.WriteAllText(Path.Combine(game, ".monoon-player"), cookShaders ? BakedShaderSheets.Marker : "1");
             var manifest = assets.Entries.Where(e => dependencies.Contains(e.Path)).Select(entry =>
             {
@@ -401,7 +412,7 @@ public static class GameBuild
             ContentBundle.Pack(game, settings.ContentBundles ?? [], manifest, (folder, members, archive, write) =>
                 cache.Generate("bundle " + folder, members.ToDictionary(p => p.Key, p => p.Value.Hash, StringComparer.Ordinal), archive, write));
             GameMods.Export(project, bin, settings.ProjectId ?? start, manifest);
-            (settings with { GameTitle = name, ProjectId = settings.ProjectId ?? start }).Save(game);
+            (settings with { GameTitle = name, ProjectId = settings.ProjectId ?? start, Icon = null }).Save(game);
             if (rid == "osx-arm64")
             {
                 var plist = new XElement("dict");
@@ -465,7 +476,7 @@ public static class GameBuild
         File.CreateSymbolicLink(alias.FullName, sdl.Name);
     }
 
-    private static readonly string[] TemplateMarkers = ["MoNoonSdlPlayer.version", "MoNoonContent.version", "MoNoonVorbis.version", "MoNoonUiControls.version", "MoNoonObjectGroups.version", "MoNoonUiPins.version", "MoNoonComponentKeys.version", "MoNoonTileCollision.version", ShaderSheetBuild.Capability];
+    private static readonly string[] TemplateMarkers = ["MoNoonSdlPlayer.version", "MoNoonContent.version", "MoNoonVorbis.version", "MoNoonUiControls.version", "MoNoonObjectGroups.version", "MoNoonUiPins.version", "MoNoonComponentKeys.version", "MoNoonTileCollision.version", "MoNoonBox2D.version", "MoNoonLines.version", ShaderSheetBuild.Capability];
 
     private static void Copy(string from, string to)
     {

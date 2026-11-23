@@ -28,18 +28,18 @@ public sealed partial class SceneGame
             if (c.Follow is Guid id)
             {
                 if (!byId.TryGetValue(id,out var follow) || !follow.Active) continue;
-                target=Vector2.Transform(follow.Size*.5f,follow.MatrixAt(follow.Position));
+                target=Affine2D.Transform(follow.Size*.5f,follow.MatrixAt(follow.Position));
             }
             // Apply the player's final post-collision transform, independent of scene object order.
             float alpha=c.Follow==null || c.HalfLife==0?1:(float)(1-Math.Exp(-Math.Log(2)*seconds/c.HalfLife));
-            b.CameraEnd=c.View(LogicalSize,Vector2.Lerp(b.CameraStart,target,alpha)).Center;
+            b.CameraEnd=c.View(LogicalSize,Affine2D.Lerp(b.CameraStart,target,alpha)).Center;
         }
     }
     private CameraView Sample(Body b,float fraction)
     {
         var c=b.Camera!;
         // Fixed/parented cameras retain the original interpolated motion path (including slides).
-        var center=c.Follow==null?b.At(fraction):Vector2.Lerp(b.CameraStart,b.CameraEnd,fraction);
+        var center=c.Follow==null?b.At(fraction):Affine2D.Lerp(b.CameraStart,b.CameraEnd,fraction);
         return c.View(LogicalSize,center);
     }
     public bool TryGetView(Guid id,out CameraView view)

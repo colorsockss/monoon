@@ -10,23 +10,27 @@ run_project() {
 usage() {
     cat <<'HELP'
 MoNoon Engine
-  monoon build <project> <release|native-aot> [--profile <development|distribution>] [--target <rid>] [--output <directory>] [--content <incremental|full>]
+  monoon build <project> [release|native-aot] [--profile <development|distribution>] [--target <rid>] [--output <directory>] [--content <incremental|full>] [--package <off|on>]
   monoon crash explain <report.crash> <build symbol directory>
+  monoon migrate <project>                     Convert an older project to the current YAML format (backup in .monoon/migrations)
   monoon profile <capture.csv> [--frame <number>]  Print a development build's slowest or chosen frame
   monoon content-update pack <exported Game directory> <replacement directory> <output.bundle>
   monoon test                                  Run the full engine regression suite
   monoon test inventorylab <build-directory> [--profile <development|distribution>]
   monoon test replay <build-directory>          Replay the recorded InventoryLab quest in both players
+  monoon test project <project>                Run the project's Tests/ scripts headless
   monoon ci                                    Prepare templates, build and check InventoryLab
 HELP
 }
 case "${1:-}" in
     -h|--help|help) usage ;;
-    build|content-update|crash|profile) run_project src/Engine.Cli "$@" ;;
+    build|content-update|crash|migrate|profile) run_project src/Engine.Cli "$@" ;;
     test)
         shift
         if [ "$#" -eq 0 ]; then
             run_project tests/Engine.Checks "$repo"
+        elif [ "$1" = project ] && [ "$#" -eq 2 ]; then
+            run_project src/Engine.Cli test project "$2"
         elif [ "$1" = replay ] && [ "$#" -eq 2 ]; then
             run_project tests/Engine.Checks "$repo" --inventory-replay "$2"
         elif [ "$1" = inventorylab ]; then

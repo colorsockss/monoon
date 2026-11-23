@@ -8,9 +8,9 @@
 | --- | --- |
 | macOS arm64 | `MoNoon.app`을 연다. |
 | Windows x64 | `MoNoon-win-x64.zip`을 풀고 `editor\MoNoon.exe`를 실행한다. |
-| Linux x64 | X11 데스크톱에서 `tar -xzf MoNoon-linux-x64.tar.gz`로 푼 뒤 `./editor/MoNoon`을 실행한다. |
+| Linux x64 | 에디터를 지원하지 않는다. Linux는 [게임 내보내기 대상](build.md)과 CI(헤드리스 빌드·리플레이)로만 쓴다. |
 
-Windows·Linux 에디터 패키지에는 .NET 런타임과 프로젝트의 C# 스크립트를 컴파일하는 Roslyn이 들어 있다. 게임을 내보낼 때 쓰는 `player-templates/`는 추출한 `editor/`와 같은 상위 폴더에 둘 수 있다. 별도 위치를 쓰면 `MONOON_PLAYERS_DIR`에 그 절대 경로를 지정한다. Native AOT 게임을 빌드할 때는 대상 OS의 .NET SDK와 네이티브 빌드 도구도 필요하다.
+Windows 에디터 패키지에는 .NET 런타임과 프로젝트의 C# 스크립트를 컴파일하는 Roslyn이 들어 있다. 게임을 내보낼 때 쓰는 `player-templates/`는 추출한 `editor/`와 같은 상위 폴더에 둘 수 있다. 별도 위치를 쓰면 `MONOON_PLAYERS_DIR`에 그 절대 경로를 지정한다. Native AOT 게임을 빌드할 때는 대상 OS의 .NET SDK와 네이티브 빌드 도구도 필요하다.
 
 **KeyRoom으로 편집해 보기**
 
@@ -19,12 +19,11 @@ Windows·Linux 에디터 패키지에는 .NET 런타임과 프로젝트의 C# �
 3. Hierarchy에서 **Player**를 선택한다. **Inspector → Transform → Position X**를 `274`에서 `190`으로 바꾸고 Enter를 누른다. **File → Save Scene**으로 저장한 뒤 에디터를 닫고 같은 프로젝트를 다시 연다.
 4. X가 `190`인지 확인하고 **Play → I**를 누른다. 플레이어가 열쇠 위에서 시작해 가방에 `Quest complete / Brass key`가 표시된다. 게임 진행을 저장하려면 가방을 닫고 **F5**를 누른다. 시작 배치를 되돌리려면 편집 모드에서 X를 `274`로 저장한다.
 
-저장소 루트에서 배포본을 생성한다. Mac 앱은 Apple Silicon Mac에서 첫 번째 명령으로 만든다. 두 x64 에디터에는 Python 3과 .NET 10 SDK가 필요하며 샘플 ZIP은 Python 3만으로 만들 수 있다. 에디터 배포본은 `editor/`, 샘플 ZIP은 `samples/dist/`에 생긴다.
+저장소 루트에서 배포본을 생성한다. Mac 앱은 Apple Silicon Mac에서 첫 번째 명령으로 만든다. Windows 에디터에는 Python 3과 .NET 10 SDK가 필요하며 샘플 ZIP은 Python 3만으로 만들 수 있다. 에디터 배포본은 `editor/`, 샘플 ZIP은 `samples/dist/`에 생긴다.
 
 ```sh
 engine/scripts/build-editor-mac.sh
 python3 engine/scripts/package-editor.py win-x64
-python3 engine/scripts/package-editor.py linux-x64
 python3 engine/scripts/package-editor.py keyroom
 ```
 
@@ -133,6 +132,9 @@ Scene과 Game은 SDL 화면 하나를 함께 쓴다. 편집 중에는 Scene 패�
 - Hierarchy의 **+**는 Square 스프라이트 오브젝트를 만든다. 우클릭 메뉴에서 **Create Empty Object**, **Create Empty Child**, **Add Square**, **Add Child Square**도 사용할 수 있다.
 - 오브젝트를 새 부모 위에 드롭하면 현재 월드 위치를 유지하면서 부모가 바뀐다. Hierarchy의 빈 영역에 놓으면 루트로 돌아간다. 부모를 이동하면 자식도 따라간다.
 - 우클릭 **Duplicate**는 선택한 오브젝트, 하위 트리, 컴포넌트 설정을 복제한다. 트리 내부를 가리키는 오브젝트 참조도 복제본에 연결된다. 한 번의 Undo로 전체 복제를 되돌릴 수 있다.
+- **Edit → Copy**, **Cut**, **Paste**로 Hierarchy나 Scene에서 고른 오브젝트를 같은 씬이나 나중에 연 다른 씬에 붙여 넣는다. Hierarchy 우클릭 메뉴에도 같은 명령이 있다. 자식, 컴포넌트, 프리팹 연결과 오버라이드가 함께 복사된다. 붙여 넣은 오브젝트는 새 ID를 받고, 선택한 오브젝트와 같은 부모 아래(선택이 없으면 루트)에 놓인다. 같은 이름의 형제가 있으면 Duplicate처럼 `이름 (1)`이 된다.
+- 복사한 오브젝트끼리의 참조는 붙여 넣은 사본으로 바뀐다. 복사하지 않은 오브젝트를 가리키는 참조는 그대로 둔다. 대상 씬에 그 오브젝트가 없으면 Inspector에 **Missing object or component**로 표시된다. 끊긴 참조가 남은 씬은 게임 빌드가 거부하므로 Inspector에서 다시 연결한다. 붙여 넣기 한 번과 잘라내기 한 번은 각각 Undo 한 번으로 되돌린다.
+- 복사한 오브젝트는 OS 클립보드에 `# MoNoon objects`로 시작하는 텍스트로 저장된다. 같은 프로젝트를 연 다른 에디터 창에서도 붙여 넣을 수 있다. 텍스트 필드에 포커스가 있으면 세 명령은 텍스트를 복사하고 붙여 넣는다. [검증 기록](../../engine/tests/results/copy-paste/README.md)
 - **Delete Object**로 부모를 지우면 직계 자식은 한 단계 위로 이동한다. 실수로 삭제했을 때는 **Edit → Undo**를 사용한다.
 - 재사용할 오브젝트를 Hierarchy에서 Project 파일 목록으로 끌면 현재 폴더에 `.prefab`이 생긴다. 이 파일을 Scene으로 드래그해 인스턴스를 배치한다. 인스턴스 루트의 **Apply to Prefab**으로 수정한 하위 트리를 원본에 반영한다. 공통 설정이 바뀌어야 하는 다른 인스턴스도 확인하고 씬을 저장한다.
 
@@ -195,7 +197,9 @@ KeyRoom의 `Scenes/PrefabWorkshop.scene`에서 자물쇠만 원본에 적용하�
 1. 오브젝트를 선택하고 **Add Component**를 연다. 메뉴의 **Built-in components**에서 엔진 기능을, **Project scripts**에서 프로젝트에 있는 동작을 고른다. **(Added)**는 이미 붙인 항목이다.
 2. 새 동작은 **Add Component → New C# Component… → Create & Add**로 생성과 부착을 함께 할 수 있다. **Project → + → New C# Script…**로 파일을 먼저 만들었다면, Project에서 `.cs`를 선택된 오브젝트의 Inspector로 드래그한다.
 3. macOS에서는 **MoNoon → Preferences…**, Windows·Linux에서는 **Edit → Preferences…**를 연다. **External script editor**를 지정하거나 **Use System Default**를 선택한다.
-4. Project의 `.cs`를 더블클릭하거나 Inspector의 스크립트 톱니바퀴에서 **Edit Script**를 누른다. 외부 에디터에서 저장하고 MoNoon으로 돌아온 뒤 Play한다. 컴파일 오류는 **Project → Console…**에서 찾아 더블클릭하면 파일을 열 수 있다. [C# 작성 규칙과 예제](runtime.md)
+4. Project의 `.cs`를 더블클릭하거나 Inspector의 스크립트 톱니바퀴에서 **Edit Script**를 누른다. 외부 에디터에서 저장하고 MoNoon으로 돌아온 뒤 Play한다. Play 중에 저장하면 필드 값을 유지한 채 새 코드로 바뀐다. [Play 중 스크립트 다시 불러오기](scripting.md#play-중-스크립트-다시-불러오기) 컴파일 오류는 **Project → Console…**에서 찾아 더블클릭하면 파일을 열 수 있다. [C# 작성 규칙과 예제](runtime.md)
+
+5. 프로젝트의 `Editor/` 폴더에 C# 파일을 두면 그 프로젝트에서만 쓰는 메뉴 명령, 스크립트 컴포넌트의 Inspector, 도킹 패널을 추가할 수 있다. KeyRoom은 **Project → Extensions → Place Coin**, CollectCoin의 Inspector 행, **Window → Coins** 패널을 이렇게 추가한다. [프로젝트 에디터 확장](workspace.md#프로젝트-에디터-확장)
 
 ## 저장과 단축키
 
@@ -205,6 +209,7 @@ KeyRoom의 `Scenes/PrefabWorkshop.scene`에서 자물쇠만 원본에 적용하�
 | --- | --- | --- |
 | 새 프로젝트 / 열기 / 씬 저장 | ⌘N / ⌘O / ⌘S | Ctrl+N / Ctrl+O / Ctrl+S |
 | Undo / Redo | ⌘Z / ⇧⌘Z | Ctrl+Z / Ctrl+Shift+Z |
+| 선택 오브젝트 잘라내기 / 복사 / 붙여넣기 | ⌘X / ⌘C / ⌘V | Ctrl+X / Ctrl+C / Ctrl+V |
 | Hierarchy 선택 복제 | ⌘D | Ctrl+D |
 | Hierarchy 선택 제거 | ⌘Delete | Delete |
 | Preferences | ⌘, | Ctrl+, |

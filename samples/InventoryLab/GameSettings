@@ -35,3 +35,10 @@ input:
     controls: ["R", "Pad.North"]
   - name: Back
     controls: ["B", "Pad.Back"]
+  - name: Skip
+    controls: ["Space"]
+localization:
+  table: 5c1a7e2e-3b0d-4f53-9a51-6e0b7c11a502
+  fallbackLocale: ko
+  defaultFont: 5c1a7e2e-3b0d-4f53-9a51-6e0b7c11a501
+accessibility: {locale: ko-KR, textScale: 1, highContrast: false}

@@ -3,7 +3,8 @@ using System.Numerics;
 
 namespace Engine.Core;
 
-/// <summary>World-space shape for physics queries. A polygon must be ordered and strictly convex.</summary>
+/// <summary>World-space shape for physics queries. A polygon must be ordered and strictly convex, with 3–8 vertices
+/// (the Box2D polygon limit).</summary>
 public readonly struct Shape2D
 {
     internal readonly Vector2[]? Vertices;
@@ -11,8 +12,10 @@ public readonly struct Shape2D
     internal readonly float Radius;
     internal readonly RectangleF Bounds;
     internal readonly Vector2 FaceNormal;
-    private Shape2D(Vector2[]? vertices, Vector2 offset, float radius, RectangleF bounds, Vector2 faceNormal = default)
-        => (Vertices,Offset,Radius,Bounds,FaceNormal)=(vertices,offset,radius,bounds,faceNormal);
+    // Box2D polygon in the coordinates of Vertices; the shape sits at Offset.
+    internal readonly CollisionGeometry.Hull? Poly;
+    private Shape2D(Vector2[]? vertices, Vector2 offset, float radius, RectangleF bounds, Vector2 faceNormal = default, CollisionGeometry.Hull? poly = null)
+        => (Vertices,Offset,Radius,Bounds,FaceNormal,Poly)=(vertices,offset,radius,bounds,faceNormal,poly);
     internal static Shape2D Face(Vector2 a, Vector2 b, Vector2 normal) => new([a,b],default,0,
         RectangleF.FromLTRB(Math.Min(a.X,b.X),Math.Min(a.Y,b.Y),Math.Max(a.X,b.X),Math.Max(a.Y,b.Y)),normal);
     internal static Shape2D PointAt(Vector2 p) => new(null,p,0,new(p.X,p.Y,0,0));
@@ -28,16 +31,16 @@ public readonly struct Shape2D
     }
     public static Shape2D Polygon(params ReadOnlySpan<Vector2> points)
     {
-        if (!CollisionGeometry.Convex(points)) throw new ArgumentException("Expected 3–32 finite vertices outlining a strictly convex polygon.");
+        if (!CollisionGeometry.Convex(points)) throw new ArgumentException("Expected 3–8 finite vertices outlining a strictly convex polygon.");
         return Hull(points.ToArray());
     }
     internal static Shape2D Hull(Vector2[] p)
     {
         Vector2 min=p[0],max=min;
         foreach (var v in p) { min=Vector2.Min(v,min); max=Vector2.Max(v,max); }
-        return new(p,Vector2.Zero,0,RectangleF.FromLTRB(min.X,min.Y,max.X,max.Y));
+        return new(p,Vector2.Zero,0,RectangleF.FromLTRB(min.X,min.Y,max.X,max.Y),default,new(p));
     }
-    internal Shape2D Translated(Vector2 t) { var b=Bounds; b.Offset(t.X,t.Y); return new(Vertices,Offset+t,Radius,b,FaceNormal); }
+    internal Shape2D Translated(Vector2 t) { var b=Bounds; b.Offset(t.X,t.Y); return new(Vertices,Offset+t,Radius,b,FaceNormal,Poly); }
     internal static bool Finite(Vector2 p) => float.IsFinite(p.X) && float.IsFinite(p.Y);
     internal void Check() { if (Vertices==null && Radius==0) throw new ArgumentException("Use a Shape2D factory."); }
 }

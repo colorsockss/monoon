@@ -1,0 +1,21 @@
+PASS editor exited with 0
+PASS Project → Extensions → Place Coin and Window → Coins come from Editor/KeyRoomTools.cs
+PASS Place Coin placed one Coin prefab instance ({'before': 0, 'after': 1, 'selected': 'Coin', 'prefab': True})
+PASS Undo removes both placements
+PASS 1280px: extension Inspector rows share the LootTable row's label and input columns ([{'label': 'LootTable', 'label_x': 1070, 'input_x': 1130, 'column': 60, 'right': 1272, 'vertical': 0}, {'label': 'Coins', 'label_x': 1070, 'input_x': 1130, 'column': 60, 'right': 1272, 'vertical': 0}, {'label': 'Place', 'label_x': 1070, 'input_x': 1130, 'column': 60, 'right': 1248, 'vertical': 0}])
+PASS 1280px: Coins panel rows use the Inspector padding and label column (8 / 60)
+PASS 1600px: extension Inspector rows share the LootTable row's label and input columns ([{'label': 'LootTable', 'label_x': 1390, 'input_x': 1450, 'column': 60, 'right': 1592, 'vertical': 0}, {'label': 'Coins', 'label_x': 1390, 'input_x': 1450, 'column': 60, 'right': 1592, 'vertical': 0}, {'label': 'Place', 'label_x': 1390, 'input_x': 1450, 'column': 60, 'right': 1568, 'vertical': 0}])
+PASS 1600px: Coins panel rows use the Inspector padding and label column (8 / 60)
+PASS 1920px: extension Inspector rows share the LootTable row's label and input columns ([{'label': 'LootTable', 'label_x': 1710, 'input_x': 1770, 'column': 60, 'right': 1912, 'vertical': 0}, {'label': 'Coins', 'label_x': 1710, 'input_x': 1770, 'column': 60, 'right': 1912, 'vertical': 0}, {'label': 'Place', 'label_x': 1710, 'input_x': 1770, 'column': 60, 'right': 1888, 'vertical': 0}])
+PASS 1920px: Coins panel rows use the Inspector padding and label column (8 / 60)
+PASS Inspector row text: 1 in this scene
+PASS panel button placed a coin and the count updated ({'after': 2, 'shown': '2'})
+PASS an Editor/ compile error is a clickable Console row at Broken.cs:3 and unloads the extensions (./Editor/Broken.cs(3,13): error CS1525: 잘못된 식의 항 ';'입니다.)
+PASS fixing the error restores the extension
+PASS release: no editor, authoring, Avalonia, SkiaSharp or Roslyn files (280 files) []
+PASS release: no C# sources and no Editor/ or Tests/ folder []
+PASS release: no extension or script reload code []
+PASS native-aot: no editor, authoring, Avalonia, SkiaSharp or Roslyn files (63 files) []
+PASS native-aot: no C# sources and no Editor/ or Tests/ folder []
+PASS native-aot: no extension or script reload code []
+PASS editor extensions in a36-ext2

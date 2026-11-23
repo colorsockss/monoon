@@ -1,0 +1,24 @@
+using System;
+using System.Globalization;
+using System.IO;
+using System.Text;
+using Engine.Core;
+
+// Attached to the Runner only in the disposable test project. Each row observes the preceding physics step:
+// the runner, the eight revolute bridge planks and the two pulley decks, as pose x y angle(°).
+public sealed class JointTrace : GameBehaviour
+{
+    private int frame;
+    public override void FixedUpdate(ScriptTick tick)
+    {
+        var path = Environment.GetEnvironmentVariable("MONOON_JOINT_TRACE");
+        if (string.IsNullOrEmpty(path)) return;
+        var row = new StringBuilder(string.Create(CultureInfo.InvariantCulture, $"{frame++} {tick.Position.X:F4} {tick.Position.Y:F4}"));
+        foreach (var group in new[] { "bridge", "pulley" })
+            foreach (var id in tick.Objects.FindByGroup(group))
+                if (tick.Objects.TryGetWorldMatrix(id, out var m))
+                    row.Append(string.Create(CultureInfo.InvariantCulture,
+                        $" {m.Translation.X:F4} {m.Translation.Y:F4} {MathF.Atan2(m.M12, m.M11) * 180 / MathF.PI:F3}"));
+        File.AppendAllText(path, row.Append('\n').ToString());
+    }
+}

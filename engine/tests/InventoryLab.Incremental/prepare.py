@@ -34,11 +34,6 @@ def prepare(dest):
     for name in ("Torch.shader", "Ridge.tileset", "Terrain.png"):
         for suffix in ("", ".meta"):
             shutil.copy2(SAMPLES / "PlatformerLab/Assets" / (name + suffix), assets)
-    font = "NanumGothic-Regular.ttf"
-    for suffix in ("", ".meta", ".license"):
-        shutil.copy2(SAMPLES / "KeyRoom/Assets/Fonts" / (font + suffix), assets)
-    with (dest / "GameSettings").open("a", encoding="utf-8") as settings:
-        settings.write("\nlocalization: {fallbackLocale: en, defaultFont: 0d164d8e-969a-52f8-a1f0-7a5ba90fb719}\n")
     scene = dest / "Scenes/Inventory.scene"
     text = scene.read_text(encoding="utf-8").replace("schemaVersion: 14", "schemaVersion: 19")
     scene.write_text(text.replace("defaultCameraId:", SCENERY + "defaultCameraId:"), encoding="utf-8")

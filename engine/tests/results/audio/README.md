@@ -1,5 +1,7 @@
 # AudioLab — macOS 재생 출력 검증
 
+> 2026-11-23부터 오디오는 SDL_mixer로 믹싱한다. 아래 PCM 해시는 이전 MoNoon 믹서의 기록이다. 새 기준과 바뀐 이유는 [SDL_mixer 전환 기록](../audio-mixer/README.md)에 있다.
+
 2026-11-14 · macOS 27.0.1 · Apple Silicon arm64. [AudioLab](../../../../samples/AudioLab) 복사본을 MoNoon 에디터의 **Scene Play**로 실행하고, 같은 프로젝트에서 내보낸 Release와 Native AOT 앱을 각각 별도 프로세스로 실행했다. 세 경로 모두 Mac의 기본 SDL 재생 장치를 열었다. 측정 대상은 **SDL 출력 큐에 성공적으로 전달한 48 kHz 스테레오 float32 PCM**이다. 물리 스피커나 마이크 응답을 측정한 것은 아니다.
 
 | 실측 | Scene Play | Release | Native AOT |

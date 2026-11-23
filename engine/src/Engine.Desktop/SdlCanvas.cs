@@ -88,7 +88,7 @@ public sealed class SdlCanvas(SdlRenderer renderer, Func<ShaderClip, RgbaImage>?
     private readonly bool software = Sdl.Render.GetRendererName(renderer) == "software";
     internal Size LogicalSize { get; init; }
 
-    private readonly SdlText labels = new(textRasterizer ?? new SdlFontRasterizer());
+    private readonly SdlText labels = new(textRasterizer ?? new TtfTextRasterizer());
     public SdlCanvas(SdlRenderer renderer, bool batchSprites, Func<ShaderClip, RgbaImage>? previewShader = null, IGameTextRasterizer? textRasterizer = null) : this(renderer, previewShader, textRasterizer)
     {
         this.batchSprites = batchSprites;
@@ -122,6 +122,7 @@ public sealed class SdlCanvas(SdlRenderer renderer, Func<ShaderClip, RgbaImage>?
 
     public void UseFonts(IReadOnlyList<string> paths) => labels.UseFonts(paths);
     public float MeasureText(string text,float size)=>labels.Measure(text,size);
+    public void MeasureTextEnds(string text,float size,Span<float> ends)=>labels.MeasureEnds(text,size,ends);
     public void DrawText(string text, float x, float y, float size, Color color)
     {
         FlushSprites();
@@ -224,6 +225,12 @@ public sealed class SdlCanvas(SdlRenderer renderer, Func<ShaderClip, RgbaImage>?
     public void DrawLine(System.Numerics.Vector2 start, System.Numerics.Vector2 end, float width, Color color) =>
         batch.Line(start,end,width,color);
 
+    public void FillStrip(ReadOnlySpan<System.Numerics.Vector2> edges, ReadOnlySpan<Color> colors, Matrix3x2 matrix)
+    {
+        batch.Strip(edges, colors, matrix);
+        if (!batchSprites) batch.Flush();
+    }
+
     public bool DrawAffine(string? path, RectangleF local, Matrix3x2 matrix, Color tint, SpriteRegion? source = null,
         string layout = TileGrid.Orthogonal)
     {
@@ -273,12 +280,80 @@ public sealed class SdlCanvas(SdlRenderer renderer, Func<ShaderClip, RgbaImage>?
         return renderer.RenderTexture(texture, source == null ? null : &crop, &target);
     }
 
+    // Screen colour adjustment. The world draws into a target texture of the window's pixel size with the window's
+    // presentation, viewport and clip; the tint and lift apply to that layer only, which is then blended over the window.
+    private SdlTexture layer;
+    private Size layerSize;
+    private SdlRendererLogicalPresentation layerMode;
+    private int layerWidth, layerHeight;
+
+    public unsafe void BeginColorAdjust()
+    {
+        FlushSprites();
+        if (!renderer.GetRenderOutputSize(out int w, out int h) ||
+            !renderer.GetRenderLogicalPresentation(out layerWidth, out layerHeight, out layerMode))
+            throw new InvalidOperationException(Sdl.PInvoke.GetError());
+        if (layerSize != new Size(w, h))
+        {
+            if (!layerSize.IsEmpty) layer.Dispose();
+            layerSize = default;
+            layer = renderer.CreateTexture(SdlPixelFormat.Rgba32, SdlTextureAccess.Target, w, h);
+            layerSize = new(w, h);
+            const uint blend = 1; // SDL_BLENDMODE_BLEND: undrawn (transparent) pixels keep the window underneath.
+            if (!layer.SetBlendMode(blend)) throw new InvalidOperationException(Sdl.PInvoke.GetError());
+        }
+        SdlRect viewport = default, clip = default;
+        bool hasViewport = renderer.RenderViewportSet() && renderer.GetRenderViewport(&viewport);
+        bool hasClip = renderer.RenderClipEnabled() && renderer.GetRenderClipRect(&clip);
+        if (!renderer.SetRenderTarget(layer)) throw new InvalidOperationException(Sdl.PInvoke.GetError());
+        renderer.SetRenderDrawColor(0, 0, 0, 0);
+        renderer.RenderClear(); // Ignores viewport and clip.
+        renderer.SetRenderLogicalPresentation(layerWidth, layerHeight, layerMode);
+        renderer.SetRenderViewport(hasViewport ? &viewport : null);
+        renderer.SetRenderClipRect(hasClip ? &clip : null);
+    }
+
+    public unsafe void EndColorAdjust(Color multiply, byte lift)
+    {
+        FlushSprites();
+        var all = new SdlFRect { w = layerSize.Width, h = layerSize.Height };
+        void FullPixels()
+        {
+            var full = new SdlRect { w = layerSize.Width, h = layerSize.Height };
+            renderer.SetRenderLogicalPresentation(0, 0, SdlRendererLogicalPresentation.Disabled);
+            renderer.SetRenderClipRect(null);
+            renderer.SetRenderViewport(&full);
+        }
+        FullPixels();
+        // MOD multiplies colour and keeps alpha; ADD lifts colour weighted by its own alpha, so empty pixels stay empty.
+        renderer.SetRenderDrawBlendMode(4);
+        renderer.SetRenderDrawColor(multiply.R, multiply.G, multiply.B, 255);
+        renderer.RenderFillRect(&all);
+        if (lift > 0)
+        {
+            renderer.SetRenderDrawBlendMode(2);
+            renderer.SetRenderDrawColor(lift, lift, lift, 255);
+            renderer.RenderFillRect(&all);
+        }
+        renderer.SetRenderDrawBlendMode(1);
+        if (!renderer.SetRenderTarget(default)) throw new InvalidOperationException(Sdl.PInvoke.GetError());
+        SdlRect viewport = default, clip = default;
+        bool hasViewport = renderer.RenderViewportSet() && renderer.GetRenderViewport(&viewport);
+        bool hasClip = renderer.RenderClipEnabled() && renderer.GetRenderClipRect(&clip);
+        FullPixels();
+        directDraws++;
+        renderer.RenderTexture(layer, null, &all);
+        renderer.SetRenderLogicalPresentation(layerWidth, layerHeight, layerMode);
+        renderer.SetRenderViewport(hasViewport ? &viewport : null);
+        renderer.SetRenderClipRect(hasClip ? &clip : null);
+    }
+
     public void ClearSprites() { FlushSprites(); labels.Dispose(); sprites.Clear(); variants.Dispose(); shaderSheets?.Dispose(); }
     public void InvalidateSprite(string path) { FlushSprites(); sprites.Invalidate(path); variants.Invalidate(path); }
     public void Dispose()
     {
         try { FlushSprites(); }
-        finally { labels.Dispose(); sprites.Dispose(); variants.Dispose(); shaderSheets?.Dispose(); }
+        finally { labels.Dispose(); sprites.Dispose(); variants.Dispose(); shaderSheets?.Dispose(); if (!layerSize.IsEmpty) layer.Dispose(); }
     }
 
     public void Clear(Color color)
@@ -300,6 +375,7 @@ public sealed class SdlCanvas(SdlRenderer renderer, Func<ShaderClip, RgbaImage>?
     {
         FlushSprites();
         var bounds = new SdlFRect { x = rectangle.X, y = rectangle.Y, w = rectangle.Width, h = rectangle.Height };
+        renderer.SetRenderDrawBlendMode(1); // SDL_BLENDMODE_BLEND: translucent fills (fades, flashes) blend like the Avalonia preview.
         renderer.SetRenderDrawColor(color.R, color.G, color.B, color.A);
         directDraws++;
         renderer.RenderFillRect(&bounds);

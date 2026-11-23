@@ -17,4 +17,4 @@ python3 "$qa/editor.py" editor/MoNoon.app/Contents/MacOS/MoNoon "$work/Platforme
   engine/.artifacts/bin/TileContactProbe/release/TileContactProbe.dll "$work/scene-play"
 ```
 
-Windows와 Linux에서는 같은 스크립트에 해당 시스템의 에디터와 플레이어 경로를 넘긴다. 에디터 회귀는 복사본의 타일셋에서 경사의 꼭짓점과 발판의 차단 방향을 편집해 저장하고, 다시 열어 복원한 다음 Scene Play를 시작한다. [판정 기준과 플랫폼별 결과](../results/tile-collision/README.md)
+Windows에서는 같은 스크립트에 에디터와 플레이어 경로를 넘긴다. Linux에서는 플레이어 검사만 한다(Linux 에디터는 2026-11-23부터 지원하지 않는다). 에디터 회귀는 복사본의 타일셋에서 경사의 꼭짓점과 발판의 차단 방향을 편집해 저장하고, 다시 열어 복원한 다음 Scene Play를 시작한다. [판정 기준과 플랫폼별 결과](../results/tile-collision/README.md)

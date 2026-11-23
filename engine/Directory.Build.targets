@@ -1,23 +1,57 @@
 <Project>
   <!-- The official SDL 3.4.12 x64 build uses only Windows system DLLs.
-       The BRUTAL build of the same ABI also imports VCRUNTIME140.dll. -->
+       The BRUTAL build of the same ABI also imports VCRUNTIME140.dll.
+       Since Ahwoo.BRUTAL.Sdl 2026.10.3 the native files come from Ahwoo.BRUTAL.Sdl.Native. -->
   <PropertyGroup>
     <WindowsSdlLibrary>$(MSBuildThisFileDirectory)native/windows-x64/SDL3.dll</WindowsSdlLibrary>
   </PropertyGroup>
 
   <Target Name="UseWindowsSdlInBuild" AfterTargets="ResolveLockFileCopyLocalFiles">
     <ItemGroup>
-      <_BrutalSdlBuild Include="@(ReferenceCopyLocalPaths->WithMetadataValue('NuGetPackageId', 'Ahwoo.BRUTAL.Sdl')->WithMetadataValue('PathInPackage', 'runtimes/win-x64/native/SDL3.dll'))" />
+      <_BrutalSdlBuild Include="@(ReferenceCopyLocalPaths->WithMetadataValue('NuGetPackageId', 'Ahwoo.BRUTAL.Sdl.Native')->WithMetadataValue('PathInPackage', 'runtimes/win-x64/native/SDL3.dll'))" />
       <ReferenceCopyLocalPaths Remove="@(_BrutalSdlBuild)" />
       <ReferenceCopyLocalPaths Include="@(_BrutalSdlBuild->'$(WindowsSdlLibrary)')" />
     </ItemGroup>
   </Target>
 
+  <!-- SDL_mixer loads as libSDL3_mixer.dylib / libSDL3_mixer.so. The versioned names in the package are
+       byte-identical copies that nothing links against; drop them from game and editor outputs. -->
+  <Target Name="DropVersionedMixerCopies" AfterTargets="ComputeResolvedFilesToPublishList">
+    <ItemGroup>
+      <_MixerCopy Include="@(ResolvedFileToPublish->WithMetadataValue('NuGetPackageId', 'Ahwoo.BRUTAL.Sdl.Mixer.Native'))"
+          Condition="'%(Filename)%(Extension)' == 'libSDL3_mixer.0.dylib' or '%(Filename)%(Extension)' == 'libSDL3_mixer.0.2.4.dylib' or '%(Filename)%(Extension)' == 'libSDL3_mixer.so.0' or '%(Filename)%(Extension)' == 'libSDL3_mixer.so.0.2.4'" />
+      <ResolvedFileToPublish Remove="@(_MixerCopy)" />
+    </ItemGroup>
+  </Target>
+
   <Target Name="UseWindowsSdlInPublish" AfterTargets="ComputeResolvedFilesToPublishList">
     <ItemGroup>
-      <_BrutalSdlPublish Include="@(ResolvedFileToPublish->WithMetadataValue('NuGetPackageId', 'Ahwoo.BRUTAL.Sdl')->WithMetadataValue('PathInPackage', 'runtimes/win-x64/native/SDL3.dll'))" />
+      <_BrutalSdlPublish Include="@(ResolvedFileToPublish->WithMetadataValue('NuGetPackageId', 'Ahwoo.BRUTAL.Sdl.Native')->WithMetadataValue('PathInPackage', 'runtimes/win-x64/native/SDL3.dll'))" />
       <ResolvedFileToPublish Remove="@(_BrutalSdlPublish)" />
       <ResolvedFileToPublish Include="@(_BrutalSdlPublish->'$(WindowsSdlLibrary)')" />
+      <_BrutalSdlBinding Include="@(ResolvedFileToPublish->WithMetadataValue('NuGetPackageId', 'Ahwoo.BRUTAL.Sdl'))" />
+    </ItemGroup>
+    <!-- A package layout change must not silently ship the VCRUNTIME140 build again. -->
+    <Error Condition="'$(RuntimeIdentifier)' == 'win-x64' and '@(_BrutalSdlBinding)' != '' and '@(_BrutalSdlPublish)' == ''"
+        Text="BRUTAL SDL3.dll for win-x64 was not found in the expected package; update the swap in Directory.Build.targets." />
+  </Target>
+
+  <!-- Brutal.Sdl.Ttf loads the unversioned libSDL3_ttf; Ahwoo.BRUTAL.Sdl.Ttf.Native also carries two identical
+       versioned copies (2 MB each on macOS and Linux) that nothing links to. Windows ships BRUTAL's SDL3_ttf.dll as is
+       (it imports VCRUNTIME140 and VCRUNTIME140_1; see engine/tests/results/text-ttf). -->
+  <PropertyGroup>
+    <_VersionedSdlTtf>^libSDL3_ttf\.(\d[\d.]*\.dylib|so\.\d[\d.]*)$</_VersionedSdlTtf>
+  </PropertyGroup>
+  <Target Name="DropVersionedSdlTtfInBuild" AfterTargets="ResolveLockFileCopyLocalFiles">
+    <ItemGroup>
+      <ReferenceCopyLocalPaths Remove="@(ReferenceCopyLocalPaths)"
+          Condition="'%(ReferenceCopyLocalPaths.NuGetPackageId)' == 'Ahwoo.BRUTAL.Sdl.Ttf.Native' and $([System.Text.RegularExpressions.Regex]::IsMatch('%(Filename)%(Extension)', '$(_VersionedSdlTtf)'))" />
+    </ItemGroup>
+  </Target>
+  <Target Name="DropVersionedSdlTtfInPublish" AfterTargets="ComputeResolvedFilesToPublishList">
+    <ItemGroup>
+      <ResolvedFileToPublish Remove="@(ResolvedFileToPublish)"
+          Condition="'%(ResolvedFileToPublish.NuGetPackageId)' == 'Ahwoo.BRUTAL.Sdl.Ttf.Native' and $([System.Text.RegularExpressions.Regex]::IsMatch('%(Filename)%(Extension)', '$(_VersionedSdlTtf)'))" />
     </ItemGroup>
   </Target>
 </Project>

@@ -48,6 +48,12 @@ public sealed partial record UiTextComponent : SceneComponent
     public string Color { get; set; } = "#FFFFFF";
     public string? TextKey { get; set; }
     public bool Wrap {get;set;}
+    /// <summary>Read color, bold, size and icon tags. See <see cref="RichTextLayout"/>.</summary>
+    public bool RichText { get; set; }
+    /// <summary>Characters revealed per second whenever the label shows new text; 0 shows it at once.</summary>
+    public float RevealRate { get; set; }
+    /// <summary>PNG sprites for &lt;icon=name&gt; tags.</summary>
+    public Dictionary<string,Guid>? Icons { get; set; }
     public Dictionary<string,string>? Translations { get;set; }
     public float InsetX { get; set; }
     public float InsetY { get; set; }
@@ -118,6 +124,10 @@ public interface IGameUi
     void ClearFocus();
     string Preedit {get;}
     bool SetText(Guid widget, string text);
+    /// <summary>Shows the rest of a revealing label at once. False if it was already complete or is not a revealing label.</summary>
+    bool SkipReveal(Guid widget);
+    /// <summary>Characters drawn so far by a label's reveal; a label without a reveal rate is always complete.</summary>
+    UiRevealProgress? RevealProgress(Guid widget);
     /// <summary>The label text currently drawn for a text widget, or the value of a text field.</summary>
     string? TextOf(Guid widget);
     bool SetVisible(Guid widget, bool visible);
@@ -149,6 +159,11 @@ public sealed partial class ScreenUi : IGameUi
         internal string? LineSource;
         internal Type? FontBackend;
         internal string[] Lines=[];
+        internal RichTextLayout? Rich;
+        internal Dictionary<string,string>? Icons; // icon name -> PNG path
+        internal string? RevealSource;
+        internal double Revealed;
+        internal int RevealTotal;
         internal readonly List<Node> Children=[];
         internal readonly UiLayoutComponent? Layout=Object.GetComponent<UiLayoutComponent>();
         internal readonly bool Scroll=Object.GetComponent<UiScrollComponent>()!=null;
@@ -177,7 +192,7 @@ public sealed partial class ScreenUi : IGameUi
     private PointF? pointer;
     private readonly Queue<(Guid Id, float? Value)> controlEvents = [];
     private readonly HashSet<string> held = [];
-    public IEnumerable<string> Images => nodes.Select(n => n.Image).OfType<string>().Distinct();
+    public IEnumerable<string> Images => nodes.Select(n => n.Image).OfType<string>().Concat(nodes.SelectMany(n => n.Icons?.Values ?? Enumerable.Empty<string>())).Distinct();
 
     public ScreenUi(SceneDocument scene, ProjectAssets? assets, Func<string,bool>? flag = null, Func<Guid,bool>? active = null,UiPreferences? preferences=null)
     {
@@ -216,7 +231,10 @@ public sealed partial class ScreenUi : IGameUi
                 node.ControlValue = control.Normalize(old?.Control?.GetType() == control.GetType() ? old.ControlValue : control.DefaultValue);
             }
             if (node.Picture?.Borders is {} borders && image != null) node.Slice = new(borders, SpriteRegion.ReadPngSize(image));
-            if(byId.TryGetValue(obj.Id,out var prior))node.Offset=prior.Offset;
+            if (node.Label?.Icons is { Count: > 0 } icons && assets != null && scene.ProjectDirectory is {} folder)
+                node.Icons = icons.Where(p => assets.PathFor(p.Value) is {} png && SpriteAssets.IsPng(png))
+                    .ToDictionary(p => p.Key, p => Path.Combine(folder, assets.PathFor(p.Value)!), StringComparer.Ordinal);
+            if(byId.TryGetValue(obj.Id,out var prior))(node.Offset,node.RevealSource,node.Revealed,node.RevealTotal)=(prior.Offset,prior.RevealSource,prior.Revealed,prior.RevealTotal);
             parent?.Children.Add(node);tree.Add(obj.Id, node); ordered.Add(node);
         }
         InsertListRows(ordered, tree);

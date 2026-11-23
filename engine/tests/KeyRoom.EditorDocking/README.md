@@ -23,4 +23,4 @@ python3 engine/tests/KeyRoom.EditorDocking/editor.py editor/MoNoon.app/Contents/
 
 단계 이름을 뒤에 붙이면 그 단계만 실행한다(`restore`와 `fallback`은 같은 결과 폴더의 `first`, `panels-restore`는 `panels` 결과가 필요하다). RenderTargetBitmap 캡처에는 네이티브 Scene 뷰가 비어 보인다. `play-game-moved.png`, `play-game-tab.png`, `float-*.png`, `restored-float-console.png`는 `screencapture -l`로 찍은 실제 창이다. 결과 기록: [editor-docking](../results/editor-docking/README.md)
 
-Windows·Linux 패키지 에디터에서도 같은 명령을 쓴다(실행 파일만 `editor/MoNoon.exe`·`editor/MoNoon`). 두 OS에는 SDL Scene 뷰가 없어(Avalonia가 Scene을 그림) NSView·그리기 호출 검사는 건너뛴다. 실제 창 캡처 자리에 RenderTargetBitmap으로 찍고 `<단계>.json`의 `captures`에 찍은 방법을 남긴다. 에뮬레이션 게스트처럼 느린 환경에서는 `MONOON_QA_SLOW`(기본 1)로 대기 시간과 제한 시간을 함께 늘린다. [x64 게스트 결과](../results/editor-ui-x64/README.md)
+Windows 패키지 에디터에서도 같은 명령을 쓴다(실행 파일만 `editor/MoNoon.exe`). Linux 에디터는 2026-11-23부터 지원하지 않는다. Windows에는 SDL Scene 뷰가 없어(Avalonia가 Scene을 그림) NSView·그리기 호출 검사는 건너뛴다. 실제 창 캡처 자리에 RenderTargetBitmap으로 찍고 `<단계>.json`의 `captures`에 찍은 방법을 남긴다. 에뮬레이션 게스트처럼 느린 환경에서는 `MONOON_QA_SLOW`(기본 1)로 대기 시간과 제한 시간을 함께 늘린다. [x64 게스트 결과](../results/editor-ui-x64/README.md)

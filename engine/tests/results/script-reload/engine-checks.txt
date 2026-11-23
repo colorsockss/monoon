@@ -1,0 +1,12 @@
+PASS script reload: Editor/ C# files are not game scripts
+PASS script reload: v1 counts one per tick
+PASS script reload: behaviours come from the new assembly
+PASS script reload: int and project enum fields keep their live values
+PASS script reload: a reference to a reloaded behaviour points at its replacement
+PASS script reload: ComponentReference<ProjectType> keeps its object
+PASS script reload: new fields get defaults and removed fields are dropped
+PASS script reload: a field whose type changed resets with a warning
+PASS script reload: running routines stop with a Console note
+PASS script reload: the next tick runs the new code
+PASS script reload: a compile error names file:line and the previous code keeps running
+PASS script reload: game scripts cannot reference the editor API or Editor/ types

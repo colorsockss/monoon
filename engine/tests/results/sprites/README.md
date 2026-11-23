@@ -14,3 +14,5 @@
 - Project의 Icons.atlas를 더블클릭하고 [편집 창을 375×300으로 축소](atlas-narrow.png)한 뒤 Repack을 눌러 씬으로 돌아왔다.
 - [자동 검사](../../Engine.Checks/SpriteChecks.cs)는 비대칭 투명 여백을 트림하고 원본을 개명한 뒤 이웃 셀의 크기를 바꿔 재패킹한다. 실제 셀 좌표가 이동해도 씬·클립 파일이 바뀌지 않고, 저장 후 재개와 내보낸 콘텐츠에서 정적 그림·애니메이션이 새 좌표를 읽는지 확인한다. 원본 누락으로 재패킹에 실패하면 이전 세대를 유지하는지도 검사한다.
 - [전체 엔진 회귀 검사](checks.txt)는 KeyRoom의 macOS arm64·Windows x64·Linux x64 Release 패키지를 생성하고 그 안의 데이터로 검사를 실행했다. 이번 실제 창·픽셀 검증 대상은 macOS arm64다.
+
+2026-11-23 roadmap 11.8부터 오른쪽 클립은 아틀라스 대신 `ArrowCycle.aseprite`에서 생성한 시트를 쓴다. 두 셀의 픽셀과 4초·0.7초 시간은 위 검증과 같다. [Aseprite 임포트 검증](../aseprite-import/README.md)

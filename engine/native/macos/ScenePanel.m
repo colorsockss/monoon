@@ -12,6 +12,7 @@ typedef int (*SceneFileDrag)(const char *path, double x, double y, int drop);
 @property(nonatomic, assign) ScenePointer pointer;
 @property(nonatomic, assign) SceneChanged changed;
 @property(nonatomic, assign) SceneFileDrag fileDrag;
+@property(nonatomic, strong) NSCursor *gameCursor;
 @end
 
 @implementation BrutalScenePanel
@@ -40,7 +41,9 @@ typedef int (*SceneFileDrag)(const char *path, double x, double y, int drop);
     self.tileTracking = [[NSTrackingArea alloc] initWithRect:NSZeroRect options:NSTrackingMouseMoved | NSTrackingMouseEnteredAndExited | NSTrackingActiveInKeyWindow | NSTrackingInVisibleRect owner:self userInfo:nil];
     [self addTrackingArea:self.tileTracking];
 }
-- (void)mouseMoved:(NSEvent *)event   { [self sendPointer:event phase:6]; }
+// Scene Play's custom game cursor. This view receives the mouse, so Avalonia's control cursor does not reach it.
+- (void)resetCursorRects { if (self.gameCursor) [self addCursorRect:self.bounds cursor:self.gameCursor]; }
+- (void)mouseMoved:(NSEvent *)event   { [self.gameCursor set]; [self sendPointer:event phase:6]; }
 - (void)mouseExited:(NSEvent *)event  { [self sendPointer:event phase:7]; }
 - (void)mouseDown:(NSEvent *)event    { [self sendPointer:event phase:0]; }
 - (void)mouseDragged:(NSEvent *)event { [self sendPointer:event phase:1]; }
@@ -94,6 +97,25 @@ void BrutalDestroyScenePanel(void *handle) {
     panel.changed = NULL;
     panel.fileDrag = NULL;
     [panel removeFromSuperview];
+}
+
+// rgba: straight RGBA rows; NULL restores the arrow. The image is one point per pixel, like an SDL color cursor.
+void BrutalSetScenePanelCursor(void *handle, const unsigned char *rgba, int width, int height, int hotX, int hotY) {
+    BrutalScenePanel *panel = (__bridge BrutalScenePanel *)handle;
+    NSCursor *cursor = nil;
+    if (rgba) {
+        NSBitmapImageRep *rep = [[NSBitmapImageRep alloc] initWithBitmapDataPlanes:NULL pixelsWide:width pixelsHigh:height
+            bitsPerSample:8 samplesPerPixel:4 hasAlpha:YES isPlanar:NO colorSpaceName:NSDeviceRGBColorSpace
+            bitmapFormat:NSBitmapFormatAlphaNonpremultiplied bytesPerRow:width * 4 bitsPerPixel:32];
+        memcpy(rep.bitmapData, rgba, (size_t)width * height * 4);
+        NSImage *image = [[NSImage alloc] initWithSize:NSMakeSize(width, height)];
+        [image addRepresentation:rep];
+        cursor = [[NSCursor alloc] initWithImage:image hotSpot:NSMakePoint(hotX, hotY)];
+    }
+    panel.gameCursor = cursor;
+    [panel.window invalidateCursorRectsForView:panel];
+    NSPoint mouse = panel.window ? [panel convertPoint:panel.window.mouseLocationOutsideOfEventStream fromView:nil] : NSZeroPoint;
+    if (panel.window && NSPointInRect(mouse, panel.bounds)) [cursor ?: NSCursor.arrowCursor set];
 }
 
 int BrutalScenePanelAttached(void *handle) {

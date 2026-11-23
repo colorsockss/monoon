@@ -5,7 +5,7 @@ values:
   nodes:
   - id: "greeting"
     speaker: "약초상"
-    text: "어서 오세요. 무슨 일로 오셨나요?"
+    text: "<b>약초상</b>입니다. 어서 오세요. 무슨 일로 오셨나요?"
     choices:
     - {text: "의뢰를 알아본다", next: "offer", action: ""}
     - {text: "보상을 문의한다", next: "reward", action: ""}
@@ -13,12 +13,12 @@ values:
     - {text: "약초가 자라는 곳을 묻는다", next: "meadow", action: ""}
   - id: "meadow"
     speaker: "약초상"
-    text: "약초는 개울 옆 풀밭에서 잘 자라요."
+    text: "herbalist.meadow"
     choices:
     - {text: "처음으로 돌아간다", next: "greeting", action: ""}
   - id: "offer"
     speaker: "약초상"
-    text: "새 잎이 돋은 약초 세 포기가 필요해요. 모아 주시겠어요?"
+    text: "<icon=herb> <color=#9BE27A>새 잎이 돋은 약초</color> <size=24><b>세 포기</b></size>가 필요해요. 모아 주시겠어요?"
     choices:
     - {text: "의뢰를 받는다", next: "accepted", action: "accept"}
     - {text: "이번에는 사양한다", next: "farewell", action: ""}
@@ -35,7 +35,7 @@ values:
     - {text: "처음으로 돌아간다", next: "greeting", action: ""}
   - id: "paid"
     speaker: "약초상"
-    text: "여기 약속한 수정이에요. 덕분에 약을 지을 수 있겠어요."
+    text: "여기 약속한 <color=#C9A0FF><b>수정</b></color>이에요. 덕분에 약을 지을 수 있겠어요."
     choices:
     - {text: "대화를 마친다", next: "", action: ""}
   - id: "farewell"

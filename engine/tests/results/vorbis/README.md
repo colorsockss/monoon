@@ -1,5 +1,7 @@
 # AudioLab의 Ogg Vorbis 스트리밍 검증
 
+> 2026-11-23부터 오디오는 SDL_mixer로 믹싱한다. 아래 해시와 [playback.csv](playback.csv)는 이전 MoNoon 믹서의 기록이다. `ci.py`는 [새 기준](../audio-mixer/playback.csv)과 비교한다. [SDL_mixer 전환 기록](../audio-mixer/README.md)
+
 [Windows·Linux x64의 Release·Native AOT 재생 결과와 가상 사운드 카드 녹음](x64/README.md)
 
 2026-11-16, macOS 27.0.1 arm64. MoNoon.app의 Project 패널에서 `Tide.ogg`를 임포트하고 AudioLab의 배경음으로 지정했다. 원본은 24 kHz 스테레오 WAV의 28,800프레임 루프이며, 같은 음원을 libvorbis 품질 5로 인코딩했다. WAV 비교용 프로젝트에는 같은 Audio Source와 믹서 설정을 사용했다. [샘플](../../../../samples/AudioLab) · [오디오 사용법](../../../../docs/manual/audio.md)

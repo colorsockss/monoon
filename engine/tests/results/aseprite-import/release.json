@@ -1,0 +1,33 @@
+{
+ "durationsMs": [
+  4000,
+  700
+ ],
+ "frames": [
+  {
+   "tick": 1,
+   "frame": 0,
+   "exactTick": 0.0
+  },
+  {
+   "tick": 240,
+   "frame": 1,
+   "exactTick": 240.0
+  },
+  {
+   "tick": 282,
+   "frame": 0,
+   "exactTick": 282.0
+  },
+  {
+   "tick": 522,
+   "frame": 1,
+   "exactTick": 522.0
+  },
+  {
+   "tick": 564,
+   "frame": 0,
+   "exactTick": 564.0
+  }
+ ]
+}

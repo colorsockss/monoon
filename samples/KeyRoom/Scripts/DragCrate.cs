@@ -13,7 +13,7 @@ public sealed class DragCrate : GameBehaviour, IWorldPointerHandler
         if (pointer.Phase == WorldPointerPhase.Drag &&
             pointer.Objects.TryGetWorldMatrix(pointer.ObjectId, out var pose))
         {
-            var grab = Vector2.Transform(pointer.GrabLocalPosition, pose);
+            var grab = Affine2D.Transform(pointer.GrabLocalPosition, pose);
             pointer.Objects.TryMoveStep(pointer.ObjectId, pointer.WorldPosition - grab);
         }
         if (previous != pointer.Phase)

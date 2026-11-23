@@ -1,0 +1,271 @@
+# Affine2D codegen, macOS 27.0.1 arm64 (Apple M4 Max), .NET 10.0.1. Probe: codegen-probe.cs.txt. JIT: DOTNET_TieredCompilation=0 DOTNET_JitDisasm='Program:Call* Program:Loop*'. AOT: ILC --codegenopt JitDisasm=* --parallelism:1 with Engine.Core rooted. LoopFused = MathF.FusedMultiplyAdd copy, LoopNumerics = System.Numerics Vector2.Transform/Lerp, Main inlines the fused copy for the byte check.
+## JIT: 11 methods listed, 0 Engine.Core.*; methods with fused multiply-add instructions:
+     4 Program:LoopFused():float (FullOpts)
+     2 Program:LoopNumerics():float (FullOpts)
+## AOT: 28732 methods listed, 11017 Engine.Core.*; methods with fused multiply-add instructions:
+     4 Program:LoopFused():float (FullOpts)
+     2 Program:LoopNumerics():float (FullOpts)
+     2 Program:Main(System.String[]):int (FullOpts)
+
+## JIT Program:CallTransform(System.Numerics.Vector2,System.Numerics.Matrix3x2):System.Numerics.Vector2 (FullOpts)
+            stp     fp, lr, [sp, #-0x10]!
+            mov     fp, sp
+            ldp     d16, d17, [x0]
+            ldr     d18, [x0, #0x10]
+            fmul    v16.4s, v16.4s, v0.s[0]
+            fmul    v17.4s, v17.4s, v1.s[0]
+            fadd    v16.4s, v16.4s, v17.4s
+            fadd    v16.4s, v16.4s, v18.4s
+            mov     v0.s[0], v16.s[0]
+            mov     v1.s[0], v16.s[1]
+            ldp     fp, lr, [sp], #0x10
+            ret     lr
+
+## JIT Program:CallTransformNormal(System.Numerics.Vector2,System.Numerics.Matrix3x2):System.Numerics.Vector2 (FullOpts)
+            stp     fp, lr, [sp, #-0x10]!
+            mov     fp, sp
+            ldp     d16, d17, [x0]
+            fmul    v16.4s, v16.4s, v0.s[0]
+            fmul    v17.4s, v17.4s, v1.s[0]
+            fadd    v16.4s, v16.4s, v17.4s
+            mov     v0.s[0], v16.s[0]
+            mov     v1.s[0], v16.s[1]
+            ldp     fp, lr, [sp], #0x10
+            ret     lr
+
+## JIT Program:CallLerp2(System.Numerics.Vector2,System.Numerics.Vector2,float):System.Numerics.Vector2 (FullOpts)
+            stp     fp, lr, [sp, #-0x10]!
+            mov     fp, sp
+            mov     v0.s[1], v1.s[0]
+            mov     v2.s[1], v3.s[0]
+            fmov    s16, #1.0000
+            fsub    s16, s16, s4
+            fmul    v16.4s, v0.4s, v16.s[0]
+            fmul    v17.4s, v2.4s, v4.s[0]
+            fadd    v16.4s, v16.4s, v17.4s
+            mov     v0.s[0], v16.s[0]
+            mov     v1.s[0], v16.s[1]
+            ldp     fp, lr, [sp], #0x10
+            ret     lr
+
+## JIT Program:CallLerp3(System.Numerics.Vector3,System.Numerics.Vector3,float):System.Numerics.Vector3 (FullOpts)
+            stp     fp, lr, [sp, #-0x10]!
+            mov     fp, sp
+            mov     v0.s[2], v2.s[0]
+            mov     v0.s[1], v1.s[0]
+            mov     v3.s[2], v5.s[0]
+            mov     v3.s[1], v4.s[0]
+            fmov    s16, #1.0000
+            fsub    s16, s16, s6
+            fmul    v16.4s, v0.4s, v16.s[0]
+            fmul    v17.4s, v3.4s, v6.s[0]
+            fadd    v16.4s, v16.4s, v17.4s
+            mov     v0.s[0], v16.s[0]
+            mov     v1.s[0], v16.s[1]
+            mov     v2.s[0], v16.s[2]
+            ldp     fp, lr, [sp], #0x10
+            ret     lr
+
+## JIT Program:CallLerp4(System.Numerics.Vector4,System.Numerics.Vector4,float):System.Numerics.Vector4 (FullOpts)
+            stp     fp, lr, [sp, #-0x10]!
+            mov     fp, sp
+            mov     v0.s[3], v3.s[0]
+            mov     v0.s[2], v2.s[0]
+            mov     v0.s[1], v1.s[0]
+            mov     v4.s[3], v7.s[0]
+            mov     v4.s[2], v6.s[0]
+            mov     v4.s[1], v5.s[0]
+            ldr     s16, [fp, #0x10]
+            fmov    s17, #1.0000
+            fsub    s17, s17, s16
+            fmul    v17.4s, v0.4s, v17.s[0]
+            fmul    v16.4s, v4.4s, v16.s[0]
+            fadd    v16.4s, v17.4s, v16.4s
+            mov     v0.s[0], v16.s[0]
+            mov     v1.s[0], v16.s[1]
+            mov     v2.s[0], v16.s[2]
+            mov     v3.s[0], v16.s[3]
+            ldp     fp, lr, [sp], #0x10
+            ret     lr
+
+## JIT Program:LoopUnfused():float (FullOpts)
+            stp     fp, lr, [sp, #-0x10]!
+            mov     fp, sp
+            movi    v0.2s, #0
+            mov     w0, wzr
+            movz    x1, #0x4148
+            movk    x1, #0x1800 LSL #16
+            movk    x1, #112 LSL #32
+            ldp     x2, x1, [x1]
+            movz    x3, #0x4BE0
+            movk    x3, #0xA6E LSL #16
+            movk    x3, #1 LSL #32
+            add     x3, x3, #16
+            mov     w4, w0
+            lsl     x5, x4, #3
+            add     x5, x5, #16
+            ldr     d16, [x2, x5]
+            mov     v17.8b, v16.8b
+            mov     x5, #24
+            mul     x5, x4, x5
+            add     x5, x5, #16
+            add     x5, x1, x5
+            ldp     d18, d19, [x5]
+            ldr     d20, [x5, #0x10]
+            dup     s21, v17.s[0]
+            fmul    v18.4s, v18.4s, v21.s[0]
+            dup     s17, v17.s[1]
+            fmul    v17.4s, v19.4s, v17.s[0]
+            fadd    v17.4s, v18.4s, v17.4s
+            fadd    v17.4s, v17.4s, v20.4s
+            add     w0, w0, #1
+            and     w5, w0, #0xFFF
+            ubfiz   x5, x5, #3, #32
+            add     x5, x5, #16
+            ldr     d18, [x2, x5]
+            ldr     s19, [x3, x4, LSL #2]
+            fmov    s20, #1.0000
+            fsub    s20, s20, s19
+            fmul    v16.4s, v16.4s, v20.s[0]
+            fmul    v18.4s, v18.4s, v19.s[0]
+            fadd    v16.4s, v16.4s, v18.4s
+            fadd    v16.4s, v17.4s, v16.4s
+            fadd    v0.4s, v0.4s, v16.4s
+            cmp     w0, #1, LSL #12
+            blt     G_M000_IG03
+            dup     s16, v0.s[0]
+            dup     s0, v0.s[1]
+            fadd    s0, s16, s0
+            ldp     fp, lr, [sp], #0x10
+            ret     lr
+
+## AOT Program:CallTransform(System.Numerics.Vector2,System.Numerics.Matrix3x2):System.Numerics.Vector2 (FullOpts)
+            stp     fp, lr, [sp, #-0x10]!
+            mov     fp, sp
+            ldp     d16, d17, [x0]
+            ldr     d18, [x0, #0x10]
+            fmul    v16.4s, v16.4s, v0.s[0]
+            fmul    v17.4s, v17.4s, v1.s[0]
+            fadd    v16.4s, v16.4s, v17.4s
+            fadd    v16.4s, v16.4s, v18.4s
+            mov     v0.s[0], v16.s[0]
+            mov     v1.s[0], v16.s[1]
+            ldp     fp, lr, [sp], #0x10
+            ret     lr
+
+## AOT Program:CallTransformNormal(System.Numerics.Vector2,System.Numerics.Matrix3x2):System.Numerics.Vector2 (FullOpts)
+            stp     fp, lr, [sp, #-0x10]!
+            mov     fp, sp
+            ldp     d16, d17, [x0]
+            fmul    v16.4s, v16.4s, v0.s[0]
+            fmul    v17.4s, v17.4s, v1.s[0]
+            fadd    v16.4s, v16.4s, v17.4s
+            mov     v0.s[0], v16.s[0]
+            mov     v1.s[0], v16.s[1]
+            ldp     fp, lr, [sp], #0x10
+            ret     lr
+
+## AOT Program:CallLerp2(System.Numerics.Vector2,System.Numerics.Vector2,float):System.Numerics.Vector2 (FullOpts)
+            stp     fp, lr, [sp, #-0x10]!
+            mov     fp, sp
+            mov     v0.s[1], v1.s[0]
+            mov     v2.s[1], v3.s[0]
+            fmov    s16, #1.0000
+            fsub    s16, s16, s4
+            fmul    v16.4s, v0.4s, v16.s[0]
+            fmul    v17.4s, v2.4s, v4.s[0]
+            fadd    v16.4s, v16.4s, v17.4s
+            mov     v0.s[0], v16.s[0]
+            mov     v1.s[0], v16.s[1]
+            ldp     fp, lr, [sp], #0x10
+            ret     lr
+
+## AOT Program:CallLerp3(System.Numerics.Vector3,System.Numerics.Vector3,float):System.Numerics.Vector3 (FullOpts)
+            stp     fp, lr, [sp, #-0x10]!
+            mov     fp, sp
+            mov     v0.s[2], v2.s[0]
+            mov     v0.s[1], v1.s[0]
+            mov     v3.s[2], v5.s[0]
+            mov     v3.s[1], v4.s[0]
+            fmov    s16, #1.0000
+            fsub    s16, s16, s6
+            fmul    v16.4s, v0.4s, v16.s[0]
+            fmul    v17.4s, v3.4s, v6.s[0]
+            fadd    v16.4s, v16.4s, v17.4s
+            mov     v0.s[0], v16.s[0]
+            mov     v1.s[0], v16.s[1]
+            mov     v2.s[0], v16.s[2]
+            ldp     fp, lr, [sp], #0x10
+            ret     lr
+
+## AOT Program:CallLerp4(System.Numerics.Vector4,System.Numerics.Vector4,float):System.Numerics.Vector4 (FullOpts)
+            stp     fp, lr, [sp, #-0x10]!
+            mov     fp, sp
+            mov     v0.s[3], v3.s[0]
+            mov     v0.s[2], v2.s[0]
+            mov     v0.s[1], v1.s[0]
+            mov     v4.s[3], v7.s[0]
+            mov     v4.s[2], v6.s[0]
+            mov     v4.s[1], v5.s[0]
+            ldr     s16, [fp, #0x10]
+            fmov    s17, #1.0000
+            fsub    s17, s17, s16
+            fmul    v17.4s, v0.4s, v17.s[0]
+            fmul    v16.4s, v4.4s, v16.s[0]
+            fadd    v16.4s, v17.4s, v16.4s
+            mov     v0.s[0], v16.s[0]
+            mov     v1.s[0], v16.s[1]
+            mov     v2.s[0], v16.s[2]
+            mov     v3.s[0], v16.s[3]
+            ldp     fp, lr, [sp], #0x10
+            ret     lr
+
+## AOT Program:LoopUnfused():float (FullOpts)
+            stp     fp, lr, [sp, #-0x10]!
+            mov     fp, sp
+            movi    v0.2s, #0
+            mov     w0, wzr
+            adrp    x1, [HIGH RELOC #0x454F38]
+            add     x1, x1, [LOW RELOC #0x454F38]
+            adrp    x2, [HIGH RELOC #0x454F78]
+            add     x2, x2, [LOW RELOC #0x454F78]
+            adrp    x3, [HIGH RELOC #0x454FB0]
+            add     x3, x3, [LOW RELOC #0x454FB0]
+            add     x3, x3, #16
+            mov     w4, w0
+            lsl     x5, x4, #3
+            add     x5, x5, #16
+            ldr     d16, [x1, x5]
+            mov     v17.8b, v16.8b
+            mov     x5, #24
+            mul     x5, x4, x5
+            add     x5, x5, #16
+            add     x5, x5, x2
+            ldp     d18, d19, [x5]
+            ldr     d20, [x5, #0x10]
+            dup     s21, v17.s[0]
+            fmul    v18.4s, v18.4s, v21.s[0]
+            dup     s17, v17.s[1]
+            fmul    v17.4s, v19.4s, v17.s[0]
+            fadd    v17.4s, v18.4s, v17.4s
+            fadd    v17.4s, v17.4s, v20.4s
+            add     w0, w0, #1
+            and     w5, w0, #0xFFF
+            ubfiz   x5, x5, #3, #32
+            add     x5, x5, #16
+            ldr     d18, [x1, x5]
+            ldr     s19, [x3, x4, LSL #2]
+            fmov    s20, #1.0000
+            fsub    s20, s20, s19
+            fmul    v16.4s, v16.4s, v20.s[0]
+            fmul    v18.4s, v18.4s, v19.s[0]
+            fadd    v16.4s, v16.4s, v18.4s
+            fadd    v16.4s, v17.4s, v16.4s
+            fadd    v0.4s, v0.4s, v16.4s
+            cmp     w0, #1, LSL #12
+            blt     G_M000_IG03
+            dup     s16, v0.s[0]
+            dup     s0, v0.s[1]
+            fadd    s0, s16, s0
+            ldp     fp, lr, [sp], #0x10
+            ret     lr

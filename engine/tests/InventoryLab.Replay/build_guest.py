@@ -24,7 +24,7 @@ def project_files(project):
     return {p.relative_to(project): sha(p.read_bytes()) for p in project.rglob("*") if p.is_file()}
 
 
-def migrate_v31(work, flags, env):
+def migrate_v31(work, env):
     marker = "engine/src/Engine.Player/MoNoonContent.version"
     old_version = subprocess.check_output(["git", "show", f"{V31_COMMIT}:{marker}"], cwd=REPO)
     if old_version.strip() != b"31":
@@ -37,8 +37,8 @@ def migrate_v31(work, flags, env):
     project = work / "samples/InventoryLab"
     original = project_files(project)
     print("Migrating InventoryLab from", V31_COMMIT, "files:", len(original), flush=True)
-    run("dotnet", "build", ENGINE / "src/Engine.Editor", *flags, "-o", work / "editor", env=env)
-    run("dotnet", work / "editor/MoNoon.dll", "--migrate-project", project, env=env)
+    # The CLI (built by prepare_tools) runs the same LegacyProject migration as the editor; no editor on CI guests.
+    run("dotnet", work / "cli/MoNoon.Cli.dll", "migrate", project, env=env)
     if project_files(project) != original:
         raise ValueError("Migration changed the already-current v31 InventoryLab source or asset IDs")
     return project, original
@@ -61,7 +61,7 @@ def main():
     parser.add_argument("--expected-rid", choices=("osx-arm64", "win-x64", "linux-x64"),
                         help="Fail if the runner OS or CPU differs from the requested target")
     parser.add_argument("--upgrade-from-v31", action="store_true",
-                        help="Migrate the archived v31 sample with the v35 editor and complete its quest from a v2 slot")
+                        help="Migrate the archived v31 sample with the v35 CLI and complete its quest from a v2 slot")
     parser.add_argument("--slot-recovery", action="store_true",
                         help="Check damaged-slot recovery and reward reclaims in both built players")
     args = parser.parse_args()
@@ -83,14 +83,14 @@ def main():
         print("Mac input replay SHA-256", sha(recording.read_bytes()), flush=True)
     with tempfile.TemporaryDirectory(prefix="monoon-guest-") as tmp:
         work = Path(tmp)
-        env, flags = prepare_tools(work, rid)
+        env, _ = prepare_tools(work, rid)
         project = REPO / "samples/InventoryLab"
         if args.upgrade_from_v31:
             templates = work / "templates"
             for player in (ENGINE / "src/Engine.Player", templates / rid, templates / "native-aot/src/Engine.Player"):
                 if (player / "MoNoonContent.version").read_text().strip() != "35":
                     raise ValueError(f"Expected a version 35 player at {player}")
-            project, original = migrate_v31(work, flags, env)
+            project, original = migrate_v31(work, env)
         for mode in ("release", "native-aot"):
             product = build_player(work, project, mode, rid, output, env)
             exe = product / ("MoNoonPlayer.exe" if rid == "win-x64" else "MoNoonPlayer")

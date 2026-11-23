@@ -1,5 +1,6 @@
 using System.Numerics;
 using Brutal.SdlApi;
+using Engine.Core;
 
 namespace Engine.Desktop;
 
@@ -74,6 +75,14 @@ public sealed class SdlGamepads : IDisposable
             last[i]=value; changed(names[i],value);
         }
         sync=false;
+    }
+    /// <summary>Rumbles the open gamepad, replacing a running rumble. SDL stops it after the duration while <see cref="Poll"/> runs.</summary>
+    public void Rumble(GamepadRumble request)
+    {
+        ushort low = (ushort)Math.Round(request.Low * ushort.MaxValue), high = (ushort)Math.Round(request.High * ushort.MaxValue);
+        uint ms = (uint)Math.Round(request.Seconds * 1000);
+        bool ok = opened && Sdl.Gamepad.RumbleGamepad(pad, low, high, ms);
+        FeedbackLog.Write($"rumble device=\"{(opened ? Sdl.Gamepad.GetGamepadName(pad) : "none")}\" low={low} high={high} ms={ms} result={(ok ? "ok" : opened ? "unsupported" : "no-gamepad")}");
     }
     private static readonly SdlGamepadAxis[] triggerAxes=[SdlGamepadAxis.LeftTrigger,SdlGamepadAxis.RightTrigger];
     public void Dispose()

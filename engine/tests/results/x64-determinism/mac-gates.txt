@@ -1,0 +1,21 @@
+# Mac arm64 (macOS 27.0.1, Apple M4 Max), fix applied: trace vs the committed Mac record (tsvdiff: sha256 prefixes, rows, differing rows)
+PlatformerLab.Joints release: a00b9e4b00b4599d a00b9e4b00b4599d rows 300/300 differ 0 max 0.0000 identical
+PlatformerLab.Joints aot: a00b9e4b00b4599d a00b9e4b00b4599d rows 300/300 differ 0 max 0.0000 identical
+PlatformerLab.Joints scene-play: a00b9e4b00b4599d a00b9e4b00b4599d rows 300/300 differ 0 max 0.0000 identical
+PlatformerLab.Paths release: 1a143d56cfa707d9 1a143d56cfa707d9 rows 400/400 differ 0 max 0.0000 identical
+PlatformerLab.Paths aot: 1a143d56cfa707d9 1a143d56cfa707d9 rows 400/400 differ 0 max 0.0000 identical
+PlatformerLab.Paths scene-play: 1a143d56cfa707d9 1a143d56cfa707d9 rows 400/400 differ 0 max 0.0000 identical
+PlatformerLab.TileCollision release: f30ed6864b3cf99f (record f30ed686, headerless)
+PlatformerLab.TileCollision aot: f30ed6864b3cf99f (record f30ed686, headerless)
+PlatformerLab.TileCollision scene-play: f30ed6864b3cf99f (record f30ed686, headerless)
+BarrageLab.Lines release: 6969a524feb5e837 (record 6969a524)
+BarrageLab.Lines aot: 6969a524feb5e837 (record 6969a524)
+BarrageLab.Lines scene-play: 6969a524feb5e837 (record 6969a524)
+CollisionLab.Spatial release:
+SPATIAL count=1000 kind=All n=1728 linearCandidates=1677780 gridCandidates=17334 sha256=32FA7AB7170DF5D060A9FC399E6B1BCF6F274A48852DEEF17AA19B8CA1FEFB63
+SPATIAL count=10000 kind=All n=1728 linearCandidates=16772778 gridCandidates=22812 sha256=B5C817DB18262EA1E4C48008C24F77B416FA20AC1ED8447702902803F7D8B896
+CollisionLab.Spatial aot:
+SPATIAL count=1000 kind=All n=1728 linearCandidates=1677780 gridCandidates=17334 sha256=32FA7AB7170DF5D060A9FC399E6B1BCF6F274A48852DEEF17AA19B8CA1FEFB63
+SPATIAL count=10000 kind=All n=1728 linearCandidates=16772778 gridCandidates=22812 sha256=B5C817DB18262EA1E4C48008C24F77B416FA20AC1ED8447702902803F7D8B896
+BarrageLab.PrefabPools release: PASS same 2338 hits from 7200 bullets; reused 6721 of 7200
+BarrageLab.PrefabPools aot: PASS same 2338 hits from 7200 bullets; reused 6721 of 7200

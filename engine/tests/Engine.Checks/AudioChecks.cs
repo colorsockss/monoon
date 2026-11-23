@@ -29,7 +29,8 @@ internal static class AudioChecks
         world.Stop(music,.01f);
         Render(mixer,479);Check(world.IsPlaying(music),"fade-out not early");Render(mixer,1);
         Check(!world.IsPlaying(music) && Render(mixer,1).All(v=>v==0),"fade-out stops on last sample");
-        world.Play(fx,0);var west=Render(mixer,4800);
+        // The resampled beacon starts one frame late; compare whole beacon cycles after its first window.
+        world.Play(fx,0);Render(mixer,4800);var west=Render(mixer,4800);
         Check(Math.Abs(Power(west,1)/Power(west,0)-4)<.001,"listener at west, beacon louder on right");
         world.Levels=world.Levels with { Music=0 };
         var sameEffects=Render(mixer,4800);
@@ -56,6 +57,34 @@ internal static class AudioChecks
             distance.Play(fx,0);
             Check(Render(distance.Mixer,1000).All(v=>v==0) && distance.IsPlaying(fx),"out-of-range loop is silent without losing phase");
         }
+        // 96 voices: a new sound replaces the oldest one-shot effect, never a loop or music.
+        using(var limit=new AudioMixer())
+        {
+            var beacon=Path.Combine(repo,"samples","AudioLab","Assets","Beacon.wav");
+            var loop=new object();limit.Start(loop,beacon,new AudioSourceComponent { Loop=true },default,0);
+            var shots=Enumerable.Range(0,96).Select(_=>new object()).ToArray();
+            foreach(var shot in shots)limit.Start(shot,beacon,new AudioSourceComponent(),default,0);
+            Render(limit,512);
+            Check(limit.Playing(loop) && !limit.Playing(shots[0]) && shots.Skip(1).All(limit.Playing),"voice limit steals the oldest one-shot effect");
+        }
+        // A 24 kHz source starts one frame late with no silent gap; starting it leaves a 48 kHz voice's samples unchanged.
+        var afterbeat=Path.Combine(repo,"samples","RhythmLab","Assets","Afterbeat.wav");
+        float[] Rhythm(bool joined)
+        {
+            using var m=new AudioMixer();
+            m.Start(new object(),afterbeat,new AudioSourceComponent { Bus=AudioBus.Music,Loop=true },default,0);
+            var head=Render(m,1000);
+            if(joined)m.Start(new object(),Path.Combine(repo,"samples","AudioLab","Assets","Beacon.wav"),new AudioSourceComponent { Volume=0 },default,0);
+            return [..head,..Render(m,4800)];
+        }
+        Check(Rhythm(false).SequenceEqual(Rhythm(true)),"a resampled voice's start leaves 48 kHz samples unchanged");
+        using(var resampled=new AudioMixer())
+        {
+            resampled.Start(new object(),Path.Combine(repo,"samples","AudioLab","Assets","Beacon.wav"),new AudioSourceComponent { Loop=true },default,0);
+            var start=Render(resampled,4800);int lead=Array.FindIndex(start,v=>v!=0)/2,run=0,longest=0;
+            for(int f=lead;f<4800;f++){run=start[2*f]==0&&start[2*f+1]==0?run+1:0;longest=Math.Max(longest,run);}
+            Check(lead<=2 && longest<4,$"resampled start: first sample at frame {lead}, longest silence {longest} frames");
+        }
         // A large sparse WAV proves preparation reads the header rather than allocating the data chunk.
         var file=Path.Combine(scratch,"large.wav");
         using(var f=File.Create(file))
@@ -69,6 +98,6 @@ internal static class AudioChecks
         long bytesUsed=GC.GetAllocatedBytesForCurrentThread()-before;Check(bytesUsed<1024*1024,"large WAV metadata allocation");
         var broken=Path.Combine(scratch,"broken.wav");File.WriteAllBytes(broken,File.ReadAllBytes(Path.Combine(repo,"samples","KeyRoom","Assets","Unlock.wav"))[..48]);
         try {mixer.Prepare(broken);throw new Exception("Accepted truncated WAV");}catch(InvalidDataException){}
-        Console.WriteLine($"PASS audio: gapless streamed loops, exact fades, bus isolation, listener pan/attenuation/fallback, source lifecycle, WAV/YAML compatibility; preparing 96 MiB allocated {bytesUsed} bytes");
+        Console.WriteLine($"PASS audio: gapless streamed loops, exact fades, bus isolation, listener pan/attenuation/fallback, source lifecycle, 96-voice stealing, WAV/YAML compatibility; preparing 96 MiB allocated {bytesUsed} bytes");
     }
 }

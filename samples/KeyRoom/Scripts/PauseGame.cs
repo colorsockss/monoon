@@ -9,6 +9,7 @@ public sealed class PauseGame : GameBehaviour
     public override void UpdateUi(UiTick tick)
     {
         if (tick.Input.Pressed("PauseGame")) tick.Time.IsPaused = !tick.Time.IsPaused;
+        if (tick.Input.Pressed("StepGame")) tick.Time.StepOnce(); // Runs one tick only while paused.
         if (!tick.Time.IsPaused)
         {
             tick.Session.Clear("paused");

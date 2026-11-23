@@ -1,0 +1,13 @@
+using System.Collections.Generic;
+using Engine.Core;
+
+// Test-only probe copied into a disposable KeyRoom (roadmap 11.2). Version 1 counts one per game tick.
+public sealed class ReloadProbe : GameBehaviour
+{
+    public int Ticks;
+    public float Speed = 2;
+    public string Version = "v1";
+    public override void OnCreate(ScriptLife life) => life.Objects.StartRoutine(life.ObjectId, Pulse());
+    private IEnumerable<ScriptWait> Pulse() { while (true) yield return ScriptWait.Frames(1); }
+    public override void FixedUpdate(ScriptTick tick) => Ticks += 1;
+}

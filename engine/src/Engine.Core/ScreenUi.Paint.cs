@@ -86,7 +86,9 @@ public sealed partial class ScreenUi
                 }
                 bool clipText=n.Field!=null || n.Rect?.HasPins==true || n.Parent?.Layout!=null || Preferences.TextScale!=1;
                 using var textClip=clipText?canvas.PushClip(box):null;
-                if(label?.Wrap==true && n.Field==null)
+                if(n.Rich is {} rich && n.Field==null)
+                    rich.Draw(canvas,tx,ty,scale,Revealed(n,text),ink,Preferences.HighContrast,n.Icons==null?null:n.Icons.GetValueOrDefault);
+                else if(label?.Wrap==true && n.Field==null)
                     foreach(var line in n.Lines){canvas.DrawText(line,tx,ty,size,ink);ty+=size*1.4f;}
                 else canvas.DrawText(text,tx,ty,size,ink);
             }

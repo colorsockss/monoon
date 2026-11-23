@@ -30,7 +30,7 @@
 
 한 PNG는 한 아틀라스에만 넣을 수 있다. 시트의 최대 크기는 4096×4096이다. 원본 파일, `.atlas`, 프로젝트 루트 `.monoon-atlas/`를 함께 보관한다. `.atlas`는 YAML이고 실제 시트는 내용 해시가 이름인 PNG다. 재패킹이 실패해도 이전 시트는 유지된다. 빌드에는 참조되는 세대만 포함된다. 원본 시트에서 좌표로 잘라 쓴 클립, UI, 타일맵 또는 마스크가 원본을 필요로 하면 그 PNG도 함께 배포된다.
 
-[SpriteLab 샘플](../../samples/SpriteLab)에서 왼쪽은 원본, 가운데는 반전·색상·마스크를 적용한 그림, 오른쪽은 같은 설정에서 화살표와 점을 번갈아 재생하는 클립이다.
+[SpriteLab 샘플](../../samples/SpriteLab)에서 왼쪽은 원본, 가운데는 반전·색상·마스크를 적용한 그림이다. 오른쪽은 같은 설정에서 화살표와 점을 번갈아 재생하는 클립으로, `ArrowCycle.aseprite`에서 가져왔다. [Aseprite 파일 가져오기](#aseprite-파일-가져오기)
 
 ## 개별 PNG로 클립 만들기
 
@@ -50,6 +50,22 @@
 KeyRoom의 원본 문 PNG를 외부에서 덮어쓰면 그 PNG에 연결된 셀이 갱신된다. [외부 PNG 자동 재임포트](project-assets.md#외부-png-자동-재임포트)
 
 규칙적으로 잘라 쓰는 PNG는 **Grid**에서 셀 크기, 여백, 간격을 설정한다. 시트 전체를 보려면 **Fit**, 픽셀을 확대하려면 **2×** 등 고정 배율을 고른다.
+
+## Aseprite 파일 가져오기
+
+`.aseprite` 또는 `.ase` 파일을 프로젝트 폴더에 복사한다. 에디터는 열려 있는 동안 파일을 감시하고, 게임 빌드도 시작할 때 같은 임포트를 실행한다. `Hero.aseprite`를 넣으면 같은 폴더에 다음 파일이 생긴다.
+
+| 생성 파일 | 내용 |
+| --- | --- |
+| `Hero.png` | 모든 프레임을 원본 캔버스 크기 그대로 격자로 배치한 시트. 프레임 순서대로 `.meta`에 셀이 기록되어 **Add → Sheet cells…**에서도 고를 수 있다. |
+| `Hero.clip` | 모든 프레임을 순서대로 반복하는 클립 |
+| `Hero.<태그>.clip` | 태그마다 하나. 태그 범위, 방향(정방향·역방향·핑퐁·역핑퐁), 반복 횟수를 반영한다. 반복이 0이면 반복 재생하고, N이면 N번 재생한 뒤 마지막 프레임에 머문다. 핑퐁은 한 방향을 1회로 센다. |
+
+프레임마다 Aseprite에서 지정한 시간(ms)이 클립의 **Seconds**가 된다. 보이는 레이어만 합성하고, 레이어와 셀의 불투명도를 적용한다. RGBA, Indexed, Grayscale 색상 모드를 읽는다. 블렌드 모드는 **Normal**만 지원한다. Multiply 같은 다른 모드나 타일맵 레이어가 보이는 상태라면 에디터 상태 표시줄과 빌드에 오류가 나타난다. 해당 레이어를 숨기거나 Normal로 바꾸면 된다. 그룹의 불투명도는 자식 레이어마다 곱해서 근사한다.
+
+Aseprite에서 같은 경로에 다시 저장하면 시트와 클립이 다시 만들어진다. 시트의 GUID는 유지되므로 씬, Sprite Animator, 애니메이터의 참조를 다시 연결하지 않아도 된다. 원본 내용이 같으면 출력 파일을 다시 쓰지 않는다. 생성된 PNG와 클립은 원본을 다시 저장할 때마다 덮어쓰므로, 시간이나 이벤트를 바꾸려면 Aseprite에서 수정한다. 태그를 지우거나 이름을 바꿔도 이전 태그의 클립은 지워지지 않는다. 쓰지 않는 클립은 직접 삭제한다. 같은 이름의 PNG가 이미 있고 Aseprite에서 만든 것이 아니면 덮어쓰지 않고 오류를 낸다. 둘 중 하나의 이름을 바꾼다.
+
+게임 빌드에는 생성된 PNG와 클립 중 씬에서 쓰는 것만 들어간다. `.aseprite` 원본과 임포터 코드는 포함되지 않는다. SpriteLab의 오른쪽 화살표에서 확인할 수 있다. [Mac 검증 기록](../../engine/tests/results/aseprite-import/README.md)
 
 ## 게임에서 재생하기
 
@@ -83,6 +99,23 @@ public override void OnAnimationEvent(ScriptAnimationEvent frame)
 
 `SetFloat`, `SetTrigger`도 같은 핸들에서 호출한다. `Play()`는 진입 상태부터 재생을 시작한다. 같은 컨트롤러를 연결한 여러 오브젝트는 각자 자신의 파라미터와 현재 프레임을 가진다. [AnimatorLab 샘플](../../samples/AnimatorLab) · [Mac 검증 화면](../../engine/tests/results/animator/README.md)
 
+
+## 선과 궤적
+
+[BarrageLab](../../samples/BarrageLab)에서 Play 후 **N**을 두 번 누르면 레이저 씬이 열린다. 가운데에서 회전하는 레이저는 경기장 벽에서 최대 세 번 반사되고, 시작점의 연노랑에서 끝의 분홍으로 색이 바뀐다. 24틱마다 발사되는 혜성은 뒤에 푸른 궤적을 남긴다. **Space**는 회전 정지·재개, **R**은 처음부터 다시 시작한다. [레이저 씬](../../samples/BarrageLab/Scenes/Laser.scene) · [Mac 실행 검증](../../engine/tests/results/lines-paths/README.md)
+
+| Add Component | Inspector에서 설정하는 값 |
+| --- | --- |
+| Line 2D | Width는 월드 단위 두께, Start color·End color는 선 길이를 따라 섞이는 `#RRGGBB` 색이다. Point·X·Y와 **+**·**×**·**Smooth/Corner** 버튼으로 점을 편집한다(아래). 점은 오브젝트의 로컬 좌표이며 이동·회전·스케일이 적용된다. |
+| Trail 2D | 오브젝트 중심이 게임 틱마다 Min step 이상 움직이면 점을 하나 기록하고, 각 점은 Time (s) 동안 Head color에서 Tail color로 바뀌며 투명해지고 가늘어진다. Max points(2–256)가 넘으면 가장 오래된 점부터 버린다. |
+
+선과 궤적은 Sprite Renderer가 없으면 Layer·Order로 그리는 순서를 정한다. 같은 오브젝트에 스프라이트가 있으면 스프라이트의 자리를 함께 쓰며, 궤적은 스프라이트 아래, 선은 위에 그린다. 꺾이는 점은 두께가 유지되도록 마이터로 잇고, 곡선은 구간마다 24개의 직선으로 나눠 그린다. 배포 게임과 Scene Play는 SDL3의 `SDL_RenderGeometry`로, 다른 OS의 Avalonia Scene 미리보기는 사각형마다 선형 그라데이션으로 같은 모양을 그린다.
+
+스크립트에서 `tick.Objects.SetLinePoints(id, points)`로 월드 좌표의 점 목록을 매 틱 바꿀 수 있다(레이저의 반사점). `TryGetLinePoints`는 그려지는 점(곡선은 나눈 점)을, `TryGetTrailPoints`는 궤적이 기록한 점을 오래된 순서로 월드 좌표에 담는다. 궤적은 게임 시간으로 기록하므로 같은 입력 기록을 재생하면 프레임 속도와 관계없이 같은 점이 남는다. 오브젝트를 비활성화하거나 풀에 돌려보내고 다시 빌려 오면 궤적이 지워진다.
+
+### Scene에서 점 편집하기
+
+Line 2D나 [Path Follower 2D](platformer-physics.md#곡선-경로를-따라가는-발판)가 있는 오브젝트 하나를 선택하면 Scene에 노란 경로와 점이 표시된다. 점을 끌면 옮겨지고(스냅을 켜면 16px 단위), 누른 점이 선택되어 금색으로 바뀐다. Inspector의 **+**(Add point)는 선택한 점과 다음 점 사이의 가운데(마지막 점이면 같은 방향으로 한 구간 더)에 점을 넣고, **×**(Delete point)는 선택한 점을 지운다(최소 2개). **Smooth**는 이웃 점 방향으로 접선 핸들을 만들고 **Corner**는 없앤다. 핸들 끝의 작은 사각형을 끌면 반대쪽 핸들이 대칭으로 움직여 곡선이 매끄럽게 이어진다. 점 끌기와 버튼 하나가 각각 실행 취소 한 단계이며 **Cmd+Z** 또는 **Ctrl+Z**로 되돌린다.
 
 ## 컴포넌트 속성 키프레임
 

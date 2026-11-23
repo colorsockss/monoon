@@ -1,0 +1,104 @@
+# IL call graph of System.Private.CoreLib 10.0.1 (System.Reflection IL reader, scratch tool): which System.Numerics APIs end in MultiplyAddEstimate
+== Vector2.Transform(Vector2,Matrix3x2)
+  Vector2.MultiplyAddEstimate(Vector2,Vector2,Vector2)
+    Vector128.MultiplyAddEstimate(Vector128`1,Vector128`1,Vector128`1)
+      Vector64.MultiplyAddEstimate(Vector64`1,Vector64`1,Vector64`1)
+        Single.MultiplyAddEstimate(Single,Single,Single)
+          Single.MultiplyAddEstimate(Single,Single,Single)
+      Vector64.MultiplyAddEstimate(Vector64`1,Vector64`1,Vector64`1)
+== Vector2.Transform(Vector2,Matrix4x4)
+    Vector4.MultiplyAddEstimate(Vector4,Vector4,Vector4)
+      Vector128.MultiplyAddEstimate(Vector128`1,Vector128`1,Vector128`1)
+        Vector64.MultiplyAddEstimate(Vector64`1,Vector64`1,Vector64`1)
+          Single.MultiplyAddEstimate(Single,Single,Single)
+        Vector64.MultiplyAddEstimate(Vector64`1,Vector64`1,Vector64`1)
+== Vector2.Transform(Vector2,Quaternion)
+          Vector128.MultiplyAddEstimate(Vector128`1,Vector128`1,Vector128`1)
+          Vector128.MultiplyAddEstimate(Vector128`1,Vector128`1,Vector128`1)
+          Vector128.MultiplyAddEstimate(Vector128`1,Vector128`1,Vector128`1)
+== Vector2.TransformNormal(Vector2,Matrix3x2)
+  Vector2.MultiplyAddEstimate(Vector2,Vector2,Vector2)
+    Vector128.MultiplyAddEstimate(Vector128`1,Vector128`1,Vector128`1)
+      Vector64.MultiplyAddEstimate(Vector64`1,Vector64`1,Vector64`1)
+        Single.MultiplyAddEstimate(Single,Single,Single)
+          Single.MultiplyAddEstimate(Single,Single,Single)
+      Vector64.MultiplyAddEstimate(Vector64`1,Vector64`1,Vector64`1)
+== Vector2.TransformNormal(Vector2,Matrix4x4)
+  Vector4.MultiplyAddEstimate(Vector4,Vector4,Vector4)
+    Vector128.MultiplyAddEstimate(Vector128`1,Vector128`1,Vector128`1)
+      Vector64.MultiplyAddEstimate(Vector64`1,Vector64`1,Vector64`1)
+        Single.MultiplyAddEstimate(Single,Single,Single)
+          Single.MultiplyAddEstimate(Single,Single,Single)
+      Vector64.MultiplyAddEstimate(Vector64`1,Vector64`1,Vector64`1)
+== Vector2.Lerp(Vector2,Vector2,Single)
+        ISimdVector`2.MultiplyAddEstimate(Vector128`1,Vector128`1,Vector128`1)
+          ISimdVector`2.MultiplyAddEstimate(Vector64`1,Vector64`1,Vector64`1)
+== Vector2.Lerp(Vector2,Vector2,Vector2)
+      ISimdVector`2.MultiplyAddEstimate(Vector128`1,Vector128`1,Vector128`1)
+        ISimdVector`2.MultiplyAddEstimate(Vector64`1,Vector64`1,Vector64`1)
+          INumberBase`1.MultiplyAddEstimate(Single,Single,Single)
+== Matrix3x2.op_Multiply(Matrix3x2,Matrix3x2)
+== Matrix3x2.op_Multiply(Matrix3x2,Single)
+== Matrix3x2.Invert(Matrix3x2,Matrix3x2&)
+
+# Brutal.Numerics 2026.10.2 / Brutal.Box2D 2026.10.2 / Brutal.Core 2026.10.4: MoNoon uses Brutal.Numerics only for float2 as a Box2D argument carrier; Brutal.Box2D has no such calls.
+
+## Engine.Core before: calls that reach MultiplyAddEstimate (FMA only where available) or vector-width APIs
+   4 Engine.Core.Affine2D.Bounds -> System.Numerics.Vector2.Transform
+   2 Engine.Core.Affine2D.Lerp -> System.MathF.FusedMultiplyAdd
+   1 Engine.Core.Affine2D.Lerp -> System.Numerics.Vector3.FusedMultiplyAdd
+   1 Engine.Core.Affine2D.Lerp -> System.Numerics.Vector4.FusedMultiplyAdd
+   2 Engine.Core.Affine2D.TransformNormal -> System.MathF.FusedMultiplyAdd
+   1 Engine.Core.CollisionGeometry+<>c__DisplayClass12_0.<ForObject>b__0 -> System.Numerics.Vector2.Transform
+   1 Engine.Core.CollisionGeometry.ForObject -> System.Numerics.Vector2.Transform
+   1 Engine.Core.CollisionGeometry.Tile -> System.Numerics.Vector2.Transform
+   1 Engine.Core.ComponentCurves.Sample -> System.Numerics.Vector3.Lerp
+   1 Engine.Core.CurvePath.At -> System.Numerics.Vector2.Lerp
+   1 Engine.Core.LineRenderer.CopyTo -> System.Numerics.Vector2.Transform
+   1 Engine.Core.LineRenderer.Draw -> System.Numerics.Vector2.Transform
+   2 Engine.Core.MotionPath.At -> System.Numerics.Vector2.Lerp
+   2 Engine.Core.PathMotion.Advance -> System.Numerics.Vector2.Transform
+   2 Engine.Core.PositionTween.Advance -> System.Numerics.Vector2.Transform
+   1 Engine.Core.SceneDocument.Reparent -> System.Numerics.Vector2.TransformNormal
+   1 Engine.Core.SceneGame.AddShape -> System.Numerics.Vector2.TransformNormal
+   1 Engine.Core.SceneGame.AudioCenter -> System.Numerics.Vector2.Transform
+   1 Engine.Core.SceneGame.Capture -> System.Numerics.Vector2.Transform
+   1 Engine.Core.SceneGame.Center -> System.Numerics.Vector2.Transform
+   1 Engine.Core.SceneGame.CommitChanges -> System.Numerics.Vector2.Transform
+   1 Engine.Core.SceneGame.CreateJoint -> System.Numerics.Vector2.Transform
+   1 Engine.Core.SceneGame.DrawCamera -> System.Numerics.Vector2.Transform
+   2 Engine.Core.SceneGame.DrawDiagnostics -> System.Numerics.Vector2.Transform
+   1 Engine.Core.SceneGame.EmitterOrigin -> System.Numerics.Vector2.Transform
+   1 Engine.Core.SceneGame.Hit -> System.Numerics.Vector2.Transform
+   1 Engine.Core.SceneGame.Instantiate -> System.Numerics.Vector2.Transform
+   1 Engine.Core.SceneGame.Local -> System.Numerics.Vector2.TransformNormal
+   1 Engine.Core.SceneGame.PoseGroup -> System.Numerics.Vector2.TransformNormal
+   1 Engine.Core.SceneGame.Reuse -> System.Numerics.Vector2.Transform
+   1 Engine.Core.SceneGame.Sample -> System.Numerics.Vector2.Lerp
+   1 Engine.Core.SceneGame.SetLinePoints -> System.Numerics.Vector2.Transform
+   1 Engine.Core.SceneGame.StepCameras -> System.Numerics.Vector2.Lerp
+   1 Engine.Core.SceneGame.StepCameras -> System.Numerics.Vector2.Transform
+   2 Engine.Core.SceneGame.StepRigidBodies -> System.Numerics.Vector2.Transform
+   1 Engine.Core.SceneGame.TrailCenter -> System.Numerics.Vector2.Transform
+   1 Engine.Core.SceneGame.TryDebugRay -> System.Numerics.Vector2.Transform
+   1 Engine.Core.SceneGame.TryGetFeet -> System.Numerics.Vector2.Transform
+   1 Engine.Core.SceneGame.UpdateTileWorlds -> System.Numerics.Vector2.Transform
+   1 Engine.Core.SceneObject.LocalToWorld -> System.Numerics.Vector2.Transform
+   1 Engine.Core.SceneObject.SetOrigin -> System.Numerics.Vector2.TransformNormal
+   1 Engine.Core.SceneObject.WorldToLocal -> System.Numerics.Vector2.Transform
+   1 Engine.Core.SceneObject.get_LocalMatrix -> System.Numerics.Vector2.TransformNormal
+   1 Engine.Core.ScreenEffects+Ramp.At -> System.Numerics.Vector4.Lerp
+   1 Engine.Core.ScriptTick.LocalToWorld -> System.Numerics.Vector2.Transform
+   1 Engine.Core.ScriptTick.WorldToLocal -> System.Numerics.Vector2.Transform
+   1 Engine.Core.SelectionTransform.Apply -> System.Numerics.Vector2.TransformNormal
+   4 Engine.Core.SkeletonPose.Step -> System.Numerics.Vector2.Transform
+   2 Engine.Core.SkeletonPose.Step -> System.Numerics.Vector2.TransformNormal
+   1 Engine.Core.SkeletonPose.TryGet -> System.Numerics.Vector2.Transform
+   1 Engine.Core.SpritePool2D.Draw -> System.Numerics.Vector2.Lerp
+   1 Engine.Core.TileCollision+<>c__DisplayClass12_0.<WorldShape>g__Vertex|0 -> System.Numerics.Vector2.Transform
+   1 Engine.Core.WorldDrawOrder.Sample -> System.Numerics.Vector2.Transform
+## Engine.Core after: calls that reach MultiplyAddEstimate (FMA only where available) or vector-width APIs
+   2 Engine.Core.Affine2D.Lerp -> System.MathF.FusedMultiplyAdd
+   1 Engine.Core.Affine2D.Lerp -> System.Numerics.Vector3.FusedMultiplyAdd
+   1 Engine.Core.Affine2D.Lerp -> System.Numerics.Vector4.FusedMultiplyAdd
+   2 Engine.Core.Affine2D.TransformNormal -> System.MathF.FusedMultiplyAdd

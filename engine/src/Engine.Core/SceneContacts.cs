@@ -62,9 +62,20 @@ public sealed partial class SceneGame
         }
     }
 
+    // Sorted by (Left, Id) across ticks: an insertion sort is linear while bodies keep their order.
+    private static readonly Comparison<Body> sweepOrder = static (a,b) => {
+        int order = a.ContactBounds.Left.CompareTo(b.ContactBounds.Left);
+        return order == 0 ? a.Id.CompareTo(b.Id) : order;
+    };
+    private int contactTick;
+    // Rows of the sweep (by Y) as ranks in ascending order: rowStart[r]..rowStart[r+1] in rowItems.
+    private int[] sweepRow0 = [], sweepRow1 = [], rowStart = [], rowFill = [], rowItems = [];
+    private readonly List<int> sweepCandidates = [];
+
     private void CollectContacts()
     {
-        contactSweep.Clear();
+        contactTick++;
+        int added = 0;
         foreach (var body in colliders)
         {
             if (!body.Active || body.Spawning || body.Collider == null) continue;
@@ -75,30 +86,46 @@ public sealed partial class SceneGame
                     bounds = RectangleF.Union(bounds, body.ShapeAt(body.At(t),body.AngleAt(t)).Bounds);
             bounds.Inflate(.00001f,.00001f); // Match the narrow phase's resting contact tolerance.
             body.ContactBounds = bounds;
-            contactSweep.Add(body);
+            body.SweepTick = contactTick;
+            if (!body.InSweep) { body.InSweep = true; contactSweep.Add(body); added++; }
         }
-        contactSweep.Sort(static (a,b) => {
-            int order = a.ContactBounds.Left.CompareTo(b.ContactBounds.Left);
-            return order == 0 ? a.Id.CompareTo(b.Id) : order;
-        });
+        int kept = 0;
         for (int i = 0; i < contactSweep.Count; i++)
         {
-            var a = contactSweep[i];
+            var body = contactSweep[i];
+            if (body.SweepTick == contactTick) contactSweep[kept++] = body;
+            else body.InSweep = false;
+        }
+        contactSweep.RemoveRange(kept, contactSweep.Count - kept);
+        SortSweep();
+
+        // Pairs are visited in (rank a, rank b) order like a plain sweep over Left, so nextContacts and crossings get the
+        // same insertion order. Rows by Y skip bodies that overlap in X only (a column of equal Left was O(n²)).
+        var sweep = System.Runtime.InteropServices.CollectionsMarshal.AsSpan(contactSweep);
+        bool rows = BuildRows(sweep);
+        for (int i = 0; i < sweep.Length; i++)
+        {
+            var a = sweep[i];
             var ac = a.ColliderConfig!;
-            for (int j = i + 1; j < contactSweep.Count; j++)
+            if (!rows || sweepRow1[i] - sweepRow0[i] > 3)
+                for (int j = i + 1; j < sweep.Length && sweep[j].ContactBounds.Left <= a.ContactBounds.Right; j++)
+                    ContactCandidate(a,ac,sweep[j]);
+            else
             {
-                var b = contactSweep[j];
-                if (b.ContactBounds.Left > a.ContactBounds.Right) break;
-                var bc = b.ColliderConfig!;
-                if (!CollisionGeometry.Pair(ac,bc) ||
-                    !BoundsMeet(a.ContactBounds,b.ContactBounds)) continue;
-                bool trigger = ac.IsTrigger || bc.IsTrigger;
-                if (!trigger && a.MotionOwner != null && a.MotionOwner == b.MotionOwner) continue;
-                var pair = ContactPair.Create(a,b,trigger);
-                if (CollisionGeometry.Cast(a.EndShape,Vector2.Zero,b.EndShape,!trigger,false) != null)
-                    nextContacts.Add(pair);
-                else if (!contacts.Contains(pair) && (a.Moved || b.Moved) && Crossed(a,b,trigger))
-                    crossings.Add(pair);
+                sweepCandidates.Clear();
+                for (int row = sweepRow0[i]; row <= sweepRow1[i]; row++)
+                {
+                    int from = rowStart[row], to = rowStart[row + 1];
+                    int first = Array.BinarySearch(rowItems, from, to - from, i + 1);
+                    for (int k = first < 0 ? ~first : first; k < to; k++)
+                    {
+                        int j = rowItems[k];
+                        if (sweep[j].ContactBounds.Left > a.ContactBounds.Right) break;
+                        if (row == Math.Max(sweepRow0[i], sweepRow0[j])) sweepCandidates.Add(j); // Its first shared row only.
+                    }
+                }
+                if (sweepRow1[i] != sweepRow0[i]) sweepCandidates.Sort();
+                foreach (int j in sweepCandidates) ContactCandidate(a,ac,sweep[j]);
             }
             // Adjacent solid cells form one contact with their tilemap object.
             if (tileLayers.Length == 0) continue;
@@ -112,6 +139,69 @@ public sealed partial class SceneGame
                     crossings.Add(pair);
             }
         }
+    }
+
+    private void ContactCandidate(Body a, Collider2DComponent ac, Body b)
+    {
+        var bc = b.ColliderConfig!;
+        if (!CollisionGeometry.Pair(ac,bc) || !BoundsMeet(a.ContactBounds,b.ContactBounds)) return;
+        bool trigger = ac.IsTrigger || bc.IsTrigger;
+        if (!trigger && a.MotionOwner != null && a.MotionOwner == b.MotionOwner) return;
+        var pair = ContactPair.Create(a,b,trigger);
+        if (CollisionGeometry.Cast(a.EndShape,Vector2.Zero,b.EndShape,!trigger,false) != null)
+            nextContacts.Add(pair);
+        else if (!contacts.Contains(pair) && (a.Moved || b.Moved) && Crossed(a,b,trigger))
+            crossings.Add(pair);
+    }
+
+    private void SortSweep()
+    {
+        var sweep = System.Runtime.InteropServices.CollectionsMarshal.AsSpan(contactSweep);
+        // The order is total (Ids are unique), so this gives exactly what List.Sort gives; a reshuffle falls back to it.
+        long budget = 4L * sweep.Length + 64;
+        for (int i = 1; i < sweep.Length; i++)
+        {
+            var body = sweep[i];
+            int j = i - 1;
+            for (; j >= 0 && sweepOrder(sweep[j],body) > 0; j--) { sweep[j + 1] = sweep[j]; budget--; }
+            sweep[j + 1] = body;
+            if (budget < 0) { contactSweep.Sort(sweepOrder); return; }
+        }
+    }
+
+    // Row height is the mean body height, so a body covers about two rows. False: use the plain sweep.
+    private bool BuildRows(ReadOnlySpan<Body> sweep)
+    {
+        int n = sweep.Length;
+        if (n < 64) return false;
+        float top = float.PositiveInfinity, bottom = float.NegativeInfinity;
+        double heights = 0;
+        foreach (var b in sweep)
+        {
+            top = Math.Min(top, b.ContactBounds.Top);
+            bottom = Math.Max(bottom, b.ContactBounds.Bottom);
+            if (!(b.ContactBounds.Height >= 0)) return false;
+            heights += b.ContactBounds.Height;
+        }
+        double span = (double)bottom - top, height = Math.Max(heights / n, span / (4.0 * n));
+        if (!double.IsFinite(span) || !(span > 0) || !(height > 0)) return false;
+        int count = (int)Math.Min(4L * n, (long)(span / height)) + 1;
+        if (sweepRow0.Length < n) { sweepRow0 = new int[n * 2]; sweepRow1 = new int[n * 2]; }
+        if (rowStart.Length < count + 1) { rowStart = new int[count * 2 + 1]; rowFill = new int[count * 2 + 1]; }
+        // Monotonic in y, so two intervals that meet (touching included) share at least one row.
+        int Row(float y) => (int)Math.Min(count - 1, ((double)y - top) / height);
+        Array.Clear(rowStart, 0, count + 1);
+        for (int i = 0; i < n; i++)
+        {
+            int r0 = sweepRow0[i] = Row(sweep[i].ContactBounds.Top), r1 = sweepRow1[i] = Row(sweep[i].ContactBounds.Bottom);
+            for (int r = r0; r <= r1; r++) rowStart[r + 1]++;
+        }
+        for (int r = 0; r < count; r++) rowStart[r + 1] += rowStart[r];
+        if (rowItems.Length < rowStart[count]) rowItems = new int[rowStart[count] * 2];
+        Array.Copy(rowStart, rowFill, count);
+        for (int i = 0; i < n; i++)
+            for (int r = sweepRow0[i]; r <= sweepRow1[i]; r++) rowItems[rowFill[r]++] = i;
+        return true;
     }
 
     private static bool Crossed(Body a, Body b, bool trigger, Shape2D? tile = null)

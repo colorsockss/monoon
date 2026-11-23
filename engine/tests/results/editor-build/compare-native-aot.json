@@ -1,0 +1,26 @@
+{
+  "label": "native-aot",
+  "build_ids": [
+    "f8c9e51e79a74efabf3699cea1c810d7",
+    "507fa65a601b45f1b94d3ea743575856"
+  ],
+  "entries": 232,
+  "identical": 218,
+  "explained": {
+    "NativeAOT/KeyRoom-osx-arm64.dmg": "zip and dmg containers store file times; their expanded contents are compared file by file under package:",
+    "NativeAOT/KeyRoom-osx-arm64.zip": "zip and dmg containers store file times; their expanded contents are compared file by file under package:",
+    "NativeAOT/KeyRoom.app/Contents/MacOS/MoNoonBuild": "the receipt's buildId is a new random ID per build (it names the symbol folder); Native AOT also records the linker UUID; every other receipt line must match",
+    "NativeAOT/KeyRoom.app/Contents/MacOS/MoNoonPlayer": "the main executable's embedded ad-hoc signature covers the seal (Native AOT: and the linker UUID); the executable without its signature (and LC_UUID) must match",
+    "NativeAOT/KeyRoom.app/Contents/_CodeSignature/CodeResources": "the bundle seal hashes the receipt; every other sealed file hash must match",
+    "Symbols/KeyRoom/osx-arm64/native-aot/<buildId>/MoNoonBuild": "the receipt's buildId is a new random ID per build (it names the symbol folder); Native AOT also records the linker UUID; every other receipt line must match",
+    "Symbols/KeyRoom/osx-arm64/native-aot/<buildId>/MoNoonPlayer.dSYM/Contents/Resources/DWARF/MoNoonPlayer": "the dSYM carries the executable's linker UUID; the debug information without LC_UUID must match",
+    "Symbols/KeyRoom/osx-arm64/native-aot/<buildId>/MoNoonPlayer.dSYM/Contents/Resources/Relocations/aarch64/MoNoonPlayer.yml": "the dSYM relocation map names the temporary link folder; every other line must match",
+    "package:NativeAOT/KeyRoom-osx-arm64.dmg/KeyRoom.app/Contents/MacOS/MoNoonBuild": "the receipt's buildId is a new random ID per build (it names the symbol folder); Native AOT also records the linker UUID; every other receipt line must match",
+    "package:NativeAOT/KeyRoom-osx-arm64.dmg/KeyRoom.app/Contents/MacOS/MoNoonPlayer": "the main executable's embedded ad-hoc signature covers the seal (Native AOT: and the linker UUID); the executable without its signature (and LC_UUID) must match",
+    "package:NativeAOT/KeyRoom-osx-arm64.dmg/KeyRoom.app/Contents/_CodeSignature/CodeResources": "the bundle seal hashes the receipt; every other sealed file hash must match",
+    "package:NativeAOT/KeyRoom-osx-arm64.zip/KeyRoom.app/Contents/MacOS/MoNoonBuild": "the receipt's buildId is a new random ID per build (it names the symbol folder); Native AOT also records the linker UUID; every other receipt line must match",
+    "package:NativeAOT/KeyRoom-osx-arm64.zip/KeyRoom.app/Contents/MacOS/MoNoonPlayer": "the main executable's embedded ad-hoc signature covers the seal (Native AOT: and the linker UUID); the executable without its signature (and LC_UUID) must match",
+    "package:NativeAOT/KeyRoom-osx-arm64.zip/KeyRoom.app/Contents/_CodeSignature/CodeResources": "the bundle seal hashes the receipt; every other sealed file hash must match"
+  },
+  "unexplained": []
+}

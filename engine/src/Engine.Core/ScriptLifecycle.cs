@@ -11,6 +11,7 @@ public sealed partial class SceneGame
     {
         if (change == LifeEvent.Disable && capture is {} held && (held.Target == body || held.Lens == body))
             CancelWorldPointer();
+        if (change == LifeEvent.Disable) StopRoutines(body);
         if (body.Behaviours.Length != 0) notifications.Enqueue((body, change));
     }
 
@@ -98,11 +99,14 @@ public sealed partial class SceneGame
         {
             foreach (var stream in ownedWorlds) stream.Dispose();
             ownedWorlds.Clear();
+            DisposePhysics();
             foreach (var body in byId.Values)
                 foreach (var script in body.Behaviours)
                     if (script.Endpoint?.World == this) script.Endpoint = null;
             if (State.LiveWorld == this) State.LiveWorld = null;
             notifications.Clear();
+            foreach (var routine in routines) routine.Stop();
+            routines.Clear();
             if (ownsScripts) scripts?.Dispose();
             if (ownsAudio) Mixer.Dispose();
         }

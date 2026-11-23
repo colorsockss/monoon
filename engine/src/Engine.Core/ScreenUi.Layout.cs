@@ -45,7 +45,7 @@ public sealed partial class ScreenUi
     private static bool Horizontal(Node n)=>n.Layout?.Axis=="Horizontal";
     private static float Extent(Node n)=>Horizontal(n)?n.Box.Width:n.Box.Height;
     private static float Limit(Node n)=>Math.Max(0,n.Content-Extent(n));
-    private float Height(Node n)=>Math.Max(n.Object.Height,n.Label==null&&n.Field==null&&n.Control is not UiDropdownComponent?0:Math.Max(0,n.Label?.InsetY??3)+(n.Label?.Size??16)*Preferences.TextScale*1.4f*Math.Max(1,n.Lines.Length));
+    private float Height(Node n)=>Math.Max(n.Object.Height,n.Label==null&&n.Field==null&&n.Control is not UiDropdownComponent?0:Math.Max(0,n.Label?.InsetY??3)+(n.Rich?.Height??(n.Label?.Size??16)*Preferences.TextScale*1.4f*Math.Max(1,n.Lines.Length)));
     private static float PinnedSize(float parent, float measured, float? start, float? end) =>
         start is float near && end is float far ? Math.Max(0, parent - near - far) : measured;
 

@@ -1,0 +1,7 @@
+rumble device="MoNoon rumble verification pad" low=65535 high=32768 ms=400 result=ok
+rumble device="MoNoon rumble verification pad" low=65535 high=32768 ms=400 result=ok
+rumble device="MoNoon rumble verification pad" low=19660 high=58982 ms=200 result=ok
+rumble device="MoNoon rumble verification pad" low=65535 high=32768 ms=400 result=ok
+cursor file=Cursor.png size=17x17 hot=8,8 rgba-sha256=c7c05cfd34f823bea347e2fea8add0d8f2dc240c5380746c71ab133c6fc7bd81
+cursor system
+rumble device="MoNoon rumble verification pad" low=19660 high=58982 ms=200 result=ok

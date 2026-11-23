@@ -1,0 +1,12 @@
+PASS editor exited with 0
+PASS v1 counted 30 ticks with one running routine
+PASS saving the script replaced the live behaviour with one from a new assembly
+PASS Ticks kept (30 → 38) and Version kept its live value
+PASS the next tick ran the new code (+1000)
+PASS the new field has its default; Speed (float → int) was reset
+PASS the type change is a Console warning
+PASS KeyRoom's own behaviours carried every field ([])
+PASS the running routine was stopped with a Console note
+PASS the compile error is a clickable Console row at ReloadProbe.cs:11
+PASS Play kept running the previous (v2) code
+PASS script reload in a36-reload3

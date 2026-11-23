@@ -1,0 +1,11 @@
+PASS ChestTests.InteractSpawnsOneCoin
+PASS ChestTests.WalkingIntoTheCoinCollectsIt
+PASS ChestTests.ChestNeedsToBeWithinReach
+PASS DoorTests.ClosedDoorStopsPlayer
+PASS DoorTests.KeyOpensDoorThenHintAfterHalfSecond
+PASS DoorTests.PauseAndStepDelayTheHint
+PASS DoorTests.RemovingTheDoorCancelsTheHint
+PASS DoorTests.RecordedWalkTakesTheKey
+PASS DoorTests.OpenDoorLeadsToSecondRoom
+9 passed, 0 failed.
+exit=0

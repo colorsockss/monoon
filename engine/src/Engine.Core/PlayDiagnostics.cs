@@ -58,7 +58,7 @@ public sealed partial class SceneGame
         if (Diagnostics?.Queries!=true || !byId.TryGetValue(origin,out var b) || !b.Active) return false;
         var lens = CameraAt(screen, 1);
         if(lens==null)return false;
-        var from=Vector2.Transform(b.Size*.5f,b.MatrixAt(b.Position));
+        var from=Affine2D.Transform(b.Size*.5f,b.MatrixAt(b.Position));
         var delta=Sample(lens,1).ScreenToWorld(screen)-from;
         if(delta.LengthSquared()<1e-8f)return false;
         hit=Raycast(from,delta,delta.Length(),new(IncludeTriggers:true,Ignore:origin));return true;
@@ -85,9 +85,10 @@ public sealed partial class SceneGame
                 if (b.Active && b.WalkPreview.Count>1)
                     for(int i=1;i<b.WalkPreview.Count;i++) Line(b.WalkPreview[i-1].Feet-Vector2.UnitY*2,b.WalkPreview[i].Feet-Vector2.UnitY*2,Color.CornflowerBlue,2);
             foreach (var b in joints)
-                if (b.Active && b.Joint?.Connected is Guid id && byId.TryGetValue(id, out var other) && other.Active)
-                    Line(Vector2.Transform(b.Size * .5f, b.MatrixAt(b.At(fraction), b.AngleAt(fraction))),
-                        Vector2.Transform(other.Size * .5f, other.MatrixAt(other.At(fraction), other.AngleAt(fraction))), Color.DeepSkyBlue);
+                foreach (var joint in b.Joints)
+                if (b.Active && joint.Connected is Guid id && byId.TryGetValue(id, out var other) && other.Active)
+                    Line(Affine2D.Transform(b.Size * .5f, b.MatrixAt(b.At(fraction), b.AngleAt(fraction))),
+                        Affine2D.Transform(other.Size * .5f, other.MatrixAt(other.At(fraction), other.AngleAt(fraction))), Color.DeepSkyBlue);
             foreach(var b in tileLayers){
                 if(!b.Active || b.Palette==null)continue;
                 var m=b.MatrixAt(b.At(fraction));var map=b.Map!;

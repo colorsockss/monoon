@@ -81,10 +81,10 @@ internal sealed class SkeletonPose
         if (owner.MotionOwner?.Support is {} support)
         {
             var oldPose=support.MatrixAt(support.At(0),support.StartAngle);
-            var carried=Vector2.Transform(Vector2.Transform(owner.At(0),Affine2D.Inverse(oldPose)),support.MatrixAt(support.Position));
+            var carried=Affine2D.Transform(Affine2D.Transform(owner.At(0),Affine2D.Inverse(oldPose)),support.MatrixAt(support.Position));
             displacement-=carried-owner.At(0);
         }
-        float travel=Vector2.TransformNormal(displacement,inverse).X;
+        float travel=Affine2D.TransformNormal(displacement,inverse).X;
         phase+=config.Clock==SkeletonClock.Travel ? travel/config.Stride : dt/config.Period;
         phase-=Math.Floor(phase);
         float want=config.Clock==SkeletonClock.Time || Math.Abs(travel)>.0001f ? 1 : 0;
@@ -99,11 +99,11 @@ internal sealed class SkeletonPose
             // Stance cancels the body's travel. The swing catches up by exactly one stride.
             float offset=config.Stride*(.25f-p+s*s*(3-2*s));
             float lift=ik.Lift*MathF.Sin(MathF.PI*s)*swingWeight;
-            var home=Vector2.Transform(new(leg.HomeX+offset,leg.HomeY),matrix);
+            var home=Affine2D.Transform(new(leg.HomeX+offset,leg.HomeY),matrix);
             var hit=game.Raycast(home-new Vector2(0,ik.Probe),Vector2.UnitY,2*ik.Probe,owner.FootFilter);
             if (hit is not {} surface || surface.Normal.Y>=-.05f) continue;
             var contact=home+new Vector2(0,surface.Distance-ik.Probe);
-            var target=Vector2.Transform(contact+surface.Normal*lift,inverse);
+            var target=Affine2D.Transform(contact+surface.Normal*lift,inverse);
             var hip=pose[upper].Translation;
             var delta=target-hip;
             float a=rig.Bones[upper].Length,b=rig.Bones[lower].Length;
@@ -116,7 +116,7 @@ internal sealed class SkeletonPose
             float shinAngle=MathF.Atan2(shin.Y,shin.X);
             angles[upper]=thighAngle-ParentAngle(upper);
             angles[lower]=shinAngle-thighAngle;
-            var tangent=Vector2.TransformNormal(new(-surface.Normal.Y,surface.Normal.X),inverse);
+            var tangent=Affine2D.TransformNormal(new(-surface.Normal.Y,surface.Normal.X),inverse);
             angles[foot]=MathF.Atan2(tangent.Y,tangent.X)-shinAngle;
             // Rebuild descendants including attachments and the bases of any later chains.
             for (int i=upper;i<angles.Length;i++) Forward(i,angles[i],pose);
@@ -130,7 +130,7 @@ internal sealed class SkeletonPose
         if (indices.TryGetValue(name,out int i))
         {
             var m=pose[i]*world;
-            result=new(m.Translation,Vector2.Transform(new(rig.Bones[i].Length,0),m),ground[i],planted[i]);
+            result=new(m.Translation,Affine2D.Transform(new(rig.Bones[i].Length,0),m),ground[i],planted[i]);
             return true;
         }
         result=default;return false;

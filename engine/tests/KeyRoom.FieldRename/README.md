@@ -19,4 +19,4 @@ python3 "$qa/verify.py" play "$work/builds/KeyRoom.app/Contents/MacOS/MoNoonPlay
 python3 "$qa/verify.py" play "$work/builds/NativeAOT/KeyRoom.app/Contents/MacOS/MoNoonPlayer" "$work/native-aot"
 ```
 
-Windows와 Linux에서도 같은 준비·검사 순서로 해당 OS의 패키지 에디터와 플레이어를 실행한다. 입력 리플레이는 시작 방에서 F3으로 비교 씬에 들어간 뒤 오른쪽 방향을 15틱 유지한다. 사본의 관찰 스크립트는 누른 순간과 놓은 순간의 두 월드 X좌표를 읽는다. [검증 코드](verify.py) · [에디터 검사](StartupHook.cs)
+Windows에서도 같은 준비·검사 순서로 패키지 에디터와 플레이어를 실행한다. Linux에서는 플레이어만 실행한다(Linux 에디터는 2026-11-23부터 지원하지 않는다). 입력 리플레이는 시작 방에서 F3으로 비교 씬에 들어간 뒤 오른쪽 방향을 15틱 유지한다. 사본의 관찰 스크립트는 누른 순간과 놓은 순간의 두 월드 X좌표를 읽는다. [검증 코드](verify.py) · [에디터 검사](StartupHook.cs)

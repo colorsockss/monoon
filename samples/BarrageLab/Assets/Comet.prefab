@@ -1,0 +1,24 @@
+schemaVersion: 30
+objects:
+- id: 8a0ac5bd-1c40-43a6-96fa-daf47d8a566a
+  name: Comet
+  groups:
+  - 혜성
+  width: 8
+  height: 8
+  components:
+  - type: spriteRenderer
+    order: 2
+    assetId: 8ab98407-072a-5424-abb4-50f74c65bb21
+    asset: Assets/Pellet.png
+    tint: "#E6FDFF"
+  - type: trail2D
+    time: 0.45
+    width: 7
+    startColor: "#BDF6FF"
+    endColor: "#3B5BFF"
+    maxPoints: 40
+    minStep: 1.5
+    order: 1
+  - type: script
+    script: Comet

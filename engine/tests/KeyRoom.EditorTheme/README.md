@@ -22,4 +22,4 @@ python3 "$qa/editor.py" editor/MoNoon.app/Contents/MacOS/MoNoon samples/KeyRoom 
 
 결과 폴더에는 `main-1280.png`, `main-1920.png`, `main-1280-long-name.png`, `inspector-*.png`, 창별 PNG, `profiler-1280.png`, 측정값 `result.json`이 남는다. Scene 뷰는 SDL 네이티브 뷰라서 `RenderTargetBitmap` 캡처에서는 비어 있다. [Mac 결과](../results/editor-theme/README.md)
 
-Windows·Linux 패키지 에디터(`editor/MoNoon.exe`·`editor/MoNoon`)에서도 같은 명령으로 실행한다. 느린 환경에서는 `MONOON_QA_SLOW`(기본 1)로 대기·제한 시간을 늘린다. [x64 게스트 결과](../results/editor-ui-x64/README.md)
+Windows 패키지 에디터(`editor/MoNoon.exe`)에서도 같은 명령으로 실행한다(Linux 에디터는 2026-11-23부터 지원하지 않는다). 느린 환경에서는 `MONOON_QA_SLOW`(기본 1)로 대기·제한 시간을 늘린다. [x64 게스트 결과](../results/editor-ui-x64/README.md)

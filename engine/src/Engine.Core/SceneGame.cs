@@ -23,6 +23,9 @@ public sealed partial class SceneGame : IGameObjects, IGame2D, IGameCameras, IDi
         public readonly CutsceneSequence? Sequence = obj.GetComponent<CutsceneDirectorComponent>()?.Sequence is Guid sequence
             ? assets?.LoadSequence(project!, sequence) ?? throw new InvalidDataException($"{obj.Name}: a cutscene requires a project.") : null;
         public readonly PositionTween? Tween = obj.GetComponent<PositionTween2DComponent>() is {} tween ? new(tween) : null;
+        public readonly PathMotion? Follower = obj.GetComponent<PathFollower2DComponent>() is {} follower ? new(follower) : null;
+        public readonly LineRenderer? Line = obj.GetComponent<Line2DComponent>() is {} line ? new(line) : null;
+        public readonly TrailRenderer? Trail = obj.GetComponent<Trail2DComponent>() is {} trail ? new(trail) : null;
         public readonly SkeletonAnimator2DComponent? SkeletonConfig=obj.GetComponent<SkeletonAnimator2DComponent>();
         public readonly SkeletonPose? Skeleton=obj.GetComponent<SkeletonAnimator2DComponent>()?.Rig is Guid rig
             ? new(assets?.LoadRig(project!,rig) ?? throw new InvalidDataException($"{obj.Name}: rig requires a project.")) : null;
@@ -36,6 +39,11 @@ public sealed partial class SceneGame : IGameObjects, IGame2D, IGameCameras, IDi
         public TileWorld? Stream;
         public Tilemap2DComponent? Map = obj.GetComponent<Tilemap2DComponent>();
         public TilePalette? Palette;
+        // Tile query shapes in world space (ScenePhysics.TileShape) and the pose, layout and cell size they were built for.
+        public Dictionary<Point,(int Tile, Shape2D? Shape)>? TileShapes;
+        public Matrix3x2 TileShapePose;
+        public string? TileShapeLayout;
+        public TileSize? TileShapeSize;
         public List<(GridNavigation Grid, System.Drawing.Point Origin)>? Grids;
         public string? Sound;
         public readonly AudioSourceComponent? AudioSource=obj.GetComponent<AudioSourceComponent>();
@@ -60,12 +68,23 @@ public sealed partial class SceneGame : IGameObjects, IGame2D, IGameCameras, IDi
         public long ContactRevision;
         public Shape2D EndShape;
         public RectangleF ContactBounds;
+        public int SweepTick; // SceneContacts.cs: the contact sweep keeps its order across ticks.
+        public bool InSweep;
         public bool Moved => translations.Count != 0 || StartAngle != Angle;
         public Collider2DComponent? Collider => ColliderEnabled ? ColliderConfig : null;
         private Shape2D geometry = CollisionGeometry.ForObject(obj);
         public readonly Rigidbody2DComponent? Rigid = obj.GetComponent<Rigidbody2DComponent>();
         public readonly CharacterMotor2DComponent? Motor = obj.GetComponent<CharacterMotor2DComponent>();
-        public readonly DistanceJoint2DComponent? Joint = obj.GetComponent<DistanceJoint2DComponent>();
+        public readonly Joint2DComponent[] Joints = obj.Components.OfType<Joint2DComponent>().ToArray();
+        // Box2D state (ScenePhysicsWorld.cs): the body this object owns, its exact shape inputs and last synced pose.
+        public Brutal.Box2DApi.B2Body Physics;
+        public Brutal.Box2DApi.B2Joint?[]? PhysicsJoints;
+        public bool PhysicsEnabled;
+        public ShapeKey PhysicsKey;
+        public List<(Body Member, bool Solid, int Pose)>? PhysicsMembers;
+        public Vector2 PhysicsPosition;
+        public float PhysicsAngle;
+        public int PoseRevision;
         public IReadOnlyList<WalkPoint> WalkPreview=[];
         public Body? MotionOwner, Support;
         public Vector2 GroundNormal = -Vector2.UnitY;
@@ -77,7 +96,7 @@ public sealed partial class SceneGame : IGameObjects, IGame2D, IGameCameras, IDi
         public float StartAngle;
         public float? WalkSpeed;
         public Vector2 Velocity;
-        public float Spin, InvMass, InvInertia, MinGroundCos;
+        public float Spin, InvMass, MinGroundCos;
         public Shape2D ShapeAt(Vector2 origin) => ShapeAt(origin, Angle);
         public Shape2D ShapeAt(Vector2 origin, float angle) => angle == 0 ? geometry.Translated(origin) :
             CollisionGeometry.ForObject(Source, MatrixAt(Vector2.Zero, angle)).Translated(origin);
@@ -93,11 +112,7 @@ public sealed partial class SceneGame : IGameObjects, IGame2D, IGameCameras, IDi
             Position = matrix.Translation;
             Basis = angle == 0 ? matrix : matrix * Matrix3x2.CreateRotation(-angle);
             geometry = CollisionGeometry.ForObject(Source, Basis);
-            if (Rigid is { FreezeRotation: false } && Motor == null && InvMass > 0)
-            {
-                var bounds = Affine2D.Bounds(new(0, 0, Size.X, Size.Y), matrix);
-                InvInertia = 12 * InvMass / (bounds.Width * bounds.Width + bounds.Height * bounds.Height);
-            }
+            PoseRevision++;
             BeginStep();
             QueryGrid?.Update(ColliderOrdinal);
             RenderGrid?.Mark(RenderOrdinal);
@@ -225,6 +240,8 @@ public sealed partial class SceneGame : IGameObjects, IGame2D, IGameCameras, IDi
         settings = scene.Settings;
         State.UseInput(settings.Input);
         assets = manifest ?? (scene.ProjectDirectory == null ? null : ProjectAssets.Scan(scene.ProjectDirectory));
+        var projectAssets = assets;
+        State.AssetPath = id => projectAssets?.PathFor(id) is {} relative && scene.ProjectDirectory is {} folder ? Path.Combine(folder, relative) : null;
         cameraId = scene.Camera?.Id;
         cameraMissing = cameraId == null && !additive && !scene.Cameras.Any() && !scene.IsUiOnly;
         if (staged) return; // The caller builds the bodies over several updates and disposes a partial world.
@@ -275,9 +292,6 @@ public sealed partial class SceneGame : IGameObjects, IGame2D, IGameCameras, IDi
             body.Velocity = rigid.BodyType == BodyType2D.Static ? default : new(rigid.VelocityX, rigid.VelocityY);
             body.Spin = rigid.BodyType == BodyType2D.Static || rigid.FreezeRotation || body.Motor != null ? 0 : float.DegreesToRadians(rigid.AngularVelocity);
             body.InvMass = rigid.BodyType == BodyType2D.Dynamic ? 1 / rigid.Mass : 0;
-            var bounds = Affine2D.Bounds(new(0,0,obj.Width,obj.Height), obj.WorldMatrix);
-            body.InvInertia = rigid.FreezeRotation || body.Motor != null ? 0 :
-                12 * body.InvMass / (bounds.Width * bounds.Width + bounds.Height * bounds.Height);
             body.MinGroundCos = MathF.Cos(float.DegreesToRadians(body.Motor?.MaxSlope ?? 60));
         }
         string? Resolve(Guid? id, string format, Func<string, bool> accepts)
@@ -361,6 +375,8 @@ public sealed partial class SceneGame : IGameObjects, IGame2D, IGameCameras, IDi
             if (b.Palette != null) sprite(b.Palette.Image);
             if (b.Source.GetComponent<UiImageComponent>()?.Sprite is Guid id && assets?.PathFor(id) is {} uiImage)
                 sprite(Path.Combine(world.ProjectDirectory!, uiImage));
+            foreach (var icon in b.Source.GetComponent<UiTextComponent>()?.Icons?.Values ?? Enumerable.Empty<Guid>())
+                if (assets?.PathFor(icon) is {} png) sprite(Path.Combine(world.ProjectDirectory!, png));
             if (b.Sound != null) sound(b.Sound);
         }
     }
@@ -395,6 +411,7 @@ public sealed partial class SceneGame : IGameObjects, IGame2D, IGameCameras, IDi
         Ui.ValidateInputModes();
         if (Time.IsPaused) CancelWorldPointer();
         Time.AdvanceUi(seconds);
+        Ui.AdvanceReveal(seconds);
         started = true;
         FlushLife();
         UpdateDialogue(input);
@@ -427,6 +444,7 @@ public sealed partial class SceneGame : IGameObjects, IGame2D, IGameCameras, IDi
                 catch (Exception ex) { throw ScriptFailure(behaviour, nameof(GameBehaviour.UpdateUi), ex); }
             }
         }
+        StepRoutines(ui: true);
         if (Time.IsPaused) { CommitChanges(); SyncAudio(); }
     }
 
@@ -466,6 +484,11 @@ public sealed partial class SceneGame : IGameObjects, IGame2D, IGameCameras, IDi
                 var parent = body.Source.ParentId is Guid id ? byId[id] : null;
                 body.Displacement+=tween.Advance(body.Position,parent?.MatrixAt(parent.Position) ?? Matrix3x2.Identity,seconds);
             }
+            if (body.Active && body.Follower is {Playing:true} follower)
+            {
+                var parent = body.Source.ParentId is Guid id ? byId[id] : null;
+                body.Displacement+=follower.Advance(body.Position,parent?.MatrixAt(parent.Position) ?? Matrix3x2.Identity,seconds);
+            }
             if (!body.Active || body.Rigid != null || body.Displacement == Vector2.Zero) continue;
 
             var group = Subtree(body);
@@ -475,8 +498,9 @@ public sealed partial class SceneGame : IGameObjects, IGame2D, IGameCameras, IDi
         }
         if (rigidBodies.Length > 0) using (FrameProfiler.Sample(FrameProfiler.Rigidbodies)) StepRigidBodies(seconds);
         using (FrameProfiler.Sample(FrameProfiler.Animation)) foreach (var body in skeletons) if (body.Active) body.Skeleton!.Step(this,body,seconds);
-        using (FrameProfiler.Sample(FrameProfiler.Effects)) StepEffects(seconds);
+        using (FrameProfiler.Sample(FrameProfiler.Effects)) { StepEffects(seconds); StepTrails(); }
         using (FrameProfiler.Sample(FrameProfiler.Contacts)) DispatchContacts();
+        StepRoutines(ui: false);
         CommitChanges();
         using (FrameProfiler.Sample(FrameProfiler.Cameras)) StepCameras(seconds);
         if (requestedCamera?.Active == true) camera = requestedCamera;
@@ -492,15 +516,24 @@ public sealed partial class SceneGame : IGameObjects, IGame2D, IGameCameras, IDi
         canvas.UseFonts(Ui.Language.Fonts);
         SetPointerFrame(interpolation);
         PrepareCameraDraw(interpolation);
+        screen = State.Screen.Sample(Math.Max(0,Time.GameSeconds-(1-interpolation)*effectStep));
+        if (screen.Adjusted) canvas.BeginColorAdjust();
         canvas.Clear(Background);
         using (FrameProfiler.Sample(FrameProfiler.RenderWorld))
         {
             if (ViewCamera is { Active:true } lens) DrawCamera(canvas,lens,interpolation);
-            if (playback is {} p) { DrawDialogue(canvas,p); return; }
-            foreach (var extra in overlays) if (extra.Active) DrawCamera(canvas,extra,interpolation);
+            if (playback is {} p) DrawDialogue(canvas,p);
+            else foreach (var extra in overlays) if (extra.Active) DrawCamera(canvas,extra,interpolation);
         }
-        using (FrameProfiler.Sample(FrameProfiler.UiDraw)) Ui.Draw(canvas);
+        if (screen.Adjusted) canvas.EndColorAdjust(screen.Multiply,screen.Lift);
+        if (playback == null) using (FrameProfiler.Sample(FrameProfiler.UiDraw)) Ui.Draw(canvas);
+        var all = new RectangleF(PointF.Empty, LogicalSize);
+        if (screen.Fade.A > 0) canvas.FillRectangle(all,screen.Fade);
+        if (screen.Flash.A > 0) canvas.FillRectangle(all,screen.Flash);
+        screen = ScreenFrame.None;
     }
+
+    private ScreenFrame screen = ScreenFrame.None;
 
     internal bool UseRenderGrid { get; set; } = true;
 
@@ -516,6 +549,7 @@ public sealed partial class SceneGame : IGameObjects, IGame2D, IGameCameras, IDi
     private int DrawCamera(ICanvas2D canvas, Body lens, float interpolation, List<Guid>? spriteOrder = null)
     {
         var shot=Sample(lens,interpolation);
+        if (screen.Moves && lens.Camera!.Output!=Camera2DComponent.Minimap) shot=ScreenEffects.Move(shot,screen);
         var port=shot.Viewport;
         bool full=port.X==0 && port.Y==0 && port.Size==LogicalSize;
         using var clip=full?null:canvas.PushClip(port);
@@ -539,18 +573,20 @@ public sealed partial class SceneGame : IGameObjects, IGame2D, IGameCameras, IDi
             }
             var local = new RectangleF(0,0,body.Size.X,body.Size.Y);
             body.SpritePool?.Draw(canvas, frame, view, interpolation);
+            body.Trail?.Draw(canvas, TrailCenter(body, matrix), effectTime, view);
             if (frame.IntersectsWith(Affine2D.Bounds(local,matrix)))
             {
                 if (spriteOrder != null && body.Renderer != null) spriteOrder.Add(body.Id);
                 if (body.SpritePool == null) body.DisplayAppearance.Draw(canvas, local, matrix * view);
                 if (body.Shader is {} shader) canvas.DrawShader(shader,shader.FrameAt(effectTime),local,matrix*view,Color.White,false);
             }
+            body.Line?.Draw(canvas, matrix, view);
             body.Skeleton?.Draw(canvas,matrix,view,frame,interpolation);
         }
         foreach (var b in emitters) if (b.Active) b.Particles!.Draw(canvas,particleSheet,frame,view,effectTime);
         foreach (var b in lights) if (b.Active)
         {
-            var center=Vector2.Transform(b.Size*.5f,b.MatrixAt(b.At(interpolation),b.AngleAt(interpolation)));
+            var center=Affine2D.Transform(b.Size*.5f,b.MatrixAt(b.At(interpolation),b.AngleAt(interpolation)));
             b.Light!.Draw(canvas,lightSheet,center,frame,view,effectTime);
         }
         if(Diagnostics is {} debug && canvas is IDiagnosticLines lines) DrawDiagnostics(lines,debug,shot,interpolation);

@@ -1,0 +1,154 @@
+schemaVersion: 30
+objects:
+- id: 9d9261b6-7996-4ae7-aee6-8d54e5d0f3f2
+  name: Runner
+  x: 60
+  y: 270
+  width: 22
+  height: 30
+  components:
+  - type: spriteRenderer
+    squareColor: "#F2D7A6"
+    order: 3
+  - type: boxCollider2D
+    layer: 1
+  - type: rigidbody2D
+    freezeRotation: true
+  - type: characterMotor2D
+  - type: script
+    script: PathRider
+    values: {"Lift": "6d66fd60-43c2-4cb3-a0b3-829e88500268", "Goal": "e3c2ffdf-a01e-407f-9d95-4455e83e50e9", "Readout": "a48485fd-a592-4d7b-a837-59c07be6a1f0", "Result": "e7735900-140c-438d-b773-d0348eef995c"}
+- id: a9719ef0-3982-4c43-9610-b0b3e8053c66
+  name: Start ledge
+  x: 0
+  y: 300
+  width: 200
+  height: 150
+  components:
+  - type: spriteRenderer
+    squareColor: "#70B6A4"
+  - type: boxCollider2D
+- id: 8a1b3b33-b72d-45ad-a298-c00b69c99540
+  name: Pit floor
+  x: 200
+  y: 430
+  width: 400
+  height: 20
+  components:
+  - type: spriteRenderer
+    squareColor: "#4D6B66"
+  - type: boxCollider2D
+- id: ef9f64cf-1d15-4583-af89-abfe60dbb7f7
+  name: Pillar
+  x: 380
+  y: 210
+  width: 40
+  height: 220
+  components:
+  - type: spriteRenderer
+    squareColor: "#5E8A80"
+  - type: boxCollider2D
+- id: e3c2ffdf-a01e-407f-9d95-4455e83e50e9
+  name: Goal ledge
+  x: 600
+  y: 260
+  width: 200
+  height: 190
+  components:
+  - type: spriteRenderer
+    squareColor: "#70B6A4"
+  - type: boxCollider2D
+- id: ef18b345-6cf8-431e-8730-6f0ee8c3a777
+  name: Goal pennant
+  x: 760
+  y: 222
+  width: 16
+  height: 8
+  components:
+  - type: spriteRenderer
+    squareColor: "#F4BD55"
+- id: 6d66fd60-43c2-4cb3-a0b3-829e88500268
+  name: Path lift
+  x: 200
+  y: 300
+  width: 80
+  height: 12
+  components:
+  - type: spriteRenderer
+    squareColor: "#D89166"
+  - type: boxCollider2D
+  - type: rigidbody2D
+    bodyType: "Kinematic"
+  - type: pathFollower2D
+    points:
+    - {x: 0, y: 0, outX: 0, outY: -60}
+    - {x: 150, y: -150, inX: -80, inY: 0, outX: 80, outY: 0}
+    - {x: 320, y: -40, inX: 0, inY: -60}
+    speed: 90
+    repeat: PingPong
+    playOnStart: false
+- id: d69c716b-e1db-438f-a733-47e2109aa2ac
+  name: Camera
+  x: 400
+  y: 225
+  width: 1
+  height: 1
+  components:
+  - type: camera2D
+- id: 40eb158a-1ab7-4d64-9604-151b53bf8e96
+  name: Canvas
+  x: 0
+  y: 0
+  width: 1
+  height: 1
+  components:
+  - type: uiCanvas
+- id: ba84850e-4b1b-4230-9554-f951d444e0c1
+  name: Title
+  parentId: 40eb158a-1ab7-4d64-9604-151b53bf8e96
+  x: 32
+  y: 20
+  width: 723
+  height: 36
+  components:
+  - type: uiRect
+  - type: uiText
+    size: 30
+    text: "Platformer Lab  —  Paths"
+- id: 021900a6-d4c0-4a12-8895-a4f558bf4a6a
+  name: Controls
+  parentId: 40eb158a-1ab7-4d64-9604-151b53bf8e96
+  x: 32
+  y: 63
+  width: 723
+  height: 36
+  components:
+  - type: uiRect
+  - type: uiText
+    size: 16
+    text: "A / D or arrows    Move       Space    Jump"
+- id: e7735900-140c-438d-b773-d0348eef995c
+  name: Result
+  parentId: 40eb158a-1ab7-4d64-9604-151b53bf8e96
+  x: 32
+  y: 365
+  width: 723
+  height: 36
+  components:
+  - type: uiRect
+  - type: uiText
+    size: 24
+    text: "Step onto the lift and ride its path over the pillar."
+- id: a48485fd-a592-4d7b-a837-59c07be6a1f0
+  name: Readout
+  parentId: 40eb158a-1ab7-4d64-9604-151b53bf8e96
+  x: 32
+  y: 403
+  width: 723
+  height: 36
+  components:
+  - type: uiRect
+  - type: uiText
+    size: 16
+    text: "X  60.0      Y  270.0"
+defaultCameraId: d69c716b-e1db-438f-a733-47e2109aa2ac

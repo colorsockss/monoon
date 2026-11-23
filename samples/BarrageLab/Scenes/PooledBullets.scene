@@ -14,7 +14,7 @@ objects:
     tint: "#FFF2BE"
   - type: script
     script: "BulletTurret"
-    values: {"Bullet": {"Id": "1f4615d7-bbce-4b65-a194-7f56de966aa4"}, "Sprites": {"Id": "719a1aa5-015b-503e-85ad-0722931cc1c0"}, "Counters": "31e59031-72c2-45ee-9a82-da857a8b93c5", "Mode": "0070a419-bb30-4d33-83fe-31c9098845d4"}
+    values: {"Bullet": {"Id": "1f4615d7-bbce-4b65-a194-7f56de966aa4"}, "Sprites": {"Id": "189ac1ae-7fca-4bfd-b5ac-51bcd1090e5f"}, "Counters": "31e59031-72c2-45ee-9a82-da857a8b93c5", "Mode": "0070a419-bb30-4d33-83fe-31c9098845d4"}
 - id: 57c87c21-fbf8-47bf-a26b-019ad66cc632
   name: Target 1
   groups:
@@ -180,7 +180,7 @@ objects:
   components:
   - type: uiRect
   - type: uiText
-    text: "Space   발사 / 중지          P   풀 / 생성·제거          R   처음부터          N   스프라이트 탄막"
+    text: "Space   발사 / 중지          P   풀 / 생성·제거          R   처음부터          N   레이저 · 궤적"
     size: 14
     color: "#AABBC7"
     insetX: 0

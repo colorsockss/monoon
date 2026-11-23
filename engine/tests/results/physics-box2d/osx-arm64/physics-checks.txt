@@ -1,0 +1,32 @@
+PASS tile collision: convex validation, transformed one-way normals, front/back sweeps, overlap and finite endpoints
+PASS spatial grid: ordered ties, cell edges, overflow, hierarchy transforms, reparent, enable and removal
+PASS collision geometry: shape casts, tangent/endpoint, overlap, filters, affine circle, sensor crossing, YAML validation and legacy defaults
+PASS paired solid and trigger enter/stay/exit, swept trigger crossing, masks and removal during callbacks
+PASS KeyRoom plate 0/closed, 1/closed, 2/open, crate alone/open, walk through, last leaves/closed
+Platformer route: True, rise 90.00, ride 124.13, slip 0.0000.
+Shuttle round trip: 134.0 px; foot IK error: 0.000 px.
+PASS platformer: ramp, moving platform, joint swing and relative slip (climb 90.00, ride 124.1269, slip 0.0000, swing 29.7698, joint error 0.014580 px)
+PASS platformer: jump releases the moving support
+PASS platformer: dynamic contacts share impulse by inverse mass (39.834, 40.333)
+PASS platformer: off-center impulse produces angular velocity
+PASS platformer: fast body stops at a static wall without tunnelling
+PASS platformer: vertical platform carries its rider and stops under a ceiling
+PASS platformer: nested rigid body simulates independently of its parent
+PASS platformer: slope above motor limit blocks ascent (158.0, 300.0)
+PASS platformer: YAML joint target and authored pose survive Play
+Joints crossing: bridge True, pulley True, 280 ticks.
+PASS joints: runner crosses the rope bridge and both pulley decks (version: 1
+values:
+  crossed: true
+  ticks: 280
+)
+PASS joints: revolute bridge sags under the runner and keeps its pivots together (lowest plank 319.4, pivot gap 0.311 px)
+PASS joints: pulley decks move opposite within the ±16 px slider limits (16.01, -16.00)
+PASS joints: revolute motor turns at its speed about its pivot (180.0 °/s, hub 8.00,8.00)
+PASS joints: revolute limit holds −10°…30° (0.0°, 30.1°)
+PASS joints: distance spring stretches and oscillates around its length (0.8…66.7 px)
+PASS joints: rigid distance joint keeps its length (0.007 px)
+PASS joints: slider motor runs to its upper limit along the axis (450.01, 0.00)
+PASS joints: soft weld sags on its spring (4.3 px)
+PASS joints: friction 0 slides down a 20° slope, friction 1 holds (1510.4, 0.00 px)
+PASS joints: restitution 0.8 bounces back up (155.6)

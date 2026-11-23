@@ -1,0 +1,606 @@
+{
+ "host": {
+  "display": "Xvfb 2560x1440x24",
+  "rid": "linux-x64",
+  "platform": "Linux-6.1.0-56-cloud-amd64-x86_64-with-glibc2.36",
+  "machine": "x86_64",
+  "python": "3.11.2",
+  "slow": "10",
+  "timeout_scale": 15,
+  "dotnet": "10.0.101"
+ },
+ "box2d-files": {
+  "status": "pass",
+  "template": [
+   "Brutal.Box2D.dll",
+   "MoNoonBox2D.version",
+   "libbox2d.so",
+   "libbox2d.so.3",
+   "libbox2d.so.3.1.1"
+  ],
+  "editor": [
+   "Brutal.Box2D.dll",
+   "libbox2d.so",
+   "libbox2d.so.3",
+   "libbox2d.so.3.1.1"
+  ],
+  "ldd": [
+   "linux-vdso.so.1 (0x00007ffd4a1ec000)",
+   "\tlibc.so.6 => /lib/x86_64-linux-gnu/libc.so.6 (0x00007fb0ecbdf000)",
+   "\t/lib64/ld-linux-x86-64.so.2 (0x00007fb0ece54000)"
+  ],
+  "seconds": 0
+ },
+ "joints-release": {
+  "status": "pass",
+  "trace.tsv": "380202618e48e8b2fc61096c966c0e201ac374b5618f75712c49905a2b954f10",
+  "result.json": "9728382a2f19666414ae3594858106da528972376162259d2f8c844d3880dd6f",
+  "result": {
+   "rows": 300,
+   "runnerFinalX": 738.9791,
+   "lowestPlankY": 319.3756,
+   "deckATravel": 16.014700000000005,
+   "deckBTravel": -16.0
+  },
+  "build": {
+   "files": 262,
+   "box2d": [
+    "Brutal.Box2D.dll",
+    "Licenses/BRUTAL/BRUTAL-BOX2D-THIRD-PARTY-NOTICES.txt",
+    "libbox2d.so",
+    "libbox2d.so.3",
+    "libbox2d.so.3.1.1"
+   ],
+   "forbidden": []
+  },
+  "seconds": 34
+ },
+ "joints-native-aot": {
+  "status": "pass",
+  "trace.tsv": "86280b2720904f090b26987e53f53c07c0d3ae378bdc12ac35c568658e01f79b",
+  "result.json": "9728382a2f19666414ae3594858106da528972376162259d2f8c844d3880dd6f",
+  "result": {
+   "rows": 300,
+   "runnerFinalX": 738.9791,
+   "lowestPlankY": 319.3756,
+   "deckATravel": 16.014700000000005,
+   "deckBTravel": -16.0
+  },
+  "build": {
+   "files": 42,
+   "box2d": [
+    "Licenses/BRUTAL/BRUTAL-BOX2D-THIRD-PARTY-NOTICES.txt",
+    "libbox2d.so",
+    "libbox2d.so.3",
+    "libbox2d.so.3.1.1"
+   ],
+   "forbidden": []
+  },
+  "seconds": 461
+ },
+ "joints-scene-play": {
+  "status": "pass",
+  "trace.tsv": "380202618e48e8b2fc61096c966c0e201ac374b5618f75712c49905a2b954f10",
+  "result.json": "9728382a2f19666414ae3594858106da528972376162259d2f8c844d3880dd6f",
+  "result": {
+   "rows": 300,
+   "runnerFinalX": 738.9791,
+   "lowestPlankY": 319.3756,
+   "deckATravel": 16.014700000000005,
+   "deckBTravel": -16.0
+  },
+  "seconds": 88
+ },
+ "tiles-release": {
+  "status": "pass",
+  "trace.tsv": "f30ed6864b3cf99f89c14ff25de33b7d4e28c1701da80627f17b62f1bdbc3491",
+  "result.json": "9c3569eb50be497288e913f4ccd9b3e56928db5adb8ccc2d7db8e236cec3d114",
+  "result": {
+   "firstLandingTick": 35,
+   "landingFeetY": 288.0,
+   "jumpApexFeetY": 280.38890000000004,
+   "ascent": {
+    "groundedTicks": 70,
+    "seams": 4,
+    "maxSurfaceErrorPx": 0.0001,
+    "minAdvancePx": 2.5
+   },
+   "descent": {
+    "groundedTicks": 70,
+    "seams": 4,
+    "maxSurfaceErrorPx": 0.0001,
+    "minAdvancePx": 2.5
+   }
+  },
+  "build": {
+   "files": 262,
+   "box2d": [
+    "Brutal.Box2D.dll",
+    "Licenses/BRUTAL/BRUTAL-BOX2D-THIRD-PARTY-NOTICES.txt",
+    "libbox2d.so",
+    "libbox2d.so.3",
+    "libbox2d.so.3.1.1"
+   ],
+   "forbidden": []
+  },
+  "seconds": 38
+ },
+ "tiles-native-aot": {
+  "status": "pass",
+  "trace.tsv": "f30ed6864b3cf99f89c14ff25de33b7d4e28c1701da80627f17b62f1bdbc3491",
+  "result.json": "9c3569eb50be497288e913f4ccd9b3e56928db5adb8ccc2d7db8e236cec3d114",
+  "result": {
+   "firstLandingTick": 35,
+   "landingFeetY": 288.0,
+   "jumpApexFeetY": 280.38890000000004,
+   "ascent": {
+    "groundedTicks": 70,
+    "seams": 4,
+    "maxSurfaceErrorPx": 0.0001,
+    "minAdvancePx": 2.5
+   },
+   "descent": {
+    "groundedTicks": 70,
+    "seams": 4,
+    "maxSurfaceErrorPx": 0.0001,
+    "minAdvancePx": 2.5
+   }
+  },
+  "build": {
+   "files": 42,
+   "box2d": [
+    "Licenses/BRUTAL/BRUTAL-BOX2D-THIRD-PARTY-NOTICES.txt",
+    "libbox2d.so",
+    "libbox2d.so.3",
+    "libbox2d.so.3.1.1"
+   ],
+   "forbidden": []
+  },
+  "seconds": 428
+ },
+ "tiles-scene-play": {
+  "status": "pass",
+  "trace.tsv": "f30ed6864b3cf99f89c14ff25de33b7d4e28c1701da80627f17b62f1bdbc3491",
+  "result.json": "9c3569eb50be497288e913f4ccd9b3e56928db5adb8ccc2d7db8e236cec3d114",
+  "result": {
+   "firstLandingTick": 35,
+   "landingFeetY": 288.0,
+   "jumpApexFeetY": 280.38890000000004,
+   "ascent": {
+    "groundedTicks": 70,
+    "seams": 4,
+    "maxSurfaceErrorPx": 0.0001,
+    "minAdvancePx": 2.5
+   },
+   "descent": {
+    "groundedTicks": 70,
+    "seams": 4,
+    "maxSurfaceErrorPx": 0.0001,
+    "minAdvancePx": 2.5
+   }
+  },
+  "seconds": 67
+ },
+ "joints-compare": {
+  "status": "fail",
+  "error": "Traceback (most recent call last):\n  File \"/run/keys96/ch11/run/guest.py\", line 49, in wrap\n    detail = fn() or {}\n             ^^^^\n  File \"/run/keys96/ch11/run/guest.py\", line 147, in _\n    V.compare(*(R / 'joints' / m for m in ['scene-play', 'release', 'native-aot']))\n  File \"/run/keys96/ch11/run/qa/PlatformerLab.Joints/verify.py\", line 51, in compare\n    assert t == traces[0], f'{o} differs from {outs[0]}'\n           ^^^^^^^^^^^^^^\nAssertionError: /run/keys96/ch11/run/results/joints/native-aot differs from /run/keys96/ch11/run/results/joints/scene-play\n",
+  "seconds": 0
+ },
+ "spatial-release": {
+  "status": "pass",
+  "rows": [
+   "SPATIAL count=1000 kind=Overlap n=576 linearCandidates=559260 gridCandidates=6462 linearP95us=219.002 gridP95us=57.001 sha256=32FA7AB7170DF5D060A9FC399E6B1BCF6F274A48852DEEF17AA19B8CA1FEFB63",
+   "SPATIAL count=1000 kind=Raycast n=576 linearCandidates=559260 gridCandidates=5022 linearP95us=193.002 gridP95us=37.000 sha256=32FA7AB7170DF5D060A9FC399E6B1BCF6F274A48852DEEF17AA19B8CA1FEFB63",
+   "SPATIAL count=1000 kind=Sweep n=576 linearCandidates=559260 gridCandidates=5850 linearP95us=237.002 gridP95us=82.001 sha256=32FA7AB7170DF5D060A9FC399E6B1BCF6F274A48852DEEF17AA19B8CA1FEFB63",
+   "SPATIAL count=1000 kind=All n=1728 linearCandidates=1677780 gridCandidates=17334 linearP95us=226.002 gridP95us=64.001 sha256=32FA7AB7170DF5D060A9FC399E6B1BCF6F274A48852DEEF17AA19B8CA1FEFB63",
+   "SPATIAL count=10000 kind=Overlap n=576 linearCandidates=5590926 gridCandidates=8868 linearP95us=2092.019 gridP95us=64.000 sha256=B5C817DB18262EA1E4C48008C24F77B416FA20AC1ED8447702902803F7D8B896",
+   "SPATIAL count=10000 kind=Raycast n=576 linearCandidates=5590926 gridCandidates=6360 linearP95us=2048.018 gridP95us=38.001 sha256=B5C817DB18262EA1E4C48008C24F77B416FA20AC1ED8447702902803F7D8B896",
+   "SPATIAL count=10000 kind=Sweep n=576 linearCandidates=5590926 gridCandidates=7584 linearP95us=2089.019 gridP95us=84.001 sha256=B5C817DB18262EA1E4C48008C24F77B416FA20AC1ED8447702902803F7D8B896",
+   "SPATIAL count=10000 kind=All n=1728 linearCandidates=16772778 gridCandidates=22812 linearP95us=2072.019 gridP95us=71.001 sha256=B5C817DB18262EA1E4C48008C24F77B416FA20AC1ED8447702902803F7D8B896"
+  ],
+  "build": {
+   "files": 245,
+   "box2d": [
+    "Brutal.Box2D.dll",
+    "Licenses/BRUTAL/BRUTAL-BOX2D-THIRD-PARTY-NOTICES.txt",
+    "libbox2d.so",
+    "libbox2d.so.3",
+    "libbox2d.so.3.1.1"
+   ],
+   "forbidden": []
+  },
+  "seconds": 45
+ },
+ "spatial-native-aot": {
+  "status": "pass",
+  "rows": [
+   "SPATIAL count=1000 kind=Overlap n=576 linearCandidates=559260 gridCandidates=6462 linearP95us=212.005 gridP95us=57.002 sha256=32FA7AB7170DF5D060A9FC399E6B1BCF6F274A48852DEEF17AA19B8CA1FEFB63",
+   "SPATIAL count=1000 kind=Raycast n=576 linearCandidates=559260 gridCandidates=5022 linearP95us=189.004 gridP95us=38.001 sha256=32FA7AB7170DF5D060A9FC399E6B1BCF6F274A48852DEEF17AA19B8CA1FEFB63",
+   "SPATIAL count=1000 kind=Sweep n=576 linearCandidates=559260 gridCandidates=5850 linearP95us=227.006 gridP95us=86.002 sha256=32FA7AB7170DF5D060A9FC399E6B1BCF6F274A48852DEEF17AA19B8CA1FEFB63",
+   "SPATIAL count=1000 kind=All n=1728 linearCandidates=1677780 gridCandidates=17334 linearP95us=218.005 gridP95us=67.002 sha256=32FA7AB7170DF5D060A9FC399E6B1BCF6F274A48852DEEF17AA19B8CA1FEFB63",
+   "SPATIAL count=10000 kind=Overlap n=576 linearCandidates=5590926 gridCandidates=8868 linearP95us=1821.046 gridP95us=71.001 sha256=B5C817DB18262EA1E4C48008C24F77B416FA20AC1ED8447702902803F7D8B896",
+   "SPATIAL count=10000 kind=Raycast n=576 linearCandidates=5590926 gridCandidates=6360 linearP95us=1793.045 gridP95us=43.001 sha256=B5C817DB18262EA1E4C48008C24F77B416FA20AC1ED8447702902803F7D8B896",
+   "SPATIAL count=10000 kind=Sweep n=576 linearCandidates=5590926 gridCandidates=7584 linearP95us=1842.046 gridP95us=97.003 sha256=B5C817DB18262EA1E4C48008C24F77B416FA20AC1ED8447702902803F7D8B896",
+   "SPATIAL count=10000 kind=All n=1728 linearCandidates=16772778 gridCandidates=22812 linearP95us=1823.046 gridP95us=86.002 sha256=B5C817DB18262EA1E4C48008C24F77B416FA20AC1ED8447702902803F7D8B896"
+  ],
+  "build": {
+   "files": 25,
+   "box2d": [
+    "Licenses/BRUTAL/BRUTAL-BOX2D-THIRD-PARTY-NOTICES.txt",
+    "libbox2d.so",
+    "libbox2d.so.3",
+    "libbox2d.so.3.1.1"
+   ],
+   "forbidden": []
+  },
+  "seconds": 424
+ },
+ "waits-release": {
+  "status": "pass",
+  "release.trace": "98d74c7894af2159072894f3a169a671e2767011cd4713ec0df939f24d8d0040",
+  "seconds": 28
+ },
+ "waits-native-aot": {
+  "status": "pass",
+  "native-aot.trace": "98d74c7894af2159072894f3a169a671e2767011cd4713ec0df939f24d8d0040",
+  "seconds": 431
+ },
+ "waits-scene-play": {
+  "status": "pass",
+  "scene-play.trace": "98d74c7894af2159072894f3a169a671e2767011cd4713ec0df939f24d8d0040",
+  "seconds": 51
+ },
+ "waits-compare": {
+  "status": "pass",
+  "seconds": 0
+ },
+ "project-tests": {
+  "status": "pass",
+  "tail": [
+   "PASS DoorTests.RecordedWalkTakesTheKey",
+   "PASS DoorTests.OpenDoorLeadsToSecondRoom",
+   "9 passed, 0 failed."
+  ],
+  "seconds": 24
+ },
+ "camlab-release": {
+  "status": "pass",
+  "record": "d56a1838068dfbc2095d122116d188f23d2feb265ce234d2222a8ba1af15c6cb",
+  "first.player.settings": "91d7cdd52a8acfda99954953df1c7ef4d0558667341d95c26a3741f571869eb4",
+  "restart.player.settings": "859fe9f5a45535e60d8afabd859f1b1c1881d73dd2739caaf41710ecaf592431",
+  "seconds": 35
+ },
+ "camlab-native-aot": {
+  "status": "pass",
+  "record": "d56a1838068dfbc2095d122116d188f23d2feb265ce234d2222a8ba1af15c6cb",
+  "first.player.settings": "91d7cdd52a8acfda99954953df1c7ef4d0558667341d95c26a3741f571869eb4",
+  "restart.player.settings": "859fe9f5a45535e60d8afabd859f1b1c1881d73dd2739caaf41710ecaf592431",
+  "seconds": 416
+ },
+ "camlab-compare": {
+  "status": "pass",
+  "seconds": 0
+ },
+ "rich-release": {
+  "status": "pass",
+  "reveal.tsv": "76118c092596d4c201db385ba0ae594bc0416928de3deb1f16b41a71a04e7de0",
+  "seconds": 48
+ },
+ "rich-native-aot": {
+  "status": "pass",
+  "reveal.tsv": "76118c092596d4c201db385ba0ae594bc0416928de3deb1f16b41a71a04e7de0",
+  "seconds": 439
+ },
+ "rich-scene-play": {
+  "status": "pass",
+  "reveal.tsv": "76118c092596d4c201db385ba0ae594bc0416928de3deb1f16b41a71a04e7de0",
+  "seconds": 98
+ },
+ "rich-compare": {
+  "status": "pass",
+  "comparison": "frame\tscene-play\trelease\tnative-aot\trelease_equals_aot\tscene_play_vs_release_pixels\n30\t0b6c934f3fec\t2c47ebb5e118\t2c47ebb5e118\tTrue\t0.013%\n85\t026257ae767b\t8bb13b7826a8\t8bb13b7826a8\tTrue\t0.013%\n120\t2ad665005f40\t3a7191196bfd\t3a7191196bfd\tTrue\t0.013%\n152\tf6ff2a09922b\t6ed1443015e0\t6ed1443015e0\tTrue\t0.013%\n175\t7b48685fc240\t22fb4b31bb9c\t22fb4b31bb9c\tTrue\t0.013%\n262\tff07c6f1cf02\t3aaadcb0a316\t3aaadcb0a316\tTrue\t0.013%\n345\tec588877509a\t50e4b744de6a\t50e4b744de6a\tTrue\t0.013%\n",
+  "seconds": 74
+ },
+ "ase-release": {
+  "status": "pass",
+  "result": {
+   "durationsMs": [
+    4000,
+    700
+   ],
+   "frames": [
+    {
+     "tick": 1,
+     "frame": 0,
+     "exactTick": 0.0
+    },
+    {
+     "tick": 240,
+     "frame": 1,
+     "exactTick": 240.0
+    },
+    {
+     "tick": 282,
+     "frame": 0,
+     "exactTick": 282.0
+    },
+    {
+     "tick": 522,
+     "frame": 1,
+     "exactTick": 522.0
+    },
+    {
+     "tick": 564,
+     "frame": 0,
+     "exactTick": 564.0
+    }
+   ]
+  },
+  "seconds": 24
+ },
+ "ase-native-aot": {
+  "status": "pass",
+  "result": {
+   "durationsMs": [
+    4000,
+    700
+   ],
+   "frames": [
+    {
+     "tick": 1,
+     "frame": 0,
+     "exactTick": 0.0
+    },
+    {
+     "tick": 240,
+     "frame": 1,
+     "exactTick": 240.0
+    },
+    {
+     "tick": 282,
+     "frame": 0,
+     "exactTick": 282.0
+    },
+    {
+     "tick": 522,
+     "frame": 1,
+     "exactTick": 522.0
+    },
+    {
+     "tick": 564,
+     "frame": 0,
+     "exactTick": 564.0
+    }
+   ]
+  },
+  "seconds": 416
+ },
+ "ase-scene-play": {
+  "status": "pass",
+  "reimport": {
+   "secondsUntilSceneUpdated": 0.89,
+   "windowActive": false,
+   "sheetBefore": "47BE7B806105F8C6CE61753050D09DA1C83F187D1ABCF3517D262E6819866D8A",
+   "sheetAfter": "1113E9010488259E5105CD30D728805803D243CAE646294E4966EFF998C5715C",
+   "source": "519070B4ACC69B273177299429DFB4C287EB07DBEBC4B5BCD4966BE8CED86650",
+   "clipSeconds": [
+    1.0,
+    0.3
+   ],
+   "sceneTrace": "result.json"
+  },
+  "seconds": 28
+ },
+ "copy-editor": {
+  "status": "fail",
+  "error": "Traceback (most recent call last):\n  File \"/run/keys96/ch11/run/guest.py\", line 49, in wrap\n    detail = fn() or {}\n             ^^^^\n  File \"/run/keys96/ch11/run/guest.py\", line 237, in _\n    script('KeyRoom.CopyPaste', 'editor.py', editor, copy, probe('KeyRoom.CopyPaste'), R / 'copy/editor')\n  File \"/run/keys96/ch11/run/guest.py\", line 80, in script\n    runpy.run_path(sys.argv[0], run_name='__main__')\n  File \"<frozen runpy>\", line 291, in run_path\n  File \"<frozen runpy>\", line 98, in _run_module_code\n  File \"<frozen runpy>\", line 88, in _run_code\n  File \"/run/keys96/ch11/run/qa/KeyRoom.CopyPaste/editor.py\", line 12, in <module>\n    if (out / 'error.txt').exists(): raise RuntimeError((out / 'error.txt').read_text(encoding='utf-8'))\n                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nRuntimeError: System.IO.InvalidDataException: text field copy: clipboard null, window active False, focused TextBox, round trip null\n   at StartupHook.Run(Window main)\n   at StartupHook.<>c.<<Initialize>b__6_1>d.MoveNext()\n",
+  "seconds": 118
+ },
+ "copy-release": {
+  "status": "pass",
+  "result": {
+   "trace": "copied 1 chest 1 outside 1"
+  },
+  "seconds": 32
+ },
+ "copy-native-aot": {
+  "status": "pass",
+  "result": {
+   "trace": "copied 1 chest 1 outside 1"
+  },
+  "seconds": 500
+ },
+ "reload-editor": {
+  "status": "pass",
+  "reload": {
+   "v1": {
+    "ticks": 30,
+    "speed": 2,
+    "version": "v1",
+    "routines": 1
+   },
+   "v2": {
+    "replaced": true,
+    "new_assembly": true,
+    "ticks_before": 30,
+    "ticks_after_reload": 30,
+    "delta_one_tick": 1000,
+    "speed": 3,
+    "version": "v1",
+    "label": "added in v2",
+    "routines": 0,
+    "console": [
+     {
+      "Level": "Info",
+      "Message": "Scripts reloaded: 23 behaviours on 19 objects kept their field values.",
+      "File": null,
+      "Line": 0
+     },
+     {
+      "Level": "Warning",
+      "Message": "ReloadProbe.Speed: type changed from Single to Int32; the field was reset to its default.",
+      "File": null,
+      "Line": 0
+     },
+     {
+      "Level": "Info",
+      "Message": "Stopped 1 running routine(s) from the previous code. Scripts start new ones as usual.",
+      "File": null,
+      "Line": 0
+     }
+    ]
+   },
+   "broken": {
+    "Message": "./Scripts/ReloadProbe.cs(11,71): error CS1002: ; expected",
+    "File": "/run/keys96/ch11/run/results/reload/KeyRoom/Scripts/ReloadProbe.cs",
+    "Line": 11,
+    "same_instance": true,
+    "delta_one_tick": 1000,
+    "playing": true
+   }
+  },
+  "seconds": 81
+ },
+ "extensions-editor": {
+  "status": "pass",
+  "os": "linux-x64",
+  "extension_menu": [
+   "Place Coin"
+  ],
+  "window_menu_has_coins": true,
+  "place_coin": {
+   "before": 0,
+   "after": 1,
+   "selected": "Coin",
+   "prefab": true
+  },
+  "undo_both": 0,
+  "extension_compile_error": {
+   "Message": "./Editor/Broken.cs(3,13): error CS1525: Invalid expression term ';'",
+   "File": "/run/keys96/ch11/run/results/extensions/KeyRoom/Editor/Broken.cs",
+   "Line": 3,
+   "menu": 0,
+   "panel": false
+  },
+  "extension_restored": [
+   "Place Coin"
+  ],
+  "seconds": 570
+ },
+ "paths-release": {
+  "status": "pass",
+  "trace.tsv": "1a143d56cfa707d9ba0dc237ad442ef82d5333a33401add5d970b126a7b7fc3d",
+  "seconds": 27
+ },
+ "paths-native-aot": {
+  "status": "pass",
+  "trace.tsv": "e37de6c0f9c517db77d3d83a3a23209c7083888573cd363b1b7a1fe47e506d61",
+  "seconds": 429
+ },
+ "paths-scene-play": {
+  "status": "pass",
+  "trace.tsv": "1a143d56cfa707d9ba0dc237ad442ef82d5333a33401add5d970b126a7b7fc3d",
+  "seconds": 157
+ },
+ "paths-compare": {
+  "status": "fail",
+  "error": "Traceback (most recent call last):\n  File \"/run/keys96/ch11/run/guest.py\", line 49, in wrap\n    detail = fn() or {}\n             ^^^^\n  File \"/run/keys96/ch11/run/guest.py\", line 274, in _\n    module(harness, 'verify').compare(*(R / feature / m for m in ['scene-play', 'release', 'native-aot']))\n  File \"/run/keys96/ch11/run/qa/PlatformerLab.Paths/verify.py\", line 83, in compare\n    assert t == traces[0], f'{o} trace differs from {outs[0]}'\n           ^^^^^^^^^^^^^^\nAssertionError: /run/keys96/ch11/run/results/paths/native-aot trace differs from /run/keys96/ch11/run/results/paths/scene-play\n",
+  "seconds": 0
+ },
+ "lines-release": {
+  "status": "pass",
+  "trace.tsv": "6969a524feb5e8376be4fe47a578f24fc863df6a7ddf4c952e779d1f76595e2b",
+  "seconds": 30
+ },
+ "lines-native-aot": {
+  "status": "pass",
+  "trace.tsv": "6969a524feb5e8376be4fe47a578f24fc863df6a7ddf4c952e779d1f76595e2b",
+  "seconds": 417
+ },
+ "lines-scene-play": {
+  "status": "pass",
+  "trace.tsv": "6969a524feb5e8376be4fe47a578f24fc863df6a7ddf4c952e779d1f76595e2b",
+  "seconds": 51
+ },
+ "lines-compare": {
+  "status": "pass",
+  "seconds": 0
+ },
+ "package-keyroom": {
+  "status": "pass",
+  "modes": {
+   "MoNoonPlayer": "-rwxr-xr-x",
+   "install-desktop-entry.sh": "-rwxr-xr-x",
+   "createdump": "-rwxr--r--",
+   "KeyRoom.desktop": "-rw-r--r--",
+   "KeyRoom.png": "-rw-r--r--",
+   "Game/GameSettings": "-rw-r--r--",
+   "libSDL3.so.0": "-rwxr--r--",
+   "libbox2d.so": "-rwxr--r--"
+  },
+  "installer": "Installed /run/keys96/ch11/run/results/package/KeyRoom-home/.local/share/applications/monoon-64fb4cd624695cecba6d9a49e61f42e7.desktop",
+  "desktop": "[Desktop Entry]\nType=Application\nName=KeyRoom\nExec=\"/run/keys96/ch11/run/results/package/KeyRoom/KeyRoom-linux-x64/MoNoonPlayer\"\nIcon=/run/keys96/ch11/run/results/package/KeyRoom/KeyRoom-linux-x64/KeyRoom.png\nTerminal=false\nCategories=Game;\n",
+  "validate": "desktop-file-validate not installed",
+  "smoke": [
+   "PASS player smoke: Scenes/KeyRoom.scene (0 control presses)"
+  ],
+  "seconds": 17
+ },
+ "package-inventorylab": {
+  "status": "pass",
+  "mode": "-rwxr-xr-x",
+  "save": "eed41defcbd7987a527deb677c60da8151ad0de1616c717c646e92b26e70f795",
+  "bytes": 171,
+  "expected": "eed41defcbd7987a527deb677c60da8151ad0de1616c717c646e92b26e70f795",
+  "seconds": 14
+ },
+ "editor68": {
+  "status": "pass",
+  "KeyRoom.scene": "b2234173fb4e97f90237d8147fb35f1e215881030e91b73b1000cf0339747c79",
+  "edit/baseline.save": "75bbe69fa563e7ee4d67e490e16ee3d03be2c84a8b1be2418f1ee856deea5e7b",
+  "edit/edited.save": "dc5135b1765858e339c9279219053ff931976ec64c804690fffb14b8d3f3cfd5",
+  "reopen/edited.save": "dc5135b1765858e339c9279219053ff931976ec64c804690fffb14b8d3f3cfd5",
+  "seconds": 159
+ },
+ "herbalist-release": {
+  "status": "pass",
+  "save": "eed41defcbd7987a527deb677c60da8151ad0de1616c717c646e92b26e70f795",
+  "bytes": 171,
+  "expected": "eed41defcbd7987a527deb677c60da8151ad0de1616c717c646e92b26e70f795",
+  "build": {
+   "files": 253,
+   "box2d": [
+    "Brutal.Box2D.dll",
+    "Licenses/BRUTAL/BRUTAL-BOX2D-THIRD-PARTY-NOTICES.txt",
+    "libbox2d.so",
+    "libbox2d.so.3",
+    "libbox2d.so.3.1.1"
+   ],
+   "forbidden": []
+  },
+  "seconds": 49
+ },
+ "herbalist-native-aot": {
+  "status": "pass",
+  "save": "eed41defcbd7987a527deb677c60da8151ad0de1616c717c646e92b26e70f795",
+  "bytes": 171,
+  "expected": "eed41defcbd7987a527deb677c60da8151ad0de1616c717c646e92b26e70f795",
+  "build": {
+   "files": 33,
+   "box2d": [
+    "Licenses/BRUTAL/BRUTAL-BOX2D-THIRD-PARTY-NOTICES.txt",
+    "libbox2d.so",
+    "libbox2d.so.3",
+    "libbox2d.so.3.1.1"
+   ],
+   "forbidden": []
+  },
+  "seconds": 475
+ },
+ "done": "2026-11-23 08:30:57",
+ "copy-editor-noclip": {
+  "status": "pass",
+  "editor.txt": "edit menu Undo Ctrl+Z | Redo Ctrl+Shift+Z | -  | Cut Ctrl+X | Copy Ctrl+C | Paste Ctrl+V | -  | Preferences… Ctrl+OemComma\ntext field copy -> SKIPPED (OS clipboard returns nothing)\ncopied Rig + Chest 1 -> OS clipboard SKIPPED (returns nothing; paste uses the editor's own copy)\nsame scene: Chest 1 (1), Chest Lid, Rig (1), Rig Arm; new IDs 4/4 unique; Rig (1).Copied -> Chest 1 (1), Outside -> Floor; Chest 1 (1) prefab e39c7875-4b68-45ac-ab27-f07c70e52132\nsame scene: Undo removes 4 objects, Redo restores the same IDs\ncut Rig (1): parent and child removed; one Undo restores both with their IDs\nSecondRoom: Rig, Rig Arm, Chest 1, Chest Lid; Rig.Copied -> pasted Chest 1, Rig.Outside -> PrefabWorkshop Floor (missing)\nInspector 1280px: Outside 'Missing object or component' at x=1130.0 w=142.0, label x=1070.0; Copied 'Chest 1' at x=1130.0 w=142.0, label x=1070.0; other value columns x=1144,1217,1130\nSecondRoom: Undo removes the paste, Redo restores it\nsaved files: SecondRoom keeps the missing Outside reference and the prefab link; PrefabWorkshop has Rig, Rig (1), Chest 1 (1)\nScene Play: copied 1 chest 1 outside 0\nOutside repointed to North Wall in the Inspector and saved\nScene Play: copied 1 chest 1 outside 1\n",
+  "seconds": 124
+ }
+}

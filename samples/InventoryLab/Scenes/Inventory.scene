@@ -439,6 +439,9 @@ objects:
     size: 19
     color: "#F1EEDA"
     wrap: true
+    richText: true
+    revealRate: 30
+    icons: {herb: 5c1a7e2e-3b0d-4f53-9a51-6e0b7c11a503}
 - id: 9eb7ca43-8a03-5fdc-80a5-65f1a4920e0e
   name: "Answer 1"
   parentId: 68ed6837-e9f4-5ed6-a614-b36f3e9485d8

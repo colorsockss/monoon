@@ -21,7 +21,7 @@ Linux는 Debian x64의 X11 가상 디스플레이와 기본 SDL 렌더러, Windo
 
 ## 배포 에디터 조작 회귀
 
-게임 창과 별도로 세 OS의 배포 에디터를 검사한다. Apple Silicon Mac에서는 Xcode UI 테스트가 원래 배치, 편집, 재열기를 각각 새 `MoNoon.app` 프로세스와 저장 폴더에서 실행한다. 저장소 루트에서 다음 명령을 실행한다.
+게임 창과 별도로 macOS와 Windows의 배포 에디터를 검사한다(Linux 에디터는 2026-11-23부터 지원하지 않는다). Apple Silicon Mac에서는 Xcode UI 테스트가 원래 배치, 편집, 재열기를 각각 새 `MoNoon.app` 프로세스와 저장 폴더에서 실행한다. 저장소 루트에서 다음 명령을 실행한다.
 
 ```sh
 engine/scripts/build-editor-mac.sh
@@ -32,17 +32,12 @@ engine/tests/KeyRoom.Desktop/mac/verify.sh editor/MoNoon.app samples/dist/KeyRoo
 
 결과 경로는 새 디렉터리여야 한다. macOS 결과에는 씬과 편집·재열기 F5 파일이 남는다. Xcode에서 `ScenePlay.xcresult`를 열면 단계별 캡처와 원래 위치의 F5 저장도 확인할 수 있다.
 
-Windows·Linux에서는 배포 압축을 푼 뒤, Pillow가 있는 Python 3으로 아래 명령을 실행한다. 두 검사 스크립트는 같은 폴더에 둔다. 화면 배율 100%, 가려지지 않은 기본 크기의 에디터 창을 사용한다. Linux X11에서는 xdotool이 필요하다.
+Windows에서는 배포 압축을 푼 뒤, Pillow가 있는 Python 3으로 아래 명령을 실행한다. 두 검사 스크립트는 같은 폴더에 둔다. 화면 배율 100%, 가려지지 않은 기본 크기의 에디터 창을 사용한다.
 
 ```powershell
 python verify_editor.py .\editor\MoNoon.exe .\KeyRoom-sample.zip .\editor-result
 ```
 
-```sh
-SDL_AUDIO_DRIVER=dummy xvfb-run -a -s "-screen 0 1400x900x24" \
-  python3 verify_editor.py ./editor/MoNoon ./KeyRoom-sample.zip ./editor-result
-```
-
 검사기는 새 결과 폴더 안에 샘플을 풀고 배포 실행 파일을 두 번 시작한다. 원래 배치는 이동 전 F5 저장에 `key: false`를 기록해야 한다. 검사기가 Inspector로 Player X를 190으로 바꾼 뒤 Ctrl+S를 보내면 씬 파일과 다음 실행의 Play에 그 값이 반영되어야 한다. 각 실행의 저장 폴더와 창 캡처를 결과 폴더에서 대조할 수 있다.
 
-Windows·Linux 검사기에 `--expected-save`와 [Mac 기준 파일](../results/editor-packaging/collected.save)의 경로를 주면 편집 직후와 재시작 후의 F5 저장을 각각 바이트 단위로 비교한다. 불일치하면 로그에 실제값과 기준값의 바이트 수와 SHA-256이 남는다.
+Windows 검사기에 `--expected-save`와 [Mac 기준 파일](../results/editor-packaging/collected.save)의 경로를 주면 편집 직후와 재시작 후의 F5 저장을 각각 바이트 단위로 비교한다. 불일치하면 로그에 실제값과 기준값의 바이트 수와 SHA-256이 남는다.

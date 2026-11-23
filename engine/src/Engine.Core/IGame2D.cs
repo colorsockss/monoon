@@ -38,6 +38,12 @@ public interface ICanvas2D
 
     void DrawShader(ShaderClip shader, int frame, RectangleF local, Matrix3x2 matrix, Color tint, bool additive) =>
         throw new NotSupportedException("This canvas does not implement procedural sprites.");
+    // A ribbon of quads: edges holds a left/right vertex pair per colour; colours blend between neighbouring pairs.
+    void FillStrip(ReadOnlySpan<Vector2> edges, ReadOnlySpan<Color> colors, Matrix3x2 matrix) =>
+        throw new NotSupportedException("This canvas does not implement line strips.");
+    // Screen colour adjustment: the world drawn between these calls is multiplied by a colour, then lifted toward white.
+    void BeginColorAdjust() => throw new NotSupportedException("This canvas does not implement screen colour adjustment.");
+    void EndColorAdjust(Color multiply, byte lift) { }
     IDisposable PushClip(RectangleF area) => throw new NotSupportedException("This canvas does not implement camera viewport clipping.");
     bool DrawFiltered(SpriteFilter filter, RectangleF local, Matrix3x2 matrix, Color tint) =>
         throw new NotSupportedException("This canvas does not support sprite masks.");
@@ -58,6 +64,21 @@ public interface ICanvas2D
     void FillRectangle(RectangleF rectangle, Color color);
     void DrawSquareSprite(RectangleF destination, Color color) => FillRectangle(destination, color);
     float MeasureText(string text,float size)=>System.Globalization.StringInfo.ParseCombiningCharacters(text).Length*size*.7f;
+    /// <summary>
+    /// Writes, for each UTF-16 char of <paramref name="text"/>, the right edge of the glyph cluster holding it when the whole
+    /// string is drawn at <paramref name="size"/>. Desktop canvases read SDL_ttf's shaped positions; this default adds up text elements.
+    /// </summary>
+    void MeasureTextEnds(string text, float size, Span<float> ends)
+    {
+        float x = 0;
+        var elements = System.Globalization.StringInfo.GetTextElementEnumerator(text);
+        while (elements.MoveNext())
+        {
+            string element = elements.GetTextElement();
+            x += MeasureText(element, size);
+            ends.Slice(elements.ElementIndex, element.Length).Fill(x);
+        }
+    }
     void DrawText(string text, float x, float y, float size, Color color) => PixelText.Draw(this, text, x, y, size / 8, color);
     bool DrawTile(string path, RectangleF destination, SpriteRegion source, string layout) =>
         layout == TileGrid.Orthogonal ? DrawSprite(path, destination, source) :

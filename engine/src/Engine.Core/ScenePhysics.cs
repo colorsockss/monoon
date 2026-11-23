@@ -51,11 +51,31 @@ public sealed partial class SceneGame : IPhysics2D
             local.Inflate(.001f,.001f);
             foreach (var (cell,id) in map.InView(Vector2.Zero,local))
             {
-                if (TileCollision.WorldShape(body.Palette.Tiles[id], map.Bounds(Vector2.Zero,cell), map.Layout, m) is not {} shape) continue;
+                if (TileShape(body,cell,id,m) is not {} shape) continue;
                 if (BoundsMeet(search,shape.Bounds)) yield return new(shape,new(body.Id,map.CollisionLayer,false,cell));
             }
         }
     }
+    // The exact world-space shape per (layer, cell), not a translated local one: translating rounds differently.
+    // A different tile ID in the cell rebuilds its entry; a new layer pose, layout or cell size clears the layer.
+    private static Shape2D? TileShape(Body body, Point cell, int id, Matrix3x2 m)
+    {
+        var map = body.Map!;
+        var cache = body.TileShapes ??= [];
+        if (!SameBits(body.TileShapePose, m) || body.TileShapeLayout != map.Layout || body.TileShapeSize != map.CellSize ||
+            cache.Count >= 1 << 16) // shortcut: a huge streamed world refills its visible cells after this cap
+        {
+            cache.Clear();
+            (body.TileShapePose, body.TileShapeLayout, body.TileShapeSize) = (m, map.Layout, map.CellSize);
+        }
+        if (cache.TryGetValue(cell, out var entry) && entry.Tile == id) return entry.Shape;
+        var shape = TileCollision.WorldShape(body.Palette!.Tiles[id], map.Bounds(Vector2.Zero,cell), map.Layout, m);
+        cache[cell] = (id, shape);
+        return shape;
+    }
+    private static bool SameBits(Matrix3x2 a, Matrix3x2 b) =>
+        System.Runtime.InteropServices.MemoryMarshal.AsBytes(new ReadOnlySpan<Matrix3x2>(in a))
+            .SequenceEqual(System.Runtime.InteropServices.MemoryMarshal.AsBytes(new ReadOnlySpan<Matrix3x2>(in b)));
     private static bool Allows(Body body, int layer, uint otherMask, uint mask, Guid? ignore, int first, int last,
         int movingLayer, Body? ignoreOwner) => body.Active && body.Id != ignore && (mask & (1u << layer)) != 0 &&
         (movingLayer < 0 || (otherMask & (1u << movingLayer)) != 0) && (body.Index < first || body.Index >= last) &&
@@ -67,6 +87,8 @@ public sealed partial class SceneGame : IPhysics2D
         var end=s.Bounds; end.Offset(travel.X,travel.Y);
         return RectangleF.Union(s.Bounds,end);
     }
+    // Hits within 1e-4 px of each other are a tie: Box2D's refined contact times carry float rounding.
+    private static float TieFraction(Vector2 travel) => 1e-4f / Math.Max(travel.Length(), 1e-6f);
     // Stable ties, including cells enumerated from sparse map chunks.
     private static int Compare(PhysicsTarget a,PhysicsTarget b)
     {
@@ -107,7 +129,7 @@ public sealed partial class SceneGame : IPhysics2D
         foreach (var o in Candidates(SweptBounds(shape,travel),filter?.Mask??uint.MaxValue,filter?.IncludeTriggers??false,filter?.Ignore,measure:true))
         {
             var hit=CollisionGeometry.Cast(shape,travel,o.Shape,true,false);
-            if (hit is not {} h || best is {} b && (h.Time>b.Fraction || h.Time==b.Fraction && Compare(o.Target,b.Target)>=0)) continue;
+            if (hit is not {} h || best is {} b && (h.Time>b.Fraction+TieFraction(travel) || h.Time>=b.Fraction-TieFraction(travel) && Compare(o.Target,b.Target)>=0)) continue;
             best=new(o.Target,h.Time,h.Time*travel.Length(),
                 CollisionGeometry.ContactPoint(shape.Translated(travel*h.Time),o.Shape,h.Normal),h.Normal);
         }

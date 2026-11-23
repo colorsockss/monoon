@@ -14,7 +14,7 @@ python3 engine/tests/KeyRoom.PlayInspector/verify_play.py \
   /tmp/monoon-ui-layout --mac-input /tmp/monoon-ui-input
 ```
 
-Windows와 Linux는 같은 드라이버에 해당 플랫폼의 배포 에디터 경로를 넘기고 마지막 `--mac-input` 옵션을 생략한다. 검사는 결과 폴더에 풀어 놓은 KeyRoom 복사본을 사용한다. 설정 복원 뒤 `GameSettings`와 씬 파일을 최초 바이트와 비교한다. [데스크톱 입력 도구와 VM 실행 조건](../KeyRoom.PlayInspector/README.md)
+Windows는 같은 드라이버에 배포 에디터 경로를 넘기고 마지막 `--mac-input` 옵션을 생략한다. Linux 에디터는 2026-11-23부터 지원하지 않는다. 검사는 결과 폴더에 풀어 놓은 KeyRoom 복사본을 사용한다. 설정 복원 뒤 `GameSettings`와 씬 파일을 최초 바이트와 비교한다. [데스크톱 입력 도구와 VM 실행 조건](../KeyRoom.PlayInspector/README.md)
 
 Windows와 Linux의 화면 캡처는 가방의 네 변에서 안쪽 4개의 픽셀이 패널 색이고 바깥쪽 4개가 다른 색일 때 저장한다. 이렇게 해야 운영체제의 화면 합성이 늦어져 직전 해상도의 편집 화면이 남아 있는 프레임을 구분할 수 있다.
 

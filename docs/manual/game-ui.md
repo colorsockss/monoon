@@ -89,13 +89,35 @@ Project 패널에서 `.table`을 열고 행 키에 문구 ID, **Text** 형식의
 
 `ui.Preferences.Locale`을 바꾸면 키가 연결된 위젯은 그 프레임을 그릴 때 새 언어를 사용한다. 서식과 각 인자도 이때 함께 번역하므로, 가방 스크립트는 나침반 장착이나 열쇠 획득으로 표시할 키가 달라질 때만 다시 연결한다. 조회는 행마다 정확한 언어 태그, 상위 언어, 프로젝트의 대체 언어 순으로 진행하며 빈 셀을 건너뛴다. 해당 문구를 찾을 수 없으면 Inspector의 **Text** 또는 `Translate(key, fallback)`의 원문을 사용한다. 원문을 생략한 스크립트 호출은 키를 돌려준다. 기존 씬의 위젯별 **Locales**도 동작한다. [KeyRoom 가방 스크립트](../../samples/KeyRoom/Scripts/BagMenu.cs)
 
-**Project 패널 → + → Import Assets…**로 TTF·OTF를 추가한다. **UI Accessibility…**의 **Default font**를 지정하고 **+ Fallback font**로 대체 글꼴을 순서대로 추가한 뒤 **Save defaults**를 누른다. 엔진은 텍스트를 NFC로 정규화하고 글자마다 필요한 글리프를 가진 첫 번째 글꼴을 사용한다. 게임 글꼴을 지정하면 배포 대상 OS에 설치된 글꼴과 관계없이 같은 순서를 사용한다. 글꼴 에셋을 지정하지 않은 프로젝트는 기존 시스템 글꼴을 사용한다. Release와 Native AOT 내보내기에는 선택한 테이블, 글꼴, 같은 이름의 `.license` 파일이 함께 들어간다.
+**Project 패널 → + → Import Assets…**로 TTF·OTF를 추가한다. **UI Accessibility…**의 **Default font**를 지정하고 **+ Fallback font**로 대체 글꼴을 순서대로 추가한 뒤 **Save defaults**를 누른다. 엔진은 텍스트를 NFC로 정규화하고 글자마다 필요한 글리프를 가진 첫 번째 글꼴을 사용한다(SDL_ttf `TTF_AddFallbackFont`). 대체 글꼴의 글자도 기본 글꼴과 같은 밑선에 놓인다. 게임 글꼴을 지정하면 배포 대상 OS에 설치된 글꼴과 관계없이 같은 순서를 사용한다. 글꼴 에셋을 지정하지 않은 프로젝트는 기존 시스템 글꼴을 사용한다. Release와 Native AOT 내보내기에는 선택한 테이블, 글꼴, 같은 이름의 `.license` 파일이 함께 들어간다.
 
 KeyRoom에서 **I**로 가방을 열고 **L** 또는 언어 버튼으로 영어와 한국어를 전환한다. 가방을 닫고 시작점에서 왼쪽의 열쇠를 주운 뒤 다시 열면 같은 아이템 이름이 의뢰 완료 문구에도 쓰인다. 샘플의 기본 글꼴은 고운돋움 부분 글꼴이며 ‘가방’을 포함한다. ‘휴대용’의 ‘휴’와 ‘황동’의 ‘황’은 대체 글꼴인 나눔고딕에서 가져온다. 두 글꼴은 SIL Open Font License로 배포된다. [고운돋움 원본](https://github.com/google/fonts/tree/main/ofl/gowundodum) · [나눔고딕 원본](https://github.com/google/fonts/tree/main/ofl/nanumgothic)
 
+## 서식 있는 텍스트와 글자 단위 표시
+
+**UI Text → Rich text tags**를 켜면 **Text**, 번역 테이블 문구, `SetText`로 넣은 문자열에서 아래 태그를 읽는다. 태그를 닫지 않거나 모르는 태그·색·아이콘 이름은 글자 그대로 표시되어 오타를 찾을 수 있다. 끄면 `<`와 `>`는 일반 글자다.
+
+| 태그 | 결과 | 예시 |
+| --- | --- | --- |
+| `<color=#RRGGBB>…</color>` | 글자색. 나머지는 **Color**를 쓴다 | `<color=#9BE27A>새 잎</color>` |
+| `<b>…</b>` | 굵게 | `<b>약초상</b>` |
+| `<size=N>…</size>` | 글자 크기(px). **Size**와 같은 단위이며 표시 설정의 글자 배율을 따른다 | `<size=24>세 포기</size>` |
+| `<icon=name>` | **Icons**에 연결한 PNG를 글자 크기로 그린다 | `<icon=herb>` |
+
+**Icons**에는 한 줄에 `이름=프로젝트 PNG 경로`(예: `herb=Assets/Icons/Herb.png`)를 쓴다. 저장 시 에셋 ID로 바뀌므로 PNG를 옮겨도 연결이 유지되고, 내보내기에 해당 PNG가 들어간다. 한 줄에 크기가 다른 글자가 섞이면 가장 큰 글자에 맞춰 줄 높이를 정하고 글자 밑선을 맞춘다. **Wrap lines**를 켠 서식 텍스트는 일반 텍스트처럼 띄어쓰기에서 줄을 바꾼다. 한국어는 어절 단위로 넘어가고, 한 줄보다 긴 어절은 글자 사이에서 끊되 마침표·쉼표·닫는 괄호로 줄을 시작하지 않는다.
+
+**Reveal /s**에 초당 글자 수를 넣으면 표시 문구가 바뀔 때마다 첫 글자부터 한 자씩 나타난다. 띄어쓰기와 아이콘도 한 글자로 센다. 줄 배치는 처음부터 전체 문장 기준이라 표시 도중 줄이 바뀌지 않는다. 같은 문구를 다시 넣으면 이어서 표시하고, 위젯이나 부모 패널을 숨겼다가 보이면 처음부터 다시 표시한다. 진행은 UI 시간으로 계산하므로 일시 정지 중에도 진행되고 입력 재생에서 같은 프레임에 같은 글자 수가 나온다. Scene 편집 화면은 전체 문구를 보여 준다.
+
+```csharp
+if (tick.Input.Pressed("Skip")) tick.Ui.SkipReveal(Line);   // 남은 글자를 한 번에 표시, 이미 끝났으면 false
+var progress = tick.Ui.RevealProgress(Line);               // Shown / Total / Complete
+```
+
+굵기와 크기는 같은 문구 텍스처로 만든다. 굵은 글자는 같은 텍스처를 글자 크기의 1/20만큼 옮겨 한 번 더 그리고, 크기 태그는 32 px로 그린 문구를 늘이거나 줄인다. 32 px보다 큰 크기는 확대되어 흐려질 수 있다. 글자 위치와 줄 바꿈은 SDL_ttf가 HarfBuzz로 배치한 글자 묶음(`TTF_Text`)의 위치를 쓰므로, 커닝이 있는 문장에서도 색이 바뀌는 지점과 부분 표시의 경계가 실제 글자와 맞는다. 부분 표시는 이미 만든 문구 텍스처를 잘라 그리므로 글자가 늘어날 때마다 새 텍스처를 만들지 않는다. [InventoryLab 약초상 대화](dialogue.md#서식-있는-대사와-글자-단위-표시) · [검증 기록](../../engine/tests/results/rich-text/README.md)
+
 ## 플레이어 표시 설정과 탐색
 
-**Project → UI Accessibility…**에서 언어 태그, 글자 크기 **75–200%**, 고대비를 설정한다. 편집 모드의 **Save defaults**는 프로젝트의 `GameSettings`에 저장하고, **Apply in Play**는 현재 세션만 바꾼다. 게임 안에서도 `click.Ui.Preferences.Locale`, `TextScale`, `HighContrast`를 바꾸면 화면에 반영되고 씬을 전환해도 세션 동안 유지된다. 사용자별로 다음 실행에 복원하려면 [플레이어 저장 API](player-data.md)를 사용한다.
+**Project → UI Accessibility…**에서 언어 태그, 글자 크기 **75–200%**, 고대비를 설정한다. 편집 모드의 **Save defaults**는 프로젝트의 `GameSettings`에 저장하고, **Apply in Play**는 현재 세션만 바꾼다. 게임 안에서도 `click.Ui.Preferences.Locale`, `TextScale`, `HighContrast`를 바꾸면 화면에 반영되고 씬을 전환해도 세션 동안 유지된다. 사용자별로 다음 실행에 복원하려면 `Preferences.SaveTo(settings)`로 [플레이어 설정](player-data.md)에 쓰고 시작할 때 `LoadFrom(settings)`을 호출한다. 같은 객체의 `ShakeScale`, `FlashScale`, `Rumble`은 [화면 흔들림·깜빡임](cameras.md#흔들림과-깜빡임-줄이기)과 [게임패드 진동](input-actions.md#게임패드-진동과-마우스-커서)을 줄이거나 끈다.
 
 | 조작 | 키보드 | 게임패드 |
 | --- | --- | --- |

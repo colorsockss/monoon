@@ -26,6 +26,40 @@ KeyRoom의 [LootRules.cs](../../samples/KeyRoom/Scripts/Shared/LootRules.cs)는 
 
 부모와 자식을 함께 켜면 부모부터, 끄거나 제거하면 자식부터 처리한다. 같은 활성 상태를 두 번 지정해도 이벤트가 중복되지 않는다. 한 번도 실행하지 않은 씬(예: 리소스 준비가 실패한 전환 대상)은 생명주기를 시작하지 않는다.
 
+## 기다린 뒤 이어서 실행하기
+
+`IEnumerable<ScriptWait>`를 반환하는 메서드에 순서대로 할 일을 쓰고 `yield return`으로 기다릴 조건을 돌려준다. `objects.StartRoutine(소유 오브젝트 ID, 메서드())`는 첫 `yield return`까지 바로 실행하고, 나머지는 조건이 충족된 틱이나 프레임에 이어서 실행한다. `objects`는 콜백의 `life.Objects`, `tick.Objects`, `contact.Objects`, `message.Objects`다.
+
+KeyRoom의 [DoorLock](../../samples/KeyRoom/Scripts/DoorLock.cs)은 문이 열린 뒤 게임 시간 0.5초를 기다려 화면 위쪽에 **The door is open. Head east.**(한국어: **문이 열렸다. 동쪽으로 가자.**)를 띄운다.
+
+```csharp
+[GameEventHandler]
+public void Unlock(GameEventContext message)
+{
+    // 문 스프라이트와 충돌체를 바꾼 뒤
+    message.Objects.StartRoutine(message.ObjectId, ShowHint(message.Session));
+}
+
+private static IEnumerable<ScriptWait> ShowHint(SessionState session)
+{
+    yield return ScriptWait.Seconds(0.5);
+    session.Set("doorHint"); // Door hint UI의 showIf: doorHint가 표시된다.
+}
+```
+
+| 대기 | 이어서 실행하는 시점 |
+| --- | --- |
+| `ScriptWait.Seconds(초)` | 게임 시간이 지정한 만큼 흐른 첫 틱. 0.5초는 정확히 30틱이다. 정지 중에는 흐르지 않고 한 틱 진행만큼 흐르며 배속을 따른다. |
+| `ScriptWait.UiSeconds(초)` | UI 시간이 지정한 만큼 흐른 첫 화면 프레임. 정지·배속과 관계없이 실제 시간으로 흐른다. |
+| `ScriptWait.Frames(틱 수)` | 지정한 수의 게임 틱 뒤. 정지 중에는 세지 않는다. |
+| `ScriptWait.Until(() => 조건)` | 매 게임 틱 조건을 확인해 처음 참이 된 틱. |
+
+모든 대기는 시작한 틱보다 뒤에 끝나므로 `Frames(0)`과 `Seconds(0)`은 다음 틱에 이어진다. 게임 시간 대기는 스크립트 `FixedUpdate`와 접촉 이벤트 다음, 구조 변경 반영 전에 시작한 순서대로 이어진다. UI 시간 대기는 각 프레임의 `UpdateUi` 다음에 이어진다. 스레드를 쓰지 않으므로 Scene Play, Release, Native AOT가 같은 입력에서 같은 틱에 실행한다.
+
+소유 오브젝트나 부모가 꺼지거나 제거되면, 그리고 씬이 바뀌거나 Play가 끝나면 대기 중인 실행을 취소한다. 다시 켜도 이어지지 않으며 메서드의 `finally` 블록은 취소 시점에 실행된다. `StartRoutine`이 돌려준 `ScriptRoutine`의 `IsRunning`으로 진행 여부를 읽고 `Stop()`으로 직접 멈춘다. 꺼진 오브젝트로는 시작할 수 없다. 실행 중 예외가 나면 `DoorLock.ShowHint: 메시지` 형식으로 실행 오류를 알린다.
+
+**직접 확인하기** — KeyRoom을 Play하고 왼쪽으로 가서 열쇠를 얻는다. 0.5초 안에 **P**로 정지하면 안내가 나타나지 않는다. 정지한 채 **.**(마침표, 프로젝트의 **StepGame** 액션)을 누를 때마다 한 틱씩 진행되고, **P**로 재개하면 문이 열린 뒤 30틱째에 안내가 표시된다. 에디터 Scene Play에서는 도구 모음의 **Step**도 같은 동작을 한다. 열쇠를 얻은 직후 **F6**으로 문을 제거하면 안내가 표시되지 않는다. [세 실행 경로의 재생 기록](../../engine/tests/results/script-waits/README.md)
+
 ## 오브젝트 참조 목록
 
 컴포넌트에 `public Guid[] Choices = [];`를 선언한다. Hierarchy에서 오브젝트를 필드의 **Drop object here**에 놓으면 끝에 추가되고, 특정 행에 놓으면 그 행 앞에 추가된다. Inspector 안에서는 오브젝트 이름을 잡아 다른 행에 놓아 그 번호로 옮긴다. **−**는 해당 참조 한 개를 제거한다. 각 편집은 **Cmd+Z**(Windows·Linux는 **Ctrl+Z**) 한 번으로 되돌릴 수 있다.
@@ -135,6 +169,59 @@ dotnet build samples/KeyRoom/.monoon/ide/KeyRoom.Scripts.slnx
 ```
 
 Rider 등 .NET IDE에서는 솔루션을 열고 메뉴 상태줄의 MoNoon PID에 관리 디버거를 연결한 뒤 Play한다. VS Code에도 **Attach .NET debugger to MoNoon PID**가 있다. 이 Mac의 macOS 27.0.1에서는 VS Code와 Rider의 기본 PID 연결 도중 두 디버거가 종료됐다. 위에서 안내한 **Attach to MoNoon Scene Play**로 중단·조회·재개를 확인했다. [Mac 검증 기록](../../engine/tests/results/ide-debugging/README.md)
+
+## Play 중 스크립트 다시 불러오기
+
+에디터에서 Scene Play를 실행한 채 외부 에디터에서 게임 스크립트(`Scripts/`와 Project 패널에서 옮긴 `.cs`)를 저장하면 MoNoon이 약 0.75초 안에 변경을 감지한다. 백그라운드에서 다시 컴파일한 뒤 실행 중인 모든 동작을 새 코드의 인스턴스로 바꾸고 Console에 `Scripts reloaded: …`를 남긴다. 다음 게임 틱부터 새 코드가 실행된다.
+
+| 필드 | 다시 불러온 뒤 |
+| --- | --- |
+| 이름과 타입이 같은 필드 (공개·비공개, 자동 속성 포함) | 실행 중의 값을 유지한다. 초기값만 바꾼 필드도 실행 중의 값이 남는다. |
+| 프로젝트의 enum | 같은 이름의 멤버로 옮긴다. |
+| 다른 동작 인스턴스 참조, `ComponentReference<T>` | 새 인스턴스나 같은 오브젝트를 가리킨다. |
+| 새로 추가한 필드 | 코드의 초기값 또는 Inspector 값으로 시작한다. |
+| 삭제한 필드 | 버린다. |
+| 타입을 바꾼 필드, 옮길 수 없는 프로젝트 타입의 값(프로젝트 클래스 목록 등) | 기본값으로 되돌리고 Console에 경고를 남긴다. |
+
+다시 불러오기는 `OnCreate`·`OnEnable`을 다시 호출하지 않는다. 실행 중이던 [대기 루틴](#기다린-뒤-이어서-실행하기)은 모두 이전 코드이므로 중지하고 Console에 개수를 알린다. 새 코드가 루틴을 다시 시작하는 시점(예: 다음 충돌이나 버튼)에 새로 실행된다. 이벤트·람다 필드는 옮기지 않으며, 게임 정의 이벤트 연결은 새 인스턴스에 다시 연결된다. 스크립트가 직접 다른 객체의 C# 이벤트에 구독해 둔 처리기는 이전 코드로 남으므로 Stop 후 다시 Play한다.
+
+컴파일 오류가 나면 Play는 이전 코드로 계속 실행된다. Console에 `Script reload failed. Play keeps running the previous code.` 경고와 `./Scripts/파일.cs(줄,열): error …` 오류가 표시되고, 오류 줄을 더블클릭하면 외부 에디터가 해당 줄을 연다. 고쳐서 다시 저장하면 그때 다시 불러온다. 다시 불러오기는 에디터의 Scene Play 전용이다. Release·Native AOT 빌드에는 이 코드가 들어가지 않는다. [Mac 검증 기록](../../engine/tests/results/script-reload/README.md)
+
+## 게임 스크립트 테스트
+
+프로젝트 루트의 `Tests/` 폴더에 C# 테스트를 둔다. 테스트 파일은 `Scripts/`의 게임 스크립트와 한 어셈블리로 컴파일되므로 `PlayerMovement` 같은 게임 타입과 `internal` 공용 규칙을 그대로 쓸 수 있다. 공개 클래스의 공개 메서드에 `[GameTest("씬 경로")]`를 붙이고 `GameTestRun run` 하나를 받는다. 기다릴 일이 없으면 `void`, 기다리면 [대기](#기다린-뒤-이어서-실행하기)와 같은 `IEnumerable<ScriptWait>`를 반환한다. 테스트 메서드 안의 `ScriptWait.Frames`도 게임 틱을 센다.
+
+```csharp
+using System.Collections.Generic;
+using Engine.Core;
+
+public sealed class DoorTests
+{
+    [GameTest("Scenes/KeyRoom.scene")]
+    public IEnumerable<ScriptWait> KeyOpensDoorThenHintAfterHalfSecond(GameTestRun run)
+    {
+        run.Press("Left");
+        yield return ScriptWait.Until(() => run.Session.Has("key"));
+        run.Release("Left");
+        long opened = run.Time.TickCount;
+        run.Assert(!run.Objects.IsColliderEnabled(run.Find("Door")), "the key turns the door's collider off");
+        yield return ScriptWait.Until(() => run.Session.Has("doorHint"));
+        run.AreEqual(30L, run.Time.TickCount - opened, "ticks from opening to the hint");
+    }
+}
+```
+
+| `GameTestRun` | 용도 |
+| --- | --- |
+| `Press`, `Release`, `Tap`, `Click(x, y)` | 다음 프레임에 키나 논리 좌표 클릭을 넣는다. `Tap`은 한 프레임 뒤에 뗀다. 컨트롤 이름은 GameSettings와 같다. |
+| `Replay("Tests/이름.inputreplay")` | 플레이어 `--record-input`으로 기록한 입력을 다음 프레임부터 원래 프레임 간격으로 재생한다. 반환값을 `yield return`하면 재생이 끝날 때까지 기다린다. |
+| `Session`, `Time`, `Objects`, `World`, `SceneId`, `Frame` | 세션 플래그, 게임·UI 시간과 틱 수, 실행 중 오브젝트 조회, 현재 씬과 진행한 프레임 수를 읽는다. |
+| `Find(이름)`, `PositionOf(이름)`, `Script<T>(이름)` | 현재 씬에서 이름으로 오브젝트 ID, 월드 위치, 붙은 스크립트 인스턴스를 찾는다. |
+| `Assert(조건, 설명)`, `AreEqual(기대값, 실제값, 설명)` | 실패하면 테스트를 멈추고 설명과 프레임 번호를 출력한다. |
+
+KeyRoom의 상자·문 규칙은 [ChestTests.cs](../../samples/KeyRoom/Tests/ChestTests.cs)와 [DoorTests.cs](../../samples/KeyRoom/Tests/DoorTests.cs)에 있다. 저장소 루트에서 `./monoon test project samples/KeyRoom`으로 실행하고 출력과 종료 코드를 확인한다. [명령과 실패 출력](build.md#게임-스크립트-테스트)
+
+`Tests/`와 [에디터 확장](workspace.md#프로젝트-에디터-확장)의 `Editor/`는 게임 빌드와 Play에서 컴파일하지 않으므로 테스트 전용 API(`GameTestRun` 등)와 에디터 API는 게임 스크립트에서 사용할 수 없다. 외부 IDE용 `.monoon/ide/` 프로젝트에도 아직 포함되지 않는다.
 
 ## 기존 프로젝트와 빌드
 

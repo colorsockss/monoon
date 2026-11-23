@@ -8,8 +8,8 @@ internal readonly record struct MotionPath(Vector2 Start, Vector2 Bend, float Be
     public Vector2 At(float time)
     {
         if (time >= EndTime) return End;
-        if (time < BendTime) return Vector2.Lerp(Start, Bend, time / BendTime);
-        return Vector2.Lerp(Bend, End, (time - BendTime) / (EndTime - BendTime));
+        if (time < BendTime) return Affine2D.Lerp(Start, Bend, time / BendTime);
+        return Affine2D.Lerp(Bend, End, (time - BendTime) / (EndTime - BendTime));
     }
 
     public float NextBreak(float time) => time < BendTime ? BendTime : time < EndTime ? EndTime : 1;

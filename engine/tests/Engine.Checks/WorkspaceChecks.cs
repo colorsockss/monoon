@@ -59,17 +59,19 @@ internal static class WorkspaceChecks
             SceneRecovery.Remove(orphan.Path);
         }
 
-        string extension = Path.Combine(source, "Editor", "KeyRoom.tools");
-        var dependencies = WorkspaceArchives.Dependencies(source, [extension]);
-        Check(dependencies.Contains("Assets/Coin.prefab") && dependencies.Contains("Assets/Coin.png.meta") &&
+        string extension = Path.Combine(source, "Editor", "KeyRoomTools.cs");
+        var dependencies = WorkspaceArchives.Dependencies(source, [extension, Path.Combine(source, "Assets", "Coin.prefab")]);
+        Check(dependencies.Contains("Editor/KeyRoomTools.cs") && !dependencies.Contains("Editor/KeyRoomTools.cs.meta") &&
+            dependencies.Contains("Assets/Coin.prefab") && dependencies.Contains("Assets/Coin.png.meta") &&
             dependencies.Contains("Assets/Loot.table") && dependencies.Contains("Scripts/CollectCoin.cs") && !dependencies.Contains("Scenes/KeyRoom.scene"),
-            "package follows editor command, prefab, sprite, table and scripts");
+            "package carries the editor extension source with the prefab, sprite, table and scripts");
         var package = Path.Combine(workspace, "Coin.monopackage");
         WorkspaceArchives.Export(source, package, WorkspaceArchives.Package, dependencies);
         var destRoot = Directory.CreateDirectory(Path.Combine(workspace, "PackageTarget")).FullName;
         var added = WorkspaceArchives.Install(package, destRoot, WorkspaceArchives.Package);
         Check(added.Length == dependencies.Count && WorkspaceArchives.Install(package, destRoot, WorkspaceArchives.Package).Length == 0 &&
-            WorkspaceArchives.Commands(destRoot).Single().Label == "Place Coin", "install package and repeat with stable IDs");
+            File.Exists(Path.Combine(destRoot, "Editor", "KeyRoomTools.cs")) && !new ProjectScripts(destRoot).Locations().Values.Any(p => p.StartsWith("Editor/")),
+            "install package and repeat with stable IDs; the extension stays out of the game scripts");
         var collision = Path.Combine(destRoot, "Assets", "Coin.prefab");
         File.AppendAllText(collision, "\n# External change\n");
         try { WorkspaceArchives.Install(package, destRoot, WorkspaceArchives.Package); throw new Exception("Package conflict accepted"); }

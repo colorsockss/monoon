@@ -1,0 +1,12 @@
+using System.Collections.Generic;
+using Engine.Core;
+
+// Version 2, saved while Scene Play runs: counts 1000 per tick, Speed became an int, Label is new.
+public sealed class ReloadProbe : GameBehaviour
+{
+    public int Ticks;
+    public int Speed = 3;
+    public string Version = "v2";
+    public string Label = "added in v2";
+    public override void FixedUpdate(ScriptTick tick) => Ticks += 1000;
+}

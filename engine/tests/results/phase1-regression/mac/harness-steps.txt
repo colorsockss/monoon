@@ -1,0 +1,332 @@
+=== PlatformerLab.Joints-prepare 20:42:16
+OK   PlatformerLab.Joints-prepare
+=== PlatformerLab.Joints-build 20:42:16
+OK   PlatformerLab.Joints-build
+=== PlatformerLab.Joints-release 20:42:38
+OK   PlatformerLab.Joints-release
+=== PlatformerLab.Joints-aot 20:42:39
+OK   PlatformerLab.Joints-aot
+=== PlatformerLab.Joints-probe 20:42:39
+OK   PlatformerLab.Joints-probe
+=== PlatformerLab.Joints-sceneplay 20:42:43
+OK   PlatformerLab.Joints-sceneplay
+=== PlatformerLab.Joints-compare 20:42:50
+OK   PlatformerLab.Joints-compare
+=== PlatformerLab.TileCollision-prepare 20:42:50
+OK   PlatformerLab.TileCollision-prepare
+=== PlatformerLab.TileCollision-build 20:42:50
+OK   PlatformerLab.TileCollision-build
+=== PlatformerLab.TileCollision-release 20:43:11
+OK   PlatformerLab.TileCollision-release
+=== PlatformerLab.TileCollision-aot 20:43:12
+OK   PlatformerLab.TileCollision-aot
+=== PlatformerLab.TileCollision-probe 20:43:12
+OK   PlatformerLab.TileCollision-probe
+=== PlatformerLab.TileCollision-sceneplay 20:43:13
+OK   PlatformerLab.TileCollision-sceneplay
+=== PlatformerLab.TileCollision-compare 20:43:17
+OK   PlatformerLab.TileCollision-compare
+=== PlatformerLab.Paths-prepare 20:43:17
+OK   PlatformerLab.Paths-prepare
+=== PlatformerLab.Paths-build 20:43:17
+OK   PlatformerLab.Paths-build
+=== PlatformerLab.Paths-release 20:43:37
+OK   PlatformerLab.Paths-release
+=== PlatformerLab.Paths-aot 20:43:38
+OK   PlatformerLab.Paths-aot
+=== PlatformerLab.Paths-probe 20:43:38
+OK   PlatformerLab.Paths-probe
+=== PlatformerLab.Paths-sceneplay 20:43:40
+OK   PlatformerLab.Paths-sceneplay
+=== PlatformerLab.Paths-compare 20:43:53
+OK   PlatformerLab.Paths-compare
+=== BarrageLab.Lines-prepare 20:43:53
+OK   BarrageLab.Lines-prepare
+=== BarrageLab.Lines-build 20:43:53
+OK   BarrageLab.Lines-build
+=== BarrageLab.Lines-release 20:44:13
+OK   BarrageLab.Lines-release
+=== BarrageLab.Lines-aot 20:44:14
+OK   BarrageLab.Lines-aot
+=== BarrageLab.Lines-probe 20:44:15
+OK   BarrageLab.Lines-probe
+=== BarrageLab.Lines-sceneplay 20:44:16
+OK   BarrageLab.Lines-sceneplay
+=== BarrageLab.Lines-compare 20:44:19
+OK   BarrageLab.Lines-compare
+=== waits-prepare 20:44:19
+OK   waits-prepare
+=== waits-build 20:44:19
+OK   waits-build
+=== waits-release 20:44:40
+OK   waits-release
+=== waits-aot 20:44:41
+OK   waits-aot
+=== waits-probe 20:44:41
+OK   waits-probe
+=== waits-sceneplay 20:44:42
+OK   waits-sceneplay
+=== waits-compare 20:44:45
+OK   waits-compare
+=== test-project 20:44:45
+OK   test-project
+=== rt-prepare 20:44:48
+OK   rt-prepare
+=== rt-build 20:44:48
+OK   rt-build
+=== rt-release 20:45:11
+OK   rt-release
+=== rt-aot 20:45:13
+OK   rt-aot
+=== rt-probe 20:45:14
+OK   rt-probe
+=== rt-sceneplay 20:45:15
+OK   rt-sceneplay
+=== rt-compare 20:45:22
+OK   rt-compare
+=== gt-probe 20:45:22
+OK   gt-probe
+=== gt-KeyRoom-build 20:45:23
+OK   gt-KeyRoom-build
+=== gt-KeyRoom-release 20:45:46
+OK   gt-KeyRoom-release
+=== gt-KeyRoom-aot 20:45:47
+OK   gt-KeyRoom-aot
+=== gt-KeyRoom-sceneplay 20:45:47
+OK   gt-KeyRoom-sceneplay
+=== gt-KeyRoom-compare 20:45:51
+OK   gt-KeyRoom-compare
+=== gt-PlatformerLab-build 20:45:51
+OK   gt-PlatformerLab-build
+=== gt-PlatformerLab-release 20:46:14
+OK   gt-PlatformerLab-release
+=== gt-PlatformerLab-aot 20:46:15
+OK   gt-PlatformerLab-aot
+=== gt-PlatformerLab-sceneplay 20:46:15
+OK   gt-PlatformerLab-sceneplay
+=== gt-PlatformerLab-compare 20:46:19
+OK   gt-PlatformerLab-compare
+=== audio-ci 20:46:19
+FAIL audio-ci (see /private/tmp/claude-501/-Users-paare-codex-project-brutal-engine/d9b5815d-691b-46f7-b17a-6ed9a224a15b/scratchpad/p1reg/h/audio-ci.log)
+=== audio-probe 20:46:55
+OK   audio-probe
+=== audio-sceneplay 20:46:56
+OK   audio-sceneplay
+=== fx-rumble 20:47:05
+OK   fx-rumble
+=== fx-probe 20:47:05
+OK   fx-probe
+=== fx-build 20:47:06
+OK   fx-build
+=== fx-verify 20:47:27
+OK   fx-verify
+=== fx-replay-release 20:56:18
+OK   fx-replay-release
+=== fx-replay-aot 20:56:19
+OK   fx-replay-aot
+=== fx-replay-compare 20:56:20
+OK   fx-replay-compare
+=== ase-prepare 20:56:20
+OK   ase-prepare
+=== ase-build 20:56:20
+OK   ase-build
+=== ase-release 20:56:39
+OK   ase-release
+=== ase-aot 20:56:39
+OK   ase-aot
+=== ase-forbidden-release 20:56:40
+OK   ase-forbidden-release
+=== ase-forbidden-aot 20:56:40
+OK   ase-forbidden-aot
+=== ase-probe 20:56:40
+OK   ase-probe
+=== ase-sceneplay 20:56:41
+OK   ase-sceneplay
+=== cp-prepare 20:56:43
+OK   cp-prepare
+=== cp-probe 20:56:43
+OK   cp-probe
+=== cp-editor 20:56:44
+OK   cp-editor
+=== cp-build 20:56:49
+OK   cp-build
+=== cp-release 20:57:09
+OK   cp-release
+=== cp-aot 20:57:09
+OK   cp-aot
+=== cp-forbidden-release 20:57:10
+OK   cp-forbidden-release
+=== cp-forbidden-aot 20:57:10
+OK   cp-forbidden-aot
+=== fr-prepare 20:57:10
+OK   fr-prepare
+=== fr-probe 20:57:10
+OK   fr-probe
+=== fr-editor 20:57:11
+OK   fr-editor
+=== fr-build 20:57:16
+OK   fr-build
+=== fr-release 20:57:36
+OK   fr-release
+=== fr-aot 20:57:37
+OK   fr-aot
+=== KeyRoom.ScriptReload-probe 20:57:37
+OK   KeyRoom.ScriptReload-probe
+=== KeyRoom.ScriptReload-editor 20:57:38
+OK   KeyRoom.ScriptReload-editor
+=== KeyRoom.EditorExtensions-probe 20:57:44
+OK   KeyRoom.EditorExtensions-probe
+=== KeyRoom.EditorExtensions-editor 20:57:45
+OK   KeyRoom.EditorExtensions-editor
+=== KeyRoom.EditorDocking-probe 20:58:15
+OK   KeyRoom.EditorDocking-probe
+=== KeyRoom.EditorDocking-editor 20:58:16
+OK   KeyRoom.EditorDocking-editor
+=== KeyRoom.EditorTheme-probe 20:59:10
+OK   KeyRoom.EditorTheme-probe
+=== KeyRoom.EditorTheme-editor 20:59:11
+OK   KeyRoom.EditorTheme-editor
+=== KeyRoom.EditorPanelsDetail-probe 20:59:26
+OK   KeyRoom.EditorPanelsDetail-probe
+=== KeyRoom.EditorPanelsDetail-editor 20:59:27
+OK   KeyRoom.EditorPanelsDetail-editor
+=== rebind-prepare 21:00:02
+OK   rebind-prepare
+=== rebind-build 21:00:02
+OK   rebind-build
+=== rebind-release 21:00:22
+OK   rebind-release
+=== rebind-aot 21:00:23
+OK   rebind-aot
+=== rebind-probe 21:00:24
+OK   rebind-probe
+=== rebind-sceneplay 21:00:25
+OK   rebind-sceneplay
+=== prefab-prepare 21:00:29
+OK   prefab-prepare
+=== prefab-probe 21:00:30
+OK   prefab-probe
+=== prefab-editor 21:00:31
+OK   prefab-editor
+=== prefab-build 21:00:33
+OK   prefab-build
+=== prefab-release 21:00:54
+OK   prefab-release
+=== prefab-aot 21:00:54
+OK   prefab-aot
+=== keys-prepare 21:00:55
+OK   keys-prepare
+=== keys-probe 21:00:55
+OK   keys-probe
+=== keys-editor 21:00:56
+OK   keys-editor
+=== groups-probe 21:01:00
+OK   groups-probe
+=== groups-package 21:01:01
+OK   groups-package
+=== groups 21:01:01
+OK   groups
+=== inv-build 21:01:06
+OK   inv-build
+=== list-release 21:01:28
+OK   list-release
+=== list-aot 21:01:29
+OK   list-aot
+=== inv-checkpoints 21:01:30
+OK   inv-checkpoints
+=== inv-replay 21:01:34
+OK   inv-replay
+=== inv-build-guest 21:01:37
+OK   inv-build-guest
+=== inv-incr-cli 21:02:05
+OK   inv-incr-cli
+=== inv-incr-prepare 21:02:06
+OK   inv-incr-prepare
+=== inv-incr 21:02:06
+OK   inv-incr
+=== SeedLab.TileTerrain-prepare 21:02:18
+OK   SeedLab.TileTerrain-prepare
+=== SeedLab.TileTerrain-build 21:02:18
+OK   SeedLab.TileTerrain-build
+=== SeedLab.TileTerrain-release 21:02:38
+OK   SeedLab.TileTerrain-release
+=== SeedLab.TileTerrain-aot 21:02:38
+OK   SeedLab.TileTerrain-aot
+=== SeedLab.TileTerrain-probe 21:02:39
+OK   SeedLab.TileTerrain-probe
+=== SeedLab.TileTerrain-sceneplay 21:02:40
+OK   SeedLab.TileTerrain-sceneplay
+=== SeedLab.GridNavigation-prepare 21:02:42
+OK   SeedLab.GridNavigation-prepare
+=== SeedLab.GridNavigation-build 21:02:43
+OK   SeedLab.GridNavigation-build
+=== SeedLab.GridNavigation-release 21:03:02
+OK   SeedLab.GridNavigation-release
+=== SeedLab.GridNavigation-aot 21:03:03
+OK   SeedLab.GridNavigation-aot
+=== SeedLab.GridNavigation-probe 21:03:03
+OK   SeedLab.GridNavigation-probe
+=== SeedLab.GridNavigation-sceneplay 21:03:04
+OK   SeedLab.GridNavigation-sceneplay
+=== col-build 21:03:06
+OK   col-build
+=== prof-release 21:03:47
+OK   prof-release
+=== prof-aot 21:03:49
+OK   prof-aot
+=== prof-probe 21:03:51
+OK   prof-probe
+=== prof-sceneplay 21:03:52
+OK   prof-sceneplay
+=== spatial-release 21:04:06
+OK   spatial-release
+=== spatial-aot 21:04:06
+OK   spatial-aot
+=== split-prepare 21:04:07
+OK   split-prepare
+=== split-build 21:04:07
+OK   split-build
+=== split-release 21:04:27
+OK   split-release
+=== split-aot 21:06:06
+OK   split-aot
+=== split-probe 21:07:40
+OK   split-probe
+=== split-sceneplay 21:07:41
+OK   split-sceneplay
+=== perf-probe 21:08:50
+OK   perf-probe
+=== editorperf 21:08:51
+OK   editorperf
+=== barrage-build 21:10:23
+OK   barrage-build
+=== barrage-release 21:10:42
+OK   barrage-release
+=== barrage-aot 21:10:46
+OK   barrage-aot
+=== world-ci 21:10:48
+OK   world-ci
+=== pkg-mac-release 21:11:15
+OK   pkg-mac-release
+=== pkg-mac-aot 21:11:32
+OK   pkg-mac-aot
+=== pkg-win 21:11:57
+OK   pkg-win
+=== pkg-linux 21:12:02
+OK   pkg-linux
+=== sign-release-app 21:12:07
+OK   sign-release-app
+=== sign-release-zip 21:12:07
+OK   sign-release-zip
+=== sign-aot-app 21:12:07
+OK   sign-aot-app
+=== sign-aot-zip 21:12:07
+OK   sign-aot-zip
+=== replay-signed 21:12:07
+OK   replay-signed
+=== replay-zip-extracted 21:12:11
+OK   replay-zip-extracted
+=== pkg-listing 21:12:14
+OK   pkg-listing
+=== forbidden files in every build output
+OK   forbidden: none

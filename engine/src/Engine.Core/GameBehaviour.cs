@@ -161,8 +161,8 @@ public readonly struct ScriptTick
     public Guid ObjectId => body.Id;
     public Vector2 Position => body.Position;
     public Matrix3x2 WorldMatrix => body.MatrixAt(body.Position);
-    public Vector2 LocalToWorld(Vector2 point) => Vector2.Transform(point, WorldMatrix);
-    public Vector2 WorldToLocal(Vector2 point) => Vector2.Transform(point, Affine2D.Inverse(WorldMatrix));
+    public Vector2 LocalToWorld(Vector2 point) => Affine2D.Transform(point, WorldMatrix);
+    public Vector2 WorldToLocal(Vector2 point) => Affine2D.Transform(point, Affine2D.Inverse(WorldMatrix));
     public GameInput Input { get; }
     public Vector2 Direction => Input.Move;
     public float DeltaTime { get; }

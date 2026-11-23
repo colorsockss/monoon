@@ -1,0 +1,97 @@
+// Fused vs unfused Affine2D helpers: codegen probe (DOTNET_JitDisasm / ILC JitDisasm) and micro-benchmark.
+using System.Diagnostics;
+using System.Numerics;
+using System.Runtime.CompilerServices;
+using Engine.Core;
+
+static class Fused
+{
+    public static Vector2 Transform(Vector2 p, Matrix3x2 m) => TransformNormal(p, m) + m.Translation;
+    public static Vector2 TransformNormal(Vector2 v, Matrix3x2 m) =>
+        new(MathF.FusedMultiplyAdd(m.M21, v.Y, m.M11 * v.X), MathF.FusedMultiplyAdd(m.M22, v.Y, m.M12 * v.X));
+    public static Vector2 Lerp(Vector2 a, Vector2 b, float t) =>
+        new(MathF.FusedMultiplyAdd(a.X, 1 - t, b.X * t), MathF.FusedMultiplyAdd(a.Y, 1 - t, b.Y * t));
+}
+
+static class Vec
+{
+    public static Vector2 Transform(Vector2 p, Matrix3x2 m) => TransformNormal(p, m) + m.Translation;
+    public static Vector2 TransformNormal(Vector2 v, Matrix3x2 m) => m.X * v.X + m.Y * v.Y;
+    public static Vector2 Lerp(Vector2 a, Vector2 b, float t) => a * (1 - t) + b * t;
+}
+
+static class Scalar // first draft: per-component separate multiply and add
+{
+    public static Vector2 Transform(Vector2 p, Matrix3x2 m) => new Vector2(m.M11 * p.X + m.M21 * p.Y, m.M12 * p.X + m.M22 * p.Y) + m.Translation;
+    public static Vector2 Lerp(Vector2 a, Vector2 b, float t) => new(a.X * (1 - t) + b.X * t, a.Y * (1 - t) + b.Y * t);
+}
+
+static class Program
+{
+    const int N = 4096;
+    static readonly Vector2[] P = new Vector2[N];
+    static readonly Matrix3x2[] M = new Matrix3x2[N];
+    static readonly float[] T = new float[N];
+
+    // Non-inlined wrappers so the disassembly shows each helper's body as callers see it after inlining.
+    [MethodImpl(MethodImplOptions.NoInlining)] static Vector2 CallTransform(Vector2 p, Matrix3x2 m) => Affine2D.Transform(p, m);
+    [MethodImpl(MethodImplOptions.NoInlining)] static Vector2 CallTransformNormal(Vector2 p, Matrix3x2 m) => Affine2D.TransformNormal(p, m);
+    [MethodImpl(MethodImplOptions.NoInlining)] static Vector2 CallLerp2(Vector2 a, Vector2 b, float t) => Affine2D.Lerp(a, b, t);
+    [MethodImpl(MethodImplOptions.NoInlining)] static Vector3 CallLerp3(Vector3 a, Vector3 b, float t) => Affine2D.Lerp(a, b, t);
+    [MethodImpl(MethodImplOptions.NoInlining)] static Vector4 CallLerp4(Vector4 a, Vector4 b, float t) => Affine2D.Lerp(a, b, t);
+
+    [MethodImpl(MethodImplOptions.NoInlining)] static float LoopUnfused()
+    { var s = Vector2.Zero; for (var i = 0; i < N; i++) s += Affine2D.Transform(P[i], M[i]) + Affine2D.Lerp(P[i], P[(i + 1) & (N - 1)], T[i]); return s.X + s.Y; }
+    [MethodImpl(MethodImplOptions.NoInlining)] static float LoopFused()
+    { var s = Vector2.Zero; for (var i = 0; i < N; i++) s += Fused.Transform(P[i], M[i]) + Fused.Lerp(P[i], P[(i + 1) & (N - 1)], T[i]); return s.X + s.Y; }
+    [MethodImpl(MethodImplOptions.NoInlining)] static float LoopVec()
+    { var s = Vector2.Zero; for (var i = 0; i < N; i++) s += Scalar.Transform(P[i], M[i]) + Scalar.Lerp(P[i], P[(i + 1) & (N - 1)], T[i]); return s.X + s.Y; }
+    [MethodImpl(MethodImplOptions.NoInlining)] static Vector2 CallVecTransform(Vector2 p, Matrix3x2 m) => Vec.Transform(p, m);
+    [MethodImpl(MethodImplOptions.NoInlining)] static Vector2 CallVecLerp(Vector2 a, Vector2 b, float t) => Vec.Lerp(a, b, t);
+    [MethodImpl(MethodImplOptions.NoInlining)] static float LoopNumerics()
+    { var s = Vector2.Zero; for (var i = 0; i < N; i++) s += Vector2.Transform(P[i], M[i]) + Vector2.Lerp(P[i], P[(i + 1) & (N - 1)], T[i]); return s.X + s.Y; }
+
+    static int Main(string[] args)
+    {
+        var r = new Random(7);
+        float F() => (float)(r.NextDouble() * 2 - 1);
+        for (var i = 0; i < N; i++) { P[i] = new(F() * 100, F() * 100); M[i] = new(F(), F(), F(), F(), F() * 50, F() * 50); T[i] = (float)r.NextDouble(); }
+
+        // Bytes: unfused helper == separate multiply/add written out; differs from fused on some inputs.
+        int differ = 0;
+        for (var i = 0; i < N; i++)
+        {
+            var u = CallTransform(P[i], M[i]); var f = Fused.Transform(P[i], M[i]);
+            var m = M[i]; var p = P[i];
+            float mx = m.M11 * p.X, my = m.M21 * p.Y, nx = m.M12 * p.X, ny = m.M22 * p.Y;
+            var manual = new Vector2(mx + my + m.M31, nx + ny + m.M32);
+            if (u != manual) { Console.WriteLine($"MISMATCH {i} {u} {manual}"); return 1; }
+            if (u != f) differ++;
+            if (CallVecTransform(p, m) != u || CallVecLerp(p, u, T[i]) != CallLerp2(p, u, T[i])) { Console.WriteLine($"VEC MISMATCH {i}"); return 1; }
+            _ = CallTransformNormal(p, m); _ = CallLerp2(p, u, T[i]); _ = CallLerp3(new(p, 1), new(u, 2), T[i]); _ = CallLerp4(new(p, 1, 2), new(u, 3, 4), T[i]);
+        }
+        var arch = System.Runtime.InteropServices.RuntimeInformation.ProcessArchitecture;
+        Console.WriteLine($"{arch} aot={!RuntimeFeature.IsDynamicCodeSupported} x86Fma={System.Runtime.Intrinsics.X86.Fma.IsSupported}: unfused==manual for {N} inputs; unfused!=fused on {differ}");
+        if (args.Length > 0 && args[0] == "nobench") return 0;
+
+        var names = new[] { "unfused", "fused", "numerics", "unfusedScalar" };
+        Func<float>[] loops = [LoopUnfused, LoopFused, LoopNumerics, LoopVec];
+        var samples = new List<double>[4]; for (var k = 0; k < 4; k++) samples[k] = [];
+        float sink = 0;
+        for (var w = 0; w < 200; w++) foreach (var l in loops) sink += l();
+        for (var rep = 0; rep < 31; rep++)
+            for (var k = 0; k < 4; k++) // alternate so load hits all three equally
+            {
+                var sw = Stopwatch.StartNew();
+                for (var it = 0; it < 200; it++) sink += loops[k]();
+                samples[k].Add(sw.Elapsed.TotalNanoseconds / (200.0 * N));
+            }
+        for (var k = 0; k < 4; k++)
+        {
+            var s = samples[k].Order().ToArray();
+            Console.WriteLine($"{names[k],-13} ns per Transform+Lerp: median {s[s.Length / 2]:F3} min {s[0]:F3} max {s[^1]:F3}");
+        }
+        Console.WriteLine($"sink {sink}");
+        return 0;
+    }
+}

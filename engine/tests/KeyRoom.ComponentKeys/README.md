@@ -17,4 +17,4 @@ python3 "$qa/editor.py" editor/MoNoon.app/Contents/MacOS/MoNoon "$work/KeyRoom" 
   engine/.artifacts/bin/ComponentKeysProbe/release/ComponentKeysProbe.dll "$work/editor"
 ```
 
-Windows와 Linux에서는 해당 플랫폼의 배포 플레이어·에디터 실행 파일을 넘긴다. 에디터 검사는 클립 창에서 회전 키 설정, Undo/Redo, 저장 후 다시 열기와 키 제거를 수행한다. 타임라인을 직접 이동해 미리보기에서 사용하는 포즈를 읽고, Scene Play에 같은 입력을 재생한다. 독립 플레이어는 창 없는 리플레이로 같은 152프레임을 진행한다. 각 경로의 `result.json`은 같은 기준값 10행을 담아야 한다. [검증 결과](../results/component-keys/README.md)
+Windows에서는 해당 플랫폼의 배포 플레이어·에디터 실행 파일을 넘긴다. Linux에서는 플레이어 검사만 한다(Linux 에디터는 2026-11-23부터 지원하지 않는다). 에디터 검사는 클립 창에서 회전 키 설정, Undo/Redo, 저장 후 다시 열기와 키 제거를 수행한다. 타임라인을 직접 이동해 미리보기에서 사용하는 포즈를 읽고, Scene Play에 같은 입력을 재생한다. 독립 플레이어는 창 없는 리플레이로 같은 152프레임을 진행한다. 각 경로의 `result.json`은 같은 기준값 10행을 담아야 한다. [검증 결과](../results/component-keys/README.md)

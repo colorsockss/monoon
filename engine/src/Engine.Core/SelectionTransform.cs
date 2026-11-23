@@ -46,7 +46,7 @@ public sealed class SelectionTransform
             if(delta==Matrix3x2.Identity)continue;
             if(delta.M11==1 && delta.M22==1 && delta.M12==0 && delta.M21==0)
             {
-                var local=Vector2.TransformNormal(delta.Translation,entry.ParentInverse);
+                var local=Affine2D.TransformNormal(delta.Translation,entry.ParentInverse);
                 obj.X+=local.X;obj.Y+=local.Y;
             }
             else obj.SetLocalMatrix(entry.World*delta*entry.ParentInverse);

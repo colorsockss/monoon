@@ -8,26 +8,47 @@
 
 **Edit → Undo / Redo**로 씬 편집과 데이터 에셋·테이블 저장, C# 파일 생성과 컴포넌트 부착, 프로젝트의 입력·오디오·접근성 설정을 되돌리거나 다시 적용할 수 있다. 파일 편집을 되돌릴 때는 디스크의 내용과 메타데이터를 확인한다. 외부 변경이 있으면 상태줄에 원인을 표시한다. 이전 형식의 프로젝트를 열거나 변환하면, 변환할 원본과 메타데이터를 프로젝트의 `.monoon/migrations/`에 ZIP으로 보관한다. 원래 경로와 파일 내용을 여기서 확인할 수 있다.
 
-## 프로젝트 확장 명령
+## 프로젝트 에디터 확장
 
-KeyRoom에서는 **Project → Extensions → Place Coin**을 누르면 편집 카메라 중심에 `Coin.prefab`이 배치된다. Inspector에서 속성을 바꾸고 일반 프리팹처럼 저장하거나 Undo할 수 있다.
+프로젝트 루트의 `Editor/` 폴더(하위 폴더 포함)에 있는 `.cs` 파일은 에디터 확장이다. 에디터가 프로젝트를 열 때, **Project → Reload Extensions**를 누를 때, 또는 편집 중 `Editor/`의 파일을 저장할 때 다시 컴파일한다. `IEditorExtension`을 구현한 공개 클래스마다 인스턴스를 하나 만들고 `Register`를 호출한다.
 
-프로젝트의 `Editor/` 폴더에 YAML 형식의 `.tools` 파일을 작성하고 **Project → Reload Extensions**를 선택한다. 이 버전은 이름과 프리팹 경로를 등록하는 선언형 메뉴 명령을 지원한다. 파일마다 여러 명령을 넣을 수 있으며 메뉴 이름은 프로젝트 안에서 고유해야 한다.
+```csharp
+using Avalonia.Controls;
+using Engine.Editor;
 
-```yaml
-version: 1
-commands:
-- label: Place Coin
-  prefab: Assets/Coin.prefab
+public sealed class KeyRoomTools : IEditorExtension
+{
+    public void Register(EditorExtensionRegistry editor)
+    {
+        editor.AddMenuCommand("Place Coin", context => context.PlacePrefab("Assets/Coin.prefab"));
+        editor.AddInspector("CollectCoin", inspector =>
+        {
+            inspector.Field("LootTable");
+            inspector.Row("Coins", new TextBlock { Text = "…" });
+        });
+        editor.AddPanel("Coins", context => new StackPanel { Children = { context.Row("Prefab", new TextBlock { Text = "Assets/Coin.prefab" }) } });
+    }
+}
 ```
+
+| API | 동작 |
+| --- | --- |
+| `AddMenuCommand(이름, 실행)` | **Project → Extensions**에 명령을 추가한다. 씬 편집 중에만 실행된다. 이름은 프로젝트 안에서 고유해야 한다. |
+| `AddInspector(스크립트 ID, 구성)` | 그 스크립트 컴포넌트의 필드 행을 확장이 구성한다. `Field(이름)`은 기본 필드 행(편집·Undo 포함)을, `Row(레이블, 컨트롤)`은 같은 레이블 열에 맞춘 행을, `Add(컨트롤)`은 임의의 컨트롤을 넣는다. |
+| `AddPanel(제목, 생성)` | **Window** 메뉴에 도킹 패널을 추가한다. 내장 도구 패널처럼 탭으로 묶거나 플로팅 창으로 뺄 수 있다. |
+| `EditorContext` | `ProjectDirectory`, `Scene`, `Selected`, `IsPlaying`, `PlacePrefab(경로)`(편집 카메라 중심에 배치, Undo 한 번), `Log(메시지)`, `Row(레이블, 컨트롤)`. |
+
+KeyRoom의 [Editor/KeyRoomTools.cs](../../samples/KeyRoom/Editor/KeyRoomTools.cs)는 **Project → Extensions → Place Coin**, CollectCoin의 Inspector(기본 LootTable 행, 씬의 코인 수, **Place another coin** 버튼), **Window → Coins** 패널을 추가한다. 이전 버전의 YAML `Editor/*.tools` 선언형 명령은 이 C# 확장으로 대체했다. 프리팹 경로는 코드의 문자열이므로 프리팹을 옮기면 확장 코드도 고친다.
+
+확장은 MoNoon 에디터, Engine.Core, Avalonia를 참조해 별도 어셈블리로 컴파일된다. 게임 스크립트는 에디터 API를 참조하지 않는 다른 컴파일이므로 `Editor/`의 타입이나 `Engine.Editor`를 쓰면 컴파일 오류가 난다. `Editor/`는 Scene Play, Release, Native AOT 빌드와 `Tests/` 테스트 컴파일에서 모두 제외된다. 확장에 컴파일 오류가 있으면 확장 전체를 내리고 Console에 `./Editor/파일.cs(줄,열)` 오류를 표시하며, 더블클릭하면 해당 줄을 연다. 프로젝트 `.csproj`가 있으면 `<Compile Remove="Editor/**/*.cs" />`를 넣어 게임 프로젝트 빌드에서 뺀다. 외부 IDE용 `.monoon/ide/` 스크립트 프로젝트에는 아직 포함되지 않는다. [Mac 검증 기록](../../engine/tests/results/editor-extensions/README.md)
 
 ## 패키지와 템플릿
 
 | 메뉴 | 사용 방법 |
 | --- | --- |
-| **Project → Export Package…** | 프로젝트 안에서 나눌 파일을 한 개 이상 선택한 다음 `.monopackage`를 저장한다. 선택한 에셋의 참조, 메타데이터, 확장 명령의 프리팹, 아틀라스의 패킹 이미지가 함께 들어간다. 스크립트가 포함되면 공유 타입을 보존하려고 프로젝트의 C# 게임 스크립트를 함께 담는다. |
+| **Project → Export Package…** | 프로젝트 안에서 나눌 파일을 한 개 이상 선택한 다음 `.monopackage`를 저장한다. 선택한 에셋의 참조, 메타데이터, 아틀라스의 패킹 이미지가 함께 들어간다. `Editor/`의 C# 파일을 선택하면 다른 확장 파일도 함께 들어가며, 확장이 배치하는 프리팹은 따로 선택한다. 스크립트가 포함되면 공유 타입을 보존하려고 프로젝트의 C# 게임 스크립트를 함께 담는다. |
 | **Project → Import Package…** | 대상 프로젝트에서 패키지를 연다. 프로젝트 폴더에 이미 있는 패키지는 Project 패널에서 더블클릭해도 된다. 원래 파일 경로와 에셋 ID를 유지한다. 내용이 동일한 파일은 재사용하고, 파일 경로나 ID가 충돌하면 가져오기를 중단한다. |
-| **File → Export Project Template…** | 현재 씬을 저장하고 설정·씬·에셋·스크립트·에디터 명령을 묶은 `.monotemplate`를 만든다. |
+| **File → Export Project Template…** | 현재 씬을 저장하고 설정·씬·에셋·스크립트·`Editor/` 확장을 묶은 `.monotemplate`를 만든다. |
 | **File → New from Template…** | 템플릿과 빈 폴더를 선택한다. 생성된 프로젝트는 새 프로젝트 ID를 사용하므로 플레이어 저장 슬롯은 독립적이며, 씬·에셋 간 참조는 유지된다. |
 
 [Mac에서 검증한 KeyRoom 실행 기록](../../engine/tests/results/workspace/README.md)

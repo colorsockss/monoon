@@ -24,8 +24,8 @@ public sealed class Runner : GameBehaviour
         if (motion.Support==Ramp && tick.Objects.TryGetWorldMatrix(Ramp,out var matrix))
         {
             // Platform.scene defines the ramp edge from (0,90) to (190,0) in local pixels.
-            var a=Vector2.Transform(new Vector2(0,90),matrix);
-            var b=Vector2.Transform(new Vector2(190,0),matrix);
+            var a=Affine2D.Transform(new Vector2(0,90),matrix);
+            var b=Affine2D.Transform(new Vector2(190,0),matrix);
             var tangent=Vector2.Normalize(b-a);
             void Foot(string name,ref int planted,ref Vector2? previous)
             {

@@ -1,0 +1,2 @@
+PASS Aseprite RGBA/indexed layers, opacity, linked cels, tags, sheet/clip import, reimport, SpriteLab sample
+All checks passed.

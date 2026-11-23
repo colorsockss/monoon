@@ -8,6 +8,8 @@
     <None Update="Scenes/**/*.scene;Scenes/**/*.scene.meta" CopyToOutputDirectory="PreserveNewest" />
     <None Update="Assets/**/*" CopyToOutputDirectory="PreserveNewest" />
     <Compile Remove="Scripts/**/*.cs" />
+    <Compile Remove="Tests/**/*.cs" />
+    <Compile Remove="Editor/**/*.cs" />
     <None Include="Scripts/**/*.cs" CopyToOutputDirectory="PreserveNewest" />
     <_MovedScriptMeta Include="**/*.cs.meta" Exclude="$(DefaultItemExcludes);$(DefaultExcludesInProjectFolder)" />
     <_MovedScript Include="@(_MovedScriptMeta->'%(RelativeDir)%(Filename)')" />

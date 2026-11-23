@@ -9,7 +9,7 @@ public sealed partial class SceneGame : IGameAudio
     public AudioMixer Mixer=>State.Mixer;
     public IGameAudio Audio=>this;
     public MixerLevels Levels { get=>Mixer.Levels;set=>Mixer.Levels=value; }
-    private static Vector2 AudioCenter(Body b)=>Vector2.Transform(b.Size*.5f,b.MatrixAt(b.Position));
+    private static Vector2 AudioCenter(Body b)=>Affine2D.Transform(b.Size*.5f,b.MatrixAt(b.Position));
     private void IndexAudio()
     {
         audioSources=bodies.Where(b=>b.AudioSource!=null && b.Sound!=null).ToArray();

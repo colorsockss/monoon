@@ -1,0 +1,384 @@
+schemaVersion: 29
+objects:
+- id: 20da89b2-5e7d-5f62-8a4b-ee901b07cb40
+  name: Runner
+  x: 60.0000
+  y: 270.0000
+  width: 22
+  height: 30
+  components:
+  - type: spriteRenderer
+    squareColor: "#F2D7A6"
+    order: 3
+  - type: boxCollider2D
+    layer: 1
+  - type: rigidbody2D
+    freezeRotation: true
+  - type: characterMotor2D
+  - type: script
+    script: Crosser
+    values: {"Goal": "164e468e-1eb0-55ef-9f67-4475f6b424e6", "Readout": "b65f86ca-84bb-537e-a57b-2036f6b13d5f", "Result": "2cdfa0f9-f4a2-5bd1-bcea-c2877ddc1740"}
+- id: f4fc6a8e-a9b0-59ec-9b3a-588769cae519
+  name: Start ledge
+  x: 0.0000
+  y: 300.0000
+  width: 200
+  height: 150
+  components:
+  - type: spriteRenderer
+    squareColor: "#70B6A4"
+  - type: boxCollider2D
+- id: ccc95897-565c-5fd3-8c54-f7481893dfc6
+  name: Pit floor
+  x: 200.0000
+  y: 430.0000
+  width: 190
+  height: 20
+  components:
+  - type: spriteRenderer
+    squareColor: "#4D6B66"
+  - type: boxCollider2D
+- id: e70a5ad3-0695-528a-8e92-eb51e215ff97
+  name: Plank 1
+  rotation: 12.6519
+  groups:
+  - bridge
+  x: 200.0000
+  y: 300.0000
+  width: 24
+  height: 6
+  components:
+  - type: spriteRenderer
+    squareColor: "#A0703F"
+  - type: boxCollider2D
+  - type: rigidbody2D
+    mass: 2
+  - type: revoluteJoint2D
+    connected: "f4fc6a8e-a9b0-59ec-9b3a-588769cae519"
+    anchorX: -12
+    anchorY: -3
+- id: aac632d9-977d-5916-8c97-77d90c04c174
+  name: Plank 2
+  rotation: 9.0371
+  groups:
+  - bridge
+  x: 223.4172
+  y: 305.2567
+  width: 24
+  height: 6
+  components:
+  - type: spriteRenderer
+    squareColor: "#A0703F"
+  - type: boxCollider2D
+  - type: rigidbody2D
+    mass: 2
+  - type: revoluteJoint2D
+    connected: "e70a5ad3-0695-528a-8e92-eb51e215ff97"
+    anchorX: -12
+    anchorY: -3
+- id: 83280369-7cbb-591c-afcd-e89f30ebc808
+  name: Plank 3
+  rotation: 5.4223
+  groups:
+  - bridge
+  x: 247.1193
+  y: 309.0264
+  width: 24
+  height: 6
+  components:
+  - type: spriteRenderer
+    squareColor: "#A0703F"
+  - type: boxCollider2D
+  - type: rigidbody2D
+    mass: 2
+  - type: revoluteJoint2D
+    connected: "aac632d9-977d-5916-8c97-77d90c04c174"
+    anchorX: -12
+    anchorY: -3
+- id: 940ec88b-e59b-5470-b86e-ff81fada5832
+  name: Plank 4
+  rotation: 1.8074
+  groups:
+  - bridge
+  x: 271.0119
+  y: 311.2943
+  width: 24
+  height: 6
+  components:
+  - type: spriteRenderer
+    squareColor: "#A0703F"
+  - type: boxCollider2D
+  - type: rigidbody2D
+    mass: 2
+  - type: revoluteJoint2D
+    connected: "83280369-7cbb-591c-afcd-e89f30ebc808"
+    anchorX: -12
+    anchorY: -3
+- id: 482b4d6d-b77e-53bc-9a74-3cfd15db5d80
+  name: Plank 5
+  rotation: -1.8074
+  groups:
+  - bridge
+  x: 295.0000
+  y: 312.0513
+  width: 24
+  height: 6
+  components:
+  - type: spriteRenderer
+    squareColor: "#A0703F"
+  - type: boxCollider2D
+  - type: rigidbody2D
+    mass: 2
+  - type: revoluteJoint2D
+    connected: "940ec88b-e59b-5470-b86e-ff81fada5832"
+    anchorX: -12
+    anchorY: -3
+- id: 15961409-1de9-5d4b-9ab2-5f8dae413862
+  name: Plank 6
+  rotation: -5.4223
+  groups:
+  - bridge
+  x: 318.9881
+  y: 311.2943
+  width: 24
+  height: 6
+  components:
+  - type: spriteRenderer
+    squareColor: "#A0703F"
+  - type: boxCollider2D
+  - type: rigidbody2D
+    mass: 2
+  - type: revoluteJoint2D
+    connected: "482b4d6d-b77e-53bc-9a74-3cfd15db5d80"
+    anchorX: -12
+    anchorY: -3
+- id: d42d2dc6-3f74-5fbd-9b77-d551ffa9e81d
+  name: Plank 7
+  rotation: -9.0371
+  groups:
+  - bridge
+  x: 342.8807
+  y: 309.0264
+  width: 24
+  height: 6
+  components:
+  - type: spriteRenderer
+    squareColor: "#A0703F"
+  - type: boxCollider2D
+  - type: rigidbody2D
+    mass: 2
+  - type: revoluteJoint2D
+    connected: "15961409-1de9-5d4b-9ab2-5f8dae413862"
+    anchorX: -12
+    anchorY: -3
+- id: 8417b00e-103e-5f87-9ee7-5daf73606e9d
+  name: Plank 8
+  rotation: -12.6519
+  groups:
+  - bridge
+  x: 366.5828
+  y: 305.2567
+  width: 24
+  height: 6
+  components:
+  - type: spriteRenderer
+    squareColor: "#A0703F"
+  - type: boxCollider2D
+  - type: rigidbody2D
+    mass: 2
+  - type: revoluteJoint2D
+    connected: "d42d2dc6-3f74-5fbd-9b77-d551ffa9e81d"
+    anchorX: -12
+    anchorY: -3
+- id: d1352b77-3329-5f46-b382-6feb2caf908f
+  name: Far ledge
+  x: 390.0000
+  y: 300.0000
+  width: 80
+  height: 150
+  components:
+  - type: spriteRenderer
+    squareColor: "#70B6A4"
+  - type: boxCollider2D
+  - type: revoluteJoint2D
+    connected: "8417b00e-103e-5f87-9ee7-5daf73606e9d"
+    anchorX: -40.0000
+    anchorY: -75.0000
+- id: c60c44c8-e7b7-5373-8751-deb7d585b89d
+  name: Pulley deck A
+  groups:
+  - pulley
+  x: 474.0000
+  y: 300.0000
+  width: 70
+  height: 12
+  components:
+  - type: spriteRenderer
+    squareColor: "#D89166"
+  - type: boxCollider2D
+  - type: rigidbody2D
+    gravity: 0
+    freezeRotation: true
+  - type: prismaticJoint2D
+    axisX: 0
+    axisY: 1
+    limit: true
+    lower: -16
+    upper: 16
+  - type: script
+    script: PulleyPair
+    values: {"Partner": "4f1e44f8-d8e9-5600-b3b8-911a9e5145ec"}
+- id: 4f1e44f8-d8e9-5600-b3b8-911a9e5145ec
+  name: Pulley deck B
+  groups:
+  - pulley
+  x: 594.0000
+  y: 300.0000
+  width: 70
+  height: 12
+  components:
+  - type: spriteRenderer
+    squareColor: "#D89166"
+  - type: boxCollider2D
+  - type: rigidbody2D
+    gravity: 0
+    freezeRotation: true
+  - type: prismaticJoint2D
+    axisX: 0
+    axisY: 1
+    limit: true
+    lower: -16
+    upper: 16
+- id: 9006afb8-af40-5574-bec7-842ef173139d
+  name: Pulley wheel
+  x: 562.0000
+  y: 140.0000
+  width: 20
+  height: 20
+  components:
+  - type: spriteRenderer
+    squareColor: "#855B40"
+- id: 2d3831ba-2eb9-5e11-9a8a-ddc532947942
+  name: Rope A
+  x: 508.0000
+  y: 150.0000
+  width: 2
+  height: 150
+  components:
+  - type: spriteRenderer
+    squareColor: "#ADC1C6"
+- id: 42a96819-981b-55c7-8595-881cb8fd345f
+  name: Rope B
+  x: 628.0000
+  y: 150.0000
+  width: 2
+  height: 150
+  components:
+  - type: spriteRenderer
+    squareColor: "#ADC1C6"
+- id: 164e468e-1eb0-55ef-9f67-4475f6b424e6
+  name: Goal ledge
+  x: 690.0000
+  y: 300.0000
+  width: 110
+  height: 150
+  components:
+  - type: spriteRenderer
+    squareColor: "#70B6A4"
+  - type: boxCollider2D
+- id: 5d7b5250-e738-5778-9b4c-34322a22f5d5
+  name: Pulley pit floor
+  x: 470.0000
+  y: 430.0000
+  width: 220
+  height: 20
+  components:
+  - type: spriteRenderer
+    squareColor: "#4D6B66"
+  - type: boxCollider2D
+- id: efb6de2d-0320-54a1-9843-14b65935f80d
+  name: Goal pennant
+  x: 760.0000
+  y: 262.0000
+  width: 16
+  height: 8
+  components:
+  - type: spriteRenderer
+    squareColor: "#F4BD55"
+- id: b2d297c9-cb8c-448c-857f-36a9d29b93b7
+  name: Paths exit
+  x: 788.0000
+  y: 240.0000
+  width: 12
+  height: 60
+  components:
+  - type: boxCollider2D
+    isTrigger: true
+  - type: script
+    script: SceneExit
+    values: {"Player": "20da89b2-5e7d-5f62-8a4b-ee901b07cb40", "Destination": {"Id": "323c83da-1b51-4250-a0c1-fcb85e96f334"}}
+- id: fea4096b-48e8-5acb-ac2c-1377c22f5a9f
+  name: Camera
+  x: 400.0000
+  y: 225.0000
+  width: 1
+  height: 1
+  components:
+  - type: camera2D
+- id: b8137708-d685-5da2-82ad-1a596d18ed93
+  name: Canvas
+  x: 0.0000
+  y: 0.0000
+  width: 1
+  height: 1
+  components:
+  - type: uiCanvas
+- id: e078021f-9f80-515a-9b48-4ec73f4722ff
+  name: Title
+  parentId: b8137708-d685-5da2-82ad-1a596d18ed93
+  x: 32.0000
+  y: 20.0000
+  width: 723
+  height: 36
+  components:
+  - type: uiRect
+  - type: uiText
+    size: 30
+    text: "Platformer Lab  —  Joints"
+- id: c8c64f0d-f8aa-5498-b37c-83db54df6bbe
+  name: Controls
+  parentId: b8137708-d685-5da2-82ad-1a596d18ed93
+  x: 32.0000
+  y: 63.0000
+  width: 723
+  height: 36
+  components:
+  - type: uiRect
+  - type: uiText
+    size: 16
+    text: "A / D or arrows    Move       Space    Jump"
+- id: 2cdfa0f9-f4a2-5bd1-bcea-c2877ddc1740
+  name: Result
+  parentId: b8137708-d685-5da2-82ad-1a596d18ed93
+  x: 32.0000
+  y: 365.0000
+  width: 723
+  height: 36
+  components:
+  - type: uiRect
+  - type: uiText
+    size: 24
+    text: "Cross the rope bridge and ride the pulley decks."
+- id: b65f86ca-84bb-537e-a57b-2036f6b13d5f
+  name: Readout
+  parentId: b8137708-d685-5da2-82ad-1a596d18ed93
+  x: 32.0000
+  y: 403.0000
+  width: 723
+  height: 36
+  components:
+  - type: uiRect
+  - type: uiText
+    size: 16
+    text: "X  60.0      Y  270.0"
+defaultCameraId: fea4096b-48e8-5acb-ac2c-1377c22f5a9f

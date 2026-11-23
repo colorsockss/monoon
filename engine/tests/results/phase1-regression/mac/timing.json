@@ -1,0 +1,494 @@
+{
+ "meta": {
+  "qemu_running": [
+   false,
+   false,
+   false,
+   false,
+   false,
+   false,
+   false,
+   false,
+   false,
+   false
+  ],
+  "order": [
+   [
+    "base",
+    "cand"
+   ],
+   [
+    "cand",
+    "base"
+   ],
+   [
+    "base",
+    "cand"
+   ],
+   [
+    "cand",
+    "base"
+   ],
+   [
+    "base",
+    "cand"
+   ]
+  ]
+ },
+ "rows": {
+  "base": [
+   {
+    "round": 1,
+    "contacts_us": 3090.1499999999996,
+    "loading_frame_ms": 157.183,
+    "scene_loading_ms": 142.077,
+    "loading_alloc_b": 88935488,
+    "inst_release_mean_us": 1204.5,
+    "inst_release_p95_us": 2115.8,
+    "inst_release_bytes": 967941,
+    "hits_release": 2338,
+    "inst_aot_mean_us": 928.1,
+    "inst_aot_p95_us": 1461.0,
+    "inst_aot_bytes": 969583,
+    "hits_aot": 2338,
+    "static_contacts_ms": 1.4305,
+    "static_alloc_b": 720.0,
+    "static_rigidbodies_ms": 0.1315,
+    "tiles_contacts_ms": 6.2236,
+    "tiles_alloc_b": 1266320.0,
+    "text_cached_us": 7.2,
+    "text_bytes": 768.0
+   },
+   {
+    "round": 2,
+    "contacts_us": 2953.4,
+    "loading_frame_ms": 163.488,
+    "scene_loading_ms": 148.555,
+    "loading_alloc_b": 88937480,
+    "inst_release_mean_us": 1237.0,
+    "inst_release_p95_us": 2220.3,
+    "inst_release_bytes": 967871,
+    "hits_release": 2338,
+    "inst_aot_mean_us": 922.4,
+    "inst_aot_p95_us": 1451.5,
+    "inst_aot_bytes": 969584,
+    "hits_aot": 2338,
+    "static_contacts_ms": 1.4085,
+    "static_alloc_b": 848.0,
+    "static_rigidbodies_ms": 0.1548,
+    "tiles_contacts_ms": 6.1311,
+    "tiles_alloc_b": 1266320.0,
+    "text_cached_us": 7.1,
+    "text_bytes": 768.0
+   },
+   {
+    "round": 3,
+    "contacts_us": 3033.85,
+    "loading_frame_ms": 163.491,
+    "scene_loading_ms": 148.581,
+    "loading_alloc_b": 88989224,
+    "inst_release_mean_us": 1209.8,
+    "inst_release_p95_us": 2643.0,
+    "inst_release_bytes": 967911,
+    "hits_release": 2338,
+    "inst_aot_mean_us": 919.6,
+    "inst_aot_p95_us": 1449.1,
+    "inst_aot_bytes": 969587,
+    "hits_aot": 2338,
+    "static_contacts_ms": 1.4465,
+    "static_alloc_b": 848.0,
+    "static_rigidbodies_ms": 0.139,
+    "tiles_contacts_ms": 6.1801,
+    "tiles_alloc_b": 1266320.0,
+    "text_cached_us": 7.2,
+    "text_bytes": 768.0
+   },
+   {
+    "round": 4,
+    "contacts_us": 2937.8999999999996,
+    "loading_frame_ms": 164.104,
+    "scene_loading_ms": 149.221,
+    "loading_alloc_b": 88936248,
+    "inst_release_mean_us": 1308.4,
+    "inst_release_p95_us": 2609.5,
+    "inst_release_bytes": 967843,
+    "hits_release": 2338,
+    "inst_aot_mean_us": 919.2,
+    "inst_aot_p95_us": 1452.3,
+    "inst_aot_bytes": 969584,
+    "hits_aot": 2338,
+    "static_contacts_ms": 1.4344,
+    "static_alloc_b": 720.0,
+    "static_rigidbodies_ms": 0.1315,
+    "tiles_contacts_ms": 6.1182,
+    "tiles_alloc_b": 1266320.0,
+    "text_cached_us": 7.1,
+    "text_bytes": 768.0
+   },
+   {
+    "round": 5,
+    "contacts_us": 3017.0,
+    "loading_frame_ms": 162.584,
+    "scene_loading_ms": 147.545,
+    "loading_alloc_b": 88940960,
+    "inst_release_mean_us": 1300.9,
+    "inst_release_p95_us": 2484.9,
+    "inst_release_bytes": 967877,
+    "hits_release": 2338,
+    "inst_aot_mean_us": 921.3,
+    "inst_aot_p95_us": 1456.3,
+    "inst_aot_bytes": 969583,
+    "hits_aot": 2338,
+    "static_contacts_ms": 1.4275,
+    "static_alloc_b": 720.0,
+    "static_rigidbodies_ms": 0.1317,
+    "tiles_contacts_ms": 6.2919,
+    "tiles_alloc_b": 1266320.0,
+    "text_cached_us": 7.0,
+    "text_bytes": 768.0
+   }
+  ],
+  "cand": [
+   {
+    "round": 1,
+    "contacts_us": 659.6500000000001,
+    "loading_frame_ms": 134.475,
+    "scene_loading_ms": 119.468,
+    "loading_alloc_b": 55505752,
+    "inst_release_mean_us": 898.2,
+    "inst_release_p95_us": 1717.1,
+    "inst_release_bytes": 419071,
+    "hits_release": 2338,
+    "inst_aot_mean_us": 513.9,
+    "inst_aot_p95_us": 1267.6,
+    "inst_aot_bytes": 437176,
+    "hits_aot": 2338,
+    "static_contacts_ms": 0.7872,
+    "static_alloc_b": 848.0,
+    "static_rigidbodies_ms": 1.1202,
+    "tiles_contacts_ms": 0.8719,
+    "tiles_alloc_b": 632032.0,
+    "text_cached_us": 3.5,
+    "text_bytes": 0.0
+   },
+   {
+    "round": 2,
+    "contacts_us": 657.1500000000001,
+    "loading_frame_ms": 134.621,
+    "scene_loading_ms": 119.685,
+    "loading_alloc_b": 55458224,
+    "inst_release_mean_us": 860.4,
+    "inst_release_p95_us": 1480.8,
+    "inst_release_bytes": 419091,
+    "hits_release": 2338,
+    "inst_aot_mean_us": 509.3,
+    "inst_aot_p95_us": 1245.2,
+    "inst_aot_bytes": 437176,
+    "hits_aot": 2338,
+    "static_contacts_ms": 0.6935,
+    "static_alloc_b": 848.0,
+    "static_rigidbodies_ms": 0.3115,
+    "tiles_contacts_ms": 0.8593,
+    "tiles_alloc_b": 632032.0,
+    "text_cached_us": 2.3,
+    "text_bytes": 0.0
+   },
+   {
+    "round": 3,
+    "contacts_us": 662.25,
+    "loading_frame_ms": 134.012,
+    "scene_loading_ms": 119.07,
+    "loading_alloc_b": 55458936,
+    "inst_release_mean_us": 858.1,
+    "inst_release_p95_us": 1517.1,
+    "inst_release_bytes": 419184,
+    "hits_release": 2338,
+    "inst_aot_mean_us": 509.4,
+    "inst_aot_p95_us": 1254.1,
+    "inst_aot_bytes": 437179,
+    "hits_aot": 2338,
+    "static_contacts_ms": 0.4905,
+    "static_alloc_b": 848.0,
+    "static_rigidbodies_ms": 0.1536,
+    "tiles_contacts_ms": 0.8708,
+    "tiles_alloc_b": 632032.0,
+    "text_cached_us": 2.3,
+    "text_bytes": 0.0
+   },
+   {
+    "round": 4,
+    "contacts_us": 654.1500000000001,
+    "loading_frame_ms": 134.458,
+    "scene_loading_ms": 119.282,
+    "loading_alloc_b": 55456344,
+    "inst_release_mean_us": 813.7,
+    "inst_release_p95_us": 1521.8,
+    "inst_release_bytes": 419015,
+    "hits_release": 2338,
+    "inst_aot_mean_us": 513.7,
+    "inst_aot_p95_us": 1265.2,
+    "inst_aot_bytes": 437171,
+    "hits_aot": 2338,
+    "static_contacts_ms": 0.7086,
+    "static_alloc_b": 848.0,
+    "static_rigidbodies_ms": 0.1505,
+    "tiles_contacts_ms": 0.864,
+    "tiles_alloc_b": 632032.0,
+    "text_cached_us": 2.3,
+    "text_bytes": 0.0
+   },
+   {
+    "round": 5,
+    "contacts_us": 665.45,
+    "loading_frame_ms": 134.493,
+    "scene_loading_ms": 119.457,
+    "loading_alloc_b": 55457096,
+    "inst_release_mean_us": 903.2,
+    "inst_release_p95_us": 1716.5,
+    "inst_release_bytes": 419019,
+    "hits_release": 2338,
+    "inst_aot_mean_us": 515.4,
+    "inst_aot_p95_us": 1267.2,
+    "inst_aot_bytes": 437174,
+    "hits_aot": 2338,
+    "static_contacts_ms": 0.4957,
+    "static_alloc_b": 848.0,
+    "static_rigidbodies_ms": 0.1519,
+    "tiles_contacts_ms": 0.8678,
+    "tiles_alloc_b": 632032.0,
+    "text_cached_us": 2.3,
+    "text_bytes": 0.0
+   }
+  ]
+ },
+ "summary": {
+  "contacts_us": {
+   "base": {
+    "median": 3017.0,
+    "min": 2937.8999999999996,
+    "max": 3090.1499999999996
+   },
+   "cand": {
+    "median": 659.6500000000001,
+    "min": 654.1500000000001,
+    "max": 665.45
+   }
+  },
+  "loading_frame_ms": {
+   "base": {
+    "median": 163.488,
+    "min": 157.183,
+    "max": 164.104
+   },
+   "cand": {
+    "median": 134.475,
+    "min": 134.012,
+    "max": 134.621
+   }
+  },
+  "scene_loading_ms": {
+   "base": {
+    "median": 148.555,
+    "min": 142.077,
+    "max": 149.221
+   },
+   "cand": {
+    "median": 119.457,
+    "min": 119.07,
+    "max": 119.685
+   }
+  },
+  "loading_alloc_b": {
+   "base": {
+    "median": 88937480,
+    "min": 88935488,
+    "max": 88989224
+   },
+   "cand": {
+    "median": 55458224,
+    "min": 55456344,
+    "max": 55505752
+   }
+  },
+  "inst_release_mean_us": {
+   "base": {
+    "median": 1237.0,
+    "min": 1204.5,
+    "max": 1308.4
+   },
+   "cand": {
+    "median": 860.4,
+    "min": 813.7,
+    "max": 903.2
+   }
+  },
+  "inst_release_p95_us": {
+   "base": {
+    "median": 2484.9,
+    "min": 2115.8,
+    "max": 2643.0
+   },
+   "cand": {
+    "median": 1521.8,
+    "min": 1480.8,
+    "max": 1717.1
+   }
+  },
+  "inst_release_bytes": {
+   "base": {
+    "median": 967877,
+    "min": 967843,
+    "max": 967941
+   },
+   "cand": {
+    "median": 419071,
+    "min": 419015,
+    "max": 419184
+   }
+  },
+  "hits_release": {
+   "base": {
+    "median": 2338,
+    "min": 2338,
+    "max": 2338
+   },
+   "cand": {
+    "median": 2338,
+    "min": 2338,
+    "max": 2338
+   }
+  },
+  "inst_aot_mean_us": {
+   "base": {
+    "median": 921.3,
+    "min": 919.2,
+    "max": 928.1
+   },
+   "cand": {
+    "median": 513.7,
+    "min": 509.3,
+    "max": 515.4
+   }
+  },
+  "inst_aot_p95_us": {
+   "base": {
+    "median": 1452.3,
+    "min": 1449.1,
+    "max": 1461.0
+   },
+   "cand": {
+    "median": 1265.2,
+    "min": 1245.2,
+    "max": 1267.6
+   }
+  },
+  "inst_aot_bytes": {
+   "base": {
+    "median": 969584,
+    "min": 969583,
+    "max": 969587
+   },
+   "cand": {
+    "median": 437176,
+    "min": 437171,
+    "max": 437179
+   }
+  },
+  "hits_aot": {
+   "base": {
+    "median": 2338,
+    "min": 2338,
+    "max": 2338
+   },
+   "cand": {
+    "median": 2338,
+    "min": 2338,
+    "max": 2338
+   }
+  },
+  "static_contacts_ms": {
+   "base": {
+    "median": 1.4305,
+    "min": 1.4085,
+    "max": 1.4465
+   },
+   "cand": {
+    "median": 0.6935,
+    "min": 0.4905,
+    "max": 0.7872
+   }
+  },
+  "static_alloc_b": {
+   "base": {
+    "median": 720.0,
+    "min": 720.0,
+    "max": 848.0
+   },
+   "cand": {
+    "median": 848.0,
+    "min": 848.0,
+    "max": 848.0
+   }
+  },
+  "static_rigidbodies_ms": {
+   "base": {
+    "median": 0.1317,
+    "min": 0.1315,
+    "max": 0.1548
+   },
+   "cand": {
+    "median": 0.1536,
+    "min": 0.1505,
+    "max": 1.1202
+   }
+  },
+  "tiles_contacts_ms": {
+   "base": {
+    "median": 6.1801,
+    "min": 6.1182,
+    "max": 6.2919
+   },
+   "cand": {
+    "median": 0.8678,
+    "min": 0.8593,
+    "max": 0.8719
+   }
+  },
+  "tiles_alloc_b": {
+   "base": {
+    "median": 1266320.0,
+    "min": 1266320.0,
+    "max": 1266320.0
+   },
+   "cand": {
+    "median": 632032.0,
+    "min": 632032.0,
+    "max": 632032.0
+   }
+  },
+  "text_cached_us": {
+   "base": {
+    "median": 7.1,
+    "min": 7.0,
+    "max": 7.2
+   },
+   "cand": {
+    "median": 2.3,
+    "min": 2.3,
+    "max": 3.5
+   }
+  },
+  "text_bytes": {
+   "base": {
+    "median": 768.0,
+    "min": 768.0,
+    "max": 768.0
+   },
+   "cand": {
+    "median": 0.0,
+    "min": 0.0,
+    "max": 0.0
+   }
+  }
+ }
+}

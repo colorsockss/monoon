@@ -66,7 +66,7 @@ public sealed class ProjectCatalog
                     else if (r.Asset!=null && SpriteAssets.IsReference(r.Asset)) PathLink(F("Sprite Renderer.Sprite"),r.Asset,".png");
                     Id(F("Sprite Renderer.Mask"),r.Mask,".png");
                 }
-                if (o.GetComponent<DistanceJoint2DComponent>()?.Connected is {} endpoint) ObjectRef("Distance Joint.Connected", endpoint);
+                foreach (var joint in o.Components.OfType<Joint2DComponent>()) if (joint.Connected is {} endpoint) ObjectRef(joint is DistanceJoint2DComponent ? "Distance Joint.Connected" : $"{joint.Kind[..^"Component".Length]}.Connected", endpoint);
                 if (o.GetComponent<Camera2DComponent>()?.Follow is {} follow) ObjectRef("Camera.Follow",follow);
                 if (o.GetComponent<Tilemap2DComponent>()?.StreamTarget is {} anchor) ObjectRef("Tilemap.StreamTarget",anchor);
                 Id(F("Cutscene Sequence"),o.GetComponent<CutsceneDirectorComponent>()?.Sequence,CutsceneSequence.Extension);

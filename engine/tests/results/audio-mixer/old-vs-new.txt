@@ -1,0 +1,25 @@
+  new output: first nonzero frame 1, silent runs inside the sound: []
+RhythmLab Afterbeat 48 kHz mono, Music loop: new output = old delayed by 0 frames; max |diff| 2.98E-08, residual/energy 2.63E-15; power L/R old 1.000000 new 1.000000; RMS ratio new/old 1.000000
+  new output: first nonzero frame 2, silent runs inside the sound: []
+AudioLab Tide.wav 24 kHz stereo, Music loop, from the start: new output = old delayed by 1 frames; max |diff| 0.00025, residual/energy 5.95E-07; power L/R old 1.006654 new 1.006015; RMS ratio new/old 1.000482
+  new output: first nonzero frame 1, silent runs inside the sound: []
+AudioLab Tide.ogg 24 kHz stereo, Music loop, from the start: new output = old delayed by 1 frames; max |diff| 0.000405, residual/energy 5.94E-07; power L/R old 1.006534 new 1.005895; RMS ratio new/old 1.000482
+  new output: first nonzero frame 2, silent runs inside the sound: []
+Beacon 24 kHz mono spatial, listener at x=-300: new output = old delayed by 1 frames; max |diff| 0.000414, residual/energy 4.47E-05; power L/R old 0.142857 new 0.142857; RMS ratio new/old 1.004564
+  new output: first nonzero frame 2, silent runs inside the sound: []
+Beacon 24 kHz mono spatial, listener at x=-100: new output = old delayed by 1 frames; max |diff| 0.00105, residual/energy 4.47E-05; power L/R old 0.600000 new 0.600000; RMS ratio new/old 1.004564
+  new output: first nonzero frame 2, silent runs inside the sound: []
+Beacon 24 kHz mono spatial, listener at x=0: new output = old delayed by 1 frames; max |diff| 0.00125, residual/energy 4.47E-05; power L/R old 1.000000 new 1.000000; RMS ratio new/old 1.004564
+  new output: first nonzero frame 2, silent runs inside the sound: []
+Beacon 24 kHz mono spatial, listener at x=150: new output = old delayed by 1 frames; max |diff| 0.000918, residual/energy 4.47E-05; power L/R old 2.200000 new 2.200000; RMS ratio new/old 1.004564
+  new output: first nonzero frame 2, silent runs inside the sound: []
+Beacon 24 kHz mono spatial, listener at x=390: new output = old delayed by 1 frames; max |diff| 4.4E-05, residual/energy 4.47E-05; power L/R old 79.000074 new 79.000076; RMS ratio new/old 1.004564
+  new output: first nonzero frame 2, silent runs inside the sound: []
+Tide.wav with 0.4 s fade-in, from the start: new output = old delayed by 1 frames; max |diff| 0.00025, residual/energy 6.01E-07; power L/R old 1.006475 new 1.005836; RMS ratio new/old 1.000485
+  new output: first nonzero frame 2, silent runs inside the sound: []
+KeyRoom Unlock.wav 22.05 kHz mono one-shot effect: new output = old delayed by 1 frames; max |diff| 0.00241, residual/energy 7.95E-06; power L/R old 1.000000 new 1.000000; RMS ratio new/old 1.002309
+  new output: first nonzero frame 1, silent runs inside the sound: []
+Afterbeat with 0.4 s fade-in (envelope): new output = old delayed by 0 frames; max |diff| 2.98E-08, residual/energy 2.79E-15; power L/R old 1.000000 new 1.000000; RMS ratio new/old 1.000000
+32 voices, us per 512-frame block (7 alternating runs): old median 109.6 [108.1-160.7], new median 77.5 [76.2-94.9]
+new mixer steady-state managed allocation over 1000 blocks: 0 bytes
+old mixer steady-state managed allocation over 1000 blocks: 0 bytes

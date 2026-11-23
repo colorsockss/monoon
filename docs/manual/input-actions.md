@@ -64,6 +64,16 @@ KeyRoom 첫 방에서 **K** 또는 패드 **RightShoulder**를 누르면 조작�
 
 바인딩이 바뀌면 `InputRevision`이 증가한다. KeyRoom은 `OnCreate`에서 설정을 읽어 `LoadInputBindings`를 호출하고, 조작키 화면이 `InputRevision` 변화를 감지하면 `LoadSettings(1)`로 최신 설정을 다시 읽은 뒤 `SaveInputBindings`와 `SaveSettings`를 호출한다. 같은 파일에 다른 값을 쓰는 스크립트도 저장 직전에 설정을 다시 읽어야 다른 스크립트가 저장한 바인딩을 덮어쓰지 않는다. [ToggleControls.cs](../../samples/KeyRoom/Scripts/ToggleControls.cs) · [검증 기록](../../engine/tests/results/player-rebinding/README.md)
 
+## 게임패드 진동과 마우스 커서
+
+`tick.Session.Rumble(low, high, seconds)`는 연결된 게임패드의 저주파(왼쪽)·고주파(오른쪽) 모터를 0–1 세기로 `seconds` 동안 진동시킨다. 엔진이 입력을 읽는 첫 번째 패드에 SDL의 `SDL_RumbleGamepad`로 전달하며, 새 호출은 진행 중인 진동을 대체한다. 시간이 지나면 SDL이 멈춘다. 패드가 없거나 창 없이 실행하면 무시된다. 플레이어가 `tick.Ui.Preferences.Rumble`을 끄면 요청을 버린다. 이 값도 [흔들림·깜빡임 설정](cameras.md#흔들림과-깜빡임-줄이기)과 함께 `SaveTo`·`LoadFrom`으로 저장한다.
+
+`tick.Session.SetCursor(sprite, hotX, hotY)`는 프로젝트 PNG(최대 256×256)를 마우스 커서로 쓴다. 핫스폿은 클릭 위치가 되는 이미지 픽셀이며 이미지 밖이면 `ArgumentOutOfRangeException`이 발생한다. `ResetCursor()`로 시스템 커서를 복원하고, `Cursor`로 현재 상태를 읽는다. 스크립트 필드를 `SpriteReference`로 선언하면 빌드가 PNG를 배포본에 포함한다. 플레이어는 SDL 컬러 커서로 표시한다. Scene Play는 같은 픽셀로 Mac에서는 SDL Scene 패널의 `NSCursor`를, Windows·Linux에서는 Avalonia 커서를 만들어 Scene 패널 위에 표시하고, Play를 멈추면 원래 커서로 돌아간다.
+
+CameraLab에서 **6**(패드 North)은 `Rumble(.3, .9, .2)`, **1**은 흔들림과 함께 `Rumble(1, .5, .4)`를 요청한다. **8**(RightStick)은 진동 끄기, **7**(LeftStick)은 조준 커서 [Cursor.png](../../samples/CameraLab/Assets/Cursor.png)(핫스폿 8, 8)와 시스템 커서를 바꾼다.
+
+`MONOON_FEEDBACK_LOG=<파일>`을 지정하면 플레이어와 Scene Play가 보낸 진동(기기 이름, 모터 세기 0–65535, 밀리초, 결과)과 커서(파일, 크기, 핫스폿, RGBA 해시)를 한 줄씩 기록한다. 패드 없이 확인할 때 쓴다. [Mac 기록과 비교](../../engine/tests/results/rumble-cursor/README.md)
+
 ## 입력 모드 전환과 복귀
 
 KeyRoom 첫 방에서 **I** 또는 **Bag [I]**로 인벤토리를 연다. **Manage compass**를 선택하고 **Apply**를 누르면 나침반이 장착되고 HUD에 출구 방향이 표시된다. 다시 적용하면 가방에 넣는다. **Cancel**은 장비 상태를 유지한다. **Backspace**를 한 번 누르면 확인창에서 인벤토리로, 한 번 더 누르면 게임으로 돌아간다. **Tab / Shift+Tab**과 **Enter**로도 모든 버튼을 조작할 수 있다. [KeyRoom 예제 스크립트](../../samples/KeyRoom/Scripts/BagMenu.cs)

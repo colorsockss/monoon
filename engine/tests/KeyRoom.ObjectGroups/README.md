@@ -7,7 +7,7 @@ dotnet build engine/tests/KeyRoom.ObjectGroups -c Release
 python3 engine/scripts/package-editor.py keyroom --output /tmp/monoon-groups
 ```
 
-macOS에서는 다음 명령으로 배포 에디터를 실행한다. Windows와 Linux에서는 첫 인자를 해당 OS의 MoNoon 에디터 실행 파일로 바꾼다. 마지막 인수에는 매번 새 결과 폴더를 지정한다. Linux X11에서는 기존 검증 환경의 xdotool을 이용해 프리팹 창을 닫은 뒤 주 창에 포커스를 돌려준다.
+macOS에서는 다음 명령으로 배포 에디터를 실행한다. Windows에서는 첫 인자를 Windows MoNoon 에디터 실행 파일로 바꾼다. 마지막 인수에는 매번 새 결과 폴더를 지정한다. Linux 에디터는 2026-11-23부터 지원하지 않는다.
 
 ```sh
 python3 engine/tests/KeyRoom.ObjectGroups/verify.py \

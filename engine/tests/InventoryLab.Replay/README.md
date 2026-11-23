@@ -18,7 +18,7 @@ Windows에서는 같은 인자를 `python.exe`에 전달한다. 첫 인자는 �
 python3 engine/tests/InventoryLab.Replay/build_guest.py game-builds/InventoryLab-upgrade game-builds/upgrade-results --upgrade-from-v31
 ```
 
-실행기는 Git에서 당시 InventoryLab 소스를 임시 폴더로 추출하고 버전 35 에디터의 `--migrate-project`를 실행한다. 기존 YAML 프로젝트의 파일과 GUID가 변환·빌드 뒤에도 보존됐는지 검사한다. 각 배포 플레이어를 헤드리스로 두 번 실행한다. 첫 실행은 약초 두 포기와 진행 중인 의뢰가 든 v2 슬롯을 `L`로 읽고 126바이트가 보존됐는지 확인한다. 두 번째 실행은 `L 1 T 2 1 S`로 의뢰를 마치고, 최종 v3 슬롯 171바이트를 Mac 기준과 비교한다. 결과 폴더의 `*-loaded.save`는 읽기 직후의 슬롯이고 `release.save`와 `native-aot.save`는 보상 수령 후 슬롯이다. [v2 입력](../results/inventorylab-upgrade-x64/v2-input.save) · [Mac 기준 저장](../fixtures/InventoryLab/Herbalist.save)
+실행기는 Git에서 당시 InventoryLab 소스를 임시 폴더로 추출하고 버전 35 CLI의 `migrate`(에디터의 `--migrate-project`와 같은 변환)를 실행한다. 게스트에는 에디터가 필요 없다. 기존 YAML 프로젝트의 파일과 GUID가 변환·빌드 뒤에도 보존됐는지 검사한다. 각 배포 플레이어를 헤드리스로 두 번 실행한다. 첫 실행은 약초 두 포기와 진행 중인 의뢰가 든 v2 슬롯을 `L`로 읽고 126바이트가 보존됐는지 확인한다. 두 번째 실행은 `L 1 T 2 1 S`로 의뢰를 마치고, 최종 v3 슬롯 171바이트를 Mac 기준과 비교한다. 결과 폴더의 `*-loaded.save`는 읽기 직후의 슬롯이고 `release.save`와 `native-aot.save`는 보상 수령 후 슬롯이다. [v2 입력](../results/inventorylab-upgrade-x64/v2-input.save) · [Mac 기준 저장](../fixtures/InventoryLab/Herbalist.save)
 
 ## 저장 슬롯 복구 회귀
 

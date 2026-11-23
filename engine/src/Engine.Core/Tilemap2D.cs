@@ -225,6 +225,16 @@ public sealed partial record Tilemap2DComponent : SceneComponent
         foreach (var key in Candidates())
         {
             if (!chunks.TryGetValue(key, out var cells)) continue;
+            // A small view probes its cells in index order instead of walking the whole chunk; same cells, same order.
+            int left0 = Math.Max(first.X, key.X * 32), right0 = Math.Min(last.X, key.X * 32 + 31);
+            int top0 = Math.Max(first.Y, key.Y * 32), bottom0 = Math.Min(last.Y, key.Y * 32 + 31);
+            if ((long)(right0 - left0 + 1) * (bottom0 - top0 + 1) < cells.Count)
+            {
+                for (long y = top0; y <= bottom0; y++) // long: the last chunk ends at int.MaxValue
+                    for (long x = left0; x <= right0; x++)
+                        if (cells.TryGetValue(Index(new((int)x, (int)y)), out var tile)) yield return (new((int)x, (int)y), tile);
+                continue;
+            }
             foreach (var (index, tile) in cells)
             {
                 var cell = Position(key, index);

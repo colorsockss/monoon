@@ -6,7 +6,7 @@
 
 ## 도킹 방식 결정
 
-Dock.Avalonia 11.3.12.1(MIT)과 의존 패키지를 받아 확인했다. 이 버전의 `Dock.Avalonia`에는 컨트롤 템플릿이 없다. DockControl·ToolDock·탭·드롭 대상의 Fluent 테마는 별도 패키지 `Dock.Avalonia.Themes.Fluent`에 있다. 이번에 승인된 다운로드에 포함되지 않았다. 내부 PART 규약에 맞춰 템플릿 20여 개를 직접 쓰는 것보다 직접 구현한 배치가 코드가 적고 Scene 뷰 문제도 피할 수 있다고 판단했다. 따라서 Grid·GridSplitter와 탭 줄로 [DockHost](../../../src/Engine.Editor/DockHost.cs)를 직접 만들었다. Dock 패키지 참조는 제거했다. 에디터에 새로 추가한 NuGet 패키지는 없다. 승인 없이 테마 패키지를 받을 수 있다면 다시 비교할 수 있다.
+Dock.Avalonia 11.3.12.1(MIT)과 의존 패키지를 받아 확인했다. 이 버전의 `Dock.Avalonia`에는 컨트롤 템플릿이 없다. DockControl·ToolDock·탭·드롭 대상의 Fluent 테마는 별도 패키지 `Dock.Avalonia.Themes.Fluent`에 있다. 이번에 승인된 다운로드에 포함되지 않았다. 내부 PART 규약에 맞춰 템플릿 20여 개를 직접 쓰는 것보다 직접 구현한 배치가 코드가 적고 Scene 뷰 문제도 피할 수 있다고 판단했다. 따라서 Grid·GridSplitter와 탭 줄로 [DockHost](../../../src/Engine.Editor/Docking/DockHost.cs)를 직접 만들었다. Dock 패키지 참조는 제거했다. 에디터에 새로 추가한 NuGet 패키지는 없다. 승인 없이 테마 패키지를 받을 수 있다면 다시 비교할 수 있다.
 
 - 패널 컨트롤은 XAML에서 한 번 만들어 DockHost의 자식으로 계속 남는다. 배치가 바뀌면 탭 묶음의 빈 영역 위치에 패널을 다시 배치한다. 부모가 바뀌지 않으므로 `x:Name` 필드, `FindControl`, Scene의 NSView와 SDL 렌더러, Play 세션이 그대로 유지된다.
 - 끄는 동안 표시하는 미리보기는 팝업 창이다. 네이티브 Scene 뷰는 메인 창 안에 그린 Avalonia 컨트롤을 덮기 때문이다.
@@ -91,7 +91,7 @@ Console, Profiler, Animator, 클립 타임라인(Clip), Tileset, Input Actions, 
 
 **에셋 편집기 규칙.** 종류마다 패널 하나를 쓴다. 같은 에셋(새 에셋끼리 포함)을 다시 열면 그 탭으로 이동하고, 다른 에셋을 열면 기존 편집기를 닫은 뒤 바꾼다. 저장하지 않은 클립·애니메이터는 먼저 묻고 Cancel이면 그대로 둔다. 이전의 클립 편집기가 이미 이 규칙(한 번에 하나, 다른 클립은 닫기 확인)이었고, 패널 이름이 고정되어 레이아웃 저장·Window 메뉴·플로팅 위치 복원이 단순해진다. 에셋별 탭은 만들지 않았다.
 
-**구현.** 예전 창 클래스는 `Window` 대신 [EditorPanel](../../../src/Engine.Editor/EditorPanel.cs)(UserControl)을 상속한다. EditorPanel은 기존 코드가 쓰던 Title, `Close(result)`, Closing·Closed·Opened·Activated·Deactivated, IsActive를 그대로 제공한다. `x:Name` 필드와 `FindControl`은 그대로다. `ShowDialog`로 기다리던 저장 뒤 처리는 편집기가 결과를 내며 닫힐 때 실행한다. 그래서 편집기가 열려 있어도 `busy`가 걸리지 않고 다른 메뉴와 Play를 쓸 수 있다. 예전에 모달이던 편집기는 Play 중 비활성이 되고 Clip만 Play 중에도 쓸 수 있다. Escape가 메인 창 전체에서 Cancel을 누르지 않도록 `IsCancel`을 뺐다. 편집기 안에서 여는 확인·시트 선택 창은 편집기를 보여 주는 창(메인 또는 플로팅)을 소유자로 쓴다.
+**구현.** 예전 창 클래스는 `Window` 대신 [EditorPanel](../../../src/Engine.Editor/Docking/EditorPanel.cs)(UserControl)을 상속한다. EditorPanel은 기존 코드가 쓰던 Title, `Close(result)`, Closing·Closed·Opened·Activated·Deactivated, IsActive를 그대로 제공한다. `x:Name` 필드와 `FindControl`은 그대로다. `ShowDialog`로 기다리던 저장 뒤 처리는 편집기가 결과를 내며 닫힐 때 실행한다. 그래서 편집기가 열려 있어도 `busy`가 걸리지 않고 다른 메뉴와 Play를 쓸 수 있다. 예전에 모달이던 편집기는 Play 중 비활성이 되고 Clip만 Play 중에도 쓸 수 있다. Escape가 메인 창 전체에서 Cancel을 누르지 않도록 `IsCancel`을 뺐다. 편집기 안에서 여는 확인·시트 선택 창은 편집기를 보여 주는 창(메인 또는 플로팅)을 소유자로 쓴다.
 
 ### 플로팅 창
 

@@ -35,6 +35,8 @@ rows:
   cells: ["COIN: 1", "동전: 1"]
 - key: hud.controls
   cells: ["Controls", "조작법"]
+- key: hud.door
+  cells: ["The door is open. Head east.", "문이 열렸다. 동쪽으로 가자."]
 - key: hud.key
   cells: ["KEY", "열쇠"]
 - key: hud.key2

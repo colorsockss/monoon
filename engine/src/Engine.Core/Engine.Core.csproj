@@ -1,6 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <AssemblyVersion>1.13.0.0</AssemblyVersion>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
     <None Update="EngineAssets/Square.png" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
@@ -9,8 +10,13 @@
     <InternalsVisibleTo Include="Engine.Checks"/>
     <InternalsVisibleTo Include="MoNoon.Cli"/>
     <InternalsVisibleTo Include="Engine.Authoring"/>
-    <PackageReference Include="NVorbis" Version="0.10.4" GeneratePathProperty="true" />
-    <None Include="$(PkgNVorbis)/LICENSE" Link="Licenses/NVorbis/LICENSE.txt" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
+    <!-- Audio decoding, resampling and mixing run on SDL_mixer 3.2 (WAV, stb_vorbis) through BRUTAL. -->
+    <PackageReference Include="Ahwoo.BRUTAL.Sdl.Mixer" Version="2026.10.3" />
+    <PackageReference Include="Ahwoo.BRUTAL.Sdl.Mixer.Native" Version="2026.10.3" GeneratePathProperty="true" />
+    <None Include="$(PkgAhwoo_BRUTAL_Sdl_Mixer_Native)/LICENSES/**/*" Link="Licenses/BRUTAL/%(RecursiveDir)%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
     <PackageReference Include="VYaml" Version="1.6.1" />
+    <!-- Physics runs on BRUTAL's Box2D binding (native box2d 3.1 for osx-arm64, win-x64, linux-x64). -->
+    <PackageReference Include="Ahwoo.BRUTAL.Box2D" Version="2026.10.2" GeneratePathProperty="true" />
+    <None Include="$(PkgAhwoo_BRUTAL_Box2D)/LICENSES/**/*" Link="Licenses/BRUTAL/%(RecursiveDir)%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
   </ItemGroup>
 </Project>

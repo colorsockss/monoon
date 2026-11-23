@@ -5,6 +5,7 @@
 | Add Component | Inspector에서 설정하는 값 |
 | --- | --- |
 | Position Tween 2D | Δ X/Y는 시작점에서의 변위, Time (s)는 편도 시간이다. Ease로 가속·감속을 고르고 Repeat에서 Once 또는 PingPong을 고른다. |
+| Path Follower 2D | Scene에서 편집한 곡선 경로를 일정 속도로 따라간다. [곡선 경로를 따라가는 발판](platformer-physics.md#곡선-경로를-따라가는-발판) |
 | Skeleton Animator 2D | Rig에 프로젝트의 `.rig`를 지정한다. Clock의 Time은 Cycle (s)마다 한 바퀴, Travel은 이동 발판의 운반량을 뺀 로컬 가로 이동 거리 Stride마다 한 바퀴 재생한다. 역방향으로 걸으면 주기도 거꾸로 흐른다. |
 | Foot IK 2D | Skeleton Animator와 같은 오브젝트에 붙인다. Probe는 발의 기준 높이에서 위·아래로 탐색할 거리, Lift는 발을 옮길 때의 높이, 레이어 마스크는 발이 디딜 지형이다. |
 

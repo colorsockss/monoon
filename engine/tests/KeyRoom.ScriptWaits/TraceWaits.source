@@ -1,0 +1,20 @@
+using System;
+using System.IO;
+using Engine.Core;
+
+// Test-only observer copied into a disposable KeyRoom. Records the replay frame, game tick and pause state on every change.
+public sealed class TraceWaits : GameBehaviour
+{
+    private string last;
+    private int frame;
+
+    public override void UpdateUi(UiTick tick)
+    {
+        var s = tick.Session;
+        string line = $"tick={tick.Time.TickCount}|paused={tick.Time.IsPaused}|key={s.Has("key")}|hint={s.Has("doorHint")}";
+        if (line != last && Environment.GetEnvironmentVariable("MONOON_WAIT_TRACE") is { Length: > 0 } path)
+            File.AppendAllText(path, frame + "|" + line + "\n");
+        last = line;
+        frame++;
+    }
+}

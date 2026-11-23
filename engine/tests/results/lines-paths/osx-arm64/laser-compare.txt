@@ -1,0 +1,6 @@
+trace	891921 bytes	480 rows	sha256 6969a524feb5e837
+0060.png	identical	sha256 2da87ed28d744231
+0200.png	identical	sha256 614001e29d6ed5b4
+0330.png	identical	sha256 a89e394b46eab7ae
+0425.png	identical	sha256 e594f996c061011b
+0470.png	identical	sha256 e531bdfc2abd9bf0

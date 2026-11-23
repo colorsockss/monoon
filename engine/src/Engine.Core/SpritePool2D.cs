@@ -88,7 +88,7 @@ public sealed class SpritePool2D
         for (int i = 0; i < count; i++)
         {
             ref readonly var slot = ref slots[active[i]];
-            var bounds = Bounds(Vector2.Lerp(slot.Previous, slot.Position, interpolation));
+            var bounds = Bounds(Affine2D.Lerp(slot.Previous, slot.Position, interpolation));
             if (!frame.IntersectsWith(bounds)) continue;
             var color = Appearance.Color;
             var tint = slot.Tint;

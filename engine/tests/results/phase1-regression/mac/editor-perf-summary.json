@@ -1,0 +1,872 @@
+{
+ "runs": {
+  "base": [
+   {
+    "objects": 10010,
+    "edit_frame": {
+     "runs": 40,
+     "median_ms": 9.6438,
+     "min_ms": 5.953,
+     "max_ms": 12.6085,
+     "median_bytes": 11150432
+    },
+    "world_items": {
+     "runs": 40,
+     "median_ms": 5.0221,
+     "min_ms": 2.8381,
+     "max_ms": 11.9725,
+     "median_bytes": 6909856
+    },
+    "edit_items": {
+     "runs": 40,
+     "median_ms": 5.2675,
+     "min_ms": 2.7793,
+     "max_ms": 8.6746,
+     "median_bytes": 6909992
+    },
+    "edit_rebuild": {
+     "runs": 3,
+     "median_ms": 5102.7017,
+     "min_ms": 4015.167,
+     "max_ms": 5956.6393,
+     "median_bytes": 4270231688
+    },
+    "edit_rebuild_layout": {
+     "runs": 3,
+     "median_ms": 7094.9163,
+     "min_ms": 5706.111,
+     "max_ms": 8526.3681,
+     "median_bytes": 8225057304
+    },
+    "play_enter": {
+     "ms": 15635.5887,
+     "bytes": 11155517336,
+     "layout_ms": 0.9769,
+     "layout_bytes": 624656
+    },
+    "toggle": {
+     "runs": 6,
+     "median_ms": 866.9322,
+     "min_ms": 813.3952,
+     "max_ms": 1198.0319,
+     "median_bytes": 548590832
+    },
+    "toggle_layout": {
+     "runs": 6,
+     "median_ms": 5506.445,
+     "min_ms": 3157.1999,
+     "max_ms": 6013.5364,
+     "median_bytes": 6621324560
+    },
+    "toggle_reused_rows": false,
+    "play_rebuild": {
+     "runs": 3,
+     "median_ms": 840.3475,
+     "min_ms": 789.3455,
+     "max_ms": 849.3508,
+     "median_bytes": 548587648
+    },
+    "play_rebuild_layout": {
+     "runs": 3,
+     "median_ms": 6778.4825,
+     "min_ms": 3239.0782,
+     "max_ms": 7808.7374,
+     "median_bytes": 6621336936
+    }
+   },
+   {
+    "objects": 10010,
+    "edit_frame": {
+     "runs": 40,
+     "median_ms": 9.908,
+     "min_ms": 5.9209,
+     "max_ms": 15.8979,
+     "median_bytes": 11150432
+    },
+    "world_items": {
+     "runs": 40,
+     "median_ms": 4.965,
+     "min_ms": 2.6299,
+     "max_ms": 7.7532,
+     "median_bytes": 6909856
+    },
+    "edit_items": {
+     "runs": 40,
+     "median_ms": 5.268,
+     "min_ms": 2.7672,
+     "max_ms": 9.5405,
+     "median_bytes": 6909992
+    },
+    "edit_rebuild": {
+     "runs": 3,
+     "median_ms": 4640.2172,
+     "min_ms": 3727.7005,
+     "max_ms": 5628.8478,
+     "median_bytes": 4270231688
+    },
+    "edit_rebuild_layout": {
+     "runs": 3,
+     "median_ms": 6999.6502,
+     "min_ms": 5657.3525,
+     "max_ms": 8386.9332,
+     "median_bytes": 8225057304
+    },
+    "play_enter": {
+     "ms": 15160.7606,
+     "bytes": 11155529832,
+     "layout_ms": 0.9476,
+     "layout_bytes": 624656
+    },
+    "toggle": {
+     "runs": 6,
+     "median_ms": 809.5771,
+     "min_ms": 776.7025,
+     "max_ms": 1423.4284,
+     "median_bytes": 548590272
+    },
+    "toggle_layout": {
+     "runs": 6,
+     "median_ms": 5458.5701,
+     "min_ms": 3138.2505,
+     "max_ms": 5986.2335,
+     "median_bytes": 6621324560
+    },
+    "toggle_reused_rows": false,
+    "play_rebuild": {
+     "runs": 3,
+     "median_ms": 789.228,
+     "min_ms": 746.8419,
+     "max_ms": 822.817,
+     "median_bytes": 548587648
+    },
+    "play_rebuild_layout": {
+     "runs": 3,
+     "median_ms": 6692.809,
+     "min_ms": 3305.7318,
+     "max_ms": 7900.4766,
+     "median_bytes": 6621335232
+    }
+   },
+   {
+    "objects": 10010,
+    "edit_frame": {
+     "runs": 40,
+     "median_ms": 9.766,
+     "min_ms": 5.6692,
+     "max_ms": 12.9504,
+     "median_bytes": 11150432
+    },
+    "world_items": {
+     "runs": 40,
+     "median_ms": 5.1087,
+     "min_ms": 2.7555,
+     "max_ms": 12.7631,
+     "median_bytes": 6909856
+    },
+    "edit_items": {
+     "runs": 40,
+     "median_ms": 5.409,
+     "min_ms": 2.7359,
+     "max_ms": 8.595,
+     "median_bytes": 6909992
+    },
+    "edit_rebuild": {
+     "runs": 3,
+     "median_ms": 4775.5299,
+     "min_ms": 3803.1302,
+     "max_ms": 5619.4411,
+     "median_bytes": 4270231688
+    },
+    "edit_rebuild_layout": {
+     "runs": 3,
+     "median_ms": 7026.1614,
+     "min_ms": 5690.6404,
+     "max_ms": 8392.1725,
+     "median_bytes": 8225057304
+    },
+    "play_enter": {
+     "ms": 13448.7204,
+     "bytes": 11155510032,
+     "layout_ms": 0.9697,
+     "layout_bytes": 624656
+    },
+    "toggle": {
+     "runs": 6,
+     "median_ms": 807.3146,
+     "min_ms": 686.8578,
+     "max_ms": 894.1108,
+     "median_bytes": 548589680
+    },
+    "toggle_layout": {
+     "runs": 6,
+     "median_ms": 5989.4891,
+     "min_ms": 4804.9043,
+     "max_ms": 7451.3449,
+     "median_bytes": 6621327680
+    },
+    "toggle_reused_rows": false,
+    "play_rebuild": {
+     "runs": 3,
+     "median_ms": 803.6387,
+     "min_ms": 764.28,
+     "max_ms": 804.7739,
+     "median_bytes": 548587648
+    },
+    "play_rebuild_layout": {
+     "runs": 3,
+     "median_ms": 3365.0775,
+     "min_ms": 3169.427,
+     "max_ms": 7255.2957,
+     "median_bytes": 6621335568
+    }
+   },
+   {
+    "objects": 10010,
+    "edit_frame": {
+     "runs": 40,
+     "median_ms": 9.9795,
+     "min_ms": 5.717,
+     "max_ms": 13.9725,
+     "median_bytes": 11150432
+    },
+    "world_items": {
+     "runs": 40,
+     "median_ms": 5.0374,
+     "min_ms": 2.8425,
+     "max_ms": 14.6478,
+     "median_bytes": 6909856
+    },
+    "edit_items": {
+     "runs": 40,
+     "median_ms": 5.5818,
+     "min_ms": 2.7867,
+     "max_ms": 7.755,
+     "median_bytes": 6909992
+    },
+    "edit_rebuild": {
+     "runs": 3,
+     "median_ms": 3799.7043,
+     "min_ms": 2678.3568,
+     "max_ms": 5581.1187,
+     "median_bytes": 4270231688
+    },
+    "edit_rebuild_layout": {
+     "runs": 3,
+     "median_ms": 8100.545,
+     "min_ms": 5662.699,
+     "max_ms": 9103.9812,
+     "median_bytes": 8225057304
+    },
+    "play_enter": {
+     "ms": 13837.9136,
+     "bytes": 11155521144,
+     "layout_ms": 0.9176,
+     "layout_bytes": 624656
+    },
+    "toggle": {
+     "runs": 6,
+     "median_ms": 810.3838,
+     "min_ms": 789.9905,
+     "max_ms": 1333.8156,
+     "median_bytes": 548589768
+    },
+    "toggle_layout": {
+     "runs": 6,
+     "median_ms": 5593.9464,
+     "min_ms": 3139.7035,
+     "max_ms": 5959.8025,
+     "median_bytes": 6621327144
+    },
+    "toggle_reused_rows": false,
+    "play_rebuild": {
+     "runs": 3,
+     "median_ms": 813.624,
+     "min_ms": 760.9766,
+     "max_ms": 818.6793,
+     "median_bytes": 548587648
+    },
+    "play_rebuild_layout": {
+     "runs": 3,
+     "median_ms": 6778.9322,
+     "min_ms": 3301.18,
+     "max_ms": 8024.1225,
+     "median_bytes": 6621336936
+    }
+   },
+   {
+    "objects": 10010,
+    "edit_frame": {
+     "runs": 40,
+     "median_ms": 9.8524,
+     "min_ms": 5.4989,
+     "max_ms": 16.2405,
+     "median_bytes": 11150432
+    },
+    "world_items": {
+     "runs": 40,
+     "median_ms": 5.1467,
+     "min_ms": 2.7537,
+     "max_ms": 14.7209,
+     "median_bytes": 6909856
+    },
+    "edit_items": {
+     "runs": 40,
+     "median_ms": 5.4657,
+     "min_ms": 2.7106,
+     "max_ms": 7.9062,
+     "median_bytes": 6909992
+    },
+    "edit_rebuild": {
+     "runs": 3,
+     "median_ms": 4885.2774,
+     "min_ms": 4656.1483,
+     "max_ms": 5619.8506,
+     "median_bytes": 4270231688
+    },
+    "edit_rebuild_layout": {
+     "runs": 3,
+     "median_ms": 8928.945,
+     "min_ms": 5310.5313,
+     "max_ms": 9586.166,
+     "median_bytes": 8225057304
+    },
+    "play_enter": {
+     "ms": 11029.7645,
+     "bytes": 11155545888,
+     "layout_ms": 0.9786,
+     "layout_bytes": 624656
+    },
+    "toggle": {
+     "runs": 6,
+     "median_ms": 792.6178,
+     "min_ms": 716.5685,
+     "max_ms": 905.7971,
+     "median_bytes": 548589680
+    },
+    "toggle_layout": {
+     "runs": 6,
+     "median_ms": 5439.805,
+     "min_ms": 3048.2053,
+     "max_ms": 5944.3577,
+     "median_bytes": 6621323824
+    },
+    "toggle_reused_rows": false,
+    "play_rebuild": {
+     "runs": 3,
+     "median_ms": 776.3779,
+     "min_ms": 767.5115,
+     "max_ms": 811.4354,
+     "median_bytes": 548587648
+    },
+    "play_rebuild_layout": {
+     "runs": 3,
+     "median_ms": 6577.3139,
+     "min_ms": 3224.7992,
+     "max_ms": 7794.651,
+     "median_bytes": 6621335232
+    }
+   }
+  ],
+  "cand": [
+   {
+    "objects": 10010,
+    "edit_frame": {
+     "runs": 40,
+     "median_ms": 5.2885,
+     "min_ms": 2.2497,
+     "max_ms": 41.103,
+     "median_bytes": 141968
+    },
+    "world_items": {
+     "runs": 40,
+     "median_ms": 2.885,
+     "min_ms": 2.6783,
+     "max_ms": 42.947,
+     "median_bytes": 1304256
+    },
+    "edit_items": {
+     "runs": 40,
+     "median_ms": 0.2036,
+     "min_ms": 0.1848,
+     "max_ms": 0.2176,
+     "median_bytes": 104
+    },
+    "edit_rebuild": {
+     "runs": 3,
+     "median_ms": 3268.114,
+     "min_ms": 2106.6974,
+     "max_ms": 4201.6672,
+     "median_bytes": 2753238584
+    },
+    "edit_rebuild_layout": {
+     "runs": 3,
+     "median_ms": 8495.6868,
+     "min_ms": 6802.1492,
+     "max_ms": 9683.7022,
+     "median_bytes": 8237469216
+    },
+    "play_enter": {
+     "ms": 11072.0928,
+     "bytes": 9613576608,
+     "layout_ms": 1.009,
+     "layout_bytes": 624656
+    },
+    "toggle": {
+     "runs": 6,
+     "median_ms": 5.9786,
+     "min_ms": 4.7691,
+     "max_ms": 6.4204,
+     "median_bytes": 978904
+    },
+    "toggle_layout": {
+     "runs": 6,
+     "median_ms": 21.6035,
+     "min_ms": 5.5288,
+     "max_ms": 85.1024,
+     "median_bytes": 5895416
+    },
+    "toggle_reused_rows": true,
+    "play_rebuild": {
+     "runs": 3,
+     "median_ms": 693.4029,
+     "min_ms": 622.1795,
+     "max_ms": 698.934,
+     "median_bytes": 225499880
+    },
+    "play_rebuild_layout": {
+     "runs": 3,
+     "median_ms": 5236.3051,
+     "min_ms": 4032.5089,
+     "max_ms": 5513.1569,
+     "median_bytes": 6624968400
+    }
+   },
+   {
+    "objects": 10010,
+    "edit_frame": {
+     "runs": 40,
+     "median_ms": 5.204,
+     "min_ms": 4.0092,
+     "max_ms": 65.0934,
+     "median_bytes": 141968
+    },
+    "world_items": {
+     "runs": 40,
+     "median_ms": 3.4704,
+     "min_ms": 3.3051,
+     "max_ms": 46.3177,
+     "median_bytes": 1304256
+    },
+    "edit_items": {
+     "runs": 40,
+     "median_ms": 0.2078,
+     "min_ms": 0.2006,
+     "max_ms": 0.2501,
+     "median_bytes": 104
+    },
+    "edit_rebuild": {
+     "runs": 3,
+     "median_ms": 3229.6875,
+     "min_ms": 1991.9754,
+     "max_ms": 4093.9386,
+     "median_bytes": 2753238584
+    },
+    "edit_rebuild_layout": {
+     "runs": 3,
+     "median_ms": 8327.375,
+     "min_ms": 6757.4944,
+     "max_ms": 9657.8395,
+     "median_bytes": 8237468992
+    },
+    "play_enter": {
+     "ms": 10914.6264,
+     "bytes": 9613526864,
+     "layout_ms": 0.964,
+     "layout_bytes": 624656
+    },
+    "toggle": {
+     "runs": 6,
+     "median_ms": 6.2059,
+     "min_ms": 4.9305,
+     "max_ms": 6.7479,
+     "median_bytes": 978904
+    },
+    "toggle_layout": {
+     "runs": 6,
+     "median_ms": 21.3268,
+     "min_ms": 5.3648,
+     "max_ms": 85.9864,
+     "median_bytes": 5895416
+    },
+    "toggle_reused_rows": true,
+    "play_rebuild": {
+     "runs": 3,
+     "median_ms": 685.9918,
+     "min_ms": 620.9815,
+     "max_ms": 710.8722,
+     "median_bytes": 225499880
+    },
+    "play_rebuild_layout": {
+     "runs": 3,
+     "median_ms": 5185.1298,
+     "min_ms": 4005.6015,
+     "max_ms": 5518.0987,
+     "median_bytes": 6624961152
+    }
+   },
+   {
+    "objects": 10010,
+    "edit_frame": {
+     "runs": 40,
+     "median_ms": 4.4899,
+     "min_ms": 3.9927,
+     "max_ms": 7.2761,
+     "median_bytes": 141968
+    },
+    "world_items": {
+     "runs": 40,
+     "median_ms": 3.5927,
+     "min_ms": 3.4503,
+     "max_ms": 64.8507,
+     "median_bytes": 1304256
+    },
+    "edit_items": {
+     "runs": 40,
+     "median_ms": 0.2048,
+     "min_ms": 0.1827,
+     "max_ms": 0.2304,
+     "median_bytes": 104
+    },
+    "edit_rebuild": {
+     "runs": 3,
+     "median_ms": 4081.9302,
+     "min_ms": 1977.0462,
+     "max_ms": 4297.5811,
+     "median_bytes": 2753238584
+    },
+    "edit_rebuild_layout": {
+     "runs": 3,
+     "median_ms": 8386.8055,
+     "min_ms": 6795.2365,
+     "max_ms": 9449.5685,
+     "median_bytes": 8237468992
+    },
+    "play_enter": {
+     "ms": 12669.5424,
+     "bytes": 9613524464,
+     "layout_ms": 0.9651,
+     "layout_bytes": 624656
+    },
+    "toggle": {
+     "runs": 6,
+     "median_ms": 5.0703,
+     "min_ms": 4.2924,
+     "max_ms": 6.1409,
+     "median_bytes": 978904
+    },
+    "toggle_layout": {
+     "runs": 6,
+     "median_ms": 11.7601,
+     "min_ms": 5.5417,
+     "max_ms": 83.2005,
+     "median_bytes": 5897624
+    },
+    "toggle_reused_rows": true,
+    "play_rebuild": {
+     "runs": 3,
+     "median_ms": 667.5337,
+     "min_ms": 601.81,
+     "max_ms": 1122.9836,
+     "median_bytes": 225499880
+    },
+    "play_rebuild_layout": {
+     "runs": 3,
+     "median_ms": 5284.4703,
+     "min_ms": 4805.2205,
+     "max_ms": 6017.844,
+     "median_bytes": 6624964808
+    }
+   },
+   {
+    "objects": 10010,
+    "edit_frame": {
+     "runs": 40,
+     "median_ms": 5.6246,
+     "min_ms": 2.2315,
+     "max_ms": 46.5088,
+     "median_bytes": 141968
+    },
+    "world_items": {
+     "runs": 40,
+     "median_ms": 2.4316,
+     "min_ms": 1.2955,
+     "max_ms": 47.8994,
+     "median_bytes": 1304256
+    },
+    "edit_items": {
+     "runs": 40,
+     "median_ms": 0.1973,
+     "min_ms": 0.1726,
+     "max_ms": 0.2162,
+     "median_bytes": 104
+    },
+    "edit_rebuild": {
+     "runs": 3,
+     "median_ms": 3168.4267,
+     "min_ms": 1990.8745,
+     "max_ms": 4064.9927,
+     "median_bytes": 2753238584
+    },
+    "edit_rebuild_layout": {
+     "runs": 3,
+     "median_ms": 8324.1248,
+     "min_ms": 6870.2765,
+     "max_ms": 9458.1859,
+     "median_bytes": 8237469216
+    },
+    "play_enter": {
+     "ms": 13234.422,
+     "bytes": 9613532072,
+     "layout_ms": 0.9572,
+     "layout_bytes": 624656
+    },
+    "toggle": {
+     "runs": 6,
+     "median_ms": 5.5362,
+     "min_ms": 4.3867,
+     "max_ms": 7.1442,
+     "median_bytes": 978904
+    },
+    "toggle_layout": {
+     "runs": 6,
+     "median_ms": 11.32,
+     "min_ms": 5.5987,
+     "max_ms": 81.196,
+     "median_bytes": 5895504
+    },
+    "toggle_reused_rows": true,
+    "play_rebuild": {
+     "runs": 3,
+     "median_ms": 668.7246,
+     "min_ms": 603.0754,
+     "max_ms": 1065.97,
+     "median_bytes": 225500080
+    },
+    "play_rebuild_layout": {
+     "runs": 3,
+     "median_ms": 5523.7929,
+     "min_ms": 5312.8874,
+     "max_ms": 5591.6301,
+     "median_bytes": 6624970928
+    }
+   },
+   {
+    "objects": 10010,
+    "edit_frame": {
+     "runs": 40,
+     "median_ms": 6.6558,
+     "min_ms": 4.3808,
+     "max_ms": 7.7792,
+     "median_bytes": 141968
+    },
+    "world_items": {
+     "runs": 40,
+     "median_ms": 1.4251,
+     "min_ms": 1.3111,
+     "max_ms": 91.2642,
+     "median_bytes": 1304256
+    },
+    "edit_items": {
+     "runs": 40,
+     "median_ms": 0.1915,
+     "min_ms": 0.1719,
+     "max_ms": 0.2117,
+     "median_bytes": 104
+    },
+    "edit_rebuild": {
+     "runs": 3,
+     "median_ms": 3170.2757,
+     "min_ms": 1996.7451,
+     "max_ms": 4076.1739,
+     "median_bytes": 2753238584
+    },
+    "edit_rebuild_layout": {
+     "runs": 3,
+     "median_ms": 8353.611,
+     "min_ms": 6774.4276,
+     "max_ms": 9462.4259,
+     "median_bytes": 8237469216
+    },
+    "play_enter": {
+     "ms": 13141.6141,
+     "bytes": 9613529992,
+     "layout_ms": 0.9684,
+     "layout_bytes": 624656
+    },
+    "toggle": {
+     "runs": 6,
+     "median_ms": 5.5945,
+     "min_ms": 4.3791,
+     "max_ms": 67.8302,
+     "median_bytes": 978904
+    },
+    "toggle_layout": {
+     "runs": 6,
+     "median_ms": 11.5131,
+     "min_ms": 5.7966,
+     "max_ms": 20.4678,
+     "median_bytes": 5895504
+    },
+    "toggle_reused_rows": true,
+    "play_rebuild": {
+     "runs": 3,
+     "median_ms": 679.9126,
+     "min_ms": 604.1974,
+     "max_ms": 1048.0877,
+     "median_bytes": 225499880
+    },
+    "play_rebuild_layout": {
+     "runs": 3,
+     "median_ms": 5497.3927,
+     "min_ms": 5304.6092,
+     "max_ms": 5584.8843,
+     "median_bytes": 6624967144
+    }
+   }
+  ]
+ },
+ "summary": {
+  "base": {
+   "edit_frame": {
+    "median_ms": 9.8524,
+    "min_ms": 9.6438,
+    "max_ms": 9.9795,
+    "median_mb": 10.63
+   },
+   "world_items": {
+    "median_ms": 5.0374,
+    "min_ms": 4.965,
+    "max_ms": 5.1467,
+    "median_mb": 6.59
+   },
+   "edit_items": {
+    "median_ms": 5.409,
+    "min_ms": 5.2675,
+    "max_ms": 5.5818,
+    "median_mb": 6.59
+   },
+   "edit_rebuild": {
+    "median_ms": 4775.5299,
+    "min_ms": 3799.7043,
+    "max_ms": 5102.7017,
+    "median_mb": 4072.41
+   },
+   "edit_rebuild_layout": {
+    "median_ms": 7094.9163,
+    "min_ms": 6999.6502,
+    "max_ms": 8928.945,
+    "median_mb": 7844.03
+   },
+   "play_enter": {
+    "median_ms": 13837.9136,
+    "min_ms": 11029.7645,
+    "max_ms": 15635.5887,
+    "median_mb": 10638.73
+   },
+   "toggle": {
+    "median_ms": 809.5771,
+    "min_ms": 792.6178,
+    "max_ms": 866.9322,
+    "median_mb": 523.18
+   },
+   "toggle_layout": {
+    "median_ms": 5506.445,
+    "min_ms": 5439.805,
+    "max_ms": 5989.4891,
+    "median_mb": 6314.59
+   },
+   "play_rebuild": {
+    "median_ms": 803.6387,
+    "min_ms": 776.3779,
+    "max_ms": 840.3475,
+    "median_mb": 523.17
+   },
+   "play_rebuild_layout": {
+    "median_ms": 6692.809,
+    "min_ms": 3365.0775,
+    "max_ms": 6778.9322,
+    "median_mb": 6314.6
+   },
+   "play_enter_layout": {
+    "median_ms": 0.9697
+   },
+   "toggle_reused_rows": false
+  },
+  "cand": {
+   "edit_frame": {
+    "median_ms": 5.2885,
+    "min_ms": 4.4899,
+    "max_ms": 6.6558,
+    "median_mb": 0.14
+   },
+   "world_items": {
+    "median_ms": 2.885,
+    "min_ms": 1.4251,
+    "max_ms": 3.5927,
+    "median_mb": 1.24
+   },
+   "edit_items": {
+    "median_ms": 0.2036,
+    "min_ms": 0.1915,
+    "max_ms": 0.2078,
+    "median_mb": 0.0
+   },
+   "edit_rebuild": {
+    "median_ms": 3229.6875,
+    "min_ms": 3168.4267,
+    "max_ms": 4081.9302,
+    "median_mb": 2625.69
+   },
+   "edit_rebuild_layout": {
+    "median_ms": 8353.611,
+    "min_ms": 8324.1248,
+    "max_ms": 8495.6868,
+    "median_mb": 7855.86
+   },
+   "play_enter": {
+    "median_ms": 12669.5424,
+    "min_ms": 10914.6264,
+    "max_ms": 13234.422,
+    "median_mb": 9168.18
+   },
+   "toggle": {
+    "median_ms": 5.5945,
+    "min_ms": 5.0703,
+    "max_ms": 6.2059,
+    "median_mb": 0.93
+   },
+   "toggle_layout": {
+    "median_ms": 11.7601,
+    "min_ms": 11.32,
+    "max_ms": 21.6035,
+    "median_mb": 5.62
+   },
+   "play_rebuild": {
+    "median_ms": 679.9126,
+    "min_ms": 667.5337,
+    "max_ms": 693.4029,
+    "median_mb": 215.05
+   },
+   "play_rebuild_layout": {
+    "median_ms": 5284.4703,
+    "min_ms": 5185.1298,
+    "max_ms": 5523.7929,
+    "median_mb": 6318.06
+   },
+   "play_enter_layout": {
+    "median_ms": 0.9651
+   },
+   "toggle_reused_rows": true
+  }
+ }
+}

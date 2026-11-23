@@ -94,7 +94,7 @@ public sealed partial class SceneDocument
                 {
                     mapped.AddComponent(component switch {
                         Tilemap2DComponent {StreamTarget: Guid anchor} map when copies.TryGetValue(anchor,out var focus) => map with { StreamTarget=focus.Id },
-                        DistanceJoint2DComponent {Connected: Guid linkId} joint when copies.TryGetValue(linkId, out var other) => joint with { Connected = other.Id },
+                        Joint2DComponent {Connected: Guid linkId} joint when copies.TryGetValue(linkId, out var other) => joint with { Connected = other.Id },
                         ScriptComponent script => script.Duplicate(copies,library),
                         Camera2DComponent {Follow: Guid follow} camera when copies.TryGetValue(follow,out var target)=>camera with {Follow=target.Id},
                         _=>component });
@@ -118,10 +118,10 @@ public sealed partial class SceneDocument
                     exporting ? null : previous?.GetComponent<Tilemap2DComponent>()?.StreamTarget;
                 dest.AddComponent(map with { StreamTarget = target }); continue;
             }
-            if (component is DistanceJoint2DComponent joint)
+            if (component is Joint2DComponent joint)
             {
                 Guid? target = joint.Connected is Guid id && copies.TryGetValue(id, out var other) ? other.Id :
-                    exporting ? null : previous?.GetComponent<DistanceJoint2DComponent>()?.Connected;
+                    exporting ? null : (previous?.Components.FirstOrDefault(c => c.GetType() == joint.GetType()) as Joint2DComponent)?.Connected;
                 dest.AddComponent(joint with { Connected = target }); continue;
             }
             if (component is Camera2DComponent cam)

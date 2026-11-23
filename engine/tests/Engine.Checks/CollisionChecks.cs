@@ -152,7 +152,13 @@ internal static class CollisionChecks
             var ray=Hit(game.Raycast(center-new Vector2(80,0),Vector2.UnitX,160,filter));
             var sweep=Hit(game.Sweep(Shape2D.Circle(center-new Vector2(80,0),2),new(160,0),filter));
             Check(ray.Target.Tile==cell && sweep.Target.Tile==cell && sweep.Distance<ray.Distance,"tile polygon casts: "+layout);
+            // Cached world-space tile shapes follow edits and the layer's pose.
+            Check(game.SetTile(o.Id,cell,0) && game.Overlap(Shape2D.Circle(center,1),filter).Count==0,"cleared tile still collides: "+layout);
+            Check(game.SetTile(o.Id,cell,1) && game.Overlap(Shape2D.Circle(center,1),filter).Single().Tile==cell,"rewritten tile: "+layout);
+            Check(game.TryGetLocalTransform(o.Id,out var pose) && game.SetLocalTransform(o.Id,pose with { Position=pose.Position+new Vector2(0,1000) }) &&
+                game.Overlap(Shape2D.Circle(center,1),filter).Count==0 &&
+                game.Overlap(Shape2D.Circle(center+new Vector2(0,1000),1),filter).Single().Tile==cell,"moved tile layer: "+layout);
         }
-        Console.WriteLine("PASS physics queries against transformed orthogonal, isometric and hexagonal solid tiles");
+        Console.WriteLine("PASS physics queries against transformed orthogonal, isometric and hexagonal solid tiles; shapes follow SetTile and moves");
     }
 }

@@ -23,7 +23,7 @@ public sealed class OpenChest : GameBehaviour
         life.Objects.TrackForSave(Lid, WorldSaveFields.Active);
         life.Objects.SetActive(Lid, false);
         if (!life.Session.Has(LootRules.CoinFlag) && life.Objects.TryGetWorldMatrix(life.ObjectId, out var world))
-            SpawnLoot(life.Objects, life.ObjectId, Vector2.Transform(new Vector2(52, -5), world));
+            SpawnLoot(life.Objects, life.ObjectId, Affine2D.Transform(new Vector2(52, -5), world));
     }
 
     public override void FixedUpdate(ScriptTick tick)

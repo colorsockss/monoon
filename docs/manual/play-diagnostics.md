@@ -40,6 +40,8 @@ tick.Session.Log("Chest opened.");
 tick.Session.Log("Loot table is empty.", GameLogLevel.Warning);
 ```
 
+내보낸 게임(Release·Native AOT)을 터미널에서 실행하면 같은 로그가 메시지 그대로 한 줄씩 출력된다. Info·Warning은 표준 출력, Error와 씬 로드 실패는 표준 오류로 간다. 플레이어는 이 출력을 `Brutal.Logging`으로 처리한다. [BRUTAL 기능 정리](../brutal.md)
+
 ## 프레임 프로파일러
 
 **Debug → Profiler**, **Run → Frame Profiler** 또는 **Window → Profiler**로 Profiler 패널을 연다. 처음에는 Scene 아래 도구 영역에 들어가며 다른 패널처럼 옮기거나 띄울 수 있다. 탭의 **×**나 패널 오른쪽 위 닫기 버튼으로 닫으면 **Profiler** 체크도 꺼진다. 최근 180개 프레임을 보관한다. Stop 후에는 마지막 기록을 읽을 수 있고 새 Play는 빈 기록으로 시작한다.
@@ -78,7 +80,7 @@ tick.Session.Log("Loot table is empty.", GameLogLevel.Warning);
 | Editor | 게임 갱신 직후 에디터의 Hierarchy·Inspector·진단 갱신 |
 | Profiler.Write | 개발용 게임이 직전 프레임을 파일에 쓰는 시간 |
 
-[CollisionLab](../../samples/CollisionLab)에서 Play 후 **2**로 충돌체 1만 개 씬을 열고 **R**을 누른다. 그래프에서 R 직후 솟은 프레임을 클릭하면 `QueryField.FixedUpdate` 아래 Physics.Overlap·Raycast·Sweep이 각각 1,344회(경로 96개 × 14회) 표시된다. 씬 전환 프레임에서는 Scene.Loading 외에 Frame의 Self 시간이 크게 나타난다. 이 시간은 에디터가 1만 개 오브젝트를 표시하는 데 사용한다.
+[CollisionLab](../../samples/CollisionLab)에서 Play 후 **2**로 충돌체 1만 개 씬을 열고 **R**을 누른다. 그래프에서 R 직후 솟은 프레임을 클릭하면 `QueryField.FixedUpdate` 아래 Physics.Overlap·Raycast·Sweep이 각각 1,344회(경로 96개 × 14회) 표시된다. 씬 전환 프레임에서는 Scene.Loading 외에 Frame의 Self 시간이 크게 나타난다. 이 시간은 에디터가 1만 개 오브젝트를 표시하는 데 사용한다. 오브젝트가 추가·삭제되거나 부모·이름이 바뀔 때만 Play Hierarchy를 다시 만든다. 풀 Rent·Return이나 활성 전환만 있으면 기존 행을 두고 비활성 행의 흐림만 바꾼다. [측정 결과](../../engine/tests/results/perf-editor/README.md)
 
 게임 스레드에서 실행된 작업만 기록한다. 다른 스레드에서 호출한 질의는 집계하지 않는다. 시간은 `Stopwatch` 타임스탬프로 측정하며 샘플을 기록할 때 관리 메모리를 할당하지 않는다. 프레임당 노드는 최대 256개, 깊이는 32단계까지 기록한다. 이를 넘은 호출은 제목에 `samples dropped`로 표시된다. 측정 비용은 시간에 포함되며, 이 Mac에서 질의 1회의 p95가 약 0.1 µs 늘었다. GPU 실행 시간은 측정하지 않는다.
 

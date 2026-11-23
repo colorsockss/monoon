@@ -1,0 +1,47 @@
+{
+  "v1": {
+    "ticks": 30,
+    "speed": 2,
+    "version": "v1",
+    "routines": 1
+  },
+  "v2": {
+    "replaced": true,
+    "new_assembly": true,
+    "ticks_before": 30,
+    "ticks_after_reload": 38,
+    "delta_one_tick": 1000,
+    "speed": 3,
+    "version": "v1",
+    "label": "added in v2",
+    "routines": 0,
+    "console": [
+      {
+        "Level": "Info",
+        "Message": "Scripts reloaded: 23 behaviours on 19 objects kept their field values.",
+        "File": null,
+        "Line": 0
+      },
+      {
+        "Level": "Warning",
+        "Message": "ReloadProbe.Speed: type changed from Single to Int32; the field was reset to its default.",
+        "File": null,
+        "Line": 0
+      },
+      {
+        "Level": "Info",
+        "Message": "Stopped 1 running routine(s) from the previous code. Scripts start new ones as usual.",
+        "File": null,
+        "Line": 0
+      }
+    ]
+  },
+  "broken": {
+    "Message": "./Scripts/ReloadProbe.cs(11,71): error CS1002: ;\uC774 \uD544\uC694\uD569\uB2C8\uB2E4.",
+    "File": "$WORK/a36-reload3/KeyRoom/Scripts/ReloadProbe.cs",
+    "Line": 11,
+    "same_instance": true,
+    "delta_one_tick": 1000,
+    "playing": true
+  }
+}

@@ -31,6 +31,12 @@ public sealed partial class ProjectScripts : ScriptLibrary
     private Func<CSharpCompilation, CSharpCompilation>? instrument;
     internal static ProjectScripts ForScenePlay(string project, Func<CSharpCompilation, CSharpCompilation>? instrument = null) =>
         new(project) { ScenePlay = true, instrument = instrument };
+    // Test scripts live in Tests/ and are compiled with the game scripts only by `monoon test project`; builds never see them.
+    internal const string TestsFolder = "Tests";
+    // Editor extensions live in Editor/ and are compiled by the editor against its API; game scripts and builds never see them.
+    internal const string EditorFolder = "Editor";
+    internal bool WithTests { get; private init; }
+    internal static ProjectScripts ForTests(string project) => new(project) { WithTests = true };
     internal override System.Reflection.Assembly LoadAssembly(System.Runtime.Loader.AssemblyLoadContext context)
     {
         if (!ScenePlay && File.Exists(CompiledPath)) return base.LoadAssembly(context);
@@ -53,7 +59,9 @@ public sealed partial class ProjectScripts : ScriptLibrary
         var platform = ((string)AppContext.GetData("TRUSTED_PLATFORM_ASSEMBLIES")!).Split(Path.PathSeparator);
         return platform.Where(path => Path.GetFileName(path).StartsWith("System.", StringComparison.Ordinal) ||
                 Path.GetFileName(path) == "netstandard.dll").Append(typeof(GameBehaviour).Assembly.Location)
-            .Distinct(StringComparer.Ordinal).Select(path => (MetadataReference)MetadataReference.CreateFromFile(path)).ToArray();
+            // The PDB lists references in order and the host's TPA order differs (editor app vs CLI): sort for identical builds.
+            .Distinct(StringComparer.Ordinal).OrderBy(Path.GetFileName, StringComparer.Ordinal)
+            .Select(path => (MetadataReference)MetadataReference.CreateFromFile(path)).ToArray();
     });
 
     internal static bool ReservedFolder(string name) => name is "bin" or "obj" or "Builds" or "build" || name.EndsWith(".app", StringComparison.OrdinalIgnoreCase);
@@ -80,7 +88,8 @@ public sealed partial class ProjectScripts : ScriptLibrary
                 }
                 if (id != null && !locations.TryAdd(id, path)) throw new InvalidDataException($"Duplicate script ID '{id}' in {path} and {locations[id]}.");
             }
-            foreach (var child in directory.EnumerateDirectories().Where(ContentFolder)) Visit(child);
+            foreach (var child in directory.EnumerateDirectories().Where(ContentFolder))
+                if (Path.GetRelativePath(root, child.FullName) is not (TestsFolder or EditorFolder)) Visit(child);
         }
         Visit(new DirectoryInfo(root));
         return locations;
@@ -113,8 +122,19 @@ public sealed partial class ProjectScripts : ScriptLibrary
     public override ScriptDefinition Get(string name) => Current().Components.TryGetValue(name,out var def) ? def :
         throw new InvalidDataException($"Scripts/{name}.cs: no attachable public GameBehaviour matching the file name.");
 
-    private SourceFile[] Sources() => Locations().OrderBy(p => p.Key, StringComparer.Ordinal)
-        .Select(p => new SourceFile(p.Key, File.ReadAllText(Path.Combine(root, p.Value)), p.Value)).ToArray();
+    private SourceFile[] Sources()
+    {
+        var files = Locations().OrderBy(p => p.Key, StringComparer.Ordinal)
+            .Select(p => new SourceFile(p.Key, File.ReadAllText(Path.Combine(root, p.Value)), p.Value));
+        var tests = Path.Combine(root, TestsFolder);
+        if (WithTests && Directory.Exists(tests))
+            files = files.Concat(Directory.EnumerateFiles(tests, "*.cs", SearchOption.AllDirectories).Order(StringComparer.Ordinal).Select(path =>
+            {
+                var relative = Path.GetRelativePath(root, path).Replace(Path.DirectorySeparatorChar, '/');
+                return new SourceFile(relative[..^3], File.ReadAllText(path), relative);
+            }));
+        return files.ToArray();
+    }
     internal Build Current()
     {
         var files = Sources();
@@ -155,8 +175,9 @@ public sealed partial class ProjectScripts : ScriptLibrary
             return CSharpSyntaxTree.ParseText(text, path: path);
         }
         var trees = files.Select(Parse).ToArray();
-        var compilation = CSharpCompilation.Create("MoNoon.GameScripts", trees, References.Value,
-            new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary, optimizationLevel: ScenePlay ? OptimizationLevel.Debug : OptimizationLevel.Release,
+        var references = WithTests ? References.Value.Append(MetadataReference.CreateFromFile(typeof(ProjectTests).Assembly.Location)) : References.Value;
+        var compilation = CSharpCompilation.Create("MoNoon.GameScripts", trees, references,
+            new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary, optimizationLevel: ScenePlay || WithTests ? OptimizationLevel.Debug : OptimizationLevel.Release,
                 deterministic: true));
         var baseType = compilation.GetTypeByMetadataName(typeof(GameBehaviour).FullName!);
         var candidates = new Dictionary<string, INamedTypeSymbol>(StringComparer.Ordinal);

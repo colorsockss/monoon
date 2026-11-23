@@ -45,7 +45,10 @@ public sealed partial class GameSession
     private static readonly int instantiating = FrameProfiler.Marker("Scene.Instantiate"),
         uploading = FrameProfiler.Marker("Scene.Upload"), committing = FrameProfiler.Marker("Scene.Commit");
     private Loading? loading;
+    internal bool LoadingScene => loading != null;
     private bool Blocking => loading?.Request.Change == SceneChange.Replace;
+    // Headless runs advance frames back to back; let the background scene read finish so a load takes frames, not wall time.
+    internal void WaitForSceneRead() { if (loading?.Read is {} read) ((IAsyncResult)read).AsyncWaitHandle.WaitOne(); } // A failed read is reported by PumpScenes.
     public ScreenUi? InputUi => Blocking ? null : Current.InputUi;
 
     private void OnAssetsChanged()

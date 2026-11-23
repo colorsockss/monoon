@@ -1,0 +1,4 @@
+BarrageLab.app 0
+NativeAOT/BarrageLab.app 0
+PlatformerLab.app 0
+NativeAOT/PlatformerLab.app 0

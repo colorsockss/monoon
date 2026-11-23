@@ -165,7 +165,7 @@ public sealed partial class SceneGame
 {
     private Body[] emitters=[], lights=[];
     private float effectStep;
-    private static Vector2 EmitterOrigin(Body b) => Vector2.Transform(new(b.Size.X*.5f,b.Size.Y-2),b.MatrixAt(b.Position));
+    private static Vector2 EmitterOrigin(Body b) => Affine2D.Transform(new(b.Size.X*.5f,b.Size.Y-2),b.MatrixAt(b.Position));
 
     public bool EmitParticles(Guid id)
     {

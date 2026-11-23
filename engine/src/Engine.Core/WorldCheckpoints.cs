@@ -141,7 +141,7 @@ public sealed partial class SceneGame
             if (body.Source.ParentId is Guid parent)
             {
                 var owner = byId[parent];
-                position = Vector2.Transform(position, Affine2D.Inverse(owner.MatrixAt(owner.Position)));
+                position = Affine2D.Transform(position, Affine2D.Inverse(owner.MatrixAt(owner.Position)));
             }
             SavedBasis? basis = null;
             if (body.EditedBasis)

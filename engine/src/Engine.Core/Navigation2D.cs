@@ -41,7 +41,7 @@ public sealed partial class SceneGame : INavigation2D
     {
         if (byId.TryGetValue(id,out var body) && body.Active)
         {
-            feet=Vector2.Transform(new(body.Size.X*.5f,body.Size.Y),body.MatrixAt(body.Position)); return true;
+            feet=Affine2D.Transform(new(body.Size.X*.5f,body.Size.Y),body.MatrixAt(body.Position)); return true;
         }
         feet=default;return false;
     }

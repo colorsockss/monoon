@@ -3,7 +3,7 @@ gameTitle: BarrageLab
 width: 800
 height: 450
 startScene: 719a1aa5-015b-503e-85ad-0722931cc1c0
-includedScenes: [719a1aa5-015b-503e-85ad-0722931cc1c0, 12940974-2dc8-472e-af74-dca5b29fdac6]
+includedScenes: [719a1aa5-015b-503e-85ad-0722931cc1c0, 12940974-2dc8-472e-af74-dca5b29fdac6, 189ac1ae-7fca-4bfd-b5ac-51bcd1090e5f]
 input:
   actions:
   - name: Fire

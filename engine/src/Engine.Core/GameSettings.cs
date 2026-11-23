@@ -14,6 +14,8 @@ public sealed partial record GameSettings(int Width = 800, int Height = 450)
     public Guid? StartScene { get; init; }
     public Guid[] IncludedScenes { get => field ??= []; set; }
     public string[]? ContentBundles { get; init; }
+    // PNG asset for distributable packages (Linux desktop entry); never needed by the player.
+    public Guid? Icon { get; init; }
     public LocalizationSettings? Localization { get; init; }
     public UiDefaults Accessibility { get=>field??=new();init; }
     public MixerLevels Mixer { get => field ??= new(); init; }

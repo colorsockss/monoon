@@ -1,0 +1,12 @@
+Plank 3/Rigidbody 2D@1280: 9 fields at x=1130, 9 labels at x=1070
+Plank 3/Revolute Joint 2D@1280: 5 fields at x=1130, 5 labels at x=1070
+Plank 3/Rigidbody 2D@1600: 9 fields at x=1450, 9 labels at x=1390
+Plank 3/Revolute Joint 2D@1600: 5 fields at x=1450, 5 labels at x=1390
+Plank 3/Rigidbody 2D@1920: 9 fields at x=1770, 9 labels at x=1710
+Plank 3/Revolute Joint 2D@1920: 5 fields at x=1770, 5 labels at x=1710
+Pulley deck A/Rigidbody 2D@1280: 9 fields at x=1130, 9 labels at x=1070
+Pulley deck A/Slider Joint 2D@1280: 8 fields at x=1130, 8 labels at x=1070
+Pulley deck A/Rigidbody 2D@1600: 9 fields at x=1450, 9 labels at x=1390
+Pulley deck A/Slider Joint 2D@1600: 8 fields at x=1450, 8 labels at x=1390
+Pulley deck A/Rigidbody 2D@1920: 9 fields at x=1770, 9 labels at x=1710
+Pulley deck A/Slider Joint 2D@1920: 8 fields at x=1770, 8 labels at x=1710

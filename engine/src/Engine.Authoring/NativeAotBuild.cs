@@ -7,19 +7,40 @@ internal static class NativeAotBuild
 {
     internal static void Publish(string playerProject, string rid, ProjectScripts.Build scripts, string output, BuildProfile profile)
     {
-        var work = Directory.CreateTempSubdirectory("monoon-aot-");
+        playerProject = RealPath(playerProject);
+        // The compiler sees the real path (/private/var on macOS), so the path maps below must use it too.
+        var work = new DirectoryInfo(RealPath(Directory.CreateTempSubdirectory("monoon-aot-").FullName));
         try
         {
             WriteScriptRegistry(work.FullName, playerProject, scripts);
             bool compactMac = rid == "osx-arm64" && profile == BuildProfile.Distribution;
+            // Map the random work folder (generated scripts, obj and PDB paths) to fixed names: identical builds give identical players.
+            string pathMap = $"{Path.Combine(work.FullName, "GameScripts", "GameSources")}=/_/%2C{work.FullName}=/_/monoon-aot";
             var args = new List<string> { "publish", playerProject, "-c", "Release", "-r", rid, "--self-contained", "true",
                 "-p:PublishAot=true", "-p:DebugType=portable", "-p:CopyOutputSymbolsToPublishDirectory=true", "-p:UseSharedCompilation=false", "-p:NuGetAudit=false", "-nr:false", "-m:1",
+                "-p:PathMap=" + pathMap,
                 "-p:MoNoonGameReferences=" + Path.Combine(work.FullName, "Scripts.props"),
                 "--artifacts-path", Path.Combine(work.FullName, "artifacts"), "-o", Path.GetFullPath(output) };
             if (compactMac) args.Add("-p:OptimizationPreference=Size");
             Run(DotnetHost(), work.FullName, args);
         }
         finally { work.Delete(true); }
+    }
+
+    // NuGet restores relative project references under the canonical path. A kit reached through a symlink (macOS
+    // /var -> /private/var, /tmp) was then restored under two spellings and Engine.Desktop's packages (Brutal.Sdl, SDL3)
+    // silently dropped out of the AOT link: the game failed at start with "Could not find file 'Brutal.Sdl'".
+    internal static string RealPath(string path)
+    {
+        var full = Path.GetFullPath(path);
+        var current = Path.GetPathRoot(full)!;
+        foreach (var part in full[current.Length..].Split(Path.DirectorySeparatorChar, StringSplitOptions.RemoveEmptyEntries))
+        {
+            current = Path.Combine(current, part);
+            if (new FileInfo(current).LinkTarget is { } target)
+                current = RealPath(Path.Combine(Path.GetDirectoryName(current)!, target));
+        }
+        return current;
     }
 
     private static string Run(string tool, string work, IEnumerable<string> arguments)
@@ -68,8 +89,7 @@ internal static class NativeAotBuild
         var core = Path.GetFullPath(Path.Combine(Path.GetDirectoryName(playerProject)!,"..","Engine.Core","Engine.Core.csproj"));
         new XDocument(new XElement("Project",new XAttribute("Sdk","Microsoft.NET.Sdk"),
             new XElement("PropertyGroup",new XElement("TargetFramework","net10.0"),
-                new XElement("AssemblyName","MoNoon.GameScripts"),new XElement("EnableDefaultCompileItems","false"),
-                new XElement("PathMap", "$(MSBuildProjectDirectory)/GameSources=/_/")),
+                new XElement("AssemblyName","MoNoon.GameScripts"),new XElement("EnableDefaultCompileItems","false")),
             sources,new XElement("ItemGroup",new XElement("ProjectReference",new XAttribute("Include",core))))).Save(project);
         var source = Path.Combine(work,"CompiledGameScripts.g.cs");
         File.WriteAllText(source, """

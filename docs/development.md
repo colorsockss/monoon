@@ -22,7 +22,7 @@ IDE에서는 [엔진 솔루션](../engine/MoNoonEngine.slnx)을 엽니다. 에�
 | 실행 대상 | 화면을 그리는 경로 |
 | --- | --- |
 | macOS arm64 에디터의 Scene | Cocoa 자식 뷰 안에 SDL의 Metal 렌더러가 직접 그립니다. 첫 소스 빌드에서 SDL 3.4.12를 내려받고 패치를 적용합니다. [패치와 빌드 스크립트](../engine/scripts/build-scene-sdl-mac.sh) |
-| Windows x64·Linux x64 에디터의 Scene | Avalonia가 씬을 그립니다. [Scene 뷰 소스](../engine/src/Engine.Editor/SceneViewport.cs) |
+| Windows x64 에디터의 Scene(Linux 에디터는 지원하지 않음) | Avalonia가 씬을 그립니다. [Scene 뷰 소스](../engine/src/Engine.Editor/Scene/SceneViewport.cs) |
 | 독립 실행과 배포 게임 | 세 플랫폼 모두 별도 SDL 창을 엽니다. 에디터에서는 **Run → Save & Run**으로 현재 씬을 실행할 수 있습니다. [데스크톱 호스트](../engine/src/Engine.Desktop/DesktopHost.cs) |
 
 에디터와 배포 게임은 VYaml로 같은 YAML 콘텐츠를 읽습니다. 씬은 `.scene`, 프리팹은 `.prefab`, 애니메이션은 `.clip`에 저장합니다. 프로젝트를 복사할 때는 `Scripts/`, `.monoon-assets`와 각 에셋의 `.meta`도 함께 보관하세요. 에셋을 옮길 때는 Project 패널을 사용하면 ID와 참조가 유지됩니다. [에셋 이동과 재임포트](manual/project-assets.md) · [구버전 JSON·YAML 프로젝트 이전](manual/upgrade.md)

@@ -78,7 +78,59 @@ internal static class ContactChecks
             if (!sensors.GetComponent<Listener>(self.Id)!.Events.SequenceEqual([(other.Id,"TE"),(other.Id,"TS"),(other.Id,"TX")]))
                 throw new Exception("Two triggers should each receive one callback per phase.");
         Console.WriteLine("PASS paired solid and trigger enter/stay/exit, swept trigger crossing, masks and removal during callbacks");
+        Order();
         PressureRoom(project);
+    }
+
+    private sealed class Recorder(List<string> log) : GameBehaviour
+    {
+        internal Vector2 Move;
+        public override void FixedUpdate(ScriptTick tick) => tick.Move(Move);
+        private void Add(ScriptContact c, string phase) => log.Add($"{c.ObjectId.ToString()[..8]}>{c.OtherId.ToString()[..8]}:{phase}");
+        public override void OnTriggerEnter(ScriptContact c) => Add(c,"TE");
+        public override void OnTriggerStay(ScriptContact c) => Add(c,"TS");
+        public override void OnTriggerExit(ScriptContact c) => Add(c,"TX");
+        public override void OnCollisionEnter(ScriptContact c) => Add(c,"CE");
+        public override void OnCollisionStay(ScriptContact c) => Add(c,"CS");
+        public override void OnCollisionExit(ScriptContact c) => Add(c,"CX");
+    }
+
+    // Callback order must not depend on how the broad phase finds pairs. Columns of equal Left, touching cells, tall
+    // walls across many rows, triggers, swept crossings and an enable toggle; the hash was recorded with the plain sweep.
+    private static void Order()
+    {
+        const string expected = "E55DF23661A36B7DC9C2E491E0CAB232ABAC6A0B614BA81A5E9F55A054A32695";
+        var scene = SceneDocument.Empty(new());
+        var moves = new Dictionary<Guid,Vector2>();
+        int next = 1;
+        Guid Add(float x, float y, float w, float h, bool trigger, bool circle = false, Vector2 move = default)
+        {
+            var obj = new SceneObject { Id = new Guid(next++, 0, 0, new byte[8]), X = x, Y = y, Width = w, Height = h };
+            obj.AddComponent(circle ? new CircleCollider2DComponent { IsTrigger = trigger } : new BoxCollider2DComponent { IsTrigger = trigger });
+            obj.AddComponent(new ScriptComponent { Script = "Recorder" });
+            scene.Objects.Add(obj);
+            moves[obj.Id] = move;
+            return obj.Id;
+        }
+        for (int col = 0; col < 10; col++)
+            for (int row = 0; row < 12; row++)
+                Add(col * 10, row * (row % 2 == 0 ? 12 : 9), 10, 10, (col + row) % 3 == 0, circle: (col * row) % 5 == 4);
+        Add(35, -20, 6, 200, false); Add(75, -20, 6, 200, true);
+        Add(-30, 5, 8, 8, true, move: new(4, 1)); Add(-30, 40, 8, 8, false, move: new(3, 0));
+        Add(120, 60, 8, 8, true, move: new(-25, 0)); Add(50, -40, 6, 6, true, circle: true, move: new(0, 9));
+        var toggled = Add(-60, 70, 10, 10, true, move: new(6, 0));
+        var log = new List<string>();
+        using var world = new SceneGame(scene,null,null,_ => new Recorder(log));
+        foreach (var (id, move) in moves) world.GetComponent<Recorder>(id)!.Move = move;
+        for (int tick = 0; tick < 40; tick++)
+        {
+            if (tick == 20) world.SetColliderEnabled(toggled,false);
+            if (tick == 22) world.SetColliderEnabled(toggled,true);
+            world.FixedUpdate(Vector2.Zero,1f/60);
+        }
+        var hash = Convert.ToHexString(System.Security.Cryptography.SHA256.HashData(System.Text.Encoding.UTF8.GetBytes(string.Join("\n",log))));
+        if (!hash.StartsWith(expected)) throw new Exception($"Contact callback order changed: {log.Count} events, SHA-256 {hash}");
+        Console.WriteLine($"PASS contact callback order over {log.Count} events matches the plain sweep (SHA-256 {hash[..16]})");
     }
 
     public static void Tiles(string project, Guid tileset)

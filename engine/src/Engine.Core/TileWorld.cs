@@ -28,6 +28,7 @@ internal sealed class TileWorld : IDisposable
     private long loads, unloads;
     internal TileStreamState State => new(center ?? default,resident.Count,index.Count,loads,unloads);
     internal bool Contains(Point key) => resident.Contains(key);
+    internal int Edits { get; private set; } // Counts accepted Set calls so physics can rebuild tile shapes.
 
     internal static TileChunkRef[] Bake(Tilemap2DComponent source, TilePalette? palette, string directory)
     {
@@ -113,6 +114,7 @@ internal sealed class TileWorld : IDisposable
     {
         if (!resident.Contains(Key(cell))) return false;
         edits[cell] = tile;
+        Edits++;
         Map.Set(cell,tile);
         Refresh(cell,palette);
         return true;
@@ -160,7 +162,7 @@ public sealed partial class SceneGame
             Point? key = null;
             if (layer.Active && target?.Active == true)
             {
-                var local = Vector2.Transform(target.Position, Affine2D.Inverse(layer.MatrixAt(layer.Position)));
+                var local = Affine2D.Transform(target.Position, Affine2D.Inverse(layer.MatrixAt(layer.Position)));
                 var cell = stream.Map.CellAt(Vector2.Zero,local.X,local.Y);
                 key = new(cell.X>>5,cell.Y>>5);
             }

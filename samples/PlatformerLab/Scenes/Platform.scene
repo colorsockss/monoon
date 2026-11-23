@@ -236,6 +236,20 @@ objects:
   components:
   - type: spriteRenderer
     squareColor: "#ADC1C6"
+- id: 3c0be5f4-2f1e-4c9b-8d0e-6a3b2b7f11d3
+  name: Joints exit
+  x: 777
+  y: 196
+  width: 10
+  height: 44
+  components:
+  - type: boxCollider2D
+    isTrigger: true
+    layer: 5
+    mask: 2
+  - type: script
+    script: SceneExit
+    values: {"Player": "2c1b062b-ee75-5c5c-bdef-fe19469fb5eb", "Destination": {"Id": "4fbf8054-5a0b-5822-86eb-a809b0f6c0dd"}}
 - id: a77a0f30-e3c0-48e8-b9bc-fcb096c40b57
   name: Gold pennant
   parentId: aa1716e0-7161-4645-8cc3-2b0030a56da2

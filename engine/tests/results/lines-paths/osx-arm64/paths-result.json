@@ -1,0 +1,15 @@
+{
+  "rows": 400,
+  "liftStarts": 59,
+  "pathEnd": 358,
+  "steps": 298,
+  "stepMin": 1.49758,
+  "stepMax": 1.5001,
+  "expected": 1.5,
+  "apexY": 150.0166,
+  "riderSlip": 0.00022,
+  "runnerFinal": [
+    702.4724,
+    230.0
+  ]
+}

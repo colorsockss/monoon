@@ -1,0 +1,22 @@
+# fma-probe.cs.txt: 100,000 random Matrix3x2/Vector2 inputs. "differs-case" counts only inputs where the fused
+# (MathF.FusedMultiplyAdd) and the separate multiply-add results differ, then says which one System.Numerics returned.
+
+# Mac arm64 (Apple M4 Max), .NET 10.0.1, dotnet run -c Release
+arch=Arm64 aot=False Fma=False Avx2=False V256=False
+Vector2.Transform differs-case: fused=13544 plain=0; Vector2.Lerp: fused=24421 plain=0; FusedMultiplyAdd helper == fused: 100000/100000
+
+# Linux x64 guest (Debian 12, QEMU TCG -cpu Haswell-v4), JIT, no switch
+arch=X64 aot=False Fma=True Avx2=True V256=True
+Vector2.Transform differs-case: fused=13544 plain=0; Vector2.Lerp: fused=24421 plain=0; FusedMultiplyAdd helper == fused: 100000/100000
+
+# same, DOTNET_EnableAVX2=0 (in .NET 10 this switch covers the x86-64-v3 group, FMA included)
+arch=X64 aot=False Fma=False Avx2=False V256=False
+Vector2.Transform differs-case: fused=0 plain=13544; Vector2.Lerp: fused=0 plain=24421; FusedMultiplyAdd helper == fused: 100000/100000
+
+# same, DOTNET_EnableFMA=0 (no effect in .NET 10: Fma stays supported)
+arch=X64 aot=False Fma=True Avx2=True V256=True
+Vector2.Transform differs-case: fused=13544 plain=0; Vector2.Lerp: fused=24421 plain=0; FusedMultiplyAdd helper == fused: 100000/100000
+
+# Linux x64 guest, Native AOT (dotnet publish -r linux-x64 -p:PublishAot=true, default instruction set)
+arch=X64 aot=True Fma=False Avx2=False V256=False
+Vector2.Transform differs-case: fused=0 plain=13544; Vector2.Lerp: fused=0 plain=24421; FusedMultiplyAdd helper == fused: 100000/100000

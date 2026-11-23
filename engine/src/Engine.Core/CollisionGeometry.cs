@@ -1,19 +1,43 @@
 using System.Drawing;
 using System.Numerics;
+using Brutal.Box2DApi;
+using Brutal.Numerics;
 
 namespace Engine.Core;
 
-// World shapes are convex polygons, true circles, or a zero-radius point for raycasts.
-// Linear casts use continuous SAT for polygons and analytic face / vertex times for round features.
+// World shapes are convex polygons, true circles, a zero-radius point for raycasts, or a one-way face.
+// The narrow phase is Box2D's: GJK distance, manifolds for resting and overlapping contact, shape casts and ray casts.
+// Box2D works in MoNoon pixels (one length unit per pixel), so its linear slop is 0.005 px.
 internal static partial class CollisionGeometry
 {
     private const double Eps = 1e-5;
+    // Resting contact tolerance in pixels. Float transforms at a few thousand pixels carry ~1e-4 px of rounding.
+    private const float Touch = 1e-4f;
+    // Movement probes this far along the travel to tell sliding from pushing into a touched surface.
+    private const float Probe = .01f;
+
+    /// <summary>Box2D polygon for a convex outline, computed once per shape outline.</summary>
+    internal sealed class Hull
+    {
+        public readonly B2Polygon Polygon;
+        public Hull(Vector2[] points)
+        {
+            Span<float2> p = stackalloc float2[points.Length];
+            for (int i = 0; i < p.Length; i++) p[i] = F(points[i]);
+            var hull = points.Length <= 8 ? Box2D.ComputeHull(p, p.Length) : default;
+            if (hull.Count < 3) throw new InvalidDataException("Expected a convex outline of 3–8 vertices that Box2D can represent.");
+            Polygon = Box2D.MakePolygon(in hull, 0);
+        }
+    }
+
+    internal static float2 F(Vector2 v) => new(v.X, v.Y);
+    internal static Vector2 V(float2 v) => new(v.X, v.Y);
     private static double Dot(Vector2 a, Vector2 b) => (double)a.X*b.X+(double)a.Y*b.Y;
     private static double Cross(Vector2 a, Vector2 b) => (double)a.X*b.Y-(double)a.Y*b.X;
-    private static Vector2 Left(Vector2 e) => Vector2.Normalize(new(-e.Y,e.X));
+
     internal static bool Convex(ReadOnlySpan<Vector2> p)
     {
-        if (p.Length is <3 or >32) return false;
+        if (p.Length is <3 or >8) return false;
         int sign=0;
         for (int i=0;i<p.Length;i++)
         {
@@ -35,7 +59,7 @@ internal static partial class CollisionGeometry
         if (c.Layer is <0 or >31 || c is CircleCollider2DComponent r && !(r.Radius>=0 && float.IsFinite(r.Radius)))
             throw new InvalidDataException($"{name}: invalid collider layer (0–31) or radius.");
         if (c is PolygonCollider2DComponent p && !Convex(p.Points.Select(v=>new Vector2(v.X,v.Y)).ToArray()))
-            throw new InvalidDataException($"{name}: expected 3–32 vertices in convex boundary order.");
+            throw new InvalidDataException($"{name}: expected 3–8 vertices in convex boundary order.");
     }
     internal static bool Pair(Collider2DComponent a,Collider2DComponent b) =>
         (a.Mask & 1u<<b.Layer)!=0 && (b.Mask & 1u<<a.Layer)!=0;
@@ -54,199 +78,184 @@ internal static partial class CollisionGeometry
             double h=Dot(new(m.M11,m.M12),new(m.M21,m.M22));
             double major=Math.Sqrt(.5*(a+b+Math.Sqrt((a-b)*(a-b)+4*h*h)));
             float scale=(float)(Math.Abs((double)m.M11*m.M22-(double)m.M12*m.M21)/major);
-            return Shape2D.Circle(Vector2.Transform(size*.5f,m),scale*(c.Radius>0?c.Radius:Math.Min(size.X,size.Y)*.5f));
+            return Shape2D.Circle(Affine2D.Transform(size*.5f,m),scale*(c.Radius>0?c.Radius:Math.Min(size.X,size.Y)*.5f));
         }
         if (collider is PolygonCollider2DComponent p)
-            return Shape2D.Hull(p.Points.Select(v=>Vector2.Transform(new Vector2(v.X,v.Y)*size,m)).ToArray());
+            return Shape2D.Hull(p.Points.Select(v=>Affine2D.Transform(new Vector2(v.X,v.Y)*size,m)).ToArray());
         return Tile(new(0,0,size.X,size.Y),TileGrid.Orthogonal,m);
     }
     internal static Shape2D Tile(RectangleF rect,string layout,Matrix3x2 matrix)
     {
         var outline=TileGrid.Outline(layout);
         var p=new Vector2[outline.Length];
-        for (int i=0;i<p.Length;i++) p[i]=Vector2.Transform(TileGrid.Vertex(rect,outline[i]),matrix);
+        for (int i=0;i<p.Length;i++) p[i]=Affine2D.Transform(TileGrid.Vertex(rect,outline[i]),matrix);
         return Shape2D.Hull(p);
     }
-    // Intersect the two support features along their common tangent. Parallel faces
-    // report the midpoint of contact; a point or curved feature gives a single point.
+
+    internal static B2ShapeProxy Proxy(in Shape2D s)
+    {
+        var proxy = new B2ShapeProxy();
+        if (s.Poly is {} hull)
+        {
+            ref readonly var polygon = ref hull.Polygon;
+            for (int i = 0; i < polygon.Count; i++) proxy.Points[i] = polygon.Vertices[i] + F(s.Offset);
+            proxy.Count = polygon.Count;
+        }
+        else if (s.Vertices != null)
+        {
+            proxy.Points[0] = F(s.Vertices[0] + s.Offset);
+            proxy.Points[1] = F(s.Vertices[1] + s.Offset);
+            proxy.Count = 2;
+        }
+        else
+        {
+            proxy.Points[0] = F(s.Offset);
+            proxy.Count = 1;
+            proxy.Radius = s.Radius;
+        }
+        return proxy;
+    }
+
+    // Box2D manifold of shape b (reference) against shape a. The normal points from b to a and the
+    // separation is negative while they overlap. A face is collided as its segment.
+    private static B2Manifold Manifold(in Shape2D a, in Shape2D b)
+    {
+        var xa = new B2Transform(F(a.Offset), B2Rot.Identity);
+        var xb = new B2Transform(F(b.Offset), B2Rot.Identity);
+        var circleA = new B2Circle { Radius = a.Radius };
+        var circleB = new B2Circle { Radius = b.Radius };
+        if (b.Poly is {} pb)
+            return a.Poly is {} pa ? Box2D.CollidePolygons(in pb.Polygon, xb, in pa.Polygon, xa)
+                : Box2D.CollidePolygonAndCircle(in pb.Polygon, xb, in circleA, xa);
+        if (b.Vertices != null)
+        {
+            var segment = new B2Segment { Point1 = F(b.Vertices[0]), Point2 = F(b.Vertices[1]) };
+            return a.Poly is {} pa ? Box2D.CollideSegmentAndPolygon(in segment, xb, in pa.Polygon, xa)
+                : Box2D.CollideSegmentAndCircle(in segment, xb, in circleA, xa);
+        }
+        if (a.Poly is {} polygon)
+        {
+            var flipped = Box2D.CollidePolygonAndCircle(in polygon.Polygon, xa, in circleB, xb);
+            flipped.Normal = -flipped.Normal;
+            return flipped;
+        }
+        return Box2D.CollideCircles(in circleB, xb, in circleA, xa);
+    }
+
+    /// <summary>Signed distance between the shapes (negative while overlapping) and the normal out of b toward a.</summary>
+    internal static float Separation(in Shape2D a, in Shape2D b, out Vector2 normal)
+    {
+        var input = new B2DistanceInput { ProxyA = Proxy(b), ProxyB = Proxy(a), TransformA = B2Transform.Identity,
+            TransformB = B2Transform.Identity, UseRadii = true };
+        var cache = new B2SimplexCache();
+        B2Simplex simplex = default;
+        var output = Box2D.ShapeDistance(in input, ref cache, ref simplex, 0);
+        if (output.Distance > Touch && output.Normal != default)
+        {
+            normal = V(output.Normal);
+            return output.Distance;
+        }
+        var manifold = Manifold(a, b);
+        if (manifold.PointCount == 0)
+        {
+            normal = output.Normal != default ? V(output.Normal) : FallbackNormal(a, b);
+            return output.Distance;
+        }
+        float separation = manifold.Points[0].Separation;
+        if (manifold.PointCount > 1) separation = Math.Min(separation, manifold.Points[1].Separation);
+        normal = V(manifold.Normal);
+        return separation;
+    }
+
+    private static Vector2 FallbackNormal(in Shape2D a, in Shape2D b)
+    {
+        var d = Center(a) - Center(b);
+        return d == Vector2.Zero ? Vector2.UnitX : Vector2.Normalize(d);
+        static Vector2 Center(in Shape2D s) => new(s.Bounds.X + s.Bounds.Width * .5f, s.Bounds.Y + s.Bounds.Height * .5f);
+    }
+
+    // The middle of the touching features: Box2D manifold points, or the closest point on the target.
     internal static Vector2 ContactPoint(Shape2D moving,Shape2D target,Vector2 normal)
     {
-        if (target.Vertices==null) return target.Offset+normal*target.Radius;
-        var tangent=new Vector2(-normal.Y,normal.X);
-        (Vector2 point,double low,double high) Feature(Shape2D s,Vector2 axis)
+        var manifold = Manifold(moving, target);
+        if (manifold.PointCount == 0)
         {
-            if (s.Vertices==null) return (s.Offset+axis*s.Radius,0,0);
-            var p=s.Vertices;
-            int best=0;
-            for (int i=1;i<p.Length;i++) if (Dot(p[i]-p[best],axis)>0) best=i;
-            double lo=0,hi=0;
-            foreach (var v in p)
-            {
-                var delta=v-p[best];
-                if (Dot(delta,axis)<-Eps) continue;
-                double t=Dot(delta,tangent);lo=Math.Min(lo,t);hi=Math.Max(hi,t);
-            }
-            return (s.Offset+p[best],lo,hi);
+            var input = new B2DistanceInput { ProxyA = Proxy(target), ProxyB = Proxy(moving), TransformA = B2Transform.Identity,
+                TransformB = B2Transform.Identity, UseRadii = true };
+            var cache = new B2SimplexCache();
+            B2Simplex simplex = default;
+            return V(Box2D.ShapeDistance(in input, ref cache, ref simplex, 0).PointA);
         }
-        var a=Feature(moving,-normal);var b=Feature(target,normal);
-        double offset=Dot(a.point-b.point,tangent);
-        double start=Math.Clamp(a.low+offset,b.low,b.high),end=Math.Clamp(a.high+offset,b.low,b.high);
-        return b.point+tangent*(float)((start+end)*.5);
+        var point = V(manifold.Points[0].Point);
+        if (manifold.PointCount > 1) point = (point + V(manifold.Points[1].Point)) * .5f;
+        // Manifold points sit midway between the shapes; move onto the target surface.
+        float gap = manifold.Points[0].Separation;
+        if (manifold.PointCount > 1) gap = (gap + manifold.Points[1].Separation) * .5f;
+        return point - V(manifold.Normal) * (gap * .5f);
     }
 
     internal readonly record struct Contact(float Time,Vector2 Normal);
 
-    // Signed distance to the nearest polygon boundary (negative inside), and an outward normal.
-    private static double ToPolygon(Vector2 point,Vector2[] p,out Vector2 normal)
-    {
-        bool ccw=Cross(p[1]-p[0],p[2]-p[0])>0;
-        double face=double.NegativeInfinity, nearest=double.PositiveInfinity;
-        Vector2 faceNormal=default, radial=default;
-        for (int i=0;i<p.Length;i++)
-        {
-            var a=p[i]; var e=p[(i+1)%p.Length]-a;
-            var n=Left(e)*(ccw?-1:1);
-            var rel=point-a;
-            var d=Dot(rel,n); if (d>face) { face=d; faceNormal=n; }
-            var away=rel-e*(float)Math.Clamp(Dot(rel,e)/Dot(e,e),0,1);
-            double ds=Dot(away,away);
-            if (ds<nearest) { nearest=ds; radial=away; }
-        }
-        normal=face<=0 || nearest<Eps*Eps ? faceNormal : Vector2.Normalize(radial);
-        return face<=0 ? face : Math.Sqrt(nearest);
-    }
     internal static bool Overlap(Shape2D a,Shape2D b) => b.FaceNormal == default
         ? Cast(a,Vector2.Zero,b,false,false) != null
         : Cast(Shape2D.PointAt(b.Offset + b.Vertices![0]), b.Vertices[1] - b.Vertices[0], a, true, false) != null;
+
     // query=true includes an initial touch and contact at the endpoint; a trigger needs interior overlap.
+    // movement=true ignores touched surfaces that the travel slides along or leaves.
     internal static Contact? Cast(Shape2D a,Vector2 travel,Shape2D b,bool query,bool movement)
     {
         if (b.FaceNormal != default) return CastFace(a, travel, b, query);
-        if (a.Vertices!=null && b.Vertices!=null) return Polygons(a,travel,b,query,movement);
-        if (a.Vertices!=null)
-        {
-            var hit=Round(b,-travel,a,query,movement);
-            return hit is {} h ? new(h.Time,-h.Normal) : null;
-        }
-        return Round(a,travel,b,query,movement);
-    }
-    private static Contact? Round(Shape2D a,Vector2 travel,Shape2D b,bool query,bool movement)
-    {
-        var p=a.Offset-b.Offset;
-        var verts=b.Vertices;
-        var radius=a.Radius+b.Radius;
-        double speed=Math.Sqrt(Dot(travel,travel));
-        double velocityEps=1e-6*speed;
-        Vector2 n;
-        double gap;
-        if (verts!=null) gap=ToPolygon(p,verts,out n)-radius;
-        else
-        {
-            gap=Math.Sqrt(Dot(p,p))-radius;
-            n=p!=Vector2.Zero?Vector2.Normalize(p):travel!=Vector2.Zero?Vector2.Normalize(travel):Vector2.UnitX;
-        }
-        if (gap<=Eps)
-        {
-            if (query || gap < -Eps && !movement || Dot(travel,n)<-velocityEps) return new(0,n);
-            return null;
-        }
-        if (speed==0) return null;
-        double best=double.PositiveInfinity; Vector2 normal=default;
-        void Accept(double t,Vector2 axis)
-        {
-            if (t<0 || t>1 || (!query && !movement && t>=1) || t>=best) return;
-            double approach=Dot(travel,axis);
-            if (query ? approach>velocityEps : approach>=-velocityEps) return;
-            best=t; normal=axis;
-        }
-        void Vertex(Vector2 vertex)
-        {
-            var d=p-vertex;
-            double proj=Dot(d,travel), v2=Dot(travel,travel), c=Dot(d,d)-(double)radius*radius;
-            double disc=proj*proj-v2*c;
-            if (disc<0 || proj>=0) return;
-            double t=c/(-proj+Math.Sqrt(disc));
-            if (t<0 || t>1 || t>=best) return;
-            var delta=d+travel*(float)t;
-            if (delta!=Vector2.Zero) Accept(t,Vector2.Normalize(delta));
-        }
-        if (verts==null) Vertex(Vector2.Zero);
-        else
-        {
-            bool ccw=Cross(verts[1]-verts[0],verts[2]-verts[0])>0;
-            for (int i=0;i<verts.Length;i++)
-            {
-                var v=verts[i]; var edge=verts[(i+1)%verts.Length]-v;
-                var axis=Left(edge)*(ccw?-1:1);
-                double speedN=Dot(travel,axis);
-                if (speedN < -velocityEps)
-                {
-                    double t=(radius-Dot(p-v,axis))/speedN;
-                    if (t>=0 && t<=1 && t<best)
-                    {
-                        double along=Dot((p-v)+travel*(float)t,edge);
-                        if (along>=0 && along<=Dot(edge,edge)) Accept(t,axis);
-                    }
-                }
-                if (radius>0) Vertex(v);
-            }
-        }
-        return double.IsFinite(best)?new((float)best,normal):null;
-    }
-    private static Contact? Polygons(Shape2D a,Vector2 travel,Shape2D b,bool query,bool movement)
-    {
-        double enter=double.NegativeInfinity,exit=double.PositiveInfinity,depth=double.PositiveInfinity;
-        Vector2 atHit=default,nearest=default;
-        var offset=a.Offset-b.Offset;
         double speed = Math.Sqrt(Dot(travel, travel));
         double velocityEps = 1e-6 * speed;
-        // World transforms and motor steps arrive as floats. At a tile seam a few ulps
-        // below a shared tangent must not turn the next tile's internal side into a wall.
-        var bounds = a.Bounds;
-        float magnitude = Math.Max(Math.Max(Math.Abs(bounds.Left), Math.Abs(bounds.Right)),
-            Math.Max(Math.Abs(bounds.Top), Math.Abs(bounds.Bottom)));
-        double tangentSlop = movement ? Math.Max(Eps, 4d * (MathF.BitIncrement(magnitude) - magnitude)) : Eps;
-        double simultaneous = movement ? tangentSlop / Math.Max(1e-8, speed) : 0;
-        bool Test(Vector2[] edges)
+        float near = Separation(a, b, out var n);
+        if (near <= Touch)
         {
-            for (int i=0;i<edges.Length;i++)
-            {
-                var axis=Left(edges[(i+1)%edges.Length]-edges[i]);
-                (double lo,double hi) Span(Vector2[] points)
-                {
-                    double l=Dot(points[0],axis),h=l;
-                    foreach (var v in points.AsSpan(1)) { var d=Dot(v,axis); l=Math.Min(l,d); h=Math.Max(h,d); }
-                    return (l,h);
-                }
-                var (amin,amax)=Span(a.Vertices!);var (bmin,bmax)=Span(b.Vertices!);
-                double delta=Dot(offset,axis),left=amax+delta-bmin,right=bmax-amin-delta;
-                double pen=Math.Min(left,right); var outward=left<right?-axis:axis;
-                if (pen<depth || pen==depth && Dot(travel,outward)<Dot(travel,nearest)) { depth=pen; nearest=outward; }
-                double vAxis=Dot(travel,axis);
-                if (Math.Abs(vAxis)<=velocityEps)
-                {
-                    if (query ? pen < -Eps : pen <= tangentSlop) return false;
-                    continue;
-                }
-                double t1=-left/vAxis,t2=right/vAxis,from=Math.Min(t1,t2);
-                var face = vAxis > 0 ? -axis : axis;
-                // At a shared vertex, slide on the least obstructive face. Keep the latest
-                // time of entry for CCD even when two projected times differ by rounding.
-                if (from > enter + simultaneous || movement && Math.Abs(from - enter) <= simultaneous &&
-                    Dot(travel, face) > Dot(travel, atHit)) atHit = face;
-                enter = Math.Max(enter, from);
-                exit=Math.Min(exit,Math.Max(t1,t2));
-                if (query ? enter>exit : enter>=exit) return false;
-            }
-            return true;
+            if (query) return new(0, n);
+            if (!movement) return near < -Touch ? new(0, n) : null;
+            if (travel == Vector2.Zero) return null;
+            // Probe a short step: a surface the travel slides along stays within the touch tolerance.
+            var ahead = a.Translated(travel * (float)Math.Min(1, Probe / speed));
+            float after = Separation(ahead, b, out var pushed);
+            if (after >= Math.Min(near, -Touch) || Dot(travel, pushed) >= -velocityEps) return null;
+            return new(0, pushed);
         }
-        if (!Test(a.Vertices!) || !Test(b.Vertices!)) return null;
-        if (depth>=-Eps && query) return new(0,nearest);
-        if (depth>Eps) return !movement || Dot(travel,nearest)<-velocityEps ? new(0,nearest) : null;
-        if (exit<=0 || enter>1 || (!query && !movement && enter>=1) || travel==Vector2.Zero) return null;
-        // A few ulps of penetration at a resting corner are not a future impact.
-        // Reject a separating motion instead of reusing the face from a past entry.
-        if (movement && enter<0 && depth>=-Eps && Dot(travel,nearest)>=-velocityEps) return null;
-        return new((float)Math.Max(0,enter),atHit);
+        if (speed == 0) return null;
+        float t;
+        if (a.Vertices == null && a.Radius == 0)
+        {
+            // Rays are exact in Box2D. Polygons are relative to their outline origin.
+            var ray = new B2RayCastInput { Origin = F(a.Offset - b.Offset), Translation = F(travel), MaxFraction = 1 };
+            B2CastOutput output;
+            if (b.Poly is {} hull) output = Box2D.RayCastPolygon(in ray, in hull.Polygon);
+            else { var circle = new B2Circle { Radius = b.Radius }; output = Box2D.RayCastCircle(in ray, in circle); }
+            if (!output.Hit) return null;
+            t = output.Fraction;
+            n = V(output.Normal);
+        }
+        else
+        {
+            // Box2D stops a cast within its linear slop of contact; reach a little past the end and refine below.
+            var input = new B2ShapeCastPairInput { ProxyA = Proxy(b), ProxyB = Proxy(a), TransformA = B2Transform.Identity,
+                TransformB = B2Transform.Identity, TranslationB = F(travel), MaxFraction = 1 + (float)(.02 / speed) };
+            var output = Box2D.ShapeCast(in input);
+            if (!output.Hit) return null;
+            t = output.Fraction;
+            n = V(output.Normal);
+            // Advance or retreat to the exact contact along the hit normal.
+            float gap = Separation(a.Translated(travel * t), b, out var refined);
+            double approach = -Dot(travel, refined);
+            if (approach > velocityEps)
+            {
+                t = (float)Math.Max(0, t + gap / approach);
+                n = refined;
+            }
+        }
+        if (t > 1 || (!query && !movement && t >= 1)) return null;
+        double along = Dot(travel, n);
+        if (query ? along > velocityEps : along >= -velocityEps) return null;
+        // A convex target entered only at a grazing touch is not an obstacle: at a tile seam the next tile's
+        // corner lies exactly on the path. Probe just past the touch, as for resting contact above.
+        if (movement && Separation(a.Translated(travel * (float)(t + Probe / speed)), b, out _) >= -Touch) return null;
+        return new(t, n);
     }
 }

@@ -1,0 +1,21 @@
+using System;
+using System.Globalization;
+using System.IO;
+using Engine.Core;
+
+// Attached to the Runner only in the disposable test project. Each row observes the preceding step:
+// frame, runner x y, path lift x y, and whether the runner stands on the lift.
+public sealed class PathTrace : GameBehaviour
+{
+    public Guid Lift;
+    private int frame;
+
+    public override void FixedUpdate(ScriptTick tick)
+    {
+        if (Environment.GetEnvironmentVariable("MONOON_LINE_TRACE") is not { Length: > 0 } path) return;
+        tick.Objects.TryGetPosition(Lift, out var lift);
+        bool riding = tick.Objects.Motion.TryGetMotion(tick.ObjectId, out var body) && body.Support == Lift;
+        File.AppendAllText(path, string.Create(CultureInfo.InvariantCulture,
+            $"{frame++} {tick.Position.X:F4} {tick.Position.Y:F4} {lift.X:F4} {lift.Y:F4} {(riding ? 1 : 0)}\n"));
+    }
+}

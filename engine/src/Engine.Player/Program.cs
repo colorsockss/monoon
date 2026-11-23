@@ -29,6 +29,8 @@ try
 {
     using var trace = playing ? PlayerStartupTrace.Open(entryTime) : null;
     var installed = Path.Combine(AppContext.BaseDirectory, "Game");
+    // A signed Mac app keeps Game in Contents/Resources behind a link; content checks reject links inside the tree.
+    if (new DirectoryInfo(installed).ResolveLinkTarget(true) is { } signedLayout) installed = signedLayout.FullName;
     var settings = GameSettings.Load(installed);
     startScene = settings.StartScene;
     var mods = GameMods.ForPlayer(installed, settings);
@@ -93,11 +95,12 @@ try
         return 0;
     }
     trace?.Mark("content_begin");
-    using var content = updates.Open(mods, Console.Error.WriteLine, trace == null ? null : trace.BundleRead);
+    using var content = updates.Open(mods, GameLog.Error, trace == null ? null : trace.BundleRead);
     trace?.Mounted(content);
     var storage = smoke ? new PlayerStorage(args[1]) : record || replay ? new PlayerStorage(args[2]) : null;
     using var game = Start(content.Root, storage, out string path);
     runningSession = game;
+    GameLog.Attach(game.State);
     trace?.Mark("session_ready");
     // Development builds only: MONOON_FRAME_PROFILE=<file.csv> records every frame's call tree.
     using var frameProfile = FrameProfileWriter.Open(AppContext.BaseDirectory);
@@ -113,13 +116,17 @@ try
             using var offscreen = OffscreenResources.Open(game);
             if (offscreen != null) Console.WriteLine($"Replay resources at start: {offscreen.Counts}");
             using var capture = ReplayCapture.Open(game);
+            var snapshots = OffscreenResources.Snapshots();
+            if (snapshots != null) Directory.CreateDirectory(snapshots.Value.Directory);
             var clock = System.Diagnostics.Stopwatch.StartNew();
             var due = TimeSpan.Zero;
             recording.Play(game, project, capture == null && frameProfile == null && offscreen == null ? null : frame =>
             {
                 capture?.Frame(frame);
                 frameProfile?.Profiler.EndFrame();
-                if (offscreen == null) return;
+                if (snapshots is var (folder, frames) && frames.Contains(frame))
+                    offscreen!.Snapshot(game, Path.Combine(folder, $"{frame:D4}.png"));
+                if (offscreen == null || !OffscreenResources.Paced) return;
                 // Wait out the recorded frame time like a 60 Hz window; the profile excludes the wait.
                 due += TimeSpan.FromTicks(recording.FrameTicks[frame]);
                 if (due > clock.Elapsed) Thread.Sleep(due - clock.Elapsed);
@@ -166,7 +173,7 @@ try
     }
     else
     {
-        game.LoadFailed += Console.Error.WriteLine;
+        game.LoadFailed += GameLog.Error;
         DesktopHost.Run(settings.GameTitle ?? "Game", game, null, trace);
     }
     return 0;

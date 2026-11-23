@@ -1,0 +1,18 @@
+using System;
+using System.IO;
+using Engine.Core;
+
+// Test-only observer copied into a disposable InventoryLab. Records the herbalist line's reveal on every frame.
+public sealed class TraceReveal : GameBehaviour
+{
+    public Guid Line;
+    private int frame;
+
+    public override void UpdateUi(UiTick tick)
+    {
+        if (Environment.GetEnvironmentVariable("MONOON_REVEAL_TRACE") is not { Length: > 0 } path) return;
+        var progress = tick.Ui.RevealProgress(Line);
+        string text = tick.Ui.TextOf(Line) ?? "";
+        File.AppendAllText(path, $"{frame++}\t{progress?.Shown}\t{progress?.Total}\t{text[..Math.Min(12, text.Length)]}\n");
+    }
+}

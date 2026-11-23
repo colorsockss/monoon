@@ -22,7 +22,7 @@ python3 engine/tests/KeyRoom.PlayInspector/verify_play.py \
   /tmp/monoon-inspector/run --mac-input /tmp/monoon-inspector/mac-input
 ```
 
-Windows와 Linux에서는 같은 드라이버에 해당 OS의 배포 에디터 경로를 넘긴다. `--mac-input`은 생략한다. 기존 데스크톱 회귀 환경의 Python과 Pillow를 사용하며 Linux에는 X11과 xdotool이 필요하다. VM에 파일만 복사할 때는 `KeyRoom.Desktop/verify.py`와 `verify_editor.py`도 드라이버 옆에 둔다.
+Windows에서는 같은 드라이버에 배포 에디터 경로를 넘긴다. `--mac-input`은 생략한다. 기존 데스크톱 회귀 환경의 Python과 Pillow를 사용한다(Linux 에디터는 2026-11-23부터 지원하지 않는다). VM에 파일만 복사할 때는 `KeyRoom.Desktop/verify.py`와 `verify_editor.py`도 드라이버 옆에 둔다.
 
 ## 측정과 합격 기준
 

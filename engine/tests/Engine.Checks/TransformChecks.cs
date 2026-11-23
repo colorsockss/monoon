@@ -55,7 +55,13 @@ internal static class TransformChecks
         sim.FixedUpdate(Vector2.Zero,1f/60);
         Require(hits.SequenceEqual([inside.Id]),"rotated trigger footprint");
         File.Delete(path); File.Delete(template);
-        Console.WriteLine("PASS affine hierarchy, pivot, nonuniform mirrored reparent, world corners, YAML/Play/prefab and transformed trigger");
+        // Separate multiply and add on every CPU and build: these inputs round differently when fused.
+        var m = new Matrix3x2(.1f, .7f, .1f, .9f, 5, 6); var q = new Vector2(.1f, .9f);
+        float xx = .1f * .1f, xy = .1f * .9f, yx = .7f * .1f, yy = .9f * .9f;
+        Require(Affine2D.Transform(q, m) == new Vector2(xx + xy + 5, yx + yy + 6) && MathF.FusedMultiplyAdd(.1f, .9f, xx) != xx + xy, "unfused transform");
+        Require(Affine2D.Lerp(new Vector2(.1f, 0), new(.1f, 0), .1f).X == xy + xx && Affine2D.Lerp(new Vector3(.1f), new(.1f), .1f).X == xy + xx
+            && Affine2D.Lerp(new Vector4(.1f), new(.1f), .1f).W == xy + xx, "unfused lerp");
+        Console.WriteLine("PASS affine hierarchy, pivot, nonuniform mirrored reparent, world corners, YAML/Play/prefab, transformed trigger and unfused transform");
     }
     private static void Require(bool ok,string name) { if (!ok) throw new Exception("Transform 2D: "+name); }
     private static void Near(Vector2 a,Vector2 b,string name) => Require(Vector2.Distance(a,b)<.001f,$"{name}: {a} / {b}");

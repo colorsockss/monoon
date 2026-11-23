@@ -79,9 +79,9 @@ Windows·Linux의 `panels-*`·`docking-*` 캡처는 RenderTargetBitmap이다(각
 
 | 처음 실패(첫 예외) | 원인 | 수정 |
 | --- | --- | --- |
-| Linux Docking `first`: `InvalidDataException: split drop: Hierarchy at 0, 446, 1058, 334 outside 0, 64, 1280, 715 or below its minimum`. `panels`: `Console at 180, 446, 878, 334 outside …`(Windows는 창 높이에 따라 재현) | 놓기 분할이 Scene 옆 패널 크기를 `span / 2`(357.5px)로 정했다. 반 픽셀 위치의 패널은 위치와 크기를 따로 반올림해 도킹 영역 아래로 1px 넘쳤다. | [DockHost.cs](../../../src/Engine.Editor/DockHost.cs): 주 패널 옆 고정 크기 열·행의 `GridLength`를 정수 픽셀로 반올림한다. |
+| Linux Docking `first`: `InvalidDataException: split drop: Hierarchy at 0, 446, 1058, 334 outside 0, 64, 1280, 715 or below its minimum`. `panels`: `Console at 180, 446, 878, 334 outside …`(Windows는 창 높이에 따라 재현) | 놓기 분할이 Scene 옆 패널 크기를 `span / 2`(357.5px)로 정했다. 반 픽셀 위치의 패널은 위치와 크기를 따로 반올림해 도킹 영역 아래로 1px 넘쳤다. | [DockHost.cs](../../../src/Engine.Editor/Docking/DockHost.cs): 주 패널 옆 고정 크기 열·행의 `GridLength`를 정수 픽셀로 반올림한다. |
 | 두 OS PanelsDetail: `Console toolbar centres 459,460`(Windows `449,450`) | 패널 머리줄 28px에서 아래 구분선 1px을 빼면 27px다. 22px 토글은 2.5, 24px 검색 칸은 1.5에 놓이고 짝수 반올림이 둘을 다른 줄로 보냈다. | [PanelStyles.axaml](../../../src/Engine.Editor/PanelStyles.axaml): `panelHeader` 아래쪽 안쪽 여백 1px(내용 영역 26px). 머리줄 높이 28px은 그대로다. |
-| 두 OS PanelsDetail: `Project path 1280 toolbar controls are off one centre line: 525.5,525` | 좁은 Project 패널에서 보이는 `…` TextBlock 높이가 13px(홀수)이라 중심이 반 픽셀 어긋났다. | [MainWindow.ProjectView.cs](../../../src/Engine.Editor/MainWindow.ProjectView.cs): `…`에 아래 패딩 1px(14px). |
+| 두 OS PanelsDetail: `Project path 1280 toolbar controls are off one centre line: 525.5,525` | 좁은 Project 패널에서 보이는 `…` TextBlock 높이가 13px(홀수)이라 중심이 반 픽셀 어긋났다. | [MainWindow.ProjectView.cs](../../../src/Engine.Editor/Project/MainWindow.ProjectView.cs): `…`에 아래 패딩 1px(14px). |
 
 검사기 수정(동작은 Mac과 같음):
 

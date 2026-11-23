@@ -422,6 +422,23 @@ objects:
   - type: uiText
     text: "COIN: 1"
     textKey: hud.coin
+- id: 6d1f3a52-0b7e-4c19-9e2d-5a8b7c4e1f20
+  parentId: 82979000-dcbc-443e-baa1-60ada0400000
+  name: Door hint
+  y: 14
+  width: 280
+  height: 26
+  components:
+  - type: uiRect
+    anchor: TopCenter
+    showIf: doorHint
+  - type: uiImage
+    color: "#344B60"
+  - type: uiText
+    text: "The door is open. Head east."
+    textKey: hud.door
+    insetX: 8
+    insetY: 3
 - id: 82979000-dcbc-443e-baa1-60ada0400005
   parentId: 82979000-dcbc-443e-baa1-60ada0400000
   name: Pause indicator

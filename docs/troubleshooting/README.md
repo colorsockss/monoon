@@ -2,7 +2,7 @@
 
 | 증상이 나타난 곳 | 먼저 할 일 |
 | --- | --- |
-| Scene 편집 또는 에디터 안의 Play | 같은 장면에서 **Run → Save & Run**도 실행한다. 별도 게임 창만 정상이면 [macOS](macos.md) / [Windows](windows.md) / [Linux](linux.md)의 **엔진·에디터** 절에서 Scene 호스트, 포커스, 좌표를 확인한다. |
+| Scene 편집 또는 에디터 안의 Play | 같은 장면에서 **Run → Save & Run**도 실행한다. 별도 게임 창만 정상이면 [macOS](macos.md) / [Windows](windows.md)의 **엔진·에디터** 절에서 Scene 호스트, 포커스, 좌표를 확인한다. Linux 에디터는 지원하지 않는다([Linux](linux.md)). |
 | 편집은 되지만 Build가 실패 | 아래에서 템플릿 위치, 시작 씬, 에셋 참조, 빌드 종류를 확인한다. |
 | 내보낸 게임만 실패 | 에디터를 닫고 해당 OS 문서의 명령으로 **배포본 자체**를 실행해 첫 예외를 확보한다. 샘플 소스를 `dotnet run`한 결과는 배포 검증이 아니다. |
 
@@ -33,4 +33,4 @@ python3 engine/tests/KeyRoom.Desktop/retest.py linux   engine/tests/results/scre
 
 [검사기와 준비 조건](../../engine/tests/KeyRoom.Desktop/README.md) · [빌드가 수집하는 파일과 검증 규칙](../../engine/src/Engine.Authoring/GameBuild.cs). 위 방향키·WASD 및 창 크기 검사는 KeyRoom Release에서 수행했다. 공용 번역과 기본·대체 폰트는 두 게스트에서 각각 Release와 Native AOT 게임 창으로 검증했다. [한국어 화면과 실행별 글꼴 기록](../../engine/tests/results/localization/x64/README.md). InventoryLab은 별도 [x64 게스트 빌드·재생 절차](../../engine/tests/InventoryLab.Replay/README.md)로 Release와 Native AOT의 헤드리스 입력 경로를 검사한다.
 
-Windows·Linux 배포 에디터의 Inspector와 Play 문제는 [패키지 조작 회귀](../../engine/tests/KeyRoom.Desktop/README.md#배포-에디터-조작-회귀)로 재현한다. [두 게스트와 Mac의 KeyRoom 화면 및 저장 결과](../../engine/tests/results/editor-packaging/README.md)에서 기준을 확인할 수 있다.
+Windows 배포 에디터의 Inspector와 Play 문제는 [패키지 조작 회귀](../../engine/tests/KeyRoom.Desktop/README.md#배포-에디터-조작-회귀)로 재현한다. [두 게스트와 Mac의 KeyRoom 화면 및 저장 결과(Linux 에디터 지원 중단 전 기록)](../../engine/tests/results/editor-packaging/README.md)에서 기준을 확인할 수 있다.

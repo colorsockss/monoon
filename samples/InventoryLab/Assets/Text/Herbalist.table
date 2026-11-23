@@ -1,0 +1,7 @@
+version: 1
+columns:
+- {name: ko, type: Text}
+- {name: en, type: Text}
+rows:
+- key: herbalist.meadow
+  cells: ["약초는 <color=#8FD3FF>개울 옆 풀밭</color>에서 잘 자라요. 아침 이슬이 마르기 전에 잎이 넓고 줄기가 곧은 것만 골라, 뿌리째 뽑지 말고 윗부분만 조심스럽게 꺾어 오시면 다음 달에도 같은 자리에서 새순이 돋는답니다.", "Herbs grow best in the <color=#8FD3FF>meadow by the stream</color>. Before the morning dew dries, pick only broad leaves on straight stems and snap off the tops instead of pulling the roots, so new shoots return to the same spot next month."]

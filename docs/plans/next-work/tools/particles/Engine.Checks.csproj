@@ -1,0 +1,4 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup><OutputType>Exe</OutputType><AssemblyName>Engine.Checks</AssemblyName><Optimize>true</Optimize><TieredPGO>true</TieredPGO></PropertyGroup>
+  <ItemGroup><ProjectReference Include="../src/Engine.Desktop/Engine.Desktop.csproj" /></ItemGroup>
+</Project>

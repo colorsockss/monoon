@@ -1,4 +1,4 @@
-"""Build both AudioLab distributions on this host and compare their playback with the Mac recording."""
+"""Build both AudioLab distributions on this host and compare their playback with the recording for this RID."""
 import argparse
 import csv
 import json
@@ -83,6 +83,13 @@ def capture(executable, environment, folder, mac_input):
                 proc.wait()
 
 
+def baseline_csv(rid):
+    """SDL_mixer is native code built per architecture, so its PCM differs in the last bit between arm64 and x64.
+    osx-arm64 keeps results/audio-mixer/playback.csv; other RIDs use playback-<rid>.csv (same columns)."""
+    name = "playback.csv" if rid == "osx-arm64" else f"playback-{rid}.csv"
+    return TESTS / "results/audio-mixer" / name
+
+
 def compare(folder, baseline):
     mix_path = folder / "mix.f32"
     _, _, metrics = read_capture(mix_path)
@@ -96,7 +103,7 @@ def compare(folder, baseline):
     (folder / "measurements.json").write_text(json.dumps(metrics, indent=2) + "\n")
     for key in ("first_four_loops_sha256", "loop_frames", "fade_in_frames", "fade_out_frames"):
         if str(metrics[key]) != baseline[key]:
-            raise ValueError(f"{key}: Mac {baseline[key]}, runner {metrics[key]}")
+            raise ValueError(f"{key}: baseline {baseline[key]}, runner {metrics[key]}")
     # The device can start earlier and drain later. All intervening stereo frames must be contiguous.
     if offset < 0 or offset % 8 or len(device) % 8 or any(device[:offset]) or any(device[offset + len(mix):]):
         raise ValueError("SDL disk output differs from the captured mix or contains an audible discontinuity")
@@ -112,7 +119,9 @@ def main():
         parser.error(f"Expected {args.rid}, running on {host_rid()}")
     root = args.results.resolve()
     root.mkdir(parents=True, exist_ok=False)
-    with (TESTS / "results/vorbis/playback.csv").open() as f:
+    if not baseline_csv(args.rid).exists():
+        parser.error(f"No PCM baseline for {args.rid}: {baseline_csv(args.rid)}")
+    with baseline_csv(args.rid).open() as f:
         mac = {row["mode"]: row for row in csv.DictReader(f) if row["codec"] == "ogg"}
     errors = []
     with tempfile.TemporaryDirectory(prefix="monoon-audio-") as tmp:
@@ -140,7 +149,7 @@ def main():
                 metrics = compare(folder, mac[reference])
                 print(f"PASS {args.rid} {mode}: {metrics['loop_frames']} frames per loop, "
                       f"{metrics['fade_in_frames']} in, {metrics['fade_out_frames']} out. "
-                      f"Mac PCM SHA-256 {metrics['first_four_loops_sha256']}", flush=True)
+                      f"PCM SHA-256 {metrics['first_four_loops_sha256']}", flush=True)
             except Exception:
                 failure = traceback.format_exc()
                 (folder / "failure.txt").write_text(failure)

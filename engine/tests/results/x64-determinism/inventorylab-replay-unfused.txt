@@ -1,0 +1,8 @@
+Expected Mac save SHA-256 eed41defcbd7987a527deb677c60da8151ad0de1616c717c646e92b26e70f795
+Mac input replay SHA-256 22638c8c350a7679ce2d44cb6682b9530f636f1bf4e09e85ba567fe8f4b5aa70
+Headless replay completed: 475 frames, 31 events.
+PASS release.save 171 bytes SHA-256 eed41defcbd7987a527deb677c60da8151ad0de1616c717c646e92b26e70f795
+PASS linux-x64 release matches the Mac save byte-for-byte
+Headless replay completed: 475 frames, 31 events.
+PASS native-aot.save 171 bytes SHA-256 eed41defcbd7987a527deb677c60da8151ad0de1616c717c646e92b26e70f795
+PASS linux-x64 native-aot matches the Mac save byte-for-byte

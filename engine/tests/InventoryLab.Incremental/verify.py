@@ -75,7 +75,7 @@ def verify(cli, demo, fixtures, dest, dependencies=False):
             saves[label] = digest(slot)
 
         product, cold = build("cold")
-        if len(cold) != 8 or any(not s.startswith("build ") for s in cold):
+        if len(cold) != 7 or any(not s.startswith("build ") for s in cold):
             raise AssertionError(("cold", cold))
         shutil.copyfile(product/"Game/Assets/MarketArt/Torch.shader.frames.png", dest/"torch.png")
         baseline = files(product)
@@ -84,7 +84,7 @@ def verify(cli, demo, fixtures, dest, dependencies=False):
         rebuilt = [s for s in decisions if s.startswith("build ")]
         reused = [s for s in decisions if s.startswith("reuse ")]
         if (len(rebuilt) != 1 or "bundle Assets/Dialogue" not in rebuilt[0] or
-                "changed: Assets/Dialogue/Herbalist.data" not in rebuilt[0] or len(reused) != 7):
+                "changed: Assets/Dialogue/Herbalist.data" not in rebuilt[0] or len(reused) != 6):
             raise AssertionError(decisions)
         bundle = product / "ContentBundles/Assets/Dialogue.bundle"
         with zipfile.ZipFile(bundle) as z:
@@ -95,7 +95,7 @@ def verify(cli, demo, fixtures, dest, dependencies=False):
             raise AssertionError("Content digest did not change")
         replay(product, "incremental")
         product, full = build("full", "full", fresh=True)
-        if len(full) != 8 or any("full content build" not in s for s in full):
+        if len(full) != 7 or any("full content build" not in s for s in full):
             raise AssertionError(("full",full))
         complete = files(product)
         if incremental != complete:
@@ -112,12 +112,12 @@ def verify(cli, demo, fixtures, dest, dependencies=False):
             replace(project/"Scenes/Inventory.scene", "{index: 31, tile: 1}", "{index: 30, tile: 1}")
             product, changes = build("dependencies")
             rebuilt = [row for row in changes if row.startswith("build ")]
-            for fragments in [("glyphs ", "changed: characters"), ("shader ", "changed: Assets/MarketArt/Torch.shader"),
+            for fragments in [("shader ", "changed: Assets/MarketArt/Torch.shader"),
                               ("(0,0)", "changed: cells"), ("(1,0)", "changed: neighbour borders"),
                               ("bundle Assets/Dialogue", "changed: Assets/Dialogue/Herbalist.data")]:
                 if not any(all(part in line for part in fragments) for line in rebuilt):
                     raise AssertionError((fragments,changes))
-            if len(rebuilt) != 5 or not any("(3,0)" in row and row.startswith("reuse ") for row in changes):
+            if len(rebuilt) != 4 or not any("(3,0)" in row and row.startswith("reuse ") for row in changes):
                 raise AssertionError(changes)
             changed_content = files(product)
             # Damage only the test's cached sheet; the published game remains intact.
@@ -130,8 +130,8 @@ def verify(cli, demo, fixtures, dest, dependencies=False):
                 raise AssertionError(repair)
             reference, _ = build("dependency-full", "full", fresh=True)
             if changed_content != files(reference):
-                raise AssertionError("Modified glyphs, shader or autotile seam differs from full build")
-            summary["dependencyRebuilds"] = 5
+                raise AssertionError("Modified dialogue, shader or autotile seam differs from full build")
+            summary["dependencyRebuilds"] = 4
             summary["repairedCacheFiles"] = 1
         (dest/"result.json").write_text(json.dumps(summary, indent=2),encoding="utf-8")
         print(json.dumps(summary),flush=True)
@@ -141,6 +141,6 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
     for name in ("cli", "demo", "fixtures", "results"):
         parser.add_argument(name, type=Path)
-    parser.add_argument("--dependencies", action="store_true", help="Also change font coverage, shader and seam inputs and damage a cached sheet")
+    parser.add_argument("--dependencies", action="store_true", help="Also change dialogue, shader and seam inputs and damage a cached sheet")
     args=parser.parse_args()
     verify(*(path.resolve() for path in (args.cli,args.demo,args.fixtures,args.results)), dependencies=args.dependencies)

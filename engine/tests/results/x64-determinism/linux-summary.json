@@ -1,0 +1,92 @@
+{
+ "host": {
+  "rid": "linux-x64",
+  "platform": "Linux-6.1.0-56-cloud-amd64-x86_64-with-glibc2.36",
+  "machine": "x86_64",
+  "cpu_flags": [
+   "avx",
+   "avx2",
+   "fma",
+   "sse4_2"
+  ],
+  "dotnet": "10.0.101"
+ },
+ "joints-release": {
+  "status": "pass",
+  "trace.tsv": "380202618e48e8b2fc61096c966c0e201ac374b5618f75712c49905a2b954f10",
+  "result.json": "9728382a2f19666414ae3594858106da528972376162259d2f8c844d3880dd6f",
+  "seconds": 29
+ },
+ "joints-native-aot": {
+  "status": "pass",
+  "trace.tsv": "380202618e48e8b2fc61096c966c0e201ac374b5618f75712c49905a2b954f10",
+  "result.json": "9728382a2f19666414ae3594858106da528972376162259d2f8c844d3880dd6f",
+  "seconds": 411
+ },
+ "joints-scene-play": {
+  "status": "pass",
+  "trace.tsv": "380202618e48e8b2fc61096c966c0e201ac374b5618f75712c49905a2b954f10",
+  "result.json": "9728382a2f19666414ae3594858106da528972376162259d2f8c844d3880dd6f",
+  "seconds": 96
+ },
+ "joints-compare": {
+  "status": "fail",
+  "seconds": 0
+ },
+ "joints-release-noavx2": {
+  "status": "pass",
+  "trace.tsv": "380202618e48e8b2fc61096c966c0e201ac374b5618f75712c49905a2b954f10",
+  "seconds": 8
+ },
+ "paths-release": {
+  "status": "pass",
+  "trace.tsv": "1a143d56cfa707d9ba0dc237ad442ef82d5333a33401add5d970b126a7b7fc3d",
+  "seconds": 31
+ },
+ "paths-native-aot": {
+  "status": "pass",
+  "trace.tsv": "1a143d56cfa707d9ba0dc237ad442ef82d5333a33401add5d970b126a7b7fc3d",
+  "seconds": 459
+ },
+ "paths-scene-play": {
+  "status": "pass",
+  "trace.tsv": "1a143d56cfa707d9ba0dc237ad442ef82d5333a33401add5d970b126a7b7fc3d",
+  "seconds": 160
+ },
+ "paths-compare": {
+  "status": "pass",
+  "trace.tsv": "1a143d56cfa707d9ba0dc237ad442ef82d5333a33401add5d970b126a7b7fc3d",
+  "seconds": 0
+ },
+ "paths-release-noavx2": {
+  "status": "pass",
+  "trace.tsv": "1a143d56cfa707d9ba0dc237ad442ef82d5333a33401add5d970b126a7b7fc3d",
+  "seconds": 6
+ },
+ "lines-release": {
+  "status": "pass",
+  "trace.tsv": "6969a524feb5e8376be4fe47a578f24fc863df6a7ddf4c952e779d1f76595e2b",
+  "seconds": 31
+ },
+ "lines-native-aot": {
+  "status": "pass",
+  "trace.tsv": "6969a524feb5e8376be4fe47a578f24fc863df6a7ddf4c952e779d1f76595e2b",
+  "seconds": 423
+ },
+ "lines-scene-play": {
+  "status": "pass",
+  "trace.tsv": "6969a524feb5e8376be4fe47a578f24fc863df6a7ddf4c952e779d1f76595e2b",
+  "seconds": 50
+ },
+ "lines-compare": {
+  "status": "pass",
+  "trace.tsv": "6969a524feb5e8376be4fe47a578f24fc863df6a7ddf4c952e779d1f76595e2b",
+  "seconds": 0
+ },
+ "lines-release-noavx2": {
+  "status": "pass",
+  "trace.tsv": "6969a524feb5e8376be4fe47a578f24fc863df6a7ddf4c952e779d1f76595e2b",
+  "seconds": 7
+ },
+ "done": "2026-11-23 09:30:13"
+}

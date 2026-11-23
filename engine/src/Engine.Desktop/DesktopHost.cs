@@ -66,6 +66,8 @@ public static class DesktopHost
         var keyFrames = recorder != null ? Environment.GetEnvironmentVariable("MONOON_KEY_FRAME_DIR") : null;
         if (!string.IsNullOrEmpty(keyFrames)) Directory.CreateDirectory(keyFrames);
         using var pads = new SdlGamepads();
+        using var cursor = new WindowCursor();
+        var played = gameplay?.State ?? (game as SceneGame)?.State;
         var previousTime = Stopwatch.GetTimestamp();
         var focused = true;
 
@@ -163,6 +165,8 @@ public static class DesktopHost
                 capture?.BeginUpdate();
                 loop.Advance(elapsed.TotalSeconds);
                 recorder?.EndFrame(elapsed);
+                if (played?.PendingRumble is { } rumble) { played.PendingRumble = null; pads.Rumble(rumble); }
+                cursor.Sync(played);
                 capture?.EndUpdate();
             }
             SyncIme();

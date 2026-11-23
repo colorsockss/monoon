@@ -42,7 +42,7 @@ public sealed partial class SceneDocument
         obj.SetLocalMatrix(local);
         if (previousRect is { } before && new ScreenUi(this, null).Bounds(obj.Id) is { } after)
         {
-            var offset = Vector2.TransformNormal(new(before.X - after.X,before.Y - after.Y), Affine2D.Inverse(parent?.WorldMatrix ?? Matrix3x2.Identity));
+            var offset = Affine2D.TransformNormal(new(before.X - after.X,before.Y - after.Y), Affine2D.Inverse(parent?.WorldMatrix ?? Matrix3x2.Identity));
             obj.X += offset.X; obj.Y += offset.Y;
         }
         return true;

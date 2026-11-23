@@ -30,7 +30,8 @@ internal static class BuildProfileChecks
         }
         string executable = Path.Combine(bin, rid == "win-x64" ? "MoNoonPlayer.exe" : "MoNoonPlayer");
         using var player = File.OpenRead(executable);
-        if (Convert.ToHexString(SHA256.HashData(player)) != receipt.GetText("playerSha256"))
+        // Code signing rewrites the player after the receipt recorded the unsigned hash.
+        if (receipt.GetText("codeSignature") == "" && Convert.ToHexString(SHA256.HashData(player)) != receipt.GetText("playerSha256"))
             throw new InvalidDataException($"Executable checksum mismatch for {file}.");
         if (!native)
         {

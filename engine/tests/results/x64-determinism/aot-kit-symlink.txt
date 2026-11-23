@@ -1,0 +1,24 @@
+# Mac arm64, before the fix: python3 engine/tests/InventoryLab.Replay/build_guest.py <out> <results>
+# Native AOT publish of the kit under tempfile ($TMPDIR = /var/folders/q5/.../T/, /var -> /private/var), from the MSBuild
+# binary log written with MSBuildDebugEngine=1 and replayed to text.
+
+## NuGet restore: the same kit tree under two spellings
+$TMPDIR/monoon-guest-f1068o0q/templates/native-aot/src/Engine.Player/Engine.Player.csproj        (command line, absolute)
+/private$TMPDIR/monoon-guest-f1068o0q/templates/native-aot/src/Engine.Desktop/Engine.Desktop.csproj (relative reference)
+/private$TMPDIR/monoon-guest-f1068o0q/templates/native-aot/src/Engine.Core/Engine.Core.csproj       (relative reference)
+# MoNoon.GameScripts referenced Engine.Core by the absolute $TMPDIR/... path (221 log lines with /var, 6 with /private/var).
+
+## BRUTAL files copied into the Engine.Player AOT input: Engine.Core's packages only, no Ahwoo.BRUTAL.Sdl / Sdl.Native
+ahwoo.brutal.box2d/2026.10.2/lib/net10.0/Brutal.Box2D.dll
+ahwoo.brutal.core/2026.10.4/lib/net10.0/Brutal.Core.dll
+ahwoo.brutal.numerics/2026.10.2/lib/net10.0/Brutal.Numerics.dll
+ahwoo.brutal.box2d.native/2026.10.2/runtimes/osx-arm64/native/libbox2d{.dylib,.3.dylib,.3.1.1.dylib}
+
+## Product: NativeAOT/InventoryLab.app/Contents/MacOS had no libSDL3*.dylib and no EngineAssets. Start:
+Unhandled exception. System.IO.FileNotFoundException: Could not find file 'Brutal.Sdl'.
+File name: 'Brutal.Sdl'
+   at Internal.Runtime.TypeLoaderExceptionHelper.CreateFileNotFoundException(ExceptionStringID, String) + 0x50
+   at Program.<Main>$(String[] args) + 0x18
+
+## Same kit copied to a path without links (/private/tmp/...), same CLI: libSDL3.dylib, libSDL3.0.dylib and EngineAssets
+## present, headless Herbalist replay 475 frames, save eed41def... (the Mac reference).

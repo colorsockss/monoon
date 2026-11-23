@@ -1,0 +1,11 @@
+PASS lines and paths: line, trail and path follower round-trip through YAML as scene version 30
+PASS lines and paths: a path follower refuses a second position driver (tween)
+PASS lines and paths: a curved line is a mitred ribbon of its flattened points with a start-to-end gradient
+PASS lines and paths: scripts replace a line's points in world space and read them back
+PASS lines and paths: constant speed along the curve: 1.49914–1.50003 px per tick (1.5 expected)
+PASS lines and paths: the kinematic path platform carries a character motor (largest slip 0.0001 px)
+PASS lines and paths: the trail keeps at most its point budget (8 of 8) inside its lifetime
+PASS lines and paths: the trail fades from its head to its tail
+PASS lines and paths: the same ticks leave the same trail points
+PASS lines and paths: a deactivated object drops its trail
+PASS lines and paths: PlatformerLab Paths: the runner rides the path lift over the pillar to the goal (359 ticks)

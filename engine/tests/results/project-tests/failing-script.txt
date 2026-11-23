@@ -1,0 +1,8 @@
+FAIL DeliberateFailure.KeyWithoutOpenSprite (Scenes/KeyRoom.scene) at frame 14, tick 14
+  InvalidOperationException: KeySequence.OnTriggerEnter: DoorLock.Unlock: DoorLock needs an open sprite, Sprite Renderer and collider.
+    at DoorLock.Open(IGameObjects objects, Guid door, KeySequence key) in DoorLock.cs:line 40
+    at DoorLock.Unlock(GameEventContext message) in DoorLock.cs:line 14
+  log: Key acquired.
+  log: Door received KeyAcquired.
+0 passed, 1 failed.
+exit=1

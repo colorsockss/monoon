@@ -1,0 +1,4 @@
+release alive after 5s (pid 34748)
+release mapped: libSDL3.0.dylib
+native-aot alive after 5s (pid 34760)
+native-aot mapped: libSDL3.0.dylib

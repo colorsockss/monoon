@@ -1,0 +1,60 @@
+Joints release: 2d523cd089166006 2d523cd089166006 rows 300/300 differ 0 max 0.0000 identical
+Joints aot: 2d523cd089166006 2d523cd089166006 rows 300/300 differ 0 max 0.0000 identical
+Joints scene-play: 2d523cd089166006 2d523cd089166006 rows 300/300 differ 0 max 0.0000 identical
+Paths release: e37de6c0f9c517db e37de6c0f9c517db rows 400/400 differ 0 max 0.0000 identical
+Paths aot: e37de6c0f9c517db e37de6c0f9c517db rows 400/400 differ 0 max 0.0000 identical
+Paths scene-play: e37de6c0f9c517db e37de6c0f9c517db rows 400/400 differ 0 max 0.0000 identical
+TileCollision release: f30ed6864b3cf99f (record f30ed686)
+TileCollision aot: f30ed6864b3cf99f (record f30ed686)
+TileCollision scene-play: f30ed6864b3cf99f (record f30ed686)
+Lines release: 6969a524feb5e837 (record 6969a524)
+Lines aot: 6969a524feb5e837 (record 6969a524)
+Lines scene-play: 6969a524feb5e837 (record 6969a524)
+ScriptWaits release: 98d74c7894af2159 (record 98d74c78)
+ScriptWaits native-aot: 98d74c7894af2159 (record 98d74c78)
+ScriptWaits scene-play: 98d74c7894af2159 (record 98d74c78)
+RichText release: 76118c092596d4c2 (record 76118c09 = 76118c092596d4c2)
+RichText native-aot: 76118c092596d4c2 (record 76118c09 = 76118c092596d4c2)
+RichText scene-play: 76118c092596d4c2 (record 76118c09 = 76118c092596d4c2)
+GridNavigation release: d80dc87356a8356f (record d80dc873)
+GridNavigation native-aot: d80dc87356a8356f (record d80dc873)
+GridNavigation scene-play: d80dc87356a8356f (record d80dc873)
+TileTerrain release: trace missing result ae5d49b4615d8153 (record c747efb9 / ae5d49b4)
+TileTerrain native-aot: trace missing result ae5d49b4615d8153 (record c747efb9 / ae5d49b4)
+TileTerrain scene-play: trace missing result ae5d49b4615d8153 (record c747efb9 / ae5d49b4)
+CameraLab replay-release: record d56a1838068dfbc2 (record d56a1838)
+CameraLab replay-aot: record d56a1838068dfbc2 (record d56a1838)
+Spatial release:
+SPATIAL count=1000 kind=All n=1728 linearCandidates=1677780 gridCandidates=17334 sha256=32FA7AB7170DF5D060A9FC399E6B1BCF6F274A48852DEEF17AA19B8CA1FEFB63
+SPATIAL count=10000 kind=All n=1728 linearCandidates=16772778 gridCandidates=22812 sha256=B5C817DB18262EA1E4C48008C24F77B416FA20AC1ED8447702902803F7D8B896
+Spatial aot:
+SPATIAL count=1000 kind=All n=1728 linearCandidates=1677780 gridCandidates=17334 sha256=32FA7AB7170DF5D060A9FC399E6B1BCF6F274A48852DEEF17AA19B8CA1FEFB63
+SPATIAL count=10000 kind=All n=1728 linearCandidates=16772778 gridCandidates=22812 sha256=B5C817DB18262EA1E4C48008C24F77B416FA20AC1ED8447702902803F7D8B896
+PrefabPools release: PASS same 2338 hits from 7200 bullets; reused 6721 of 7200
+grep: /private/tmp/claude-501/-Users-paare-codex-project-brutal-engine/d9b5815d-691b-46f7-b17a-6ed9a224a15b/scratchpad/p1reg/h/barrage-native-aot.log: No such file or directory
+PrefabPools native-aot: (see barrage-aot.log)
+Aseprite: 
+build_guest release: eed41defcbd7987a (record eed41def)
+build_guest native-aot: eed41defcbd7987a (record eed41def)
+GameText KeyRoom:
+frame	scene-play	release	native-aot	identical
+5	e30f9410938e	e30f9410938e	e30f9410938e	True
+70	dff25d87f3fe	dff25d87f3fe	dff25d87f3fe	True
+190	edb107b91a92	edb107b91a92	edb107b91a92	True
+230	6d6d08dbd755	6d6d08dbd755	6d6d08dbd755	True
+GameText PlatformerLab:
+frame	scene-play	release	native-aot	identical
+260	d7f83d332076	d7f83d332076	d7f83d332076	True
+320	1af6fe9ba532	1af6fe9ba532	1af6fe9ba532	True
+380	b2376b05ae26	b2376b05ae26	b2376b05ae26	True
+RichText comparison:
+frame	scene-play	release	native-aot	identical
+30	f9cdb68623c4	f9cdb68623c4	f9cdb68623c4	True
+85	0ea0040d77a9	0ea0040d77a9	0ea0040d77a9	True
+120	c9d1fcbeccf0	c9d1fcbeccf0	c9d1fcbeccf0	True
+152	54e058fabd1e	54e058fabd1e	54e058fabd1e	True
+175	c139156b3851	c139156b3851	c139156b3851	True
+262	692fcbe83cba	692fcbe83cba	692fcbe83cba	True
+345	26c146c9c94e	26c146c9c94e	26c146c9c94e	True
+PASS same 2338 hits from 7200 bullets; reused 6721 of 7200
+Headless replay completed: 600 frames, 0 events.

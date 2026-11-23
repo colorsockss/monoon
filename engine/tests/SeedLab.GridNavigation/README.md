@@ -17,4 +17,4 @@ python3 "$qa/editor.py" editor/MoNoon.app/Contents/MacOS/MoNoon "$work/SeedLab" 
   engine/.artifacts/bin/RouteProbe/release/RouteProbe.dll "$work/scene-play"
 ```
 
-Windows와 Linux에서는 같은 명령에 해당 OS의 패키지 에디터와 배포 플레이어 경로를 지정한다. 에디터 검증은 창이 있는 데스크톱 세션에서 수행한다. Debian VM에서는 Xvfb를 사용한다. 독립 플레이어는 `--replay-input`을 사용한다. 각 실행의 `result.json`에는 테스트별 경로와 비용이 들어간다.
+Windows에서는 같은 명령에 패키지 에디터와 배포 플레이어 경로를 지정한다. 에디터 검증은 창이 있는 데스크톱 세션에서 수행한다. Linux에서는 플레이어만 검사한다(Linux 에디터는 2026-11-23부터 지원하지 않는다). 독립 플레이어는 `--replay-input`을 사용한다. 각 실행의 `result.json`에는 테스트별 경로와 비용이 들어간다.

@@ -1,0 +1,32 @@
+=== bundles 21:12:45
+FAIL bundles (see /private/tmp/claude-501/-Users-paare-codex-project-brutal-engine/d9b5815d-691b-46f7-b17a-6ed9a224a15b/scratchpad/p1reg/env/bundles.log)
+=== inspector-probe 21:13:06
+OK   inspector-probe
+=== inspector-package 21:13:07
+OK   inspector-package
+=== inspector-swift 21:13:07
+OK   inspector-swift
+=== inspector 21:13:08
+FAIL inspector (see /private/tmp/claude-501/-Users-paare-codex-project-brutal-engine/d9b5815d-691b-46f7-b17a-6ed9a224a15b/scratchpad/p1reg/env/inspector.log)
+=== xcui 21:15:12
+OK   xcui
+=== access-tools 21:15:58
+OK   access-tools
+=== access-build 21:15:59
+OK   access-build
+=== access 21:16:17
+FAIL access (see /private/tmp/claude-501/-Users-paare-codex-project-brutal-engine/d9b5815d-691b-46f7-b17a-6ed9a224a15b/scratchpad/p1reg/env/access.log)
+=== widgets-build 21:16:39
+OK   widgets-build
+=== widgets-pad 21:16:41
+OK   widgets-pad
+=== widgets-swift 21:16:41
+OK   widgets-swift
+=== widgets 21:16:42
+FAIL widgets (see /private/tmp/claude-501/-Users-paare-codex-project-brutal-engine/d9b5815d-691b-46f7-b17a-6ed9a224a15b/scratchpad/p1reg/env/widgets.log)
+=== display-build 21:19:12
+OK   display-build
+=== display-swift 21:19:14
+OK   display-swift
+=== display 21:19:14
+FAIL display (see /private/tmp/claude-501/-Users-paare-codex-project-brutal-engine/d9b5815d-691b-46f7-b17a-6ed9a224a15b/scratchpad/p1reg/env/display.log)

@@ -16,7 +16,7 @@ public sealed partial class SceneDocument
     public const int Width = 800;
     [Obsolete("Use Settings.Height for a project's game resolution.")]
     public const int Height = 450;
-    internal const int CurrentVersion = 28;
+    internal const int CurrentVersion = 30;
     internal ScriptLibrary ResolveScripts(ScriptLibrary? library) => library ??
         ScriptLibrary.Open(ProjectDirectory ?? throw new InvalidDataException("Save the project before running scripts."));
 
@@ -203,7 +203,10 @@ public sealed partial class SceneDocument
                 throw new InvalidDataException($"{script.Script}: invalid or duplicate game event connection.");
         UpgradeHud();
         // Older readers must reject transformed scenes instead of silently flattening them.
-        SchemaVersion = Objects.Any(o => o.GetComponent<UiRectComponent>() is { HasPins: true }) ? CurrentVersion :
+        SchemaVersion = Objects.SelectMany(o => o.Components).Any(c => c is Line2DComponent or Trail2DComponent or PathFollower2DComponent) ? CurrentVersion :
+            Objects.SelectMany(o => o.Components).Any(c => c is RevoluteJoint2DComponent or PrismaticJoint2DComponent or
+                WeldJoint2DComponent or DistanceJoint2DComponent { Spring: true } or Rigidbody2DComponent { Friction: not Rigidbody2DComponent.DefaultFriction }) ? 29 :
+            Objects.Any(o => o.GetComponent<UiRectComponent>() is { HasPins: true }) ? 28 :
             Objects.Any(o => o.Tag != null || o.Groups != null) ? 27 :
             Objects.Any(o => o.GetComponent<UiControlComponent>() is UiSliderComponent or UiToggleComponent or UiDropdownComponent) ? 26 :
             Objects.Any(o => o.GetComponent<UiImageComponent>()?.Borders != null || o.GetComponent<UiButtonComponent>()?.Style != null ||
@@ -217,7 +220,7 @@ public sealed partial class SceneDocument
             Objects.SelectMany(o=>o.Components).Any(c=>c is ParticleEmitter2DComponent or PointLight2DComponent or SpriteShader2DComponent) ? 19 :
             Objects.Any(o=>o.GetComponent<NavigationRegion2DComponent>()!=null) ? 18 :
             Objects.Any(o => o.GetComponent<Tilemap2DComponent>()?.StreamRadius != null) ? 17 :
-            Objects.SelectMany(o => o.Components).Any(c => c is Rigidbody2DComponent or DistanceJoint2DComponent or CharacterMotor2DComponent) ? 16 :
+            Objects.SelectMany(o => o.Components).Any(c => c is Rigidbody2DComponent or Joint2DComponent or CharacterMotor2DComponent) ? 16 :
             Objects.Any(o=>o.Prefab?.Baseline!=null) ? 15 :
             Objects.SelectMany(o=>o.Components).Any(c=>c is UiLayoutComponent or UiScrollComponent or UiTextFieldComponent or UiTextComponent {Translations:not null} or UiTextComponent {Wrap:true}) ? 14 :
             Objects.SelectMany(o=>o.Components).Any(c=>c is AudioListener2DComponent or AudioSourceComponent { Extended:true }) ? 13 :
@@ -246,14 +249,16 @@ public sealed partial class SceneDocument
                 if (component is CutsceneDirectorComponent && obj.GetComponent<Camera2DComponent>() is { Output: not Camera2DComponent.Primary })
                     throw new InvalidDataException($"{obj.Name}: a cutscene shot requires a primary camera.");
                 if (component is PositionTween2DComponent tween) tween.Validate(obj);
+                if (component is PathFollower2DComponent follower) follower.Validate(obj);
+                if (component is Line2DComponent line) line.Validate(obj.Name);
+                if (component is Trail2DComponent trail) trail.Validate(obj.Name);
                 if (component is SkeletonAnimator2DComponent skeleton) skeleton.Validate(obj.Name);
                 if (component is FootIK2DComponent feet) feet.Validate(obj.Name);
                 if (component is ParticleEmitter2DComponent emitter) emitter.Validate(obj.Name);
                 if (component is PointLight2DComponent light) light.Validate(obj.Name);
                 if (component is NavigationRegion2DComponent region) region.Validate(obj.Name);
                 if (component is Rigidbody2DComponent rigid) rigid.Validate(obj.Name);
-                if (component is DistanceJoint2DComponent joint && (joint.Connected == obj.Id || !float.IsFinite(joint.Length) || joint.Length < 0))
-                    throw new InvalidDataException($"{obj.Name}: invalid joint length or self connection.");
+                if (component is Joint2DComponent joint) joint.Validate(obj);
                 if (component is CharacterMotor2DComponent motor && (motor.MaxSlope is not (>= 0 and < 90) || !float.IsFinite(motor.GroundSnap) || motor.GroundSnap < 0))
                     throw new InvalidDataException($"{obj.Name}: invalid walkable slope or ground snap.");
                 if (component is AudioSourceComponent audio) audio.Validate(obj.Name);
@@ -278,8 +283,10 @@ public sealed partial class SceneDocument
                     throw new InvalidDataException($"{obj.Name}: tile cell size must be positive.");
                 if(component is UiLayoutComponent l && (l.Axis is not ("Vertical" or "Horizontal") || l.Gap is not (>=0 and <=16384) || l.Padding is not (>=0 and <=16384)) ||
                     component is UiTextFieldComponent f && (f.MaxLength is <1 or >4096 || f.Value==null || f.Value.Contains('\n')) ||
-                    component is UiTextComponent { Translations:{} translations } && translations.Any(p=>string.IsNullOrWhiteSpace(p.Key)||p.Value==null))
-                    throw new InvalidDataException($"{obj.Name}: invalid UI layout, text field or translation.");
+                    component is UiTextComponent { Translations:{} translations } && translations.Any(p=>string.IsNullOrWhiteSpace(p.Key)||p.Value==null) ||
+                    component is UiTextComponent rich && (rich.RevealRate is not (>=0 and <=10000) ||
+                        rich.Icons?.Any(p => string.IsNullOrWhiteSpace(p.Key) || p.Key.IndexOfAny(['<','>','/']) >= 0 || p.Value == Guid.Empty) == true))
+                    throw new InvalidDataException($"{obj.Name}: invalid UI layout, text field, translation, reveal rate or text icon.");
                 if (component is UiImageComponent { Borders: {} edges } panel && (panel.Sprite == null ||
                     edges.Left < 0 || edges.Right < 0 || edges.Top < 0 || edges.Bottom < 0))
                     throw new InvalidDataException($"{obj.Name}: 9-slice needs a PNG and nonnegative borders.");
@@ -358,7 +365,12 @@ public sealed partial class SceneObject
     [YamlMember("components"), YamlRequired]
     internal SceneComponent[] StoredComponents { get => Components.ToArray(); set => Components = (value ?? throw new InvalidDataException("Expected components.")).ToImmutableArray(); }
 
-    public T? GetComponent<T>() where T : SceneComponent => Components.OfType<T>().FirstOrDefault();
+    // Called per frame and per spawn: ImmutableArray's struct enumerator keeps this allocation-free.
+    public T? GetComponent<T>() where T : SceneComponent
+    {
+        foreach (var component in Components) if (component is T match) return match;
+        return null;
+    }
 
     public bool AddComponent(SceneComponent component)
     {

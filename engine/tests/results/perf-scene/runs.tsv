@@ -1,0 +1,53 @@
+variant	run	build	mode	hits	mean_us	p95_us	bytes_per_frame	gen0
+base	1	release	pool	2338	471.2	791.3	58713	8
+base	1	release	instantiate	2338	1115.3	2708.8	967661	147
+base	1	aot	pool	2338	128.7	135.0	58688	8
+base	1	aot	instantiate	2338	990.0	1630.0	969427	147
+cand	1	release	pool	2338	342.1	410.3	53870	8
+cand	1	release	instantiate	2338	935.0	1753.3	418667	65
+cand	1	aot	pool	2338	130.3	145.9	53840	8
+cand	1	aot	instantiate	2338	522.5	1394.4	418797	64
+base	2	release	pool	2338	277.3	406.2	58713	8
+base	2	release	instantiate	2338	1171.0	2135.1	967705	147
+base	2	aot	pool	2338	127.6	133.2	58688	8
+base	2	aot	instantiate	2338	1010.7	1664.3	969426	147
+cand	2	release	pool	2338	385.9	470.4	53870	8
+cand	2	release	instantiate	2338	781.0	1604.9	418650	65
+cand	2	aot	pool	2338	127.7	138.0	53840	8
+cand	2	aot	instantiate	2338	535.0	1424.8	418801	65
+base	3	release	pool	2338	405.3	451.5	58713	8
+base	3	release	instantiate	2338	1251.8	2839.2	967614	147
+base	3	aot	pool	2338	131.8	142.6	58688	8
+base	3	aot	instantiate	2338	1060.2	1836.8	969432	147
+cand	3	release	pool	2338	312.2	396.9	53870	8
+cand	3	release	instantiate	2338	951.9	1817.3	418642	65
+cand	3	aot	pool	2338	127.2	136.3	53840	8
+cand	3	aot	instantiate	2338	518.2	1370.2	418801	64
+base	4	release	pool	2338	346.2	423.4	58713	8
+base	4	release	instantiate	2338	1176.0	2769.5	967648	147
+base	4	aot	pool	2338	129.6	134.8	58688	8
+base	4	aot	instantiate	2338	1024.3	1777.8	969432	147
+cand	4	release	pool	2338	323.2	402.1	53870	8
+cand	4	release	instantiate	2338	818.7	1559.8	418646	65
+cand	4	aot	pool	2338	129.0	141.3	53840	8
+cand	4	aot	instantiate	2338	636.0	1561.9	418803	65
+base	5	release	pool	2338	345.7	391.4	58713	8
+base	5	release	instantiate	2338	1146.0	2155.0	967674	147
+base	5	aot	pool	2338	130.1	139.9	58688	8
+base	5	aot	instantiate	2338	996.6	1611.9	969429	147
+cand	5	release	pool	2338	326.1	425.0	53870	8
+cand	5	release	instantiate	2338	1008.5	1864.2	418697	65
+cand	5	aot	pool	2338	133.6	166.8	53840	8
+cand	5	aot	instantiate	2338	535.6	1444.5	418799	64
+
+variant	run	profiler_frame_ms	scene_loading_ms	loading_alloc_bytes	split_add_instantiate_ms	split_add_commit_ms	split_add_max_ms	previous_add_commit_ms	split_replace_instantiate_ms	split_replace_commit_ms
+base	1	168.506	152.154	88877744	62.941	23.54	41.697	21.806	67.064	8.054
+cand	1	160.384	144.071	54438576	25.452	17.452	24.598	16.257	26.159	6.984
+base	2	171.952	155.45	88881656	58.845	23.611	42.387	21.253	64.529	8.256
+cand	2	146.065	128.918	54438376	27.336	20.444	32.293	16.225	35.255	7.382
+base	3	177.774	160.608	88829344	60.383	24.494	42.913	22.229	65.248	7.646
+cand	3	149.53	132.54	54396544	27.925	18.832	26.073	16.059	67.56	7.507
+base	4	184.864	168.753	88835736	59.341	37.079	54.911	21.706	68.636	8.018
+cand	4	146.391	129.448	54448560	26.976	19.333	26.433	15.121	26.046	6.903
+base	5	169.482	153.375	88828544	60.982	22.896	45.2	24.538	72.622	8.369
+cand	5	146.03	129.727	54436864	26.404	17.703	25.238	15.186	55.884	7.983

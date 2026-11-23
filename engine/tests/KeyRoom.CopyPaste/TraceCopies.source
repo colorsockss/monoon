@@ -1,0 +1,21 @@
+using System;
+using System.IO;
+using System.Linq;
+using Engine.Core;
+
+// Copied into a disposable project only: records whether both references resolve at runtime.
+public sealed class TraceCopies : GameBehaviour
+{
+    public Guid Copied, Outside;
+    private bool written;
+
+    public override void FixedUpdate(ScriptTick tick)
+    {
+        if (written) return;
+        written = true;
+        bool copied = tick.Objects.TryGetPosition(Copied, out _), chest = tick.Objects.FindByTag("Chest").Contains(Copied);
+        bool outside = Outside != Guid.Empty && tick.Objects.TryGetPosition(Outside, out _);
+        File.WriteAllText(Environment.GetEnvironmentVariable("MONOON_COPY_TRACE")!,
+            $"copied {(copied ? 1 : 0)} chest {(chest ? 1 : 0)} outside {(outside ? 1 : 0)}\n");
+    }
+}

@@ -1,0 +1,118 @@
+{
+ "host": {
+  "rid": "linux-x64",
+  "platform": "Linux-6.1.0-56-cloud-amd64-x86_64-with-glibc2.36",
+  "machine": "x86_64",
+  "cpu_flags": [
+   "avx",
+   "avx2",
+   "fma",
+   "sse4_2"
+  ],
+  "dotnet": "10.0.101"
+ },
+ "joints-release": {
+  "status": "pass",
+  "trace.tsv": "86280b2720904f090b26987e53f53c07c0d3ae378bdc12ac35c568658e01f79b",
+  "result.json": "9728382a2f19666414ae3594858106da528972376162259d2f8c844d3880dd6f",
+  "seconds": 34
+ },
+ "joints-native-aot": {
+  "status": "pass",
+  "trace.tsv": "86280b2720904f090b26987e53f53c07c0d3ae378bdc12ac35c568658e01f79b",
+  "result.json": "9728382a2f19666414ae3594858106da528972376162259d2f8c844d3880dd6f",
+  "seconds": 440
+ },
+ "joints-scene-play": {
+  "status": "pass",
+  "trace.tsv": "86280b2720904f090b26987e53f53c07c0d3ae378bdc12ac35c568658e01f79b",
+  "result.json": "9728382a2f19666414ae3594858106da528972376162259d2f8c844d3880dd6f",
+  "seconds": 94
+ },
+ "joints-compare": {
+  "status": "pass",
+  "trace.tsv": "86280b2720904f090b26987e53f53c07c0d3ae378bdc12ac35c568658e01f79b",
+  "seconds": 0
+ },
+ "joints-release-noavx2": {
+  "status": "pass",
+  "trace.tsv": "86280b2720904f090b26987e53f53c07c0d3ae378bdc12ac35c568658e01f79b",
+  "seconds": 8
+ },
+ "paths-release": {
+  "status": "pass",
+  "trace.tsv": "e37de6c0f9c517db77d3d83a3a23209c7083888573cd363b1b7a1fe47e506d61",
+  "seconds": 33
+ },
+ "paths-native-aot": {
+  "status": "pass",
+  "trace.tsv": "e37de6c0f9c517db77d3d83a3a23209c7083888573cd363b1b7a1fe47e506d61",
+  "seconds": 466
+ },
+ "paths-scene-play": {
+  "status": "pass",
+  "trace.tsv": "e37de6c0f9c517db77d3d83a3a23209c7083888573cd363b1b7a1fe47e506d61",
+  "seconds": 159
+ },
+ "paths-compare": {
+  "status": "pass",
+  "trace.tsv": "e37de6c0f9c517db77d3d83a3a23209c7083888573cd363b1b7a1fe47e506d61",
+  "seconds": 0
+ },
+ "paths-release-noavx2": {
+  "status": "pass",
+  "trace.tsv": "e37de6c0f9c517db77d3d83a3a23209c7083888573cd363b1b7a1fe47e506d61",
+  "seconds": 6
+ },
+ "lines-release": {
+  "status": "pass",
+  "trace.tsv": "6969a524feb5e8376be4fe47a578f24fc863df6a7ddf4c952e779d1f76595e2b",
+  "seconds": 30
+ },
+ "lines-native-aot": {
+  "status": "pass",
+  "trace.tsv": "6969a524feb5e8376be4fe47a578f24fc863df6a7ddf4c952e779d1f76595e2b",
+  "seconds": 439
+ },
+ "lines-scene-play": {
+  "status": "pass",
+  "trace.tsv": "6969a524feb5e8376be4fe47a578f24fc863df6a7ddf4c952e779d1f76595e2b",
+  "seconds": 51
+ },
+ "lines-compare": {
+  "status": "pass",
+  "trace.tsv": "6969a524feb5e8376be4fe47a578f24fc863df6a7ddf4c952e779d1f76595e2b",
+  "seconds": 0
+ },
+ "lines-release-noavx2": {
+  "status": "pass",
+  "trace.tsv": "6969a524feb5e8376be4fe47a578f24fc863df6a7ddf4c952e779d1f76595e2b",
+  "seconds": 7
+ },
+ "tiles-release": {
+  "status": "pass",
+  "trace.tsv": "f30ed6864b3cf99f89c14ff25de33b7d4e28c1701da80627f17b62f1bdbc3491",
+  "seconds": 34
+ },
+ "tiles-native-aot": {
+  "status": "pass",
+  "trace.tsv": "f30ed6864b3cf99f89c14ff25de33b7d4e28c1701da80627f17b62f1bdbc3491",
+  "seconds": 420
+ },
+ "tiles-scene-play": {
+  "status": "pass",
+  "trace.tsv": "f30ed6864b3cf99f89c14ff25de33b7d4e28c1701da80627f17b62f1bdbc3491",
+  "seconds": 69
+ },
+ "tiles-compare": {
+  "status": "pass",
+  "trace.tsv": "f30ed6864b3cf99f89c14ff25de33b7d4e28c1701da80627f17b62f1bdbc3491",
+  "seconds": 0
+ },
+ "tiles-release-noavx2": {
+  "status": "pass",
+  "trace.tsv": "f30ed6864b3cf99f89c14ff25de33b7d4e28c1701da80627f17b62f1bdbc3491",
+  "seconds": 8
+ },
+ "done": "2026-11-23 11:09:27"
+}

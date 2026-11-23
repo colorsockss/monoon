@@ -1,0 +1,13 @@
+edit menu Undo Ctrl+Z | Redo Ctrl+Shift+Z | -  | Cut Ctrl+X | Copy Ctrl+C | Paste Ctrl+V | -  | Preferences… Ctrl+OemComma
+text field copy -> SKIPPED (OS clipboard returns nothing)
+copied Rig + Chest 1 -> OS clipboard SKIPPED (returns nothing; paste uses the editor's own copy)
+same scene: Chest 1 (1), Chest Lid, Rig (1), Rig Arm; new IDs 4/4 unique; Rig (1).Copied -> Chest 1 (1), Outside -> Floor; Chest 1 (1) prefab e39c7875-4b68-45ac-ab27-f07c70e52132
+same scene: Undo removes 4 objects, Redo restores the same IDs
+cut Rig (1): parent and child removed; one Undo restores both with their IDs
+SecondRoom: Rig, Rig Arm, Chest 1, Chest Lid; Rig.Copied -> pasted Chest 1, Rig.Outside -> PrefabWorkshop Floor (missing)
+Inspector 1280px: Outside 'Missing object or component' at x=1130.0 w=142.0, label x=1070.0; Copied 'Chest 1' at x=1130.0 w=142.0, label x=1070.0; other value columns x=1144,1217,1130
+SecondRoom: Undo removes the paste, Redo restores it
+saved files: SecondRoom keeps the missing Outside reference and the prefab link; PrefabWorkshop has Rig, Rig (1), Chest 1 (1)
+Scene Play: copied 1 chest 1 outside 0
+Outside repointed to North Wall in the Inspector and saved
+Scene Play: copied 1 chest 1 outside 1

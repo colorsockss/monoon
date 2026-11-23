@@ -86,7 +86,10 @@ internal sealed class WorldDrawOrder
             if (obj.GetComponent<Tilemap2DComponent>() is {} map) Add(map.SortingLayer, map.Order, map: map);
             var sprite = obj.GetComponent<SpriteRendererComponent>();
             var skeleton = obj.GetComponent<SkeletonAnimator2DComponent>();
-            Add(sprite?.SortingLayer ?? skeleton?.SortingLayer ?? 0, sprite?.Order ?? skeleton?.Order ?? 0,
+            var line = obj.GetComponent<Line2DComponent>();
+            var trail = obj.GetComponent<Trail2DComponent>();
+            Add(sprite?.SortingLayer ?? skeleton?.SortingLayer ?? line?.SortingLayer ?? trail?.SortingLayer ?? 0,
+                sprite?.Order ?? skeleton?.Order ?? line?.Order ?? trail?.Order ?? 0,
                 sprite?.SortByY == true, sprite?.FootOffset ?? 0);
         }
 
@@ -104,7 +107,7 @@ internal sealed class WorldDrawOrder
     public void Sample(float interpolation)
     {
         foreach (var entry in movingEntries)
-            entry.WorldY = Vector2.Transform(entry.Foot, matrixAt(entry.Item.Index, interpolation)).Y;
+            entry.WorldY = Affine2D.Transform(entry.Foot, matrixAt(entry.Item.Index, interpolation)).Y;
 
         bool changed = false;
         foreach (var scope in movingScopes)

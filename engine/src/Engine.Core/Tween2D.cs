@@ -37,7 +37,7 @@ internal sealed class PositionTween(PositionTween2DComponent config)
     public Vector2 Advance(Vector2 position, Matrix3x2 parent, float dt)
     {
         if (!Playing) return default;
-        origin ??= Vector2.Transform(position,Affine2D.Inverse(parent));
+        origin ??= Affine2D.Transform(position,Affine2D.Inverse(parent));
         elapsed+=dt;
         double t;
         if (config.Repeat==TweenRepeat.PingPong)
@@ -55,7 +55,7 @@ internal sealed class PositionTween(PositionTween2DComponent config)
             TweenEase.EaseInOut => .5-.5*Math.Cos(t*Math.PI), _=>t
         };
         var target=origin.Value+new Vector2(config.OffsetX,config.OffsetY)*(float)eased;
-        return Vector2.Transform(target,parent)-position;
+        return Affine2D.Transform(target,parent)-position;
     }
 }
 
@@ -63,8 +63,9 @@ public sealed partial class SceneGame
 {
     public bool PlayTween(Guid id)
     {
-        if (!byId.TryGetValue(id,out var b) || !b.Active || b.Tween==null) return false;
-        b.Tween.Playing=true;
+        if (!byId.TryGetValue(id,out var b) || !b.Active || b.Tween==null && b.Follower==null) return false;
+        if (b.Tween!=null) b.Tween.Playing=true;
+        if (b.Follower!=null) b.Follower.Playing=true;
         return true;
     }
 }

@@ -95,7 +95,7 @@ public sealed class MazeRun : GameBehaviour
 
     private bool Enter(ScriptTick tick, Point target)
     {
-        Vector2 step = Vector2.TransformNormal(Center(target) - Center(run.Position), tick.WorldMatrix);
+        Vector2 step = Affine2D.TransformNormal(Center(target) - Center(run.Position), tick.WorldMatrix);
         return tick.Objects.TryMoveStep(pawn, step);
     }
 
@@ -167,7 +167,7 @@ public sealed class MazeRun : GameBehaviour
             !objects.TryGetWorldMatrix(layer, out var world))
             throw new InvalidOperationException("MazeRun needs a non-streamed tilemap.");
         if (pawn != Guid.Empty) objects.Destroy(pawn);
-        var spawn = Vector2.Transform(Center(maze.Entrance), world);
+        var spawn = Affine2D.Transform(Center(maze.Entrance), world);
         pawn = objects.Instantiate(Pawn, spawn - new Vector2(7));
         exit = maze.Exit;
         run = replay == null

@@ -43,6 +43,20 @@ internal sealed class SdlSpriteBatch(SdlRenderer renderer)
         vertices[first + 3] = Vertex(start + side, 0, 0, color);
     }
 
+    public void Strip(ReadOnlySpan<Vector2> edges, ReadOnlySpan<Color> colors, Matrix3x2 matrix)
+    {
+        static SdlFColor Of(Color c) => new() { r = c.R / 255f, g = c.G / 255f, b = c.B / 255f, a = c.A / 255f };
+        for (int i = 0; i + 1 < colors.Length; i++)
+        {
+            SdlFColor a = Of(colors[i]), b = Of(colors[i + 1]);
+            int first = Reserve(default, 4);
+            vertices[first] = Vertex(Vector2.Transform(edges[i * 2], matrix), 0, 0, a);
+            vertices[first + 1] = Vertex(Vector2.Transform(edges[i * 2 + 2], matrix), 0, 0, b);
+            vertices[first + 2] = Vertex(Vector2.Transform(edges[i * 2 + 3], matrix), 0, 0, b);
+            vertices[first + 3] = Vertex(Vector2.Transform(edges[i * 2 + 1], matrix), 0, 0, a);
+        }
+    }
+
     private int Reserve(SdlTexture nextTexture, int count)
     {
         if (vertexCount + count > vertices.Length || texture.Pointer != nextTexture.Pointer) Flush();
@@ -65,6 +79,8 @@ internal sealed class SdlSpriteBatch(SdlRenderer renderer)
         Submissions++;
         int usedVertices = vertexCount, usedIndices = indexCount;
         vertexCount = indexCount = 0;
+        // Untextured geometry (lines, trails, rotated fills) uses the draw blend mode, which a fresh renderer starts as NONE.
+        if (texture.Pointer == default(SdlTexture).Pointer) renderer.SetRenderDrawBlendMode(1);
         fixed (SdlVertex* vertexData = vertices)
         fixed (int* indexData = indices)
             if (!renderer.RenderGeometry(texture, vertexData, usedVertices, indexData, usedIndices))

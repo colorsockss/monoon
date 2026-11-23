@@ -1,0 +1,16 @@
+PASS ChestTests.InteractSpawnsOneCoin
+PASS ChestTests.WalkingIntoTheCoinCollectsIt
+PASS ChestTests.ChestNeedsToBeWithinReach
+FAIL DeliberateFailure.HintAfterFourTenths (Scenes/KeyRoom.scene) at frame 38, tick 38
+  GameTestFailure: the hint is visible 0.4 s after the door opens
+    at DeliberateFailure.HintAfterFourTenths(GameTestRun run)+MoveNext() in ./Tests/DeliberateFailure.cs:line 14
+  log: Key acquired.
+  log: Door received KeyAcquired.
+PASS DoorTests.ClosedDoorStopsPlayer
+PASS DoorTests.KeyOpensDoorThenHintAfterHalfSecond
+PASS DoorTests.PauseAndStepDelayTheHint
+PASS DoorTests.RemovingTheDoorCancelsTheHint
+PASS DoorTests.RecordedWalkTakesTheKey
+PASS DoorTests.OpenDoorLeadsToSecondRoom
+9 passed, 1 failed.
+exit=1

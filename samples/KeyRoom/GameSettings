@@ -25,6 +25,8 @@ input:
     controls: [H, Mouse.Right, Pad.Start]
   - name: PauseGame
     controls: [P, Pad.Back]
+  - name: StepGame
+    controls: [Period]
   - name: SlotOne
     controls: ["1"]
   - name: SlotTwo

@@ -1,0 +1,41 @@
+# Mac arm64 (macOS 27.0.1, Apple M4 Max), unfused Affine2D. tsvdiff: new vs previous record (11708ce), sha256 prefixes, differing rows
+PlatformerLab.Joints release: 2d523cd089166006 a00b9e4b00b4599d rows 300/300 differ 225 max 0.0010 first 63 | 63 192.1776 269.9950 200.1062 299.9895 16.223 223.3313 306.7404 12.284 246.9676 311.8783 7 | 63 192.1775 269.9950 200.1062 299.9895 16.223 223.3313 306.7404 12.284 246.9676 311.8783 7
+PlatformerLab.Joints aot: 2d523cd089166006 a00b9e4b00b4599d rows 300/300 differ 225 max 0.0010 first 63 | 63 192.1776 269.9950 200.1062 299.9895 16.223 223.3313 306.7404 12.284 246.9676 311.8783 7 | 63 192.1775 269.9950 200.1062 299.9895 16.223 223.3313 306.7404 12.284 246.9676 311.8783 7
+PlatformerLab.Joints scene-play: 2d523cd089166006 a00b9e4b00b4599d rows 300/300 differ 225 max 0.0010 first 63 | 63 192.1776 269.9950 200.1062 299.9895 16.223 223.3313 306.7404 12.284 246.9676 311.8783 7 | 63 192.1775 269.9950 200.1062 299.9895 16.223 223.3313 306.7404 12.284 246.9676 311.8783 7
+PlatformerLab.Paths release: e37de6c0f9c517db 1a143d56cfa707d9 rows 400/400 differ 107 max 0.0002 first 89 | 89 260.5625 225.0383 210.5625 255.0384 1 | 89 260.5625 225.0384 210.5625 255.0384 1
+PlatformerLab.Paths aot: e37de6c0f9c517db 1a143d56cfa707d9 rows 400/400 differ 107 max 0.0002 first 89 | 89 260.5625 225.0383 210.5625 255.0384 1 | 89 260.5625 225.0384 210.5625 255.0384 1
+PlatformerLab.Paths scene-play: e37de6c0f9c517db 1a143d56cfa707d9 rows 400/400 differ 107 max 0.0002 first 89 | 89 260.5625 225.0383 210.5625 255.0384 1 | 89 260.5625 225.0384 210.5625 255.0384 1
+PlatformerLab.TileCollision release: f30ed6864b3cf99f (record f30ed686)
+PlatformerLab.TileCollision aot: f30ed6864b3cf99f (record f30ed686)
+PlatformerLab.TileCollision scene-play: f30ed6864b3cf99f (record f30ed686)
+BarrageLab.Lines release: 6969a524feb5e837 (record 6969a524)
+BarrageLab.Lines aot: 6969a524feb5e837 (record 6969a524)
+BarrageLab.Lines scene-play: 6969a524feb5e837 (record 6969a524)
+KeyRoom.ScriptWaits release: 98d74c7894af2159 (record 98d74c7894af2159)
+KeyRoom.ScriptWaits native-aot: 98d74c7894af2159 (record 98d74c7894af2159)
+KeyRoom.ScriptWaits scene-play: 98d74c7894af2159 (record 98d74c7894af2159)
+InventoryLab.RichText release reveal.tsv: 76118c092596d4c2 (record 76118c09)
+InventoryLab.RichText native-aot reveal.tsv: 76118c092596d4c2 (record 76118c09)
+InventoryLab.RichText scene-play reveal.tsv: 76118c092596d4c2 (record 76118c09)
+SeedLab.GridNavigation release result.json: d80dc87356a8356f (record d80dc873)
+SeedLab.GridNavigation native-aot result.json: d80dc87356a8356f (record d80dc873)
+SeedLab.GridNavigation scene-play result.json: d80dc87356a8356f (record d80dc873)
+SeedLab.TileTerrain release trace.txt/result.json: c747efb932efb54f ae5d49b4615d8153 (record c747efb9 ae5d49b4)
+SeedLab.TileTerrain native-aot trace.txt/result.json: c747efb932efb54f ae5d49b4615d8153 (record c747efb9 ae5d49b4)
+SeedLab.TileTerrain scene-play trace.txt/result.json: c747efb932efb54f ae5d49b4615d8153 (record c747efb9 ae5d49b4)
+CameraLab effect record release: d56a1838068dfbc2 (record d56a1838068dfbc2)
+CameraLab effect record aot: d56a1838068dfbc2 (record d56a1838068dfbc2)
+CollisionLab.Spatial release:
+SPATIAL count=1000 kind=All n=1728 linearCandidates=1677780 gridCandidates=17334 sha256=32FA7AB7170DF5D060A9FC399E6B1BCF6F274A48852DEEF17AA19B8CA1FEFB63
+SPATIAL count=10000 kind=All n=1728 linearCandidates=16772778 gridCandidates=22812 sha256=B5C817DB18262EA1E4C48008C24F77B416FA20AC1ED8447702902803F7D8B896
+CollisionLab.Spatial aot:
+SPATIAL count=1000 kind=All n=1728 linearCandidates=1677780 gridCandidates=17334 sha256=32FA7AB7170DF5D060A9FC399E6B1BCF6F274A48852DEEF17AA19B8CA1FEFB63
+SPATIAL count=10000 kind=All n=1728 linearCandidates=16772778 gridCandidates=22812 sha256=B5C817DB18262EA1E4C48008C24F77B416FA20AC1ED8447702902803F7D8B896
+BarrageLab.PrefabPools release: PASS same 2338 hits from 7200 bullets; reused 6721 of 7200
+BarrageLab.PrefabPools aot: PASS same 2338 hits from 7200 bullets; reused 6721 of 7200
+KeyRoom.WorldCheckpoints ci.py (Release + Native AOT vs fixtures): 22 PASS, 0 FAIL
+InventoryLab build_guest.py:
+PASS release.save 171 bytes SHA-256 eed41defcbd7987a527deb677c60da8151ad0de1616c717c646e92b26e70f795
+PASS osx-arm64 release matches the Mac save byte-for-byte
+PASS native-aot.save 171 bytes SHA-256 eed41defcbd7987a527deb677c60da8151ad0de1616c717c646e92b26e70f795
+PASS osx-arm64 native-aot matches the Mac save byte-for-byte

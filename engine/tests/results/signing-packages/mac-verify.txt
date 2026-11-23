@@ -1,0 +1,45 @@
+build osx-arm64 release exit 0
+build osx-arm64 native-aot exit 0
+build win-x64 release exit 0
+build linux-x64 release exit 0
+== package step messages
+Package: <scratch>/out/KeyRoom-linux-x64.tar.gz
+Signed ad-hoc (no macIdentity configured); runs on this Mac, other Macs need a Developer ID signature.
+Notarisation skipped: ad-hoc signatures cannot be notarised. Set macIdentity and notaryKeychainProfile.
+Package: <scratch>/out/NativeAOT/KeyRoom-osx-arm64.zip
+Package: <scratch>/out/NativeAOT/KeyRoom-osx-arm64.dmg
+Signed ad-hoc (no macIdentity configured); runs on this Mac, other Macs need a Developer ID signature.
+Notarisation skipped: ad-hoc signatures cannot be notarised. Set macIdentity and notaryKeychainProfile.
+Package: <scratch>/out/KeyRoom-osx-arm64.zip
+Package: <scratch>/out/KeyRoom-osx-arm64.dmg
+Windows signing skipped: signtool runs only on a Windows host. Package on Windows to sign.
+Package: <scratch>/out/KeyRoom-win-x64.zip
+== configured PFX password in logs, stdout or outputs
+none
+== osx-arm64 release
+<scratch>/out/KeyRoom.app: valid on disk
+<scratch>/out/KeyRoom.app: satisfies its Designated Requirement
+CodeDirectory v=20500 size=627 flags=0x10002(adhoc,runtime) hashes=8+7 location=embedded
+Signature=adhoc
+{
+  "com.apple.security.cs.allow-jit" => true
+  "com.apple.security.cs.disable-library-validation" => true
+}
+  codeSignature: "macos-adhoc"
+zip extracted with ditto: codesign verify OK
+PASS player smoke: Scenes/KeyRoom.scene (0 control presses)
+dmg root: Applications KeyRoom.app 
+dmg app: codesign verify OK
+== osx-arm64 native-aot
+<scratch>/out/NativeAOT/KeyRoom.app: valid on disk
+<scratch>/out/NativeAOT/KeyRoom.app: satisfies its Designated Requirement
+CodeDirectory v=20500 size=23123 flags=0x10002(adhoc,runtime) hashes=711+7 location=embedded
+Signature=adhoc
+{
+  "com.apple.security.cs.disable-library-validation" => true
+}
+  codeSignature: "macos-adhoc"
+zip extracted with ditto: codesign verify OK
+PASS player smoke: Scenes/KeyRoom.scene (0 control presses)
+dmg root: Applications KeyRoom.app 
+dmg app: codesign verify OK

@@ -1,9 +1,8 @@
-"""Build a standalone desktop editor or an editable KeyRoom sample archive."""
+"""Build the standalone Windows editor or an editable KeyRoom sample archive (no Linux editor since 2026-11-23)."""
 import argparse
 import os
 from pathlib import Path
 import subprocess
-import tarfile
 import tempfile
 import zipfile
 
@@ -32,37 +31,25 @@ def package_editor(target, stage, archive):
         "-nr:false", "-m:1", "-p:UsedAvaloniaProducts=", "-p:UseSharedCompilation=false",
         "-p:NuGetAudit=false", "-p:PublishSingleFile=false",
     ], check=True)
-    if target == "win-x64":
-        native_files = ("MoNoon.exe", "coreclr.dll", "SDL3.dll", "libSkiaSharp.dll")
-    else:
-        native_files = ("MoNoon", "libcoreclr.so", "libSDL3.so", "libSkiaSharp.so")
+    native_files = ("MoNoon.exe", "coreclr.dll", "SDL3.dll", "SDL3_mixer.dll", "libSkiaSharp.dll")
     for name in (*native_files, "MoNoon.dll", "Microsoft.CodeAnalysis.CSharp.dll"):
         if not (stage / name).is_file():
             raise RuntimeError(f"Publish is missing {name}")
-    if target == "win-x64":
-        with zipfile.ZipFile(archive, "w", zipfile.ZIP_DEFLATED) as bundle:
-            for path in sorted(stage.rglob("*")):
-                if path.is_file():
-                    bundle.write(path, Path("editor") / path.relative_to(stage))
-    else:
-        def executable_modes(info):
-            if info.name in ("editor/MoNoon", "editor/createdump"):
-                info.mode |= 0o111
-            return info
-        with tarfile.open(archive, "w:gz") as bundle:
-            bundle.add(stage, arcname="editor", filter=executable_modes)
+    with zipfile.ZipFile(archive, "w", zipfile.ZIP_DEFLATED) as bundle:
+        for path in sorted(stage.rglob("*")):
+            if path.is_file():
+                bundle.write(path, Path("editor") / path.relative_to(stage))
 
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("target", choices=["win-x64", "linux-x64", "keyroom"])
+    parser.add_argument("target", choices=["win-x64", "keyroom"])
     parser.add_argument("--output", type=Path, help="Override the artifact directory.")
     args = parser.parse_args()
     default_output = ROOT / ("samples/dist" if args.target == "keyroom" else "editor")
     output = (args.output or default_output).resolve()
     output.mkdir(parents=True, exist_ok=True)
-    name = {"win-x64": "MoNoon-win-x64.zip", "linux-x64": "MoNoon-linux-x64.tar.gz",
-            "keyroom": "KeyRoom-sample.zip"}[args.target]
+    name = {"win-x64": "MoNoon-win-x64.zip", "keyroom": "KeyRoom-sample.zip"}[args.target]
     with tempfile.TemporaryDirectory(dir=output) as work:
         artifact = Path(work) / name
         if args.target == "keyroom":

@@ -38,6 +38,31 @@ if (tick.Cameras.TryGetView(cameraId, out var view))
 
 [Mac 실행 화면과 측정 기록](../../engine/tests/results/cameras/README.md)
 
+## 화면 흔들림, 줌 펀치, 페이드·플래시·색 보정
+
+CameraLab을 Play하고 **1**(패드 West)을 누르면 두 화면이 흔들리면서 순간 확대되고, **2**(East)는 흰색 플래시, **3**(LeftShoulder)은 검게 페이드 아웃·인, **4**(RightShoulder)는 따뜻하고 어두운 색 보정을 켜고 끈다. **F**(Start)로 게임 시간을 멈춘 뒤 **.**(오른쪽 트리거)를 누르면 한 틱씩 진행하며 효과를 살펴볼 수 있다. [ScreenFxDemo.cs](../../samples/CameraLab/Scripts/ScreenFxDemo.cs)
+
+스크립트에서는 `tick.Session.Screen`을 사용한다. `UpdateUi`에서도 호출할 수 있고 씬을 바꿔도 세션 동안 유지된다.
+
+| API | 동작 |
+| --- | --- |
+| `Shake(amplitude, seconds, frequency = 18)` | 최대 `amplitude` 논리 픽셀만큼 흔들고 `seconds` 동안 줄어든다. 진행 중인 흔들림을 대체한다. |
+| `ZoomPunch(amount, seconds)` | 즉시 `amount`(0.15 = 15%)만큼 확대하고 `seconds` 동안 원래 배율로 돌아온다. |
+| `Flash(color, seconds)` | 화면 전체를 `color`로 덮고 `seconds` 동안 사라진다. 알파가 시작 불투명도다. |
+| `Fade(color, seconds)` | 화면 전체 덮개를 `color`로 바꾼다. `Color.Black`이면 페이드 아웃, `Color.Transparent`면 다시 보인다. 다음 호출까지 유지된다. |
+| `Adjust(tint, brightness, seconds = 0)` | 월드에 `tint`를 곱하고 `brightness`(-1–1)만큼 검정 또는 흰색 쪽으로 옮긴다. `Adjust(Color.White, 0)`으로 끈다. |
+| `Clear()` / `Current` | 모든 효과를 끈다. / 마지막 게임 틱의 값(흔들림 오프셋, 배율, 덮개·플래시·보정 색)을 반환한다. |
+
+흔들림과 줌은 Primary와 Extra 화면에만 적용되고 미니맵은 그대로다. 그리는 위치만 바뀌므로 `TryGetView`와 충돌·추적 결과는 달라지지 않는다. 효과는 게임 시간으로 진행해 일시정지하면 멈추고, 흔들림 위상은 고정 시드에서 정해진다. 같은 틱에 같은 호출을 하면 입력 재생과 세 실행 경로에서 같은 프레임이 그려진다.
+
+색 보정은 HUD를 제외한 카메라 화면에, 페이드와 플래시는 HUD까지 덮는다. 플레이어와 Scene Play는 월드를 창 픽셀 크기의 SDL3 렌더 타깃에 그린 뒤 곱하기·더하기 블렌드로 보정하고 창에 합성한다. 보정이 꺼져 있으면 렌더 타깃을 거치지 않는다. Windows·Linux 에디터의 Avalonia 미리보기는 같은 계산을 블렌드 채우기로 그린다.
+
+### 흔들림과 깜빡임 줄이기
+
+`tick.Ui.Preferences.ShakeScale`은 흔들림과 줌 펀치, `FlashScale`은 플래시 불투명도에 곱한다(0–1, 0이면 끔). CameraLab에서는 **5**(Back)로 100%와 25%를 바꾼다. 같은 위상으로 진폭만 줄어든다. 설정은 `Preferences.SaveTo(settings)`로 `player.settings`에 저장하고, 다음 실행의 `OnCreate`에서 `LoadFrom(settings)`로 복원한다. 키는 `accessibility.` 접두사를 쓰고, 범위를 벗어난 값은 무시한다. [플레이어 저장](player-data.md#파일-위치)
+
+[Mac 세 실행 경로의 캡처와 기록](../../engine/tests/results/screen-effects/README.md)
+
 ## 대형 씬에서 두 카메라 확인하기
 
 CollisionLab을 Play하고 숫자 **2**를 누르면 충돌체 10,000개가 있는 필드가 열린다. 방향키나 WASD로 주황색 사각형을 파란색 사각형 위아래로 움직여 본다. 두 사각형이 겹칠 때 발이 더 아래에 있는 쪽이 앞에 보인다. 오른쪽 위 미니맵에서도 같은 순서로 보이며, 흰 선은 기본 카메라의 시야다.

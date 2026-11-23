@@ -30,6 +30,15 @@ public sealed partial class SceneGame
     internal sealed record EventEndpoint(SceneGame World, Body Owner, ScriptComponent Script);
     private int eventDepth;
 
+    // Editor script reload: the new instances take over the object's script slots in the same order.
+    internal void ReplaceBehaviours(Body body, GameBehaviour[] next)
+    {
+        body.Behaviours = next;
+        body.PointerHandlers = next.OfType<IWorldPointerHandler>().ToArray();
+        BindEventEndpoints(body);
+    }
+    internal IEnumerable<Body> LiveBodies => byId.Values.Where(b => !removed.Contains(b.Id));
+
     private void BindEventEndpoints(Body body)
     {
         int index = 0;

@@ -1,0 +1,36 @@
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
+using System.Numerics;
+using System.Text;
+using Engine.Core;
+
+// Attached to the laser emitter only in the disposable test project. Each row observes the preceding step:
+// frame | laser points as drawn | per comet: centre and trail points (oldest first), all in world space.
+public sealed class LineTrace : GameBehaviour
+{
+    public Guid Laser;
+    private int frame;
+    private readonly List<Vector2> points = [];
+
+    public override void FixedUpdate(ScriptTick tick)
+    {
+        if (Environment.GetEnvironmentVariable("MONOON_LINE_TRACE") is not { Length: > 0 } path) return;
+        var row = new StringBuilder(string.Create(CultureInfo.InvariantCulture, $"{frame++} |"));
+        void Points()
+        {
+            foreach (var p in points) row.Append(string.Create(CultureInfo.InvariantCulture, $" {p.X:F3},{p.Y:F3}"));
+        }
+        tick.Objects.TryGetLinePoints(Laser, points);
+        Points();
+        foreach (var id in tick.Objects.FindByGroup("혜성"))
+        {
+            tick.Objects.TryGetPosition(id, out var at);
+            tick.Objects.TryGetTrailPoints(id, points);
+            row.Append(string.Create(CultureInfo.InvariantCulture, $" | {at.X:F3},{at.Y:F3} {points.Count}:"));
+            Points();
+        }
+        File.AppendAllText(path, row.Append('\n').ToString());
+    }
+}

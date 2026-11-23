@@ -61,5 +61,28 @@ internal static class DiagnosticsChecks
         GameLogEntry? logged=null;keyroom.State.Logged+=e=>logged=e;
         keyroom.State.Log("test warning",GameLogLevel.Warning);
         Check(logged is {Level:GameLogLevel.Warning,Message:"test warning",Line:>0},"runtime log keeps severity and caller location");
+        RunGameLog(Check);
+    }
+
+    // Player logs go through Brutal.Logging but must keep the console fallback's exact lines and streams.
+    private static void RunGameLog(Action<bool,string> check)
+    {
+        var state=new SessionState();
+        Engine.Desktop.GameLog.Attach(state);
+        var (stdout,stderr)=(Console.Out,Console.Error);
+        var (output,errors)=(new StringWriter(),new StringWriter());
+        Console.SetOut(output);Console.SetError(errors);
+        try
+        {
+            state.Log("SPATIAL count=1 {braces} ünï  x");
+            state.Log("careful",GameLogLevel.Warning);
+            state.Log("broken",GameLogLevel.Error);
+            Engine.Desktop.GameLog.Error("Scene failed");
+        }
+        finally {Console.SetOut(stdout);Console.SetError(stderr);}
+        string n=Environment.NewLine;
+        check(output.ToString()==$"SPATIAL count=1 {{braces}} ünï  x{n}careful{n}" && errors.ToString()==$"broken{n}Scene failed{n}",
+            "GameLog writes script logs unchanged, errors to stderr");
+        check(!Brutal.Logging.LogCategory.Get("Sdl").IsCategoryEnabled,"GameLog keeps BRUTAL's per-call SDL trace off");
     }
 }

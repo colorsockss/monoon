@@ -38,6 +38,8 @@ var previousProfile = Environment.GetEnvironmentVariable("MONOON_USER_DATA");
 Environment.SetEnvironmentVariable("MONOON_USER_DATA",Path.Combine(scratch,".profiles"));
 try
 {
+    if (args.Contains("--screen-effects-only")) { ScreenEffectsChecks.Run(repository,scratch); return; }
+    if (args.Contains("--lines-only")) { LinesChecks.Run(scratch); LinesChecks.RunPaths(repository, scratch); return; }
     if (args is [_, "--inventory-replay", var replayBuilds])
     {
         InputReplayChecks.CheckRecording(scratch);
@@ -60,9 +62,17 @@ try
         return;
     }
     if (args is [_, "--contacts-only"]) { ContactChecks.Run(project); return; }
+    if (args is [_, "--physics-only"])
+    {
+        TileContactChecks.Run(); CollisionChecks.Run(repository); ContactChecks.Run(project); RigidBodyChecks.Run(repository, scratch);
+        JointChecks.Run(repository, scratch);
+        return;
+    }
     if (args is [_, "--rebinding-only"]) { RebindingChecks.Run(project, scratch); return; }
     if (args is [_, "--prefab-pool-only"]) { PrefabPoolChecks.Run(repository, scratch); return; }
     if (args is [_, "--terrain-only"]) { TileTerrainChecks.Run(repository, scratch); return; }
+    DistributionPackageChecks.Run(repository, scratch); if (args is [_, "--packages-only"]) return;
+    BuildSettingsChecks.Run(repository, scratch); if (args is [_, "--build-settings-only"]) return;
     FrameProfilerChecks.Run(scratch); if (args is [_, "--profiler-only"]) return;
     TileContactChecks.Run();
     GridNavigationChecks.Run();
@@ -70,6 +80,8 @@ try
     GameModChecks.Run(scratch);
     ContentUpdateChecks.Run(scratch);
     DialogueChecks.Run(repository, scratch);
+    RichTextChecks.Run(repository);
+    if (args.Contains("--rich-text-only")) return;
     DeckChecks.Run(repository, scratch);
     if (args.Contains("--deck-only")) return;
     QuestChecks.Run(repository, scratch);
@@ -98,11 +110,15 @@ try
     TileTerrainChecks.Run(repository,scratch);
     if (args.Contains("--world-only")) return;
     RigidBodyChecks.Run(repository, scratch);
+    JointChecks.Run(repository, scratch);
     if (args.Contains("--platformer-only")) return;
     WorkspaceChecks.Run(project, scratch);
     AudioChecks.Run(repository,scratch);
     VorbisChecks.Run(repository, scratch);
     CameraChecks.Run(repository,scratch);
+    ScreenEffectsChecks.Run(repository,scratch);
+    LinesChecks.Run(scratch);
+    LinesChecks.RunPaths(repository, scratch);
     CollisionChecks.Run(repository);
     ContactChecks.Run(project);
     WorldPointerChecks.Run(project);
@@ -111,9 +127,13 @@ try
     AnimatorChecks.Run(animatorRoot,Path.Combine(repository,"samples","AnimatorLab")); Directory.Delete(animatorRoot,true);
     var spriteRoot=Path.Combine(scratch,"SpriteTest");
     SpriteChecks.Run(spriteRoot,repository); Directory.Delete(spriteRoot,true);
+    ScriptRoutineChecks.Run();
+    Check(ProjectTests.Run(project, Console.Out) == 0, "KeyRoom chest and door project tests");
+    AsepriteChecks.Run(repository,scratch);
     ScriptingChecks.Run(scratch);
     ScriptFieldRenameChecks.Run(scratch);
     SceneScriptDebugChecks.Run(scratch);
+    ScriptReloadChecks.Run(scratch);
     InputMapChecks.Run(scratch);
     InputModeChecks.Run(project);
     RebindingChecks.Run(project, scratch);
@@ -144,6 +164,13 @@ try
     RuntimeTransformChecks.Run(scene);
     TimeChecks.Run(scene);
     TransformChecks.Run(scratch);
+    if (!OperatingSystem.IsWindows())
+    {
+        var link = Directory.CreateSymbolicLink(Path.Combine(scratch, "kit-link"), Path.Combine(scratch, "Scenes")).FullName;
+        var real = NativeAotBuild.RealPath(Path.Combine(link, "KeyRoom.scene"));
+        Check(real == NativeAotBuild.RealPath(sceneFile) && !real.Contains("kit-link") && File.Exists(real), "Native AOT kit path resolves symlinks");
+        Directory.Delete(link);
+    }
     UiChecks.Run(scene, scratch);
     AccessibilityChecks.Run();
     UiPinChecks.Run(project);
@@ -153,6 +180,7 @@ try
     MultiInspectorChecks.Run(scratch);
     PrefabEditingChecks.Run(scratch);
     PrefabStructureChecks.Run(scratch);
+    ObjectClipboardChecks.Run(scratch);
     GameEventChecks.Run(scratch);
     var original = scene.CaptureObjects();
     var main = scene.Camera!;
@@ -206,6 +234,7 @@ try
     WalkGame(sceneFile);
     RuntimePrefabChecks.Chest(scene);
     RuntimePrefabChecks.Subtrees(scene, scratch);
+    RuntimePrefabChecks.Cached(scene, scratch);
 
     var wall = scene.Objects.Single(o => o.Name == "Wall");
     const string prefabPath = "Assets/Wall.prefab";
@@ -289,7 +318,6 @@ static void WalkGame(string file)
     var gate = scene.Objects.Single(o => o.Name == "Door");
     var initial = gate.GetComponent<SpriteRendererComponent>()!;
     var closedSprite = initial.AssetId;
-    var door = scene.Objects.Single(o => o.Name == "Door Camera").Id;
     using var session = new GameSession(scene);
     var error = ""; int sounds = 0;
     session.LoadFailed += s => error = s;
@@ -317,11 +345,10 @@ static void WalkGame(string file)
         initial.Tint == null && !world.SetSpriteTint(gate.Id, "not-a-color") &&
         !world.SetSprite(gate.Id, new SpriteReference(Guid.NewGuid())) && world.SetSpriteTint(gate.Id, null),
         "runtime tint and invalid edits leave the authored renderer intact");
+    // KeyRoom's door rules (blocking, pickup camera, hint, next room) are project tests: samples/KeyRoom/Tests/DoorTests.cs.
     for (int i = 0; i < 60; i++) session.FixedUpdate(Vector2.UnitX, step);
-    var player = scene.Objects.Single(o => o.Name == "Player").Id;
-    Check(world.TryGetPosition(player, out var stopped) && Math.Abs(stopped.X - 440) < .01f && !session.State.Has("key"), "closed door stops the player's leading edge");
     for (int i = 0; i < 70 && !session.State.Has("key"); i++) session.FixedUpdate(-Vector2.UnitX, step);
-    Check(sounds == 1 && session.State.Has("key") && session.Current.ActiveCameraId == door, "pickup and door camera");
+    Check(sounds == 1 && session.State.Has("key"), "pickup plays the door sound once");
     Check(world.IsActive(gate.Id) && !world.IsColliderEnabled(gate.Id) &&
         world.GetComponent<SpriteRendererComponent>(gate.Id)?.Asset == "Assets/DoorOpen3.png" &&
         !GateHit() && world.Physics.Overlap(probe).All(hit => hit.ObjectId != gate.Id) &&
@@ -336,7 +363,6 @@ static void WalkGame(string file)
     for (int i = 0; i < 60; i++) session.FixedUpdate(Vector2.Zero, step);
     session.Draw(canvas, 1);
     Check(canvas.Images.Any(i => Path.GetFileName(i.Path) == "DoorOpen3.png"), "finished animation draws the assigned open PNG");
-    Check(session.Current.ActiveCameraId == start, "camera restored after one second");
     for (int i = 0; i < 115; i++) session.FixedUpdate(Vector2.UnitX, step);
     SceneStreamingChecks.Wait(session);
     Check(error == "" && session.SceneId != scene.AssetId && session.State.Has("key") && sounds == 1, "enter next room with key: " + error);

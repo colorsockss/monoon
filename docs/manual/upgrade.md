@@ -58,7 +58,7 @@ cat "$project/Scenes/Inventory.scene.meta"
 | 목적지에 내용이 다른 파일이 있음 | 오류에 나온 원본·목적지를 소스 백업과 비교한다. 작업 사본에서 사용할 버전을 결정한 뒤 재실행한다. |
 | `projectId`가 없음 | 변환기가 새 ID를 발급할 수 있다. 이미 배포한 게임이면 이전 앱의 `Game/GameSettings`와 사용자 프로필을 먼저 대조하고, 작업 사본에 기존 게임의 ID를 유지한다. 이 ID가 슬롯·모드·콘텐츠 업데이트를 찾는 기준이다. |
 
-파일을 변환하면 로그의 `Migration backup`이 `.monoon/migrations/*.zip`을 가리킨다. ZIP에는 변환 대상 중 원래 존재하던 파일이 들어 있다. 전체 프로젝트로 되돌릴 때는 1단계의 소스 사본을 쓴다. [마이그레이션 백업](../../engine/src/Engine.Editor/MigrationBackup.cs)
+파일을 변환하면 로그의 `Migration backup`이 `.monoon/migrations/*.zip`을 가리킨다. ZIP에는 변환 대상 중 원래 존재하던 파일이 들어 있다. 전체 프로젝트로 되돌릴 때는 1단계의 소스 사본을 쓴다. [마이그레이션 백업](../../engine/src/Engine.Authoring/MigrationBackup.cs)
 
 InventoryLab의 `projectId`는 `ade09cc3-a769-56d7-9832-a2bea14c7e71`이고, `startScene`과 `Inventory.scene.meta`의 ID는 모두 `6a7b735e-336d-5674-b2e7-a136db5a7771`이다. 시작 씬이 `includedScenes`에 포함되는지 확인한다. 에디터에서는 **Project 패널 → + → Check Missing References…**로 끊긴 연결을 찾을 수 있다. 스크립트 ID는 `Scripts/` 아래 상대 경로를 사용하므로 폴더나 파일 이름이 달라졌다면 씬·프리팹의 연결도 확인한다. InventoryLab에서는 **Bag**의 `InventoryContainer.Catalog`, `QuestLog.Catalog`, `DialoguePlayer.Story`가 각각 아이템 표, 의뢰 표, 약초상 대사를 가리킨다.
 
@@ -123,7 +123,7 @@ cmp engine/tests/fixtures/InventoryLab/Herbalist.save "$work/v2-aot/slot-001.sav
 
 ## Windows x64와 Linux x64에서 같은 슬롯 검사하기
 
-각 OS에서 버전 31 프로젝트의 작업 사본을 준비한다. 같은 버전 35 엔진 소스로 에디터와 해당 RID의 Release 템플릿을 빌드하고 Native AOT 키트를 준비한다. Windows에서는 MSVC x64와 Windows SDK, Linux에서는 clang과 zlib 개발 파일이 필요하다. 에디터를 빌드한 폴더에서 `dotnet MoNoon.dll --migrate-project <프로젝트>`를 실행하면 창 없이 3단계를 수행할 수 있다. [게스트별 SDK와 빌드 환경](../troubleshooting/README.md)
+각 OS에서 버전 31 프로젝트의 작업 사본을 준비한다. 같은 버전 35 엔진 소스로 CLI와 해당 RID의 Release 템플릿을 빌드하고 Native AOT 키트를 준비한다. Windows에서는 MSVC x64와 Windows SDK, Linux에서는 clang과 zlib 개발 파일이 필요하다. CLI를 빌드한 폴더에서 `dotnet MoNoon.Cli.dll migrate <프로젝트>`를 실행하면 에디터 없이 3단계를 수행할 수 있다. Linux에는 에디터가 없으므로(2026-11-23부터) 이 명령을 쓴다. [게스트별 SDK와 빌드 환경](../troubleshooting/README.md)
 
 아래는 보존된 게스트에서 사용한 폴더 배치다. 작업 루트는 Windows에서 `C:\MN3135`, Debian에서 `~/MN3135`다. CLI는 `cli/`, 버전 35 템플릿과 AOT 키트는 `templates/`, 변환한 샘플은 `samples/InventoryLab/`에 둔다.
 

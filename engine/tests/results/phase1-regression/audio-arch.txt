@@ -1,0 +1,8 @@
+x64 Release = Native AOT, first four loops: True ddacda7e39eaedd80c08ff02dee9b27eb7888f22ccc2d53bc9816457bdc8f9e8
+x64 Release = Native AOT, frames 0..245760 (before the earlier F stop): True
+x64 loop_frames: release 57600 native-aot 57600
+x64 fade_in_frames: release 19200 native-aot 19200
+x64 fade_out_frames: release 28800 native-aot 28800
+x64 max_envelope_error: release 9.533596845967551e-06 native-aot 9.533596845967551e-06
+arm64 vs x64 first four loops (460800 samples): 291748 differ, first differing frame 1, max |diff| 5.96e-08 (0.50 LSB of 24-bit PCM), RMS diff 8.89e-09 vs signal RMS 0.0729 (-138.3 dB)
+arm64 hash ced6c800e6973e67473b97b0c7e302b84cd3d94078a34e6ae785b1837be5281b

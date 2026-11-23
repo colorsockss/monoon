@@ -21,4 +21,4 @@ python3 engine/tests/KeyRoom.EditorPanelsDetail/editor.py editor/MoNoon.app/Cont
 
 `main-*.png`, `marks-*.png`, `project-tree.png`, `console-1280.png`, `long-name-1280.png`, `restart-1280.png`는 `screencapture -l`로 찍은 실제 창이다. 나머지는 패널만 RenderTargetBitmap으로 찍는다. 디스플레이가 잠자기 상태이면 Avalonia가 렌더 타이머를 시작하지 못해(-6661) 에디터가 바로 끝난다. 결과 기록: [editor-panels](../results/editor-panels/README.md)
 
-Windows·Linux 패키지 에디터에서는 `screencapture` 대신 RenderTargetBitmap으로 찍고 `first.json`의 `captures`에 방법을 남긴다(Scene 뷰도 Avalonia가 그리므로 비지 않는다). 저장소가 없는 환경에서는 `MONOON_CLI`에 배포한 `MoNoon.Cli.dll`(또는 실행 파일)과 `MONOON_PLAYERS_DIR`를 지정하면 그 CLI로 비교 빌드를 만든다. `MONOON_QA_SLOW`(기본 1)는 대기·제한 시간을 늘린다. [x64 게스트 결과](../results/editor-ui-x64/README.md)
+Windows 패키지 에디터에서는 `screencapture` 대신 RenderTargetBitmap으로 찍고 `first.json`의 `captures`에 방법을 남긴다(Scene 뷰도 Avalonia가 그리므로 비지 않는다). 저장소가 없는 환경에서는 `MONOON_CLI`에 배포한 `MoNoon.Cli.dll`(또는 실행 파일)과 `MONOON_PLAYERS_DIR`를 지정하면 그 CLI로 비교 빌드를 만든다. `MONOON_QA_SLOW`(기본 1)는 대기·제한 시간을 늘린다. Linux 에디터는 2026-11-23부터 지원하지 않는다. [x64 게스트 결과](../results/editor-ui-x64/README.md)

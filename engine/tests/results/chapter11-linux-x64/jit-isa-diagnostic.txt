@@ -1,0 +1,10 @@
+# Linux x64 guest, Release (JIT) player replays with JIT ISA switches; sha256 prefix of trace.tsv
+joints (no switch): 380202618e48e8b2
+joints DOTNET_EnableFMA=0: 380202618e48e8b2
+joints DOTNET_EnableAVX2=0: 86280b2720904f09
+joints DOTNET_EnableAVX=0: 86280b2720904f09
+paths (no switch): 1a143d56cfa707d9
+paths DOTNET_EnableAVX2=0: e37de6c0f9c517db
+joints Release 380202618e48e8b2, Native AOT 86280b2720904f09
+paths Release 1a143d56cfa707d9, Native AOT e37de6c0f9c517db
+guest CPU flags: fma sse4_1 sse4_2 avx avx2 bmi2 (QEMU TCG -cpu Haswell-v4)

@@ -5,7 +5,8 @@ namespace Engine.Core;
 // One project assembly per Play session. All component instances see the same project types.
 internal sealed class ScriptRuntime(ScriptLibrary library) : IDisposable
 {
-    private readonly AssemblyLoadContext context = new("Project scripts", isCollectible: true);
+    private AssemblyLoadContext context = new("Project scripts", isCollectible: true);
+    private ScriptLibrary library = library;
     private Func<ScriptComponent, GameBehaviour>? factory;
 
     public GameBehaviour Create(ScriptComponent component)
@@ -23,4 +24,12 @@ internal sealed class ScriptRuntime(ScriptLibrary library) : IDisposable
     }
 
     public void Dispose() { factory = null; context.Unload(); }
+
+    // Editor script reload: later instances come from `next`; the old assembly unloads once nothing uses its types.
+    internal void Adopt(ScriptRuntime next)
+    {
+        var old = context;
+        (context, library, factory) = (next.context, next.library, next.factory);
+        old.Unload();
+    }
 }

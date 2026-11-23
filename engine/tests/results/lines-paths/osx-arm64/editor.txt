@@ -1,0 +1,4 @@
+Path Follower 2D@1280: 6 fields at x=1130, 7 labels at x=1070, name box right 1272 <= panel 1280
+Path Follower 2D@1600: 6 fields at x=1450, 7 labels at x=1390, name box right 1592 <= panel 1600
+Path Follower 2D@1920: 6 fields at x=1770, 7 labels at x=1710, name box right 1912 <= panel 1920
+path edit: drag point, add, smooth, drag handle, delete; 5 undo, 5 redo, 5 undo restore the authored path

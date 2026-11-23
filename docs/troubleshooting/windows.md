@@ -13,7 +13,7 @@ dotnet --info
 dotnet run --project engine/src/Engine.Editor -- samples/KeyRoom
 ```
 
-Scene은 [Avalonia가 직접 그리는 경로](../../engine/src/Engine.Editor/SceneViewport.cs)다. 편집/Play만 비면 같은 씬의 **Save & Run**과 비교한다. 별도 SDL 창만 실패하면 아래 DLL 진단을 따른다. 반대로 편집에서만 클릭 위치가 틀리면 Windows 배율, 창 크기, 클릭 좌표를 기록해 Scene을 재현한다. macOS NSView 패치는 이 경로와 무관하다.
+Scene은 [Avalonia가 직접 그리는 경로](../../engine/src/Engine.Editor/Scene/SceneViewport.cs)다. 편집/Play만 비면 같은 씬의 **Save & Run**과 비교한다. 별도 SDL 창만 실패하면 아래 DLL 진단을 따른다. 반대로 편집에서만 클릭 위치가 틀리면 Windows 배율, 창 크기, 클릭 좌표를 기록해 Scene을 재현한다. macOS NSView 패치는 이 경로와 무관하다.
 
 ## 빌드된 게임
 

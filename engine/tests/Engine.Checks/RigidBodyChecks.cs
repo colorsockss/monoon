@@ -23,7 +23,7 @@ internal static class RigidBodyChecks
             var data = storage.LoadSlot(1, 1);
             if (data?.GetBool("passed") != true)
                 throw new Exception($"Platform route failed at {end}, {motion} {data?.ToYaml()}");
-            Console.WriteLine("PASS platformer: ramp, moving platform, joint swing and relative slip");
+            Console.WriteLine($"PASS platformer: ramp, moving platform, joint swing and relative slip (climb {data.GetNumber("climb"):F2}, ride {data.GetNumber("ride"):F4}, slip {data.GetNumber("slip"):F4}, swing {data.GetNumber("swing"):F4}, joint error {data.GetNumber("jointError"):F6} px)");
             session.Actions.Press("X"); session.FixedUpdate(session.Actions.Take(), Step); session.Actions.Release("X");
             session.Actions.Press("Space"); session.FixedUpdate(session.Actions.Take(), Step);
             session.Current.TryGetMotion(runner.Id, out motion);
@@ -46,7 +46,8 @@ internal static class RigidBodyChecks
             game.ApplyImpulse(a.Id, new(120,0));
             for (int i=0;i<30;i++) game.FixedUpdate(default(Vector2),Step);
             game.TryGetMotion(a.Id, out var ma); game.TryGetMotion(b.Id, out var mb);
-            Check(Math.Abs(ma.Velocity.X-40)<.1f && Math.Abs(mb.Velocity.X-40)<.1f, "dynamic contacts share impulse by inverse mass");
+            // Box2D soft contact leaves the pair separating at ~0.5 px/s (39.83 and 40.33); momentum is exact.
+            Check(Math.Abs(2*ma.Velocity.X+mb.Velocity.X-120)<.01f && Math.Abs(ma.Velocity.X-40)<.5f && Math.Abs(mb.Velocity.X-40)<.5f, $"dynamic contacts share impulse by inverse mass ({ma.Velocity.X:F3}, {mb.Velocity.X:F3})");
             game.ApplyImpulse(b.Id, new(0,20),new(150,20));
             game.TryGetMotion(b.Id, out var angular);
             Check(angular.AngularVelocity > 1, "off-center impulse produces angular velocity");

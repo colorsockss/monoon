@@ -75,7 +75,7 @@ public sealed class ComponentCurves
                 else
                 {
                     float t = (float)((time-curve.Times[next-1]) / (curve.Times[next]-curve.Times[next-1]));
-                    value = Vector3.Lerp(curve.Values[next-1],curve.Values[next],t);
+                    value = Affine2D.Lerp(curve.Values[next-1],curve.Values[next],t);
                 }
             }
             result = curve.Property switch

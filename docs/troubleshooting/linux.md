@@ -2,18 +2,9 @@
 
 검증 환경은 Docker가 아니라 이 Mac에 보존한 **QEMU Debian 12.15 amd64**다. [실행 기록](../../engine/tests/results/keyroom-desktop/yaml-linux-x64/results.json)의 커널은 6.1.0-54-cloud-amd64, glibc는 2.36이다. 게임은 X11 가상 화면(Xvfb 1280×900×24)에서 SDL 기본 렌더러와 더미 오디오로 실행했다. 실제 GPU, Wayland 세션, 소리 출력을 검증한 기록은 아니다.
 
-## 엔진·에디터
+## 에디터는 지원하지 않음
 
-배포 에디터 문제는 `tar -xzf MoNoon-linux-x64.tar.gz`로 패키지를 풀고 X11에서 `./editor/MoNoon ./KeyRoom`으로 재현한다. KeyRoom은 같은 상위 폴더에 편집용 샘플 ZIP을 풀어 준비한다. 그래픽 데스크톱이 없는 게스트는 [Xvfb 배포 에디터 조작 검사](../../engine/tests/KeyRoom.Desktop/README.md#배포-에디터-조작-회귀)로 Inspector 편집과 Play를 반복한다.
-
-소스와 비교할 때는 .NET 10 SDK가 있는 Linux 데스크톱에서 저장소 루트 기준으로 실행한다.
-
-```sh
-dotnet --info
-dotnet run --project engine/src/Engine.Editor -- samples/KeyRoom
-```
-
-편집/Play는 [Avalonia Scene](../../engine/src/Engine.Editor/SceneViewport.cs), **Save & Run**은 독립 SDL 창이다. X11에서 둘 다 열리지 않으면 같은 셸의 `printenv DISPLAY`와 그래픽 세션을 먼저 확인한다. 둘 중 하나에서만 틀리면 편집/Play와 독립 창의 캡처를 각각 남기고 해당 렌더링 경로를 조사한다.
+MoNoon은 Linux용 에디터를 배포하거나 지원하지 않는다(사용자 결정, 2026-11-23). Linux x64는 게임 내보내기 대상(Release·Native AOT, `tar.gz` 패키지)과 CI의 헤드리스 빌드·리플레이에만 쓴다. 에디터 Scene 편집이나 Play 문제는 [macOS](macos.md) 또는 [Windows](windows.md)에서 재현한다. 2026-11-23 이전의 Linux 에디터 검증 기록은 `engine/tests/results/`에 그대로 남아 있다.
 
 ## 빌드된 게임
 

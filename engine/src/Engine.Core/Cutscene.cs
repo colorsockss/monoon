@@ -101,7 +101,7 @@ public sealed partial class SceneGame
             // Keep every authored line visible, including text without word separators.
             while (true)
             {
-                rows = ScreenUi.WrapText(line.TextKey is {} tk ? Ui.Translate(tk, line.Text) : line.Text, w - 4 * pad, s => canvas.MeasureText(s, font));
+                rows = ScreenUi.WrapText(line.TextKey is {} tk ? Ui.Translate(tk, line.Text) : line.Text, w - 4 * pad, canvas, font);
                 height = 2 * pad + (2 + rows.Length) * font * 1.4f;
                 if (height <= h * .65f && canvas.MeasureText(speaker, font) <= w - 6 * pad) break;
                 font *= .85f;

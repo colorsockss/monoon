@@ -1,0 +1,26 @@
+using System.Numerics;
+using System.Runtime.Intrinsics;
+using System.Runtime.Intrinsics.X86;
+// For random inputs, report whether System.Numerics Transform/Lerp match the fused (FMA) or the separate multiply-add result.
+var rng = new Random(1);
+int n = 100000, tFused = 0, tPlain = 0, lFused = 0, lPlain = 0, oursOk = 0;
+for (int i = 0; i < n; i++)
+{
+    float F() => (float)(rng.NextDouble() * 2000 - 1000);
+    var m = new Matrix3x2(F() / 900, F() / 900, F() / 900, F() / 900, F(), F());
+    var p = new Vector2(F(), F());
+    var t = Vector2.Transform(p, m);
+    float fx = MathF.FusedMultiplyAdd(m.M21, p.Y, m.M11 * p.X) + m.M31;
+    float px = (m.M11 * p.X + m.M21 * p.Y) + m.M31;
+    if (fx != px) { if (t.X == fx) tFused++; else if (t.X == px) tPlain++; }
+    var a = new Vector2(F(), F()); var b = new Vector2(F(), F()); float s = (float)rng.NextDouble();
+    var l = Vector2.Lerp(a, b, s);
+    float lf = MathF.FusedMultiplyAdd(a.X, 1 - s, b.X * s), lp = a.X * (1 - s) + b.X * s;
+    if (lf != lp) { if (l.X == lf) lFused++; else if (l.X == lp) lPlain++; }
+    // The width-independent replacement: Vector2.FusedMultiplyAdd always fuses.
+    var ours = Vector2.FusedMultiplyAdd(new(m.M21, m.M22), new(p.Y), new Vector2(m.M11, m.M12) * p.X) + m.Translation;
+    if (ours.X == fx) oursOk++;
+}
+Console.WriteLine($"arch={System.Runtime.InteropServices.RuntimeInformation.ProcessArchitecture} aot={!System.Runtime.CompilerServices.RuntimeFeature.IsDynamicCodeSupported} " +
+    $"Fma={Fma.IsSupported} Avx2={Avx2.IsSupported} V256={Vector256.IsHardwareAccelerated}");
+Console.WriteLine($"Vector2.Transform differs-case: fused={tFused} plain={tPlain}; Vector2.Lerp: fused={lFused} plain={lPlain}; FusedMultiplyAdd helper == fused: {oursOk}/{n}");

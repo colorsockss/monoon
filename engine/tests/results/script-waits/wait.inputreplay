@@ -1,0 +1,41 @@
+version: 1
+project: 64fb4cd6-2469-5cec-ba6d-9a49e61f42e7
+startScene: 64fb4cd6-2469-5cec-ba6d-9a49e61f42e7
+frameTicks: [166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667]
+events:
+- frame: 5
+  timeTicks: 833335
+  input: {kind: key, control: "Left", down: true}
+- frame: 22
+  timeTicks: 3666674
+  input: {kind: key, control: "Left", down: false}
+- frame: 28
+  timeTicks: 4666676
+  input: {kind: key, control: "P", down: true}
+- frame: 29
+  timeTicks: 4833343
+  input: {kind: key, control: "P", down: false}
+- frame: 40
+  timeTicks: 6666680
+  input: {kind: key, control: "Period", down: true}
+- frame: 41
+  timeTicks: 6833347
+  input: {kind: key, control: "Period", down: false}
+- frame: 46
+  timeTicks: 7666682
+  input: {kind: key, control: "Period", down: true}
+- frame: 47
+  timeTicks: 7833349
+  input: {kind: key, control: "Period", down: false}
+- frame: 52
+  timeTicks: 8666684
+  input: {kind: key, control: "Period", down: true}
+- frame: 53
+  timeTicks: 8833351
+  input: {kind: key, control: "Period", down: false}
+- frame: 70
+  timeTicks: 11666690
+  input: {kind: key, control: "P", down: true}
+- frame: 71
+  timeTicks: 11833357
+  input: {kind: key, control: "P", down: false}

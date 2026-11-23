@@ -8,10 +8,15 @@ internal static class SpriteSheetImporter
 {
     private static readonly object gate = new();
 
-    internal static ProjectAssets Scan(string root)
+    // asepriteErrors: report Aseprite import errors instead of throwing (the editor keeps applying the other sheets).
+    internal static ProjectAssets Scan(string root, Action<string>? asepriteErrors = null)
     {
         lock (gate)
         {
+            // Aseprite errors are raised after the PNG sheets below are updated, so one bad file does not block the rest.
+            InvalidDataException? asepriteError = null;
+            if (!File.Exists(Path.Combine(root, ".monoon-player")))
+                try { AsepriteImporter.Import(root); } catch (InvalidDataException ex) { asepriteError = ex; }
             var assets = ProjectAssets.Scan(root);
             var images = assets.Entries.Where(e => SpriteAssets.IsPng(e.Path) && File.Exists(Path.Combine(root,e.Path)))
                 .ToDictionary(e => e.Id);
@@ -63,7 +68,9 @@ internal static class SpriteSheetImporter
                 ProjectYaml.Write(path + ".meta", meta with { Inputs = updated });
                 changed = true;
             }
-            return changed ? ProjectAssets.Scan(root) : assets;
+            var result = changed ? ProjectAssets.Scan(root) : assets;
+            if (asepriteError != null) { if (asepriteErrors == null) throw asepriteError; asepriteErrors(asepriteError.Message); }
+            return result;
         }
     }
 

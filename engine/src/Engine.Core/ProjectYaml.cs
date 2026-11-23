@@ -9,7 +9,8 @@ using VYaml.Serialization;
 namespace Engine.Core;
 
 [YamlObject]
-internal sealed partial record AssetMeta([property: YamlRequired] Guid Id, SheetSlice[]? Slices = null, SheetInput[]? Inputs = null);
+// ImportHash: SHA-256 of the Aseprite file this sheet was generated from (editor and build tools only).
+internal sealed partial record AssetMeta([property: YamlRequired] Guid Id, SheetSlice[]? Slices = null, SheetInput[]? Inputs = null, string? ImportHash = null);
 
 [YamlObject]
 internal sealed partial record SheetInput(int Cell, Guid Sprite, string Hash);
