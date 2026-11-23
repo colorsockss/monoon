@@ -6,6 +6,7 @@
 | --- | --- |
 | [범용 2D 엔진 로드맵](roadmap.md) | 공통 런타임부터 장르 도구·배포까지의 개발 순서 |
 | [MoNoon Engine 사용자 매뉴얼](manual/README.md) | 프로젝트 열기부터 컴포넌트, UI, 애니메이션, 네 가지 타일 Layout과 게임 배포까지 실제 조작 순서 |
+| [BRUTAL 프레임워크 기능 정리](brutal.md) | 엔진이 기반으로 쓰는 BRUTAL 패키지별 기능과 MoNoon에서 사용할 때의 경계·라이선스 |
 | [InventoryLab 게임 스크립트 API](manual/api.md) | 컴포넌트 참조, 입력·UI, 가방·의뢰·대화, 저장 슬롯 호출 예제 |
 | [기존 프로젝트 업그레이드](manual/upgrade.md) | 소스·GUID와 구버전 저장을 보존하며 버전 35 Release·Native AOT로 내보내기 |
 | [공통 진단과 KeyRoom 재검증](troubleshooting/README.md) | 템플릿, YAML 에셋, 빌드 종류, 기존 VM 재사용 |
