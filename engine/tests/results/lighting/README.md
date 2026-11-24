@@ -4,7 +4,7 @@
 
 사용자 결정 14에 따라 셰이더 없이 만들었다. 라이트맵 렌더 타깃을 주변광 색으로 지우고 광원을 더한 뒤, SDL `MOD`(곱하기) 블렌드로 월드 위에 합성한다. 그림자는 충돌체·타일 변에서 만든 다각형을 `RenderGeometry`로 광원별 보조 타깃에 검게 칠한다. 렌더 타깃, 블렌드 모드, `RenderGeometry`는 모두 기존 `Ahwoo.BRUTAL.Sdl`(`Brutal.SdlApi`)로 호출했다. 새 패키지는 내려받지 않았고 노멀맵과 GPU 셰이더는 나중 후보로 남겼다.
 
-[샘플 씬](../../../samples/PlatformerLab/Scenes/Cave.scene) · [사용 설명](../../../docs/manual/effects.md#global-light-2d-어둠과-그림자) · [화면 회귀 하네스](../../PlatformerLab.Lighting/README.md) · [벤치](../../benchmarks/Lighting/Program.cs)
+[샘플 씬](../../../../samples/PlatformerLab/Scenes/Cave.scene) · [사용 설명](../../../../docs/manual/effects.md#global-light-2d-어둠과-그림자) · [화면 회귀 하네스](../../PlatformerLab.Lighting/README.md) · [벤치](../../../benchmarks/Lighting/Program.cs)
 
 | 실행 경로 | 캡처 |
 | --- | --- |

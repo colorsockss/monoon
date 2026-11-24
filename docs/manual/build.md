@@ -105,6 +105,8 @@ Release는 엔진·플레이어·게임 스크립트의 portable PDB를 저장�
 | `win-x64` | Windows에서 인증서를 설정한 경우 `signtool`로 `MoNoonPlayer.exe` 서명 | `<게임>-win-x64.zip` |
 | `linux-x64` | 실행 권한을 보존한 압축, `.desktop` 항목, 아이콘, 메뉴 등록 스크립트 | `<게임>-linux-x64.tar.gz` |
 
+게임 아이콘은 Linux 데스크톱 항목에만 쓴다. macOS `.icns`와 Windows 실행 파일의 아이콘 리소스는 넣지 않는다.
+
 **macOS.** 서명할 때 `Contents/MacOS`의 `Game`, `EngineAssets`, `Licenses` 폴더를 `Contents/Resources`로 옮기고 같은 이름의 상대 링크를 남긴다. 플레이어가 읽는 경로는 그대로다. 안쪽 dylib·DLL·빌드 기록을 먼저 서명한 뒤 앱 묶음을 서명하고 `codesign --verify --deep --strict`로 확인한다. Release는 CoreCLR JIT를 위해 `com.apple.security.cs.allow-jit` 권한을 받는다. Native AOT는 추가 권한이 필요 없다. Developer ID를 지정하지 않으면 애드혹(`-`)으로 서명한다. 이 경우 팀 ID가 없는 라이브러리를 읽도록 `disable-library-validation`을 추가한다. 애드혹 앱은 빌드한 Mac에서 실행할 수 있다. 다른 Mac에 배포하려면 Developer ID로 서명하고 공증한다. 앱 안의 DLL 서명은 확장 속성에 저장되므로 ZIP은 Finder나 `ditto -x -k`로 풀어야 한다. `unzip`으로 풀면 서명 검사가 실패한다. DMG는 이 문제가 없다.
 
 빌드 기록 `MoNoonBuild`의 `playerSha256`은 서명 전 실행 파일의 값이다. 서명한 빌드에는 `codeSignature`(`macos-adhoc`, `macos-developer-id`, `windows-authenticode`)가 추가된다. 보관한 심볼 폴더의 기록도 같은 내용으로 갱신된다.
@@ -169,6 +171,8 @@ python3 engine/tests/InventoryLab.Crashes/check.py game-builds/InventoryLab
 | 기록된 약초 의뢰를 두 빌드에서 창 없이 재생하고 원본 저장과 비교 | `./monoon test replay game-builds/InventoryLab` |
 | 프로젝트의 게임 스크립트 테스트 실행 | `./monoon test project samples/KeyRoom` |
 | 엔진 전체 회귀 검사 | `./monoon test` |
+| 템플릿이 필요한 검사를 빼고 빠르게 | `./monoon test --tier fast` |
+| 이전 형식 프로젝트를 에디터 없이 변환 | `./monoon migrate <프로젝트 폴더>` |
 | 배포본 크기 기준 검사·갱신(osx-arm64) | `./monoon test size`, 의도한 변화는 `./monoon test size --update` 후 기준 파일 커밋 |
 
 **build**는 저장된 프로젝트의 **GameSettings**에서 시작 씬, 포함 씬과 게임 이름을 읽고, 빌드 종류와 옵션은 [BuildSettings](#프로젝트-빌드-설정)에서 읽는다. 명령줄에 적은 값이 우선한다. 둘 다 없으면 호스트 RID의 Release 배포용 빌드다. Release는 Native AOT 키트를 대상 플랫폼용으로 publish하고(키트가 없으면 대상 플랫폼의 템플릿을 복사), Native AOT는 같은 OS·아키텍처에서 빌드한다. 깨끗한 체크아웃에서 개별 빌드 명령을 쓸 때는 먼저 `./engine/scripts/build-players.sh osx-arm64`처럼 필요한 템플릿을 만든다. 전체 회귀 검사는 세 대상의 내보내기까지 검사하므로 처음에는 `./engine/scripts/build-players.sh`로 세 템플릿을 준비한다.
@@ -256,11 +260,10 @@ CLI 기본값은 `--content incremental`이다. 다음 명령을 실행하고 In
 | `bytesByType` | 확장자별 바이트 합계(큰 순서) |
 | `unreferenced` | `Assets/` 아래 에셋 중 어느 경로에서도 참조하지 않아 배포하지 않은 파일. 빌드에서 뺀 씬에서만 쓰는 프리팹도 여기에 나온다. 아틀라스에 패킹돼 아틀라스로 배포된 원본 PNG는 제외한다. `Scenes/` 등 `Assets/` 밖 폴더는 검사하지 않는다. |
 | `warnings` | `Game/`이나 콘텐츠 번들에 들어간 1 MiB 초과 WAV. 자동 변환하지 않으므로 Ogg Vorbis로 바꿔 다시 임포트한다. 에디터의 **Import Assets…**도 1 MiB를 넘는 WAV를 가져오면 Console에 같은 문구를 경고로 남긴다. |
-
 | `atlases` | 빌드가 쓰는 스프라이트 아틀라스마다 셀 수, 쓰는 셀 수, 사용률(쓰는 셀과 테두리 1픽셀이 시트에서 차지하는 비율), 재패킹 여부, 원본·배포 시트의 바이트와 픽셀 수. 아래 [빌드용 아틀라스 재패킹](#빌드용-아틀라스-재패킹)을 본다. |
 | `features` | 엔진 기능마다 포함 여부와 이유. 아래 [쓰지 않는 엔진 기능 제외](#쓰지-않는-엔진-기능-제외)를 본다. |
 
-CLI와 에디터 **Console**에는 요약만 표시한다. 요약에는 배포 합계, 크기 상위 10개 파일과 이유, 미참조 파일 수·합계와 상위 10개, 아틀라스 사용률·재패킹 한 줄씩, 기능 판정(기능마다 한 줄), 경고, `assets.yaml` 경로가 들어간다. 경고 줄은 Console에서 경고 수준으로 표시된다. [검증 기록과 보고서 예시](../../engine/tests/results/build-report/README.md)
+CLI와 에디터 **Console**에는 요약만 표시한다. 요약에는 배포 합계, 크기 상위 10개 파일과 이유, 미참조 파일 수·합계와 상위 10개, 아틀라스 사용률·재패킹 한 줄씩, 기능 판정(기능마다 한 줄), 경고, `assets.yaml` 경로가 들어간다. 경고 줄은 Console에서 경고 수준으로 표시된다. `./monoon test`는 KeyRoom 사본에 미참조 PNG·WAV를 넣고 Release·Native AOT로 빌드해, 미참조 에셋과 빌드에서 뺀 씬에서만 쓰는 프리팹이 `Game/`에 없고 `unreferenced`에 나오는지 확인한다. [검증 기록과 보고서 예시](../../engine/tests/results/build-report/README.md)
 
 ### 빌드용 아틀라스 재패킹
 
@@ -310,7 +313,7 @@ Native AOT 빌드는 같은 판정으로 빠진 기능의 엔진 코드까지 �
 
 - 새 기능들은 네이티브 라이브러리가 없어 Release 배포본은 바뀌지 않는다. `GameSettings`의 `features`에 같은 이름(`Tilemaps` 등)을 넣으면 강제로 포함한다.
 - 빌드가 보지 못한 콘텐츠(모드, 콘텐츠 업데이트)가 빠진 기능의 컴포넌트를 쓰면 그 씬을 읽을 때 VYaml의 형식 오류로, 읽기 코드가 남는 경우에는 `<오브젝트>: this build excluded Particles: … Add Particles to GameSettings features and build again to include it.` 오류로 멈춘다. 그런 게임은 `features`로 포함한다.
-- 측정(osx-arm64 배포용 실행 파일): SpriteLab 7.36 → 6.26 MB(−14.9%), KeyRoom 7.58 → 6.86 MB, InventoryLab 7.54 → 6.65 MB. [측정 기록](../../engine/tests/results/aot-feature-switches/README.md)
+- 측정(osx-arm64 배포용 실행 파일): SpriteLab 7.36 → 6.26 MB(−14.9%), KeyRoom 8.32 → 6.86 MB(−17.5%), InventoryLab 7.97 → 6.65 MB(−16.6%). KeyRoom·InventoryLab 값에는 같은 작업에서 플레이어의 `JsonSerializer`를 뺀 몫이 함께 들어 있다. [측정 기록](../../engine/tests/results/aot-feature-switches/README.md)
 - 플레이어의 VYaml 포매터 등록은 생성기의 모듈 초기화 대신 `Engine.Core/PlayerYamlRegistration.cs`가 한다(AOT에서만, 생성기 쪽은 `Engine.Player/EngineFeatures.Substitutions.xml`이 비운다). `[YamlObject]` 형식을 더하거나 바꾸면 `./monoon test`의 `feature-switches` 검사가 생성기 목록과 다르다고 실패하므로 그 줄을 같은 기능 블록에 옮겨 적는다. 검사는 기능 블록 밖의 형식이 블록 안 형식을 쓰지 않는지도 본다.
 - 새 엔진 기능 코드를 스위치 뒤에 둘 때는 실행 객체를 만드는 곳(예: `SceneGame.Body`의 필드)과 그 객체 없이도 닿는 정적 호출을 감싼다. 스위치는 다른 조건과 `&&`·`||`로 묶지 말고 따로 `if`로 둔다(컴파일러가 비단락 연산으로 바꾸면 ILC가 분기를 접지 못한다).
 
@@ -403,12 +406,12 @@ player=game-builds/InventoryLab/InventoryLab.app/Contents/MacOS/MoNoonPlayer
 
 엔진을 수정한 뒤 저장소 루트에서 `./monoon test`를 실행한다. 새 체크아웃에서 세 플랫폼의 Release 내보내기 템플릿을 준비하거나 플레이어 소스 변경을 반영하려면 먼저 `./engine/scripts/build-players.sh`를 실행한다. `git worktree`로 만든 작업 폴더에서는 대신 `engine/scripts/bootstrap-worktree.sh`를 실행하면 메인 체크아웃의 네이티브 라이브러리와 공유 템플릿 캐시를 네트워크 없이 연결한다. [워크트리 준비](../development.md#워크트리-준비)
 
-플랫폼별 검사는 Apple Silicon Mac과 기존 Windows x64·Linux x64 VM에서 실행한다. 각 검사에 새 결과 폴더를 지정하면 해당 OS의 저장 파일, 측정값 또는 캡처를 로컬에서 확인할 수 있다. [VM 실행 방법](../troubleshooting/README.md)
+플랫폼별 검사는 Apple Silicon Mac과 기존 Windows x64·Linux x64 VM에서 실행한다. Linux x64는 게임 실행 대상과 헤드리스 빌드·리플레이만 검사한다(Linux 에디터는 2026-11-23부터 지원하지 않는다). Windows 검증은 사용자가 Windows 장비 준비를 알릴 때까지 보류 중이다. 각 검사에 새 결과 폴더를 지정하면 해당 OS의 저장 파일, 측정값 또는 캡처를 로컬에서 확인할 수 있다. [VM 실행 방법](../troubleshooting/README.md)
 
 | 대상 | 검사 방법 |
 | --- | --- |
 | InventoryLab 배포 게임 | Release와 Native AOT에서 약초 의뢰 입력을 재생하고 저장 바이트를 Mac 기준과 대조한다. v31 프로젝트를 v35로 변환하고 기존 v2 슬롯에서 의뢰를 마치는 경우도 재생할 수 있다. [실행 명령](../../engine/tests/InventoryLab.Replay/README.md) |
-| KeyRoom 배포 에디터 | Inspector에서 Player X를 바꾸고 씬을 저장한다. 편집 직후와 다시 연 뒤의 Play에서 F5 저장을 기준 파일과 비교한다. [OS별 조작 회귀 명령](../../engine/tests/KeyRoom.Desktop/README.md#배포-에디터-조작-회귀) |
+| KeyRoom 배포 에디터(macOS·Windows) | Inspector에서 Player X를 바꾸고 씬을 저장한다. 편집 직후와 다시 연 뒤의 Play에서 F5 저장을 기준 파일과 비교한다. [OS별 조작 회귀 명령](../../engine/tests/KeyRoom.Desktop/README.md#배포-에디터-조작-회귀) |
 | KeyRoom 에디터 빌드 | **Build Game…**의 컨트롤로 설정을 저장하고 Release(패키지 포함)와 Native AOT를 빌드한 뒤, 같은 설정으로 `./monoon build`한 결과와 파일별 SHA-256을 비교한다. [실행 명령](../../engine/tests/KeyRoom.EditorBuild/README.md) |
 | KeyRoom 배포 게임 | Release와 Native AOT에서 코인을 생성하고 저장을 복원한 뒤 획득 상태를 대조한다. [월드 체크포인트 실행 명령](../../engine/tests/KeyRoom.WorldCheckpoints/README.md) |
 | AudioLab 배포 게임 | Release와 Native AOT에서 Ogg 루프를 재생하고 F 키로 정지해 SDL 출력과 페이드 길이를 대조한다. [실행 명령](../../engine/tests/AudioLab.Vorbis/README.md) |
@@ -430,5 +433,5 @@ player=game-builds/InventoryLab/InventoryLab.app/Contents/MacOS/MoNoonPlayer
 | 컴포넌트 스크립트가 컴파일되지 않음 | **Project → Console…**에서 첫 오류와 파일명을 확인한다. [에디터 사용법](editor.md) |
 | 씬은 열리지만 Play나 빌드에 실패 | 시작 카메라, 시작·포함 씬, 오류에 표시된 PNG·타일 ID·스크립트 참조를 확인한다. [공통 진단](../troubleshooting/README.md) |
 | 특정 OS에서 실행·입력·렌더링 실패 | 에디터의 Scene, Play, 독립 게임 중 어디에서 실패했는지 기록하고 플랫폼별 실행 절차를 따른다. [macOS](../troubleshooting/macos.md) · [Windows](../troubleshooting/windows.md) · [Linux](../troubleshooting/linux.md) |
-| 엔진 수정 후 회귀 확인 | 저장소 루트에서 `dotnet run --project engine/tests/Engine.Checks -c Release -- "$PWD"`를 실행한다. 씬·참조·UI·애니메이션·타일·게임 내보내기를 검사한다. [검사 코드](../../engine/tests/Engine.Checks/) |
+| 엔진 수정 후 회귀 확인 | 저장소 루트에서 `./monoon test`(= `dotnet run --project engine/tests/Engine.Checks -c Release -- "$PWD"`)를 실행한다. 씬·참조·UI·애니메이션·타일·게임 내보내기를 검사한다. 묶음 하나만 돌리는 `--only <이름>`, 하네스 실행기 `engine/scripts/run-harness.py`는 [에이전트 작업 흐름](agent-workflow.md#빌드와-테스트-명령-macos-arm64)에 있다. [검사 코드](../../engine/tests/Engine.Checks/) |
 | Mac SDL 텍스처와 타일 픽셀 비교 | `dotnet run --project engine/benchmarks/Sprites2D/Brutal -c Release -- metal --verify-batching`을 실행한다. 소프트웨어 렌더러는 `metal` 자리에 `software`를 지정한다. [스프라이트 벤치마크와 기존 측정 결과](../../engine/benchmarks/Sprites2D/) |

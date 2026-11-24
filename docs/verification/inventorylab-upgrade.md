@@ -20,7 +20,7 @@
 
 ## Windows x64·Linux x64 게스트 검증
 
-2026-11-15에 같은 Mac의 기존 QEMU Windows 11 Enterprise LTSC x64(10.0.26100.1742)와 Debian 12.15 amd64(커널 6.1.0-54-cloud-amd64)를 사용했다. 버전 31 커밋에서 추출한 InventoryLab 파일 25개를 각 게스트 안에서 작업 사본으로 복사했다. 두 OS 모두 x64 .NET SDK 10.0.101로 버전 35 에디터를 빌드해 `--migrate-project`를 실행했다. 변환 직후와 두 게임을 빌드한 후에 파일 목록과 각 파일의 SHA-256이 버전 31 보관본과 동일했다. 프로젝트 ID는 `ade09cc3-a769-56d7-9832-a2bea14c7e71`로 유지됐다.
+2026-11-15에 같은 Mac의 기존 QEMU Windows 11 Enterprise LTSC x64(10.0.26100.1742)와 Debian 12.15 amd64(커널 6.1.0-54-cloud-amd64)를 사용했다. 버전 31 커밋에서 추출한 InventoryLab 파일 25개를 각 게스트 안에서 작업 사본으로 복사했다. 두 OS 모두 x64 .NET SDK 10.0.101로 버전 35 에디터를 빌드해 `--migrate-project`를 실행했다(Linux 에디터 지원을 멈춘 2026-11-23 전 기록이다. 지금은 에디터 없이 `monoon migrate`로 같은 변환을 한다). 변환 직후와 두 게임을 빌드한 후에 파일 목록과 각 파일의 SHA-256이 버전 31 보관본과 동일했다. 프로젝트 ID는 `ade09cc3-a769-56d7-9832-a2bea14c7e71`로 유지됐다.
 
 두 게스트에서 각각 콘텐츠 버전 35인 플레이어 소스·Release 템플릿·AOT 키트를 확인하고 `distribution` 프로필로 두 게임을 직접 빌드했다. 아래 저장 파일은 각 배포 플레이어에서 회수한 원본이다.
 

@@ -31,6 +31,8 @@ loop: false
 - **좌표 계약**: 원본 PNG의 왼쪽 위가 (0,0), 오른쪽·아래 끝은 제외하는 정수 픽셀 영역이다. 너비·높이는 양수, 영역 전체가 원본 안에 있어야 한다. PNG가 변경되면 해시로 캐시를 무효화하고 다시 검증한다. 새 크기 밖으로 나간 영역을 자동으로 옆 프레임에 맞추지 않는다. 문제 프레임을 표시해 고치도록 한다.
 - **렌더러**: [ICanvas2D](../../engine/src/Engine.Core/IGame2D.cs)에 원본 영역과 목적지 사각형을 각각 전달한다. SDL 즉시 그리기의 source rect, [SDL 배치](../../engine/src/Engine.Desktop/SdlSpriteBatch.cs)의 텍스처 좌표, Mac Scene의 좌표 변환, [Avalonia 미리보기](../../engine/src/Engine.Editor/Scene/SceneViewport.cs)의 이미지 자르기에 같은 영역을 쓴다. 시트는 한 번 로드하고 인접 셀 색이 섞이지 않도록 최근접 샘플링을 사용한다. 이 계약을 [타일셋](tilemap-editor.md)에서도 재사용한다.
 - **내보내기**: 에디터·Release·Native AOT 모두 같은 VYaml 타입과 생성 포매터로 읽는다. [GameBuild](../../engine/src/Engine.Authoring/GameBuild.cs)는 클립에서 PNG를 한 번만 수집하고 누락 GUID나 영역 오류에 씬·클립·프레임 위치를 붙인다. 영역 지원 전 템플릿이 시트 전체를 그리는 일이 없도록 에디터와 템플릿/키트의 콘텐츠 기능 버전을 빌드 전에 대조하고, 불일치하면 갱신을 안내한다.
-- **완료 기준**: 인접 셀의 색이 확연히 다른 테스트 시트로 내부·가장자리 프레임을 자른다. Mac Scene Play와 독립 Release/AOT에서 선택한 셀만 보이고 재시작 후에도 같다. Windows/Linux는 Release 배포 게임으로 확인한다. Avalonia 미리보기 경로도 별도로 대조한다. KeyRoom 원본은 시트가 없어도 예전처럼 열쇠를 먹으면 문 애니메이션이 재생돼야 한다.
+- **완료 기준**: 인접 셀의 색이 확연히 다른 테스트 시트로 내부·가장자리 프레임을 자른다. Mac Scene Play와 독립 Release/AOT에서 선택한 셀만 보이고 재시작 후에도 같다. Windows/Linux는 Release 배포 게임으로 확인한다. Windows 에디터의 Avalonia 미리보기 경로도 별도로 대조한다(Linux 에디터는 지원하지 않는다). KeyRoom 원본은 시트가 없어도 예전처럼 열쇠를 먹으면 문 애니메이션이 재생돼야 한다.
 
 클립 편집을 확장한 로드맵 2.2에서는 프레임 이벤트와 별도 컨트롤러에서의 상태·파라미터 전환을 지원한다. [편집 및 미리보기 사용법](../manual/sprites.md#파라미터로-애니메이션-전환하기)
+
+이후 클립에 컴포넌트 속성 키(회전·스케일·색·불투명도, 9.6)를 더했고, Aseprite 파일이 시트와 클립을 만든다(11.8). 애니메이터에는 Int·Vector2 파라미터, AND 조건, Exit time, Any State와 4·8방향 클립 세트가 있다(16.5). [사용법](../manual/sprites.md) · [구현 기록](../history/rendering.md#스프라이트-클립과-애니메이터)

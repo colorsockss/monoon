@@ -27,4 +27,4 @@ sh engine/scripts/gui-lock.sh python3 "$qa/editor.py" editor/MoNoon.app/Contents
   engine/.artifacts/bin/IntegerScaleProbe/release/IntegerScaleProbe.dll "$work/scene-play"
 ```
 
-도우미는 창 위치(`geometry`)만 읽으므로 키 입력·손쉬운 사용 권한이 필요 없다. 화면 기록 권한은 필요하다. Pillow를 쓰지 않고 PNG를 직접 읽는다. Scene Play 검사는 패키지 에디터에서 Play를 누르고 창을 1280×800, 1600×1000, 1920×1080으로 바꿔 Game 패널의 `Scale × RenderScaling`이 장치 픽셀 기준 정수(Fit을 내림, 최소 1)인지 확인한다. 카메라 좌표 반올림은 `./monoon test`의 [EngineFeatures1Checks](../Engine.Checks/EngineFeatures1Checks.cs)가 확인한다. [검증 결과](../results/engine-features-1/README.md#168-정수-배율-표시)
+도우미는 창 위치(`geometry`)만 읽으므로 키 입력·손쉬운 사용 권한이 필요 없다. 화면 기록 권한은 필요하다. Pillow를 쓰지 않고 PNG를 직접 읽는다. Scene Play 검사는 패키지 에디터에서 Play를 누르고 창을 1280×800, 1600×1000, 1920×1080으로 바꿔 Game 패널의 `Scale × RenderScaling`이 장치 픽셀 기준 정수(Fit을 내림, 최소 1)인지 확인한다. 카메라 좌표 반올림은 `./monoon test`의 [EngineFeatures1Checks](../Engine.Checks/EngineFeatures1Checks.cs)가 확인한다. [검증 결과](../results/engine-features-1/README.md)

@@ -22,7 +22,7 @@ Project에서 파일이나 폴더를 우클릭해 **Rename…** 또는 **Move to
 
 문 PNG를 옮기면 원본과 `.meta`가 함께 이동한다. 씬·프리팹의 스프라이트 경로가 바뀌고 클립과 스크립트의 PNG 참조는 같은 ID를 사용한다. C# 파일이나 `Scripts` 폴더 전체를 옮기면 각 C# 파일의 기존 스크립트 ID가 `.cs.meta`에 보존된다. Inspector의 **Edit Script**는 옮긴 파일을 열고 **Asset References…**는 새 경로를 표시한다. C# 파일 이름을 바꿔도 클래스와 기존 컴포넌트 ID는 유지된다.
 
-변경은 디스크에 즉시 적용된다. 한 번의 **Cmd+Z**(Windows·Linux는 **Ctrl+Z**)로 파일·메타·참조를 함께 되돌린다. 씬 편집 내용을 저장하려면 **Save Scene**을 사용한다. [문 스프라이트와 Scripts 폴더로 확인한 결과](../../engine/tests/results/project-moves/README.md)
+변경은 디스크에 즉시 적용된다. 한 번의 **Cmd+Z**(Windows는 **Ctrl+Z**)로 파일·메타·참조를 함께 되돌린다. 씬 편집 내용을 저장하려면 **Save Scene**을 사용한다. [문 스프라이트와 Scripts 폴더로 확인한 결과](../../engine/tests/results/project-moves/README.md)
 
 ## 데이터 에셋과 테이블
 

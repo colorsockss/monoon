@@ -28,4 +28,4 @@ sh engine/scripts/gui-lock.sh python3 "$qa/editor.py" editor/MoNoon.app/Contents
 python3 "$qa/verify.py" compare "$work/scene-play/scene-play.trace" "$work/release/release.trace" "$work/aot/aot.trace"
 ```
 
-[검증 결과](../results/engine-features-1/README.md#163-스크립트-트윈-api)
+[검증 결과](../results/engine-features-1/README.md)

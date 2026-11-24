@@ -7,11 +7,11 @@ macOS 27.0.1 (26A434) arm64, 이 Apple Silicon Mac에서 저장소 루트 기준
 - 테스트 위치: 프로젝트 루트의 `Tests/`. `ProjectScripts.ForTests`가 `Scripts/`의 게임 스크립트와 `Tests/**/*.cs`를 한 어셈블리로 컴파일한다(테스트 API `GameTestRun`·`[GameTest]`는 빌드 도구인 Engine.Authoring에 있다). 일반 컴파일(Scene Play, Release, Native AOT)은 루트의 `Tests/` 폴더를 건너뛴다.
 - 실행: 테스트마다 빈 임시 `MONOON_USER_DATA`로 `GameSession`을 열고 `GameLoop`를 1/60초 프레임으로 진행한다. 입력은 `.inputreplay` 재생과 같은 `ReplayInput.Dispatch` → `GameInputRouter` 경로로 넣고, `run.Replay(...)`는 기록 파일 자체를 재생한다. 테스트 본문은 11.1의 `ScriptWait`로 기다린다. 배경 스레드의 씬 읽기는 프레임을 진행하기 전에 끝날 때까지 기다리므로 씬 전환도 벽시계 시간과 무관하다.
 - 실패: 실패한 프레임 번호(1부터)와 게임 틱, 첫 예외, 프로젝트 파일의 줄 위치, 마지막 게임 로그 5줄을 출력하고 종료 코드 1을 반환한다.
-- BRUTAL에는 게임 테스트 실행기가 없어([BRUTAL 기능 목록](../../../docs/brutal.md)) 기존 입력 재생과 Roslyn 스크립트 컴파일을 재사용했다.
+- BRUTAL에는 게임 테스트 실행기가 없어([BRUTAL 기능 목록](../../../../docs/brutal.md)) 기존 입력 재생과 Roslyn 스크립트 컴파일을 재사용했다.
 
 ## KeyRoom 상자·문 규칙
 
-`Engine.Checks`에 있던 상자 규칙(코인 하나만 생성, 두 번째 E 무시, 걸어서 획득)과 문 규칙(닫힌 문이 x 440에서 막음, 열쇠 획득 시 문 카메라, 1초 뒤 플레이어 카메라 복귀, 두 번째 방 진입)을 [ChestTests.cs](../../../samples/KeyRoom/Tests/ChestTests.cs)·[DoorTests.cs](../../../samples/KeyRoom/Tests/DoorTests.cs)로 옮기고, 도달 거리·문 안내 대기(30틱, 정지·Step, 문 제거 시 취소)·기록 입력 재생 테스트를 더했다. `Engine.Checks`의 중복 단언은 지웠고, `./monoon test`가 같은 KeyRoom 테스트를 실행한다.
+`Engine.Checks`에 있던 상자 규칙(코인 하나만 생성, 두 번째 E 무시, 걸어서 획득)과 문 규칙(닫힌 문이 x 440에서 막음, 열쇠 획득 시 문 카메라, 1초 뒤 플레이어 카메라 복귀, 두 번째 방 진입)을 [ChestTests.cs](../../../../samples/KeyRoom/Tests/ChestTests.cs)·[DoorTests.cs](../../../../samples/KeyRoom/Tests/DoorTests.cs)로 옮기고, 도달 거리·문 안내 대기(30틱, 정지·Step, 문 제거 시 취소)·기록 입력 재생 테스트를 더했다. `Engine.Checks`의 중복 단언은 지웠고, `./monoon test`가 같은 KeyRoom 테스트를 실행한다.
 
 ```sh
 ./monoon test project samples/KeyRoom

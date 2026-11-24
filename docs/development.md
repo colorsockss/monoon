@@ -21,8 +21,8 @@ IDE에서는 [엔진 솔루션](../engine/MoNoonEngine.slnx)을 엽니다. 에�
 
 | 실행 대상 | 화면을 그리는 경로 |
 | --- | --- |
-| macOS arm64 에디터의 Scene | Cocoa 자식 뷰 안에 SDL의 Metal 렌더러가 직접 그립니다. 첫 소스 빌드는 SDL 3.4.12를 패치해 빌드합니다. 소스 묶음이 없으면 내려받지 않고 멈추므로, 처음 한 번은 `MONOON_ALLOW_SDL_DOWNLOAD=1`을 지정하세요. [패치와 빌드 스크립트](../engine/scripts/build-scene-sdl-mac.sh) |
-| Windows x64 에디터의 Scene(Linux 에디터는 지원하지 않음) | Avalonia가 씬을 그립니다. [Scene 뷰 소스](../engine/src/Engine.Editor/Scene/SceneViewport.cs) |
+| macOS arm64 에디터의 Scene | Cocoa 자식 뷰 안에 SDL의 Metal 렌더러가 직접 그립니다. 첫 소스 빌드는 SDL 3.4.12를 패치해 빌드합니다. 소스 묶음이 없으면 내려받지 않고 멈춥니다. 워크트리에서는 아래 [워크트리 준비](#워크트리-준비)로 메인 체크아웃의 파일을 연결하고, 메인 체크아웃에서 처음 한 번만 `MONOON_ALLOW_SDL_DOWNLOAD=1`을 지정하세요. [패치와 빌드 스크립트](../engine/scripts/build-scene-sdl-mac.sh) |
+| Windows x64 에디터의 Scene(Linux 에디터는 2026-11-23부터 지원하지 않음) | Avalonia가 씬을 그립니다. [Scene 뷰 소스](../engine/src/Engine.Editor/Scene/SceneViewport.cs) |
 | 독립 실행과 배포 게임 | 세 플랫폼 모두 별도 SDL 창을 엽니다. 에디터에서는 **Run → Save & Run**으로 현재 씬을 실행할 수 있습니다. [데스크톱 호스트](../engine/src/Engine.Desktop/DesktopHost.cs) |
 
 에디터와 배포 게임은 VYaml로 같은 YAML 콘텐츠를 읽습니다. 씬은 `.scene`, 프리팹은 `.prefab`, 애니메이션은 `.clip`에 저장합니다. 프로젝트를 복사할 때는 `Scripts/`, `.monoon-assets`와 각 에셋의 `.meta`도 함께 보관하세요. 에셋을 옮길 때는 Project 패널을 사용하면 ID와 참조가 유지됩니다. [에셋 이동과 재임포트](manual/project-assets.md) · [구버전 JSON·YAML 프로젝트 이전](manual/upgrade.md)
@@ -81,6 +81,26 @@ engine/scripts/bootstrap-worktree.sh
 - 캐시는 템플릿 세트 하나에 약 290 MB입니다. 오래된 항목은 `.monoon-cache/players/`에서 지워도 됩니다. 다음 실행 때 다시 빌드합니다.
 - `build-scene-sdl-mac.sh`는 SDL 소스 묶음이 없으면 `curl`을 부르지 않고 이 스크립트를 안내한 뒤 실패합니다.
 - 여러 에이전트가 함께 작업할 때의 GUI 잠금, 하네스·결과 기록, 병합 규칙은 [에이전트 작업 흐름](manual/agent-workflow.md)에 있습니다.
+
+## 에이전트 개발 도구 진행 상태
+
+[AI 작업 흐름 조사](plans/next-work/5-ai-workflow.md)의 W 항목은 로드맵 대신 이 표에서 관리합니다(사용자 결정 1, 2026-11-24). 구현 방식과 이유는 [빌드·검증 히스토리](history/build.md#에이전트-개발-도구)에 있습니다.
+
+| 항목 | 상태 |
+| --- | --- |
+| W1 워크트리 부트스트랩 | 완료. `bootstrap-worktree.sh`, `.worktreeinclude`, SDL 내려받기 차단, `worktree.baseRef: head` |
+| W2 공용 운영 문서 | 완료. `CLAUDE.md`의 `@AGENTS.md`, [에이전트 작업 흐름](manual/agent-workflow.md), `engine/scripts/gui-lock.sh`. 경로별 `.claude/rules/`는 만들지 않았습니다 |
+| W3 프로브 공용 라이브러리 | 완료. [Probe.cs](../engine/tests/Shared/Probe.cs)의 창 감지와 짧은 제한 시간. 에디터 쪽 `MONOON_QA_MODAL`과 공용 `harness.py`는 만들지 않았습니다 |
+| W4 하네스 매니페스트·실행기 | 완료. [harnesses.json](../engine/tests/harnesses.json), [run-harness.py](../engine/scripts/run-harness.py), `--changed`. `./monoon test --harness`와 빌드 묶음(`buildGroups`)은 없습니다 |
+| W5 Engine.Checks 등록·계층 | 완료. `[Check]` 특성, `--only`, `--tier fast` |
+| W6 에디터 자동화 API | 하지 않음. 프로브는 아직 리플렉션으로 에디터 내부를 읽습니다 |
+| W7 Claude Code 권한·가드 | 완료. `.claude/settings.json`의 deny와 [guard.py](../.claude/hooks/guard.py). Bash sandbox는 보류 |
+| W8 skill·서브에이전트 | 완료. skill 4개(`bootstrap-worktree`, `run-harness`, `regress`, `results-readme`), 서브에이전트 2개(`implementer`, `harness-runner`). `/baseline-update`, `/bench-ab`, 탐색·리뷰 에이전트는 없습니다 |
+| W9 기준선 캐시·A/B 실행기 | 하지 않음 |
+| W10 x64 결정성 조기 검사 | 정적 검사만 완료(`determinism-scan`). osx-x64 팩과 Rosetta 비교는 보류(결정 15) |
+| W11 소유권·통합 스크립트 | 핫스팟 소유 규칙만 [작업 흐름](manual/agent-workflow.md#병렬-작업-병합과-소유)에 있습니다. `integrate.sh`는 없습니다 |
+| W12 모델·병렬도 지침 | 동시 빌드 3–4개 제한과 `harness-runner`(Sonnet, 낮은 effort)만 반영했습니다 |
+| W13 창 없는 Scene Play | 보류 |
 
 ## 회귀 검사와 문제 해결
 

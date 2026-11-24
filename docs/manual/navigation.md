@@ -76,10 +76,10 @@ Hierarchy에서 영역을 선택하면 Scene 보기가 지나갈 수 있는 칸�
 
 ### 스크립트에서 사용하기
 
-`OnCreate`에서 `tick.Objects.Navigation.BakeArea(regionId)`를 한 번 호출해 `NavArea2D`를 받아 둔다. 그 시점의 콜라이더와 로드된 타일로 굽는다. 프레임마다 굽지 않는다.
+`OnCreate`에서 `life.Objects.Navigation.BakeArea(regionId)`를 한 번 호출해 `NavArea2D`를 받아 둔다. 영역 컴포넌트가 없으면 `null`이다. 그 시점의 콜라이더와 로드된 타일로 굽는다. 프레임마다 굽지 않는다.
 
 - `FindPath(start, goal, points)`는 8방향 A* 경로를 시야로 줄여(string pulling) 모서리 지점만 `points`에 쓰고 점 개수를 돌려준다. 첫 점은 출발점, 끝 점은 목적지다. 목적지 칸이 막혔으면 가장 가까운 열린 칸 중심에서 끝나고, 길이 없으면 0이다. 버퍼보다 긴 경로는 중간 모서리에서 끊기므로(개수 = 버퍼 길이) 거기서 다시 요청한다.
 - `AddObstacle(rect)`·`RemoveObstacle(rect)`는 문이나 상자처럼 움직이는 장애물을 칸에 반영하고 `Revision`을 올린다.
-- `NavCrowd2D`는 유닛 여러 개를 함께 움직인다. `Add(start, goal)`로 넣고 `FixedUpdate`마다 `Step(tick.DeltaTime)`을 부른다. 다음 모서리로 `Speed`(px/s)만큼 이동하고, 겹친 이웃과는 겹친 거리의 절반씩 밀어내며, 앞을 막은 유닛은 옆으로 비켜 간다. 닫힌 칸에서는 축 하나로 미끄러진다. 영역이 바뀌거나 60틱마다 다시 탐색하며 한 틱의 탐색은 `MaxPlansPerStep`(기본 16)개까지다. `Positions`로 위치를 읽는다.
+- `NavCrowd2D`는 유닛 여러 개를 함께 움직인다. `new NavCrowd2D(area, 최대 인원, 경로 점 수 = 32)`로 만들고 `Add(start, goal)`로 넣고 `FixedUpdate`마다 `Step(tick.DeltaTime)`을 부른다. 다음 모서리로 `Speed`(px/s)만큼 이동하고, 겹친 이웃과는 겹친 거리의 절반씩 밀어내며, 앞을 막은 유닛은 옆으로 비켜 간다. 닫힌 칸에서는 축 하나로 미끄러진다. 영역이 바뀌거나 `ReplanTicks`(기본 60)틱마다 다시 탐색하며 한 틱의 탐색은 `MaxPlansPerStep`(기본 16)개까지다. `Positions`로 위치를 읽는다.
 
 모든 버퍼는 생성할 때 한 번 만든다. 그 뒤의 경로 요청, 장애물 변경과 `Step`은 메모리를 할당하지 않는다. 탐색은 정수 비용, 이동은 FMA 없는 스칼라 연산을 고정된 순서로 쓰므로 같은 입력이면 Scene Play, Release, Native AOT의 결과가 같다. 200명은 [스프라이트 풀](sprite-pools.md)로 그린다. [CrowdRun.cs](../../samples/SeedLab/Scripts/CrowdRun.cs) · [검증과 비용 측정](../../engine/tests/results/navigation-free/README.md)

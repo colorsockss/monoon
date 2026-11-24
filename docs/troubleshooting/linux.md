@@ -14,8 +14,8 @@ game=./game-builds/KeyRoom/KeyRoom-linux-x64
 ```
 
 - **`Permission denied` 또는 창이 안 뜸**: `ls -l "$game/MoNoonPlayer"`로 실행 비트를 확인한다. 실행 비트를 유지해 폴더 전체를 다시 복사한다. X11 세션 없이 SSH에서 실행한 경우에는 기존 VM의 [Xvfb 재검사 명령](README.md)을 사용한다. 검은 캡처만으로 HUD 문제라고 판단하지 않는다.
-- **열쇠 획득/HUD 표시 중 `SDL_CreateTextureFromSurface … surface … invalid`**: [원래 실패 스택](../../engine/tests/results/keyroom-desktop/linux-original-crash.txt)은 PNG 로더가 아니라 `SdlText.Draw`를 가리킨다. 현재 [플레이어 텍스트 경로](../../engine/src/Engine.Desktop/SdlText.cs)는 글자를 RGBA 버퍼에 배치하고 버퍼를 고정한 동안 SDL surface와 텍스처를 만든다. 글자 일부만 비면 게임에 포함된 기본·대체 폰트와 `MONOON_FONT_TRACE=1` 로그를 확인한다.
-- **라이브러리 문제와 구별**: 게스트에서 `ldd "$game/libSDL3.so.0"` 출력에 `not found`가 있는지 확인한다. 글자만 비면 `fc-match sans`로 사용할 폰트도 확인한다. 배포 파일이 오래됐으면 Mac에서 `./engine/scripts/build-players.sh linux-x64` 후 Linux x64 Release로 다시 내보낸다.
+- **열쇠 획득/HUD 표시 중 `SDL_CreateTextureFromSurface … surface … invalid`**: [원래 실패 스택](../../engine/tests/results/keyroom-desktop/linux-original-crash.txt)은 PNG 로더가 아니라 `SdlText.Draw`를 가리킨다. 지금은 [TtfTextRasterizer](../../engine/src/Engine.Desktop/TtfTextRasterizer.cs)가 BRUTAL의 SDL_ttf로 배포한 TTF·OTF에서 글자를 RGBA 버퍼에 그리고, [SdlText](../../engine/src/Engine.Desktop/SdlText.cs)가 그 버퍼로 텍스처를 만든다. 글자 일부만 비면 `Game/`에 기본·대체 폰트가 들어 있는지 확인한다. 프로젝트 글꼴이 없는 게임은 `/usr/share/fonts`, `/usr/local/share/fonts`, `~/.local/share/fonts`에서 DejaVuSans·LiberationSans·NotoSansCJK를 찾고, 하나도 없으면 `No system font is available.`로 멈춘다.
+- **라이브러리 문제와 구별**: 게스트에서 `ldd "$game/libSDL3.so.0"` 출력에 `not found`가 있는지 확인한다. 배포 파일이 오래됐으면 Mac에서 `./engine/scripts/build-players.sh linux-x64` 후 Linux x64 Release로 다시 내보낸다.
 - **수정 확인**: 초기 화면만 보고 판단하지 않는다. 두 조작 방식으로 실제 열쇠를 먹고, HUD 글자와 둘째 방의 벽이 같이 그려지고, 리사이즈 후에도 글자가 남는지 확인한다. [열쇠 획득](../../engine/tests/results/keyroom-desktop/yaml-linux-x64/wasd/02-key.png) · [둘째 방](../../engine/tests/results/keyroom-desktop/yaml-linux-x64/wasd/03-room-two.png).
 
 ## InventoryLab 헤드리스 빌드·회귀

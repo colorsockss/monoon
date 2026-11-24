@@ -20,7 +20,7 @@ PlatformerLab을 열고 Play에서 Space를 누르면 Runner가 제자리에서 
 
 ### .particles 에셋
 
-YAML 파일이며 `Assets`에 저장하거나 Project의 Import로 가져온다. 빠진 키는 아래 기본값이 된다. [Sparks.particles](../../samples/ParticleLab/Assets/Sparks.particles)
+YAML 파일이며 `Assets`에 저장하거나 Project의 Import로 가져온다. 아래는 [Sparks.particles](../../samples/ParticleLab/Assets/Sparks.particles)를 바탕으로 모든 키를 적은 예다. 빠진 키는 기본값이 된다: `duration: 1`, `looping: true`, `maxParticles: 256`, `rate: 10`, `shape: Point`, `direction: -90`, `spread: 0`, `lifetime: 1`, `speed: 40`, `size: 8`, `aspect: 1`, `rotation: 0`, `color: "#FFFFFF"`, `endSize: 1`, `endAlpha: 0`, `gravity: 0`, `space: World`, `blend: Alpha`, 텍스처 없음(내장 점).
 
 ```yaml
 duration: 1.2          # 주기 길이(초)
@@ -60,7 +60,7 @@ blend: Additive        # Alpha·Additive·Multiply
 
 입자 위치는 출생 시각에서 `시작점 + 속도·나이 + ½·중력·나이²`로 계산한다. 방출과 만료는 1/60초 게임 틱에서만 하고, 그리기는 같은 식을 보간 시각에 평가한다. 그래서 렌더 프레임 수가 달라도 틱마다의 입자 상태는 같다. Local 공간에서는 중력도 방출기의 로컬 축을 따른다.
 
-**Additive**는 밝게 더한다. **Multiply**는 아래 화면을 입자 색으로 어둡게 한다(흰색은 그대로). 곱하기 블렌드는 SDL 규칙에 맞게 텍스처를 미리 알파로 곱한 사본으로 그린다. Win·Linux의 Avalonia Scene Play(에디터)는 곱하기와 PNG 텍스처의 가산을 알파 블렌드로 미리 보여 준다. 배포 게임과 Mac Scene Play는 세 블렌드를 모두 그린다.
+**Additive**는 밝게 더한다. **Multiply**는 아래 화면을 입자 색으로 어둡게 한다(흰색은 그대로). 곱하기 블렌드는 SDL 규칙에 맞게 텍스처를 미리 알파로 곱한 사본으로 그린다. Windows 에디터의 Avalonia Scene Play는 곱하기와 PNG 텍스처의 가산을 알파 블렌드로 미리 보여 준다. 배포 게임과 Mac Scene Play는 세 블렌드를 모두 그린다.
 
 ### 수명 곡선과 그라데이션
 
@@ -143,6 +143,8 @@ if (e.Collided > 0) PlaySplash();
 
 곡선과 그라데이션 편집기가 그리는 선과 막대는 런타임이 굽는 64칸 표 그대로다. 값은 입력하는 동안 바로 미리보기에 반영되고, Enter·포커스 이동·끌기 끝·색 선택기 닫기에서 한 번 확정된다. 확정할 때마다 `.particles` 파일을 저장하고 **Edit → Undo** 한 단계가 된다. Undo·Redo는 파일 바이트를 그대로 되돌리고 패널도 다시 읽는다. 패널이 저장한 파일은 에디터 형식(모든 키, 주석 없음)으로 다시 써진다. Play 중에도 패널을 쓸 수 있다([Play 중 다시 불러오기](#play-중-다시-불러오기)).
 
+에셋에 크기 곡선·그라데이션·회전 속도·속도 곡선이 있으면 Inspector의 Particle Emitter 2D 아래에도 **Over lifetime · <파일 이름>** 행이 생기고, 같은 곡선·그라데이션 편집기로 바로 고칠 수 있다. 확정하면 같은 `.particles` 파일을 저장한다. 곡선이 없는 에셋은 이 행이 없다. 곡선을 새로 추가하려면 Particle 패널을 쓴다.
+
 도구줄은 두 미리보기를 함께 움직인다. 재생·일시정지, 처음부터(↻), 한 틱 진행, 시간 막대, 속도(0.1–4×), 미리보기 시드(0이면 방출기 시드), 입자 수와 틱 비용을 둔다. Scene 편집 화면은 선택한 방출기와 그 서브 방출 자식만 시뮬레이션해 정렬 순서대로 그리고, **Play all in Scene**을 켜면 씬의 모든 방출기를 그린다. 패널 왼쪽의 미리보기는 에셋 하나를 원점에 놓고 그린다. 두 미리보기 모두 플레이어와 같은 `ParticleSystem2D`를 1/60초 틱으로 0부터 진행하므로, 시간 막대를 t초에 두면 Play를 t초 실행한 상태와 같다(ParticleLab Curves에서 틱별 해시가 Scene Play·Release·Native AOT trace와 같다). 미리보기는 Duration + 최대 수명마다 처음부터 다시 재생한다. Landing·Manual 방출기도 미리보기에서는 바로 재생한다. 충돌은 게임의 타일·물리 세계가 필요해 편집 미리보기에서는 일어나지 않는다. 미리보기는 씬과 에셋 파일을 바꾸지 않는다. [검증 기록](../../engine/tests/results/particles-editor/README.md)
 
 ### 프리셋
@@ -183,7 +185,7 @@ int live = tick.Objects.ReadParticles(id, buffer); // 직전 틱 기준 입자(�
 
 난수는 방출기마다 고정 시드의 `SeededRandom`을 쓰고, 범위·도형 샘플링은 BRUTAL `Brutal.Maths`의 `RandomExtensions`를 쓴다(호출당 소비하는 난수 수가 일정하다). 시뮬레이션의 변환은 `Affine2D`만 쓴다. 같은 OS·아키텍처에서는 Scene Play·Release·Native AOT의 틱별 입자 상태가 같다. 방향과 회전은 `MathF.Sin`·`MathF.Cos`(OS의 수학 라이브러리)로 계산하므로 다른 OS·아키텍처끼리는 마지막 자리가 다를 수 있다. `MathF.SinCos`는 쓰지 않는다. macOS arm64에서 JIT(Scene Play·Release)과 Native AOT의 결과가 약 2.6%의 입력에서 다르기 때문이다.
 
-입자는 관리 메모리를 할당하지 않는다. 방출기를 만들 때 `maxParticles` 크기의 배열을 한 번 잡는다. `./monoon test`의 `particle-budget` 검사가 ParticleLab Stress 효과(입자 10,240개)의 Step + Draw를 재서 프레임마다 0 B, 중앙값 0.5 ms 이하(SDL 제출 제외)인지 본다. M4 Max에서 약 0.13–0.19 ms다. 입자 런타임을 고쳤을 때 도는 세 경로 trace 절차는 [ParticleLab 회귀](../../engine/tests/ParticleLab.Trace/README.md#한-번에-실행회귀-기준-1411)에 있다. [ParticleLab 측정](../../engine/tests/results/particles/README.md)
+입자는 관리 메모리를 할당하지 않는다. 방출기를 만들 때 `maxParticles` 크기의 배열을 한 번 잡는다. `./monoon test`의 `particle-budget` 검사가 ParticleLab Stress 효과(입자 10,240개)의 Step + Draw를 재서 프레임마다 0 B, 중앙값 0.5 ms 이하(SDL 제출 제외)인지 본다. M4 Max에서 중앙값 약 0.13–0.26 ms였다. 입자 런타임을 고쳤을 때 도는 세 경로 trace 절차는 [ParticleLab 회귀](../../engine/tests/ParticleLab.Trace/README.md#한-번에-실행회귀-기준-1411)에 있다. [ParticleLab 측정](../../engine/tests/results/particles/README.md)
 
 ### 이전 형식 바꾸기
 
@@ -238,6 +240,6 @@ PlatformerLab의 **Cave** 씬을 열면 어두운 동굴 안에서 횃불 7개�
 - Unlit layer는 그리기 순서로 판단한다. 정렬 순서에서 처음으로 그 레이어 이상인 항목부터 뒤의 모든 항목이 조명 밖이다. Sorting Group 2D 안의 렌더러는 그룹 자리에서 함께 그린다.
 - 그림자는 광원 쪽을 등진 충돌체 변을 반경 밖까지 늘인 다각형이다. 광원이 들어 있는 충돌체(광원 오브젝트 자신의 콜라이더 포함)는 그 빛을 가리지 않는다. 타일은 빛을 받는 쪽 면만 밝고 그 뒤 칸은 그림자에 들어간다. 원은 팔각형으로, 캡슐은 감싸는 사각형으로 가린다.
 - 그림자 다각형은 광원마다 캐시한다. 광원이 움직이거나, 반경 안 콜라이더의 위치·회전·켜짐이 바뀌거나, 타일이 바뀌거나 스트리밍 페이지가 오가면 그 광원만 다시 만든다. 움직이는 충돌체는 틱 끝 위치로 가리므로 보간되는 스프라이트보다 그림자가 최대 한 틱 앞설 수 있다.
-- 에디터 Scene 편집 화면도 같은 경로로 조명과 그림자를 미리 보여 준다(깜빡임은 시각 0). Win·Linux 에디터의 Avalonia 미리보기는 렌더 타깃이 없어 Ambient 밝기만큼 어둡게 한 뒤 빛을 더하고 그림자는 그리지 않는다.
+- 에디터 Scene 편집 화면도 같은 경로로 조명과 그림자를 미리 보여 준다(깜빡임은 시각 0). Windows 에디터의 Avalonia 미리보기는 렌더 타깃이 없어 Ambient 밝기만큼 어둡게 한 뒤 빛을 더하고 그림자는 그리지 않는다.
 
 셰이더를 쓰지 않는다. 플레이어는 조명 영역 크기(캔버스 단위, 보통 게임 해상도)의 SDL 렌더 타깃 하나를 Ambient 색으로 지우고, 그림자 없는 광원은 감쇠 이미지를 더하기 블렌드로 한 번에 그린다. 그림자 광원은 작은 보조 타깃에 빛을 그리고 그림자 다각형을 검게 채운 뒤 라이트맵에 더한다(광원당 그리기 3회). 마지막으로 라이트맵을 곱하기 블렌드(`SDL_BLENDMODE_MOD`)로 월드 위에 합성한다. 800×450 게임은 라이트맵 약 1.4 MB, 1920×1080은 약 8.3 MB이고 보조 타깃은 가장 큰 그림자 광원의 화면 크기만큼 더 쓴다. 프레임당 관리 할당은 없다. 씬 저장 스키마는 Global Light 2D나 Cast shadows를 쓰면 42가 된다.

@@ -4,9 +4,9 @@ macOS 27.0.1 (26A434) arm64, 이 Apple Silicon Mac에서 실행했다. 대상은
 
 ## 동작
 
-KeyRoom의 [DoorLock](../../../samples/KeyRoom/Scripts/DoorLock.cs)은 열쇠 이벤트로 문을 연 뒤 `StartRoutine`으로 `ShowHint`를 시작한다. `ShowHint`는 `ScriptWait.Seconds(0.5)` 뒤에 `doorHint` 플래그를 켜고, `showIf: doorHint`인 **Door hint** UI가 화면 위쪽 가운데에 **The door is open. Head east.**를 표시한다. 대기는 SceneGame의 고정 틱(게임 시간)에서만 진행하므로 정지 중에는 멈추고 Step(에디터 도구 모음, 독립 게임은 StepGame 액션 `.`)마다 한 틱 진행한다.
+KeyRoom의 [DoorLock](../../../../samples/KeyRoom/Scripts/DoorLock.cs)은 열쇠 이벤트로 문을 연 뒤 `StartRoutine`으로 `ShowHint`를 시작한다. `ShowHint`는 `ScriptWait.Seconds(0.5)` 뒤에 `doorHint` 플래그를 켜고, `showIf: doorHint`인 **Door hint** UI가 화면 위쪽 가운데에 **The door is open. Head east.**를 표시한다. 대기는 SceneGame의 고정 틱(게임 시간)에서만 진행하므로 정지 중에는 멈추고 Step(에디터 도구 모음, 독립 게임은 StepGame 액션 `.`)마다 한 틱 진행한다.
 
-방식은 반복자(`IEnumerable<ScriptWait>`) 루틴이다. 스레드 풀·`async`를 쓰지 않고 게임 루프가 시작 순서대로 재개하므로 Native AOT에서도 리플렉션·동적 코드 없이 같은 순서로 실행된다. BRUTAL에서 가장 가까운 기능은 `Brutal.Concurrency`의 작업 시스템이지만 워커 스레드에서 병렬 작업을 실행하는 용도라, 게임 틱과 같은 스레드에서 정해진 순서로 스크립트를 이어 실행하는 이 기능에는 쓰지 않았다([BRUTAL 기능 목록](../../../docs/brutal.md)). 대기는 MoNoon의 게임 시간(`GameTime`) 위에 구현했다.
+방식은 반복자(`IEnumerable<ScriptWait>`) 루틴이다. 스레드 풀·`async`를 쓰지 않고 게임 루프가 시작 순서대로 재개하므로 Native AOT에서도 리플렉션·동적 코드 없이 같은 순서로 실행된다. BRUTAL에서 가장 가까운 기능은 `Brutal.Concurrency`의 작업 시스템이지만 워커 스레드에서 병렬 작업을 실행하는 용도라, 게임 틱과 같은 스레드에서 정해진 순서로 스크립트를 이어 실행하는 이 기능에는 쓰지 않았다([BRUTAL 기능 목록](../../../../docs/brutal.md)). 대기는 MoNoon의 게임 시간(`GameTime`) 위에 구현했다.
 
 ## 재생 입력과 결과
 
@@ -30,7 +30,7 @@ KeyRoom의 [DoorLock](../../../samples/KeyRoom/Scripts/DoorLock.cs)은 열쇠 �
 - 소유 오브젝트 비활성화·제거, 씬 종료 시 취소(`finally` 실행), 다시 켜도 재개하지 않음, 꺼진 오브젝트로 시작하면 오류
 - 자기 소유 오브젝트를 끄는 루틴은 그 단계 뒤에 멈춤, 예외는 `ScriptRoutineChecks.Throws: boom`처럼 메서드 이름과 함께 보고
 
-KeyRoom 프로젝트 테스트 [DoorTests](../../../samples/KeyRoom/Tests/DoorTests.cs)도 같은 규칙(30틱, 정지·Step, 문 제거 시 취소)을 확인한다. [프로젝트 테스트 결과](../project-tests/README.md)
+KeyRoom 프로젝트 테스트 [DoorTests](../../../../samples/KeyRoom/Tests/DoorTests.cs)도 같은 규칙(30틱, 정지·Step, 문 제거 시 취소)을 확인한다. [프로젝트 테스트 결과](../project-tests/README.md)
 
 ## 배포본 검사
 

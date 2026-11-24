@@ -21,8 +21,8 @@
 
 | 샘플 | 내용 |
 | --- | --- |
-| [BarrageLab 레이저](../../../samples/BarrageLab/Scenes/Laser.scene) | [LaserSweep](../../../samples/BarrageLab/Scripts/LaserSweep.cs)이 매 틱 경기장 벽 반사(최대 3회, 총 1,400px)를 계산해 Line 2D(두께 6, `#FFF6C8` → `#FF3D8B`)에 넣는다. 24틱마다 [Comet](../../../samples/BarrageLab/Scripts/Comet.cs) 프리팹(Trail 2D 0.45초, 두께 7, 40점)을 풀에서 빌려 쏜다. 경기장 테두리도 Line 2D(두께 2)다. |
-| [PlatformerLab Paths](../../../samples/PlatformerLab/Scenes/Paths.scene) | Kinematic 발판 + Path Follower 2D(점 3개, 모두 곡선, 90px/s, PingPong). 캐릭터가 처음 디디면 [PathRider](../../../samples/PlatformerLab/Scripts/PathRider.cs)가 출발시키고, 기둥 위를 지나 건너편 언덕 높이에서 내린다. |
+| [BarrageLab 레이저](../../../../samples/BarrageLab/Scenes/Laser.scene) | [LaserSweep](../../../../samples/BarrageLab/Scripts/LaserSweep.cs)이 매 틱 경기장 벽 반사(최대 3회, 총 1,400px)를 계산해 Line 2D(두께 6, `#FFF6C8` → `#FF3D8B`)에 넣는다. 24틱마다 [Comet](../../../../samples/BarrageLab/Scripts/Comet.cs) 프리팹(Trail 2D 0.45초, 두께 7, 40점)을 풀에서 빌려 쏜다. 경기장 테두리도 Line 2D(두께 2)다. |
+| [PlatformerLab Paths](../../../../samples/PlatformerLab/Scenes/Paths.scene) | Kinematic 발판 + Path Follower 2D(점 3개, 모두 곡선, 90px/s, PingPong). 캐릭터가 처음 디디면 [PathRider](../../../../samples/PlatformerLab/Scripts/PathRider.cs)가 출발시키고, 기둥 위를 지나 건너편 언덕 높이에서 내린다. |
 
 ![레이저 200프레임](osx-arm64/laser-0200.png) ![Paths 150프레임](osx-arm64/paths-0150.png)
 

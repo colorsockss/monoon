@@ -141,7 +141,7 @@ public override void OnAnimationEvent(ScriptAnimationEvent frame)
 | Line 2D | Width는 월드 단위 두께, Start color·End color는 선 길이를 따라 섞이는 `#RRGGBB` 색이다. Point·X·Y와 **+**·**×**·**Smooth/Corner** 버튼으로 점을 편집한다(아래). 점은 오브젝트의 로컬 좌표이며 이동·회전·스케일이 적용된다. |
 | Trail 2D | 오브젝트 중심이 게임 틱마다 Min step 이상 움직이면 점을 하나 기록하고, 각 점은 Time (s) 동안 Head color에서 Tail color로 바뀌며 투명해지고 가늘어진다. Max points(2–256)가 넘으면 가장 오래된 점부터 버린다. |
 
-선과 궤적은 Sprite Renderer가 없으면 Layer·Order로 그리는 순서를 정한다. 같은 오브젝트에 스프라이트가 있으면 스프라이트의 자리를 함께 쓰며, 궤적은 스프라이트 아래, 선은 위에 그린다. 꺾이는 점은 두께가 유지되도록 마이터로 잇고, 곡선은 구간마다 24개의 직선으로 나눠 그린다. 배포 게임과 Scene Play는 SDL3의 `SDL_RenderGeometry`로, 다른 OS의 Avalonia Scene 미리보기는 사각형마다 선형 그라데이션으로 같은 모양을 그린다.
+선과 궤적은 Sprite Renderer가 없으면 Layer·Order로 그리는 순서를 정한다. 같은 오브젝트에 스프라이트가 있으면 스프라이트의 자리를 함께 쓰며, 궤적은 스프라이트 아래, 선은 위에 그린다. 꺾이는 점은 두께가 유지되도록 마이터로 잇고, 곡선은 구간마다 24개의 직선으로 나눠 그린다. 배포 게임과 Scene Play는 SDL3의 `SDL_RenderGeometry`로, Windows 에디터의 Avalonia Scene 미리보기는 사각형마다 선형 그라데이션으로 같은 모양을 그린다.
 
 스크립트에서 `tick.Objects.SetLinePoints(id, points)`로 월드 좌표의 점 목록을 매 틱 바꿀 수 있다(레이저의 반사점). `TryGetLinePoints`는 그려지는 점(곡선은 나눈 점)을, `TryGetTrailPoints`는 궤적이 기록한 점을 오래된 순서로 월드 좌표에 담는다. 궤적은 게임 시간으로 기록하므로 같은 입력 기록을 재생하면 프레임 속도와 관계없이 같은 점이 남는다. 오브젝트를 비활성화하거나 풀에 돌려보내고 다시 빌려 오면 궤적이 지워진다.
 

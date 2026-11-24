@@ -53,12 +53,17 @@ public sealed class InventoryContainer : GameBehaviour
 ```csharp
 // InventoryAction.OnUiClick 안에서
 var bench = Workbench.Resolve(click.Objects);
-if (Command == "talk" && bench != null) bench.ToggleTalk(click.Ui);
+switch (Command)
+{
+    case "talk": bench.ToggleTalk(click.Ui); break;
+    // add·select·use·quest·choose·save·load도 같은 방식
+}
 ```
 
 ```csharp
 // InventoryWorkbench.Show 안에서
 ui.SetVisible(DialoguePanel, talk.Current != null);
+ui.SetText(QuestTitle, quest.Title);
 ui.SetInteractable(QuestButton, quest.Stage is QuestStage.Available or QuestStage.Ready);
 ui.SetText(Status, message);
 ```
@@ -67,7 +72,7 @@ ui.SetText(Status, message);
 
 ## 수집·대화·보상을 연결하기
 
-`DialogueSession.Begin()`은 시작 노드를 열고 `Current`는 현재 노드, `Position`은 저장할 노드 ID를 제공한다. `Choose`는 0부터 시작하는 선택지 번호와 행동 콜백을 받는다. 약초상 대화 에셋에는 의뢰를 받는 선택지에 `accept`, 보상을 받는 선택지에 `claim`이 들어 있다. [대화 노드와 선택지](../../samples/InventoryLab/Assets/Dialogue/Herbalist.data) · [대화 세션](../../samples/InventoryLab/Scripts/Dialogue/DialoguePlayer.cs)
+`DialogueSession.Begin()`은 시작 노드를 열고 `Current`는 현재 노드, `Position`은 저장할 노드 ID를 제공한다. `Choose`는 0부터 시작하는 선택지 번호와 행동 콜백을 받는다. 약초상 대화 에셋에는 의뢰를 받는 선택지에 `accept`, 보상을 받는 선택지에 `claim`이 들어 있다. 아래는 실패 메시지 처리를 뺀 요약이다. [대화 노드와 선택지](../../samples/InventoryLab/Assets/Dialogue/Herbalist.data) · [대화 세션](../../samples/InventoryLab/Scripts/Dialogue/DialoguePlayer.cs)
 
 ```csharp
 bool advanced = talk.Choose(index, action => action switch

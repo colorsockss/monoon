@@ -4,20 +4,27 @@
 
 ## Inspector에서 붙일 수 있는 내장 컴포넌트
 
-| 이름 | 역할과 주요 설정 |
-| --- | --- |
-| Sprite Renderer | 프로젝트 PNG 또는 기본 **Square**를 Transform 크기로 그린다. Square에는 **Color**를 설정할 수 있다. **Layer / Order**로 월드 그리기 순서를 정한다. |
-| Sprite Animator | **Clip**에 프레임 애니메이션을 연결한다. **Play on start**를 켜면 씬 시작과 함께 재생한다. |
-| Audio Source | 음악·효과음 스트리밍, 루프·페이드, 소스 볼륨과 공간 범위를 설정한다. [믹서와 조작법](audio.md) |
-| Audio Listener 2D | 공간 음향을 듣는 기준점이다. 플레이어에 붙이면 이동에 따라 거리와 좌우 균형이 바뀐다. |
-| Tilemap 2D | 타일셋, 격자 모양, 셀 크기와 배치를 가진 월드 레이어다. [타일맵 편집](tilemaps.md) |
-| Box / Circle / Polygon Collider 2D | 상자·원·볼록 다각형으로 이동을 막거나 진입 이벤트를 받는다. **Layer / Mask**와 **Is Trigger**로 대상을 정한다. [설정과 스크립트 질의](collision.md) |
-| Camera 2D | 시점·추적·Zoom·맵 경계와 출력 영역을 설정한다. [분할 화면과 미니맵](cameras.md) |
-| UI Canvas | 게임 화면 기준 UI 루트와 그리기 **Order**를 정한다. |
-| UI Rect | UI의 **Anchor**와 **Show if** 조건을 정한다. 크기와 오프셋은 Transform에서 편집한다. |
-| UI Image | PNG 또는 단색 채움을 UI 영역에 표시한다. |
-| UI Text | 텍스트, 글자 크기·색, 가로·세로 안쪽 여백을 지정한다. |
-| UI Button | 마우스 클릭과 키보드 활성화를 받는다. **Interactable**로 입력을 제어한다. [UI 제작](game-ui.md) |
+**Inspector → Add Component**는 내장 컴포넌트를 아래 분류로 보여 주고, 마지막 **Scripts**에 프로젝트 C# 컴포넌트를 둔다.
+
+| 분류 | 컴포넌트 | 역할과 안내 |
+| --- | --- | --- |
+| Rendering | Sprite Renderer | 프로젝트 PNG 또는 기본 **Square**를 Transform 크기로 그린다. **Color**, **Draw**(Simple·Tiled·Sliced), **Layer / Order**로 색·반복·그리기 순서를 정한다. [스프라이트](sprites.md) |
+| Rendering | Sorting Group 2D | 여러 장으로 된 캐릭터를 한 덩어리로 정렬한다. [발 위치 정렬](sprites.md#발-위치로-앞뒤-정렬하기) |
+| Rendering | Tilemap 2D | 타일셋, 격자 모양, 셀 크기와 배치를 가진 월드 레이어다. [타일맵 편집](tilemaps.md) |
+| Rendering | Camera 2D · Parallax 2D | 시점·추적·Zoom·맵 경계와 출력 영역, 카메라를 따라 늦게 움직이는 배경. [카메라](cameras.md) |
+| Rendering | Line 2D · Trail 2D | 점을 이은 선과 움직임 궤적. [선과 궤적](sprites.md#선과-궤적) |
+| Rendering | Particle Emitter 2D · Sprite Shader 2D · Point Light 2D · Global Light 2D | 파티클, 미리 구운 셰이더 시트, 점광원과 어둠·그림자. [효과](effects.md) |
+| Rendering | Text 2D | 월드 좌표를 따라가는 텍스트. [이름표와 데미지 숫자](game-ui.md#월드에-붙는-이름표와-데미지-숫자) |
+| Physics | Box · Circle · Polygon · Capsule · Edge Collider 2D | 이동을 막거나 진입 이벤트를 받는 도형. **Layer / Mask**와 **Is Trigger**로 대상을 정한다. [설정과 스크립트 질의](collision.md) |
+| Physics | Rigidbody 2D · Distance · Revolute · Slider · Weld Joint 2D · Character Motor 2D | Box2D 강체와 조인트, 경사를 걷는 캐릭터. [플랫포머 물리](platformer-physics.md) |
+| UI | UI Canvas · UI Rect · UI Image · UI Text · UI Button | 게임 화면 기준 UI 루트, 앵커와 **Show if**, 이미지·텍스트·버튼. [UI 제작](game-ui.md) |
+| UI | UI Layout · UI Scroll View · UI Text Field · UI Slider · UI Toggle · UI Dropdown | 자동 배치·스크롤 목록, 이름 입력, 설정 화면 위젯. [UI 제작](game-ui.md#슬라이더토글드롭다운) |
+| Audio | Audio Source · Audio Listener 2D | 음악·효과음 스트리밍, 루프·페이드, 공간 음향을 듣는 기준점. [오디오](audio.md) |
+| Animation | Sprite Animator | **Clip**에 프레임 애니메이션을 연결한다. **Play on start**를 켜면 씬 시작과 함께 재생한다. [애니메이션](sprites.md#게임에서-재생하기) |
+| Animation | Skeleton Animator 2D · Foot IK 2D · Position Tween 2D | 뼈대 애니메이션, 발 IK, 위치 왕복. [리그 애니메이션](rig-animation.md) |
+| Animation | Path Follower 2D | 곡선 경로를 일정한 속도로 따라간다. [경로 발판](platformer-physics.md#곡선-경로를-따라가는-발판) |
+| Animation | Cutscene Director | 카메라 전환과 대화를 순서대로 재생한다. [컷신과 대화](cutscenes.md) |
+| Navigation | Navigation Region 2D | 플랫폼 보행 길찾기와 탑다운 자유 이동 길찾기의 영역. [내비게이션](navigation.md) |
 
 Transform은 모든 오브젝트가 가진 기본 정보다. 이동, 열쇠 획득, 문 열기 등 게임 고유의 동작은 프로젝트의 C# 스크립트로 추가한다. 예전 HUD 데이터는 씬을 열 때 현행 UI 구성으로 읽힌다.
 
@@ -27,7 +34,7 @@ Transform은 모든 오브젝트가 가진 기본 정보다. 이동, 열쇠 획�
 
 **Project → Game Resolution…**에서 논리 너비와 높이를 지정한다. 기본값은 800×450이며 각 축에 1~16384의 정수를 넣을 수 있다. 창을 늘리면 같은 비율로 확대되고 남는 부분에는 여백이 생긴다. Scene 편집 중에는 카메라 바깥쪽도 작업할 수 있다.
 
-픽셀 아트 게임은 같은 창에서 **Pixel art: integer scale**을 켠다. 배포 게임은 SDL의 정수 배율 표시(`SDL_LOGICAL_PRESENTATION_INTEGER_SCALE`)로 게임 픽셀 하나를 장치 픽셀 1·2·3…개로만 그리고, 남는 부분은 여백으로 둔다. PNG 스프라이트는 보간하지 않고(nearest) 그리며, 카메라가 보는 영역의 왼쪽 위를 게임 픽셀 단위로 반올림해 스프라이트가 움직일 때 줄이 흔들리지 않는다. 글자는 지금처럼 부드럽게 축소한다. 에디터 Game 패널의 **Fit**도 같은 규칙으로 배율을 내림한다. 옵션은 `GameSettings`의 `integerScale: true`로 저장되며, 꺼 두면 키를 쓰지 않는다. [DisplayLab 검증](../../engine/tests/results/engine-features-1/README.md#168-정수-배율-표시)
+픽셀 아트 게임은 같은 창에서 **Pixel art: integer scale**을 켠다. 배포 게임은 SDL의 정수 배율 표시(`SDL_LOGICAL_PRESENTATION_INTEGER_SCALE`)로 게임 픽셀 하나를 장치 픽셀 1·2·3…개로만 그리고, 남는 부분은 여백으로 둔다. PNG 스프라이트는 보간하지 않고(nearest) 그리며, 카메라가 보는 영역의 왼쪽 위를 게임 픽셀 단위로 반올림해 스프라이트가 움직일 때 줄이 흔들리지 않는다. 글자는 지금처럼 부드럽게 축소한다. 에디터 Game 패널의 **Fit**도 같은 규칙으로 배율을 내림한다. 옵션은 `GameSettings`의 `integerScale: true`로 저장되며, 꺼 두면 키를 쓰지 않는다. [DisplayLab 검증](../../engine/tests/results/engine-features-1/README.md)
 
 **Scene → Create Camera**로 여러 카메라를 배치한다. **Camera 2D → Set as start camera**로 시작 시점을 선택하고 **Frame Camera**로 편집 뷰를 맞춘다. Primary 중 한 대가 활성화되고 Extra·Minimap은 동시에 표시할 수 있다. **Follow**로 플레이어를 지정하거나 카메라를 자식으로 두어 따라가게 할 수 있으며, `tick.Cameras.TrySetActive(id)`로 다른 카메라를 요청할 수 있다. 월드 오브젝트가 있는 씬에는 카메라가 필요하다. UI 전용 씬도 실행할 수 있다.
 
@@ -52,7 +59,7 @@ public sealed class PlayerMovement : GameBehaviour
 
 - 고정 업데이트는 게임 시간 1초당 60회다. 일시정지·배속·UI 시간은 [시간 제어](time.md)에서 설정한다. `tick.Move`에는 해당 틱의 변위를 전달한다. 자식과 충돌체가 있는 오브젝트도 같은 이동 경로를 사용한다.
 - **Project → Input Actions…**에서 액션을 만들고 키보드·마우스·패드를 연결한다. `tick.Input.Move`는 네 이동 액션을 길이 1 이하의 벡터로 합친다. `InteractPressed`는 `Pressed("Interact")`의 단축형이다. [액션 편집과 스크립트 API](input-actions.md)
-- Inspector는 공개 인스턴스 필드 중 `int`, `float`, `double`, `bool`, `string`, 오브젝트 참조용 `Guid`, 컴포넌트 참조용 `ComponentReference<T>`, 씬·프리팹 참조용 `SceneReference`·`PrefabReference`를 지원한다. 편집할 필드는 초기값을 생략하거나 상수를 사용한다. 같은 스크립트라도 Inspector 값은 오브젝트별로 씬에 저장된다.
+- Inspector는 공개 인스턴스 필드와 `[SerializeField]` 필드를 편집한다. 숫자·`bool`·`string`·enum·`Vector2`·`Color`, 오브젝트 참조 `Guid`, `ComponentReference<T>`, 에셋 참조(`SpriteReference`·`PrefabReference`·`SceneReference`·`DataReference`·`TableReference`)와 그 배열, 기본 타입 배열·`List<T>`·사전·`[Serializable]` 구조체를 쓸 수 있다. 편집할 필드는 초기값을 생략하거나 상수·간단한 초기화식을 쓴다. 같은 스크립트라도 Inspector 값은 오브젝트별로 씬에 저장된다. [필드 종류](scripting.md#숫자색플래그배열목록사전구조체-필드) · [필드 속성과 툴팁](scripting.md#inspector-필드-속성과-툴팁)
 
 ## 벽, 열쇠, 다음 방
 

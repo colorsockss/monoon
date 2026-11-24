@@ -1,5 +1,7 @@
 # Windows x64: SDL 로드와 게임 창 포커스
 
+Windows 검증은 사용자가 Windows 장비 준비를 알릴 때까지 보류 중이다. 그때 다시 확인할 항목은 [13–16장 Windows 목록](../../engine/tests/results/next1-x64/README.md#windows-x64--장비-준비-후)에 모여 있다. 아래는 그 전의 기록과 절차다.
+
 검증 환경은 이 Mac에 보존한 QEMU의 Windows 11 Enterprise LTSC x64(24H2, 빌드 26100.1742)다. [게스트 정보](../../engine/tests/results/keyroom-desktop/yaml-windows-x64/windows.txt)와 [플레이 결과](../../engine/tests/results/keyroom-desktop/yaml-windows-x64/results.json)는 **YAML Release 게임**에 대한 기록이다.
 
 ## 엔진·에디터

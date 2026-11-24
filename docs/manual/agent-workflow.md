@@ -37,10 +37,11 @@ engine/scripts/bootstrap-worktree.sh
 
 | 종류 | 이름 |
 | --- | --- |
-| 그 묶음만 실행(템플릿 불필요) | `screen-effects`, `particles`, `particle-budget`, `lines`, `contacts`, `physics`, `colliders`, `physics-alloc`, `audio-buses`, `autotile`, `tile-animation`, `animator-conditions`, `animator-directions`, `world-text`, `ui-grid`, `rebinding`, `prefab-pool`, `terrain`, `nav-free`, `asset-report`(Release와 Native AOT) |
-| 앞의 검사를 모두 실행한 뒤 멈춤 | `names`, `determinism-scan`, `player-yaml`, `packages`, `build-settings`, `profiler`, `rich-text`, `deck`, `quest`, `inventory`, `pool`, `rhythm`, `turn`, `generation`, `cutscene`, `rig`, `effects`, `nav`, `world`, `platformer`, `split-loading` |
+| 그 묶음만 실행(템플릿 불필요) | `feature-switches`, `physics`, `nav-free`, `prefab-pool`, `particles`, `lighting`, `particle-budget`, `terrain`, `autotile`, `tile-animation`, `colliders`, `physics-alloc`, `audio-buses`, `camera-framing`, `screen-effects`, `lines`, `world-text`, `ui-grid`, `contacts`, `animator-conditions`, `animator-directions`, `script-debug`, `input-interactions`, `rebinding`, `engine-features-1`, `inspector-edit`, `history` |
+| 그 묶음만 실행(템플릿 필요) | `asset-report`(Release와, `--only`로만 도는 Native AOT 보고서), `build-size`(= `./monoon test size`) |
+| 앞의 검사를 모두 실행한 뒤 멈춤 | `names`, `features`, `determinism-scan`, `player-yaml`, `packages`, `build-settings`, `profiler`, `rich-text`, `deck`, `quest`, `inventory`, `pool`, `rhythm`, `turn`, `generation`, `cutscene`, `rig`, `effects`, `nav`, `world`, `platformer`, `split-loading` |
 
-두 번째 줄의 이름은 `packages`부터 세 플랫폼 템플릿이 필요하다(맨 앞의 배포 패키지 검사). 새 워크트리에서는 bootstrap 뒤에 실행한다.
+세 번째 줄의 이름은 `features`부터 세 플랫폼 템플릿이 필요하다(순서 200의 `FeatureChecks`가 게임을 내보낸다). 새 워크트리에서는 bootstrap 뒤에 실행한다. 목록은 검사를 더할 때마다 늘어나므로 `--list`가 기준이다.
 
 ### Engine.Checks 등록과 계층
 
@@ -115,6 +116,8 @@ python3 engine/scripts/run-harness.py --tier full                     # ./monoon
 python3 engine/scripts/run-harness.py --check                         # 매니페스트 자기 검사
 ```
 
+그 밖의 옵션: `--dry-run`(단계 스크립트만 쓰고 출력), `--build-editor`(Scene Play 전에 `build-editor-mac.sh`를 한 번 실행), `--skip-checks`(`--tier`에서 `./monoon test` 생략), `--broad`(아래).
+
 - 결과 폴더(`--out`, 없으면 새 임시 폴더)에 하네스마다 `run.sh`, `run.log`와 `summary.json`(하네스, 모드, 종료 코드, 초, 실패한 단계, 첫 오류 줄)이 남는다. 첫 오류 줄은 결과 폴더의 가장 최근 `error.txt` 첫 줄, 없으면 실패한 단계 출력의 마지막 `Error`·`Exception`·`FAIL` 줄이다. 종료 코드 2는 준비물(템플릿, 에디터, 창 도구)이 없다는 뜻이고 이유가 같은 줄에 나온다.
 - `--changed <기준>`은 기준과의 merge-base부터 작업 트리까지(커밋하지 않은 파일과 새 파일 포함), `a..b`나 `<커밋>^!`은 그 범위의 바뀐 파일을 본다. 하네스 폴더, 샘플, `watch`에 맞으면 직접 선택이다. 에디터 소스·`engine/tests/Shared`·`editor.py`·`StartupHook.cs`·프로브 csproj만 바뀌었으면 `scene-play`만, `Engine.Player`만 바뀌었으면 Release·Native AOT만 고른다. 문서와 결과 폴더만 바뀐 diff는 하네스를 고르지 않는다(`./monoon test`가 맡는다).
 - 매니페스트의 `broad` glob(`engine/src/**`, `engine/native/**`, 빌드 스크립트 등)은 공용 코드라 거의 모든 하네스에 닿는다. `--broad`나 `--tier full`일 때만 더한다.
@@ -151,7 +154,8 @@ python3 engine/scripts/run-harness.py --check                         # 매니�
 - Linux x64는 게임 실행 대상과 CI(헤드리스 빌드·리플레이)만이다. Linux 에디터는 지원하지 않는다.
 - Windows 검증은 사용자가 Windows 장비 준비를 알릴 때까지 보류한다. 이 Mac에서 win-x64 템플릿·배포본을 빌드하는 것은 괜찮다.
 - 구현 에이전트는 VM을 시작하지 않는다. x64 회귀는 coordinator가 웨이브 끝에 한 번에 돌린다. `.test-env/`의 가상 디스크·기반 이미지·키는 바꾸거나 지우거나 저장소에 넣지 않는다.
-- 시뮬레이션 코드는 `Vector2.Transform`·`Lerp` 대신 `Affine2D`를 쓴다(FMA 차이로 x64 결과가 달라진다). [2D 변환 규칙](transform-2d.md)
+- 시뮬레이션 코드는 `Vector2.Transform`·`Lerp` 대신 `Affine2D`를 쓴다(FMA 차이로 x64 결과가 달라진다). `./monoon test`의 `determinism-scan`이 런타임 소스에서 금지 API를 찾으면 실패한다. [2D 변환 규칙](transform-2d.md)
+- 지난 Linux x64 회귀(13–16장)의 게스트 구성, 실패 처리, Windows 보류 목록은 [next1-x64 기록](../../engine/tests/results/next1-x64/README.md)에 있다. 게스트 빌드 시간을 줄이려고 하네스의 빌드를 샘플별로 묶는 방법은 [제안](../../engine/tests/results/next1-x64/build-groups.md)만 있고 `run-harness.py`에는 아직 없다(하네스마다 빌드한다).
 
 ## 병렬 작업, 병합과 소유
 

@@ -77,4 +77,4 @@ CollisionLab을 열고 Play에서 **1**을 누르면 충돌체 1천 개, **2**�
 
 캡슐과 Edge도 같은 격자에 들어간다. 1천·1만 개(캡슐·Edge·박스 섞음) 월드에서 격자와 전체 순회의 겹침·레이·스윕 답이 순서까지 같다. [16.4 검증 기록](../../engine/tests/results/colliders-capsule-chain/README.md)
 
-스크립트에서 `tick.Objects.Physics.QueryDiagnostics.LastColliderCandidates`를 읽으면 직전 겹침·레이캐스트·스윕에서 검사 대상으로 꺼낸 오브젝트 충돌체 수를 얻는다. 평소에는 인덱스가 켜져 있다. 비교할 때는 해당 월드의 `UseSpatialIndex`를 잠시 끈 뒤 원래 값으로 복원한다. [플랫폼별 측정과 재현 명령](../../engine/tests/results/spatial-queries/README.md)
+스크립트에서 `tick.Objects.Physics.QueryDiagnostics.LastColliderCandidates`를 읽으면 직전 겹침·레이캐스트·스윕에서 검사 대상으로 꺼낸 오브젝트 충돌체 수를 얻는다. 평소에는 인덱스가 켜져 있다. 비교할 때는 같은 `QueryDiagnostics`의 `UseSpatialIndex`를 잠시 끈 뒤 원래 값으로 복원한다. [플랫폼별 측정과 재현 명령](../../engine/tests/results/spatial-queries/README.md)

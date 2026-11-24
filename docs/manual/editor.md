@@ -51,7 +51,9 @@ Hierarchy 행에 포인터를 올리면 오른쪽에 눈(표시)과 자물쇠(�
 
 Console 패널 위쪽 도구 줄에는 **Clear**, **Collapse**, 검색 필드, 로그·경고·오류 필터 버튼이 있다. 필터 버튼의 숫자는 보관 중인 메시지(최대 1,000개)의 종류별 개수이고, 버튼을 끄면 그 종류가 목록에서 빠진다. **Collapse**를 켜면 종류·내용·소스 위치가 같은 메시지를 한 줄로 묶고 오른쪽에 개수를 표시한다. 목록에는 각 메시지의 첫 줄만 나온다. 메시지를 선택하면 아래에 전체 내용과 스택, 소스 위치가 나오며 텍스트를 선택해 복사할 수 있다. 소스 위치가 있는 메시지는 더블클릭해 스크립트를 연다.
 
-글자 없는 아이콘 버튼은 포인터를 올리면 이름이 툴팁으로 표시된다. 창 위쪽 가운데 도구 모음의 일시정지·한 틱 진행과 Scene의 도구 버튼도 아이콘 버튼이다. 패널, 플로팅 창, 대화 상자의 색·글자 크기·간격은 같은 디자인 토큰을 쓴다. 긴 오브젝트·필드 이름은 말줄임표로 줄이고 툴팁으로 전체 이름을 보여 준다. [토큰과 아이콘 캡처](../../engine/tests/results/editor-theme/README.md)
+### 아이콘과 툴팁
+
+글자 없는 아이콘 버튼은 포인터를 올리면 이름이 툴팁으로 표시된다. 창 위쪽 가운데 도구 모음의 일시정지·한 틱 진행과 Scene의 도구 버튼도 아이콘 버튼이다. 패널, 플로팅 창, 대화 상자의 색·글자 크기·간격은 같은 디자인 토큰을 쓴다. 글자는 OS 시스템 글꼴로 그린다. 긴 오브젝트·필드 이름은 말줄임표로 줄이고 툴팁으로 전체 이름을 보여 준다. [토큰과 아이콘 캡처](../../engine/tests/results/editor-theme/README.md)
 
 ## 패널 배치와 레이아웃
 
@@ -74,8 +76,8 @@ Hierarchy, Project, Scene, Game, Inspector와 아래 도구 패널은 각각 독
 
 | 패널 | 여는 방법 |
 | --- | --- |
-| Console | **Project → Console…**, Play의 **Debug → Console…** |
-| Profiler | Play의 **Debug → Profiler**, **Run → Frame Profiler** |
+| Console | **Project → Console…**, Play 중 **Debug** 도구 줄의 **Console…** |
+| Profiler | Play 중 **Debug** 도구 줄의 **Profiler**, **Run → Frame Profiler** |
 | Particle | Inspector의 Particle Emitter 2D **Edit in Particle panel**, Project의 `.particles` 더블클릭, **Window → Particle** ([파티클 패널](effects.md#particle-패널)) |
 | Animator | Project의 `.controller` 더블클릭, **+ → New Animator Controller…** |
 | Clip | Project의 `.clip` 더블클릭, **+ → New Animation Clip…** |
@@ -126,7 +128,7 @@ Scene과 Game은 SDL 화면 하나를 함께 쓴다. 편집 중에는 Scene 패�
 | Save Layout as Custom | 현재 배치와 크기, 띄운 창의 위치를 Custom으로 저장한다. |
 | Reset Layout | 띄운 패널을 모두 메인 창에 붙이고 Default로 되돌린다. |
 
-배치는 프로젝트가 아니라 사용자 설정에 저장되어 다음 실행에 복원된다. 패널을 옮기거나 분할선을 놓을 때와 에디터를 닫을 때 저장하며, 창 위치·크기, 띄운 패널 창의 위치·크기, Custom 배치도 함께 저장한다. 위치는 macOS `~/Library/Application Support/MoNoon/editor-layout.json`, Windows `%LOCALAPPDATA%\MoNoon\editor-layout.json`, Linux `~/.local/share/MoNoon/editor-layout.json`이다. `MONOON_USER_DATA`를 지정하면 그 폴더를 쓴다. 저장한 패널 크기가 현재 화면보다 크면 Default 배치를, 저장한 창 위치가 연결된 모니터 밖이거나 창이 화면보다 크면 기본 크기(1220×740)를 쓴다. 띄운 패널 창이 사라진 모니터에 있었거나 화면보다 크면 메인 창 가운데에 기본 크기로 연다. 파일을 지우면 Default로 시작한다.
+배치는 프로젝트가 아니라 사용자 설정에 저장되어 다음 실행에 복원된다. 패널을 옮기거나 분할선을 놓을 때와 에디터를 닫을 때 저장하며, 창 위치·크기, 띄운 패널 창의 위치·크기, Custom 배치도 함께 저장한다. 위치는 macOS `~/Library/Application Support/MoNoon/editor-layout.json`, Windows `%LOCALAPPDATA%\MoNoon\editor-layout.json`이다. `MONOON_USER_DATA`를 지정하면 그 폴더를 쓴다. 저장한 패널 크기가 현재 화면보다 크면 Default 배치를, 저장한 창 위치가 연결된 모니터 밖이거나 창이 화면보다 크면 기본 크기(1220×740)를 쓴다. 띄운 패널 창이 사라진 모니터에 있었거나 화면보다 크면 메인 창 가운데에 기본 크기로 연다. 파일을 지우면 Default로 시작한다.
 
 ## 오브젝트와 프리팹
 
@@ -141,7 +143,7 @@ Scene과 Game은 SDL 화면 하나를 함께 쓴다. 편집 중에는 Scene 패�
 
 ## 다중 선택과 기즈모
 
-Hierarchy에서 첫 오브젝트를 클릭하고 마지막 오브젝트를 **Shift+클릭**하면 펼쳐진 행을 범위 선택한다. **Cmd+클릭**(Windows·Linux는 **Ctrl+클릭**)으로 한 개씩 추가하거나 뺄 수 있다. Scene에서는 **Shift+클릭**으로 개별 선택을 전환한다. Inspector 탭 아래 작업 줄에 선택 개수가 표시된다. 여러 월드 오브젝트를 함께 이동·회전·스케일하려면 Scene 기즈모를 사용한다.
+Hierarchy에서 첫 오브젝트를 클릭하고 마지막 오브젝트를 **Shift+클릭**하면 펼쳐진 행을 범위 선택한다. **Cmd+클릭**(Windows는 **Ctrl+클릭**)으로 한 개씩 추가하거나 뺄 수 있다. Scene에서는 **Shift+클릭**으로 개별 선택을 전환한다. Inspector 탭 아래 작업 줄에 선택 개수가 표시된다. 여러 월드 오브젝트를 함께 이동·회전·스케일하려면 Scene 기즈모를 사용한다.
 
 | 도구 | 조작 | Snap을 켰을 때 |
 | --- | --- | --- |
@@ -163,7 +165,7 @@ Hierarchy에서 첫 오브젝트를 클릭하고 마지막 오브젝트를 **Shi
 1. KeyRoom의 Project 패널에서 `Scenes/WallWorkshop.scene`을 열고 Hierarchy에서 **Wall 01**을 클릭한 뒤 **Wall 10**을 **Shift+클릭**한다.
 2. Inspector 작업 줄에 **10 selected**가 표시되고 공통 컴포넌트가 나온다. 모든 벽에서 같은 값은 그대로 보이고 서로 다른 값은 `—`(마스크 버튼은 **Mixed**)로 보인다. 예제에서 너비는 76, 높이는 28이며 충돌 레이어와 마스크는 혼합 상태다.
 3. **Box Collider 2D → Mask**에서 **None**을 고르면 10개 마스크가 모두 0이 된다. **All layers**는 32개 비트를 전부 켠다. 개별 레이어의 **✓**는 모든 벽이 켰다는 뜻이고, **−**는 일부 벽만 켰다는 뜻이다. 혼합된 레이어를 클릭하면 그 비트를 전부 켜고, 모두 켜진 레이어를 클릭하면 그 비트를 전부 끈다. 각 벽의 다른 비트는 유지된다.
-4. **Edit → Undo** 또는 **Cmd+Z**(Windows·Linux는 **Ctrl+Z**)를 한 번 누른다. 벽 10개가 선택된 채 원래 마스크로 돌아간다. 벽 하나를 선택하고 **Overrides…**를 열면 그 인스턴스의 개별 설정을 볼 수 있다.
+4. **Edit → Undo** 또는 **Cmd+Z**(Windows는 **Ctrl+Z**)를 한 번 누른다. 벽 10개가 선택된 채 원래 마스크로 돌아간다. 벽 하나를 선택하고 **Overrides…**를 열면 그 인스턴스의 개별 설정을 볼 수 있다.
 
 
 ## 프리팹의 원본과 인스턴스 편집
@@ -209,7 +211,7 @@ KeyRoom의 `Scenes/PrefabWorkshop.scene`에서 자물쇠만 원본에 적용하�
 
 1. 오브젝트를 선택하고 **Add Component**를 연다. 위쪽 검색 상자에 이름 일부를 입력하면(예: `col` → 충돌체 5종과 이름이 맞는 스크립트) 맞는 항목만 남고, Enter는 첫 항목을 붙인다. 내장 컴포넌트는 **Rendering·Physics·UI·Audio·Animation·Navigation**, 프로젝트 동작은 **Scripts** 묶음에 있다. **(Added)**는 이미 붙인 항목이다.
 2. 새 동작은 **Add Component → New C# Component… → Create & Add**로 생성과 부착을 함께 할 수 있다. **Project → + → New C# Script…**로 파일을 먼저 만들었다면, Project에서 `.cs`를 선택된 오브젝트의 Inspector로 드래그한다.
-3. macOS에서는 **MoNoon → Preferences…**, Windows·Linux에서는 **Edit → Preferences…**를 연다. **External script editor**를 지정하거나 **Use System Default**를 선택한다.
+3. macOS에서는 **MoNoon → Preferences…**, Windows에서는 **Edit → Preferences…**를 연다. **External script editor**를 지정하거나 **Use System Default**를 선택한다.
 4. Project의 `.cs`를 더블클릭하거나 Inspector의 스크립트 톱니바퀴에서 **Edit Script**를 누른다. 외부 에디터에서 저장하고 MoNoon으로 돌아온 뒤 Play한다. Play 중에 저장하면 필드 값을 유지한 채 새 코드로 바뀐다. [Play 중 스크립트 다시 불러오기](scripting.md#play-중-스크립트-다시-불러오기) 컴파일 오류는 **Project → Console…**에서 찾아 더블클릭하면 파일을 열 수 있다. [C# 작성 규칙과 예제](runtime.md)
 
 5. 프로젝트의 `Editor/` 폴더에 C# 파일을 두면 그 프로젝트에서만 쓰는 메뉴 명령, 스크립트 컴포넌트의 Inspector, 도킹 패널을 추가할 수 있다. KeyRoom은 **Project → Extensions → Place Coin**, CollectCoin의 Inspector 행, **Window → Coins** 패널을 이렇게 추가한다. [프로젝트 에디터 확장](workspace.md#프로젝트-에디터-확장)
@@ -313,7 +315,7 @@ Inspector의 텍스트·숫자 필드는 입력하는 즉시 씬과 Scene 화면
 
 Undo 기록은 편집마다 바뀐 오브젝트만 보관한다. 바뀌지 않은 오브젝트는 이전 기록과 같은 데이터를 함께 쓰므로, 1만 오브젝트 씬에서 100단계를 기록해도 약 13 MB다(이전에는 단계마다 씬 전체를 복사해 약 1 GB였다). Undo·Redo도 바뀐 오브젝트만 다시 읽는다. [측정 기록](../../engine/tests/results/inspector-undo-diff/README.md)
 
-| 동작 | macOS | Windows·Linux |
+| 동작 | macOS | Windows |
 | --- | --- | --- |
 | 새 프로젝트 / 열기 / 씬 저장 | ⌘N / ⌘O / ⌘S | Ctrl+N / Ctrl+O / Ctrl+S |
 | Undo / Redo | ⌘Z / ⇧⌘Z | Ctrl+Z / Ctrl+Shift+Z |

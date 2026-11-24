@@ -103,9 +103,9 @@ KeyRoom 첫 방에서 **K** 또는 패드 **RightShoulder**를 누르면 조작�
 
 ## 게임패드 진동과 마우스 커서
 
-`tick.Session.Rumble(low, high, seconds)`는 연결된 게임패드의 저주파(왼쪽)·고주파(오른쪽) 모터를 0–1 세기로 `seconds` 동안 진동시킨다. 엔진이 입력을 읽는 첫 번째 패드에 SDL의 `SDL_RumbleGamepad`로 전달하며, 새 호출은 진행 중인 진동을 대체한다. 시간이 지나면 SDL이 멈춘다. 패드가 없거나 창 없이 실행하면 무시된다. 플레이어가 `tick.Ui.Preferences.Rumble`을 끄면 요청을 버린다. 이 값도 [흔들림·깜빡임 설정](cameras.md#흔들림과-깜빡임-줄이기)과 함께 `SaveTo`·`LoadFrom`으로 저장한다.
+`tick.Session.Rumble(low, high, seconds)`는 연결된 게임패드의 저주파(왼쪽)·고주파(오른쪽) 모터를 0–1 세기로 `seconds`(0–60초) 동안 진동시킨다. 범위 밖 값은 `ArgumentOutOfRangeException`이다. 엔진이 입력을 읽는 첫 번째 패드에 SDL의 `SDL_RumbleGamepad`로 전달하며, 새 호출은 진행 중인 진동을 대체한다. 시간이 지나면 SDL이 멈춘다. 패드가 없거나 창 없이 실행하면 무시된다. 플레이어가 `tick.Ui.Preferences.Rumble`을 끄면 요청을 버린다. 이 값도 [흔들림·깜빡임 설정](cameras.md#흔들림과-깜빡임-줄이기)과 함께 `SaveTo`·`LoadFrom`으로 저장한다.
 
-`tick.Session.SetCursor(sprite, hotX, hotY)`는 프로젝트 PNG(최대 256×256)를 마우스 커서로 쓴다. 핫스폿은 클릭 위치가 되는 이미지 픽셀이며 이미지 밖이면 `ArgumentOutOfRangeException`이 발생한다. `ResetCursor()`로 시스템 커서를 복원하고, `Cursor`로 현재 상태를 읽는다. 스크립트 필드를 `SpriteReference`로 선언하면 빌드가 PNG를 배포본에 포함한다. 플레이어는 SDL 컬러 커서로 표시한다. Scene Play는 같은 픽셀로 Mac에서는 SDL Scene 패널의 `NSCursor`를, Windows·Linux에서는 Avalonia 커서를 만들어 Scene 패널 위에 표시하고, Play를 멈추면 원래 커서로 돌아간다.
+`tick.Session.SetCursor(sprite, hotX, hotY)`는 프로젝트 PNG(최대 256×256, 더 크면 `ArgumentException`)를 마우스 커서로 쓴다. 핫스폿은 클릭 위치가 되는 이미지 픽셀이며 이미지 밖이면 `ArgumentOutOfRangeException`이 발생한다. `ResetCursor()`로 시스템 커서를 복원하고, `Cursor`로 현재 상태를 읽는다. 스크립트 필드를 `SpriteReference`로 선언하면 빌드가 PNG를 배포본에 포함한다. 플레이어는 SDL 컬러 커서로 표시한다. Scene Play는 같은 픽셀로 Mac에서는 SDL Scene 패널의 `NSCursor`를, Windows 에디터에서는 Avalonia 커서를 만들어 Scene 패널 위에 표시하고, Play를 멈추면 원래 커서로 돌아간다.
 
 CameraLab에서 **6**(패드 North)은 `Rumble(.3, .9, .2)`, **1**은 흔들림과 함께 `Rumble(1, .5, .4)`를 요청한다. **8**(RightStick)은 진동 끄기, **7**(LeftStick)은 조준 커서 [Cursor.png](../../samples/CameraLab/Assets/Cursor.png)(핫스폿 8, 8)와 시스템 커서를 바꾼다.
 

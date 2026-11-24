@@ -38,7 +38,7 @@ Scene에서 위젯을 드래그하면 고정된 변의 여백도 갱신된다. *
 
 **UI Image**의 **Sprite**를 선택하면 PNG가 영역에 그려진다. 단색 패널은 **Fill**로 색을 준다. **UI Text**에서는 **Size**, **Color**, **Inset X / Y**를 지정한다. 하나의 오브젝트에 이미지·텍스트·버튼을 함께 붙여 배경과 표시 문구를 구성할 수 있다.
 
-스크립트는 `tick.Ui`, `contact.Ui`, `click.Ui`에서 `SetText(id, text)`, `SetVisible(id, visible)`, `SetInteractable(id, enabled)`를 호출할 수 있다. 대상은 Inspector에 연결한 오브젝트 GUID다. 런타임 변경은 Play 세션에 적용된다. [KeyRoom의 UI가 들어 있는 씬](../../samples/KeyRoom/Scenes/KeyRoom.scene)
+스크립트는 `tick.Ui`, `contact.Ui`, `click.Ui`에서 `SetText(id, text)`, `SetVisible(id, visible)`, `SetInteractable(id, enabled)`를 호출할 수 있다. 대상은 Inspector에 연결한 오브젝트 GUID다. 런타임 변경은 Play 세션에 적용된다. `TextOf(id)`는 지금 그리는 문구(텍스트 필드는 값)를, `Bounds(id)`는 이번 프레임의 위젯 사각형(게임 픽셀)을 돌려준다. `Focused`, `FocusWidget(id)`, `ClearFocus()`로 키보드·패드 포커스를 읽고 옮긴다. [KeyRoom의 UI가 들어 있는 씬](../../samples/KeyRoom/Scenes/KeyRoom.scene)
 
 ## 자동 배치와 스크롤
 
@@ -67,7 +67,7 @@ public override void OnUiDrop(UiDrop drop)
 }
 ```
 
-Grid·Wrap 레이아웃이나 끌어 놓기 칸이 있는 씬은 schemaVersion 41로 저장된다. 둘 다 쓰지 않는 씬은 이전 버전과 같은 키로 저장된다. [검증 기록](../../engine/tests/results/engine-features-4/README.md)
+Grid·Wrap 레이아웃이나 끌어 놓기 칸이 있는 씬은 schemaVersion 41 이상으로 저장된다. 둘 다 쓰지 않는 씬은 이전 버전과 같은 키로 저장된다. [검증 기록](../../engine/tests/results/engine-features-4/README.md)
 
 목록의 크기를 고정하려면 **UI → Scroll View**를 만든다. 뷰 밖의 자식은 그려지거나 클릭되지 않는다. 휠·트랙패드, 스크롤 손잡이 드래그, 키보드·패드 포커스로 보이지 않는 행을 드러낼 수 있다. 가로 목록은 **UI Layout → Axis → Horizontal**로 바꾼다. 긴 설명문은 **UI Text → Wrap lines**를 켠다. 폭·번역·글자 배율이 바뀌면 줄 높이가 바뀌고 세로 목록의 다음 행도 이동한다.
 
@@ -156,7 +156,7 @@ var id = tick.Objects.Rent(Number, at);
 tick.Objects.SetWorldText(id, values[i]);   // 미리 만든 문자열: 프레임마다 새 문자열을 만들지 않는다
 ```
 
-글자는 화면 텍스트와 같은 SDL_ttf 문구 캐시를 쓴다. 같은 문자열은 텍스처 하나를 공유하고, 문구가 그대로인 동안에는 그리기에서 메모리를 할당하지 않는다. 데미지 숫자 100개를 이 Mac의 소프트웨어 렌더러로 그릴 때 한 프레임(단계 + 그리기 + 표시) 중앙값은 약 0.25 ms였다. 캐시는 서로 다른 문자열 128개까지 보관하므로, 한 화면에 그보다 많은 다른 문구를 동시에 띄우면 매 프레임 다시 만든다. Text 2D가 하나라도 있는 씬은 schemaVersion 40으로 저장되고, 빌드는 SDL_ttf를 포함한다. [검증 기록](../../engine/tests/results/engine-features-4/README.md)
+글자는 화면 텍스트와 같은 SDL_ttf 문구 캐시를 쓴다. 같은 문자열은 텍스처 하나를 공유하고, 문구가 그대로인 동안에는 그리기에서 메모리를 할당하지 않는다. 데미지 숫자 100개를 이 Mac의 소프트웨어 렌더러로 그릴 때 한 프레임(단계 + 그리기 + 표시) 중앙값은 약 0.25 ms였다. 캐시는 서로 다른 문자열 128개까지 보관하므로, 한 화면에 그보다 많은 다른 문구를 동시에 띄우면 매 프레임 다시 만든다. Text 2D가 하나라도 있는 씬은 schemaVersion 40 이상으로 저장되고, 빌드는 SDL_ttf를 포함한다. [검증 기록](../../engine/tests/results/engine-features-4/README.md)
 
 ## 플레이어 표시 설정과 탐색
 
@@ -213,6 +213,6 @@ tick.Objects.SetWorldText(id, values[i]);   // 미리 만든 문자열: 프레�
 
 게임 스크립트는 `Session.Display`에서 독립 창의 상태를 읽는다. Scene 패널과 헤드리스 실행에서는 이 값이 `null`이다. `SetFullscreen(bool)`과 `SetVSync(bool)`는 적용 성공 여부를 반환한다. 게임은 `Fullscreen`과 `VSync`에서 실제 적용값을 읽어 위젯을 갱신할 수 있다. 창 관리자나 렌더러가 요청을 거절하면 DisplayLab은 안내 문구와 현재 상태를 표시한다. [DisplayLab 스크립트](../../samples/DisplayLab/Scripts/DisplayOption.cs)
 
-엔진은 게임별 프로필의 `display.settings`에 창 모드의 콘텐츠 너비·높이, 전체 화면 여부, VSync를 저장한다. 크기 단위는 SDL 창 좌표다. 논리 해상도와 화면 비율은 게임 프로젝트가 정하며, 크기가 다른 창에서는 레터박스를 적용한다. 정수 배율을 켠 프로젝트는 배율을 정수로 내림하고 나머지를 여백으로 둔다([정수 배율](runtime.md#월드-시간-카메라)). DisplayLab 오른쪽 위의 12×12 픽셀 배지로 보간 여부를 확인할 수 있다.
+엔진은 게임별 프로필의 `display.settings`에 창 모드의 콘텐츠 너비·높이, 전체 화면 여부, VSync를 저장한다. 크기 단위는 SDL 창 좌표다. 파일이 없으면 프로젝트 해상도의 창, VSync 켬으로 시작하고, 1–32768 밖의 크기는 무시한다. 논리 해상도와 화면 비율은 게임 프로젝트가 정하며, 크기가 다른 창에서는 레터박스를 적용한다. 정수 배율을 켠 프로젝트는 배율을 정수로 내림하고 나머지를 여백으로 둔다([정수 배율](runtime.md#월드-시간-카메라)). DisplayLab 오른쪽 위의 12×12 픽셀 배지로 보간 여부를 확인할 수 있다.
 
 전체 화면은 현재 디스플레이 모드를 유지하는 SDL의 기본 테두리 없는 전체 화면을 사용한다. VSync는 렌더러에서 읽어 온 동기화 간격으로 확인한다. [SDL 전체 화면 API](https://wiki.libsdl.org/SDL3/SDL_SetWindowFullscreen) · [SDL VSync API](https://wiki.libsdl.org/SDL3/SDL_SetRenderVSync)

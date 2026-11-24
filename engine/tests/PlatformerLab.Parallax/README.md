@@ -27,4 +27,4 @@ sh engine/scripts/gui-lock.sh python3 "$qa/editor.py" editor/MoNoon.app/Contents
 python3 "$qa/verify.py" compare "$work/scene-play/scene-play.trace" "$work/release/release.trace" "$work/aot/aot.trace"
 ```
 
-Scene Play는 시작 훅이 패키지 에디터에서 Play를 누르고 같은 기록을 `InputReplay.Play`로 재생한 뒤 Stop한다. [검증 결과](../results/engine-features-1/README.md#162-패럴랙스와-타일-반복-스프라이트)
+Scene Play는 시작 훅이 패키지 에디터에서 Play를 누르고 같은 기록을 `InputReplay.Play`로 재생한 뒤 Stop한다. [검증 결과](../results/engine-features-1/README.md)

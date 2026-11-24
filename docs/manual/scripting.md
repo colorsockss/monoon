@@ -81,17 +81,17 @@ tick.Objects.Tween(tick.ObjectId).Scale(new(1.4f, 1.4f), .1f, TweenEase.EaseOut)
 click.Objects.Tween(click.ObjectId, TweenClock.Ui).UiRect(new(2, 2, -4, -4), .05f, TweenEase.EaseOut).UiRect(default, .08f, TweenEase.EaseIn);
 ```
 
-UI 요소의 현재 위치는 `tick.Ui.Bounds(id)`로 읽는다. [세 실행 경로의 다섯 시점 값](../../engine/tests/results/engine-features-1/README.md#163-스크립트-트윈-api)
+UI 요소의 현재 위치는 `tick.Ui.Bounds(id)`로 읽는다. [세 실행 경로의 다섯 시점 값](../../engine/tests/results/engine-features-1/README.md#검증)
 
 ## 오브젝트 참조 목록
 
-컴포넌트에 `public Guid[] Choices = [];`를 선언한다. Hierarchy에서 오브젝트를 필드의 **Drop object here**에 놓으면 끝에 추가되고, 특정 행에 놓으면 그 행 앞에 추가된다. Inspector 안에서는 오브젝트 이름을 잡아 다른 행에 놓아 그 번호로 옮긴다. **−**는 해당 참조 한 개를 제거한다. 각 편집은 **Cmd+Z**(Windows·Linux는 **Ctrl+Z**) 한 번으로 되돌릴 수 있다.
+컴포넌트에 `public Guid[] Choices = [];`를 선언한다. Hierarchy에서 오브젝트를 필드의 **Drop object here**에 놓으면 끝에 추가되고, 특정 행에 놓으면 그 행 앞에 추가된다. Inspector 안에서는 오브젝트 이름을 잡아 다른 행에 놓아 그 번호로 옮긴다. **−**는 해당 참조 한 개를 제거한다. 각 편집은 **Cmd+Z**(Windows는 **Ctrl+Z**) 한 번으로 되돌릴 수 있다.
 
 InventoryLab의 **Bag → InventoryWorkbench → Choices**에서 **Answer 4**를 **Answer 2**에 놓으면 순서가 **1, 4, 2, 3**이 된다. 저장하고 다시 열어 Play한 뒤 **T**로 약초상과 대화한다. 원래 네 번째 버튼에는 **[2] 보상을 문의한다**가 표시되고 이를 클릭하면 약초상이 보상을 설명한다. 숫자 키는 현재 목록 순서를 따른다. [Mac 검증 화면과 저장 결과](../../engine/tests/results/script-reference-lists/README.md)
 
 ## 에셋 참조 목록과 enum, Vector2
 
-KeyRoom에서 Hierarchy의 **Key → KeySequence**를 펼친다. **Frames**는 문이 열린 후 표시할 스프라이트 목록이다. Project 검색창에서 PNG를 찾아 **Drop .png here**에 놓으면 끝에 추가되고, 기존 행 위에 놓으면 그 행 앞에 추가된다. 목록 안에서 이름을 잡아 옮기면 순서가 바뀐다. 추가·이동·제거 각각을 **Cmd+Z**(Windows·Linux는 **Ctrl+Z**) 한 번으로 되돌릴 수 있다.
+KeyRoom에서 Hierarchy의 **Key → KeySequence**를 펼친다. **Frames**는 문이 열린 후 표시할 스프라이트 목록이다. Project 검색창에서 PNG를 찾아 **Drop .png here**에 놓으면 끝에 추가되고, 기존 행 위에 놓으면 그 행 앞에 추가된다. 목록 안에서 이름을 잡아 옮기면 순서가 바뀐다. 추가·이동·제거 각각을 **Cmd+Z**(Windows는 **Ctrl+Z**) 한 번으로 되돌릴 수 있다.
 
 **RestFrame**에서 **First** 또는 **Last**를 골라 목록의 어느 쪽을 사용할지 정한다. **Offset**의 X와 Y는 문이 열릴 때의 월드 이동량(픽셀)이다. X가 양수면 오른쪽, Y가 음수면 위로 이동한다. **DoorOpen2.png**를 첫 번째에 두고 **First**, **24**, **-12**를 지정한 뒤 저장한다. Play에서 열쇠를 얻으면 열림 애니메이션이 끝난 문은 해당 PNG를 표시하고 월드 좌표 **(504, 70)**에 놓인다. 충돌체는 꺼져 있어 통과할 수 있다. 샘플 기본값은 **Last**와 **(0, 0)**이다.
 
@@ -131,7 +131,7 @@ KeyRoom의 **Chest → OpenChest → Player**에는 `PlayerMovement`가 붙은 �
 
 ## 게임 정의 이벤트
 
-KeyRoom에서 **Key → KeySequence → KeyAcquired**를 펼친다. 기본 연결은 **Door · DoorLock.Unlock**이다. **−**로 해제하고 **Connect…**에서 **Object → Wall/Door**, **Method → DoorLock.Unlock**, **Connect**를 선택해 다시 연결할 수 있다. 연결 행을 누르면 대상을 바꿀 수 있다. 각 변경은 **Cmd+Z**(Windows·Linux는 **Ctrl+Z**) 한 번으로 되돌릴 수 있다. **Cmd+S**로 씬을 저장한다.
+KeyRoom에서 **Key → KeySequence → KeyAcquired**를 펼친다. 기본 연결은 **Door · DoorLock.Unlock**이다. **−**로 해제하고 **Connect…**에서 **Object → Wall/Door**, **Method → DoorLock.Unlock**, **Connect**를 선택해 다시 연결할 수 있다. 연결 행을 누르면 대상을 바꿀 수 있다. 각 변경은 **Cmd+Z**(Windows는 **Ctrl+Z**) 한 번으로 되돌릴 수 있다. **Cmd+S**로 씬을 저장한다.
 
 발신 스크립트는 인자 없는 공개 인스턴스 C# 이벤트를 선언한다. KeyRoom은 처음 열쇠를 얻었을 때만 이벤트를 발생시킨다.
 
@@ -185,7 +185,7 @@ KeyRoom의 기본 설정에서는 먼저 오른쪽 문에 부딪힌 뒤 왼쪽�
 | `tick.Debug.Circle(center, radius, color, width = 1)` | 월드 반지름의 원 윤곽(32분할) |
 | `tick.Debug.Text(position, text, color, size = 12)` | 왼쪽 위가 월드 점에 오는 텍스트. 크기는 화면 픽셀이다. |
 
-`FixedUpdate`에서 그린 도형은 다음 게임 틱까지, `UpdateUi`에서 그린 도형은 다음 UI 프레임까지 보인다. 계속 보이려면 매 틱 다시 호출한다. 게임 시간을 멈추면 마지막 틱의 도형이 남는다. 한 종류당 4,096개까지 그리고 나머지는 버린다. 좌표가 유한하지 않은 호출도 버린다. 목록은 용량을 유지하므로 같은 수를 계속 그리면 프레임마다 할당하지 않는다.
+`FixedUpdate`에서 그린 도형은 다음 게임 틱까지, `UpdateUi`에서 그린 도형은 다음 UI 프레임까지 보인다. 계속 보이려면 매 틱 다시 호출한다. 게임 시간을 멈추면 마지막 틱의 도형이 남는다. `FixedUpdate`와 `UpdateUi`에서 각각 선·원·텍스트를 합쳐 4,096개까지 그리고 나머지는 버린다. 좌표가 유한하지 않은 호출도 버린다. 목록은 용량을 유지하므로 같은 수를 계속 그리면 프레임마다 할당하지 않는다.
 
 **Scene Play와 개발용 빌드(`--profile development`)에서만 그린다.** 두 경로는 스크립트를 `MONOON_DEBUG_DRAW` 기호로 컴파일한다. 배포용 빌드에서는 C# 컴파일러가 `tick.Debug.…` 호출을 인수 계산과 함께 지우고(`[Conditional]`), 게시 단계가 그리기 경로를 트리밍 기능 스위치 `MoNoon.ScriptDebugDraw=false`로 제거한다. 디버그 전용 상태나 계산은 `#if MONOON_DEBUG_DRAW`로 감싸면 배포본에 남지 않는다.
 

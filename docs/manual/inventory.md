@@ -34,6 +34,6 @@ public sealed class LootBag : GameBehaviour
 }
 ```
 
-슬롯 인덱스는 0부터 시작한다. **TryAdd**와 **TryTake**는 공간이나 수량이 부족하면 기존 내용 전체를 보존하고 false를 돌려준다. **Capture()** 결과는 **PlayerStorage.SaveSlot**에 저장할 수 있다. **Restore(data)**는 칸 위치와 수량을 복원한다. 가방 용량, 아이템 ID, 묶음 상한이 기존 저장과 맞지 않으면 오류를 반환하므로 게임 규칙을 변경할 때는 저장 마이그레이션을 적용한다.
+슬롯 인덱스는 0부터 시작한다. **TryAdd**와 **TryTake**는 공간이나 수량이 부족하면 기존 내용 전체를 보존하고 false를 돌려준다. **Capture()** 결과는 **PlayerStorage.SaveSlot**에 저장할 수 있다. **Restore(data)**는 칸 위치와 수량을 복원한다. 저장 버전, 가방 용량, 아이템 ID, 묶음 상한이 기존 저장과 맞지 않으면 가방을 바꾸지 않고 `InvalidDataException`을 던지므로 게임 규칙을 변경할 때는 저장 마이그레이션을 적용한다.
 
 [아이템 정의 표](../../samples/InventoryLab/Assets/Inventory/Items.table) · [가방 코드](../../samples/InventoryLab/Scripts/Inventory/InventoryBag.cs) · [Mac 실행 기록](../../engine/tests/results/inventory/README.md)

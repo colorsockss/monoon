@@ -158,13 +158,13 @@ KeyRoom은 다섯 참조 형식을 모두 쓰고, 객체 변환기 공통 코드
 
 ### 로드맵 15.12 행 문안 제안 (coordinator용, `docs/roadmap.md`는 고치지 않음)
 
-> | 15.12 | AOT 게임별 엔진 기능 조건부 컴파일 | 예정. aot-size-2 측정에서 조건(결정 6)을 넘었다: VYaml 기본 리졸버·JSON 직렬화기 계층을 뺀 뒤에도 SpriteLab AOT 7.36 MB 중 안 쓰는 기능 코드가 약 1.26 MB(DGML 가정 제거, 12개 묶음), 15.11 기능(텍스트·오디오·물리)만 약 0.9 MB, KeyRoom 약 0.55 MB. `#if` 대신 기능 스위치(`[FeatureSwitchDefinition]` + 키트 publish의 `RuntimeHostConfigurationOption Trim="true"`, 기존 `MoNoon.ExportedGameOnly`와 같은 방식)를 쓴다. 15.11 `BuildFeatures`가 기능 집합을 정하고 `NativeAotBuild`가 스위치를 넘긴다. ① `SceneComponent` 합집합을 `ProjectYaml`의 사용자 포매터 목록에 둔 엔진 쪽 포매터로 읽고, 꺼진 기능의 태그는 등록하지 않는다(약 0.21 MB) ② `SceneGame`·`RuntimeObjects`의 단계·그리기·적재 호출과 스크립트 API 진입점을 `if (EngineFeatures.X)`로 감싼다(나머지) ③ 꺼진 기능의 컴포넌트가 씬·프리팹에 있으면 빌드가 실패한다. Release·Scene Play는 스위치가 켜진 채라 코드가 같다(트리밍 Release에도 같은 스위치를 줄 수 있다). 완료: SpriteLab·KeyRoom·PlatformerLab·AudioLab AOT 크기, 각 AOT 리플레이·스모크가 Release와 같음, 기능 끈 조합 4종이 빌드·실행됨, 크기 기준 갱신. [측정](../engine/tests/results/aot-size-2/README.md#3-1512-판단-aot-게임별-엔진-기능-조건부-컴파일) |
+> | 15.12 | AOT 게임별 엔진 기능 조건부 컴파일 | 예정. aot-size-2 측정에서 조건(결정 6)을 넘었다: VYaml 기본 리졸버·JSON 직렬화기 계층을 뺀 뒤에도 SpriteLab AOT 7.36 MB 중 안 쓰는 기능 코드가 약 1.26 MB(DGML 가정 제거, 12개 묶음), 15.11 기능(텍스트·오디오·물리)만 약 0.9 MB, KeyRoom 약 0.55 MB. `#if` 대신 기능 스위치(`[FeatureSwitchDefinition]` + 키트 publish의 `RuntimeHostConfigurationOption Trim="true"`, 기존 `MoNoon.ExportedGameOnly`와 같은 방식)를 쓴다. 15.11 `BuildFeatures`가 기능 집합을 정하고 `NativeAotBuild`가 스위치를 넘긴다. ① `SceneComponent` 합집합을 `ProjectYaml`의 사용자 포매터 목록에 둔 엔진 쪽 포매터로 읽고, 꺼진 기능의 태그는 등록하지 않는다(약 0.21 MB) ② `SceneGame`·`RuntimeObjects`의 단계·그리기·적재 호출과 스크립트 API 진입점을 `if (EngineFeatures.X)`로 감싼다(나머지) ③ 꺼진 기능의 컴포넌트가 씬·프리팹에 있으면 빌드가 실패한다. Release·Scene Play는 스위치가 켜진 채라 코드가 같다(트리밍 Release에도 같은 스위치를 줄 수 있다). 완료: SpriteLab·KeyRoom·PlatformerLab·AudioLab AOT 크기, 각 AOT 리플레이·스모크가 Release와 같음, 기능 끈 조합 4종이 빌드·실행됨, 크기 기준 갱신. [측정](../../../../engine/tests/results/aot-size-2/README.md#3-1512-판단-aot-게임별-엔진-기능-조건부-컴파일) |
 
 ### coordinator에게: 핫스팟 문서에 옮길 내용
 
 `docs/manual/build.md`(핫스팟)의 크기 기준 단락 뒤에 다음을 제안한다.
 
-> 런타임 코드는 VYaml의 `YamlSerializer` 정적 API나 `StandardResolver`를 쓰지 않는다. 읽기는 `ProjectYaml.Decode`, 쓰기는 `ProjectYamlWriters`의 오버로드를 쓴다. Native AOT 플레이어는 `Engine.Player/VYaml.Substitutions.xml`로 `YamlSerializerOptions`의 생성자를 없애므로 그 API는 예외를 낸다. 크기 검사 앞의 키트 map 검사가 둘 다 잡는다. JSON 값 하나를 만들 때는 `JsonSerializer.SerializeToElement` 대신 `JsonElements.Of`를 쓴다. [측정](../../engine/tests/results/aot-size-2/README.md)
+> 런타임 코드는 VYaml의 `YamlSerializer` 정적 API나 `StandardResolver`를 쓰지 않는다. 읽기는 `ProjectYaml.Decode`, 쓰기는 `ProjectYamlWriters`의 오버로드를 쓴다. Native AOT 플레이어는 `Engine.Player/VYaml.Substitutions.xml`로 `YamlSerializerOptions`의 생성자를 없애므로 그 API는 예외를 낸다. 크기 검사 앞의 키트 map 검사가 둘 다 잡는다. JSON 값 하나를 만들 때는 `JsonSerializer.SerializeToElement` 대신 `JsonElements.Of`를 쓴다. [측정](../../../../engine/tests/results/aot-size-2/README.md)
 
 ## 검증
 

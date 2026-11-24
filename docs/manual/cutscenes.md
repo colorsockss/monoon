@@ -25,6 +25,8 @@ lines:
   text: "보여요. 발판이 닿으면 건너갈게요."
 ```
 
+줄마다 `speakerKey`, `textKey`를 더 적으면 [공용 번역 테이블](game-ui.md#공용-번역-테이블과-게임-폰트)에서 현재 언어의 문구를 찾고, 찾지 못하면 `speaker`, `text`를 그대로 쓴다. 대사 패널은 화면 높이의 65% 안에 들어가도록 줄을 바꾸고, 그래도 넘치면 글자를 줄인다. 글자 배율과 고대비 설정을 따른다. 버튼 안내의 `Next`·`Finish`·`Skip`은 번역 키 `dialogue.next`·`dialogue.finish`·`dialogue.skip`으로 바꿀 수 있다.
+
 재생 중에는 한 카메라의 화면과 대사 패널을 표시하며, 일반 HUD와 게임플레이 스크립트에는 조작 입력을 전달하지 않는다. 물리, 트윈, AI는 계속 진행된다. 자동 이동처럼 입력 없이 캐릭터를 움직이는 스크립트는 `tick.Objects.Cutscene`을 보고 직접 멈춘다. 상태에는 디렉터 ID, 0부터 시작하는 현재 줄 번호, 전체 줄 수가 있다. `LastCutsceneExit`로 끝까지 읽음(`Completed`), 건너뜀(`Skipped`), 디렉터 비활성화·제거(`Interrupted`)를 구분한다.
 
 기본 액션 이름은 `DialogueNext`, `SkipCutscene`이다. 프로젝트의 [입력 액션](input-actions.md)에 두 이름을 등록하면 키를 변경할 수 있고 화면 안내도 바뀐다. 연결된 대사 에셋은 Release와 Native AOT 양쪽 빌드에 포함된다. [Mac 실제 실행 검증](../../engine/tests/results/cutscenes/README.md).

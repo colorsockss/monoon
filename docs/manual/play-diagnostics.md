@@ -13,7 +13,7 @@ KeyRoom에서는 **E**로 상자를 열고 Hierarchy 맨 아래에 생긴 **Coin
 1. KeyRoom에서 **Player**를 선택하고 **Play**를 누른다. Inspector의 **PlayerMovement → MoveSpeed**에 `320`을 입력하고 Enter를 누른다. 다른 필드로 포커스를 옮겨도 입력이 확정된다. 게임 화면에서 움직이면 곧바로 빨라진다.
 2. **Stop**만 누르면 다음 Play는 원본 속도 `240`으로 시작한다.
 3. 값을 유지하려면 Play 중 MoveSpeed를 바꾼 뒤 오른쪽 체크를 켜고 Inspector 탭 아래 작업 줄의 **Apply selected**를 누른다. 직접 바꾼 필드는 처음에 체크된다. 함께 바꾼 **Local X**의 체크를 끄면 속도만 적용된다.
-4. **Stop** 후 macOS에서 **Cmd+Z**, Windows·Linux에서 **Ctrl+Z**를 한 번 누르면 그 적용 전체가 되돌아간다. 복원한 값을 파일에도 남기려면 씬을 저장한다.
+4. **Stop** 후 macOS에서 **Cmd+Z**, Windows에서 **Ctrl+Z**를 한 번 누르면 그 적용 전체가 되돌아간다. 복원한 값을 파일에도 남기려면 씬을 저장한다.
 
 실시간 편집은 월드 오브젝트의 로컬 위치·회전·스케일, 오브젝트 **Active**, Sprite Renderer **Tint**, 충돌체 켜짐(**Collider**)과, 스크립트가 Inspector에 공개한 `int`·`float`·`double`·`bool`·enum(플래그 enum 제외)·`Vector2`·`string`·색(`Color`, `[ColorUsage]` 문자열) 필드를 지원한다. 체크·선택·색은 바로, 글자와 숫자는 Enter나 포커스 이동 때 실행 중인 게임에 들어간다. 배열·목록·사전·구조체 필드는 Play 중 읽기 전용이다. **Apply selected**는 현재 선택한 오브젝트에서 직접 입력하고 체크를 켠 값만, **Apply all**은 이번 Play에서 바꾼 모든 오브젝트의 모든 값을 체크와 관계없이 원본 씬으로 옮긴다. 둘 다 Undo 한 번이다. 적용하지 않은 값은 **Stop**에서 버린다. Play 중 스크립트나 물리로 달라진 위치는 자동 적용 대상에 들어가지 않는다.
 
@@ -33,7 +33,7 @@ KeyRoom에서는 **E**로 상자를 열고 Hierarchy 맨 아래에 생긴 **Coin
 
 ## 콘솔
 
-**Project → Console…**, **Debug → Console…** 또는 **Window → Console**로 Console 패널을 연다. 처음 열면 Scene 아래에 들어가고, 이미 열려 있으면 그 탭을 앞으로 가져온다. 닫거나 다른 탭 뒤에 있어도 기록은 계속 쌓인다. Play 시작·종료, 씬 전환, 수동 레이 결과, 컴파일·실행 오류와 스크립트 로그가 실시간으로 들어온다. 등급(Info/Warning/Error)과 검색어로 필터링한다. **Clear**는 전체 기록을 지운다. 최근 1,000개까지 보관하며, 프로젝트 스크립트 경로가 있는 메시지를 더블클릭하면 설정한 외부 에디터로 연다.
+**Project → Console…**, Play 중 **Debug** 도구 줄의 **Console…** 또는 **Window → Console**로 Console 패널을 연다. 처음 열면 Scene 아래에 들어가고, 이미 열려 있으면 그 탭을 앞으로 가져온다. 닫거나 다른 탭 뒤에 있어도 기록은 계속 쌓인다. Play 시작·종료, 씬 전환, 수동 레이 결과, 컴파일·실행 오류와 스크립트 로그가 실시간으로 들어온다. 등급(Info/Warning/Error)과 검색어로 필터링한다. **Clear**는 전체 기록을 지운다. 최근 1,000개까지 보관하며, 프로젝트 스크립트 경로가 있는 메시지를 더블클릭하면 설정한 외부 에디터로 연다.
 
 ```csharp
 tick.Session.Log("Chest opened.");
@@ -44,7 +44,7 @@ tick.Session.Log("Loot table is empty.", GameLogLevel.Warning);
 
 ## 프레임 프로파일러
 
-**Debug → Profiler**, **Run → Frame Profiler** 또는 **Window → Profiler**로 Profiler 패널을 연다. 처음에는 Scene 아래 도구 영역에 들어가며 다른 패널처럼 옮기거나 띄울 수 있다. 탭의 **×**나 패널 오른쪽 위 닫기 버튼으로 닫으면 **Profiler** 체크도 꺼진다. 최근 180개 프레임을 보관한다. Stop 후에는 마지막 기록을 읽을 수 있고 새 Play는 빈 기록으로 시작한다.
+Play 중 **Debug** 도구 줄의 **Profiler** 체크, **Run → Frame Profiler** 또는 **Window → Profiler**로 Profiler 패널을 연다. 처음에는 Scene 아래 도구 영역에 들어가며 다른 패널처럼 옮기거나 띄울 수 있다. 탭의 **×**나 패널 오른쪽 위 닫기 버튼으로 닫으면 **Profiler** 체크도 꺼진다. 최근 180개 프레임을 보관한다. Stop 후에는 마지막 기록을 읽을 수 있고 새 Play는 빈 기록으로 시작한다.
 
 | 지표 | 측정 범위 |
 | --- | --- |

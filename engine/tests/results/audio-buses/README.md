@@ -27,7 +27,7 @@
 | [SceneAudio.cs](../../../src/Engine.Core/SceneAudio.cs), [GameSession.cs](../../../src/Engine.Core/GameSession.cs), [SceneGame.cs](../../../src/Engine.Core/SceneGame.cs)(한 줄) | `IGameAudio.TransitionTo`. 세션 시작 시 `Mixer.Configure(settings)`. 한 틱의 Play on start 소리들을 믹서 잠금 안에서 시작해 같은 출력 프레임에 맞춘다(이전에는 출력 작업자가 두 `Start` 사이에 블록을 만들 수 있었다) |
 | [Presentation2D.cs](../../../src/Engine.Core/Presentation2D.cs) | Audio Source 검증이 다섯 버스를 받는다. 씬 스키마는 올리지 않았다(이전 리더는 새 버스 이름을 읽지 못해 거부한다) |
 | [MainWindow.Audio.cs](../../../src/Engine.Editor/Inspector/MainWindow.Audio.cs) | Bus 목록에 모든 버스, Audio Mixer 창에 Voice·UI·Ambience 행(기존 `Row` 격자 재사용, 창 높이 230 → 320) |
-| [AudioLab](../../../samples/AudioLab) | `Line.wav`([생성기](../../AudioLab.Buses/make_line.py)), Voice 버스의 `Line` 소스, V/패드 West로 대사, N/패드 North로 Night 스냅샷(1.5초), 오른쪽 위 Voice level 드롭다운(`player.settings`의 `voicePreset`), 두 번째 안내 줄. GameSettings에 덕킹 규칙(Voice → Music −8 dB, 0.05/0.4초)과 Night 스냅샷(Music 0.5, Effects 0.6) |
+| [AudioLab](../../../../samples/AudioLab) | `Line.wav`([생성기](../../AudioLab.Buses/make_line.py)), Voice 버스의 `Line` 소스, V/패드 West로 대사, N/패드 North로 Night 스냅샷(1.5초), 오른쪽 위 Voice level 드롭다운(`player.settings`의 `voicePreset`), 두 번째 안내 줄. GameSettings에 덕킹 규칙(Voice → Music −8 dB, 0.05/0.4초)과 Night 스냅샷(Music 0.5, Effects 0.6) |
 | [AudioBusChecks](../../Engine.Checks/AudioBusChecks.cs) | `--only audio-buses`, 전체 실행에 등록 |
 | [AudioLab.Buses](../../AudioLab.Buses/README.md) | 헤드리스 Release·Native AOT 재생, Scene Play 기록, 샘플 비교 |
 | [audio.md](../../../../docs/manual/audio.md) | 버스·스냅샷·덕킹 절 |
