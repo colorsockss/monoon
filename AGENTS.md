@@ -24,6 +24,14 @@
 - 엔진 기능을 구현하거나 라이브러리를 추가하기 전에 [BRUTAL 기능 정리](docs/brutal.md)를 확인한다. BRUTAL에 해당 기능이 있으면 다른 NuGet 패키지나 직접 구현보다 BRUTAL을 먼저 사용한다.
 - BRUTAL로 부족해 다른 방법을 쓸 때는 그 이유를 커밋이나 문서에 남긴다. 런타임 경계와 배포 렌더링 규칙은 위 항목을 그대로 따른다.
 
+# 리플렉션 대신 C# 소스 생성기
+
+- 빌드 패키징과 성능을 위해 리플렉션보다 C# Source Generator를 적극 사용한다. 런타임 리플렉션은 Native AOT trim에서 깨지기 쉽고, 메타데이터를 남겨 배포 용량을 키우며, 시작 시간과 프레임 비용을 늘린다.
+- 런타임과 게임 스크립트에서 타입 검색, 컴포넌트 등록, 필드 직렬화·바인딩, 이벤트·메시지 연결처럼 리플렉션으로 하던 일은 빌드 때 코드를 생성해 처리한다.
+- .NET 기본 생성기를 먼저 쓴다: JSON은 `JsonSerializerContext`, 정규식은 `[GeneratedRegex]`, 네이티브 호출은 `[LibraryImport]`. 직접 만들 때는 `IIncrementalGenerator`를 사용한다.
+- 생성기 프로젝트는 빌드 도구로 보고 배포본에 넣지 않는다. 런타임 프로젝트는 `OutputItemType="Analyzer" ReferenceOutputAssembly="false"`로만 참조한다.
+- 리플렉션은 에디터와 빌드 도구에서만 쓴다. 런타임에서 피할 수 없으면 `[DynamicallyAccessedMembers]` 같은 trim 주석을 달고, Native AOT 빌드에 trim·AOT 경고가 새로 생기지 않는지 확인한다.
+
 # 로컬 테스트
 
 - 개발 중 회귀 검사는 이 Mac과 기존 Windows·Linux VM에서 실행한다. [로컬 테스트 명령](docs/manual/build.md#로컬-회귀-검사)을 따른다.
