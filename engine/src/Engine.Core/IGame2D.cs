@@ -38,13 +38,39 @@ public interface ICanvas2D
 
     void DrawShader(ShaderClip shader, int frame, RectangleF local, Matrix3x2 matrix, Color tint, bool additive) =>
         throw new NotSupportedException("This canvas does not implement procedural sprites.");
+    // One emitter's particles in one call. This fallback draws each quad on its own and blends PNGs as alpha only.
+    void DrawParticles(ParticleTexture texture, ReadOnlySpan<ParticleQuad> quads, Matrix3x2 view, ParticleBlend blend)
+    {
+        var unit = new RectangleF(0, 0, 1, 1);
+        foreach (ref readonly var q in quads)
+        {
+            var corner = q.Center - q.Right - q.Down;
+            var matrix = new Matrix3x2(q.Right.X * 2, q.Right.Y * 2, q.Down.X * 2, q.Down.Y * 2, corner.X, corner.Y) * view;
+            if (texture.Shader != null) DrawShader(texture.Shader, q.Cell, unit, matrix, q.Tint, blend == ParticleBlend.Additive);
+            else DrawAffine(texture.Path, unit, matrix, q.Tint, texture.Cells[q.Cell]);
+        }
+    }
     // A ribbon of quads: edges holds a left/right vertex pair per colour; colours blend between neighbouring pairs.
     void FillStrip(ReadOnlySpan<Vector2> edges, ReadOnlySpan<Color> colors, Matrix3x2 matrix) =>
         throw new NotSupportedException("This canvas does not implement line strips.");
     // Screen colour adjustment: the world drawn between these calls is multiplied by a colour, then lifted toward white.
     void BeginColorAdjust() => throw new NotSupportedException("This canvas does not implement screen colour adjustment.");
     void EndColorAdjust(Color multiply, byte lift) { }
+    // 2D lighting (roadmap 16.7). BeginLighting starts a lightmap over area (canvas units) cleared to ambient; DrawLight adds
+    // one falloff sprite to it with shadow quads (4 world points each, drawn with view) cut out of that light only;
+    // EndLighting multiplies what is already drawn under area by the lightmap. This fallback, for canvases without render
+    // targets (the Win/Linux editor preview), darkens to the ambient brightness and adds the lights on top without shadows.
+    void BeginLighting(RectangleF area, Color ambient) =>
+        FillRectangle(area, Color.FromArgb(255 - (ambient.R + ambient.G + ambient.B) / 3, 0, 0, 0));
+    void DrawLight(ShaderClip sheet, RectangleF local, Matrix3x2 matrix, Color tint, ReadOnlySpan<Vector2> shadowQuads, Matrix3x2 view) =>
+        DrawShader(sheet, 0, local, matrix, tint, true);
+    void EndLighting() { }
     IDisposable PushClip(RectangleF area) => throw new NotSupportedException("This canvas does not implement camera viewport clipping.");
+    // Pixel size of a loaded sprite image; empty when this canvas cannot tell (Tiled and Sliced sprites then draw stretched).
+    Size SpriteSize(string path) => Size.Empty;
+    // Tiled and Sliced sprites (SpriteDrawMode). size is the image or atlas cell; borders cut it into a 9-slice.
+    bool DrawGrid(string path, RectangleF local, Matrix3x2 matrix, Color tint, SpriteRegion? source, Size size, UiBorders? borders, bool tiled) =>
+        SpriteGrid.Draw(this, path, local, matrix, tint, source, size, borders, tiled);
     bool DrawFiltered(SpriteFilter filter, RectangleF local, Matrix3x2 matrix, Color tint) =>
         throw new NotSupportedException("This canvas does not support sprite masks.");
     // Local rectangle plus affine basis; keeps trimmed atlas frames in object space.

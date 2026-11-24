@@ -3,6 +3,7 @@ using System.Numerics;
 
 internal static class NavigationChecks
 {
+    [Check(3200, StopAfter = "nav")] static void Registered(CheckRun c) => Run(c.Repository, c.Scratch);
     public static void Run(string repository,string scratch)
     {
         SightAndClearance();

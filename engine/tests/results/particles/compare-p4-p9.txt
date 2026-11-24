@@ -1,0 +1,32 @@
+## Modules: Scene Play, Release, Native AOT
+trace	600 rows	sha256 e62406276c4e2f54
+0090.png	identical	sha256 3ed24020216080cd
+0300.png	identical	sha256 2c00accfcfb4ae00
+0590.png	identical	sha256 986bbbc98c0c3e5a
+## Sorting: Scene Play, Release, Native AOT
+trace	300 rows	sha256 95461fe76b65c14e
+0240.png	identical	sha256 6db00d2ce197fe4d
+## Stress: Scene Play, Release, Native AOT
+trace	300 rows	sha256 11e37a08d521261e
+0200.png	identical	sha256 34534abcf6a85ee3
+0290.png	identical	sha256 cb4cdee24c41f903
+## Curves: Scene Play, Release, Native AOT
+trace	300 rows	sha256 ceb998dab2f2424d
+0150.png	identical	sha256 3e695087a2b61bec
+0290.png	identical	sha256 e3d8cf0baa6cbf3f
+## Rain: Scene Play, Release, Native AOT
+trace	360 rows	sha256 9f592abd5377c6a2
+0180.png	identical	sha256 84ca5f58aa625df8
+0350.png	identical	sha256 f1ecdceb998baf2c
+## Fireworks: Scene Play, Release, Native AOT
+trace	420 rows	sha256 3bb5a68f7ffba18f
+0100.png	identical	sha256 1969007dd0c0461c
+0400.png	identical	sha256 e869330d0e42a2b0
+## P.1–P.3 traces (first four columns) after P.4–P.9
+Modules/scene-play/trace.tsv: 600 rows identical to engine/tests/results/particles/osx-arm64/modules-trace.tsv
+Sorting/scene-play/trace.tsv: 300 rows identical to engine/tests/results/particles/osx-arm64/sorting-trace.tsv
+Stress/scene-play/trace.tsv: 300 rows identical to engine/tests/results/particles/osx-arm64/stress-trace.tsv
+## check results
+{"scene":"Curves","rows":300,"emitters":[3],"peak":153,"last":148,"distinctHashes":300}
+{"scene":"Rain","rows":360,"emitters":[4],"peak":642,"last":611,"distinctHashes":360,"rainHits":1329,"splashes":2658,"splashDropped":0,"cinderHits":2229}
+{"scene":"Fireworks","rows":420,"emitters":[2],"peak":205,"last":147,"distinctHashes":420,"rockets":18,"rocketDeaths":15,"sparks":720,"dropped":0}

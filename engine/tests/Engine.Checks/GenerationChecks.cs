@@ -5,6 +5,7 @@ using Engine.Core;
 
 internal static class GenerationChecks
 {
+    [Check(2400, StopAfter = "generation")] static void Registered(CheckRun c) => Run(c.Repository);
     private static void Check(bool result, string message)
     {
         if (!result) throw new Exception("Generation: " + message);

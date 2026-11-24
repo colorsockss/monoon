@@ -1,0 +1,8 @@
+rate: 60
+shape: Circle
+radius: 28
+speed: {min: 10, max: 25}
+lifetime: {min: 0.8, max: 1.4}
+size: {min: 4, max: 7}
+color: {min: "#7FDBFF", max: "#B18CFF"}
+blend: Additive

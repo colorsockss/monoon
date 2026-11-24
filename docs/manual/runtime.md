@@ -27,6 +27,8 @@ Transform은 모든 오브젝트가 가진 기본 정보다. 이동, 열쇠 획�
 
 **Project → Game Resolution…**에서 논리 너비와 높이를 지정한다. 기본값은 800×450이며 각 축에 1~16384의 정수를 넣을 수 있다. 창을 늘리면 같은 비율로 확대되고 남는 부분에는 여백이 생긴다. Scene 편집 중에는 카메라 바깥쪽도 작업할 수 있다.
 
+픽셀 아트 게임은 같은 창에서 **Pixel art: integer scale**을 켠다. 배포 게임은 SDL의 정수 배율 표시(`SDL_LOGICAL_PRESENTATION_INTEGER_SCALE`)로 게임 픽셀 하나를 장치 픽셀 1·2·3…개로만 그리고, 남는 부분은 여백으로 둔다. PNG 스프라이트는 보간하지 않고(nearest) 그리며, 카메라가 보는 영역의 왼쪽 위를 게임 픽셀 단위로 반올림해 스프라이트가 움직일 때 줄이 흔들리지 않는다. 글자는 지금처럼 부드럽게 축소한다. 에디터 Game 패널의 **Fit**도 같은 규칙으로 배율을 내림한다. 옵션은 `GameSettings`의 `integerScale: true`로 저장되며, 꺼 두면 키를 쓰지 않는다. [DisplayLab 검증](../../engine/tests/results/engine-features-1/README.md#168-정수-배율-표시)
+
 **Scene → Create Camera**로 여러 카메라를 배치한다. **Camera 2D → Set as start camera**로 시작 시점을 선택하고 **Frame Camera**로 편집 뷰를 맞춘다. Primary 중 한 대가 활성화되고 Extra·Minimap은 동시에 표시할 수 있다. **Follow**로 플레이어를 지정하거나 카메라를 자식으로 두어 따라가게 할 수 있으며, `tick.Cameras.TrySetActive(id)`로 다른 카메라를 요청할 수 있다. 월드 오브젝트가 있는 씬에는 카메라가 필요하다. UI 전용 씬도 실행할 수 있다.
 
 ## 이동과 입력 스크립트

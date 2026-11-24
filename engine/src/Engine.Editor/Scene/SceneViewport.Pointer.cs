@@ -1,6 +1,7 @@
 using RectangleF = System.Drawing.RectangleF;
 using Vector2 = System.Numerics.Vector2;
 using Avalonia;
+using Avalonia.Controls;
 using Avalonia.Input;
 using Engine.Core;
 
@@ -10,9 +11,18 @@ public sealed partial class SceneViewport
 {
     // Game panel scale: 0 fits the game into the panel, otherwise panel units per game pixel.
     internal double GameZoom { get; set; }
-    internal double Scale => spritePreview ? 1 : IsPlaying
-        ? GameZoom > 0 ? GameZoom : Math.Max(double.Epsilon, Math.Min(Bounds.Width / LayoutSettings.Width, Bounds.Height / LayoutSettings.Height))
-        : editZoom;
+    internal double Scale => spritePreview ? 1 : IsPlaying ? GameZoom > 0 ? GameZoom : FitScale : editZoom;
+    private double FitScale
+    {
+        get
+        {
+            double fit = Math.Min(Bounds.Width / LayoutSettings.Width, Bounds.Height / LayoutSettings.Height);
+            if (LayoutSettings.IntegerScale != true) return Math.Max(double.Epsilon, fit);
+            // The player's SDL integer presentation: whole device pixels per game pixel, at least one.
+            double pixels = (VisualRoot as TopLevel)?.RenderScaling ?? 1;
+            return Math.Max(1, Math.Floor(fit * pixels + 1e-9)) / pixels;
+        }
+    }
     internal Point Origin => spritePreview ? default : IsPlaying
         ? new((Bounds.Width - LayoutSettings.Width * Scale) / 2, (Bounds.Height - LayoutSettings.Height * Scale) / 2)
         : new(Bounds.Width / 2 - editCenter.X * Scale, Bounds.Height / 2 - editCenter.Y * Scale);
@@ -92,6 +102,7 @@ public sealed partial class SceneViewport
         if (BeginTiles(p)) return;
         var worldPoint=WorldPoint(p);
         if(!toggle && BeginPathDrag(worldPoint))return;
+        if(!toggle && BeginRadiusDrag(worldPoint))return;
         if(!toggle && HitGrip(worldPoint) is var handle && handle!=Grip.None){BeginGesture(worldPoint,handle);return;}
         var u = EditUiPoint(p);
         dragging = PreviewUi.Pick((float)u.X, (float)u.Y);
@@ -132,8 +143,9 @@ public sealed partial class SceneViewport
         CancelStroke();
         panStart = null;
         gesture=null;
-        bool pathMoved = pathGrip >= 0 && movedDuringDrag;
+        bool pathMoved = (pathGrip >= 0 || radiusGrip) && movedDuringDrag;
         pathGrip = -1;
+        radiusGrip = false;
         if (pathMoved) PathEdited?.Invoke();
         draggingUi = false;
         dragging = null;
@@ -159,6 +171,7 @@ public sealed partial class SceneViewport
             return;
         }
         if(pathGrip>=0){DragPath(WorldPoint(ToWorld(point)));return;}
+        if(radiusGrip){DragRadius(WorldPoint(ToWorld(point)));return;}
         if(gesture!=null){UpdateGesture(WorldPoint(ToWorld(point)));return;}
         if (dragging is null || IsPlaying) return;
         if (draggingUi)
@@ -198,6 +211,7 @@ public sealed partial class SceneViewport
         }
         if(IsPlaying) GamePointer(point,"Mouse.Left",false);
         if(pathGrip>=0)DragPath(WorldPoint(p));
+        if(radiusGrip)DragRadius(WorldPoint(p));
         if(gesture!=null)UpdateGesture(WorldPoint(p));
         EndDrag();
     }

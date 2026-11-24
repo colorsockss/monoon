@@ -1,0 +1,25 @@
+using System;
+using System.IO;
+using Engine.Core;
+
+// Test-only observer copied into a disposable InventoryLab: on each UI frame where the bag changed, writes
+// frame, focused slot, carried slot and every slot's text.
+public sealed class TraceBag : GameBehaviour
+{
+    public Guid[] Slots = [];
+    private int frame;
+    private string last = "";
+
+    public override void UpdateUi(UiTick tick)
+    {
+        if (Environment.GetEnvironmentVariable("MONOON_BAG_TRACE") is not { Length: > 0 } path) return;
+        var ui = tick.Ui;
+        string Index(Guid? id) => id is Guid g && Array.IndexOf(Slots, g) is var i && i >= 0 ? i.ToString() : "-";
+        var texts = new string[Slots.Length];
+        for (int i = 0; i < Slots.Length; i++) texts[i] = ui.TextOf(Slots[i]) ?? "";
+        string line = $"{Index(ui.Focused)}\t{Index((ui as ScreenUi)?.Carried)}\t{string.Join('|', texts)}";
+        if (line != last) File.AppendAllText(path, $"{frame}\t{line}\n");
+        last = line;
+        frame++;
+    }
+}

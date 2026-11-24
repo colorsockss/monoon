@@ -1,0 +1,20 @@
+PASS UI grid: Grid 4 places 20 slots in five rows of equal stretched cells
+PASS UI grid: a hidden slot leaves no gap in the grid
+PASS UI grid: Wrap fits as many cells as the width allows
+PASS UI grid: a narrower Wrap layout moves to two cells per row
+PASS UI grid: a pointer drag drops one slot on another without a click
+PASS UI grid: a press that moves 4 px or less is a click and picks the slot up
+PASS UI grid: clicking a second slot drops the picked one on it
+PASS UI grid: releasing over a plain button or empty space drops nothing
+PASS UI grid: a plain button still clicks
+PASS UI grid: focus the first slot
+PASS UI grid: Enter picks the focused slot; arrows move focus right and down the grid
+PASS UI grid: Enter on another slot drops on it
+PASS UI grid: Escape cancels a pick without leaving focus
+PASS UI grid: pad South picks; D-pad moves down and left
+PASS UI grid: pad East cancels the pick first
+PASS UI grid: pad South on another slot drops on it
+PASS UI grid: activating the picked slot again puts it back
+PASS UI grid: grid layout and draggable slots round-trip as scene version 41
+PASS UI grid: without them the scene keeps its older version and writes neither key
+PASS UI grid: Save rejects a grid of 0 columns (use no value)

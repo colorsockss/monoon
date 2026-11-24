@@ -4,6 +4,7 @@ using Engine.Core;
 
 internal static class ScriptingChecks
 {
+    [Check(6200)] static void Registered(CheckRun c) => Run(c.Scratch);
     internal static void Run(string scratch)
     {
         var root = Directory.CreateDirectory(Path.Combine(scratch,"Lifecycle")).FullName;

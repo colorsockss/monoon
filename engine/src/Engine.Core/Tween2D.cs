@@ -7,7 +7,7 @@ namespace Engine.Core;
 public enum TweenEase { Linear, EaseIn, EaseOut, EaseInOut }
 public enum TweenRepeat { Once, PingPong }
 
-[DisplayName("Position Tween 2D"), YamlObject]
+[DisplayName("Position Tween 2D"), YamlObject, EngineFeature(EngineFeature.Tweens)]
 public sealed partial record PositionTween2DComponent : SceneComponent
 {
     public PositionTween2DComponent() { }

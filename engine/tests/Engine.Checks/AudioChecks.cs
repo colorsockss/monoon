@@ -3,6 +3,7 @@ using Engine.Core;
 
 internal static class AudioChecks
 {
+    [Check(4200)] static void Registered(CheckRun c) => Run(c.Repository, c.Scratch);
     private static void Check(bool result,string why) { if(!result)throw new Exception("Audio: "+why); }
     private static float[] Render(AudioMixer m,int frames){var buffer=new float[frames*2];m.Render(buffer);return buffer;}
     private static double Power(float[] buf,int channel)=>buf.Where((_,i)=>(i&1)==channel).Average(x=>(double)x*x);

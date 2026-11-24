@@ -5,6 +5,7 @@ using Engine.Core;
 
 internal static class PrefabPoolChecks
 {
+    [Check(2100, "prefab-pool", StopAfter = "pool")] static void Registered(CheckRun c) => Run(c.Repository, c.Scratch);
     private static void Check(bool ok, string message)
     {
         if (!ok) throw new Exception("Prefab pool: " + message);

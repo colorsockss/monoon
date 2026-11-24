@@ -1,0 +1,30 @@
+using System;
+using System.IO;
+using System.Linq;
+using System.Numerics;
+using Engine.Core;
+
+// Attached to the Main Camera only in the disposable test project (roadmap 13.2). One row per game tick: tick, coin active,
+// coin child active, child ticks, child enables, gate collider enabled, gate overlap hits, ghost renderer present,
+// disabled-script runs. Tick 30 turns the inactive coin on, 60 the turned-off gate collider, 90 the coin off again.
+public sealed class ComponentTrace : GameBehaviour
+{
+    private int frame;
+
+    private static string B(bool value) => value ? "1" : "0";
+
+    public override void FixedUpdate(ScriptTick tick)
+    {
+        if (Environment.GetEnvironmentVariable("MONOON_COMPONENT_TRACE") is not { Length: > 0 } path) return;
+        var o = tick.Objects;
+        Guid coin = o.FindByTag("QaCoin").Single(), glint = o.FindByTag("QaCoinChild").Single();
+        Guid gate = o.FindByTag("QaGate").Single(), ghost = o.FindByTag("QaGhost").Single();
+        if (frame == 30) o.SetActive(coin, true);
+        if (frame == 60) o.SetColliderEnabled(gate, true);
+        if (frame == 90) o.SetActive(coin, false);
+        o.TryGetPosition(gate, out var at);
+        int hits = o.Physics.Overlap(Shape2D.Circle(at + new Vector2(15, 15), 4), new PhysicsFilter(IncludeTriggers: true)).Count(h => h.ObjectId == gate);
+        File.AppendAllText(path, $"{frame++} {B(o.IsActive(coin))} {B(o.IsActive(glint))} {CoinChildTicker.Ticks} {CoinChildTicker.Enables} " +
+            $"{B(o.IsColliderEnabled(gate))} {hits} {B(o.TryGetSpriteColor(ghost, out _))} {DisabledTicker.Runs}\n");
+    }
+}

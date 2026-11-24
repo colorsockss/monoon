@@ -5,6 +5,8 @@ using System.Text.Json.Serialization;
 namespace Engine.Core;
 
 [JsonPolymorphic(TypeDiscriminatorPropertyName = "type")]
+[JsonDerivedType(typeof(Text2DComponent), "text2D")]
+[YamlObjectUnion("text2D", typeof(Text2DComponent), DiscriminatorKey = "type")]
 [JsonDerivedType(typeof(CutsceneDirectorComponent), "cutsceneDirector")]
 [YamlObjectUnion("cutsceneDirector", typeof(CutsceneDirectorComponent), DiscriminatorKey = "type")]
 [JsonDerivedType(typeof(Line2DComponent), "line2D")]
@@ -13,6 +15,8 @@ namespace Engine.Core;
 [YamlObjectUnion("trail2D", typeof(Trail2DComponent), DiscriminatorKey = "type")]
 [JsonDerivedType(typeof(PathFollower2DComponent), "pathFollower2D")]
 [YamlObjectUnion("pathFollower2D", typeof(PathFollower2DComponent), DiscriminatorKey = "type")]
+[JsonDerivedType(typeof(Parallax2DComponent), "parallax2D")]
+[YamlObjectUnion("parallax2D", typeof(Parallax2DComponent), DiscriminatorKey = "type")]
 [JsonDerivedType(typeof(PositionTween2DComponent), "positionTween2D")]
 [YamlObjectUnion("positionTween2D", typeof(PositionTween2DComponent), DiscriminatorKey = "type")]
 [JsonDerivedType(typeof(SkeletonAnimator2DComponent), "skeletonAnimator2D")]
@@ -23,6 +27,8 @@ namespace Engine.Core;
 [YamlObjectUnion("particleEmitter2D", typeof(ParticleEmitter2DComponent), DiscriminatorKey = "type")]
 [JsonDerivedType(typeof(PointLight2DComponent), "pointLight2D")]
 [YamlObjectUnion("pointLight2D", typeof(PointLight2DComponent), DiscriminatorKey = "type")]
+[JsonDerivedType(typeof(GlobalLight2DComponent), "globalLight2D")]
+[YamlObjectUnion("globalLight2D", typeof(GlobalLight2DComponent), DiscriminatorKey = "type")]
 [JsonDerivedType(typeof(SpriteShader2DComponent), "spriteShader2D")]
 [YamlObjectUnion("spriteShader2D", typeof(SpriteShader2DComponent), DiscriminatorKey = "type")]
 [JsonDerivedType(typeof(NavigationRegion2DComponent), "navigationRegion2D")]
@@ -51,6 +57,10 @@ namespace Engine.Core;
 [YamlObjectUnion("circleCollider2D", typeof(CircleCollider2DComponent), DiscriminatorKey = "type")]
 [JsonDerivedType(typeof(PolygonCollider2DComponent), "polygonCollider2D")]
 [YamlObjectUnion("polygonCollider2D", typeof(PolygonCollider2DComponent), DiscriminatorKey = "type")]
+[JsonDerivedType(typeof(CapsuleCollider2DComponent), "capsuleCollider2D")]
+[YamlObjectUnion("capsuleCollider2D", typeof(CapsuleCollider2DComponent), DiscriminatorKey = "type")]
+[JsonDerivedType(typeof(EdgeCollider2DComponent), "edgeCollider2D")]
+[YamlObjectUnion("edgeCollider2D", typeof(EdgeCollider2DComponent), DiscriminatorKey = "type")]
 [JsonDerivedType(typeof(BoxCollider2DComponent), "boxCollider2D")]
 [YamlObjectUnion("boxCollider2D", typeof(BoxCollider2DComponent), DiscriminatorKey = "type")]
 [JsonDerivedType(typeof(SpriteAnimatorComponent), "spriteAnimator")]
@@ -89,8 +99,14 @@ namespace Engine.Core;
 public abstract partial record SceneComponent
 {
     internal virtual string Kind => GetType().Name;
+    // A turned-off component is left out of Play and builds (a collider starts with SetColliderEnabled false). Only false is stored.
+    [JsonIgnore, YamlIgnore] public bool Enabled { get; set; } = true;
+    [JsonIgnore, YamlMember("enabled")] internal bool? StoredEnabled { get => Enabled ? null : false; set => Enabled = value ?? true; }
+    // Structural components (UI rect and canvas, body, tile layer, camera) stay on; deactivate the object instead.
+    internal virtual bool CanDisable => true;
 }
 
+[EngineFeature(EngineFeature.Physics)]
 public abstract record Collider2DComponent : SceneComponent
 {
     // Compound colliders are authored as children of a moving parent.
@@ -123,9 +139,41 @@ public readonly partial record struct ColliderVertex(float X, float Y);
 public sealed partial record PolygonCollider2DComponent : Collider2DComponent
 {
     public PolygonCollider2DComponent() { }
-    [YamlConstructor] public PolygonCollider2DComponent(uint mask = uint.MaxValue) => Mask = mask;
+    [YamlConstructor] public PolygonCollider2DComponent(uint mask = uint.MaxValue, ColliderVertex[]? points = null)
+    {
+        Mask = mask;
+        if (points != null) Points = points;
+    }
     private ColliderVertex[] points = [new(0,1),new(.5f,0),new(1,1)];
     public ColliderVertex[] Points { get => (ColliderVertex[])points.Clone(); set => points = value is null ? [] : (ColliderVertex[])value.Clone(); }
+}
+
+/// <summary>A Box2D capsule along the longer side of the object. Zero radius fits half the shorter side; a larger
+/// radius is clamped to it.</summary>
+[DisplayName("Capsule Collider 2D"), YamlObject, EngineFeature(EngineFeature.Physics)]
+public sealed partial record CapsuleCollider2DComponent : Collider2DComponent
+{
+    public CapsuleCollider2DComponent() { }
+    [YamlConstructor] public CapsuleCollider2DComponent(uint mask = uint.MaxValue) => Mask = mask;
+    public float Radius { get; set; }
+}
+
+/// <summary>A polyline of 2–1024 points in local size units (0–1 spans the object), or a closed loop of at least 3.
+/// Queries treat its segments as two-sided; Box2D collides a chain on one side only: points from left to right
+/// block from above, and a loop ordered clockwise on screen blocks from outside.</summary>
+[DisplayName("Edge Collider 2D"), YamlObject, EngineFeature(EngineFeature.Physics)]
+public sealed partial record EdgeCollider2DComponent : Collider2DComponent
+{
+    public const int MaxPoints = 1024;
+    public EdgeCollider2DComponent() { }
+    [YamlConstructor] public EdgeCollider2DComponent(uint mask = uint.MaxValue, ColliderVertex[]? points = null)
+    {
+        Mask = mask;
+        if (points != null) Points = points;
+    }
+    private ColliderVertex[] points = [new(0,.5f),new(1,.5f)];
+    public ColliderVertex[] Points { get => (ColliderVertex[])points.Clone(); set => points = value is null ? [] : (ColliderVertex[])value.Clone(); }
+    public bool Loop { get; set; }
 }
 
 [DisplayName("Sprite Renderer")]
@@ -147,12 +195,16 @@ public sealed partial record SpriteRendererComponent : SceneComponent
     public string SquareColor { get; set; } = "#FFFFFF";
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)] public Guid? AssetId { get; set; }
     public string? Asset { get; set; }
+    // Null is Simple, so existing scenes and prefab revisions keep their bytes.
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)] public SpriteDrawMode? DrawMode { get; set; }
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)] public UiBorders? Slice { get; set; }
 }
 
 [DisplayName("Camera 2D")]
 [YamlObject]
 public sealed partial record Camera2DComponent : SceneComponent
 {
+    internal override bool CanDisable => false;
     public const float MinZoom = 0.05f, MaxZoom = 32f;
     public Camera2DComponent() { }
     [YamlConstructor] public Camera2DComponent(float zoom = 1,string output = Primary,bool showViews=true) => (Zoom,Output,ShowViews) = (zoom,output,showViews);

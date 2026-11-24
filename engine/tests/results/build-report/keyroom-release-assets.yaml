@@ -1,0 +1,123 @@
+shippedBytes: 2239866
+bytesByType:
+  ".ttf": 2075868
+  ".scene": 69563
+  ".dll": 32256
+  ".png": 22410
+  ".wav": 16844
+  ".license": 8929
+  (none): 6222
+  ".table": 4726
+  ".prefab": 1723
+  ".clip": 1289
+  ".data": 36
+unreferencedBytes: 1039
+warnings: []
+shipped:
+- path: Assets/Fonts/NanumGothic-Regular.ttf
+  bytes: 2054744
+  reason: GameSettings localization
+- path: ".monoon-compiled/MoNoon.GameScripts.dll"
+  bytes: 32256
+  reason: compiled project scripts
+- path: Scenes/KeyRoom.scene
+  bytes: 25295
+  reason: GameSettings includedScenes
+- path: Assets/Fonts/GowunDodum-Regular.ttf
+  bytes: 21124
+  reason: GameSettings localization
+- path: Assets/Oak.png
+  bytes: 20952
+  reason: Scenes/KeyRoom.scene > Oak tree > SpriteRenderer
+- path: Assets/Unlock.wav
+  bytes: 16844
+  reason: Scenes/KeyRoom.scene > Door > AudioSource
+- path: Scenes/KeyBindings.scene
+  bytes: 15063
+  reason: GameSettings includedScenes
+- path: Scenes/SecondRoom.scene
+  bytes: 11102
+  reason: GameSettings includedScenes
+- path: Scenes/RoomGuide.scene
+  bytes: 7343
+  reason: GameSettings includedScenes
+- path: Scenes/PointerWorkshop.scene
+  bytes: 7054
+  reason: GameSettings includedScenes
+- path: Assets/Fonts/NanumGothic-Regular.ttf.license
+  bytes: 4534
+  reason: GameSettings localization
+- path: Assets/Fonts/GowunDodum-Regular.ttf.license
+  bytes: 4395
+  reason: GameSettings localization
+- path: Assets/KeyRoomText.table
+  bytes: 4249
+  reason: GameSettings localization
+- path: ".monoon-assets"
+  bytes: 4104
+  reason: build metadata
+- path: Scenes/MovementWorkshop.scene
+  bytes: 3706
+  reason: GameSettings includedScenes
+- path: GameSettings
+  bytes: 2117
+  reason: build metadata
+- path: Assets/Coin.prefab
+  bytes: 792
+  reason: Scenes/KeyRoom.scene > Chest > OpenChest.Loot
+- path: Assets/Door.clip
+  bytes: 619
+  reason: Scenes/KeyRoom.scene > Door > SpriteAnimator clip
+- path: Assets/Oak.prefab
+  bytes: 467
+  reason: Scenes/KeyRoom.scene > Oak tree > prefab instance
+- path: Assets/MovementPlayer.prefab
+  bytes: 464
+  reason: Scenes/MovementWorkshop.scene > Inherited player > prefab instance
+- path: Assets/KeyRoomTheme.table
+  bytes: 360
+  reason: GameSettings uiTheme
+- path: Assets/LidMotion.clip
+  bytes: 344
+  reason: Scenes/KeyRoom.scene > Chest Lid > SpriteAnimator clip
+- path: Assets/CoinPulse.clip
+  bytes: 326
+  reason: Scenes/KeyRoom.scene > Chest > Assets/Coin.prefab > Coin > SpriteAnimator clip
+- path: Assets/DoorSheet.png
+  bytes: 313
+  reason: Scenes/KeyRoom.scene > Door > SpriteAnimator Assets/Door.clip
+- path: Assets/Door.png
+  bytes: 220
+  reason: Scenes/KeyRoom.scene > Door > SpriteRenderer
+- path: Assets/DoorOpen1.png
+  bytes: 211
+  reason: "Scenes/KeyRoom.scene > Key > KeySequence.Frames[0]"
+- path: Assets/GuideFrame.png
+  bytes: 172
+  reason: Scenes/KeyRoom.scene > Controls panel > UiImage
+- path: Assets/DoorOpen2.png
+  bytes: 164
+  reason: "Scenes/KeyRoom.scene > Key > KeySequence.Frames[1]"
+- path: Assets/Coin.png
+  bytes: 147
+  reason: Scenes/KeyRoom.scene > Chest > Assets/Coin.prefab > Coin > SpriteRenderer
+- path: Assets/Key.png
+  bytes: 142
+  reason: Scenes/KeyRoom.scene > Key Image > SpriteRenderer
+- path: Assets/Loot.table
+  bytes: 117
+  reason: Scenes/KeyRoom.scene > Chest > Assets/Coin.prefab > Coin > CollectCoin.LootTable
+- path: Assets/DoorOpen3.png
+  bytes: 89
+  reason: "Scenes/KeyRoom.scene > Key > KeySequence.Frames[2]"
+- path: Assets/KeyRoomRules.data
+  bytes: 36
+  reason: Scenes/KeyRoom.scene > Chest > OpenChest.Rules
+- path: ".monoon-player"
+  bytes: 1
+  reason: build metadata
+unreferenced:
+- path: Assets/Chest.prefab
+  bytes: 816
+- path: Assets/WallSegment.prefab
+  bytes: 223

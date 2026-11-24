@@ -25,6 +25,12 @@
 
 Character Motor는 Box2D가 플랫포머 캐릭터에 권하는 방식처럼 직접 움직이는 컨트롤러다. Box2D 형상 캐스트로 벽과 바닥을 찾아 경사를 걷고, 높이 1px 이하의 턱(조인트로 이은 판자와 언덕이 만나는 모서리 등)은 앞이 비어 있으면 넘어간다. Box2D 월드에는 키네마틱 물체로 들어가 걸어 들어온 동적 물체를 밀고, 떨어지는 상자를 막는다. 서 있는 동적 물체에는 `Mass × Gravity`의 무게를 발밑에 가하고, 그 물체가 움직인 만큼 캐릭터를 함께 옮긴다. 키네마틱 형상은 발바닥에서 2px 위까지만 두어 무게 외의 힘으로 발판을 누르지 않는다.
 
+## 캡슐 캐릭터와 체인 경사
+
+**Slopes** 씬(`Scenes/Slopes.scene`, 에디터에서 직접 열어 Play)은 8px 타일을 이어 깐 바닥과 Edge Collider 2D로 만든 경사·언덕을 둔다. 캐릭터는 [Capsule Collider 2D](collision.md)와 Character Motor 2D를 쓴다. **→ / D**로 타일 이음새를 지나 14° 경사를 올라가고 **← / A**로 돌아온다. 걷는 중 지면에 선 채 한 틱에 반 걸음도 못 가면 걸림으로 센다. 왕복을 마치면 **Round trip without a snag**가 표시된다. 오른쪽의 회색 캡슐(Dynamic 강체)은 Box2D 체인 위에 떨어져 서고, 경사 중간의 노란 캡슐 트리거를 지날 때마다 [진입 이벤트](collision.md#진입유지이탈-이벤트)가 온다. [SlopeRunner](../../samples/PlatformerLab/Scripts/SlopeRunner.cs)
+
+캐릭터의 키네마틱 Box2D 캡슐도 다각형처럼 발바닥에서 2px 위까지만 둔다. 같은 입력에서 Scene Play·Release·Native AOT의 캐릭터·캡슐 위치 기록이 같다. [Mac 실행 검증](../../engine/tests/results/colliders-capsule-chain/README.md)
+
 ## 흔들다리와 도르래 발판
 
 Joints 씬의 다리는 24×6px 판자 8개를 Revolute Joint 2D로 이은 것이다. 각 판자는 왼쪽 위 모서리(Anchor −12, −3)에서 앞 판자와 묶이고, 첫 판자는 Start ledge에, 마지막 판자는 Far ledge가 가진 조인트에 묶인다. 판자 사슬(192px)이 두 언덕 사이(190px)보다 조금 길어 처지고, 캐릭터의 무게로 더 휜다. 판자 위쪽 모서리가 회전축이므로 이웃 판자의 윗면이 이어진다.

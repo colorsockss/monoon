@@ -3,6 +3,7 @@ using Engine.Core;
 
 internal static class GameModChecks
 {
+    [Check(1300)] static void Registered(CheckRun c) => Run(c.Scratch);
     internal static void Run(string scratch)
     {
         var gameId = Guid.NewGuid();

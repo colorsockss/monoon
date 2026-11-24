@@ -3,6 +3,7 @@ using Engine.Core;
 // Roadmap 10.4: structural overrides are applied to, or reverted from, the source one at a time.
 internal static class PrefabStructureChecks
 {
+    [Check(9800)] static void Registered(CheckRun c) => Run(c.Scratch);
     internal static void Run(string project)
     {
         var path = Path.Combine(project, "Scenes", "PrefabWorkshop.scene");

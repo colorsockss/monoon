@@ -3,6 +3,7 @@ using Engine.Core;
 
 internal static class CutsceneChecks
 {
+    [Check(2500, StopAfter = "cutscene")] static void Registered(CheckRun c) => Run(c.Repository, c.Scratch);
     public static void Run(string repository, string scratch)
     {
         string project = Path.Combine(repository, "samples/PlatformerLab");

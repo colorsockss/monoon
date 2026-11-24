@@ -1,7 +1,7 @@
 #!/bin/sh
 # Usage: run-harnesses.sh <checkout> <result-root> [harness...]  — runs every editor.py harness (editor part only), each under gui-lock.
 S=/private/tmp/claude-501/-Users-paare-codex-project-brutal-engine/d9b5815d-691b-46f7-b17a-6ed9a224a15b/scratchpad
-LOCK="sh $S/gui-lock.sh"
+LOCK="sh engine/scripts/gui-lock.sh"
 cd "$1" || exit 2
 R=$2; shift 2
 mkdir -p "$R"

@@ -1,7 +1,7 @@
 <local:EditorPanel xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:local="using:Engine.Editor" x:Class="Engine.Editor.TilesetWindow"
-        Title="Tileset" MinWidth="365" MinHeight="435">
-  <Grid Margin="{StaticResource EditorWindowPadding}" RowDefinitions="Auto,Auto,Auto,*,Auto,Auto,Auto,Auto,Auto">
+        Title="Tileset" MinWidth="365" MinHeight="465">
+  <Grid Margin="{StaticResource EditorWindowPadding}" Grid.IsSharedSizeScope="True" RowDefinitions="Auto,Auto,Auto,*,Auto,Auto,Auto,Auto,Auto,Auto,Auto">
     <Grid x:Name="NameRow" Margin="0,0,0,6" ColumnDefinitions="58,*" ColumnSpacing="6">
       <TextBlock Text="Name" Classes="fieldLabel"/>
       <TextBox x:Name="AssetName" Grid.Column="1" AutomationProperties.Name="Tileset name"/>
@@ -30,21 +30,43 @@
       <TextBlock Text="Brush" Classes="fieldLabel"/>
       <ComboBox Grid.Column="1" x:Name="TerrainMode" HorizontalAlignment="Stretch" AutomationProperties.Name="Terrain brush"
                 ToolTip.Tip="Start at this tile; following sheet cells are indexed by connected edges.">
-        <ComboBoxItem Content="Single tile"/><ComboBoxItem Content="Terrain · 4 edges (16 cells)"/><ComboBoxItem Content="Terrain · 6 edges (64 cells)"/>
+        <ComboBoxItem Content="Single tile"/><ComboBoxItem Content="Terrain · 4 edges (16 cells)"/><ComboBoxItem Content="Terrain · 6 edges (64 cells)"/><ComboBoxItem Content="Terrain · 8 neighbours (47 cells)"/>
       </ComboBox>
     </Grid>
-    <Grid Grid.Row="5" Margin="0,4,0,0" ColumnDefinitions="58,*" ColumnSpacing="6">
+    <Grid Grid.Row="5" Margin="0,4,0,0" ColumnSpacing="6">
+      <!-- One shared width for Seed, FPS and Cost keeps the fields of these rows equally wide. -->
+      <Grid.ColumnDefinitions><ColumnDefinition Width="58"/><ColumnDefinition/><ColumnDefinition Width="Auto" SharedSizeGroup="SideLabel"/><ColumnDefinition Width="72"/></Grid.ColumnDefinitions>
+      <TextBlock Text="Random" Classes="fieldLabel"/>
+      <NumericUpDown x:Name="RandomCount" Grid.Column="1" Classes="sheetNumber" VerticalContentAlignment="Center" Minimum="2" Maximum="64" Watermark="Off"
+                     AutomationProperties.Name="Random tiles"
+                     ToolTip.Tip="Pick each cell from this many tiles: this one (or the full terrain cell) and the sheet cells after it. Empty: off."/>
+      <TextBlock Grid.Column="2" Text="Seed" Classes="fieldLabel"/>
+      <NumericUpDown x:Name="RandomSeedBox" Grid.Column="3" Classes="sheetNumber" VerticalContentAlignment="Center" Minimum="0" Maximum="2147483647" Value="0"
+                     AutomationProperties.Name="Random seed" ToolTip.Tip="The same seed repeats the same pattern at every cell."/>
+    </Grid>
+    <Grid Grid.Row="6" Margin="0,4,0,0" ColumnSpacing="6">
+      <Grid.ColumnDefinitions><ColumnDefinition Width="58"/><ColumnDefinition/><ColumnDefinition Width="Auto" SharedSizeGroup="SideLabel"/><ColumnDefinition Width="72"/></Grid.ColumnDefinitions>
+      <TextBlock Text="Frames" Classes="fieldLabel"/>
+      <NumericUpDown x:Name="FrameCount" Grid.Column="1" Classes="sheetNumber" VerticalContentAlignment="Center" Minimum="2" Maximum="64" Watermark="Off"
+                     AutomationProperties.Name="Animation frames"
+                     ToolTip.Tip="Animate this tile through itself and the sheet cells after it. Every cell shows the same frame. Empty: off."/>
+      <TextBlock Grid.Column="2" Text="FPS" Classes="fieldLabel"/>
+      <NumericUpDown x:Name="FrameFps" Grid.Column="3" Classes="sheetNumber" VerticalContentAlignment="Center" Minimum="1" Maximum="60" Value="8"
+                     AutomationProperties.Name="Animation frames per second" ToolTip.Tip="Frames per second of game time."/>
+    </Grid>
+    <Grid Grid.Row="7" Margin="0,4,0,0" ColumnDefinitions="58,*" ColumnSpacing="6">
       <TextBlock Text="Collision" Classes="fieldLabel"/>
       <ComboBox x:Name="ShapeMode" Grid.Column="1" HorizontalAlignment="Stretch" AutomationProperties.Name="Tile collision">
         <ComboBoxItem Content="None"/><ComboBoxItem Content="Full cell"/><ComboBoxItem Content="Polygon"/><ComboBoxItem Content="One-way face"/>
       </ComboBox>
     </Grid>
-    <Grid x:Name="VerticesRow" Grid.Row="6" Margin="0,4,0,0" ColumnDefinitions="58,*" ColumnSpacing="6" IsVisible="False">
+    <Grid x:Name="VerticesRow" Grid.Row="8" Margin="0,4,0,0" ColumnDefinitions="58,*" ColumnSpacing="6" IsVisible="False">
       <TextBlock Text="Points" Classes="fieldLabel"/>
       <TextBox x:Name="PointsBox" Grid.Column="1" Watermark="0,1  1,0  1,1" AutomationProperties.Name="Normalized tile points"
                ToolTip.Tip="x,y pairs from 0 to 1, separated by spaces. A left-to-right face blocks from above. Reverse its points to flip it."/>
     </Grid>
-    <Grid Grid.Row="7" Margin="0,4,0,0" ColumnDefinitions="58,*,Auto,72" ColumnSpacing="6">
+    <Grid Grid.Row="9" Margin="0,4,0,0" ColumnSpacing="6">
+      <Grid.ColumnDefinitions><ColumnDefinition Width="58"/><ColumnDefinition/><ColumnDefinition Width="Auto" SharedSizeGroup="SideLabel"/><ColumnDefinition Width="72"/></Grid.ColumnDefinitions>
       <TextBlock Text="Terrain" Classes="fieldLabel"/>
       <TextBox x:Name="TerrainName" Grid.Column="1" Watermark="floor, mud, water" MaxLength="64" AutomationProperties.Name="Terrain name"
                ToolTip.Tip="Gameplay kind that scripts read from a cell."/>
@@ -53,7 +75,7 @@
                      AutomationProperties.Name="Move cost"
                      ToolTip.Tip="Grid navigation entry weight. 0 blocks. Empty: 1, or 0 for tiles with collision."/>
     </Grid>
-    <Grid Grid.Row="8" x:Name="Footer" Margin="0,6,0,0" RowDefinitions="Auto,Auto" ColumnDefinitions="*,Auto" ColumnSpacing="8">
+    <Grid Grid.Row="10" x:Name="Footer" Margin="0,6,0,0" RowDefinitions="Auto,Auto" ColumnDefinitions="*,Auto" ColumnSpacing="8">
       <Grid x:Name="TileStatus" ColumnDefinitions="*,Auto" ColumnSpacing="6">
         <TextBlock x:Name="Info" Classes="label" MaxLines="2" TextWrapping="Wrap" TextTrimming="CharacterEllipsis"
                    ToolTip.Tip="{Binding Text, RelativeSource={RelativeSource Self}}"/>

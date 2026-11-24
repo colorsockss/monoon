@@ -1,0 +1,17 @@
+rate: 10
+shape: Edge
+width: 160
+direction: 90
+spread: 10
+speed: {min: 25, max: 35}
+lifetime: {min: 3, max: 3}
+size: {min: 14, max: 18}
+rotation: {min: 0, max: 360}
+color: {min: "#E8F4FF"}
+texture: 5b2e74f5-8b12-5eb4-b780-ee246678daea
+sheet: {columns: 4, rows: 1, frames: 1}
+# Spins fast and slows to a stop; the Max curve turns the other way, so each flake spins at its own rate.
+rotationSpeed:
+  smooth: true
+  keys: [{time: 0, value: 540}, {time: 1, value: 0}]
+  max: [{time: 0, value: -540}, {time: 1, value: 0}]

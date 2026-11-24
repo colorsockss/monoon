@@ -68,6 +68,7 @@ try
     var result = DesktopBuild.Export(root, gameSettings, build.Target, output, build.NativeAot, build.BuildProfile, build.FullContent);
     foreach (var line in result.ContentDecisions) Console.Error.WriteLine(line);
     Console.Error.WriteLine($"Content report: {result.ContentReport}");
+    foreach (var line in result.AssetSummary) Console.Error.WriteLine(line);
     if (result.SymbolDirectory != null) Console.Error.WriteLine($"Debug symbols: {result.SymbolDirectory}");
     if (build.Package) DistributionPackage.Create(root, gameSettings, build.Target, result, SigningSettings.Load(), Console.Error.WriteLine);
     Console.WriteLine(result.Product);

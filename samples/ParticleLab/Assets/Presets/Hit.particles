@@ -1,0 +1,14 @@
+# A hit flash: one fast ring of bright particles that shrink away.
+duration: 0.3
+looping: false
+rate: 0
+bursts: [{time: 0, count: 14}]
+maxParticles: 64
+shape: Circle
+radius: 4
+speed: {min: 90, max: 180}
+lifetime: {min: 0.15, max: 0.35}
+size: {min: 3, max: 6}
+color: {min: "#FFFFFF", max: "#FF5A5A"}
+endSize: 0.2
+blend: Additive

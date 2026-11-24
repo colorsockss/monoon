@@ -5,6 +5,7 @@ using MoNoon.Dialogue;
 
 internal static class DialogueChecks
 {
+    [Check(1500)] static void Registered(CheckRun c) => Run(c.Repository, c.Scratch);
     internal static void Run(string repo, string scratch)
     {
         var sample = Path.Combine(repo, "samples", "InventoryLab");

@@ -30,6 +30,7 @@ internal sealed class SdlText(IGameTextRasterizer textRenderer) : IDisposable
             if (cache.Count >= 128) Clear();
             var bitmap = textRenderer.Rasterize(text);
             label = (bitmap.CreateTexture(renderer), bitmap.Width, bitmap.Height);
+            label.Texture.SetScaleMode(SdlScaleMode.Linear); // Labels are 32 px masters; integer-scaled pixel art defaults to nearest.
             cache.Add(text, label);
         }
         float scale = size / TtfTextRasterizer.FontSize;

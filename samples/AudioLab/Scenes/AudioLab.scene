@@ -15,6 +15,17 @@ objects:
     volume: 0.55
     fadeIn: 0.4
     fadeOut: 0.6
+- id: f2bed475-bef2-41b5-8237-5844ae0e0b3d
+  name: Line
+  x: 0
+  y: 0
+  width: 1
+  height: 1
+  components:
+  - type: audioSource
+    sound: 46c50a56-da15-4b4a-9c21-fefef996d8a8
+    bus: Voice
+    volume: 0.9
 - id: a3e06a29-84c3-5ff3-bff7-74cf7b51cab7
   name: Player
   x: 144
@@ -36,6 +47,8 @@ objects:
       EffectsList: "c7374793-0a6a-552d-aad5-7b4f43652ed7"
       MasterMute: "0ca0f5df-4701-5f62-ba20-c46e2844ddce"
       Readout: "20c3d31e-94a6-59e3-ac9d-a9ec83896432"
+      Line: "f2bed475-bef2-41b5-8237-5844ae0e0b3d"
+      VoiceList: "a7322121-9d88-493f-8c67-3a50916b95ea"
 - id: 45a0bc60-61c2-5d57-bd9e-9c8b0a98ea7f
   name: Beacon
   x: 388
@@ -343,4 +356,41 @@ objects:
   - type: uiRect
   - type: uiToggle
     initial: false
+- id: 184793d6-3eac-4c45-9a8b-065d22e8eb14
+  name: Voice level label
+  x: 440
+  y: 84
+  width: 130
+  height: 28
+  parentId: c8404033-aaef-521e-8513-9076bdc9941a
+  components:
+  - type: uiRect
+  - type: uiText
+    size: 16
+    insetY: 3
+    text: Voice level
+- id: a7322121-9d88-493f-8c67-3a50916b95ea
+  name: VoiceList
+  x: 578
+  y: 84
+  width: 190
+  height: 28
+  parentId: c8404033-aaef-521e-8513-9076bdc9941a
+  components:
+  - type: uiRect
+  - type: uiDropdown
+    options: ["Quiet (37.5%)", "Normal (75%)", "Full (100%)"]
+    initial: 2
+- id: 7f68a18c-0220-47a8-a108-221496968c11
+  name: Keys 2
+  x: 32
+  y: 420
+  width: 747
+  height: 24
+  parentId: c8404033-aaef-521e-8513-9076bdc9941a
+  components:
+  - type: uiRect
+  - type: uiText
+    size: 15
+    text: "V / Pad West: dialogue (music ducks 8 dB)    N / Pad North: night snapshot"
 defaultCameraId: 8241f05a-bc2e-54c8-9922-756347112139

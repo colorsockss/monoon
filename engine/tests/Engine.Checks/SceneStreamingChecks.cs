@@ -3,6 +3,7 @@ using Engine.Core;
 
 internal static class SceneStreamingChecks
 {
+    [Check(7900)] static void Registered(CheckRun c) => Run(c.Scratch, c.Scene);
     internal static void Wait(GameSession game)
     {
         long deadline = Environment.TickCount64 + 5000;

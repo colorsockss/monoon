@@ -16,7 +16,7 @@ recording(out / 'Frames.inputreplay', project / 'GameSettings')
 env = dict(os.environ, DOTNET_STARTUP_HOOKS=str(hook), MONOON_QA_PROJECT=str(project),
            MONOON_ASE_EDITOR=str(out), MONOON_FRAME_TRACE=str(out / 'trace.txt'), MONOON_USER_DATA=str(out / 'profile'))
 with (out / 'editor.log').open('wb') as log:
-    subprocess.run([str(editor), str(project)], env=env, stdout=log, stderr=log, timeout=900, check=True)
+    subprocess.run([str(editor), str(project)], env=env, stdout=log, stderr=log, timeout=240 * float(os.environ.get('MONOON_QA_SLOW') or 1), check=True)
 if (out / 'error.txt').exists(): raise RuntimeError((out / 'error.txt').read_text(encoding='utf-8'))
 check(out, out / 'played.aseprite')
 

@@ -18,7 +18,8 @@ internal static class InventoryBuildChecks
         {
             var bin = Path.GetDirectoryName(player)!;
             if (!File.Exists(player)) throw new FileNotFoundException($"Missing {mode} player at {player}.");
-            var scripts = Path.Combine(bin, "Game", ".monoon-compiled", "MoNoon.GameScripts.dll");
+            // Release links the scripts next to the managed player (per-game publish); Native AOT compiles both into the executable.
+            var scripts = Path.Combine(bin, BuildSymbols.ScriptAssembly(bin));
             if (File.Exists(scripts) != (mode == "Release") || File.Exists(Path.Combine(bin, "MoNoonPlayer.dll")) != (mode == "Release"))
                 throw new InvalidDataException($"Unexpected player or script compilation mode at {bin}.");
             BuildProfileChecks.CheckInventory(output, bin, rid, mode != "Release", expectedProfile);

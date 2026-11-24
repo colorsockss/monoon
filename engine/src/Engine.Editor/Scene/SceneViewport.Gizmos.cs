@@ -13,7 +13,14 @@ public sealed partial class SceneViewport
 {
     internal GizmoTool Gizmo { get; set; }
     internal bool SnapEnabled { get; set; }
-    internal IReadOnlyList<SceneObject> Selection { get; set; }=[];
+    // Every edit that can change the draw order drops the kept order, so a newly selected object's sorting inputs still
+    // match it: take them as the reference for typed edits on that selection.
+    internal IReadOnlyList<SceneObject> Selection
+    {
+        get => selection;
+        set { selection = value; if (editOrder != null) editOrderSelection = value.Select(OrderInputs.Of).ToArray(); }
+    }
+    private IReadOnlyList<SceneObject> selection = [];
     internal event Action<SceneObject?>? TogglePicked;
     private enum Grip { None, X, Y, Center, Ring }
     private const float Arm=44;
@@ -108,7 +115,9 @@ public sealed partial class SceneViewport
             for(int i=0;i<4;i++)
                 canvas.DrawLine(obj.LocalToWorld(corners[i]),obj.LocalToWorld(corners[(i+1)%4]),unit*1.5f,SelectionColor);
         }
+        DrawNavArea(canvas);
         DrawPath(canvas,unit);
+        DrawCapsule(canvas,unit);
         if(!HasWorldSelection || EditMap!=null)return;
         var center=SelectionTransform.Center(Selection);
         var x=center+new Vector2(Arm*unit,0);

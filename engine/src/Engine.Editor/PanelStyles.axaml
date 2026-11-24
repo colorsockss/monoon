@@ -5,6 +5,26 @@
   <Style Selector="TreeViewItem.dropTarget"><Setter Property="Foreground" Value="{DynamicResource EditorAccent}"/></Style>
   <Style Selector="Border.referenceRow"><Setter Property="Background" Value="Transparent"/></Style>
   <Style Selector="Border.referenceRow.referenceDrop"><Setter Property="Background" Value="{DynamicResource EditorDropTarget}"/></Style>
+  <!-- Object fields (13.7/13.17): drop feedback only recolours the 1px border, so nothing around the field moves. -->
+  <Style Selector="local|ReferenceField">
+    <Setter Property="Height" Value="{StaticResource EditorInputHeight}"/>
+    <Setter Property="Background" Value="{DynamicResource EditorField}"/>
+    <Setter Property="BorderBrush" Value="{DynamicResource EditorBorder}"/>
+    <Setter Property="BorderThickness" Value="{StaticResource EditorBorderThickness}"/>
+    <Setter Property="CornerRadius" Value="{StaticResource EditorCornerRadius}"/>
+    <Setter Property="Cursor" Value="Hand"/>
+  </Style>
+  <Style Selector="local|ReferenceField:pointerover"><Setter Property="BorderBrush" Value="{DynamicResource EditorBorderHover}"/></Style>
+  <Style Selector="local|ReferenceField:focus"><Setter Property="BorderBrush" Value="{DynamicResource EditorAccent}"/></Style>
+  <Style Selector="local|ReferenceField.referenceDrop"><Setter Property="BorderBrush" Value="{DynamicResource EditorAccent}"/></Style>
+  <Style Selector="local|ReferenceField.referenceReject"><Setter Property="BorderBrush" Value="{DynamicResource EditorError}"/></Style>
+  <Style Selector="local|ReferenceField Button.picker">
+    <Setter Property="Width" Value="22"/><Setter Property="Height" Value="22"/><Setter Property="MinHeight" Value="0"/>
+    <Setter Property="Padding" Value="0"/><Setter Property="Cursor" Value="Arrow"/>
+  </Style>
+  <Style Selector="local|ReferenceField Button.picker PathIcon"><Setter Property="Width" Value="12"/><Setter Property="Height" Value="12"/></Style>
+  <!-- Ping (13.7): the target row flashes without changing size. -->
+  <Style Selector="TreeViewItem.ping, ListBoxItem.ping"><Setter Property="Background" Value="{DynamicResource EditorAccentOverlay}"/></Style>
   <Style Selector="ToggleButton.drawerHeader:checked PathIcon"><Setter Property="RenderTransform" Value="rotate(90deg)"/></Style>
   <Style Selector="TextBlock.panel">
     <Setter Property="FontSize" Value="{StaticResource EditorFontSize}"/><Setter Property="FontWeight" Value="{StaticResource EditorTitleWeight}"/>
@@ -61,6 +81,29 @@
   </Style>
   <Style Selector="ToggleButton.rowToggle:pointerover /template/ ContentPresenter#PART_ContentPresenter">
     <Setter Property="Background" Value="{DynamicResource EditorHover}"/><Setter Property="Foreground" Value="{DynamicResource EditorText}"/><Setter Property="BorderBrush" Value="Transparent"/>
+  </Style>
+  <!-- Component warnings (13.14): one yellow line above the section; the section itself does not move sideways. -->
+  <Style Selector="TextBlock.componentWarning">
+    <Setter Property="Foreground" Value="{DynamicResource EditorWarning}"/>
+    <Setter Property="Margin" Value="0,2,0,2"/>
+  </Style>
+  <!-- Prefab override rows (13.6): a 2px bar drawn in the panel padding (negative margin), so the row's columns never move. -->
+  <Style Selector="Border.overrideBar">
+    <Setter Property="Width" Value="2"/><Setter Property="HorizontalAlignment" Value="Left"/><Setter Property="Margin" Value="-6,1,0,1"/>
+    <Setter Property="Background" Value="{DynamicResource EditorAccent}"/><Setter Property="IsHitTestVisible" Value="False"/>
+  </Style>
+  <!-- Inspector tab: lock and Debug view. Checked only changes colour, so the tab never changes width. -->
+  <Style Selector="ToggleButton.tabTool">
+    <Setter Property="Width" Value="16"/><Setter Property="Height" Value="16"/><Setter Property="MinHeight" Value="0"/>
+    <Setter Property="Padding" Value="0"/><Setter Property="BorderThickness" Value="0"/>
+    <Setter Property="HorizontalContentAlignment" Value="Center"/><Setter Property="VerticalAlignment" Value="Center"/>
+    <Setter Property="Background" Value="Transparent"/><Setter Property="Foreground" Value="{DynamicResource EditorMuted}"/>
+  </Style>
+  <Style Selector="ToggleButton.tabTool:checked /template/ ContentPresenter#PART_ContentPresenter, ToggleButton.tabTool:pressed /template/ ContentPresenter#PART_ContentPresenter">
+    <Setter Property="Background" Value="Transparent"/><Setter Property="Foreground" Value="{DynamicResource EditorAccent}"/><Setter Property="BorderBrush" Value="Transparent"/>
+  </Style>
+  <Style Selector="ToggleButton.tabTool:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+    <Setter Property="Background" Value="{DynamicResource EditorHover}"/><Setter Property="BorderBrush" Value="Transparent"/>
   </Style>
   <!-- Project path bar -->
   <Style Selector="Border.pathBar">

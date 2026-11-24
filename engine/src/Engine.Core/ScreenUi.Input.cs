@@ -78,6 +78,7 @@ public sealed partial class ScreenUi
     public void Drag(float x,float y)
     {
         pointer = new(x, y);
+        StartDrag(x, y);
         if ((x != -1 || y != -1) && pressed is Guid sliding && byId.TryGetValue(sliding, out var slider) && slider.Control is UiSliderComponent && Enabled(slider) && Visible(slider))
             Slide(slider, x);
         if(barDrag is not Guid id || !byId.TryGetValue(id,out var n))return;
@@ -111,9 +112,10 @@ public sealed partial class ScreenUi
         if(!down&&barDrag!=null){Drag(x,y);barDrag=null;return true;}
         var target=hovered is Guid hot ? byId[hot] : null;
         var id=target?.Object.Id;
-        if(down){pressed=id;if(id.HasValue || ActiveInputMode==null)SetFocus(id);if(target?.Field!=null)Begin(target);
+        if(down){pressed=id;grab=target!=null&&Draggable(target)?new PointF(x,y):null;if(id.HasValue || ActiveInputMode==null)SetFocus(id);if(target?.Field!=null)Begin(target);
             else if (target?.Control is UiSliderComponent) Slide(target, x);
             return id.HasValue;}
+        if(EndDrag(x,y))return true;
         bool captured=pressed.HasValue;
         if(target?.Control!=null && target.Field==null && id==pressed)UseControl(target);
         pressed=null;return captured;
@@ -158,6 +160,7 @@ public sealed partial class ScreenUi
             used=EditKey(key);
             if(key is "Backspace" or "Delete" or "Left" or "Right")return used;
         }
+        else if(key=="Escape"&&CancelCarry())used=true;
         else if(ControlKey(key))used=true;
         else if(key=="Tab")used=Navigate(key,reverse);
         else if(key is "Up" or "Down" or "Left" or "Right")used=(focus!=null||uiOnly||ActiveInputMode.HasValue)&&Navigate(key);
@@ -169,7 +172,7 @@ public sealed partial class ScreenUi
     public bool PadKey(string key)
     {
         Arrange();
-        if(key=="Pad.East" && ControlKey("Escape"))return true;
+        if(key=="Pad.East" && (CancelCarry() || ControlKey("Escape")))return true;
         if(key=="Pad.East"){if(ActiveInputMode.HasValue||focus==null)return false;SetFocus(null);return true;}
         if(key=="Pad.South"){if(edit!=null){EndEditing();return true;}return ControlKey("Return") || Activate(key);}
         string? dir=key switch
@@ -179,7 +182,8 @@ public sealed partial class ScreenUi
         };
         return dir!=null&&(focus!=null||uiOnly||ActiveInputMode.HasValue)&&(ControlKey(dir)||Navigate(dir));
     }
-    internal void Dispatch(Action<Guid> click, Action<Guid,float>? changed = null)
+    internal bool HasControlEvents => controlEvents.Count != 0 || drops.Count != 0;
+    internal void Dispatch(Action<Guid> click, Action<Guid,float>? changed = null, Action<Guid,Guid>? dropped = null)
     {
         while (controlEvents.TryDequeue(out var e))
         {
@@ -187,12 +191,13 @@ public sealed partial class ScreenUi
             if (e.Value is float value) changed?.Invoke(e.Id, value);
             else click(ClickTarget(e.Id));
         }
+        DispatchDrops(dropped);
     }
     internal void ReleaseActivation(string control)
     {
         if (activationKey == control) { activationOwner = null; activationKey = null; }
     }
-    public void ResetInput(){SetFocus(null);CancelPointer();activationOwner=null;activationKey=null;held.Clear();controlEvents.Clear();}
+    public void ResetInput(){SetFocus(null);CancelPointer();CancelCarry();activationOwner=null;activationKey=null;held.Clear();controlEvents.Clear();}
     internal event Action? PointerCanceled;
-    public void CancelPointer(){CloseOptions();popupPointer=false;pressed=barDrag=hovered=null;pointer=null;PointerCanceled?.Invoke();}
+    public void CancelPointer(){CloseOptions();popupPointer=false;pressed=barDrag=hovered=null;pointer=null;if(dragging)CancelCarry();grab=null;PointerCanceled?.Invoke();}
 }

@@ -3,7 +3,7 @@ using Engine.Core;
 public sealed class RoomGuide : GameBehaviour
 {
     public SceneReference Guide;
-    public string Action = "RoomGuide";
+    [InputAction] public string Action = "RoomGuide";
 
     public override void UpdateUi(UiTick tick)
     {

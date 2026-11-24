@@ -21,8 +21,7 @@ public partial class MainWindow
             BrowseFolder(ParentPath(path),path); RefreshComponentList();
             Status.Text = $"Saved {path}.";
         };
-        window.Closed += (_,_) => { if (clipEditor == window) clipEditor = null; ProjectBrowser.SelectionMode = SelectionMode.Single; };
-        ProjectBrowser.SelectionMode = SelectionMode.Multiple;
+        window.Closed += (_,_) => { if (clipEditor == window) clipEditor = null; };
         clipEditor = window;
         ShowEditor<object>("Clip", window);
     }

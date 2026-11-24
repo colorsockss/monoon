@@ -22,26 +22,46 @@ public sealed partial record Camera2DComponent
     public Guid? Follow { get; set; }
     public float HalfLife { get; set; }
     public CameraRect? Bounds { get; set; }
+    // Roadmap 16.11. World pixels the tracked point may move from the view centre before the camera follows.
+    public float DeadZoneWidth { get; set; }
+    public float DeadZoneHeight { get; set; }
+    // Seconds of the tracked point's velocity the camera aims ahead.
+    public float LookAhead { get; set; }
+    // Object group framed together with Follow: the camera centres the members' bounds and zooms out (no further than
+    // Bounds allows) until they fit with FramePadding world pixels around them.
+    public string? FrameGroup { get; set; }
+    public float FramePadding { get; set; }
+    public const float MaxLookAhead = 10;
 
-    internal bool Extended => Output!=Primary || Viewport!=null || Order!=0 || Follow!=null || HalfLife!=0 || Bounds!=null;
+    internal bool Tracks => Follow!=null || FrameGroup!=null;
+    internal bool Framing => DeadZoneWidth!=0 || DeadZoneHeight!=0 || LookAhead!=0 || FrameGroup!=null || FramePadding!=0;
+    internal bool Extended => Output!=Primary || Viewport!=null || Order!=0 || Follow!=null || HalfLife!=0 || Bounds!=null || Framing;
     internal void Validate(string owner)
     {
+        static bool Size(float v) => float.IsFinite(v) && v>=0;
         if (!(Zoom>=MinZoom && Zoom<=MaxZoom) || Output is not (Primary or Extra or Minimap) ||
             !float.IsFinite(HalfLife) || HalfLife<0 || Bounds is { Valid:false } ||
+            !Size(DeadZoneWidth) || !Size(DeadZoneHeight) || !Size(FramePadding) || !Size(LookAhead) || LookAhead>MaxLookAhead ||
+            FrameGroup is {} group && (group.Length is 0 or > 64 || group!=group.Trim()) ||
             Viewport is {} v && (!v.Valid || v.X<0 || v.Y<0 || v.X+v.Width>1.000001f || v.Y+v.Height>1.000001f))
-            throw new InvalidDataException($"{owner}: invalid Camera 2D output, zoom, follow time, bounds or normalized viewport.");
+            throw new InvalidDataException($"{owner}: invalid Camera 2D output, zoom, follow time, bounds, dead zone, look-ahead, frame group or normalized viewport.");
     }
 
     private static readonly CameraRect Full=new(0,0,1,1), Inset=new(.73f,.03f,.25f,.25f);
     public CameraRect DefaultViewport() => Output==Minimap ? Inset : Full;
-    public CameraView View(Size resolution,Vector2 center)
+    internal Rectangle Port(Size resolution)
     {
         var v=Viewport??DefaultViewport();
         // Round shared edges, not widths: split views meet even at odd logical resolutions.
         static int Edge(float value,int extent) => Math.Clamp((int)MathF.Round(value*extent),0,extent);
         int left=Math.Min(resolution.Width-1,Edge(v.X,resolution.Width)), top=Math.Min(resolution.Height-1,Edge(v.Y,resolution.Height));
-        var port=Rectangle.FromLTRB(left,top,Math.Max(left+1,Edge(v.X+v.Width,resolution.Width)),Math.Max(top+1,Edge(v.Y+v.Height,resolution.Height)));
-        float zoom=Zoom;
+        return Rectangle.FromLTRB(left,top,Math.Max(left+1,Edge(v.X+v.Width,resolution.Width)),Math.Max(top+1,Edge(v.Y+v.Height,resolution.Height)));
+    }
+    public CameraView View(Size resolution,Vector2 center) => View(resolution,center,Zoom);
+    // zoom: the group framing's zoom. Bounds may still raise it so the view never shows outside the map.
+    public CameraView View(Size resolution,Vector2 center,float zoom)
+    {
+        var port=Port(resolution);
         if (Bounds is {} b) zoom=Math.Max(zoom,Math.Max(port.Width/b.Width,port.Height/b.Height));
         float w=port.Width/zoom,h=port.Height/zoom;
         var frame=new RectangleF(center.X-w/2,center.Y-h/2,w,h);

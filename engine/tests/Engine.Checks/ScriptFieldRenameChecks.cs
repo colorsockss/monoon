@@ -3,6 +3,7 @@ using Engine.Core;
 
 internal static class ScriptFieldRenameChecks
 {
+    [Check(6300)] static void Registered(CheckRun c) => Run(c.Scratch);
     internal static void Run(string scratch)
     {
         string root = Path.Combine(scratch, "FieldNames");

@@ -23,6 +23,7 @@ internal static class EditorTokens
     public static double Gap2 => Get<double>("EditorGap2");
     public static double FieldGap => Get<double>("EditorFieldGap");
     public static double FieldLabelWidth => Get<double>("EditorFieldLabelWidth");
+    public static double InputHeight => Get<double>("EditorInputHeight");
     public static double DialogLabelWidth => Get<double>("EditorDialogLabelWidth");
     public static double FontSize => Get<double>("EditorFontSize");
     public static double FontSizeSmall => Get<double>("EditorFontSizeSmall");
@@ -55,7 +56,7 @@ internal static class EditorTokens
         Tilemap2DComponent or NavigationRegion2DComponent => Geometry("IconTilemap"),
         SpriteAnimatorComponent or SkeletonAnimator2DComponent or PositionTween2DComponent or PathFollower2DComponent or FootIK2DComponent => Geometry("IconAnimator"),
         ParticleEmitter2DComponent or Line2DComponent or Trail2DComponent => Geometry("IconParticle"),
-        PointLight2DComponent => Geometry("IconLight"),
+        PointLight2DComponent or GlobalLight2DComponent => Geometry("IconLight"),
         _ when component.GetType().Name.StartsWith("Ui", StringComparison.Ordinal) || component is HudComponent => Geometry("IconUi"),
         _ => null,
     };

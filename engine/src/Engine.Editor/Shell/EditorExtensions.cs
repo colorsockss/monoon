@@ -21,6 +21,19 @@ public sealed class EditorExtensionRegistry
     internal readonly List<(string Label, Action<EditorContext> Run)> Commands = [];
     internal readonly Dictionary<string, Action<ScriptInspector>> Inspectors = new(StringComparer.Ordinal);
     internal readonly List<(string Title, Func<EditorContext, Control> Build)> Panels = [];
+    internal readonly Dictionary<string, Func<FieldDrawer, Control>> Drawers = new(StringComparer.Ordinal);
+
+    /// <summary>
+    /// Draws the value of every script field marked with the attribute <paramref name="key"/> (its class name, with or without
+    /// "Attribute", e.g. "Stars" for [Stars]) or, when no attribute matches, of the C# type <paramref name="key"/> (e.g. "int",
+    /// "Vector2"). The control goes in the value column of the field's row; change the value with <see cref="FieldDrawer.Set"/>.
+    /// </summary>
+    public void AddFieldDrawer(string key, Func<FieldDrawer, Control> build)
+    {
+        key = key?.EndsWith("Attribute", StringComparison.Ordinal) == true ? key[..^"Attribute".Length] : key ?? "";
+        if (string.IsNullOrWhiteSpace(key) || !Drawers.TryAdd(key, build ?? throw new ArgumentNullException(nameof(build))))
+            throw new InvalidDataException($"Invalid or duplicate field drawer '{key}'.");
+    }
 
     /// <summary>Adds Project → Extensions → <paramref name="label"/>. It runs only while the scene is being edited.</summary>
     public void AddMenuCommand(string label, Action<EditorContext> run)
@@ -57,17 +70,40 @@ public sealed class EditorContext
     public SceneObject? PlacePrefab(string path) => window.ExtensionPlacePrefab(path);
     /// <summary>Writes an information line to the Console.</summary>
     public void Log(string message) => window.ExtensionLog(message);
-    /// <summary>A labelled row on the Inspector's label column, for Inspectors and panels.</summary>
+    /// <summary>A labelled row on the Inspector's label column, for Inspectors and panels (the built-in Inspector's row).</summary>
     public Control Row(string label, Control input)
     {
-        var row = new Grid { ColumnDefinitions = EditorTokens.LabelColumns(EditorTokens.FieldLabelWidth), ColumnSpacing = EditorTokens.FieldGap };
-        row.Children.Add(new TextBlock { Text = label, Classes = { "fieldLabel" }, TextTrimming = TextTrimming.CharacterEllipsis });
-        ToolTip.SetTip(row, label);
         AutomationProperties.SetName(input, label);
-        Grid.SetColumn(input, 1);
-        row.Children.Add(input);
-        return row;
+        return MainWindow.InspectorRowControl(label, input);
     }
+
+    /// <summary>
+    /// Records what the extension changed in the scene since the last record as one Undo step (as an Inspector edit does).
+    /// False when nothing changed or while playing.
+    /// </summary>
+    public bool RecordEdit() => window.ExtensionRecordEdit();
+
+    /// <summary>
+    /// Sets the saved value of the script field <paramref name="name"/> of <paramref name="component"/> and records it as one Undo
+    /// step. A value equal to the script's default removes the saved key; null also removes it. Values are the field's type
+    /// (Vector2 for a vector, a #RRGGBB text for a colour, a name or "A, B" for an enum, a JsonElement for arrays, lists,
+    /// dictionaries and structs). Throws for a field the script does not show in the Inspector.
+    /// </summary>
+    public void SetField(ScriptComponent component, string name, object? value) => window.ExtensionSetField(component, name, value);
+}
+
+/// <summary>One script field drawn by an <see cref="EditorExtensionRegistry.AddFieldDrawer"/> drawer.</summary>
+public sealed class FieldDrawer
+{
+    internal FieldDrawer(EditorContext editor, ScriptComponent component, ScriptField field) => (Editor, Component, Field) = (editor, component, field);
+    public EditorContext Editor { get; }
+    public ScriptComponent Component { get; }
+    public ScriptField Field { get; }
+    public string Name => Field.Name;
+    /// <summary>The current value (the saved one, or the script's default); see <see cref="EditorContext.SetField"/> for the types.</summary>
+    public object? Value => Field.Value(Component);
+    /// <summary>Saves a new value as one Undo step.</summary>
+    public void Set(object? value) => Editor.SetField(Component, Field.Name, value);
 }
 
 /// <summary>Builds the Inspector rows of one script component. Rows share the label column of the built-in Inspector.</summary>

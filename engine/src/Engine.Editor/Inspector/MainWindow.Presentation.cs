@@ -11,17 +11,9 @@ public partial class MainWindow
     {
         var fields = new StackPanel { Spacing = 2 };
         void Row(string label, Control editor) => InspectorRow(fields, label, editor);
-        void Asset(string label, string suffix, Guid? current, Action<Guid?> set, Func<string, bool>? accepts = null)
-        {
-            var items = new List<ObjectReference> { new(Guid.Empty, "None") };
-            if (project != null) items.AddRange(ProjectAssets.Scan(project).Entries.Where(e => (accepts?.Invoke(e.Path) ?? e.Path.EndsWith(suffix, StringComparison.OrdinalIgnoreCase))
-                && File.Exists(Path.Combine(project, e.Path))).Select(e => new ObjectReference(e.Id, e.Path)));
-            var picker = new ComboBox { ItemsSource = items, SelectedItem = items.FirstOrDefault(i => i.Id == (current ?? Guid.Empty)),
-                HorizontalAlignment = HorizontalAlignment.Stretch };
-            if (picker.SelectedItem is ObjectReference selected) ToolTip.SetTip(picker,selected.Label);
-            picker.SelectionChanged += (_, _) => { if (picker.SelectedItem is ObjectReference item) { set(item.Id == Guid.Empty ? null : item.Id); MarkDirty(); } };
-            Row(label, picker);
-        }
+        // Object fields (13.7/13.17): drop, pick or clear is one Undo step, then the section shows the new value.
+        void Asset(string label, string suffix, Guid? current, Action<Guid?> set, Func<string, bool>? accepts = null) =>
+            Row(label, AssetField(label, accepts ?? EndsWith(suffix), current, id => { if (id == current) return; set(id); MarkDirty(); RefreshComponentList(); }));
         void Text(string label, string value, Action<string> set)
         {
             var box = new TextBox { Text = value };
@@ -40,15 +32,22 @@ public partial class MainWindow
             control.SelectionChanged+=(_,_)=>{ if(control.SelectedItem is T value) {set(value);MarkDirty();} };
             Row(label,control);
         }
-        void Color(string label, string value, Action<string> set) => Text(label, value, v => { if (SceneObject.TryColor(v, out _)) set(v); });
+        // 13.9: swatch + ColorPicker popup + hex text. Dragging in the popup and typing apply live; closing the popup, Enter or
+        // leaving the text records one Undo step.
+        void Color(string label, string value, Action<string> set)
+        {
+            var field = new ColorField(label, value, alpha: false);
+            field.Changed += (hex, commit) => { set(hex); if (commit) MarkDirty(); else Viewport.InvalidateUi(); };
+            Row(label, field);
+        }
         void Sorting(Func<int> layer, Action<int> setLayer, Func<int> order, Action<int> setOrder)
         {
-            if (Selected?.GetComponent<SpriteRendererComponent>() != null) return; // The sprite's slot is shared.
+            if (Inspected?.GetComponent<SpriteRendererComponent>() != null) return; // The sprite's slot is shared.
             Number("Layer", layer(), -32768, 32767, v => setLayer((int)v));
             Number("Order", order(), -32768, 32767, v => setOrder((int)v));
         }
         // The point selected in the Scene view; Add, Delete and Smooth/Corner each record one undo step.
-        void PathRows(PathPoint[] points, Action<PathPoint[]> set, bool pinFirst)
+        void PathRows(PathPoint[] points, Action<PathPoint[]> set, bool pinFirst, bool curves = true)
         {
             if (points.Length == 0) return;
             int index = Math.Clamp(Viewport.PathIndex, 0, points.Length - 1);
@@ -73,7 +72,7 @@ public partial class MainWindow
             var shape = new Button { Content = PathEdit.Smooth(points[index]) ? "Corner" : "Smooth",
                 HorizontalAlignment = HorizontalAlignment.Stretch, HorizontalContentAlignment = HorizontalAlignment.Center };
             ToolTip.SetTip(shape, "Add or remove tangent handles");
-            Action(2, shape, (path, i) => (path.ToggleSmooth(i), i));
+            if (curves) Action(2, shape, (path, i) => (path.ToggleSmooth(i), i));
             buttons.IsEnabled = !Viewport.IsPlaying;
             Row("", buttons);
         }
@@ -84,7 +83,26 @@ public partial class MainWindow
                 Color("Start color", line.StartColor, v => line.StartColor = v);
                 Color("End color", line.EndColor, v => line.EndColor = v);
                 Sorting(() => line.SortingLayer, v => line.SortingLayer = v, () => line.Order, v => line.Order = v);
-                PathRows(line.Points, p => line.Points = p, false);
+                // The Scene view edits an Edge Collider 2D on the same object instead (PathEdit.Of).
+                if (Inspected?.GetComponent<EdgeCollider2DComponent>() == null) PathRows(line.Points, p => line.Points = p, false);
+                break;
+            case Text2DComponent worldText:
+                Text("Text key", worldText.TextKey ?? "", s => worldText.TextKey = string.IsNullOrWhiteSpace(s) ? null : s.Trim());
+                Text("Text", worldText.Text, s => worldText.Text = s);
+                Number("Size", worldText.Size, 1, 1024, v => worldText.Size = v);
+                Color("Color", worldText.Color, v => worldText.Color = v);
+                Choice("Align", worldText.Align, v => worldText.Align = v);
+                var worldRich = new CheckBox { Content = "Rich text tags", IsChecked = worldText.RichText };
+                ToolTip.SetTip(worldRich, "<color=#RRGGBB>, <b> and <size=N>");
+                worldRich.IsCheckedChanged += (_, _) => { worldText.RichText = worldRich.IsChecked == true; MarkDirty(); };
+                Row("", worldRich);
+                Sorting(() => worldText.SortingLayer, v => worldText.SortingLayer = v, () => worldText.Order, v => worldText.Order = v);
+                if (Inspected?.GetComponent<SpriteRendererComponent>() == null)
+                {
+                    var worldByY = new CheckBox { Content = "Use foot Y", IsChecked = worldText.SortByY };
+                    worldByY.IsCheckedChanged += (_, _) => { worldText.SortByY = worldByY.IsChecked == true; MarkDirty(); };
+                    Row("Y sort", worldByY);
+                }
                 break;
             case Trail2DComponent trail:
                 Number("Time (s)", trail.Time, .01m, 10, v => trail.Time = v);
@@ -105,6 +123,15 @@ public partial class MainWindow
                 break;
             case CutsceneDirectorComponent director:
                 Asset("Dialogue", CutsceneSequence.Extension, director.Sequence, v => director.Sequence = v);
+                break;
+            case Parallax2DComponent parallax:
+                Number("Scroll X", parallax.ScrollX, -16, 16, v => parallax.ScrollX = v);
+                Number("Scroll Y", parallax.ScrollY, -16, 16, v => parallax.ScrollY = v);
+                var repeatX = new CheckBox { Content = "X", IsChecked = parallax.RepeatX };
+                var repeatY = new CheckBox { Content = "Y", IsChecked = parallax.RepeatY };
+                repeatX.IsCheckedChanged += (_, _) => { parallax.RepeatX = repeatX.IsChecked == true; MarkDirty(); };
+                repeatY.IsCheckedChanged += (_, _) => { parallax.RepeatY = repeatY.IsChecked == true; MarkDirty(); };
+                Row("Repeat", new StackPanel { Orientation = Orientation.Horizontal, Spacing = 8, Children = { repeatX, repeatY } });
                 break;
             case PositionTween2DComponent tween:
                 Number("Δ X",tween.OffsetX,-1000000,1000000,v=>tween.OffsetX=v);
@@ -133,7 +160,7 @@ public partial class MainWindow
                 break;
             case SkeletonAnimator2DComponent skeleton:
                 Asset("Rig",SkeletonRig.Extension,skeleton.Rig,v=>skeleton.Rig=v);
-                if (Selected?.GetComponent<SpriteRendererComponent>()==null)
+                if (Inspected?.GetComponent<SpriteRendererComponent>()==null)
                 {
                     Number("Layer",skeleton.SortingLayer,-32768,32767,v=>skeleton.SortingLayer=(int)v);
                     Number("Order",skeleton.Order,-32768,32767,v=>skeleton.Order=(int)v);
@@ -151,22 +178,30 @@ public partial class MainWindow
                 Asset("Shader",ShaderClip.Extension,shader.Shader,v=>shader.Shader=v);
                 break;
             case ParticleEmitter2DComponent emitter:
-                var triggers=new ComboBox {ItemsSource=Enum.GetValues<ParticleTrigger>(), SelectedItem=emitter.Trigger, HorizontalAlignment=HorizontalAlignment.Stretch};
-                triggers.SelectionChanged+=(_,_)=>{ if(triggers.SelectedItem is ParticleTrigger value) { emitter.Trigger=value; MarkDirty(); } };
-                Row("Trigger",triggers);
-                Number("Count",emitter.Count,1,256,v=>emitter.Count=(int)v);
-                Number("Life (s)",emitter.Lifetime,.01m,60,v=>emitter.Lifetime=v);
-                Number("Speed",emitter.Speed,0,4096,v=>emitter.Speed=v);
-                Number("Gravity",emitter.Gravity,-4096,4096,v=>emitter.Gravity=v);
-                Number("Size",emitter.Size,.1m,256,v=>emitter.Size=v);
-                Text("Color",emitter.Color,v=>{ if(SceneObject.TryColor(v,out _)) emitter.Color=v; });
+                Asset("Particles",ParticleEffect.Extension,emitter.Particles,v=>emitter.Particles=v);
+                var editParticles = new Button { Content = "Edit in Particle panel", HorizontalAlignment = HorizontalAlignment.Stretch, HorizontalContentAlignment = HorizontalAlignment.Center };
+                editParticles.Click += (_, _) => OpenParticlePanel();
+                Row("", editParticles);
+                Choice("Trigger",emitter.Trigger,v=>emitter.Trigger=v);
+                Number("Seed",emitter.Seed,0,16777216,v=>emitter.Seed=(uint)v);
+                Number("Offset X",emitter.OffsetX,-16384,16384,v=>emitter.OffsetX=v);
+                Number("Offset Y",emitter.OffsetY,-16384,16384,v=>emitter.OffsetY=v);
+                Sorting(() => emitter.SortingLayer, v => emitter.SortingLayer = v, () => emitter.Order, v => emitter.Order = v);
+                ParticleCurveRows(emitter, fields);
                 break;
             case PointLight2DComponent light:
                 Number("Radius",light.Radius,.1m,16384,v=>light.Radius=v);
                 Number("Intensity",light.Intensity,0,1,v=>light.Intensity=v);
                 Number("Flicker",light.Flicker,0,1,v=>light.Flicker=v);
                 Number("Hz",light.Frequency,0,30,v=>light.Frequency=v);
-                Text("Color",light.Color,v=>{ if(SceneObject.TryColor(v,out _)) light.Color=v; });
+                Color("Color",light.Color,v=>light.Color=v);
+                var shadows = new CheckBox { Content = "Cast shadows", IsChecked = light.Shadows };
+                shadows.IsCheckedChanged += (_, _) => { light.Shadows = shadows.IsChecked == true; MarkDirty(); };
+                Row("", shadows);
+                break;
+            case GlobalLight2DComponent global:
+                Color("Ambient",global.Color,v=>global.Color=v);
+                Number("Unlit layer",global.UnlitLayer,-32768,32767,v=>global.UnlitLayer=(int)v);
                 break;
             case NavigationRegion2DComponent nav:
                 Number("Spacing",nav.Spacing,4,128,v=>nav.Spacing=v);
@@ -174,6 +209,8 @@ public partial class MainWindow
                 Number("Agent H",nav.AgentHeight,1,4096,v=>nav.AgentHeight=v);
                 Number("Slope °",nav.MaxSlope,0,80,v=>nav.MaxSlope=v);
                 CollisionMaskField(nav.TerrainMask,v=>nav.TerrainMask=v,Row);
+                // Top-down bake (16.15): radius Agent W / 2, cells Spacing; the Scene view shades the open cells.
+                Row("Top-down",ValueLabel(Viewport.SelectedNavArea() is {} area ? $"{area.OpenCells():N0} / {area.Columns*area.Rows:N0} cells open" : "—"));
                 break;
             case Rigidbody2DComponent rigid:
                 var types = new ComboBox { ItemsSource = Enum.GetValues<BodyType2D>(), SelectedItem = rigid.BodyType, HorizontalAlignment = HorizontalAlignment.Stretch };
@@ -197,11 +234,8 @@ public partial class MainWindow
                 }
                 break;
             case Joint2DComponent joint:
-                var targets = new List<ObjectReference> { new(Guid.Empty, "None") };
-                targets.AddRange(Scene.Objects.Where(o => o.Id != Selected?.Id).Select(o => new ObjectReference(o.Id, ObjectPath(o))));
-                var connected = new ComboBox { ItemsSource = targets, SelectedItem = targets.Find(o => o.Id == (joint.Connected ?? Guid.Empty)), HorizontalAlignment = HorizontalAlignment.Stretch };
-                connected.SelectionChanged += (_, _) => { if (connected.SelectedItem is ObjectReference target) { joint.Connected = target.Id == Guid.Empty ? null : target.Id; MarkDirty(); } };
-                Row("Connect", connected);
+                var self = Inspected?.Id;
+                Row("Connect", ObjectField("Connect", o => o.Id != self, joint.Connected, id => { joint.Connected = id; MarkDirty(); RefreshComponentList(); }));
                 // Checkboxes sit in the value column like "Freeze rotation"; toggling shows or hides dependent rows.
                 void Toggle(string text, bool value, Action<bool> set)
                 {
@@ -280,6 +314,15 @@ public partial class MainWindow
                     Number("Radius",circle.Radius,0,1000000,v=>circle.Radius=v);
                 if (collider is PolygonCollider2DComponent polygon)
                     PolygonFields(polygon,Row);
+                if (collider is CapsuleCollider2DComponent capsule)
+                    Number("Radius",capsule.Radius,0,1000000,v=>capsule.Radius=v);
+                if (collider is EdgeCollider2DComponent edge && Inspected != null && PathEdit.Of(Inspected) is { } edgePath)
+                {
+                    var loop = new CheckBox { Content="Loop", IsChecked=edge.Loop, IsEnabled=edge.Points.Length>=3 };
+                    loop.IsCheckedChanged += (_,_) => { edge.Loop=loop.IsChecked==true; MarkDirty(); };
+                    Row("",loop);
+                    PathRows(edgePath.Points, edgePath.Set, false, curves: false);
+                }
                 break;
             case Tilemap2DComponent map:
                 CollisionFilterFields(map.CollisionLayer,map.CollisionMask,v=>map.CollisionLayer=v,v=>map.CollisionMask=v,Row,"Physics");
@@ -309,11 +352,7 @@ public partial class MainWindow
                 Row("",enable);
                 if (map.StreamRadius is int radius)
                 {
-                    var focusTargets = new List<ObjectReference> { new(Guid.Empty, "Active camera") };
-                    focusTargets.AddRange(Scene.Objects.Select(o => new ObjectReference(o.Id,ObjectPath(o))));
-                    var focus = new ComboBox { ItemsSource=focusTargets, SelectedItem=focusTargets.Find(t => t.Id==(map.StreamTarget ?? Guid.Empty)), HorizontalAlignment=HorizontalAlignment.Stretch };
-                    focus.SelectionChanged += (_,_) => { if (focus.SelectedItem is ObjectReference t) { map.StreamTarget=t.Id==Guid.Empty ? null : t.Id; MarkDirty(); } };
-                    Row("Follow",focus);
+                    Row("Follow", ObjectField("Follow", _ => true, map.StreamTarget, id => { map.StreamTarget = id; MarkDirty(); RefreshComponentList(); }, "Active camera"));
                     Number("Radius",radius,1,16,v=>map.StreamRadius=(int)v);
                 }
                 TileTools(map,Row);
@@ -341,7 +380,7 @@ public partial class MainWindow
                 var anchor = new ComboBox { ItemsSource = ScreenUi.Anchors, SelectedItem = rect.Anchor, HorizontalAlignment = HorizontalAlignment.Stretch };
                 anchor.SelectionChanged += (_, _) => { if (anchor.SelectedItem is string a) { rect.Anchor = a; MarkDirty(); } };
                 Row("Anchor", anchor);
-                if (Selected is {} widget) UiPinFields(widget, rect, Row);
+                if (Inspected is {} widget) UiPinFields(widget, rect, Row);
                 var scaleWidth = new CheckBox { Content="Scale width and X with text", IsChecked=rect.ScaleHorizontalWithText };
                 scaleWidth.IsCheckedChanged += (_,_) => { rect.ScaleHorizontalWithText=scaleWidth.IsChecked==true; MarkDirty(); };
                 Row("",scaleWidth);
@@ -355,12 +394,16 @@ public partial class MainWindow
                     if (id != image.Sprite) { image.Sprite = id; image.Borders = null; RefreshComponentList(); }
                 });
                 SliceFields(image, Row);
-                Text("Fill", image.Color, s => { if (SceneObject.TryColor(s, out _)) image.Color = s; });
+                Color("Fill", image.Color, s => image.Color = s);
                 break;
             case UiLayoutComponent stack:
-                var axes = new ComboBox { ItemsSource = new[] { "Vertical", "Horizontal" }, SelectedItem = stack.Axis, HorizontalAlignment = HorizontalAlignment.Stretch };
-                axes.SelectionChanged += (_,_) => { if (axes.SelectedItem is string axis) { stack.Axis=axis; MarkDirty(); } };
+                var axes = new ComboBox { ItemsSource = new[] { "Vertical", "Horizontal", "Grid", "Wrap" }, SelectedItem = stack.Axis, HorizontalAlignment = HorizontalAlignment.Stretch };
                 Row("Axis", axes);
+                // 0 fits as many cells as the width allows (stored as no value), like Wrap.
+                Number("Columns", stack.Columns ?? 0, 0, 256, v => stack.Columns = v >= 1 ? (int)v : null);
+                var columnsRow = fields.Children[^1];
+                columnsRow.IsEnabled = stack.Axis == "Grid";
+                axes.SelectionChanged += (_,_) => { if (axes.SelectedItem is string axis) { stack.Axis=axis; columnsRow.IsEnabled = axis == "Grid"; MarkDirty(); } };
                 Number("Gap", stack.Gap, 0, 16384, v => stack.Gap=v);
                 Number("Padding", stack.Padding, 0, 16384, v => stack.Padding=v);
                 var stretch=new CheckBox { Content="Stretch children", IsChecked=stack.Stretch };
@@ -410,7 +453,7 @@ public partial class MainWindow
                 };
                 Row("Icons",icons);
                 Number("Size", label.Size, 1, 1024, n => label.Size = n);
-                Text("Color", label.Color, s => { if (SceneObject.TryColor(s, out _)) label.Color = s; });
+                Color("Color", label.Color, s => label.Color = s);
                 Number("Inset X", label.InsetX, -16384, 16384, n => label.InsetX = n);
                 Number("Inset Y", label.InsetY, -16384, 16384, n => label.InsetY = n);
                 break;
@@ -456,6 +499,13 @@ public partial class MainWindow
                 var enabled = new CheckBox { Content = "Interactable", IsChecked = button.Interactable };
                 enabled.IsCheckedChanged += (_, _) => { button.Interactable = enabled.IsChecked == true; MarkDirty(); };
                 Row("", enabled);
+                if (button is UiButtonComponent slot)
+                {
+                    var draggable = new CheckBox { Content = "Drag and drop slot", IsChecked = slot.Draggable };
+                    ToolTip.SetTip(draggable, "Drag onto another slot, or activate to pick up and activate another to drop (OnUiDrop).");
+                    draggable.IsCheckedChanged += (_, _) => { slot.Draggable = draggable.IsChecked == true; MarkDirty(); };
+                    Row("", draggable);
+                }
                 break;
         }
         return fields;

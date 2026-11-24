@@ -33,8 +33,7 @@ public class ScriptLibrary
 
     public static bool ValidName(string? name) => !string.IsNullOrWhiteSpace(name) && name.Length <= 100 &&
         (char.IsLetter(name[0]) || name[0] == '_') && name.All(c => char.IsLetterOrDigit(c) || c == '_') &&
-        !Keywords.Contains(name) && !System.Text.RegularExpressions.Regex.IsMatch(name, @"^(CON|AUX|NUL|PRN|COM[1-9]|LPT[1-9])$",
-            System.Text.RegularExpressions.RegexOptions.IgnoreCase | System.Text.RegularExpressions.RegexOptions.CultureInvariant);
+        !Keywords.Contains(name) && !ProjectAssets.WindowsDeviceName(name); // name has no '.', so this matches the whole name
 
     // Reserved C# identifiers cannot name script components. Contextual keywords are valid.
     private static readonly HashSet<string> Keywords = new(("""

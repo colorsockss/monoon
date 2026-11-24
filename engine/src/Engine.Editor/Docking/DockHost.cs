@@ -18,6 +18,9 @@ public sealed class DockHost : Panel
     public static readonly AttachedProperty<bool> FillProperty = AvaloniaProperty.RegisterAttached<DockHost, Control, bool>("Fill");
     public static string? GetPanel(Control control) => control.GetValue(PanelProperty);
     public static void SetPanel(Control control, string? value) => control.SetValue(PanelProperty, value);
+    // Small controls a panel adds to its own tab (the Inspector's lock and Debug view); made again whenever the tab is.
+    public static readonly AttachedProperty<Func<Control>?> TabToolsProperty = AvaloniaProperty.RegisterAttached<DockHost, Control, Func<Control>?>("TabTools");
+    public static void SetTabTools(Control control, Func<Control>? value) => control.SetValue(TabToolsProperty, value);
     public static bool GetFill(Control control) => control.GetValue(FillProperty);
     public static void SetFill(Control control, bool value) => control.SetValue(FillProperty, value);
 
@@ -419,6 +422,7 @@ public sealed class DockHost : Panel
     {
         var content = new StackPanel { Orientation = Orientation.Horizontal, Spacing = 4 };
         content.Children.Add(new TextBlock { Text = Label(id), VerticalAlignment = VerticalAlignment.Center });
+        if (PanelControl(id).GetValue(TabToolsProperty) is { } tools) content.Children.Add(tools());
         var menu = new ContextMenu();
         var floatItem = new MenuItem { Header = "Float in Window" };
         floatItem.Click += (_, _) => Float(id);

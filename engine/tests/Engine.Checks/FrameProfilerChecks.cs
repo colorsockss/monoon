@@ -4,6 +4,7 @@ using Engine.Core;
 
 internal static class FrameProfilerChecks
 {
+    [Check(800, StopAfter = "profiler")] static void Registered(CheckRun c) => Run(c.Scratch);
     private static void Check(bool ok, string message)
     {
         if (!ok) throw new Exception("Frame profiler: " + message);

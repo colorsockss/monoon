@@ -3,6 +3,7 @@ using Engine.Core;
 
 internal static class UiChecks
 {
+    [Check(8800)] static void Registered(CheckRun c) => Run(c.Scene, c.Scratch);
     public static void Run(SceneDocument scene, string scratch)
     {
         var obj = scene.Objects.Single(o => o.Name == "Controls button");

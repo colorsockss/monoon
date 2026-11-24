@@ -19,6 +19,28 @@
       <Style Selector="^:pointerover"><Setter Property="Background" Value="{DynamicResource EditorHover}"/></Style>
       <Style Selector="^:focus-visible"><Setter Property="Background" Value="{DynamicResource EditorActive}"/></Style>
     </ControlTheme>
+    <!-- 16px check for the object's active state and component headers: fits the reserved header column. -->
+    <ControlTheme x:Key="CompactCheck" TargetType="CheckBox">
+      <Setter Property="Width" Value="16"/><Setter Property="Height" Value="16"/>
+      <Setter Property="Background" Value="{DynamicResource EditorField}"/>
+      <Setter Property="BorderBrush" Value="{DynamicResource EditorBorder}"/>
+      <Setter Property="Cursor" Value="Hand"/>
+      <Setter Property="Template">
+        <ControlTemplate>
+          <Border Name="box" Width="14" Height="14" CornerRadius="2" BorderThickness="1" Background="{TemplateBinding Background}"
+                  BorderBrush="{TemplateBinding BorderBrush}" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Path Name="mark" Data="M2.5,6.5 L5.2,9.2 L10.5,3.5" Stroke="{DynamicResource EditorOnAccent}" StrokeThickness="1.6" IsVisible="False"/>
+          </Border>
+        </ControlTemplate>
+      </Setter>
+      <Style Selector="^:pointerover"><Setter Property="BorderBrush" Value="{DynamicResource EditorBorderHover}"/></Style>
+      <Style Selector="^:checked">
+        <Setter Property="Background" Value="{DynamicResource EditorAccent}"/><Setter Property="BorderBrush" Value="{DynamicResource EditorAccent}"/>
+      </Style>
+      <Style Selector="^:checked /template/ Path#mark"><Setter Property="IsVisible" Value="True"/></Style>
+      <Style Selector="^:focus-visible /template/ Border#box"><Setter Property="BorderBrush" Value="{DynamicResource EditorAccentHover}"/></Style>
+      <Style Selector="^:disabled"><Setter Property="Opacity" Value="0.5"/></Style>
+    </ControlTheme>
     <ControlTheme x:Key="{x:Type local:ComponentSection}" TargetType="local:ComponentSection">
       <Setter Property="Margin" Value="0,0,0,1"/>
       <Setter Property="BorderBrush" Value="{DynamicResource EditorDivider}"/>
@@ -28,18 +50,30 @@
           <Border BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="0,1,0,0">
             <Grid RowDefinitions="Auto,Auto">
               <Grid ColumnDefinitions="*,Auto" ColumnSpacing="4" MinHeight="{StaticResource EditorRowHeight}">
+                <!-- Prefab override dot (13.6), in the panel padding like the row bars: the header text never moves. -->
+                <Ellipse Name="OverrideDot" Width="5" Height="5" Margin="-7,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Center"
+                         Fill="{DynamicResource EditorAccent}" IsHitTestVisible="False" IsVisible="{TemplateBinding IsOverridden}"
+                         ToolTip.Tip="Prefab override"/>
                 <ToggleButton Name="HeaderToggle" Classes="drawerHeader" Theme="{StaticResource DrawerHeader}" MinHeight="{StaticResource EditorRowHeight}" Padding="0"
                               IsChecked="{Binding Foldout.IsExpanded, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"
                               AutomationProperties.Name="{Binding Header, RelativeSource={RelativeSource TemplatedParent}}"
                               ToolTip.Tip="{Binding Header, RelativeSource={RelativeSource TemplatedParent}}">
-                  <Grid ColumnDefinitions="8,16,*" ColumnSpacing="4">
+                  <!-- The third column is reserved in every section for the on/off check, so titles share one x. -->
+                  <Grid ColumnDefinitions="8,16,16,*" ColumnSpacing="4">
                     <PathIcon Width="7" Height="7" Data="M1,0 L7,4 L1,8 Z"/>
                     <PathIcon Grid.Column="1" Theme="{StaticResource EditorIcon}" Foreground="{DynamicResource EditorMuted}"
                               Data="{Binding Icon, RelativeSource={RelativeSource TemplatedParent}}"/>
-                    <TextBlock Grid.Column="2" Text="{Binding Header, RelativeSource={RelativeSource TemplatedParent}}"
+                    <TextBlock Grid.Column="3" Text="{Binding Header, RelativeSource={RelativeSource TemplatedParent}}"
                                TextTrimming="CharacterEllipsis" VerticalAlignment="Center" FontWeight="SemiBold"/>
                   </Grid>
                 </ToggleButton>
+                <!-- Above the fold toggle (not inside it): a click turns the component on or off without folding it. -->
+                <CheckBox Name="EnabledCheck" Theme="{StaticResource CompactCheck}" MinHeight="0" Margin="32,0,0,0"
+                          HorizontalAlignment="Left" VerticalAlignment="Center"
+                          IsVisible="{TemplateBinding CanToggle}"
+                          IsChecked="{Binding IsOn, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"
+                          AutomationProperties.Name="{Binding Header, RelativeSource={RelativeSource TemplatedParent}, StringFormat='{}{0} enabled'}"
+                          ToolTip.Tip="Enabled: a turned-off component is left out of Play and builds"/>
                 <Button Grid.Column="1" IsVisible="{TemplateBinding HasSettings}" Classes="quiet" Padding="2" Width="20" Height="20" MinHeight="0" Background="Transparent"
                         HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
                         ToolTip.Tip="Component settings"
@@ -83,14 +117,9 @@
       <StackPanel Spacing="2">
         <Grid ColumnDefinitions="56,*" ColumnSpacing="{StaticResource EditorFieldGap}">
           <TextBlock Classes="fieldLabel" Text="Sprite"/>
-          <Button Grid.Column="1" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch"
-                  AutomationProperties.Name="Select sprite" ToolTip.Tip="Drop a PNG here or click to choose a sprite." Click="SpriteMenuClick">
-            <Grid ColumnDefinitions="*,Auto" ColumnSpacing="5">
-              <TextBlock Text="{Binding AssetLabel}" ToolTip.Tip="{Binding AssetLabel}" TextTrimming="LeadingCharacterEllipsis"/>
-              <TextBlock Grid.Column="1" Text="▾"/>
-            </Grid>
-          </Button>
+          <ContentControl Grid.Column="1" Content="{Binding SpriteEditor}"/>
         </Grid>
+        <ContentControl Content="{Binding DrawEditor}"/>
         <Grid ColumnDefinitions="56,*" RowDefinitions="Auto,Auto" ColumnSpacing="{StaticResource EditorFieldGap}" RowSpacing="2">
           <TextBlock Classes="fieldLabel" Text="Layer"/>
           <NumericUpDown Grid.Column="1" Minimum="-32768" Maximum="32767" Increment="1" Value="{Binding Layer, Mode=TwoWay}"/>
@@ -105,11 +134,9 @@
                          IsEnabled="{Binding SortByY}" Value="{Binding FootOffset, Mode=TwoWay}"
                          ToolTip.Tip="Local Y offset from the bottom center, in world units."/>
         </Grid>
-        <Grid ColumnDefinitions="56,16,*" ColumnSpacing="{StaticResource EditorFieldGap}">
+        <Grid ColumnDefinitions="56,*" ColumnSpacing="{StaticResource EditorFieldGap}">
           <TextBlock Text="Color" Classes="fieldLabel"/>
-          <Border Grid.Column="1" Background="{Binding ColorBrush}" CornerRadius="2"/>
-          <TextBox Grid.Column="2" Text="{Binding ColorText, Mode=OneWay}" AutomationProperties.Name="Sprite tint"
-                   TextChanged="SquareColorChanged" LostFocus="SquareColorCommitted" KeyDown="SquareColorKeyDown"/>
+          <ContentControl Grid.Column="1" Content="{Binding ColorEditor}"/>
         </Grid>
         <Grid ColumnDefinitions="56,*" RowDefinitions="Auto,Auto,Auto" ColumnSpacing="{StaticResource EditorFieldGap}" RowSpacing="2">
           <TextBlock Classes="fieldLabel" Text="Flip"/>
@@ -120,9 +147,7 @@
           <TextBlock Grid.Row="1" Classes="fieldLabel" Text="Align"/>
           <CheckBox Grid.Row="1" Grid.Column="1" Content="Pixel snap" IsChecked="{Binding PixelSnap, Mode=TwoWay}"/>
           <TextBlock Grid.Row="2" Classes="fieldLabel" Text="Mask"/>
-          <Button Grid.Row="2" Grid.Column="1" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" Click="SpriteMaskClick">
-            <TextBlock Text="{Binding MaskLabel}" TextTrimming="LeadingCharacterEllipsis" ToolTip.Tip="{Binding MaskLabel}"/>
-          </Button>
+          <ContentControl Grid.Row="2" Grid.Column="1" Content="{Binding MaskEditor}"/>
         </Grid>
       </StackPanel>
     </DataTemplate>
@@ -240,7 +265,7 @@
               </TreeView>
             </Border>
             <Grid Grid.Column="1" RowDefinitions="*,Auto">
-              <ListBox x:Name="ProjectBrowser" Margin="4,3" AutomationProperties.Name="Project files"
+              <ListBox x:Name="ProjectBrowser" Margin="4,3" AutomationProperties.Name="Project files" SelectionMode="Multiple"
                        ScrollViewer.HorizontalScrollBarVisibility="Disabled" ItemTemplate="{StaticResource ProjectListItem}"/>
               <Border Grid.Row="1" x:Name="ProjectPreviewPanel" IsVisible="False" BorderBrush="{DynamicResource EditorDivider}"
                       BorderThickness="0,1,0,0" Padding="6,4">
@@ -345,9 +370,15 @@
             <Grid ColumnDefinitions="*,Auto" ColumnSpacing="4">
               <TextBlock x:Name="InspectorCaption" Classes="label" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"
                          ToolTip.Tip="{Binding Text, RelativeSource={RelativeSource Self}}"/>
-              <Button x:Name="ApplyPlayValues" Grid.Column="1" Classes="quiet" Content="Apply selected" IsVisible="False"
-                      Height="21" MinHeight="0" Padding="5,0" Click="ApplySelectedPlayValues"
-                      ToolTip.Tip="Apply checked fields to the edited scene in one Undo step. A previously saved, clean scene is saved immediately."/>
+              <!-- 13.11: Apply all sits left of Apply selected in the same cell, so Overrides… (edit mode) keeps its place. -->
+              <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="4">
+                <Button x:Name="ApplyAllPlayValues" Classes="quiet" Content="Apply all" IsVisible="False"
+                        Height="21" MinHeight="0" Padding="5,0" Click="ApplyAllPlayValuesClick"
+                        ToolTip.Tip="Apply every value edited in this Play session, checked or not, on every object, in one Undo step."/>
+                <Button x:Name="ApplyPlayValues" Classes="quiet" Content="Apply selected" IsVisible="False"
+                        Height="21" MinHeight="0" Padding="5,0" Click="ApplySelectedPlayValues"
+                        ToolTip.Tip="Apply checked fields to the edited scene in one Undo step. A previously saved, clean scene is saved immediately."/>
+              </StackPanel>
               <Button x:Name="OverridesButton" Grid.Column="1" Classes="quiet" Content="Overrides…" IsVisible="False"
                       Height="21" MinHeight="0" Padding="5,0" ToolTip.Tip="Inspect prefab property overrides"/>
             </Grid>
@@ -356,9 +387,16 @@
             <StackPanel Margin="{StaticResource EditorPanelPadding}">
               <TextBlock x:Name="EmptyInspector" Classes="label" Text="Select an object in the scene." TextWrapping="Wrap"/>
               <StackPanel x:Name="MultiInspector" IsVisible="False"/>
+              <!-- 13.16: the Project asset clicked last (a summary, import settings and a button for its editor panel). -->
+              <StackPanel x:Name="AssetInspector" IsVisible="False"/>
               <StackPanel x:Name="Inspector">
+                <TextBlock x:Name="SceneWarning" Classes="componentWarning" IsVisible="False" TextWrapping="Wrap"/>
                 <Grid ColumnDefinitions="56,*" ColumnSpacing="{StaticResource EditorFieldGap}" Margin="0,0,0,4">
+                  <!-- The label keeps the shared left edge; the active check sits at the label column's right end. -->
                   <TextBlock Text="Name" Classes="fieldLabel"/>
+                  <CheckBox x:Name="ObjectActive" Theme="{StaticResource CompactCheck}" MinHeight="0" HorizontalAlignment="Right" VerticalAlignment="Center"
+                            AutomationProperties.Name="Object active"
+                            ToolTip.Tip="Active: an inactive object and its children start disabled in Play and builds (scripts can SetActive them)"/>
                   <TextBox Grid.Column="1" x:Name="ObjectName" AutomationProperties.Name="Object name"/>
                 </Grid>
                 <local:ComponentSection x:Name="LiveSection" Header="Runtime" HasSettings="False" IsVisible="False">
@@ -431,12 +469,20 @@
                              ToolTip.Tip="Separate group names with commas."/>
                   </Grid>
                 </local:ComponentSection>
+                <local:ComponentSection x:Name="DebugSection" Header="Object (Debug)" Icon="{StaticResource IconInfo}" HasSettings="False" IsVisible="False">
+                  <StackPanel x:Name="DebugObjectRows" Spacing="2"/>
+                </local:ComponentSection>
                 <ItemsControl x:Name="AttachedComponents">
                   <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                      <local:ComponentSection Header="{Binding Name}" Icon="{Binding Icon}" HasSettings="{Binding Editable}" Foldout="{Binding Foldout}">
-                        <ContentControl Content="{Binding Fields}" IsEnabled="{Binding FieldsEnabled}" HorizontalContentAlignment="Stretch"/>
-                      </local:ComponentSection>
+                      <StackPanel>
+                        <TextBlock Classes="componentWarning" Text="{Binding Warning}" IsVisible="{Binding HasWarning}" TextWrapping="Wrap"
+                                   ToolTip.Tip="{Binding Warning}"/>
+                        <local:ComponentSection Header="{Binding Name}" Icon="{Binding Icon}" HasSettings="{Binding Editable}" Foldout="{Binding Foldout}"
+                                                CanToggle="{Binding CanToggle}" IsOn="{Binding Enabled, Mode=TwoWay}" IsOverridden="{Binding Overridden}">
+                          <ContentControl Content="{Binding Fields}" IsEnabled="{Binding FieldsEnabled}" HorizontalContentAlignment="Stretch"/>
+                        </local:ComponentSection>
+                      </StackPanel>
                     </DataTemplate>
                   </ItemsControl.ItemTemplate>
                 </ItemsControl>

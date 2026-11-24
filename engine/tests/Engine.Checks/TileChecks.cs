@@ -5,6 +5,8 @@ using Engine.Editor;
 
 internal static class TileChecks
 {
+    [Check(7700)]
+    static void Registered(CheckRun c) { var root = Path.Combine(c.Scratch, "TileTest"); Prepare(c.TileSample, root); Run(root); Directory.Delete(root, true); }
     internal static void Prepare(string original, string root)
     {
         if (Directory.Exists(root) && Directory.EnumerateFileSystemEntries(root).Any()) throw new IOException($"Expected an empty fixture directory: {root}");

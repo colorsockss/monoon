@@ -1,0 +1,12 @@
+<linker>
+  <!-- Native AOT only. YamlSerializerOptions' constructor and Standard store StandardResolver.Instance, whose BuiltinResolver
+       builds ~70 formatters (Uri, DateTime, BigInteger, Type …) that ILC then keeps with their BCL code. The player never
+       constructs options: ProjectYaml.CreateOptions sets every field itself and Decode does not reach DefaultOptions.
+       Anything that still calls these throws instead of silently using another resolver. ProjectYamlResolverChecks. -->
+  <assembly fullname="VYaml">
+    <type fullname="VYaml.Serialization.YamlSerializerOptions">
+      <method signature="System.Void .ctor()" body="remove" />
+      <method signature="VYaml.Serialization.YamlSerializerOptions get_Standard()" body="remove" />
+    </type>
+  </assembly>
+</linker>

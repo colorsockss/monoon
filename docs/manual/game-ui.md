@@ -44,6 +44,31 @@ Scene에서 위젯을 드래그하면 고정된 변의 여백도 갱신된다. *
 
 **Hierarchy → UI → Layout** 아래에 위젯을 넣으면 Hierarchy 순서대로 배치된다. **Axis**에서 세로 또는 가로를 선택하고 **Padding**으로 가장자리 여백, **Gap**으로 자식 사이 간격을 정한다. **Stretch children**은 진행 방향에 수직인 축을 부모의 안쪽 폭 또는 높이에 맞춘다. 숨긴 자식은 간격도 차지하지 않는다. 레이아웃 안에서 자식의 Transform 크기는 기본 크기로 쓰고 위치는 레이아웃이 결정한다.
 
+**Axis → Grid**는 자식을 같은 크기의 칸에 왼쪽 위부터 한 줄씩 채운다. **Columns**에 한 줄의 칸 수를 넣는다. **Stretch children**을 켜면 칸 폭은 안쪽 폭을 칸 수로 나눈 값이고 높이는 가장 높은 자식에 맞춘다. 끄면 각 자식의 크기를 그대로 쓴다. **Axis → Wrap**(또는 Columns 0)은 가장 넓은 자식이 들어가는 만큼 한 줄에 놓고 나머지는 다음 줄로 넘긴다. 패널 폭이 줄면 줄당 칸 수도 줄어든다. 두 축 모두 세로로 스크롤되고, 방향키·D-pad는 화면에 보이는 칸 배치를 따라 위아래·좌우로 이동한다.
+
+## 가방 칸 끌어 놓기
+
+[InventoryLab](../../samples/InventoryLab/)의 **Scenes/BagGrid.scene**을 열고 Play를 누른다. Bag은 Grid 4열 레이아웃이고 칸 20개는 **UI Button → Drag and drop slot**을 켠 버튼이다.
+
+| 조작 | 결과 |
+| --- | --- |
+| 칸을 누른 채 4 px보다 많이 끌어 다른 칸 위에서 놓기 | 놓은 칸에 `OnUiDrop`. 끄는 동안 칸 사본이 포인터를 따라온다. 칸이 아닌 곳에서 놓으면 아무 일도 없다 |
+| 칸 클릭, Enter·Space, 패드 아래쪽 버튼 | 처음은 칸을 집고(금색 테두리), 다른 칸에서 다시 하면 그 칸에 놓는다. 집은 칸에서 다시 하면 내려놓는다 |
+| Esc, 패드 오른쪽 버튼 | 집은 칸을 취소한다. 포커스는 그대로 둔다 |
+
+끌어 놓기 칸은 `OnUiClick`을 보내지 않는다. `OnUiDrop(UiDrop drop)`은 놓은 칸(`drop.Target`)의 컴포넌트가 받고, 그 칸에 스크립트가 없으면 스크립트가 있는 가장 가까운 부모가 받는다. 샘플은 Bag 오브젝트의 [BagGrid](../../samples/InventoryLab/Scripts/Bag/BagGrid.cs) 하나가 모든 칸의 놓기를 받아 두 칸의 글자를 바꾼다.
+
+```csharp
+public override void OnUiDrop(UiDrop drop)
+{
+    string from = drop.Ui.TextOf(drop.Source) ?? "", to = drop.Ui.TextOf(drop.Target) ?? "";
+    drop.Ui.SetText(drop.Source, to);
+    drop.Ui.SetText(drop.Target, from);
+}
+```
+
+Grid·Wrap 레이아웃이나 끌어 놓기 칸이 있는 씬은 schemaVersion 41로 저장된다. 둘 다 쓰지 않는 씬은 이전 버전과 같은 키로 저장된다. [검증 기록](../../engine/tests/results/engine-features-4/README.md)
+
 목록의 크기를 고정하려면 **UI → Scroll View**를 만든다. 뷰 밖의 자식은 그려지거나 클릭되지 않는다. 휠·트랙패드, 스크롤 손잡이 드래그, 키보드·패드 포커스로 보이지 않는 행을 드러낼 수 있다. 가로 목록은 **UI Layout → Axis → Horizontal**로 바꾼다. 긴 설명문은 **UI Text → Wrap lines**를 켠다. 폭·번역·글자 배율이 바뀌면 줄 높이가 바뀌고 세로 목록의 다음 행도 이동한다.
 
 ## 버튼 테마와 9-slice
@@ -115,6 +140,24 @@ var progress = tick.Ui.RevealProgress(Line);               // Shown / Total / Co
 
 굵기와 크기는 같은 문구 텍스처로 만든다. 굵은 글자는 같은 텍스처를 글자 크기의 1/20만큼 옮겨 한 번 더 그리고, 크기 태그는 32 px로 그린 문구를 늘이거나 줄인다. 32 px보다 큰 크기는 확대되어 흐려질 수 있다. 글자 위치와 줄 바꿈은 SDL_ttf가 HarfBuzz로 배치한 글자 묶음(`TTF_Text`)의 위치를 쓰므로, 커닝이 있는 문장에서도 색이 바뀌는 지점과 부분 표시의 경계가 실제 글자와 맞는다. 부분 표시는 이미 만든 문구 텍스처를 잘라 그리므로 글자가 늘어날 때마다 새 텍스처를 만들지 않는다. [InventoryLab 약초상 대화](dialogue.md#서식-있는-대사와-글자-단위-표시) · [검증 기록](../../engine/tests/results/rich-text/README.md)
 
+## 월드에 붙는 이름표와 데미지 숫자
+
+화면에 고정되는 UI Text와 달리 **Text 2D**는 월드 오브젝트에 붙어 카메라를 따라 움직이고 확대된다. 일반 오브젝트(Canvas 밖)를 선택하고 **Add Component → Rendering → Text 2D**를 붙인다.
+
+1. [InventoryLab](../../samples/InventoryLab/)에서 **Scenes/Labels.scene**을 열고 Play를 누른다. 약초상 머리 위 이름표는 **Text key**에 `label.herbalist`를 넣어 번역 테이블에서 ‘약초상’을 읽는다. 키를 찾지 못하면 **Text**를 쓴다.
+2. 간판을 선택한다. **Rich text tags**를 켜면 UI Text와 같은 `<color>`, `<b>`, `<size>` 태그를 읽는다. `<icon>` 태그는 Text 2D에서 글자 그대로 표시된다.
+3. **Size**는 Transform 배율 1에서의 월드 단위 글자 크기다. 오브젝트의 Scale과 카메라 Zoom을 함께 따른다. 회전은 적용하지 않는다. **Align**은 오브젝트 사각형 안의 가로 위치(Left·Center·Right)이고, 세로는 사각형 가운데에 둔다.
+4. **Layer / Order**와 **Use foot Y**는 Sprite Renderer와 같은 [앞뒤 정렬](sprites.md#발-위치로-앞뒤-정렬하기)에 참여한다. 같은 오브젝트에 Sprite Renderer가 있으면 스프라이트의 정렬 값을 함께 쓴다.
+
+스크립트는 `tick.Objects.SetWorldText(id, text)`로 문구를 바꾼다. 바꾼 문구는 번역 키보다 우선하며 씬이 끝날 때까지 유지된다. 샘플의 `DamageBurst`는 시작할 때 숫자 문자열 100개를 만들어 두고, 90틱마다 풀에서 `Damage number` 프리팹 100개를 빌려 문자열을 연결한다. 각 숫자는 60틱 동안 올라간 뒤 풀로 돌아간다. [DamageBurst.cs](../../samples/InventoryLab/Scripts/Labels/DamageBurst.cs)
+
+```csharp
+var id = tick.Objects.Rent(Number, at);
+tick.Objects.SetWorldText(id, values[i]);   // 미리 만든 문자열: 프레임마다 새 문자열을 만들지 않는다
+```
+
+글자는 화면 텍스트와 같은 SDL_ttf 문구 캐시를 쓴다. 같은 문자열은 텍스처 하나를 공유하고, 문구가 그대로인 동안에는 그리기에서 메모리를 할당하지 않는다. 데미지 숫자 100개를 이 Mac의 소프트웨어 렌더러로 그릴 때 한 프레임(단계 + 그리기 + 표시) 중앙값은 약 0.25 ms였다. 캐시는 서로 다른 문자열 128개까지 보관하므로, 한 화면에 그보다 많은 다른 문구를 동시에 띄우면 매 프레임 다시 만든다. Text 2D가 하나라도 있는 씬은 schemaVersion 40으로 저장되고, 빌드는 SDL_ttf를 포함한다. [검증 기록](../../engine/tests/results/engine-features-4/README.md)
+
 ## 플레이어 표시 설정과 탐색
 
 **Project → UI Accessibility…**에서 언어 태그, 글자 크기 **75–200%**, 고대비를 설정한다. 편집 모드의 **Save defaults**는 프로젝트의 `GameSettings`에 저장하고, **Apply in Play**는 현재 세션만 바꾼다. 게임 안에서도 `click.Ui.Preferences.Locale`, `TextScale`, `HighContrast`를 바꾸면 화면에 반영되고 씬을 전환해도 세션 동안 유지된다. 사용자별로 다음 실행에 복원하려면 `Preferences.SaveTo(settings)`로 [플레이어 설정](player-data.md)에 쓰고 시작할 때 `LoadFrom(settings)`을 호출한다. 같은 객체의 `ShakeScale`, `FlashScale`, `Rumble`은 [화면 흔들림·깜빡임](cameras.md#흔들림과-깜빡임-줄이기)과 [게임패드 진동](input-actions.md#게임패드-진동과-마우스-커서)을 줄이거나 끈다.
@@ -170,6 +213,6 @@ var progress = tick.Ui.RevealProgress(Line);               // Shown / Total / Co
 
 게임 스크립트는 `Session.Display`에서 독립 창의 상태를 읽는다. Scene 패널과 헤드리스 실행에서는 이 값이 `null`이다. `SetFullscreen(bool)`과 `SetVSync(bool)`는 적용 성공 여부를 반환한다. 게임은 `Fullscreen`과 `VSync`에서 실제 적용값을 읽어 위젯을 갱신할 수 있다. 창 관리자나 렌더러가 요청을 거절하면 DisplayLab은 안내 문구와 현재 상태를 표시한다. [DisplayLab 스크립트](../../samples/DisplayLab/Scripts/DisplayOption.cs)
 
-엔진은 게임별 프로필의 `display.settings`에 창 모드의 콘텐츠 너비·높이, 전체 화면 여부, VSync를 저장한다. 크기 단위는 SDL 창 좌표다. 논리 해상도와 화면 비율은 게임 프로젝트가 정하며, 크기가 다른 창에서는 레터박스를 적용한다.
+엔진은 게임별 프로필의 `display.settings`에 창 모드의 콘텐츠 너비·높이, 전체 화면 여부, VSync를 저장한다. 크기 단위는 SDL 창 좌표다. 논리 해상도와 화면 비율은 게임 프로젝트가 정하며, 크기가 다른 창에서는 레터박스를 적용한다. 정수 배율을 켠 프로젝트는 배율을 정수로 내림하고 나머지를 여백으로 둔다([정수 배율](runtime.md#월드-시간-카메라)). DisplayLab 오른쪽 위의 12×12 픽셀 배지로 보간 여부를 확인할 수 있다.
 
 전체 화면은 현재 디스플레이 모드를 유지하는 SDL의 기본 테두리 없는 전체 화면을 사용한다. VSync는 렌더러에서 읽어 온 동기화 간격으로 확인한다. [SDL 전체 화면 API](https://wiki.libsdl.org/SDL3/SDL_SetWindowFullscreen) · [SDL VSync API](https://wiki.libsdl.org/SDL3/SDL_SetRenderVSync)

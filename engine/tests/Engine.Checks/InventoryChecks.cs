@@ -5,6 +5,7 @@ using MoNoon.Inventory;
 
 internal static class InventoryChecks
 {
+    [Check(1900, StopAfter = "inventory")] static void Registered(CheckRun c) => Run(c.Repository, c.Scratch);
     internal static void Run(string repo, string scratch)
     {
         var sample = Path.Combine(repo, "samples", "InventoryLab");

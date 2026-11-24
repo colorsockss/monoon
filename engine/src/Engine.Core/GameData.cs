@@ -19,9 +19,9 @@ public sealed partial class GameData
         Values.TryGetValue(key, out var value) && value.ValueKind == JsonValueKind.String ? value.GetString()! : fallback;
     public double GetNumber(string key, double fallback = 0) =>
         Values.TryGetValue(key, out var value) && value.ValueKind == JsonValueKind.Number && value.TryGetDouble(out var n) && double.IsFinite(n) ? n : fallback;
-    public void Set(string key, bool value) => Values[key] = JsonSerializer.SerializeToElement(value, GameJson.Default.Boolean);
-    public void Set(string key, string value) => Values[key] = JsonSerializer.SerializeToElement(value, GameJson.Default.String);
-    public void Set(string key, double value) => Values[key] = JsonSerializer.SerializeToElement(value, GameJson.Default.Double);
+    public void Set(string key, bool value) => Values[key] = JsonElements.Of(value);
+    public void Set(string key, string value) => Values[key] = JsonElements.Of(value);
+    public void Set(string key, double value) => Values[key] = JsonElements.Of(value);
 
     internal GameData Validate()
     {

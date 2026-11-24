@@ -1,0 +1,46 @@
+using System;
+using System.Drawing;
+using System.IO;
+using System.Text;
+using Engine.Core;
+
+// Test-only observer copied into a disposable SeedLab. Edits cells at the chunk seams at fixed ticks and records the
+// art the engine resolves for every visible cell of the three Meadow layers, plus the animated water and torch frame
+// on every tick.
+public sealed class TraceAutotile : GameBehaviour
+{
+    private static readonly Guid Hedge = new("654fb765-e00e-5f1b-b9b1-568ff216f30d");
+    private static readonly Guid Grass = new("dfa93b16-f5e8-585a-a1f6-f58e0efe4a0f");
+    private static readonly Guid Water = new("3c6977da-c9f1-5a95-a09d-1abe59072e5e");
+    private static readonly (int Tick, Guid Layer, int X, int Y, int Tile)[] Edits =
+    [
+        (10, Hedge, -1, -1, 1), (10, Hedge, 7, 0, 0), (10, Hedge, 0, -6, 1), (10, Grass, 0, 0, 0), (10, Grass, -1, -1, 0),
+        (10, Water, 0, 0, 0), (30, Water, 0, 0, 57),
+        (30, Grass, 0, 0, 51), (30, Grass, -1, -1, 51), (30, Hedge, -1, -1, 0), (30, Hedge, 7, 0, 1),
+    ];
+
+    public override void FixedUpdate(ScriptTick tick)
+    {
+        if (Environment.GetEnvironmentVariable("MONOON_AUTOTILE_TRACE") is not { Length: > 0 } path) return;
+        long now = tick.Session.Time.TickCount;
+        foreach (var edit in Edits)
+            if (edit.Tick == now && !tick.Objects.SetTile(edit.Layer, new Point(edit.X, edit.Y), edit.Tile))
+                throw new InvalidOperationException($"SetTile {edit.X},{edit.Y} failed");
+        if (!tick.Objects.TryGetTile(Water, new Point(-3, -2), out var water) || !tick.Objects.TryGetTile(Water, new Point(3, 2), out var torch))
+            throw new InvalidOperationException("No water layer");
+        File.AppendAllText(path, $"{now}|clock|{water.Display},{torch.Display}\n");
+        if (now is not (1 or 20 or 40)) return;
+        var line = new StringBuilder();
+        foreach (var (name, layer) in new[] { ("grass", Grass), ("hedge", Hedge), ("water", Water) })
+        {
+            line.Append(now).Append('|').Append(name).Append('|');
+            for (int y = -14; y < 14; y++)
+            for (int x = -25; x < 25; x++)
+            {
+                if (!tick.Objects.TryGetTile(layer, new Point(x, y), out var info)) throw new InvalidOperationException($"No {name} layer");
+                line.Append(info.Tile == 0 ? 0 : info.Display).Append(x == 24 && y == 13 ? '\n' : ',');
+            }
+        }
+        File.AppendAllText(path, line.ToString());
+    }
+}

@@ -3,6 +3,7 @@ using Engine.Core;
 
 internal static class InputMapChecks
 {
+    [Check(6700)] static void Registered(CheckRun c) => Run(c.Scratch);
     internal static void Run(string scratch)
     {
         static void Check(bool ok,string name) { if(!ok) throw new Exception("Input map: "+name); }

@@ -1,0 +1,10 @@
+{
+  "scene": "Sorting",
+  "rows": 300,
+  "emitters": [
+    3
+  ],
+  "peak": 141,
+  "last": 133,
+  "distinctHashes": 299
+}

@@ -1,0 +1,19 @@
+using System;
+using System.Globalization;
+using System.IO;
+using Engine.Core;
+
+// Test-only observer copied into a disposable CameraLab. One line per game tick: both players and both cameras (centre, zoom).
+public sealed class TraceCameras : GameBehaviour
+{
+    public Guid Main, Second, Player, Partner;
+
+    public override void FixedUpdate(ScriptTick tick)
+    {
+        if (Environment.GetEnvironmentVariable("MONOON_CAMERA_TRACE") is not { Length: > 0 } path) return;
+        if (!tick.Cameras.TryGetView(Main, out var a) || !tick.Cameras.TryGetView(Second, out var b) ||
+            !tick.Objects.TryGetPosition(Player, out var p) || !tick.Objects.TryGetPosition(Partner, out var q)) return;
+        static string F(float v) => v.ToString("R", CultureInfo.InvariantCulture);
+        File.AppendAllText(path, $"{tick.Session.Time.TickCount}|{F(p.X)},{F(p.Y)}|{F(q.X)},{F(q.Y)}|{F(a.Center.X)},{F(a.Center.Y)},{F(a.Zoom)}|{F(b.Center.X)},{F(b.Center.Y)},{F(b.Zoom)}\n");
+    }
+}

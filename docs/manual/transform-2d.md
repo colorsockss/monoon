@@ -16,6 +16,15 @@ Hierarchy에서 월드 오브젝트를 선택하고 Inspector의 **Transform**�
 
 행렬로 점을 옮기거나 보간할 때는 `Vector2.Transform`, `Vector2.TransformNormal`, `Vector2.Lerp` 대신 `Affine2D.Transform`, `Affine2D.TransformNormal`, `Affine2D.Lerp`를 쓴다. 시뮬레이션 상태(위치, 속도, 충돌 판정)를 바꾸는 스크립트 코드에서는 반드시 이 함수를 쓴다. .NET의 함수는 CPU에 FMA가 있을 때만 곱셈과 덧셈을 합쳐 계산한다. 그래서 x64에서는 Release(JIT)와 Native AOT의 결과가 마지막 자리에서 달라질 수 있다. `Affine2D` 함수는 모든 CPU와 빌드에서 곱셈과 덧셈을 따로 반올림한다. 모든 CPU에서 하드웨어 명령으로 빠르게 돌고 결과도 같다. 엔진 코드도 이 함수를 쓴다. Box2D 같은 네이티브 라이브러리의 결과는 아키텍처마다 다를 수 있다. [x64 결정론 기록](../../engine/tests/results/x64-determinism/README.md)
 
+각도로 방향을 만들 때는 `MathF.SinCos` 대신 `MathF.Sin`과 `MathF.Cos`를 따로 부른다. macOS arm64에서 JIT은 `sincosf`를 한 번 부르고 Native AOT는 둘을 따로 계산해, 입력의 약 2.6%가 마지막 자리에서 달랐다. `./monoon test`의 결정성 API 검사가 엔진(`Engine.Core`·`Engine.Desktop`)과 `samples/*/Scripts`에서 아래 API를 찾으면 실패한다. 그리기 전용 코드(`SdlSpriteBatch`의 정점 좌표)만 이유와 함께 허용 목록에 있다([검사](../../engine/tests/Engine.Checks/DeterminismScanChecks.cs)).
+
+| 쓰지 않는 API | 대신 쓸 것 |
+| --- | --- |
+| `Vector2/3/4.Transform`·`TransformNormal`·`Lerp`, `Matrix3x2`·`Matrix4x4`·`Quaternion`·`Plane`의 `Lerp`·`Slerp`·`Transform`, `float.Lerp` | `Affine2D.Transform`·`TransformNormal`·`Lerp` |
+| `MultiplyAddEstimate`, `Vector*.FusedMultiplyAdd` | 곱셈과 덧셈을 따로 쓴다 |
+| `MathF.SinCos`, `Math.SinCos` | `MathF.Sin`, `MathF.Cos` |
+| Brutal.Numerics `float2/3/4.Lerp`·`FusedMultiplyAdd`, `float4x4`, `floatQuat`, `Rows.Transform` | `System.Numerics` 형식과 `Affine2D` |
+
 **따라 해보기:** KeyRoom에서 Chest를 선택해 Rotation을 30, Scale을 (1.5, 0.75), Pivot을 (0.5, 0.5)로 바꾸고 Play한다. Chest Lid의 로컬 회전은 0인데 화면에서는 상자와 함께 기울어진다. Stop 후 Chest Lid를 Wall로 옮겨 보자. 로컬 회전은 30으로 바뀌지만 뚜껑은 같은 위치에 보인다. 원본 예제를 유지하려면 프로젝트 복사본에서 실습한다.
 
 [Mac 에디터의 저장·재열기 검증](../../engine/tests/results/transform-2d/README.md)

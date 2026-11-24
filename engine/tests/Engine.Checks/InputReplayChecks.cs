@@ -4,6 +4,7 @@ using Engine.Core;
 
 internal static class InputReplayChecks
 {
+    [Check(7300)] static void Registered(CheckRun c) => CheckRecording(c.Scratch);
     internal static async Task RunInventory(string repository, string builds, string scratch)
     {
         var fixture = Path.Combine(repository, "engine", "tests", "fixtures", "InventoryLab");

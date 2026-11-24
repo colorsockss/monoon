@@ -1,0 +1,25 @@
+using System;
+using System.Globalization;
+using System.IO;
+using Engine.Core;
+
+// Test-only observer copied into a disposable KeyRoom. Every game tick it records the satchel's local position, scale and
+// drawn colour (SatchelPop) and the Controls button's laid-out box (ToggleControls press tween).
+public sealed class TraceTweens : GameBehaviour
+{
+    private static readonly Guid Satchel = new("51c1580c-0444-5d49-84bc-ad7df3a3add4");
+    private static readonly Guid Button = new("82979000-dcbc-443e-baa1-60ada0400003");
+    private int frame;
+
+    public override void FixedUpdate(ScriptTick tick)
+    {
+        if (Environment.GetEnvironmentVariable("MONOON_TWEEN_TRACE") is not { Length: > 0 } path) return;
+        static string F(float v) => v.ToString("R", CultureInfo.InvariantCulture);
+        if (!tick.Objects.TryGetLocalTransform(Satchel, out var local) || !tick.Objects.TryGetSpriteColor(Satchel, out var color) ||
+            tick.Ui.Bounds(Button) is not { } box) throw new InvalidOperationException("Satchel or Controls button missing.");
+        File.AppendAllText(path, $"{frame}|tick={tick.Session.Time.TickCount}|coin={tick.Session.Has("coin")}|controls={tick.Session.Has("controls")}" +
+            $"|pos={F(local.Position.X)},{F(local.Position.Y)}|scale={F(local.Scale.X)},{F(local.Scale.Y)}|argb={color.ToArgb():X8}" +
+            $"|button={F(box.X)},{F(box.Y)},{F(box.Width)},{F(box.Height)}\n");
+        frame++;
+    }
+}

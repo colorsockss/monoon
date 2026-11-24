@@ -238,9 +238,19 @@ internal sealed class MacSceneHost : NativeControlHost
             target.DrawFiltered(filter,local,matrix * new System.Numerics.Matrix3x2((float)sx,0,0,(float)sy,(float)x,(float)y),tint);
         public bool DrawAffine(string? path, RectangleF local, System.Numerics.Matrix3x2 matrix, Color tint, SpriteRegion? source = null, string layout = TileGrid.Orthogonal) =>
             target.DrawAffine(path,local,matrix * new System.Numerics.Matrix3x2((float)sx,0,0,(float)sy,(float)x,(float)y),tint,source,layout);
+        public Size SpriteSize(string path) => target.SpriteSize(path);
+        public bool DrawGrid(string path, RectangleF local, System.Numerics.Matrix3x2 matrix, Color tint, SpriteRegion? source, Size size, UiBorders? borders, bool tiled) =>
+            target.DrawGrid(path,local,matrix * new System.Numerics.Matrix3x2((float)sx,0,0,(float)sy,(float)x,(float)y),tint,source,size,borders,tiled);
         public IDisposable PushClip(RectangleF r) => target.PushClip(ToPixels(r));
         public void BeginColorAdjust() => target.BeginColorAdjust();
         public void EndColorAdjust(Color multiply, byte lift) => target.EndColorAdjust(multiply, lift);
+        public void BeginLighting(RectangleF area, Color ambient) => target.BeginLighting(ToPixels(area), ambient);
+        public void DrawLight(ShaderClip sheet, RectangleF local, System.Numerics.Matrix3x2 matrix, Color tint, ReadOnlySpan<System.Numerics.Vector2> shadowQuads, System.Numerics.Matrix3x2 view)
+        {
+            var pixels = new System.Numerics.Matrix3x2((float)sx,0,0,(float)sy,(float)x,(float)y);
+            target.DrawLight(sheet, local, matrix * pixels, tint, shadowQuads, view * pixels);
+        }
+        public void EndLighting() => target.EndLighting();
         private RectangleF ToPixels(RectangleF r) => new((float)(x + r.X * sx), (float)(y + r.Y * sy),
             (float)(r.Width * sx), (float)(r.Height * sy));
         public void FillRectangle(RectangleF r, Color color) => target.FillRectangle(ToPixels(r), color);

@@ -3,6 +3,7 @@ using Engine.Core;
 
 internal static class WorldPointerChecks
 {
+    [Check(5300)] static void Registered(CheckRun c) => Run(c.Project);
     private sealed class Listener : GameBehaviour, IWorldPointerHandler
     {
         public readonly List<WorldPointerEvent> Events = [];

@@ -1,0 +1,1 @@
+same as HarnessManifestChecks (with __pycache__ ignored): True 69 missing [] extra []

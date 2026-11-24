@@ -1,0 +1,6 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <ItemGroup>
+    <ProjectReference Include="../../src/Engine.Editor/Engine.Editor.csproj"/>
+    <Compile Include="../Shared/Probe.cs" Link="Probe.cs"/>
+  </ItemGroup>
+</Project>

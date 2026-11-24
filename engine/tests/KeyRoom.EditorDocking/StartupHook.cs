@@ -25,46 +25,27 @@ public static class StartupHook
     private static readonly Avalonia.Input.Pointer Mouse = new(Avalonia.Input.Pointer.GetNextFreeId(), PointerType.Mouse, true);
     private static Window main = null!;
     private static DockHost dock = null!;
-    // MONOON_QA_SLOW scales waits and time limits for emulated x64 guests (TCG); 1 on a normal desktop.
-    private static readonly double Slow = double.TryParse(Environment.GetEnvironmentVariable("MONOON_QA_SLOW"), System.Globalization.CultureInfo.InvariantCulture, out var s) ? s : 1;
-    private static Task Delay(int ms) => Task.Delay((int)(ms * Slow));
     // How each real-window capture was taken: screencapture -l on macOS, RenderTargetBitmap (no native Scene view) elsewhere.
     private static readonly Dictionary<string, string> Captures = [];
 
-    public static void Initialize() => Task.Run(async () =>
+    public static void Initialize() => Start(Path.Combine(Output, $"{Phase}-error.txt"), async life =>
     {
-        while (Application.Current?.ApplicationLifetime is not IClassicDesktopStyleApplicationLifetime { MainWindow: not null })
-            await Task.Delay(100);
-        await Dispatcher.UIThread.InvokeAsync(async () =>
+        main = life.MainWindow!;
+        dock = main.FindControl<DockHost>("Dock")!;
+        await Until(() => main.IsVisible && main.FindControl<TreeView>("Hierarchy")!.Items.Count > 1, "KeyRoom");
+        await Delay(500);
+        Result["os"] = System.Runtime.InteropServices.RuntimeInformation.RuntimeIdentifier;
+        Result["captures"] = Captures;
+        Result["screen"] = main.Screens.All.Select(s => new { s.WorkingArea.Width, s.WorkingArea.Height, s.Scaling }).ToList();
+        await (Phase switch
         {
-            var life = (IClassicDesktopStyleApplicationLifetime)Application.Current!.ApplicationLifetime!;
-            try
-            {
-                main = life.MainWindow!;
-                dock = main.FindControl<DockHost>("Dock")!;
-                await Until(() => main.IsVisible && main.FindControl<TreeView>("Hierarchy")!.Items.Count > 1, "KeyRoom");
-                await Delay(500);
-                Result["os"] = System.Runtime.InteropServices.RuntimeInformation.RuntimeIdentifier;
-                Result["captures"] = Captures;
-                Result["screen"] = main.Screens.All.Select(s => new { s.WorkingArea.Width, s.WorkingArea.Height, s.Scaling }).ToList();
-                await (Phase switch
-                {
-                    "first" => First(), "restore" => Restore(), "fallback" => Fallback(), "panels" => Panels(), "panels-restore" => PanelsRestore(),
-                    _ => throw new ArgumentException(Phase)
-                });
-                File.WriteAllText(Path.Combine(Output, $"{Phase}.json"), JsonSerializer.Serialize(Result, new JsonSerializerOptions { WriteIndented = true }));
-            }
-            catch (Exception ex) { File.WriteAllText(Path.Combine(Output, $"{Phase}-error.txt"), ex.ToString()); }
-            finally { life.Shutdown(); }
+            "first" => First(), "restore" => Restore(), "fallback" => Fallback(), "panels" => Panels(), "panels-restore" => PanelsRestore(),
+            _ => throw new ArgumentException(Phase)
         });
-    });
+        File.WriteAllText(Path.Combine(Output, $"{Phase}.json"), JsonSerializer.Serialize(Result, new JsonSerializerOptions { WriteIndented = true }));
+    }, allow: ["Console*", "Animator*", "Inspector*", "Scene*", "Game*"]); // floating panel windows
 
     private static void Require(bool value, string message) { if (!value) throw new InvalidDataException(message); }
-    private static async Task Until(Func<bool> done, string what, int seconds = 60)
-    {
-        var limit = DateTime.UtcNow.AddSeconds(seconds * Slow);
-        while (!done()) { if (DateTime.UtcNow > limit) throw new TimeoutException(what); await Delay(50); }
-    }
     private static T Find<T>(string name) where T : Control => main.FindControl<T>(name) ?? throw new InvalidDataException($"{name} not found");
     private static Rect In(Visual c) => new(c.TranslatePoint(default, main)!.Value, c.Bounds.Size);
     private static Control Panel(string id) => dock.Panels.Single(p => DockHost.GetPanel(p) == id);

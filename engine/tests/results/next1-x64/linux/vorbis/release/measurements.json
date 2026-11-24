@@ -1,0 +1,16 @@
+{
+  "loop_frames": 57600,
+  "fade_in_frames": 19200,
+  "fade_out_frames": 28800,
+  "stop_frame": 250368,
+  "captured_frames": 279552,
+  "seam_left": 0.0028032755944877863,
+  "seam_right": 0.006734627764672041,
+  "interior_peak_left": 0.006416382442694157,
+  "interior_peak_right": 0.007272647228091955,
+  "max_envelope_error": 9.533596845967551e-06,
+  "first_four_loops_sha256": "ddacda7e39eaedd80c08ff02dee9b27eb7888f22ccc2d53bc9816457bdc8f9e8",
+  "device_offset_bytes": -1,
+  "device_bytes": 3432448,
+  "frames_before_f": 244224
+}

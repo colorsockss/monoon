@@ -18,27 +18,10 @@ public static class StartupHook
     private static readonly Guid Field10000 = Guid.Parse("ae245142-c47c-52aa-8b4f-5c867bdef887");
     private static readonly string[] Queries = ["Physics.Overlap", "Physics.Raycast", "Physics.Sweep"];
 
-    public static void Initialize() => Task.Run(async () =>
-    {
-        while (Application.Current?.ApplicationLifetime is not IClassicDesktopStyleApplicationLifetime { MainWindow: not null })
-            await Task.Delay(100);
-        await Dispatcher.UIThread.InvokeAsync(async () =>
-        {
-            var life = (IClassicDesktopStyleApplicationLifetime)Application.Current!.ApplicationLifetime!;
-            try { await Test(life.MainWindow!); }
-            catch (Exception ex) { File.WriteAllText(Path.Combine(Output, "error.txt"), ex.ToString()); }
-            finally { life.Shutdown(); }
-        });
-    });
+    public static void Initialize() => Start(Path.Combine(Output, "error.txt"), life => Test(life.MainWindow!));
 
     private static void Click(Button button) => button.RaiseEvent(new RoutedEventArgs(Button.ClickEvent, button));
     private static void Require(bool value, string message) { if (!value) throw new InvalidDataException(message); }
-    private static async Task Until(Func<bool> done, string what, int seconds = 60)
-    {
-        var limit = DateTime.UtcNow.AddSeconds(seconds);
-        while (!done()) { if (DateTime.UtcNow > limit) throw new TimeoutException(what); await Task.Delay(50); }
-    }
-
     private static async Task Test(Window main)
     {
         var view = main.FindControl<Control>("Viewport")!;
@@ -62,12 +45,12 @@ public static class StartupHook
         async Task Press(string key)
         {
             Require(game.Actions.Press(key), $"{key} is not bound");
-            await Task.Delay(250);
+            await Delay(250);
             game.Actions.Release(key);
         }
         await Press("2");
         await Until(() => game.SceneId == Field10000, "Field10000 loaded");
-        await Task.Delay(1500);
+        await Delay(1500);
         long before = work.Sequence;
         await Press("R");
         await Until(() => work.Sequence > before + 40, "frames after R");
@@ -103,7 +86,7 @@ public static class StartupHook
         foreach (int width in new[] { 1400, 820 })
         {
             main.Width = width;
-            await Task.Delay(400);
+            await Delay(400);
             double Right(Control c) => c.TranslatePoint(new(c.Bounds.Width, 0), main)!.Value.X;
             double Left(Control c) => c.TranslatePoint(default, main)!.Value.X;
             var head = header.Children.Cast<TextBlock>().ToArray();

@@ -3,6 +3,7 @@ using Engine.Core;
 
 internal static class AccessibilityChecks
 {
+    [Check(8900)] static void Registered(CheckRun c) => Run();
     public static void Run()
     {
         var doc=new SceneDocument();

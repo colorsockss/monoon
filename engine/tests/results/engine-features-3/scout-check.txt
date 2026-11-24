@@ -1,0 +1,17 @@
+PASS preview.trace: 420 traced ticks
+PASS preview.trace: every tick matches the independent model (state and facing)
+PASS preview.trace: Walk faces all 8 directions; Idle shows only axes (N after walking N and after the lap, S at start and after the SW step)
+PASS scene-play.trace: 420 traced ticks
+PASS scene-play.trace: every tick matches the independent model (state and facing)
+PASS scene-play.trace: Walk faces all 8 directions; Idle shows only axes (N after walking N and after the lap, S at start and after the SW step)
+PASS release.trace: 420 traced ticks
+PASS release.trace: every tick matches the independent model (state and facing)
+PASS release.trace: Walk faces all 8 directions; Idle shows only axes (N after walking N and after the lap, S at start and after the SW step)
+PASS native-aot.trace: 420 traced ticks
+PASS native-aot.trace: every tick matches the independent model (state and facing)
+PASS native-aot.trace: Walk faces all 8 directions; Idle shows only axes (N after walking N and after the lap, S at start and after the SW step)
+PASS 4 paths trace the same state, frame and facing on all 420 ticks
+PASS Release and Native AOT frame 30 PNGs are identical
+PASS Release and Native AOT frame 95 PNGs are identical
+PASS Release and Native AOT frame 240 PNGs are identical
+PASS Release and Native AOT frame 330 PNGs are identical

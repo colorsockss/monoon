@@ -1,0 +1,31 @@
+using System;
+using System.Globalization;
+using System.IO;
+using Engine.Core;
+
+// Test-only observer copied into a disposable PlatformerLab. Records the camera centre and each layer's parallax offset every game tick.
+public sealed class TraceParallax : GameBehaviour
+{
+    private static readonly Guid Camera = new("76e07dce-fa43-5f68-b662-57c60b5cf1fe");
+    private static readonly (string Name, Guid Id)[] Layers =
+    [
+        ("sky", new("d6fe7613-81a1-5515-90da-95afa49709ec")),
+        ("hills", new("0a823879-be5c-51cb-8097-69bd8b210ff0")),
+        ("trees", new("d4342089-d11b-571c-83b1-47dd89e94031")),
+    ];
+    private int frame;
+
+    public override void FixedUpdate(ScriptTick tick)
+    {
+        if (Environment.GetEnvironmentVariable("MONOON_PARALLAX_TRACE") is not { Length: > 0 } path) return;
+        if (!tick.Cameras.TryGetView(Camera, out var view)) throw new InvalidOperationException("No camera view.");
+        string line = $"{frame}|tick={tick.Session.Time.TickCount}|camera={view.Center.X.ToString("R", CultureInfo.InvariantCulture)}";
+        foreach (var (name, id) in Layers)
+        {
+            if (!tick.Cameras.TryGetParallaxOffset(id, out var offset)) throw new InvalidOperationException($"No parallax offset for {name}.");
+            line += $"|{name}={offset.X.ToString("R", CultureInfo.InvariantCulture)},{offset.Y.ToString("R", CultureInfo.InvariantCulture)}";
+        }
+        File.AppendAllText(path, line + "\n");
+        frame++;
+    }
+}

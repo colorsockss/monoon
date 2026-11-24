@@ -307,6 +307,13 @@
     <Setter Property="BorderBrush" Value="Transparent"/>
   </Style>
   <Style Selector="ListBox"><Setter Property="Background" Value="{DynamicResource EditorField}"/></Style>
+  <!-- ColorField's flyout: the ColorPicker package's ColorView on the panel colours. -->
+  <Style Selector="FlyoutPresenter.colorFlyout, FlyoutPresenter.pickerFlyout">
+    <Setter Property="Background" Value="{DynamicResource EditorPanel}"/>
+    <Setter Property="BorderBrush" Value="{DynamicResource EditorBorder}"/>
+    <Setter Property="Padding" Value="{StaticResource EditorPanelPadding}"/>
+    <Setter Property="MaxWidth" Value="340"/>
+  </Style>
   <Style Selector="Button.primary">
     <Setter Property="Background" Value="{DynamicResource EditorAccent}"/>
     <Setter Property="Foreground" Value="{DynamicResource EditorOnAccent}"/>

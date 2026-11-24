@@ -16,7 +16,7 @@ public sealed partial class SceneDocument
     public const int Width = 800;
     [Obsolete("Use Settings.Height for a project's game resolution.")]
     public const int Height = 450;
-    internal const int CurrentVersion = 30;
+    internal const int CurrentVersion = 42;
     internal ScriptLibrary ResolveScripts(ScriptLibrary? library) => library ??
         ScriptLibrary.Open(ProjectDirectory ?? throw new InvalidDataException("Save the project before running scripts."));
 
@@ -98,7 +98,7 @@ public sealed partial class SceneDocument
         scene.Validate();
         scene.AssetId = assets.IdFor(Path.GetRelativePath(project, path).Replace(Path.DirectorySeparatorChar, '/'));
         // Export already resolved prefab instances against their source assets.
-        if (!File.Exists(Path.Combine(project, ".monoon-player")))
+        if (!ProjectAssets.Exported(project))
         {
             try { scene.RefreshPrefabs(assets); }
             catch (Exception ex) when (editing && ex is (InvalidDataException or FileNotFoundException or DirectoryNotFoundException))
@@ -203,7 +203,17 @@ public sealed partial class SceneDocument
                 throw new InvalidDataException($"{script.Script}: invalid or duplicate game event connection.");
         UpgradeHud();
         // Older readers must reject transformed scenes instead of silently flattening them.
-        SchemaVersion = Objects.SelectMany(o => o.Components).Any(c => c is Line2DComponent or Trail2DComponent or PathFollower2DComponent) ? CurrentVersion :
+        // 36–39 were reserved for other roadmap 16 work.
+        SchemaVersion = Objects.SelectMany(o => o.Components).Any(c => c is GlobalLight2DComponent or PointLight2DComponent { Shadows: true }) ? 42 :
+            Objects.SelectMany(o => o.Components).Any(c => c is UiLayoutComponent { Axis: "Grid" or "Wrap" } or UiButtonComponent { Draggable: true }) ? 41 :
+            Objects.SelectMany(o => o.Components).Any(c => c is Text2DComponent) ? 40 :
+            Cameras.Any(o => o.GetComponent<Camera2DComponent>()!.Framing) ? 35 :
+            Objects.SelectMany(o => o.Components).Any(c => c is CapsuleCollider2DComponent or EdgeCollider2DComponent) ? 34 :
+            Objects.SelectMany(o => o.Components).Any(c => c is Parallax2DComponent or SpriteRendererComponent { DrawMode: not null } or
+                SpriteRendererComponent { Slice: not null }) ? 33 :
+            Objects.Any(o => !o.Active || o.Components.Any(c => !c.Enabled)) ? 32 :
+            Objects.SelectMany(o => o.Components).Any(c => c is ParticleEmitter2DComponent { Legacy: false }) ? 31 :
+            Objects.SelectMany(o => o.Components).Any(c => c is Line2DComponent or Trail2DComponent or PathFollower2DComponent) ? 30 :
             Objects.SelectMany(o => o.Components).Any(c => c is RevoluteJoint2DComponent or PrismaticJoint2DComponent or
                 WeldJoint2DComponent or DistanceJoint2DComponent { Spring: true } or Rigidbody2DComponent { Friction: not Rigidbody2DComponent.DefaultFriction }) ? 29 :
             Objects.Any(o => o.GetComponent<UiRectComponent>() is { HasPins: true }) ? 28 :
@@ -245,65 +255,79 @@ public sealed partial class SceneDocument
             {
                 if (component is null || !types.Add(component.Kind))
                     throw new InvalidDataException($"'{obj.Name}' must have one entry per attached component type.");
-                if (component is UiControlComponent control) control.Validate(obj.Name);
-                if (component is CutsceneDirectorComponent && obj.GetComponent<Camera2DComponent>() is { Output: not Camera2DComponent.Primary })
-                    throw new InvalidDataException($"{obj.Name}: a cutscene shot requires a primary camera.");
-                if (component is PositionTween2DComponent tween) tween.Validate(obj);
-                if (component is PathFollower2DComponent follower) follower.Validate(obj);
-                if (component is Line2DComponent line) line.Validate(obj.Name);
-                if (component is Trail2DComponent trail) trail.Validate(obj.Name);
-                if (component is SkeletonAnimator2DComponent skeleton) skeleton.Validate(obj.Name);
-                if (component is FootIK2DComponent feet) feet.Validate(obj.Name);
-                if (component is ParticleEmitter2DComponent emitter) emitter.Validate(obj.Name);
-                if (component is PointLight2DComponent light) light.Validate(obj.Name);
-                if (component is NavigationRegion2DComponent region) region.Validate(obj.Name);
-                if (component is Rigidbody2DComponent rigid) rigid.Validate(obj.Name);
-                if (component is Joint2DComponent joint) joint.Validate(obj);
-                if (component is CharacterMotor2DComponent motor && (motor.MaxSlope is not (>= 0 and < 90) || !float.IsFinite(motor.GroundSnap) || motor.GroundSnap < 0))
-                    throw new InvalidDataException($"{obj.Name}: invalid walkable slope or ground snap.");
-                if (component is AudioSourceComponent audio) audio.Validate(obj.Name);
-                if (component is Collider2DComponent collider)
-                    CollisionGeometry.Validate(collider, obj.Name);
-                if (component is Tilemap2DComponent tm && (tm.StreamRadius is < 1 or > 16 ||
-                    tm.ChunkFiles != null && (tm.StreamRadius == null || tm.OccupiedCells().Any())))
-                    throw new InvalidDataException($"{obj.Name}: expected stream radius 1–16 and one source of tile cells.");
-                if (component is Tilemap2DComponent { CollisionLayer: < 0 or > 31 })
-                    throw new InvalidDataException($"{obj.Name}: collision layer must be 0–31.");
-                if (component is Camera2DComponent camera) camera.Validate(obj.Name);
-                if (component is SpriteRendererComponent sr && !float.IsFinite(sr.FootOffset) ||
-                    component is SortingGroup2DComponent group && !float.IsFinite(group.FootOffset))
-                    throw new InvalidDataException($"{obj.Name}: sprite sorting foot offset must be finite.");
-                if (component is SpriteRendererComponent sprite && (!SceneObject.TryColor(sprite.SquareColor, out _) || sprite.Tint != null && !SceneObject.TryColor(sprite.Tint,out _)))
-                    throw new InvalidDataException($"'{obj.Name}' needs a sprite color in #RRGGBB format.");
-                if (component is SpriteRendererComponent { Asset: { } asset } && !SpriteAssets.IsReference(asset))
-                    throw new InvalidDataException($"'{obj.Name}' has an invalid PNG asset path: {asset}");
-                if (component is Tilemap2DComponent grid && !TileGrid.IsSupported(grid.Layout))
-                    throw new InvalidDataException($"{obj.Name}: unknown tile layout '{grid.Layout}'.");
-                if (component is Tilemap2DComponent map && map.CellSize is not { Width: > 0, Height: > 0 })
-                    throw new InvalidDataException($"{obj.Name}: tile cell size must be positive.");
-                if(component is UiLayoutComponent l && (l.Axis is not ("Vertical" or "Horizontal") || l.Gap is not (>=0 and <=16384) || l.Padding is not (>=0 and <=16384)) ||
-                    component is UiTextFieldComponent f && (f.MaxLength is <1 or >4096 || f.Value==null || f.Value.Contains('\n')) ||
-                    component is UiTextComponent { Translations:{} translations } && translations.Any(p=>string.IsNullOrWhiteSpace(p.Key)||p.Value==null) ||
-                    component is UiTextComponent rich && (rich.RevealRate is not (>=0 and <=10000) ||
-                        rich.Icons?.Any(p => string.IsNullOrWhiteSpace(p.Key) || p.Key.IndexOfAny(['<','>','/']) >= 0 || p.Value == Guid.Empty) == true))
-                    throw new InvalidDataException($"{obj.Name}: invalid UI layout, text field, translation, reveal rate or text icon.");
-                if (component is UiImageComponent { Borders: {} edges } panel && (panel.Sprite == null ||
-                    edges.Left < 0 || edges.Right < 0 || edges.Top < 0 || edges.Bottom < 0))
-                    throw new InvalidDataException($"{obj.Name}: 9-slice needs a PNG and nonnegative borders.");
-                if (component is UiRectComponent rect)
-                {
-                    ScreenUi.AnchorIndex(rect.Anchor);
-                    if (InvalidPin(rect.Left) || InvalidPin(rect.Right) || InvalidPin(rect.Top) || InvalidPin(rect.Bottom))
-                        throw new InvalidDataException($"{obj.Name}: UI edge offsets must be finite.");
-                }
-                if (component is UiImageComponent image && !SceneObject.TryColor(image.Color, out _) ||
-                    component is UiTextComponent label && (!SceneObject.TryColor(label.Color, out _) || !float.IsFinite(label.Size) ||
-                    label.Size is <= 0 or > 1024 || !float.IsFinite(label.InsetX) || !float.IsFinite(label.InsetY)))
-                    throw new InvalidDataException($"'{obj.Name}' has an invalid UI color, size or inset.");
-                if (component is ScriptComponent script && (!ScriptLibrary.ValidReference(script.Script) || script.Values == null))
-                    throw new InvalidDataException($"'{obj.Name}' has an invalid script component.");
+                ValidateComponent(obj, component);
             }
         }
+    }
+
+    // One component's save rules, also used by the Inspector to warn before Save fails (roadmap 13.14).
+    internal static void ValidateComponent(SceneObject obj, SceneComponent component)
+    {
+        if (!component.Enabled && !component.CanDisable)
+            throw new InvalidDataException($"{obj.Name}: {component.Kind} cannot be turned off; deactivate the object instead.");
+        if (component is UiControlComponent control) control.Validate(obj.Name);
+        if (component is CutsceneDirectorComponent && obj.GetComponent<Camera2DComponent>() is { Output: not Camera2DComponent.Primary })
+            throw new InvalidDataException($"{obj.Name}: a cutscene shot requires a primary camera.");
+        if (component is PositionTween2DComponent tween) tween.Validate(obj);
+        if (component is Parallax2DComponent parallax) parallax.Validate(obj);
+        if (component is SpriteRendererComponent { DrawMode: {} mode } drawn && (!Enum.IsDefined(mode) ||
+            mode == SpriteDrawMode.Sliced && drawn.Slice == null || drawn.Slice is { Left: < 0 } or { Top: < 0 } or { Right: < 0 } or { Bottom: < 0 }))
+            throw new InvalidDataException($"{obj.Name}: a Sliced sprite needs nonnegative Slice borders.");
+        if (component is PathFollower2DComponent follower) follower.Validate(obj);
+        if (component is Line2DComponent line) line.Validate(obj.Name);
+        if (component is Text2DComponent text) text.Validate(obj.Name);
+        if (component is Trail2DComponent trail) trail.Validate(obj.Name);
+        if (component is SkeletonAnimator2DComponent skeleton) skeleton.Validate(obj.Name);
+        if (component is FootIK2DComponent feet) feet.Validate(obj.Name);
+        if (component is ParticleEmitter2DComponent emitter) emitter.Validate(obj.Name);
+        if (component is PointLight2DComponent light) light.Validate(obj.Name);
+        if (component is GlobalLight2DComponent global) global.Validate(obj.Name);
+        if (component is NavigationRegion2DComponent region) region.Validate(obj.Name);
+        if (component is Rigidbody2DComponent rigid) rigid.Validate(obj.Name);
+        if (component is Joint2DComponent joint) joint.Validate(obj);
+        if (component is CharacterMotor2DComponent motor && (motor.MaxSlope is not (>= 0 and < 90) || !float.IsFinite(motor.GroundSnap) || motor.GroundSnap < 0))
+            throw new InvalidDataException($"{obj.Name}: invalid walkable slope or ground snap.");
+        if (component is AudioSourceComponent audio) audio.Validate(obj.Name);
+        if (component is Collider2DComponent collider)
+            CollisionGeometry.Validate(collider, obj.Name);
+        if (component is Tilemap2DComponent tm && (tm.StreamRadius is < 1 or > 16 ||
+            tm.ChunkFiles != null && (tm.StreamRadius == null || tm.OccupiedCells().Any())))
+            throw new InvalidDataException($"{obj.Name}: expected stream radius 1–16 and one source of tile cells.");
+        if (component is Tilemap2DComponent { CollisionLayer: < 0 or > 31 })
+            throw new InvalidDataException($"{obj.Name}: collision layer must be 0–31.");
+        if (component is Camera2DComponent camera) camera.Validate(obj.Name);
+        if (component is SpriteRendererComponent sr && !float.IsFinite(sr.FootOffset) ||
+            component is SortingGroup2DComponent group && !float.IsFinite(group.FootOffset))
+            throw new InvalidDataException($"{obj.Name}: sprite sorting foot offset must be finite.");
+        if (component is SpriteRendererComponent sprite && (!SceneObject.TryColor(sprite.SquareColor, out _) || sprite.Tint != null && !SceneObject.TryColor(sprite.Tint,out _)))
+            throw new InvalidDataException($"'{obj.Name}' needs a sprite color in #RRGGBB format.");
+        if (component is SpriteRendererComponent { Asset: { } asset } && !SpriteAssets.IsReference(asset))
+            throw new InvalidDataException($"'{obj.Name}' has an invalid PNG asset path: {asset}");
+        if (component is Tilemap2DComponent grid && !TileGrid.IsSupported(grid.Layout))
+            throw new InvalidDataException($"{obj.Name}: unknown tile layout '{grid.Layout}'.");
+        if (component is Tilemap2DComponent map && map.CellSize is not { Width: > 0, Height: > 0 })
+            throw new InvalidDataException($"{obj.Name}: tile cell size must be positive.");
+        if(component is UiLayoutComponent l && (l.Axis is not ("Vertical" or "Horizontal" or "Grid" or "Wrap") || l.Columns is <1 or >256 || l.Gap is not (>=0 and <=16384) || l.Padding is not (>=0 and <=16384)) ||
+            component is UiTextFieldComponent f && (f.MaxLength is <1 or >4096 || f.Value==null || f.Value.Contains('\n')) ||
+            component is UiTextComponent { Translations:{} translations } && translations.Any(p=>string.IsNullOrWhiteSpace(p.Key)||p.Value==null) ||
+            component is UiTextComponent rich && (rich.RevealRate is not (>=0 and <=10000) ||
+                rich.Icons?.Any(p => string.IsNullOrWhiteSpace(p.Key) || p.Key.IndexOfAny(['<','>','/']) >= 0 || p.Value == Guid.Empty) == true))
+            throw new InvalidDataException($"{obj.Name}: invalid UI layout, text field, translation, reveal rate or text icon.");
+        if (component is UiImageComponent { Borders: {} edges } panel && (panel.Sprite == null ||
+            edges.Left < 0 || edges.Right < 0 || edges.Top < 0 || edges.Bottom < 0))
+            throw new InvalidDataException($"{obj.Name}: 9-slice needs a PNG and nonnegative borders.");
+        if (component is UiRectComponent rect)
+        {
+            ScreenUi.AnchorIndex(rect.Anchor);
+            if (InvalidPin(rect.Left) || InvalidPin(rect.Right) || InvalidPin(rect.Top) || InvalidPin(rect.Bottom))
+                throw new InvalidDataException($"{obj.Name}: UI edge offsets must be finite.");
+        }
+        if (component is UiImageComponent image && !SceneObject.TryColor(image.Color, out _) ||
+            component is UiTextComponent label && (!SceneObject.TryColor(label.Color, out _) || !float.IsFinite(label.Size) ||
+            label.Size is <= 0 or > 1024 || !float.IsFinite(label.InsetX) || !float.IsFinite(label.InsetY)))
+            throw new InvalidDataException($"'{obj.Name}' has an invalid UI color, size or inset.");
+        if (component is ScriptComponent script && (!ScriptLibrary.ValidReference(script.Script) || script.Values == null))
+            throw new InvalidDataException($"'{obj.Name}' has an invalid script component.");
     }
 }
 
@@ -334,6 +358,18 @@ public sealed partial class SceneObject
 
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)] public PrefabLink? Prefab { get; set; }
     public string Name { get; set; } = "GameObject";
+    // Inactive objects and their children start disabled in Play and builds (scripts can SetActive them). Only false is stored,
+    // so existing scenes keep their bytes.
+    [JsonIgnore, YamlIgnore] public bool Active { get; set; } = true;
+    [JsonIgnore, YamlMember("active")] internal bool? StoredActive { get => Active ? null : false; set => Active = value ?? true; }
+    [JsonIgnore, YamlIgnore] public bool ActiveInHierarchy
+    {
+        get
+        {
+            for (var node = this; node != null; node = node.Parent) if (!node.Active) return false;
+            return true;
+        }
+    }
     private string? tag;
     private string[]? groups;
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]

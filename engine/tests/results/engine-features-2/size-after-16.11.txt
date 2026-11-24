@@ -1,0 +1,6 @@
+KeyRoom release: app 32,867,555 B, executable 124,712 B, first frame 168 ms, session_ready 66.6 ms (baseline 32,824,540 / 124,712)
+KeyRoom native-aot: app 15,692,448 B, executable 8,554,176 B, first frame 49 ms, session_ready 8.4 ms (baseline 15,675,408 / 8,537,616)
+PlatformerLab release: app 30,117,388 B, executable 124,712 B, first frame 176 ms, session_ready 75.8 ms (baseline 30,074,021 / 124,712)
+PlatformerLab native-aot: app 12,913,807 B, executable 8,238,832 B, first frame 58 ms, session_ready 12.2 ms (baseline 12,896,911 / 8,222,256)
+InventoryLab release: app 83,558,364 B, executable 124,712 B, first frame 600 ms, session_ready 468.3 ms (baseline 83,514,645 / 124,712)
+InventoryLab native-aot: app 66,331,631 B, executable 8,238,720 B, first frame 407 ms, session_ready 365.2 ms (baseline 66,314,911 / 8,222,160)

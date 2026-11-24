@@ -55,6 +55,7 @@ public static class ProjectImport
                     case CutsceneSequence.Extension: CutsceneSequence.Load(temp); break;
                     case SkeletonRig.Extension: SkeletonRig.Load(temp); break;
                     case ShaderClip.Extension: ShaderClip.Load(temp); break;
+                    case ParticleEffect.Extension: ParticleEffect.Load(temp); break;
                     case ProjectAssets.Data: GameData.Load(temp); break;
                     case GameTable.Extension: GameTable.Load(temp); break;
                     case ProjectAssets.Clip: SpriteClip.Load(temp); break;

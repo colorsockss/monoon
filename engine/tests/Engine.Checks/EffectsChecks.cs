@@ -1,10 +1,12 @@
 using System.Drawing;
 using System.Numerics;
+using Brutal.SdlApi;
 using Engine.Core;
 using Engine.Desktop;
 
 internal static class EffectsChecks
 {
+    [Check(2700, "particles")] static void Registered(CheckRun c) => Run(c.Repository);
     private sealed class Canvas : ICanvas2D
     {
         internal readonly List<RectangleF> Dust=[];
@@ -80,9 +82,37 @@ internal static class EffectsChecks
         game.Current.SetActive(runner.Id,false); game.Current.SetActive(runner.Id,true); game.Draw(canvas,1);
         Check(canvas.Dust.Count==0,"disabling the emitter clears its particles");
         var saved=ProjectYaml.Decode<SceneDocument>(ProjectYaml.Encode(scene));
-        Check(saved.SchemaVersion==21 && saved.Objects.Single(o=>o.Id==torch.Id).GetComponent<PointLight2DComponent>()==torch.GetComponent<PointLight2DComponent>() &&
+        Check(saved.SchemaVersion==31 && saved.Objects.Single(o=>o.Id==torch.Id).GetComponent<PointLight2DComponent>()==torch.GetComponent<PointLight2DComponent>() &&
             saved.Objects.Single(o=>o.Id==runner.Id).GetComponent<ParticleEmitter2DComponent>()==runner.GetComponent<ParticleEmitter2DComponent>(),
             "effect settings round-trip through scene YAML");
+        DrawWithoutAllocating(clip);
+    }
+
+    // The player's SDL canvas: a sheet lookup and source cell per particle, light and torch frame without a heap object.
+    private static unsafe void DrawWithoutAllocating(ShaderClip torch)
+    {
+        var target=Sdl.PInvoke.CreateSurface(64,64,SdlPixelFormat.Rgba32);
+        if (target==null) throw new InvalidOperationException(Sdl.PInvoke.GetError());
+        try
+        {
+            using var renderer=Sdl.Render.CreateSoftwareRenderer(target);
+            using var canvas=new SdlCanvas(renderer,batchSprites:true,previewShader:ShaderPixels.Preview);
+            var area=new RectangleF(0,0,8,8);
+            void Draw(int i)
+            {
+                canvas.DrawShader(ShaderClip.Puff,0,area,Matrix3x2.Identity,Color.White,false);
+                canvas.DrawShader(ShaderClip.LightFalloff,0,area,Matrix3x2.Identity,Color.White,true);
+                canvas.DrawShader(torch,i%torch.Frames,area,Matrix3x2.Identity,Color.White,false);
+            }
+            for (int i=0;i<64;i++) Draw(i);
+            canvas.FlushSprites();
+            long before=GC.GetAllocatedBytesForCurrentThread();
+            for (int i=0;i<1000;i++) Draw(i);
+            canvas.FlushSprites();
+            long bytes=GC.GetAllocatedBytesForCurrentThread()-before;
+            Check(bytes==0,$"1,000 rounds of dust, light and torch shader draws allocate {bytes} B after warm-up");
+        }
+        finally { Sdl.PInvoke.DestroySurface(target); }
     }
     private static void Check(bool pass,string label)
     {

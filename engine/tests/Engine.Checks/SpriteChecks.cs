@@ -6,6 +6,8 @@ using SkiaSharp;
 
 internal static class SpriteChecks
 {
+    [Check(5800, Templates = true)]
+    static void Registered(CheckRun c) { var root = Path.Combine(c.Scratch, "SpriteTest"); Run(root, c.Repository); Directory.Delete(root, true); }
     internal static void Prepare(string root)
     {
         if (Directory.Exists(root) && Directory.EnumerateFileSystemEntries(root).Any()) throw new IOException("Expected an empty sprite sample folder.");

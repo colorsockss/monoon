@@ -45,6 +45,32 @@ public sealed class ComponentSection : HeaderedContentControl
         set => SetValue(IconProperty, value);
     }
 
+    // The header's on/off check (SceneComponent.Enabled) for components that can be turned off.
+    public static readonly StyledProperty<bool> CanToggleProperty =
+        AvaloniaProperty.Register<ComponentSection, bool>(nameof(CanToggle));
+    public bool CanToggle
+    {
+        get => GetValue(CanToggleProperty);
+        set => SetValue(CanToggleProperty, value);
+    }
+
+    public static readonly StyledProperty<bool> IsOnProperty =
+        AvaloniaProperty.Register<ComponentSection, bool>(nameof(IsOn), true, defaultBindingMode: Avalonia.Data.BindingMode.TwoWay);
+    public bool IsOn
+    {
+        get => GetValue(IsOnProperty);
+        set => SetValue(IsOnProperty, value);
+    }
+
+    // 13.6: the component has prefab overrides on this instance (a dot left of the header).
+    public static readonly StyledProperty<bool> IsOverriddenProperty =
+        AvaloniaProperty.Register<ComponentSection, bool>(nameof(IsOverridden));
+    public bool IsOverridden
+    {
+        get => GetValue(IsOverriddenProperty);
+        set => SetValue(IsOverriddenProperty, value);
+    }
+
     public static readonly StyledProperty<bool> HasSettingsProperty =
         AvaloniaProperty.Register<ComponentSection, bool>(nameof(HasSettings), true);
     public bool HasSettings

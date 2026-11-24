@@ -7,6 +7,15 @@ internal interface IProjectFileEdit
     void Restore(bool redo);
 }
 
+// Several files changed by one command (an atlas group move repacks two atlases): one Undo step, restored in reverse.
+internal sealed record ProjectFileEdits(IProjectFileEdit[] Parts) : IProjectFileEdit
+{
+    public void Restore(bool redo)
+    {
+        foreach (var part in redo ? Parts : Parts.Reverse()) part.Restore(redo);
+    }
+}
+
 // The scene and the source file are one Undo step. Never erase a later external edit.
 internal sealed record PrefabFileEdit(string Path,PrefabFiles Before,PrefabFiles After) : IProjectFileEdit
 {

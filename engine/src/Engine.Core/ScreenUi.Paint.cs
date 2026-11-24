@@ -9,7 +9,7 @@ public sealed partial class ScreenUi
     {
         canvas.UseFonts(Language.Fonts);
         Arrange(canvas);
-        if (inputModes.Count == 0) { DrawLayer(canvas, x, y, scale, nodes); DrawOptions(canvas, x, y, scale); return; }
+        if (inputModes.Count == 0) { DrawLayer(canvas, x, y, scale, nodes); DrawCarried(canvas, x, y, scale); DrawOptions(canvas, x, y, scale); return; }
         // Paint each panel, including its scrollbars, before painting the panel above it.
         for (int start = 0; start < nodes.Length;)
         {
@@ -18,6 +18,7 @@ public sealed partial class ScreenUi
             DrawLayer(canvas, x, y, scale, nodes.AsSpan(start, end - start));
             start = end;
         }
+        DrawCarried(canvas, x, y, scale);
         DrawOptions(canvas, x, y, scale);
     }
 
@@ -46,7 +47,8 @@ public sealed partial class ScreenUi
                 else if(n.Image==null||!(n.Slice?.Draw(canvas,n.Image,box,scale) ?? canvas.DrawSprite(n.Image,box)))canvas.FillRectangle(box,Color.Magenta);
             }
             var label=n.Label;
-            if(label!=null||n.Field!=null)
+            // Labels, text fields and controls are the text feature (roadmap 15.12): without it no node has one.
+            if(EngineFeatures.Text) if(label!=null||n.Field!=null)
             {
                 float size=(label?.Size??16)*Preferences.TextScale*scale, tx=box.Left+(label?.InsetX??5)*scale, ty=box.Top+(label?.InsetY??2)*scale;
                 var ink=label!=null&&SceneObject.TryColor(label.Color,out var color)?color:Color.White;
@@ -92,7 +94,7 @@ public sealed partial class ScreenUi
                     foreach(var line in n.Lines){canvas.DrawText(line,tx,ty,size,ink);ty+=size*1.4f;}
                 else canvas.DrawText(text,tx,ty,size,ink);
             }
-            DrawControl(canvas, n, box, scale, paint);
+            if(EngineFeatures.Text) DrawControl(canvas, n, box, scale, paint);
             if(Enabled(n)&&focus==id)
             {
                 var ring=Preferences.HighContrast?Color.Yellow:Color.LightSkyBlue;var u=scale*(Preferences.HighContrast?2:1);

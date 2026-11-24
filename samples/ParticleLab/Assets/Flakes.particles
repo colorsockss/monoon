@@ -1,0 +1,13 @@
+rate: 12
+shape: Edge
+width: 120
+direction: 90
+spread: 20
+speed: {min: 20, max: 30}
+lifetime: {min: 2, max: 3}
+size: {min: 10, max: 14}
+rotation: {min: 0, max: 360}
+color: {min: "#E8F4FF"}
+endAlpha: 1
+texture: 5b2e74f5-8b12-5eb4-b780-ee246678daea
+sheet: {columns: 4, rows: 1}

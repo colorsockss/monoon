@@ -1,0 +1,58 @@
+{
+  "default": {
+    "client": [
+      800,
+      450
+    ],
+    "density": 2.0,
+    "viewport": [
+      0,
+      0,
+      1600,
+      900
+    ],
+    "scale": 2
+  },
+  "small": {
+    "client": [
+      720,
+      540
+    ],
+    "density": 2.0,
+    "viewport": [
+      320,
+      315,
+      800,
+      450
+    ],
+    "scale": 1
+  },
+  "large": {
+    "client": [
+      1300,
+      760
+    ],
+    "density": 2.0,
+    "viewport": [
+      100,
+      85,
+      2400,
+      1350
+    ],
+    "scale": 3
+  },
+  "reopened": {
+    "client": [
+      1300,
+      760
+    ],
+    "density": 2.0,
+    "viewport": [
+      100,
+      85,
+      2400,
+      1350
+    ],
+    "scale": 3
+  }
+}

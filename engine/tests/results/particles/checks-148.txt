@@ -1,0 +1,69 @@
+PASS particles: start size and colour stay between their two values and circle particles start inside the radius
+PASS particles: start speed spans 10–20 px/s (10.00–20.00)
+PASS particles: lifetimes between 1 and 2 s expire each particle on its own (swap-remove): 2000 971 0
+PASS particles: Point shape places particles on its area
+PASS particles: Edge shape places particles on its area
+PASS particles: Box shape places particles on its area
+PASS particles: Cone shape places particles on its area
+PASS particles: a 3-cycle burst of 7 fires at 0.5, 0.75 and 1.0 s (ticks 29,45,60)
+PASS particles: a looping 0.5 s cycle repeats its time-0 burst every 30 ticks
+PASS particles: 37 particles per second over 10 s of 60 Hz ticks emit 370
+PASS particles: prewarm matches one duration simulated with the same seed
+PASS particles: a seed replays the same particles and another seed changes them
+PASS particles: local-space particles move with the emitter and world-space ones stay where they were emitted
+PASS particles: a full pool keeps its particles and counts the dropped ones
+PASS particles: a manual emitter waits for Play and then fires its time-0 burst
+PASS particles: curve ends hold their key values, a zero-length segment is a step without NaN, one key is a constant
+PASS particles: smooth keys with zero slopes ease in and out; slopes of 1 give the straight line
+PASS particles: effects without curves keep End size/alpha and fixed rotation
+PASS particles: curves and gradients read from YAML with default slopes and save again byte for byte
+PASS particles: rejects sizeOverLifetime: {keys: []}
+PASS particles: rejects sizeOverLifetime: {keys: [{time: 0.5, value: 1}, {time: 0.2, value: 1}]}
+PASS particles: rejects sizeOverLifetime: {keys: [{time: 0, value: -1}]}
+PASS particles: rejects colorOverLifetime: {colors: [{time: 0, color: red}]}
+PASS particles: rejects colorOverLifetime: {alphas: [{time: 1.5, alpha: 1}]}
+PASS particles: a size curve and alpha gradient equal to End size/alpha give the same particles
+PASS particles: random between two curves gives each particle its own size between them
+PASS particles: a gradient multiplies the start colour and alpha over lifetime (Color [A=0, R=255, G=128, B=64] Color [A=246, R=131, G=66, B=33])
+PASS particles: 90°/s rotation speed turns a particle a quarter turn in its first second (<1.5695823E-06, 5>)
+PASS particles: a 50 px/s velocity curve moves 50 px in a second and a 30 px/s² force follows ½at² (59.999966, 25)
+PASS particles: linear drag slows particles (99.9 vs 42.0 px)
+PASS particles: value noise is a seeded lattice hash in −1…1
+PASS particles: noise moves particles apart, replays with the seed and changes with another seed
+PASS particles: a falling particle stops at the floor top and bounces up (159.11, then 137.97)
+PASS particles: the slope tile turns a falling particle down its face (<96.96319, 174.60449>)
+PASS particles: a one-way ledge stops falling particles and lets rising ones through (143.8, 11.0)
+PASS particles: lifetime loss 1 kills each particle on its first hit (20 → 0, 20 hits)
+PASS particles: 2,688 particles with noise, drag, a velocity curve and tile collision step with 0 B allocated (17,957 hits)
+PASS particles: Colliders mode casts at most 4 rays per tick (4) and bounces particles off what they hit (8 hits)
+PASS particles: each of 21 rocket deaths emits exactly 40 sparks in the rocket colour (840, 27 rockets, tinted True); sparks never fire their own sub-emitter
+PASS particles: a full target keeps 50 and counts 110 dropped sub-emitted particles
+PASS particles: collisions (2767) and births (3000) emit 2 and 1 splashes each (8534) with 0 B allocated over 100 ticks
+PASS particles: all 22 ParticleLab effects load and validate
+PASS particles: particles draw inside the sorting order (back,particles,front)
+PASS particles: an unmigrated emitter still plays its inline settings (schema 19)
+PASS particles: migrate writes one shared .particles asset per distinct setting and schema 31 emitters that reference it
+PASS particles: a second migrate changes nothing
+PASS particles: 10,240 additive and 120 multiply particles (size curve, gradient, rotation speed) step and draw through SdlCanvas with 0 B allocated over 120 frames
+PASS particles: editor preview: scrubbing to tick t simulates the same particles as playing t ticks
+PASS particles: editor preview matches the Curves Scene Play/Release/AOT trace on 300 of 300 ticks
+PASS particles: preset Dust equals ParticleLab Assets/Presets/Dust.particles, validates, uses the built-in texture
+PASS particles: preset Embers equals ParticleLab Assets/Presets/Embers.particles, validates, uses the built-in texture
+PASS particles: preset Smoke equals ParticleLab Assets/Presets/Smoke.particles, validates, uses the built-in texture
+PASS particles: preset Sparks equals ParticleLab Assets/Presets/Sparks.particles, validates, uses the built-in texture
+PASS particles: preset Hit equals ParticleLab Assets/Presets/Hit.particles, validates, uses the built-in texture
+PASS particles: preset Rain equals ParticleLab Assets/Presets/Rain.particles, validates, uses the built-in texture
+PASS particles: six presets: dust, embers, smoke, sparks, hit, rain
+PASS particles: a second preset copy in the same folder is named Assets/Dust2.particles
+PASS particles: a colour change reloads into both Embers prefabs ((2, 0)), keeps their 33+32 live particles exactly, and new ones are green
+PASS particles: an asset that fails validation throws and the running emitters keep the previous effect
+PASS particles: a new Max particles restarts both emitters ((0, 2)): empty, then emitting again from the seed's start
+PASS particles: an asset reloads only the emitters that use it
+PASS particles: a colour change reloads into both Embers prefabs ((2, 0)), keeps their 33+32 live particles exactly, and new ones are green
+PASS particles: an asset that fails validation throws and the running emitters keep the previous effect
+PASS particles: a new Max particles restarts both emitters ((0, 2)): empty, then emitting again from the seed's start
+PASS particles: an asset reloads only the emitters that use it
+PASS particles: the same reloads at the same ticks replay the same particles (9a2d5a1b91b130bc)
+PASS particle-budget: 10,240 particles (Storm.particles): Step + Draw median 126.6 µs, p95 134.4 µs, 0 B over 600 frames (budget 500 µs, SDL submit excluded)
+PASS build size baseline: 6 osx-arm64 distribution builds within +1%
+All checks passed.

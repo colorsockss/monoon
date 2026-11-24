@@ -1,0 +1,16 @@
+duration: 3
+prewarm: true
+rate: 20
+shape: Box
+width: 160
+height: 20
+direction: 90
+spread: 40
+speed: {min: 15, max: 35}
+lifetime: {min: 2.5, max: 3.5}
+size: {min: 6, max: 10}
+rotation: {min: 0, max: 360}
+color: {min: "#FFFFFF"}
+endAlpha: 1
+texture: 5b2e74f5-8b12-5eb4-b780-ee246678daea
+sheet: {columns: 4, rows: 1, fps: 6}

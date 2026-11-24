@@ -3,6 +3,7 @@ using Engine.Core;
 
 internal static class PrefabEditingChecks
 {
+    [Check(9700)] static void Registered(CheckRun c) => Run(c.Scratch);
     internal static void Run(string project)
     {
         string Asset(string name)=>Path.Combine(project,"Assets",name+".prefab");

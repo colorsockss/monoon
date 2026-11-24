@@ -1,0 +1,855 @@
+{
+ "runs": {
+  "base": [
+   {
+    "objects": 10010,
+    "strict": false,
+    "number_key": {
+     "runs": 40,
+     "median_ms": 19.3653,
+     "min_ms": 17.1418,
+     "max_ms": 1549.9635,
+     "median_bytes": 36410320
+    },
+    "number_commit": {
+     "runs": 8,
+     "median_ms": 0.2844,
+     "min_ms": 0.2061,
+     "max_ms": 0.3515,
+     "median_bytes": 20864
+    },
+    "number_edit": {
+     "runs": 8,
+     "median_ms": 97.37049999999999,
+     "min_ms": 89.51930000000002,
+     "max_ms": 1681.8912,
+     "median_bytes": 182086032
+    },
+    "number_captures": [
+     5,
+     5,
+     5,
+     5,
+     5,
+     5,
+     5,
+     5
+    ],
+    "text_key": {
+     "runs": 50,
+     "median_ms": 17.3487,
+     "min_ms": 15.471,
+     "max_ms": 1510.969,
+     "median_bytes": 36406944
+    },
+    "text_commit": {
+     "runs": 5,
+     "median_ms": 0.2605,
+     "min_ms": 0.2372,
+     "max_ms": 0.3233,
+     "median_bytes": 18960
+    },
+    "text_edit": {
+     "runs": 5,
+     "median_ms": 181.2702,
+     "min_ms": 171.4386,
+     "max_ms": 1671.0731,
+     "median_bytes": 364128152
+    },
+    "text_captures": [
+     10,
+     10,
+     10,
+     10,
+     10
+    ],
+    "history_100": {
+     "ms": 3593.4366,
+     "allocated_bytes": 4243487600,
+     "retained_bytes": 1108148528,
+     "snapshot_strings": 101,
+     "snapshot_bytes": 1116912560
+    }
+   },
+   {
+    "objects": 10010,
+    "strict": false,
+    "number_key": {
+     "runs": 40,
+     "median_ms": 18.4737,
+     "min_ms": 16.6948,
+     "max_ms": 1474.8006,
+     "median_bytes": 36410448
+    },
+    "number_commit": {
+     "runs": 8,
+     "median_ms": 0.2635,
+     "min_ms": 0.2237,
+     "max_ms": 0.312,
+     "median_bytes": 20864
+    },
+    "number_edit": {
+     "runs": 8,
+     "median_ms": 93.8066,
+     "min_ms": 87.9993,
+     "max_ms": 1599.9984999999997,
+     "median_bytes": 182080600
+    },
+    "number_captures": [
+     5,
+     5,
+     5,
+     5,
+     5,
+     5,
+     5,
+     5
+    ],
+    "text_key": {
+     "runs": 50,
+     "median_ms": 17.1747,
+     "min_ms": 14.9209,
+     "max_ms": 1426.268,
+     "median_bytes": 36407072
+    },
+    "text_commit": {
+     "runs": 5,
+     "median_ms": 0.2631,
+     "min_ms": 0.2325,
+     "max_ms": 0.2897,
+     "median_bytes": 19384
+    },
+    "text_edit": {
+     "runs": 5,
+     "median_ms": 183.21180000000004,
+     "min_ms": 167.91819999999998,
+     "max_ms": 1584.1206,
+     "median_bytes": 364128112
+    },
+    "text_captures": [
+     10,
+     10,
+     10,
+     10,
+     10
+    ],
+    "history_100": {
+     "ms": 3382.1349,
+     "allocated_bytes": 4174180848,
+     "retained_bytes": 1100085576,
+     "snapshot_strings": 101,
+     "snapshot_bytes": 1116912560
+    }
+   },
+   {
+    "objects": 10010,
+    "strict": false,
+    "number_key": {
+     "runs": 40,
+     "median_ms": 18.4379,
+     "min_ms": 17.0007,
+     "max_ms": 1461.9077,
+     "median_bytes": 36410224
+    },
+    "number_commit": {
+     "runs": 8,
+     "median_ms": 0.2405,
+     "min_ms": 0.1817,
+     "max_ms": 0.2929,
+     "median_bytes": 20776
+    },
+    "number_edit": {
+     "runs": 8,
+     "median_ms": 93.868,
+     "min_ms": 89.72080000000001,
+     "max_ms": 1545.9270999999999,
+     "median_bytes": 182080752
+    },
+    "number_captures": [
+     5,
+     5,
+     5,
+     5,
+     5,
+     5,
+     5,
+     5
+    ],
+    "text_key": {
+     "runs": 50,
+     "median_ms": 17.4106,
+     "min_ms": 15.2214,
+     "max_ms": 1415.5794,
+     "median_bytes": 36407072
+    },
+    "text_commit": {
+     "runs": 5,
+     "median_ms": 0.2945,
+     "min_ms": 0.2495,
+     "max_ms": 0.3104,
+     "median_bytes": 19384
+    },
+    "text_edit": {
+     "runs": 5,
+     "median_ms": 184.6891,
+     "min_ms": 167.95329999999998,
+     "max_ms": 1574.3072,
+     "median_bytes": 364127928
+    },
+    "text_captures": [
+     10,
+     10,
+     10,
+     10,
+     10
+    ],
+    "history_100": {
+     "ms": 3397.1336,
+     "allocated_bytes": 4174176856,
+     "retained_bytes": 1100095424,
+     "snapshot_strings": 101,
+     "snapshot_bytes": 1116912560
+    }
+   },
+   {
+    "objects": 10010,
+    "strict": false,
+    "number_key": {
+     "runs": 40,
+     "median_ms": 24.4235,
+     "min_ms": 17.5477,
+     "max_ms": 1433.8477,
+     "median_bytes": 36413944
+    },
+    "number_commit": {
+     "runs": 8,
+     "median_ms": 0.2773,
+     "min_ms": 0.2332,
+     "max_ms": 0.3037,
+     "median_bytes": 20440
+    },
+    "number_edit": {
+     "runs": 8,
+     "median_ms": 246.67980000000003,
+     "min_ms": 105.29070000000002,
+     "max_ms": 1509.8076,
+     "median_bytes": 287211872
+    },
+    "number_captures": [
+     5,
+     5,
+     5,
+     5,
+     5,
+     5,
+     5,
+     5
+    ],
+    "text_key": {
+     "runs": 50,
+     "median_ms": 17.5097,
+     "min_ms": 15.4522,
+     "max_ms": 1419.0184,
+     "median_bytes": 36407104
+    },
+    "text_commit": {
+     "runs": 5,
+     "median_ms": 0.2491,
+     "min_ms": 0.2465,
+     "max_ms": 0.2574,
+     "median_bytes": 18960
+    },
+    "text_edit": {
+     "runs": 5,
+     "median_ms": 185.74849999999998,
+     "min_ms": 171.79989999999998,
+     "max_ms": 1573.9311999999998,
+     "median_bytes": 364186520
+    },
+    "text_captures": [
+     10,
+     10,
+     10,
+     10,
+     10
+    ],
+    "history_100": {
+     "ms": 3328.1616,
+     "allocated_bytes": 4069045776,
+     "retained_bytes": 1099849632,
+     "snapshot_strings": 101,
+     "snapshot_bytes": 1116912560
+    }
+   },
+   {
+    "objects": 10010,
+    "strict": false,
+    "number_key": {
+     "runs": 40,
+     "median_ms": 18.2207,
+     "min_ms": 17.1256,
+     "max_ms": 51.674,
+     "median_bytes": 36410256
+    },
+    "number_commit": {
+     "runs": 8,
+     "median_ms": 0.254,
+     "min_ms": 0.2065,
+     "max_ms": 0.3067,
+     "median_bytes": 20864
+    },
+    "number_edit": {
+     "runs": 8,
+     "median_ms": 94.9337,
+     "min_ms": 91.70730000000002,
+     "max_ms": 124.81800000000001,
+     "median_bytes": 182081008
+    },
+    "number_captures": [
+     5,
+     5,
+     5,
+     5,
+     5,
+     5,
+     5,
+     5
+    ],
+    "text_key": {
+     "runs": 50,
+     "median_ms": 17.2658,
+     "min_ms": 15.8381,
+     "max_ms": 1370.9892,
+     "median_bytes": 36409048
+    },
+    "text_commit": {
+     "runs": 5,
+     "median_ms": 0.2414,
+     "min_ms": 0.2259,
+     "max_ms": 0.2607,
+     "median_bytes": 18960
+    },
+    "text_edit": {
+     "runs": 5,
+     "median_ms": 184.1726,
+     "min_ms": 170.63639999999998,
+     "max_ms": 1525.4954,
+     "median_bytes": 364184912
+    },
+    "text_captures": [
+     10,
+     10,
+     10,
+     10,
+     10
+    ],
+    "history_100": {
+     "ms": 3503.3584,
+     "allocated_bytes": 4243522800,
+     "retained_bytes": 1108161896,
+     "snapshot_strings": 101,
+     "snapshot_bytes": 1116912560
+    }
+   }
+  ],
+  "cand": [
+   {
+    "objects": 10010,
+    "strict": true,
+    "number_key": {
+     "runs": 40,
+     "median_ms": 8.1504,
+     "min_ms": 7.3559,
+     "max_ms": 77.1619,
+     "median_bytes": 2346320
+    },
+    "number_commit": {
+     "runs": 8,
+     "median_ms": 14.3838,
+     "min_ms": 13.9418,
+     "max_ms": 18.428,
+     "median_bytes": 34042688
+    },
+    "number_edit": {
+     "runs": 8,
+     "median_ms": 65.9801,
+     "min_ms": 55.453500000000005,
+     "max_ms": 122.3657,
+     "median_bytes": 45772360
+    },
+    "number_captures": [
+     1,
+     1,
+     1,
+     1,
+     1,
+     1,
+     1,
+     1
+    ],
+    "text_key": {
+     "runs": 50,
+     "median_ms": 4.5842,
+     "min_ms": 2.5688,
+     "max_ms": 1428.0049,
+     "median_bytes": 2343232
+    },
+    "text_commit": {
+     "runs": 5,
+     "median_ms": 12.9896,
+     "min_ms": 12.4713,
+     "max_ms": 14.0113,
+     "median_bytes": 34040880
+    },
+    "text_edit": {
+     "runs": 5,
+     "median_ms": 49.2532,
+     "min_ms": 43.7997,
+     "max_ms": 1521.9615,
+     "median_bytes": 57500856
+    },
+    "text_captures": [
+     1,
+     1,
+     1,
+     1,
+     1
+    ],
+    "history_100": {
+     "ms": 3420.7947,
+     "allocated_bytes": 4170013448,
+     "retained_bytes": 967954136,
+     "snapshot_strings": 101,
+     "snapshot_bytes": 1116912560
+    }
+   },
+   {
+    "objects": 10010,
+    "strict": true,
+    "number_key": {
+     "runs": 40,
+     "median_ms": 8.7155,
+     "min_ms": 7.2052,
+     "max_ms": 75.6386,
+     "median_bytes": 2346320
+    },
+    "number_commit": {
+     "runs": 8,
+     "median_ms": 14.4407,
+     "min_ms": 14.1366,
+     "max_ms": 14.879,
+     "median_bytes": 34042752
+    },
+    "number_edit": {
+     "runs": 8,
+     "median_ms": 67.8637,
+     "min_ms": 54.184999999999995,
+     "max_ms": 120.6337,
+     "median_bytes": 45779408
+    },
+    "number_captures": [
+     1,
+     1,
+     1,
+     1,
+     1,
+     1,
+     1,
+     1
+    ],
+    "text_key": {
+     "runs": 50,
+     "median_ms": 5.0376,
+     "min_ms": 2.7862,
+     "max_ms": 1436.2987,
+     "median_bytes": 2343840
+    },
+    "text_commit": {
+     "runs": 5,
+     "median_ms": 13.6332,
+     "min_ms": 12.829,
+     "max_ms": 17.1571,
+     "median_bytes": 34041136
+    },
+    "text_edit": {
+     "runs": 5,
+     "median_ms": 49.2097,
+     "min_ms": 48.423,
+     "max_ms": 1532.8305,
+     "median_bytes": 57509464
+    },
+    "text_captures": [
+     1,
+     1,
+     1,
+     1,
+     1
+    ],
+    "history_100": {
+     "ms": 3471.8335,
+     "allocated_bytes": 4170020640,
+     "retained_bytes": 968279512,
+     "snapshot_strings": 101,
+     "snapshot_bytes": 1116912560
+    }
+   },
+   {
+    "objects": 10010,
+    "strict": true,
+    "number_key": {
+     "runs": 40,
+     "median_ms": 7.4107,
+     "min_ms": 6.5959,
+     "max_ms": 50.1966,
+     "median_bytes": 2346272
+    },
+    "number_commit": {
+     "runs": 8,
+     "median_ms": 15.4568,
+     "min_ms": 14.651,
+     "max_ms": 17.7327,
+     "median_bytes": 34042776
+    },
+    "number_edit": {
+     "runs": 8,
+     "median_ms": 58.6398,
+     "min_ms": 50.129799999999996,
+     "max_ms": 92.7338,
+     "median_bytes": 45772360
+    },
+    "number_captures": [
+     1,
+     1,
+     1,
+     1,
+     1,
+     1,
+     1,
+     1
+    ],
+    "text_key": {
+     "runs": 50,
+     "median_ms": 4.7852,
+     "min_ms": 2.5695,
+     "max_ms": 1436.6859,
+     "median_bytes": 2343200
+    },
+    "text_commit": {
+     "runs": 5,
+     "median_ms": 13.5492,
+     "min_ms": 13.1002,
+     "max_ms": 14.433,
+     "median_bytes": 34040880
+    },
+    "text_edit": {
+     "runs": 5,
+     "median_ms": 51.317,
+     "min_ms": 48.1334,
+     "max_ms": 1525.4349999999997,
+     "median_bytes": 57500832
+    },
+    "text_captures": [
+     1,
+     1,
+     1,
+     1,
+     1
+    ],
+    "history_100": {
+     "ms": 3516.4591,
+     "allocated_bytes": 4170007864,
+     "retained_bytes": 712060160,
+     "snapshot_strings": 101,
+     "snapshot_bytes": 1116912560
+    }
+   },
+   {
+    "objects": 10010,
+    "strict": true,
+    "number_key": {
+     "runs": 40,
+     "median_ms": 7.642,
+     "min_ms": 6.6207,
+     "max_ms": 65.6153,
+     "median_bytes": 2346320
+    },
+    "number_commit": {
+     "runs": 8,
+     "median_ms": 15.4828,
+     "min_ms": 14.7497,
+     "max_ms": 50.4126,
+     "median_bytes": 34042816
+    },
+    "number_edit": {
+     "runs": 8,
+     "median_ms": 60.0085,
+     "min_ms": 51.6435,
+     "max_ms": 109.16470000000001,
+     "median_bytes": 45772360
+    },
+    "number_captures": [
+     1,
+     1,
+     1,
+     1,
+     1,
+     1,
+     1,
+     1
+    ],
+    "text_key": {
+     "runs": 50,
+     "median_ms": 5.1321,
+     "min_ms": 2.5974,
+     "max_ms": 1527.0097,
+     "median_bytes": 2343248
+    },
+    "text_commit": {
+     "runs": 5,
+     "median_ms": 13.6571,
+     "min_ms": 13.0475,
+     "max_ms": 14.7107,
+     "median_bytes": 34041056
+    },
+    "text_edit": {
+     "runs": 5,
+     "median_ms": 90.56899999999999,
+     "min_ms": 48.1558,
+     "max_ms": 1582.5042999999998,
+     "median_bytes": 57503432
+    },
+    "text_captures": [
+     1,
+     1,
+     1,
+     1,
+     1
+    ],
+    "history_100": {
+     "ms": 3600.9303,
+     "allocated_bytes": 4170024424,
+     "retained_bytes": 713821296,
+     "snapshot_strings": 101,
+     "snapshot_bytes": 1116912560
+    }
+   },
+   {
+    "objects": 10010,
+    "strict": true,
+    "number_key": {
+     "runs": 40,
+     "median_ms": 7.5365,
+     "min_ms": 6.7311,
+     "max_ms": 77.0766,
+     "median_bytes": 2346272
+    },
+    "number_commit": {
+     "runs": 8,
+     "median_ms": 15.1485,
+     "min_ms": 14.6507,
+     "max_ms": 18.7781,
+     "median_bytes": 34042776
+    },
+    "number_edit": {
+     "runs": 8,
+     "median_ms": 60.670199999999994,
+     "min_ms": 55.7001,
+     "max_ms": 119.4824,
+     "median_bytes": 45772360
+    },
+    "number_captures": [
+     1,
+     1,
+     1,
+     1,
+     1,
+     1,
+     1,
+     1
+    ],
+    "text_key": {
+     "runs": 50,
+     "median_ms": 4.0019,
+     "min_ms": 2.6976,
+     "max_ms": 1424.7361,
+     "median_bytes": 2343232
+    },
+    "text_commit": {
+     "runs": 5,
+     "median_ms": 13.2415,
+     "min_ms": 12.8983,
+     "max_ms": 14.1899,
+     "median_bytes": 34040880
+    },
+    "text_edit": {
+     "runs": 5,
+     "median_ms": 67.4819,
+     "min_ms": 48.688500000000005,
+     "max_ms": 1486.8676000000003,
+     "median_bytes": 57500856
+    },
+    "text_captures": [
+     1,
+     1,
+     1,
+     1,
+     1
+    ],
+    "history_100": {
+     "ms": 3469.7327,
+     "allocated_bytes": 4170029016,
+     "retained_bytes": 967930152,
+     "snapshot_strings": 101,
+     "snapshot_bytes": 1116912560
+    }
+   }
+  ]
+ },
+ "summary": {
+  "base": {
+   "number_key": {
+    "median_ms": 18.474,
+    "min_ms": 18.221,
+    "max_ms": 24.424,
+    "median_mb": 34.72
+   },
+   "number_commit": {
+    "median_ms": 0.264,
+    "min_ms": 0.24,
+    "max_ms": 0.284,
+    "median_mb": 0.02
+   },
+   "number_edit": {
+    "median_ms": 94.934,
+    "min_ms": 93.807,
+    "max_ms": 246.68,
+    "median_mb": 173.65
+   },
+   "text_key": {
+    "median_ms": 17.349,
+    "min_ms": 17.175,
+    "max_ms": 17.51,
+    "median_mb": 34.72
+   },
+   "text_commit": {
+    "median_ms": 0.261,
+    "min_ms": 0.241,
+    "max_ms": 0.294,
+    "median_mb": 0.02
+   },
+   "text_edit": {
+    "median_ms": 184.173,
+    "min_ms": 181.27,
+    "max_ms": 185.748,
+    "median_mb": 347.26
+   },
+   "history_100_ms": {
+    "median": 3397.1,
+    "min": 3328.2,
+    "max": 3593.4
+   },
+   "history_100_allocated_mb": {
+    "median": 3980.8,
+    "min": 3880.5,
+    "max": 4046.9
+   },
+   "history_100_retained_mb": {
+    "median": 1049.1,
+    "min": 1048.9,
+    "max": 1056.8
+   },
+   "history_100_snapshot_mb": {
+    "median": 1065.2,
+    "min": 1065.2,
+    "max": 1065.2
+   },
+   "history_100_snapshot_strings": {
+    "median": 101.0,
+    "min": 101.0,
+    "max": 101.0
+   },
+   "captures_per_edit": [
+    5,
+    10
+   ]
+  },
+  "cand": {
+   "number_key": {
+    "median_ms": 7.642,
+    "min_ms": 7.411,
+    "max_ms": 8.716,
+    "median_mb": 2.24
+   },
+   "number_commit": {
+    "median_ms": 15.149,
+    "min_ms": 14.384,
+    "max_ms": 15.483,
+    "median_mb": 32.47
+   },
+   "number_edit": {
+    "median_ms": 60.67,
+    "min_ms": 58.64,
+    "max_ms": 67.864,
+    "median_mb": 43.65
+   },
+   "text_key": {
+    "median_ms": 4.785,
+    "min_ms": 4.002,
+    "max_ms": 5.132,
+    "median_mb": 2.23
+   },
+   "text_commit": {
+    "median_ms": 13.549,
+    "min_ms": 12.99,
+    "max_ms": 13.657,
+    "median_mb": 32.46
+   },
+   "text_edit": {
+    "median_ms": 51.317,
+    "min_ms": 49.21,
+    "max_ms": 90.569,
+    "median_mb": 54.84
+   },
+   "history_100_ms": {
+    "median": 3471.8,
+    "min": 3420.8,
+    "max": 3600.9
+   },
+   "history_100_allocated_mb": {
+    "median": 3976.8,
+    "min": 3976.8,
+    "max": 3976.8
+   },
+   "history_100_retained_mb": {
+    "median": 923.1,
+    "min": 679.1,
+    "max": 923.4
+   },
+   "history_100_snapshot_mb": {
+    "median": 1065.2,
+    "min": 1065.2,
+    "max": 1065.2
+   },
+   "history_100_snapshot_strings": {
+    "median": 101.0,
+    "min": 101.0,
+    "max": 101.0
+   },
+   "captures_per_edit": [
+    1
+   ]
+  }
+ },
+ "saved_field10000_sha256": {
+  "base-1": "99189634ed49e12cbada8a90f93b0dd5a851916ec9eae00cfb87cedcceeb37f4",
+  "cand-1": "99189634ed49e12cbada8a90f93b0dd5a851916ec9eae00cfb87cedcceeb37f4",
+  "base-2": "99189634ed49e12cbada8a90f93b0dd5a851916ec9eae00cfb87cedcceeb37f4",
+  "cand-2": "99189634ed49e12cbada8a90f93b0dd5a851916ec9eae00cfb87cedcceeb37f4",
+  "base-3": "99189634ed49e12cbada8a90f93b0dd5a851916ec9eae00cfb87cedcceeb37f4",
+  "cand-3": "99189634ed49e12cbada8a90f93b0dd5a851916ec9eae00cfb87cedcceeb37f4",
+  "base-4": "99189634ed49e12cbada8a90f93b0dd5a851916ec9eae00cfb87cedcceeb37f4",
+  "cand-4": "99189634ed49e12cbada8a90f93b0dd5a851916ec9eae00cfb87cedcceeb37f4",
+  "base-5": "99189634ed49e12cbada8a90f93b0dd5a851916ec9eae00cfb87cedcceeb37f4",
+  "cand-5": "99189634ed49e12cbada8a90f93b0dd5a851916ec9eae00cfb87cedcceeb37f4"
+ }
+}

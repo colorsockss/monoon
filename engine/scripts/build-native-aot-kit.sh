@@ -1,7 +1,10 @@
 #!/bin/sh
 set -eu
 cd "$(dirname "$0")/.."
-kit=${MONOON_PLAYERS_DIR:-"$(dirname "$PWD")/player-templates"}/native-aot
+players=${MONOON_PLAYERS_DIR:-"$(dirname "$PWD")/player-templates"}
+# bootstrap-worktree.sh may link player-templates to the shared cache; never write into it.
+if [ -z "${MONOON_PLAYERS_DIR:-}" ] && [ -L "$players" ]; then rm "$players"; fi
+kit=$players/native-aot
 mkdir -p "$kit/src" "$kit/native/windows-x64"
 cp Directory.Build.props Directory.Build.targets "$kit/"
 for project in Engine.Core Engine.Desktop Engine.Player; do

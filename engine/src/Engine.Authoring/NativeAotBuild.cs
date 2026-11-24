@@ -3,29 +3,42 @@ using System.Xml.Linq;
 
 namespace Engine.Core;
 
+// Publishes the player kit for one game with its scripts linked statically: Native AOT, or (roadmap 15.7) a trimmed
+// self-contained Release precompiled with ReadyToRun. crossgen2 targets win-x64 and linux-x64 from any host.
 internal static class NativeAotBuild
 {
-    internal static void Publish(string playerProject, string rid, ProjectScripts.Build scripts, string output, BuildProfile profile)
+    internal static void Publish(string playerProject, string rid, ProjectScripts.Build scripts, string output, BuildProfile profile, bool nativeAot = true,
+        EngineFeature[]? excluded = null)
     {
         playerProject = RealPath(playerProject);
         // The compiler sees the real path (/private/var on macOS), so the path maps below must use it too.
         var work = new DirectoryInfo(RealPath(Directory.CreateTempSubdirectory("monoon-aot-").FullName));
         try
         {
-            WriteScriptRegistry(work.FullName, playerProject, scripts);
-            bool compactMac = rid == "osx-arm64" && profile == BuildProfile.Distribution;
+            WriteScriptRegistry(work.FullName, playerProject, scripts, profile, excluded);
             // Map the random work folder (generated scripts, obj and PDB paths) to fixed names: identical builds give identical players.
             string pathMap = $"{Path.Combine(work.FullName, "GameScripts", "GameSources")}=/_/%2C{work.FullName}=/_/monoon-aot";
             var args = new List<string> { "publish", playerProject, "-c", "Release", "-r", rid, "--self-contained", "true",
-                "-p:PublishAot=true", "-p:DebugType=portable", "-p:CopyOutputSymbolsToPublishDirectory=true", "-p:UseSharedCompilation=false", "-p:NuGetAudit=false", "-nr:false", "-m:1",
+                "-p:DebugType=portable", "-p:CopyOutputSymbolsToPublishDirectory=true", "-p:UseSharedCompilation=false", "-p:NuGetAudit=false", "-nr:false", "-m:1",
                 "-p:PathMap=" + pathMap,
                 "-p:MoNoonGameReferences=" + Path.Combine(work.FullName, "Scripts.props"),
                 "--artifacts-path", Path.Combine(work.FullName, "artifacts"), "-o", Path.GetFullPath(output) };
-            if (compactMac) args.Add("-p:OptimizationPreference=Size");
+            if (nativeAot) args.Add("-p:PublishAot=true");
+            // R2R symbol files (.r2rmap, .ni.pdb) would ship in the product; crash reports use IL offsets and portable PDBs.
+            // ILLink otherwise writes the random work folder into each assembly's debug directory, so identical builds would differ;
+            // keeping the compiler's PathMap-ed PDB path makes them byte-identical.
+            else args.AddRange(["-p:PublishTrimmed=true", "-p:PublishReadyToRun=true", "-p:PublishReadyToRunEmitSymbols=false",
+                "-p:_ExtraTrimmerArgs=--preserve-symbol-paths"]);
+            if (nativeAot && PrefersSize(rid, profile)) args.Add("-p:OptimizationPreference=Size");
             Run(DotnetHost(), work.FullName, args);
         }
         finally { work.Delete(true); }
     }
+
+    internal static string FeatureSwitch(EngineFeature feature) => EngineFeatures.SwitchPrefix + EngineFeatures.Name(feature);
+
+    // Distribution Native AOT trades a little speed for a smaller executable (roadmap 15.9 adds linux-x64; win-x64 waits for Windows checks).
+    internal static bool PrefersSize(string rid, BuildProfile profile) => profile == BuildProfile.Distribution && rid is "osx-arm64" or "linux-x64";
 
     // NuGet restores relative project references under the canonical path. A kit reached through a symlink (macOS
     // /var -> /private/var, /tmp) was then restored under two spellings and Engine.Desktop's packages (Brutal.Sdl, SDL3)
@@ -57,7 +70,7 @@ internal static class NativeAotBuild
         var output = stdout.GetAwaiter().GetResult();
         var error = stderr.GetAwaiter().GetResult();
         if (process.ExitCode != 0)
-            throw new InvalidOperationException($"Native AOT build failed in {Path.GetFileName(tool)} (exit {process.ExitCode}).\n{output}{error}".TrimEnd());
+            throw new InvalidOperationException($"Player publish failed in {Path.GetFileName(tool)} (exit {process.ExitCode}).\n{output}{error}".TrimEnd());
         return output.Trim();
     }
 
@@ -72,7 +85,7 @@ internal static class NativeAotBuild
     }
 
     // Build the same source snapshot and generated factory against the target SDK reference assemblies.
-    private static void WriteScriptRegistry(string work, string playerProject, ProjectScripts.Build scripts)
+    private static void WriteScriptRegistry(string work, string playerProject, ProjectScripts.Build scripts, BuildProfile profile, EngineFeature[]? excluded)
     {
         var dir = Directory.CreateDirectory(Path.Combine(work,"GameScripts")).FullName;
         var sources = new XElement("ItemGroup");
@@ -89,7 +102,9 @@ internal static class NativeAotBuild
         var core = Path.GetFullPath(Path.Combine(Path.GetDirectoryName(playerProject)!,"..","Engine.Core","Engine.Core.csproj"));
         new XDocument(new XElement("Project",new XAttribute("Sdk","Microsoft.NET.Sdk"),
             new XElement("PropertyGroup",new XElement("TargetFramework","net10.0"),
-                new XElement("AssemblyName","MoNoon.GameScripts"),new XElement("EnableDefaultCompileItems","false")),
+                new XElement("AssemblyName","MoNoon.GameScripts"),new XElement("EnableDefaultCompileItems","false"),
+                // Development builds keep the scripts' tick.Debug calls (roadmap 16.14); distribution compiles them away.
+                profile==BuildProfile.Development ? new XElement("DefineConstants","$(DefineConstants);"+ScriptDebug.Symbol) : null),
             sources,new XElement("ItemGroup",new XElement("ProjectReference",new XAttribute("Include",core))))).Save(project);
         var source = Path.Combine(work,"CompiledGameScripts.g.cs");
         File.WriteAllText(source, """
@@ -102,6 +117,14 @@ internal static class NativeAotBuild
             """);
         new XDocument(new XElement("Project",new XElement("ItemGroup",
             new XElement("ProjectReference",new XAttribute("Include",project),new XElement("Aliases","projectScripts")),
-            new XElement("Compile",new XAttribute("Include",source))))).Save(Path.Combine(work,"Scripts.props"));
+            new XElement("Compile",new XAttribute("Include",source)),
+            // Distribution: trimming removes the debug draw path behind ScriptDebug.IsSupported.
+            profile==BuildProfile.Distribution ? new XElement("RuntimeHostConfigurationOption",new XAttribute("Include",ScriptDebug.Switch),
+                new XAttribute("Value","false"),new XAttribute("Trim","true")) : null,
+            // Roadmap 15.12 (Native AOT only): features the build left out (BuildFeatures) are switched off and ILC drops their code.
+            // Every feature gets a constant (true when kept), so no feature test reads AppContext in the player.
+            excluded == null ? null : Enum.GetValues<EngineFeature>().Select(f => new XElement("RuntimeHostConfigurationOption",
+                new XAttribute("Include",FeatureSwitch(f)),new XAttribute("Value",excluded.Contains(f) ? "false" : "true"),
+                new XAttribute("Trim","true")))))).Save(Path.Combine(work,"Scripts.props"));
     }
 }

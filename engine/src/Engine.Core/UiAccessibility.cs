@@ -50,10 +50,13 @@ public sealed partial record UiLayoutComponent : SceneComponent
     public float Gap { get;set; }=6;
     public float Padding { get;set; }=6;
     public bool Stretch { get;set; }=true;
+    /// <summary>Grid: cells per row. Null (and Wrap) fits as many cells of the widest child as the width allows.</summary>
+    [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]
+    public int? Columns { get;set; }
 }
 [DisplayName("UI Scroll View"),YamlObject]
 public sealed partial record UiScrollComponent : SceneComponent;
-[DisplayName("UI Text Field"),YamlObject]
+[DisplayName("UI Text Field"),YamlObject,EngineFeature(EngineFeature.Text)]
 public sealed partial record UiTextFieldComponent : SceneComponent
 {
     public UiTextFieldComponent() {}

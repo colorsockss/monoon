@@ -28,6 +28,7 @@ public sealed partial record CutsceneSequence(DialogueLine[] Lines)
 }
 
 [DisplayName("Cutscene Director"), YamlObject]
+[EngineFeature(EngineFeature.Text)]
 public sealed partial record CutsceneDirectorComponent : SceneComponent
 {
     public Guid? Sequence { get; set; }

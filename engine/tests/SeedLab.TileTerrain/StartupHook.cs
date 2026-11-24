@@ -13,18 +13,7 @@ public static class StartupHook
 {
     private static readonly string Output = Environment.GetEnvironmentVariable("MONOON_TERRAIN_EDITOR")!;
     private const BindingFlags Private = BindingFlags.NonPublic | BindingFlags.Instance;
-    public static void Initialize() => Task.Run(async () =>
-    {
-        while (Application.Current?.ApplicationLifetime is not IClassicDesktopStyleApplicationLifetime { MainWindow: not null })
-            await Task.Delay(100);
-        await Dispatcher.UIThread.InvokeAsync(async () =>
-        {
-            var life = (IClassicDesktopStyleApplicationLifetime)Application.Current!.ApplicationLifetime!;
-            try { await Test(life, life.MainWindow!); }
-            catch (Exception ex) { File.WriteAllText(Path.Combine(Output, "error.txt"), ex.ToString()); }
-            finally { life.Shutdown(); }
-        });
-    });
+    public static void Initialize() => Start(Path.Combine(Output, "error.txt"), life => Test(life, life.MainWindow!));
 
     private static void Click(Button button) => button.RaiseEvent(new RoutedEventArgs(Button.ClickEvent, button));
     private static void Require(bool value, string message) { if (!value) throw new InvalidDataException(message); }
@@ -34,7 +23,7 @@ public static class StartupHook
         string project = Environment.GetEnvironmentVariable("MONOON_QA_PROJECT")!;
         var view = main.FindControl<Control>("Viewport")!;
         var scene = view.GetType().GetProperty("Scene")!;
-        while (((SceneDocument)scene.GetValue(view)!).Objects.All(o => o.Name != "Board")) await Task.Delay(100);
+        await Until(() => ((SceneDocument)scene.GetValue(view)!).Objects.Any(o => o.Name == "Board"), "Board");
         SpriteRegion mud = new(16, 0, 8, 8);
         async Task Edit(string expectName, int expectCost, string name, int cost, bool capture)
         {
@@ -42,7 +31,7 @@ public static class StartupHook
             // The tileset editor is a dock panel in the main window (roadmap 12.4); it appears after the panel's layout pass.
             await closing;
             Visual? found = null;
-            for (int i = 0; i < 200 && (found = main.GetVisualDescendants().SingleOrDefault(c => c.GetType().Name == "TilesetWindow")) == null; i++) await Task.Delay(50);
+            for (int i = 0; i < 200 && (found = main.GetVisualDescendants().SingleOrDefault(c => c.GetType().Name == "TilesetWindow")) == null; i++) await Delay(50);
             var window = (ContentControl)(found ?? throw new InvalidDataException("Tileset panel did not open"));
             var grid = window.FindControl<Control>("Cells")!;
             grid.GetType().GetMethod("RestoreSelection", Private)!.Invoke(grid, [new[] { mud }]);
@@ -56,7 +45,7 @@ public static class StartupHook
                 foreach (int width in new[] { 700, 380 })
                 {
                     window.Width = width;
-                    await Task.Delay(180);
+                    await Delay(180);
                     var field = terrain.TranslatePoint(default, window)!.Value;
                     var chooser = window.FindControl<ComboBox>("ShapeMode")!.TranslatePoint(default, window)!.Value;
                     var number = price.TranslatePoint(default, window)!.Value;

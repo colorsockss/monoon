@@ -15,26 +15,12 @@ using Engine.Core;
 // into SecondRoom through the Edit menu, Undo and Redo each step, show the missing reference, save and Play.
 public static class StartupHook
 {
-    // MONOON_QA_SLOW scales waits and time limits for emulated x64 guests (TCG); 1 on a normal desktop.
-    private static readonly double Slow = double.TryParse(Environment.GetEnvironmentVariable("MONOON_QA_SLOW"), System.Globalization.CultureInfo.InvariantCulture, out var s) ? s : 1;
-    private static Task Delay(int ms) => Task.Delay((int)(ms * Slow));
     private static readonly string Output = Environment.GetEnvironmentVariable("MONOON_COPY_EDITOR")!;
     private const BindingFlags Members = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic;
     private static bool noClipboard;
     private const string Missing = "Missing object or component";
 
-    public static void Initialize() => Task.Run(async () =>
-    {
-        while (Application.Current?.ApplicationLifetime is not IClassicDesktopStyleApplicationLifetime { MainWindow: not null })
-            await Delay(100);
-        await Dispatcher.UIThread.InvokeAsync(async () =>
-        {
-            var desktop = (IClassicDesktopStyleApplicationLifetime)Application.Current!.ApplicationLifetime!;
-            try { await Run(desktop.MainWindow!); }
-            catch (Exception ex) { File.WriteAllText(Path.Combine(Output, "error.txt"), ex.ToString()); }
-            finally { desktop.Shutdown(); }
-        });
-    });
+    public static void Initialize() => Start(Path.Combine(Output, "error.txt"), life => Run(life.MainWindow!));
 
     private static object? Call(Window w, string method, params object?[] args) => w.GetType().GetMethod(method, Members)!.Invoke(w, args);
     private static SceneDocument Scene(Window w) => (SceneDocument)w.GetType().GetProperty("Scene", Members)!.GetValue(w)!;
@@ -43,12 +29,6 @@ public static class StartupHook
     private static JsonElement Ref(Guid id) => JsonDocument.Parse($"\"{id}\"").RootElement.Clone();
     private static Guid Field(SceneObject obj, string name) => obj.GetComponent<ScriptComponent>()!.ReadOverride(name, Guid.Empty);
     private static Rect In(Visual c, Visual root) => new(c.TranslatePoint(default, root)!.Value, c.Bounds.Size);
-
-    private static async Task Wait(Func<bool> ready, string what)
-    {
-        var deadline = DateTime.UtcNow.AddSeconds(90 * Slow);
-        while (!ready()) { if (DateTime.UtcNow > deadline) throw new TimeoutException(what); await Delay(80); }
-    }
 
     private static NativeMenuItem Item(Window main, string menu, string header) =>
         NativeMenu.GetMenu(main)!.Items.OfType<NativeMenuItem>().Single(i => i.Header == menu).Menu!.Items.OfType<NativeMenuItem>().Single(i => i.Header == header);
@@ -64,14 +44,14 @@ public static class StartupHook
         var status0 = main.FindControl<TextBlock>("Status")!;
         status0.Text = "";
         Click(item);
-        await Wait(() => status0.Text == status, $"{header}: status '{status}', got '{status0.Text}'");
+        await Until(() => status0.Text == status, $"{header}: status '{status}', got '{status0.Text}'");
     }
 
     private static async Task Run(Window main)
     {
         string root = Environment.GetEnvironmentVariable("MONOON_QA_PROJECT")!;
         string trace = Environment.GetEnvironmentVariable("MONOON_COPY_TRACE")!;
-        await Wait(() => Scene(main).Objects.Count > 1, "KeyRoom");
+        await Until(() => Scene(main).Objects.Count > 1, "KeyRoom");
         main.Width = 1280; main.Height = 800;
         var edit = NativeMenu.GetMenu(main)!.Items.OfType<NativeMenuItem>().Single(i => i.Header == "Edit").Menu!.Items.OfType<NativeMenuItem>();
         Log("edit menu " + string.Join(" | ", edit.Select(i => $"{i.Header} {i.Gesture}")));
@@ -175,17 +155,19 @@ public static class StartupHook
         Call(main, "Select", moved);
         await Delay(800);
         var panel = main.GetVisualDescendants().OfType<Border>().First(b => b.Name == "InspectorPanel");
-        ComboBox Picker(string field) => panel.GetVisualDescendants().OfType<ComboBox>().Single(c => AutomationProperties.GetName(c) == field && c.IsEffectivelyVisible);
+        // Object fields (13.7): a ReferenceField per reference, its value in Shown.
+        Control Picker(string field) => panel.GetVisualDescendants().OfType<Control>().Single(c => c.GetType().Name == "ReferenceField" && AutomationProperties.GetName(c) == field && c.IsEffectivelyVisible);
+        object? Member(object target, string name) => target.GetType().GetProperty(name, BindingFlags.NonPublic | BindingFlags.Instance)!.GetValue(target);
         var outside = Picker("Outside");
         var copiedPicker = Picker("Copied");
-        Require(outside.SelectedItem?.ToString() == Missing, "Outside shows " + outside.SelectedItem);
-        Require(copiedPicker.SelectedItem?.ToString() == "Chest 1", "Copied shows " + copiedPicker.SelectedItem);
-        TextBlock Label(ComboBox c) => ((Panel)c.Parent!).Children.OfType<TextBlock>().First();
+        Require(Member(outside, "Shown")?.ToString() == Missing, "Outside shows " + Member(outside, "Shown"));
+        Require(Member(copiedPicker, "Shown")?.ToString() == "Chest 1", "Copied shows " + Member(copiedPicker, "Shown"));
+        TextBlock Label(Control c) => ((Panel)c.Parent!).Children.OfType<TextBlock>().First();
         var (a, b) = (In(outside, main), In(copiedPicker, main));
         var (la, lb) = (In(Label(outside), main), In(Label(copiedPicker), main));
         Require(a.X == b.X && a.Width == b.Width && la.X == lb.X && Math.Abs((a.Center.Y - la.Center.Y) - (b.Center.Y - lb.Center.Y)) < .5,
             $"missing row {a}/{la} vs reference row {b}/{lb}");
-        var sprite = panel.GetVisualDescendants().OfType<Control>().Where(c => c.IsEffectivelyVisible && c is ComboBox or NumericUpDown && c != outside && c != copiedPicker)
+        var sprite = panel.GetVisualDescendants().OfType<Control>().Where(c => c.IsEffectivelyVisible && (c is ComboBox or NumericUpDown || c.GetType().Name == "ReferenceField") && c != outside && c != copiedPicker)
             .Select(c => Math.Round(In(c, main).X, 1)).Distinct().ToArray();
         Log($"Inspector 1280px: Outside '{Missing}' at x={a.X:F1} w={a.Width:F1}, label x={la.X:F1}; Copied 'Chest 1' at x={b.X:F1} w={b.Width:F1}, label x={lb.X:F1}; other value columns x={string.Join(',', sprite)}");
         using (var bitmap = new RenderTargetBitmap(new PixelSize((int)panel.Bounds.Width, (int)panel.Bounds.Height)))
@@ -222,8 +204,13 @@ public static class StartupHook
         Call(main, "Select", pastedRig);
         await Delay(500);
         var repoint = Picker("Outside");
-        repoint.SelectedItem = repoint.Items.First(i => i?.ToString() == "North Wall");
-        await Wait(() => Field(second.Objects.Single(o => o.Name == "Rig"), "Outside") == wall.Id, "repointing Outside");
+        // The picker (13.7): search, then choose the one match.
+        ((Avalonia.Controls.Primitives.FlyoutBase)Member(repoint, "Picker")!).ShowAt(repoint);
+        await Delay(200);
+        ((TextBox)Member(repoint, "Search")!).Text = "North Wall";
+        var match = ((ListBox)Member(repoint, "List")!).Items.Cast<object>().Single(i => i.ToString() == "North Wall");
+        repoint.GetType().GetMethod("Choose", BindingFlags.NonPublic | BindingFlags.Instance)!.Invoke(repoint, [match]);
+        await Until(() => Field(second.Objects.Single(o => o.Name == "Rig"), "Outside") == wall.Id, "repointing Outside");
         Require(await (Task<bool>)Call(main, "Save")!, "SecondRoom save cancelled");
         reopened = SceneDocument.OpenForEditing(Path.Combine(root, "Scenes", "SecondRoom.scene"));
         Require(Field(reopened.Objects.Single(o => o.Name == "Rig"), "Outside") == wall.Id, "saved repointed reference");
@@ -236,7 +223,7 @@ public static class StartupHook
         File.Delete(trace);
         var play = main.FindControl<Button>("PlayButton")!;
         play.RaiseEvent(new RoutedEventArgs(Button.ClickEvent, play));
-        await Wait(() => File.Exists(trace), "Scene Play trace");
+        await Until(() => File.Exists(trace), "Scene Play trace");
         var row = File.ReadAllText(trace).Trim();
         play.RaiseEvent(new RoutedEventArgs(Button.ClickEvent, play));
         Require(row == expected, "Scene Play trace " + row);

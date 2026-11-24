@@ -6,6 +6,8 @@ namespace Engine.Core;
 [YamlObject]
 public sealed partial record LocalizationSettings
 {
+    public LocalizationSettings() { }
+    [YamlConstructor] public LocalizationSettings(string fallbackLocale = "en") => FallbackLocale = fallbackLocale;
     public Guid? Table { get; init; }
     public string FallbackLocale { get; init; } = "en";
     public Guid? DefaultFont { get; init; }

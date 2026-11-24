@@ -1,0 +1,38 @@
+PASS scene-play.trace: three snapshots of the three layers
+PASS scene-play.trace: water (3 frames, 4 FPS) and torch (4 frames, 8 FPS) show the oracle frame on all 50 ticks
+PASS scene-play.trace tick 1 grass: 1400 cells match the oracle
+PASS scene-play.trace tick 1 hedge: 1400 cells match the oracle
+PASS scene-play.trace tick 1 water: 1400 cells match the oracle
+PASS scene-play.trace tick 20 grass: 1400 cells match the oracle
+PASS scene-play.trace tick 20 hedge: 1400 cells match the oracle
+PASS scene-play.trace tick 20 water: 1400 cells match the oracle
+PASS scene-play.trace tick 40 grass: 1400 cells match the oracle
+PASS scene-play.trace tick 40 hedge: 1400 cells match the oracle
+PASS scene-play.trace tick 40 water: 1400 cells match the oracle
+PASS release.trace: three snapshots of the three layers
+PASS release.trace: water (3 frames, 4 FPS) and torch (4 frames, 8 FPS) show the oracle frame on all 50 ticks
+PASS release.trace tick 1 grass: 1400 cells match the oracle
+PASS release.trace tick 1 hedge: 1400 cells match the oracle
+PASS release.trace tick 1 water: 1400 cells match the oracle
+PASS release.trace tick 20 grass: 1400 cells match the oracle
+PASS release.trace tick 20 hedge: 1400 cells match the oracle
+PASS release.trace tick 20 water: 1400 cells match the oracle
+PASS release.trace tick 40 grass: 1400 cells match the oracle
+PASS release.trace tick 40 hedge: 1400 cells match the oracle
+PASS release.trace tick 40 water: 1400 cells match the oracle
+PASS native-aot.trace: three snapshots of the three layers
+PASS native-aot.trace: water (3 frames, 4 FPS) and torch (4 frames, 8 FPS) show the oracle frame on all 50 ticks
+PASS native-aot.trace tick 1 grass: 1400 cells match the oracle
+PASS native-aot.trace tick 1 hedge: 1400 cells match the oracle
+PASS native-aot.trace tick 1 water: 1400 cells match the oracle
+PASS native-aot.trace tick 20 grass: 1400 cells match the oracle
+PASS native-aot.trace tick 20 hedge: 1400 cells match the oracle
+PASS native-aot.trace tick 20 water: 1400 cells match the oracle
+PASS native-aot.trace tick 40 grass: 1400 cells match the oracle
+PASS native-aot.trace tick 40 hedge: 1400 cells match the oracle
+PASS native-aot.trace tick 40 water: 1400 cells match the oracle
+PASS Scene Play, Release and Native AOT resolve the same art for every cell and animation frame (59 lines), before and after seam edits
+PASS Release and Native AOT frame 5 PNGs are identical
+PASS Release and Native AOT frame 25 PNGs are identical
+PASS Release and Native AOT frame 45 PNGs are identical
+hedge seed 7 -> 8 -> 7 and water FPS 4 -> 6 -> 4 saved and reopened (8 neighbours, 4 random tiles, 3 frames)

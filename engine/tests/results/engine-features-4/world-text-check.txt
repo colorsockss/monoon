@@ -1,0 +1,12 @@
+PASS Text 2D: Text 2D round-trips through YAML and marks the scene as version 40
+PASS Text 2D: scenes without Text 2D keep their older schema version
+PASS Text 2D: Save rejects size 0, colour #FFFFFF, align 1
+PASS Text 2D: Save rejects size 16, colour gold, align 1
+PASS Text 2D: Save rejects size 16, colour #FFFFFF, align 7
+PASS Text 2D: a shipped Text 2D keeps SDL_ttf in the build (Text feature)
+PASS Text 2D: a centred label follows the camera's zoom and position (390, 211, size 20)
+PASS Text 2D: sorting layer 1 draws the label over a layer-0 sprite at the same place
+PASS Text 2D: rich text tags draw bold twice and colour runs; a missing translation key falls back to Text
+PASS Text 2D: SetWorldText accepts Text 2D objects only
+PASS Text 2D: script text replaces the label on the next frame
+PASS Text 2D: 100 rising damage numbers: step + draw + present (SDL software renderer, SDL_ttf labels) median 278 µs, p95 303 µs; draw 0 B, step 0 B over 600 frames; 100 draw submissions per frame

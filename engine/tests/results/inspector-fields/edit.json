@@ -1,0 +1,37 @@
+{
+  "saved": {
+    "Seed": "9000000000",
+    "SlotMask": "4294967295",
+    "CrateTint": "\u0022#10203040\u0022",
+    "LabelColor": "\u0022#ABCDEF\u0022",
+    "Tags": "\u0022Gem, Key\u0022",
+    "StackSizes": "[5,7,1,9]",
+    "Weights": "[0.5,0.3]",
+    "Names": "[\u0022moss\u0022,\u0022gem\u0022,\u0022key\u0022]",
+    "Unlocked": "[true,true,true]",
+    "Restock": "[2,4,6]",
+    "Prices": "{\u0022herb\u0022:3,\u0022key\u0022:25,\u0022an intentionally long supply crate dictionary key for trimming\u0022:99}",
+    "FirstWave": "{\u0022Count\u0022:8,\u0022Delay\u0022:1.5,\u0022Rarity\u0022:\u0022Epic\u0022,\u0022Label\u0022:\u0022Evening\u0022}"
+  },
+  "alignment": {
+    "1280": {
+      "rows": 34,
+      "valueX": 1130,
+      "buttonRight": 1272,
+      "keyWidth": 55
+    },
+    "1600": {
+      "rows": 34,
+      "valueX": 1450,
+      "buttonRight": 1592,
+      "keyWidth": 55
+    },
+    "1920": {
+      "rows": 34,
+      "valueX": 1770,
+      "buttonRight": 1912,
+      "keyWidth": 55
+    }
+  },
+  "scene": "/private/tmp/claude-501/-Users-paare-codex-project-brutal-engine/d9b5815d-691b-46f7-b17a-6ed9a224a15b/scratchpad/fields-13-8/gui/InventoryLab/Scenes/Inventory.scene"
+}

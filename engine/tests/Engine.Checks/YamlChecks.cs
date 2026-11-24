@@ -4,6 +4,7 @@ using Engine.Core;
 
 internal static class YamlChecks
 {
+    [Check(7400)] static void Registered(CheckRun c) => Run(c.Scratch);
     internal static void Run(string scratch)
     {
         CheckAssetNames(Path.Combine(scratch, "RenameTest"));

@@ -10,11 +10,29 @@ public sealed class ProjectAssets
 {
     internal static bool ValidName(string? name) => !string.IsNullOrWhiteSpace(name) && name==name.Trim() &&
         !name.StartsWith('.') && !name.EndsWith('.') && !name.Any(c=>char.IsControl(c)||"<>:\"/\\|?*".Contains(c)) &&
-        !System.Text.RegularExpressions.Regex.IsMatch(name,@"^(CON|PRN|AUX|NUL|COM[1-9]|LPT[1-9])(\.|$)",System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+        !WindowsDeviceName(name);
+
+    // CON, PRN, AUX, NUL, COM1-9 and LPT1-9 (ASCII, any case), alone or before the first '.': "con", "COM1.txt".
+    // Hand-written instead of a Regex so the player does not link System.Text.RegularExpressions.
+    internal static bool WindowsDeviceName(string name)
+    {
+        var stem = name.AsSpan(0, name.IndexOf('.') is >= 0 and var dot ? dot : name.Length);
+        return stem.Length == 3 && (System.Text.Ascii.EqualsIgnoreCase(stem, "CON") || System.Text.Ascii.EqualsIgnoreCase(stem, "PRN")
+                || System.Text.Ascii.EqualsIgnoreCase(stem, "AUX") || System.Text.Ascii.EqualsIgnoreCase(stem, "NUL"))
+            || stem.Length == 4 && stem[3] is >= '1' and <= '9'
+                && (System.Text.Ascii.EqualsIgnoreCase(stem[..3], "COM") || System.Text.Ascii.EqualsIgnoreCase(stem[..3], "LPT"));
+    }
 
     public const string Manifest = ".monoon-assets";
+
+    // Native AOT players only run exported games, so the kit sets this switch and trimming drops the loose-project
+    // paths (prefab refresh, tile baking, asset scanning) that re-encode scene objects with VYaml.
+    private const string ExportedGameSwitch = "MoNoon.ExportedGameOnly";
+    [System.Diagnostics.CodeAnalysis.FeatureSwitchDefinition(ExportedGameSwitch)]
+    internal static bool ExportedGameOnly => AppContext.TryGetSwitch(ExportedGameSwitch, out bool on) && on;
+    internal static bool Exported(string root) => ExportedGameOnly || File.Exists(Path.Combine(root, ".monoon-player"));
     public const string Scene = ".scene", Prefab = ".prefab", Clip = ".clip", Tileset = ".tileset", Data = ".data";
-    public static bool IsAsset(string path) => Path.GetExtension(path) is Scene or Prefab or Clip or Tileset or Data or CutsceneSequence.Extension or SkeletonRig.Extension or ShaderClip.Extension or GameTable.Extension or SpriteAtlas.Extension or AnimationController.Extension || GameLocalization.IsFont(path) || SpriteAssets.IsPng(path) || AudioFile.IsSupported(path);
+    public static bool IsAsset(string path) => Path.GetExtension(path) is Scene or Prefab or Clip or Tileset or Data or CutsceneSequence.Extension or SkeletonRig.Extension or ShaderClip.Extension or ParticleEffect.Extension or GameTable.Extension or SpriteAtlas.Extension or AnimationController.Extension || GameLocalization.IsFont(path) || SpriteAssets.IsPng(path) || AudioFile.IsSupported(path);
     internal static bool IsDocument(string path) => Path.GetExtension(path) is Scene or Prefab or Clip;
     private readonly Dictionary<Guid, CutsceneSequence> sequences = [];
     internal CutsceneSequence LoadSequence(string root, Guid id)
@@ -39,6 +57,15 @@ public sealed class ProjectAssets
         if (PathFor(id) is not {} path || !path.EndsWith(ShaderClip.Extension))
             throw new InvalidDataException($"Missing shader {id}.");
         return shaders[id]=ShaderClip.Load(Path.Combine(root,path), this, root);
+    }
+    private readonly Dictionary<Guid, ParticleEffect> particles = [];
+    internal ParticleEffect LoadParticles(string root, Guid id) => particles.TryGetValue(id,out var cached) ? cached : ReloadParticles(root,id);
+    // Reads the file again (editor Scene Play reload); later loads share the new effect.
+    internal ParticleEffect ReloadParticles(string root, Guid id)
+    {
+        if (PathFor(id) is not {} path || !path.EndsWith(ParticleEffect.Extension))
+            throw new InvalidDataException($"Missing particle effect {id}.");
+        return particles[id]=ParticleEffect.Load(Path.Combine(root,path)).WithTexture(root,this);
     }
     private SpriteLibrary? spriteLibrary;
     public SpriteLibrary Sprites(string root) => spriteLibrary ??= new(root,this);
@@ -67,7 +94,7 @@ public sealed class ProjectAssets
         {
             var manifest = Path.Combine(root, Manifest);
             var previous = File.Exists(manifest) ? ProjectYaml.Read<AssetEntry[]>(manifest) : [];
-            if (File.Exists(Path.Combine(root, ".monoon-player"))) return new(previous);
+            if (Exported(root)) return new(previous);
             var files = Enumerate(root, root).Order(StringComparer.Ordinal).ToArray();
             var present = files.ToHashSet(StringComparer.Ordinal);
             var missing = previous.Where(e => !present.Contains(e.Path)).ToList();

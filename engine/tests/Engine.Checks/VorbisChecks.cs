@@ -2,6 +2,7 @@ using Engine.Core;
 
 internal static class VorbisChecks
 {
+    [Check(4400)] static void Registered(CheckRun c) => Run(c.Repository, c.Scratch);
     internal static void CheckLongTrack(string file)
     {
         var info = AudioFile.Read(file);

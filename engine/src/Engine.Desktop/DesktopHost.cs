@@ -21,7 +21,11 @@ public static class DesktopHost
             using var window = Sdl.Video.CreateWindow(title, preferences.WindowSize.Width, preferences.WindowSize.Height,
                 SdlWindowFlags.Resizable | SdlWindowFlags.HighPixelDensity);
             using var renderer = Sdl.Render.CreateRenderer(window, null!);
-            renderer.SetRenderLogicalPresentation(size.Width, size.Height, SdlRendererLogicalPresentation.Letterbox);
+            bool integer = ((game as GameSession)?.Current ?? game as SceneGame)?.IntegerScale == true;
+            renderer.SetRenderLogicalPresentation(size.Width, size.Height,
+                integer ? SdlRendererLogicalPresentation.IntegerScale : SdlRendererLogicalPresentation.Letterbox);
+            // Pixel art samples PNG sprites without filtering. SdlText keeps its labels linear.
+            if (integer && !renderer.SetDefaultTextureScaleMode(SdlScaleMode.Nearest)) throw new InvalidOperationException(Sdl.PInvoke.GetError());
             var clip = new SdlRect { w = size.Width, h = size.Height };
             renderer.SetRenderClipRect(&clip);
             var display = new SdlDesktopDisplay(window, renderer, state, preferences);

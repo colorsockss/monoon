@@ -1,0 +1,30 @@
+run 1 base
+alive=1024	us/frame=87.4	ns/particle=85.3	B/frame=32768.0
+alive=10240	us/frame=878.6	ns/particle=85.8	B/frame=327680.0
+run 1 p0
+alive=1024	us/frame=17.7	ns/particle=17.3	B/frame=0.0
+alive=10240	us/frame=179.6	ns/particle=17.5	B/frame=0.0
+run 2 base
+alive=1024	us/frame=87.4	ns/particle=85.3	B/frame=32768.0
+alive=10240	us/frame=895.4	ns/particle=87.4	B/frame=327680.0
+run 2 p0
+alive=1024	us/frame=17.8	ns/particle=17.4	B/frame=0.0
+alive=10240	us/frame=179.2	ns/particle=17.5	B/frame=0.0
+run 3 base
+alive=1024	us/frame=87.0	ns/particle=85.0	B/frame=32768.0
+alive=10240	us/frame=873.0	ns/particle=85.3	B/frame=327680.0
+run 3 p0
+alive=1024	us/frame=17.8	ns/particle=17.4	B/frame=0.0
+alive=10240	us/frame=178.0	ns/particle=17.4	B/frame=0.0
+run 4 base
+alive=1024	us/frame=86.8	ns/particle=84.7	B/frame=32768.0
+alive=10240	us/frame=868.2	ns/particle=84.8	B/frame=327680.0
+run 4 p0
+alive=1024	us/frame=17.7	ns/particle=17.3	B/frame=0.0
+alive=10240	us/frame=178.7	ns/particle=17.5	B/frame=0.0
+run 5 base
+alive=1024	us/frame=83.8	ns/particle=81.9	B/frame=32768.0
+alive=10240	us/frame=846.8	ns/particle=82.7	B/frame=327680.0
+run 5 p0
+alive=1024	us/frame=17.4	ns/particle=17.0	B/frame=0.0
+alive=10240	us/frame=177.6	ns/particle=17.3	B/frame=0.0

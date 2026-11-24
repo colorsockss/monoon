@@ -22,6 +22,7 @@ public partial class MainWindow
     private void ShowSelection(IReadOnlyList<SceneObject> selection)
     {
         var obj=selection.LastOrDefault();
+        inspectedAsset=null; // an object selection takes the Inspector back from a Project asset (13.16)
         Viewport.Selection=selection;
         foreach(var (owner,row) in treeItems)row.Classes.Set("groupSelected",selection.Count>1 && selection.Contains(owner));
         refreshing = true;

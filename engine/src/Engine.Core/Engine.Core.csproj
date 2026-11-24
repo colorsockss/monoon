@@ -1,5 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
+    <!-- FeatureSwitchChecks compares Engine.Core/PlayerYamlRegistration.cs with VYaml's generated registration (roadmap 15.12). -->
+    <EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
     <AssemblyVersion>1.13.0.0</AssemblyVersion>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
@@ -18,5 +20,7 @@
     <!-- Physics runs on BRUTAL's Box2D binding (native box2d 3.1 for osx-arm64, win-x64, linux-x64). -->
     <PackageReference Include="Ahwoo.BRUTAL.Box2D" Version="2026.10.2" GeneratePathProperty="true" />
     <None Include="$(PkgAhwoo_BRUTAL_Box2D)/LICENSES/**/*" Link="Licenses/BRUTAL/%(RecursiveDir)%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
+    <!-- Particle start values and emission shapes: fixed draws per call, fed by the emitter's SeededRandom (Particles2D.cs). -->
+    <PackageReference Include="Ahwoo.BRUTAL.Maths" Version="2026.10.3" />
   </ItemGroup>
 </Project>

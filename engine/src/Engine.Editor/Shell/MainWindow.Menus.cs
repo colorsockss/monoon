@@ -108,6 +108,7 @@ public partial class MainWindow
             if (redo) box.Redo(); else box.Undo();
             return;
         }
+        CommitEdit();
         Viewport.Focus();
         if (redo ? history.CanRedo : history.CanUndo)
         {
@@ -151,8 +152,8 @@ public partial class MainWindow
         bool editingName = ObjectName.IsFocused && Selected is { } obj &&
             !string.IsNullOrWhiteSpace(ObjectName.Text) && ObjectName.Text.Trim() != obj.Name;
         bool clip = FocusedClip != null;
-        undoItem.IsEnabled = edit && (clip || history.CanUndo || editingName);
-        redoItem.IsEnabled = edit && (clip || history.CanRedo && !editingName);
+        undoItem.IsEnabled = edit && (clip || history.CanUndo || pendingEdit != null || editingName);
+        redoItem.IsEnabled = edit && (clip || history.CanRedo && !editingName && pendingEdit == null);
         cutItem.IsEnabled = copyItem.IsEnabled = pasteItem.IsEnabled = edit;
         inputItem.IsEnabled = edit;
         newProjectItem.IsEnabled = openProjectItem.IsEnabled = saveSceneItem.IsEnabled = edit;

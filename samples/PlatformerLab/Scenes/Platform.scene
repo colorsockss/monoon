@@ -1,4 +1,4 @@
-schemaVersion: 21
+schemaVersion: 31
 objects:
 - id: 2c1b062b-ee75-5c5c-bdef-fe19469fb5eb
   name: Runner
@@ -21,13 +21,9 @@ objects:
   - type: rigidbody2D
     freezeRotation: true
   - type: particleEmitter2D
+    particles: 1cf31b57-f933-e958-b00f-7ff94fcfaae8
     trigger: Landing
-    count: 22
-    lifetime: 0.62
-    speed: 104
-    gravity: 174
-    size: 5
-    color: "#E6C79B"
+    offsetY: 13
   - type: characterMotor2D
   - type: script
     script: "Runner"

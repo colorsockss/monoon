@@ -9,8 +9,9 @@
   </Target>
 
   <!-- The SDK resolves the complete self-contained runtime for this RID. An old
-       publish directory may still contain files from previous dependencies. -->
-  <Target Name="WritePlayerFileList" AfterTargets="Publish" Condition="'$(PublishAot)' != 'true'">
+       publish directory may still contain files from previous dependencies.
+       Only the shared Release template is copied by this list; a per-game publish ships its own output. -->
+  <Target Name="WritePlayerFileList" AfterTargets="Publish" Condition="'$(PublishAot)' != 'true' and '$(MoNoonGameReferences)' == ''">
     <WriteLinesToFile File="$(PublishDir)/MoNoonPlayer.files"
         Lines="@(ResolvedFileToPublish->'%(RelativePath)')" Overwrite="true" />
   </Target>

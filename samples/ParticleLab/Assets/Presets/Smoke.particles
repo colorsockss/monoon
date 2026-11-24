@@ -1,0 +1,15 @@
+# Soft grey smoke that billows up, grows and fades in and out. Prewarm starts it already rising.
+duration: 2
+prewarm: true
+rate: 10
+maxParticles: 64
+shape: Circle
+radius: 8
+spread: 25
+speed: {min: 12, max: 24}
+lifetime: {min: 2, max: 3}
+size: {min: 10, max: 16}
+rotation: {min: 0, max: 360}
+color: {min: "#6E6E6E", max: "#9A9A9A"}
+sizeOverLifetime: {smooth: true, keys: [{time: 0, value: 0.6}, {time: 1, value: 2.5}]}
+colorOverLifetime: {alphas: [{time: 0, alpha: 0}, {time: 0.2, alpha: 0.7}, {time: 1, alpha: 0}]}

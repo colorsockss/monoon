@@ -54,8 +54,8 @@ public sealed class SpiralBarrage : GameBehaviour
             {
                 bool clockwise = (i & 1) == 0;
                 float angle = i * (MathF.Tau / Arms) + (clockwise ? 3 : -2) * phase;
-                var (sin, cos) = MathF.SinCos(angle);
-                var direction = new Vector2(cos, sin);
+                // Separate Sin/Cos: MathF.SinCos gives different last bits under JIT and Native AOT.
+                var direction = new Vector2(MathF.Cos(angle), MathF.Sin(angle));
                 pool.TrySpawn(tick.Position + direction * 13, direction * (clockwise ? 152 : 192), clockwise ? Mint : Coral);
             }
         }

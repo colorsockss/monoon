@@ -102,6 +102,8 @@ public partial class MainWindow
         foreach (var decision in buildResult.ContentDecisions) WriteLog(new(GameLogLevel.Info, decision, null, 0));
         foreach (var line in packageLog) WriteLog(new(GameLogLevel.Info, line, null, 0));
         WriteLog(new(GameLogLevel.Info, $"Content report: {buildResult.ContentReport}", null, 0));
+        foreach (var line in buildResult.AssetSummary)
+            WriteLog(new(line.StartsWith("Warning: ", StringComparison.Ordinal) ? GameLogLevel.Warning : GameLogLevel.Info, line, null, 0));
         settings.Save(root); Scene.Settings = settings; MarkDirty();
         Status.Text = $"Built {buildResult.Product}";
     }

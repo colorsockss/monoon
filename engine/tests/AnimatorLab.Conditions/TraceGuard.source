@@ -1,0 +1,17 @@
+using System;
+using System.IO;
+using Engine.Core;
+
+// Test-only observer added to the Guard in a disposable AnimatorLab. Runs after GuardDemo on the same object, so each line
+// is the animator state and frame before this tick's animator step.
+public sealed class TraceGuard : GameBehaviour
+{
+    private int tick;
+
+    public override void FixedUpdate(ScriptTick step)
+    {
+        if (Environment.GetEnvironmentVariable("MONOON_GUARD_TRACE") is not { Length: > 0 } path) return;
+        var animator = step.Objects.Animator(step.ObjectId)!;
+        File.AppendAllText(path, $"{tick++}|{animator.State}|{animator.Frame}\n");
+    }
+}

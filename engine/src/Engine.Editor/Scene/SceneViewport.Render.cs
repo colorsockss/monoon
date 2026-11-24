@@ -34,6 +34,12 @@ public sealed partial class SceneViewport
         if (spritePreview)
         {
             canvas.Clear(SceneGame.Background);
+            if (Particles is { } isolated)
+            {
+                float w = (float)Bounds.Width, h = (float)Bounds.Height;
+                isolated.DrawAll(canvas, new RectangleF(-w / 2, -h / 2, w, h), Matrix3x2.CreateTranslation(w / 2, h / 2));
+                return;
+            }
             if (previewFrame is not { Image: {} path } frame) return;
             var size = frame.Canvas is {} trim ? new System.Drawing.Size(trim.Width,trim.Height) :
                 frame.Source is {} cell ? new System.Drawing.Size(cell.Width,cell.Height) :
@@ -66,17 +72,27 @@ public sealed partial class SceneViewport
                 canvas.FillRectangle(new RectangleF((float)area.Left, (float)(top + i * step), (float)area.Width, unit), GridColor);
         }
         var visible = new RectangleF((float)area.X, (float)area.Y, (float)area.Width, (float)area.Height);
-        foreach (var (obj,map,_,_) in EditItems())
+        var global = Scene.Objects.FirstOrDefault(o => !IsHidden(o) && o.GetComponent<GlobalLight2DComponent>() != null)?.GetComponent<GlobalLight2DComponent>();
+        bool unlit = global == null;
+        foreach (var (obj,map,layer,_) in EditItems())
         {
+            if (!unlit && layer >= global!.UnlitLayer) { DrawLighting(canvas,global,visible); unlit = true; }
             if (map != null)
             {
                 if (Palette(map.Tileset) is { } palette) map.Draw(canvas,palette,obj.WorldMatrix,visible,System.Numerics.Matrix3x2.Identity);
                 continue;
             }
             DrawSceneSprite(canvas,obj,visible);
+            Particles?.Draw(canvas,obj,visible);
             if (obj.GetComponent<Line2DComponent>() is {} line) new LineRenderer(line).Draw(canvas,obj.WorldMatrix,System.Numerics.Matrix3x2.Identity);
+            if (obj.GetComponent<Text2DComponent>() is {} text)
+            {
+                var label = new WorldTextLabel(text);
+                label.Draw(canvas,label.Text(PreviewUi),new(obj.Width,obj.Height),obj.WorldMatrix,System.Numerics.Matrix3x2.Identity,visible);
+            }
         }
-        foreach (var obj in Scene.Objects)
+        if (!unlit) DrawLighting(canvas,global!,visible);
+        if (global == null) foreach (var obj in Scene.Objects)
             if (obj.GetComponent<PointLight2DComponent>() is {} light && !IsHidden(obj))
                 light.Draw(canvas,ShaderClip.LightFalloff,Vector2.Transform(new(obj.Width*.5f,obj.Height*.5f),obj.WorldMatrix),visible,System.Numerics.Matrix3x2.Identity,0);
         foreach (var camera in Scene.Cameras.Where(camera => !IsHidden(camera)))
@@ -98,6 +114,33 @@ public sealed partial class SceneViewport
             PreviewUi.Draw(canvas, uiFrame.X, uiFrame.Y, 1 / zoom);
         if (Preview != null) Outline(canvas, uiFrame, unit, FrameColor);
         DrawSelection(canvas,unit);
+    }
+
+    // The player's lighting path (roadmap 16.7) at effect time 0, with shadows from the scene's colliders and solid tiles.
+    private readonly LightShadows editShadows = new();
+    private void DrawLighting(ISceneCanvas canvas, GlobalLight2DComponent global, RectangleF visible)
+    {
+        canvas.BeginLighting(visible, global.Ambient());
+        foreach (var obj in Scene.Objects)
+        {
+            if (obj.GetComponent<PointLight2DComponent>() is not {} light || IsHidden(obj)) continue;
+            var center = Vector2.Transform(new(obj.Width*.5f,obj.Height*.5f),obj.WorldMatrix);
+            if (!light.Shade(center,visible,0,out var lit,out var tint)) continue;
+            editShadows.Clear();
+            if (light.Shadows)
+                foreach (var other in Scene.Objects)
+                {
+                    if (other == obj || IsHidden(other)) continue;
+                    if (other.GetComponent<Collider2DComponent>() is { IsTrigger: false }) editShadows.Add(CollisionGeometry.ForObject(other),center,light.Radius);
+                    if (other.GetComponent<Tilemap2DComponent>() is not {} map || Palette(map.Tileset) is not {} palette) continue;
+                    foreach (var (cell,id) in map.InView(Vector2.Zero,Affine2D.Bounds(lit,Affine2D.Inverse(other.WorldMatrix))))
+                        if (palette.Tiles.TryGetValue(id,out var tile) && TileCollision.WorldShape(tile,map.Bounds(Vector2.Zero,cell),map.Layout,other.WorldMatrix) is {} shape)
+                            editShadows.Add(shape,center,light.Radius);
+                }
+            editShadows.Finish(center,light.Radius);
+            canvas.DrawLight(ShaderClip.LightFalloff,lit,Matrix3x2.Identity,tint,editShadows.Quads,Matrix3x2.Identity);
+        }
+        canvas.EndLighting();
     }
 
     private static void Outline(ICanvas2D canvas, RectangleF box, float line, GameColor color)
@@ -139,8 +182,7 @@ public sealed partial class SceneViewport
         public long Submissions;
         public void DrawShader(ShaderClip shader,int frame,RectangleF r,System.Numerics.Matrix3x2 m,GameColor tint,bool additive)
         {
-            var bitmap=shaders.Get(shader,GameColor.FromArgb(255,tint),additive);
-            var cell=shader.Region(frame);
+            var bitmap=shaders.Get(shader,GameColor.FromArgb(255,tint),additive,frame,out var cell);
             using var transform=context.PushTransform(new Matrix(m.M11,m.M12,m.M21,m.M22,m.M31,m.M32));
             using var opacity=context.PushOpacity(tint.A/255.0);
             using var blend=context.PushRenderOptions(new RenderOptions {BitmapBlendingMode=additive?BitmapBlendingMode.Plus:BitmapBlendingMode.SourceOver,
@@ -148,6 +190,7 @@ public sealed partial class SceneViewport
             context.DrawImage(bitmap,new Rect(cell.X,cell.Y,cell.Width,cell.Height),new Rect(r.X,r.Y,r.Width,r.Height));
             Submissions++;
         }
+        public System.Drawing.Size SpriteSize(string path) => images.TryGet(path, out var image) ? new(image.PixelSize.Width, image.PixelSize.Height) : default;
         public IDisposable PushClip(RectangleF r) => context.PushClip(new Rect(r.X,r.Y,r.Width,r.Height));
         public void BeginColorAdjust() { }
         // Same arithmetic as the SDL layer (colour × multiply + lift) with blended fills over the game area.

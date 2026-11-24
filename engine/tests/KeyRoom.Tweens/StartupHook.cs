@@ -1,0 +1,28 @@
+using System.Reflection;
+using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Controls.ApplicationLifetimes;
+using Avalonia.Interactivity;
+using Avalonia.Threading;
+using Engine.Core;
+
+// Loaded into the packaged editor with DOTNET_STARTUP_HOOKS. Starts Scene Play, replays the tween recording and stops.
+public static class StartupHook
+{
+    public static void Initialize() => Start(Path.Combine(Environment.GetEnvironmentVariable("MONOON_TWEEN_EDITOR")!, "error.txt"), async life =>
+    {
+        string output = Environment.GetEnvironmentVariable("MONOON_TWEEN_EDITOR")!;
+        var main = life.MainWindow!;
+        var viewport = main.FindControl<Control>("Viewport")!;
+        var scene = viewport.GetType().GetProperty("Scene")!;
+        await Until(() => ((SceneDocument)scene.GetValue(viewport)!).Objects.Any(o => o.Name == "Tween trace"), "Tween trace");
+        var play = main.FindControl<Button>("PlayButton")!;
+        var project = GameSettings.Load(Environment.GetEnvironmentVariable("MONOON_QA_PROJECT")!);
+        play.RaiseEvent(new RoutedEventArgs(Button.ClickEvent, play));
+        var game = (GameSession)viewport.GetType().GetField("game", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(viewport)!;
+        game.LoadFailed += message => throw new InvalidDataException(message);
+        InputReplay.Load(Path.Combine(output, "tweens.inputreplay")).Play(game, project.ProjectId!.Value);
+        play.RaiseEvent(new RoutedEventArgs(Button.ClickEvent, play));
+        await Delay(200);
+    });
+}

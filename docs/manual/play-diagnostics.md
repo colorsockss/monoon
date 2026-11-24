@@ -15,7 +15,7 @@ KeyRoom에서는 **E**로 상자를 열고 Hierarchy 맨 아래에 생긴 **Coin
 3. 값을 유지하려면 Play 중 MoveSpeed를 바꾼 뒤 오른쪽 체크를 켜고 Inspector 탭 아래 작업 줄의 **Apply selected**를 누른다. 직접 바꾼 필드는 처음에 체크된다. 함께 바꾼 **Local X**의 체크를 끄면 속도만 적용된다.
 4. **Stop** 후 macOS에서 **Cmd+Z**, Windows·Linux에서 **Ctrl+Z**를 한 번 누르면 그 적용 전체가 되돌아간다. 복원한 값을 파일에도 남기려면 씬을 저장한다.
 
-실시간 편집은 월드 오브젝트의 로컬 위치·회전·스케일과 스크립트가 Inspector에 공개한 `int`·`float`·`double` 필드를 지원한다. **Apply selected**는 현재 선택한 오브젝트에서 직접 입력한 값만 원본 씬으로 옮긴다. Play 중 스크립트나 물리로 달라진 위치는 자동 적용 대상에 들어가지 않는다.
+실시간 편집은 월드 오브젝트의 로컬 위치·회전·스케일, 오브젝트 **Active**, Sprite Renderer **Tint**, 충돌체 켜짐(**Collider**)과, 스크립트가 Inspector에 공개한 `int`·`float`·`double`·`bool`·enum(플래그 enum 제외)·`Vector2`·`string`·색(`Color`, `[ColorUsage]` 문자열) 필드를 지원한다. 체크·선택·색은 바로, 글자와 숫자는 Enter나 포커스 이동 때 실행 중인 게임에 들어간다. 배열·목록·사전·구조체 필드는 Play 중 읽기 전용이다. **Apply selected**는 현재 선택한 오브젝트에서 직접 입력하고 체크를 켠 값만, **Apply all**은 이번 Play에서 바꾼 모든 오브젝트의 모든 값을 체크와 관계없이 원본 씬으로 옮긴다. 둘 다 Undo 한 번이다. 적용하지 않은 값은 **Stop**에서 버린다. Play 중 스크립트나 물리로 달라진 위치는 자동 적용 대상에 들어가지 않는다.
 
 저장된 씬에 미저장 편집이 없으면 선택 적용과 함께 파일도 저장한다. 새 씬이거나 기존 편집이 남아 있으면 Stop 후 **Save Scene**으로 저장한다. 런타임에 생성된 프리팹과 추가 로드한 씬의 오브젝트는 Play 안에서만 조정할 수 있다. 로컬 Transform을 원본에 적용하려면 원본과 현재 부모가 같아야 한다.
 

@@ -38,20 +38,28 @@
 
   <!-- Brutal.Sdl.Ttf loads the unversioned libSDL3_ttf; Ahwoo.BRUTAL.Sdl.Ttf.Native also carries two identical
        versioned copies (2 MB each on macOS and Linux) that nothing links to. Windows ships BRUTAL's SDL3_ttf.dll as is
-       (it imports VCRUNTIME140 and VCRUNTIME140_1; see engine/tests/results/text-ttf). -->
+       (it imports VCRUNTIME140 and VCRUNTIME140_1; see engine/tests/results/text-ttf).
+       Brutal.Box2D likewise loads the unversioned libbox2d, so its two versioned copies go too. Linux SDL3 keeps
+       libSDL3.so (P/Invoke name) and libSDL3.so.0 (soname that SDL_ttf and SDL_mixer link to) but not libSDL3.so.0.4.12. -->
   <PropertyGroup>
     <_VersionedSdlTtf>^libSDL3_ttf\.(\d[\d.]*\.dylib|so\.\d[\d.]*)$</_VersionedSdlTtf>
+    <_VersionedBox2D>^libbox2d\.(\d[\d.]*\.dylib|so\.\d[\d.]*)$</_VersionedBox2D>
+    <_VersionedSdl>^libSDL3\.so\.\d+\.\d[\d.]*$</_VersionedSdl>
   </PropertyGroup>
   <Target Name="DropVersionedSdlTtfInBuild" AfterTargets="ResolveLockFileCopyLocalFiles">
     <ItemGroup>
       <ReferenceCopyLocalPaths Remove="@(ReferenceCopyLocalPaths)"
-          Condition="'%(ReferenceCopyLocalPaths.NuGetPackageId)' == 'Ahwoo.BRUTAL.Sdl.Ttf.Native' and $([System.Text.RegularExpressions.Regex]::IsMatch('%(Filename)%(Extension)', '$(_VersionedSdlTtf)'))" />
+          Condition="('%(ReferenceCopyLocalPaths.NuGetPackageId)' == 'Ahwoo.BRUTAL.Sdl.Ttf.Native' and $([System.Text.RegularExpressions.Regex]::IsMatch('%(Filename)%(Extension)', '$(_VersionedSdlTtf)')))
+              or ('%(ReferenceCopyLocalPaths.NuGetPackageId)' == 'Ahwoo.BRUTAL.Box2D.Native' and $([System.Text.RegularExpressions.Regex]::IsMatch('%(Filename)%(Extension)', '$(_VersionedBox2D)')))
+              or ('%(ReferenceCopyLocalPaths.NuGetPackageId)' == 'Ahwoo.BRUTAL.Sdl.Native' and $([System.Text.RegularExpressions.Regex]::IsMatch('%(Filename)%(Extension)', '$(_VersionedSdl)')))" />
     </ItemGroup>
   </Target>
   <Target Name="DropVersionedSdlTtfInPublish" AfterTargets="ComputeResolvedFilesToPublishList">
     <ItemGroup>
       <ResolvedFileToPublish Remove="@(ResolvedFileToPublish)"
-          Condition="'%(ResolvedFileToPublish.NuGetPackageId)' == 'Ahwoo.BRUTAL.Sdl.Ttf.Native' and $([System.Text.RegularExpressions.Regex]::IsMatch('%(Filename)%(Extension)', '$(_VersionedSdlTtf)'))" />
+          Condition="('%(ResolvedFileToPublish.NuGetPackageId)' == 'Ahwoo.BRUTAL.Sdl.Ttf.Native' and $([System.Text.RegularExpressions.Regex]::IsMatch('%(Filename)%(Extension)', '$(_VersionedSdlTtf)')))
+              or ('%(ResolvedFileToPublish.NuGetPackageId)' == 'Ahwoo.BRUTAL.Box2D.Native' and $([System.Text.RegularExpressions.Regex]::IsMatch('%(Filename)%(Extension)', '$(_VersionedBox2D)')))
+              or ('%(ResolvedFileToPublish.NuGetPackageId)' == 'Ahwoo.BRUTAL.Sdl.Native' and $([System.Text.RegularExpressions.Regex]::IsMatch('%(Filename)%(Extension)', '$(_VersionedSdl)')))" />
     </ItemGroup>
   </Target>
 </Project>

@@ -44,4 +44,17 @@ input:
   - name: MasterMute
     controls:
     - M
+  - name: Talk
+    controls:
+    - V
+    - Pad.West
+  - name: Night
+    controls:
+    - N
+    - Pad.North
 mixer: {master: 0.8, music: 0.8, effects: 0.75}
+audioSnapshots:
+- name: Night
+  levels: {music: 0.5, effects: 0.6}
+audioDucking:
+- {trigger: Voice, target: Music, decibels: -8, attack: 0.05, release: 0.4}

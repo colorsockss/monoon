@@ -1,0 +1,8 @@
+rate: 5120
+maxParticles: 10240
+spread: 360
+speed: {min: 20, max: 160}
+lifetime: {min: 2, max: 2}
+size: {min: 2, max: 4}
+color: {min: "#6BE4FF", max: "#FF7AD9"}
+endAlpha: 0.2

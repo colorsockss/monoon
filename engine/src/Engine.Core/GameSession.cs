@@ -43,6 +43,8 @@ public sealed partial class SessionState
         PendingScene?.Cancel();
         Requested = new(assetId, SceneChange.Replace, null, onEntered);
     }
+    // The default transition label is drawn with SDL_ttf.
+    [EngineFeature(EngineFeature.Text)]
     public SceneOperation LoadSceneAsync(Guid id, string? transitionText = "Loading…", double minimumSeconds = 0,
         Action<SessionState>? onEntered = null) => Request(id, SceneChange.Replace, transitionText, minimumSeconds, onEntered);
     public SceneOperation AddSceneAsync(Guid id) => Request(id, SceneChange.Add, null, 0, null);
@@ -126,7 +128,7 @@ public sealed partial class GameSession : IGame2D, IDisposable
         scene.CheckReferences(manifest);
         var gameId = scene.Settings.ProjectId ?? scene.Settings.StartScene ?? scene.AssetId ?? Guid.Empty;
         bool editor = project == null || !File.Exists(Path.Combine(project, ".monoon-player"));
-        State.Mixer.Levels=scene.Settings.Mixer;
+        if (EngineFeatures.Audio) State.Mixer.Configure(scene.Settings);
         State.Storage = storage ?? PlayerStorage.ForGame(gameId, editor);
         State.SceneId = scene.AssetId;
         if (compiledScripts == null && System.Runtime.CompilerServices.RuntimeFeature.IsDynamicCodeSupported && project != null)
@@ -184,6 +186,6 @@ public sealed partial class GameSession : IGame2D, IDisposable
         State.Requested = null;
         DiscardLoading();
         try { Current.Dispose(); }
-        finally { resources?.Dispose(); sharedScripts?.Dispose(); State.Mixer.Dispose(); }
+        finally { resources?.Dispose(); sharedScripts?.Dispose(); if (EngineFeatures.Audio) State.Mixer.Dispose(); }
     }
 }

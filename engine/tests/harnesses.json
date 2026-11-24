@@ -1,0 +1,4603 @@
+{
+ "about": "Harnesses under engine/tests for engine/scripts/run-harness.py (docs/manual/agent-workflow.md#하네스-실행기). Steps run in order in one bash process from the repository root with $qa (this folder), $work (fresh result folder), $app (packaged editor), $bin (engine/.artifacts/bin), $probe_dll and $lock (GUI lock). A step with modes runs only when all of them are selected.",
+ "broad": [
+  "engine/src/**",
+  "engine/native/**",
+  "engine/Directory.Build.*",
+  "engine/scripts/build-players.sh",
+  "engine/scripts/build-native-aot-kit.sh",
+  "engine/scripts/build-editor-mac.sh",
+  "engine/tests/Shared/**",
+  "monoon"
+ ],
+ "harnesses": [
+  {
+   "id": "Accessibility.Mac",
+   "samples": [
+    "AccessLab"
+   ],
+   "modes": [
+    "scene-play",
+    "release",
+    "native-aot"
+   ],
+   "needs": [
+    "accessibility",
+    "editor",
+    "gui",
+    "keyboard",
+    "templates",
+    "window-tool"
+   ],
+   "baselines": [],
+   "watch": [
+    "engine/src/Engine.Core/UiAccessibility.cs",
+    "engine/src/Engine.Core/ScreenUi*.cs",
+    "engine/src/Engine.Core/UiControls.cs",
+    "engine/src/Engine.Desktop/SdlText.cs",
+    "engine/src/Engine.Desktop/SdlGamepads.cs",
+    "engine/src/Engine.Editor/Scene/SceneViewport.TextInput.cs"
+   ],
+   "steps": [
+    {
+     "kind": "prepare",
+     "run": "tar -xf engine/.artifacts/native/downloads/SDL3-3.4.12.tar.gz -C \"$work\" SDL3-3.4.12/include"
+    },
+    {
+     "kind": "prepare",
+     "run": "clang -dynamiclib -I\"$work/SDL3-3.4.12/include\" \"$qa/virtual-pad.c\" -o \"$work/pad.dylib\""
+    },
+    {
+     "kind": "prepare",
+     "run": "clang -fobjc-arc -framework Carbon -framework Foundation \"$qa/input-source.m\" -o \"$work/input-source\""
+    },
+    {
+     "kind": "prepare",
+     "run": "clang -fobjc-arc -framework Cocoa \"$qa/focus-ring.m\" -o \"$work/ring\""
+    },
+    {
+     "kind": "prepare",
+     "run": "export MONOON_QA_PAD_LIBRARY=\"$work/pad.dylib\" MONOON_QA_INPUT_SOURCE=\"$work/input-source\" MONOON_QA_RING=\"$work/ring\""
+    },
+    {
+     "kind": "build",
+     "modes": [
+      "release"
+     ],
+     "run": "./monoon build samples/AccessLab release --profile distribution --output game-builds/AccessLab"
+    },
+    {
+     "kind": "build",
+     "modes": [
+      "native-aot"
+     ],
+     "run": "./monoon build samples/AccessLab native-aot --profile distribution --output game-builds/AccessLab"
+    },
+    {
+     "kind": "editor",
+     "modes": [
+      "scene-play"
+     ],
+     "gui": true,
+     "run": "$lock python3 \"$qa/verify.py\" editor"
+    },
+    {
+     "kind": "play",
+     "modes": [
+      "release"
+     ],
+     "gui": true,
+     "run": "$lock python3 \"$qa/verify.py\" release"
+    },
+    {
+     "kind": "play",
+     "modes": [
+      "native-aot"
+     ],
+     "gui": true,
+     "run": "$lock python3 \"$qa/verify.py\" aot"
+    }
+   ]
+  },
+  {
+   "id": "AnimatorLab.Conditions",
+   "samples": [
+    "AnimatorLab"
+   ],
+   "modes": [
+    "scene-play",
+    "release",
+    "native-aot"
+   ],
+   "needs": [
+    "editor",
+    "gui",
+    "templates"
+   ],
+   "probe": "GuardProbe",
+   "baselines": [],
+   "watch": [
+    "engine/src/Engine.Core/AnimationController.cs",
+    "engine/src/Engine.Core/SpriteClipTimeline.cs",
+    "engine/src/Engine.Editor/Panels/AnimatorWindow.cs",
+    "engine/src/Engine.Editor/Panels/MainWindow.Animator.cs"
+   ],
+   "steps": [
+    {
+     "kind": "prepare",
+     "run": "python3 \"$qa/verify.py\" prepare samples/AnimatorLab \"$work/AnimatorLab\""
+    },
+    {
+     "kind": "build",
+     "modes": [
+      "release"
+     ],
+     "run": "./monoon build \"$work/AnimatorLab\" release --profile distribution --output \"$work/builds\""
+    },
+    {
+     "kind": "build",
+     "modes": [
+      "native-aot"
+     ],
+     "run": "./monoon build \"$work/AnimatorLab\" native-aot --profile distribution --output \"$work/builds\""
+    },
+    {
+     "kind": "play",
+     "modes": [
+      "release"
+     ],
+     "run": "python3 \"$qa/verify.py\" play \"$work/builds/AnimatorLab.app/Contents/MacOS/MoNoonPlayer\" \"$work/release\""
+    },
+    {
+     "kind": "play",
+     "modes": [
+      "native-aot"
+     ],
+     "run": "python3 \"$qa/verify.py\" play \"$work/builds/NativeAOT/AnimatorLab.app/Contents/MacOS/MoNoonPlayer\" \"$work/native-aot\""
+    },
+    {
+     "kind": "compare",
+     "modes": [
+      "release",
+      "native-aot"
+     ],
+     "run": "python3 \"$qa/verify.py\" snapshots \"$work/release\" \"$work/native-aot\""
+    },
+    {
+     "kind": "prepare",
+     "run": "python3 \"$qa/verify.py\" prepare samples/AnimatorLab \"$work/editor-copy\""
+    },
+    {
+     "kind": "probe",
+     "modes": [
+      "scene-play"
+     ],
+     "run": "dotnet build \"$qa\" -c Release -m:1 -p:UsedAvaloniaProducts="
+    },
+    {
+     "kind": "editor",
+     "modes": [
+      "scene-play"
+     ],
+     "gui": true,
+     "run": "$lock python3 \"$qa/editor.py\" $app \"$work/editor-copy\" $bin/GuardProbe/release/GuardProbe.dll \"$work/scene-play\""
+    },
+    {
+     "kind": "compare",
+     "modes": [
+      "scene-play",
+      "release",
+      "native-aot"
+     ],
+     "run": "python3 \"$qa/verify.py\" compare \"$work/scene-play/preview.trace\" \"$work/scene-play/scene-play.trace\" \"$work/release/release.trace\" \"$work/native-aot/native-aot.trace\""
+    }
+   ]
+  },
+  {
+   "id": "AnimatorLab.Directions",
+   "samples": [
+    "AnimatorLab"
+   ],
+   "modes": [
+    "scene-play",
+    "release",
+    "native-aot"
+   ],
+   "needs": [
+    "editor",
+    "gui",
+    "templates"
+   ],
+   "probe": "ScoutProbe",
+   "baselines": [],
+   "watch": [
+    "engine/src/Engine.Core/AnimationController.cs",
+    "engine/src/Engine.Core/SpriteClipTimeline.cs",
+    "engine/src/Engine.Editor/Panels/AnimatorWindow.cs",
+    "engine/src/Engine.Editor/Panels/MainWindow.Animator.cs"
+   ],
+   "steps": [
+    {
+     "kind": "prepare",
+     "run": "python3 \"$qa/verify.py\" prepare samples/AnimatorLab \"$work/AnimatorLab\""
+    },
+    {
+     "kind": "build",
+     "modes": [
+      "release"
+     ],
+     "run": "./monoon build \"$work/AnimatorLab\" release --profile distribution --output \"$work/builds\""
+    },
+    {
+     "kind": "build",
+     "modes": [
+      "native-aot"
+     ],
+     "run": "./monoon build \"$work/AnimatorLab\" native-aot --profile distribution --output \"$work/builds\""
+    },
+    {
+     "kind": "play",
+     "modes": [
+      "release"
+     ],
+     "run": "python3 \"$qa/verify.py\" play \"$work/builds/AnimatorLab.app/Contents/MacOS/MoNoonPlayer\" \"$work/release\""
+    },
+    {
+     "kind": "play",
+     "modes": [
+      "native-aot"
+     ],
+     "run": "python3 \"$qa/verify.py\" play \"$work/builds/NativeAOT/AnimatorLab.app/Contents/MacOS/MoNoonPlayer\" \"$work/native-aot\""
+    },
+    {
+     "kind": "compare",
+     "modes": [
+      "release",
+      "native-aot"
+     ],
+     "run": "python3 \"$qa/verify.py\" snapshots \"$work/release\" \"$work/native-aot\""
+    },
+    {
+     "kind": "prepare",
+     "run": "python3 \"$qa/verify.py\" prepare samples/AnimatorLab \"$work/editor-copy\""
+    },
+    {
+     "kind": "probe",
+     "modes": [
+      "scene-play"
+     ],
+     "run": "dotnet build \"$qa\" -c Release -m:1 -p:UsedAvaloniaProducts="
+    },
+    {
+     "kind": "editor",
+     "modes": [
+      "scene-play"
+     ],
+     "gui": true,
+     "run": "$lock python3 \"$qa/editor.py\" $app \"$work/editor-copy\" $bin/ScoutProbe/release/ScoutProbe.dll \"$work/scene-play\""
+    },
+    {
+     "kind": "compare",
+     "modes": [
+      "scene-play",
+      "release",
+      "native-aot"
+     ],
+     "run": "python3 \"$qa/verify.py\" compare \"$work/scene-play/preview.trace\" \"$work/scene-play/scene-play.trace\" \"$work/release/release.trace\" \"$work/native-aot/native-aot.trace\""
+    }
+   ]
+  },
+  {
+   "id": "AudioLab.Buses",
+   "samples": [
+    "AudioLab"
+   ],
+   "modes": [
+    "scene-play",
+    "release",
+    "native-aot"
+   ],
+   "needs": [
+    "editor",
+    "gui",
+    "templates"
+   ],
+   "baselines": [
+    "engine/tests/results/audio-mixer/playback.csv",
+    "engine/tests/AudioLab.Buses/*.py (inline expected hashes)"
+   ],
+   "watch": [
+    "engine/src/Engine.Core/AudioMixer.cs",
+    "engine/src/Engine.Core/SceneAudio.cs",
+    "engine/src/Engine.Core/AudioOutputClock.cs",
+    "engine/src/Engine.Desktop/SdlSounds.cs",
+    "engine/src/Engine.Desktop/MacAudioOutput.cs"
+   ],
+   "steps": [
+    {
+     "kind": "prepare",
+     "run": "python3 \"$qa/verify.py\" prepare \"$work/projects\""
+    },
+    {
+     "kind": "build",
+     "modes": [
+      "release"
+     ],
+     "run": "for p in default ducking; do ./monoon build \"$work/projects/$p\" release --profile distribution --output \"$work/builds-$p\"; done"
+    },
+    {
+     "kind": "build",
+     "modes": [
+      "native-aot"
+     ],
+     "run": "for p in default ducking; do ./monoon build \"$work/projects/$p\" native-aot --profile distribution --output \"$work/builds-$p\"; done"
+    },
+    {
+     "kind": "play",
+     "modes": [
+      "release"
+     ],
+     "run": "for p in default ducking; do python3 \"$qa/verify.py\" play \"$work/builds-$p/AudioLab.app/Contents/MacOS/MoNoonPlayer\" \"$work/release-$p\"; done"
+    },
+    {
+     "kind": "play",
+     "modes": [
+      "native-aot"
+     ],
+     "run": "for p in default ducking; do python3 \"$qa/verify.py\" play \"$work/builds-$p/NativeAOT/AudioLab.app/Contents/MacOS/MoNoonPlayer\" \"$work/aot-$p\"; done"
+    },
+    {
+     "kind": "probe",
+     "modes": [
+      "scene-play"
+     ],
+     "run": "dotnet build engine/tests/AudioLab.Vorbis/AudioProbe.csproj -c Release -m:1 -p:UsedAvaloniaProducts="
+    },
+    {
+     "kind": "editor",
+     "modes": [
+      "scene-play"
+     ],
+     "gui": true,
+     "run": "for p in default ducking; do $lock python3 \"$qa/editor.py\" $app \"$work/projects/$p\" $bin/AudioProbe/release/AudioProbe.dll \"$work/scene-play-$p\"; done"
+    },
+    {
+     "kind": "compare",
+     "modes": [
+      "release"
+     ],
+     "run": "python3 \"$qa/verify.py\" check \"$work/release-default\" \"$work/release-ducking\""
+    },
+    {
+     "kind": "compare",
+     "modes": [
+      "native-aot"
+     ],
+     "run": "python3 \"$qa/verify.py\" check \"$work/aot-default\" \"$work/aot-ducking\""
+    },
+    {
+     "kind": "compare",
+     "modes": [
+      "scene-play"
+     ],
+     "run": "python3 \"$qa/verify.py\" check \"$work/scene-play-default\" \"$work/scene-play-ducking\""
+    },
+    {
+     "kind": "compare",
+     "modes": [
+      "scene-play",
+      "release",
+      "native-aot"
+     ],
+     "run": "python3 \"$qa/verify.py\" compare \"$work/scene-play-ducking\" \"$work/release-ducking\" \"$work/aot-ducking\""
+    }
+   ]
+  },
+  {
+   "id": "AudioLab.MixerEditor",
+   "samples": [
+    "AudioLab"
+   ],
+   "modes": [
+    "scene-play"
+   ],
+   "needs": [
+    "editor",
+    "gui"
+   ],
+   "probe": "MixerEditorProbe",
+   "baselines": [],
+   "watch": [
+    "engine/src/Engine.Core/AudioMixer.cs",
+    "engine/src/Engine.Editor/Inspector/MainWindow.Audio.cs",
+    "engine/src/Engine.Editor/Shell/MainWindow.GameSettings.cs"
+   ],
+   "steps": [
+    {
+     "kind": "probe",
+     "modes": [
+      "scene-play"
+     ],
+     "run": "dotnet build \"$qa\" -c Release -m:1 -p:UsedAvaloniaProducts="
+    },
+    {
+     "kind": "editor",
+     "modes": [
+      "scene-play"
+     ],
+     "gui": true,
+     "run": "$lock python3 $qa/editor.py $app $bin/MixerEditorProbe/release/MixerEditorProbe.dll \"$work/run\""
+    }
+   ]
+  },
+  {
+   "id": "AudioLab.Vorbis",
+   "samples": [
+    "AudioLab"
+   ],
+   "modes": [
+    "scene-play",
+    "release",
+    "native-aot"
+   ],
+   "needs": [
+    "editor",
+    "gui",
+    "templates"
+   ],
+   "probe": "AudioProbe",
+   "baselines": [
+    "engine/tests/results/audio-mixer/playback.csv"
+   ],
+   "watch": [
+    "engine/src/Engine.Core/AudioFile.cs",
+    "engine/src/Engine.Core/AudioMixer.cs",
+    "engine/src/Engine.Core/SceneAudio.cs",
+    "engine/src/Engine.Core/AudioOutputClock.cs",
+    "engine/src/Engine.Desktop/SdlSounds.cs",
+    "engine/src/Engine.Desktop/MacAudioOutput.cs"
+   ],
+   "omitted": "ci.py win-x64·linux-x64는 x64 게스트 전용이라 넣지 않았다.",
+   "steps": [
+    {
+     "kind": "probe",
+     "modes": [
+      "scene-play"
+     ],
+     "run": "dotnet build \"$qa/AudioProbe.csproj\" -c Release -m:1 -p:UsedAvaloniaProducts="
+    },
+    {
+     "kind": "play",
+     "modes": [
+      "release",
+      "native-aot"
+     ],
+     "gui": true,
+     "run": "$lock python3 \"$qa/ci.py\" osx-arm64 \"$work/ci\""
+    },
+    {
+     "kind": "prepare",
+     "run": "cp -R samples/AudioLab \"$work/AudioLab\""
+    },
+    {
+     "kind": "editor",
+     "modes": [
+      "scene-play"
+     ],
+     "gui": true,
+     "run": "$lock python3 \"$qa/editor.py\" $app \"$work/AudioLab\" $bin/AudioProbe/release/AudioProbe.dll \"$work/scene-play\""
+    }
+   ]
+  },
+  {
+   "id": "AudioLab.Widgets",
+   "samples": [
+    "AudioLab"
+   ],
+   "modes": [
+    "release"
+   ],
+   "needs": [
+    "gui",
+    "keyboard",
+    "templates"
+   ],
+   "probe": "VirtualPad",
+   "baselines": [],
+   "watch": [
+    "engine/src/Engine.Core/UiControls.cs",
+    "engine/src/Engine.Core/ScreenUi*.cs",
+    "engine/src/Engine.Core/SceneAudio.cs",
+    "engine/src/Engine.Desktop/SdlGamepads.cs"
+   ],
+   "steps": [
+    {
+     "kind": "build",
+     "modes": [
+      "release"
+     ],
+     "run": "./monoon build samples/AudioLab release --profile distribution --output \"$work/builds\""
+    },
+    {
+     "kind": "probe",
+     "modes": [
+      "release"
+     ],
+     "run": "dotnet build \"$qa/VirtualPad.csproj\" -c Release -m:1"
+    },
+    {
+     "kind": "prepare",
+     "run": "swiftc engine/tests/AudioLab.Vorbis/mac-input.swift -o \"$work/mac-input\""
+    },
+    {
+     "kind": "play",
+     "modes": [
+      "release"
+     ],
+     "gui": true,
+     "run": "$lock python3 \"$qa/verify_widgets.py\" \"$work/builds/AudioLab.app/Contents/MacOS/MoNoonPlayer\" $bin/VirtualPad/release/VirtualPad.dll \"$work/results\" \"$work/mac-input\""
+    }
+   ]
+  },
+  {
+   "id": "BarrageLab.Lines",
+   "samples": [
+    "BarrageLab"
+   ],
+   "modes": [
+    "scene-play",
+    "release",
+    "native-aot"
+   ],
+   "needs": [
+    "editor",
+    "gui",
+    "templates"
+   ],
+   "baselines": [],
+   "watch": [
+    "engine/src/Engine.Core/Lines2D.cs",
+    "engine/src/Engine.Core/MotionPath.cs",
+    "engine/src/Engine.Editor/Scene/SceneViewport.Paths.cs",
+    "engine/tests/PlatformerLab.Paths/*Probe.csproj",
+    "engine/tests/PlatformerLab.Paths/StartupHook.cs"
+   ],
+   "steps": [
+    {
+     "kind": "prepare",
+     "run": "python3 \"$qa/verify.py\" prepare samples/BarrageLab \"$work/BarrageLab\""
+    },
+    {
+     "kind": "build",
+     "modes": [
+      "release"
+     ],
+     "run": "./monoon build \"$work/BarrageLab\" release --profile distribution --output \"$work/builds\""
+    },
+    {
+     "kind": "build",
+     "modes": [
+      "native-aot"
+     ],
+     "run": "./monoon build \"$work/BarrageLab\" native-aot --profile distribution --output \"$work/builds\""
+    },
+    {
+     "kind": "play",
+     "modes": [
+      "release"
+     ],
+     "run": "python3 \"$qa/verify.py\" play \"$work/builds/BarrageLab.app/Contents/MacOS/MoNoonPlayer\" \"$work/release\""
+    },
+    {
+     "kind": "play",
+     "modes": [
+      "native-aot"
+     ],
+     "run": "python3 \"$qa/verify.py\" play \"$work/builds/NativeAOT/BarrageLab.app/Contents/MacOS/MoNoonPlayer\" \"$work/aot\""
+    },
+    {
+     "kind": "probe",
+     "modes": [
+      "scene-play"
+     ],
+     "run": "dotnet build engine/tests/PlatformerLab.Paths -c Release -m:1 -p:UsedAvaloniaProducts="
+    },
+    {
+     "kind": "editor",
+     "modes": [
+      "scene-play"
+     ],
+     "gui": true,
+     "run": "$lock python3 \"$qa/editor.py\" $app \"$work/BarrageLab\" $bin/PathsProbe/release/PathsProbe.dll \"$work/scene-play\""
+    },
+    {
+     "kind": "compare",
+     "modes": [
+      "scene-play",
+      "release",
+      "native-aot"
+     ],
+     "run": "python3 \"$qa/verify.py\" compare \"$work/scene-play\" \"$work/release\" \"$work/aot\""
+    }
+   ]
+  },
+  {
+   "id": "BarrageLab.PrefabPools",
+   "samples": [
+    "BarrageLab"
+   ],
+   "modes": [
+    "release",
+    "native-aot"
+   ],
+   "needs": [
+    "templates"
+   ],
+   "baselines": [],
+   "watch": [
+    "engine/src/Engine.Core/PrefabPools.cs",
+    "engine/src/Engine.Core/SpritePool2D.cs",
+    "engine/src/Engine.Core/Prefabs.cs"
+   ],
+   "steps": [
+    {
+     "kind": "build",
+     "modes": [
+      "release"
+     ],
+     "run": "./monoon build samples/BarrageLab release --profile distribution --output $work/barrage-release"
+    },
+    {
+     "kind": "build",
+     "modes": [
+      "native-aot"
+     ],
+     "run": "./monoon build samples/BarrageLab native-aot --profile distribution --output $work/barrage-aot"
+    },
+    {
+     "kind": "play",
+     "modes": [
+      "release"
+     ],
+     "run": "python3 $qa/replay.py $work/barrage-release/BarrageLab.app/Contents/MacOS/MoNoonPlayer $work/barrage-release-replay"
+    },
+    {
+     "kind": "play",
+     "modes": [
+      "native-aot"
+     ],
+     "run": "python3 $qa/replay.py $work/barrage-aot/NativeAOT/BarrageLab.app/Contents/MacOS/MoNoonPlayer $work/barrage-aot-replay"
+    }
+   ]
+  },
+  {
+   "id": "CameraLab.DebugDraw",
+   "samples": [
+    "CameraLab"
+   ],
+   "modes": [
+    "scene-play",
+    "release",
+    "native-aot"
+   ],
+   "needs": [
+    "editor",
+    "gui",
+    "templates"
+   ],
+   "probe": "DebugDrawProbe",
+   "baselines": [],
+   "watch": [
+    "engine/src/Engine.Core/PlayDiagnostics.cs",
+    "engine/src/Engine.Core/Camera2D.cs",
+    "engine/src/Engine.Core/SceneCameras.cs",
+    "engine/src/Engine.Desktop/SdlCanvas.cs"
+   ],
+   "steps": [
+    {
+     "kind": "probe",
+     "modes": [
+      "scene-play"
+     ],
+     "run": "dotnet build \"$qa\" -c Release -m:1 -p:UsedAvaloniaProducts="
+    },
+    {
+     "kind": "prepare",
+     "run": "cp -R samples/CameraLab \"$work/CameraLab\""
+    },
+    {
+     "kind": "build",
+     "modes": [
+      "release"
+     ],
+     "run": "for p in distribution development; do ./monoon build \"$work/CameraLab\" release --profile $p --output \"$work/$p\"; done"
+    },
+    {
+     "kind": "build",
+     "modes": [
+      "native-aot"
+     ],
+     "run": "for p in distribution development; do ./monoon build \"$work/CameraLab\" native-aot --profile $p --output \"$work/$p\"; done"
+    },
+    {
+     "kind": "play",
+     "modes": [
+      "release"
+     ],
+     "run": "python3 \"$qa/verify.py\" play \"$work/development/Development/CameraLab.app/Contents/MacOS/MoNoonPlayer\" \"$work/out/development-release\""
+    },
+    {
+     "kind": "play",
+     "modes": [
+      "release"
+     ],
+     "run": "python3 \"$qa/verify.py\" play \"$work/distribution/CameraLab.app/Contents/MacOS/MoNoonPlayer\" \"$work/out/distribution-release\""
+    },
+    {
+     "kind": "play",
+     "modes": [
+      "native-aot"
+     ],
+     "run": "python3 \"$qa/verify.py\" play \"$work/development/Development/NativeAOT/CameraLab.app/Contents/MacOS/MoNoonPlayer\" \"$work/out/development-aot\""
+    },
+    {
+     "kind": "play",
+     "modes": [
+      "native-aot"
+     ],
+     "run": "python3 \"$qa/verify.py\" play \"$work/distribution/NativeAOT/CameraLab.app/Contents/MacOS/MoNoonPlayer\" \"$work/out/distribution-aot\""
+    },
+    {
+     "kind": "compare",
+     "modes": [
+      "release"
+     ],
+     "run": "python3 \"$qa/verify.py\" check \"$work/out/development-release\" \"$work/out/distribution-release\""
+    },
+    {
+     "kind": "compare",
+     "modes": [
+      "native-aot"
+     ],
+     "run": "python3 \"$qa/verify.py\" check \"$work/out/development-aot\" \"$work/out/distribution-aot\""
+    },
+    {
+     "kind": "editor",
+     "modes": [
+      "scene-play"
+     ],
+     "gui": true,
+     "run": "$lock python3 \"$qa/editor.py\" $app \"$work/CameraLab\" $bin/DebugDrawProbe/release/DebugDrawProbe.dll \"$work/out/scene-play\""
+    }
+   ]
+  },
+  {
+   "id": "CameraLab.Framing",
+   "samples": [
+    "CameraLab"
+   ],
+   "modes": [
+    "scene-play",
+    "release",
+    "native-aot"
+   ],
+   "needs": [
+    "editor",
+    "gui",
+    "templates"
+   ],
+   "probe": "FramingProbe",
+   "baselines": [],
+   "watch": [
+    "engine/src/Engine.Core/Camera2D.cs",
+    "engine/src/Engine.Core/SceneCameras.cs",
+    "engine/src/Engine.Editor/Inspector/MainWindow.Cameras.cs"
+   ],
+   "steps": [
+    {
+     "kind": "probe",
+     "modes": [
+      "scene-play"
+     ],
+     "run": "dotnet build \"$qa\" -c Release -m:1 -p:UsedAvaloniaProducts="
+    },
+    {
+     "kind": "prepare",
+     "run": "python3 \"$qa/verify.py\" prepare samples/CameraLab \"$work/CameraLab\""
+    },
+    {
+     "kind": "build",
+     "modes": [
+      "release"
+     ],
+     "run": "./monoon build \"$work/CameraLab\" release --profile distribution --output \"$work/builds\""
+    },
+    {
+     "kind": "build",
+     "modes": [
+      "native-aot"
+     ],
+     "run": "./monoon build \"$work/CameraLab\" native-aot --profile distribution --output \"$work/builds\""
+    },
+    {
+     "kind": "play",
+     "modes": [
+      "release"
+     ],
+     "run": "python3 \"$qa/verify.py\" play \"$work/builds/CameraLab.app/Contents/MacOS/MoNoonPlayer\" \"$work/release\""
+    },
+    {
+     "kind": "play",
+     "modes": [
+      "native-aot"
+     ],
+     "run": "python3 \"$qa/verify.py\" play \"$work/builds/NativeAOT/CameraLab.app/Contents/MacOS/MoNoonPlayer\" \"$work/aot\""
+    },
+    {
+     "kind": "prepare",
+     "run": "python3 \"$qa/verify.py\" prepare samples/CameraLab \"$work/play/CameraLab\""
+    },
+    {
+     "kind": "editor",
+     "modes": [
+      "scene-play"
+     ],
+     "gui": true,
+     "run": "$lock python3 \"$qa/editor.py\" $app \"$work/play/CameraLab\" $bin/FramingProbe/release/FramingProbe.dll \"$work/scene-play\""
+    },
+    {
+     "kind": "compare",
+     "modes": [
+      "scene-play",
+      "release",
+      "native-aot"
+     ],
+     "run": "python3 \"$qa/verify.py\" check \"$work/scene-play\" \"$work/release\" \"$work/aot\""
+    }
+   ]
+  },
+  {
+   "id": "CameraLab.ScreenEffects",
+   "samples": [
+    "CameraLab"
+   ],
+   "modes": [
+    "scene-play",
+    "release",
+    "native-aot"
+   ],
+   "needs": [
+    "editor",
+    "gui",
+    "templates",
+    "window-tool"
+   ],
+   "probe": "CameraLabProbe",
+   "baselines": [],
+   "watch": [
+    "engine/src/Engine.Core/ScreenEffects.cs",
+    "engine/src/Engine.Core/Effects2D.cs",
+    "engine/src/Engine.Desktop/SdlCanvas.cs",
+    "engine/src/Engine.Desktop/GameFeedback.cs",
+    "engine/src/Engine.Desktop/SdlGamepads.cs"
+   ],
+   "steps": [
+    {
+     "kind": "prepare",
+     "run": "tar -xf engine/.artifacts/native/downloads/SDL3-3.4.12.tar.gz -C \"$work\" SDL3-3.4.12/include"
+    },
+    {
+     "kind": "prepare",
+     "run": "clang -dynamiclib -I\"$work/SDL3-3.4.12/include\" \"$qa/rumble-pad.c\" -o \"$work/rumble.dylib\""
+    },
+    {
+     "kind": "probe",
+     "modes": [
+      "scene-play"
+     ],
+     "run": "dotnet build \"$qa\" -c Release -m:1 -p:UsedAvaloniaProducts="
+    },
+    {
+     "kind": "prepare",
+     "run": "cp -R samples/CameraLab \"$work/CameraLab\""
+    },
+    {
+     "kind": "build",
+     "modes": [
+      "release"
+     ],
+     "run": "./monoon build \"$work/CameraLab\" release --profile distribution --output \"$work/builds\""
+    },
+    {
+     "kind": "build",
+     "modes": [
+      "native-aot"
+     ],
+     "run": "./monoon build \"$work/CameraLab\" native-aot --profile distribution --output \"$work/builds\""
+    },
+    {
+     "kind": "play",
+     "modes": [
+      "scene-play",
+      "release",
+      "native-aot"
+     ],
+     "gui": true,
+     "run": "MONOON_QA_WINDOW=engine/.artifacts/clip-qa/window MONOON_QA_RUMBLE_LIBRARY=\"$work/rumble.dylib\" $lock python3 \"$qa/verify.py\" \"$work/CameraLab\" \"$work/builds/CameraLab.app\" \"$work/builds/NativeAOT/CameraLab.app\" $probe_dll \"$work/out\""
+    },
+    {
+     "kind": "play",
+     "modes": [
+      "release"
+     ],
+     "run": "python3 \"$qa/replay.py\" play \"$work/builds/CameraLab.app/Contents/MacOS/MoNoonPlayer\" \"$work/replay-release\""
+    },
+    {
+     "kind": "play",
+     "modes": [
+      "native-aot"
+     ],
+     "run": "python3 \"$qa/replay.py\" play \"$work/builds/NativeAOT/CameraLab.app/Contents/MacOS/MoNoonPlayer\" \"$work/replay-aot\""
+    },
+    {
+     "kind": "compare",
+     "modes": [
+      "release",
+      "native-aot"
+     ],
+     "run": "python3 \"$qa/replay.py\" compare \"$work/replay-release\" \"$work/replay-aot\""
+    }
+   ]
+  },
+  {
+   "id": "CollisionLab.EditorPerf",
+   "samples": [
+    "CollisionLab"
+   ],
+   "modes": [
+    "scene-play"
+   ],
+   "needs": [
+    "editor",
+    "gui"
+   ],
+   "probe": "EditorPerfProbe",
+   "baselines": [],
+   "watch": [
+    "engine/src/Engine.Editor/Scene/SceneViewport*.cs",
+    "engine/src/Engine.Editor/Hierarchy/*.cs",
+    "engine/src/Engine.Editor/Inspector/MainWindow.Inspector.cs"
+   ],
+   "steps": [
+    {
+     "kind": "probe",
+     "modes": [
+      "scene-play"
+     ],
+     "run": "dotnet build \"$qa\" -c Release -m:1 -p:UsedAvaloniaProducts="
+    },
+    {
+     "kind": "editor",
+     "modes": [
+      "scene-play"
+     ],
+     "gui": true,
+     "run": "$lock python3 $qa/editor.py samples/CollisionLab \"$work/editor-perf\" 5 cand=$app,$bin/EditorPerfProbe/release/EditorPerfProbe.dll"
+    }
+   ]
+  },
+  {
+   "id": "CollisionLab.FrameProfiler",
+   "samples": [
+    "CollisionLab"
+   ],
+   "modes": [
+    "scene-play",
+    "release",
+    "native-aot"
+   ],
+   "needs": [
+    "editor",
+    "gui",
+    "templates"
+   ],
+   "probe": "ProfilerProbe",
+   "baselines": [],
+   "watch": [
+    "engine/src/Engine.Core/FrameProfiler.cs",
+    "engine/src/Engine.Core/FrameProfileWriter.cs",
+    "engine/src/Engine.Editor/Debugging/PlayProfiler.cs",
+    "engine/src/Engine.Editor/Debugging/FrameChart.cs",
+    "engine/src/Engine.Cli/FrameProfileReport.cs"
+   ],
+   "steps": [
+    {
+     "kind": "build",
+     "modes": [
+      "release"
+     ],
+     "run": "for p in development distribution; do ./monoon build samples/CollisionLab release --profile $p --output \"$work/builds\"; done"
+    },
+    {
+     "kind": "build",
+     "modes": [
+      "native-aot"
+     ],
+     "run": "for p in development distribution; do ./monoon build samples/CollisionLab native-aot --profile $p --output \"$work/builds\"; done"
+    },
+    {
+     "kind": "play",
+     "modes": [
+      "release"
+     ],
+     "run": "python3 \"$qa/replay.py\" \"$work/builds/Development/CollisionLab.app/Contents/MacOS/MoNoonPlayer\" \"$work/builds/CollisionLab.app/Contents/MacOS/MoNoonPlayer\" \"$work/release\""
+    },
+    {
+     "kind": "play",
+     "modes": [
+      "native-aot"
+     ],
+     "run": "python3 \"$qa/replay.py\" \"$work/builds/Development/NativeAOT/CollisionLab.app/Contents/MacOS/MoNoonPlayer\" \"$work/builds/NativeAOT/CollisionLab.app/Contents/MacOS/MoNoonPlayer\" \"$work/aot\""
+    },
+    {
+     "kind": "compare",
+     "modes": [
+      "release"
+     ],
+     "run": "./monoon profile \"$work/release/development.csv\""
+    },
+    {
+     "kind": "probe",
+     "modes": [
+      "scene-play"
+     ],
+     "run": "dotnet build \"$qa\" -c Release -m:1 -p:UsedAvaloniaProducts="
+    },
+    {
+     "kind": "editor",
+     "modes": [
+      "scene-play"
+     ],
+     "gui": true,
+     "run": "$lock python3 \"$qa/editor.py\" $app samples/CollisionLab $bin/ProfilerProbe/release/ProfilerProbe.dll \"$work/scene-play\""
+    }
+   ]
+  },
+  {
+   "id": "CollisionLab.InspectorEdits",
+   "samples": [
+    "CollisionLab",
+    "KeyRoom"
+   ],
+   "modes": [
+    "scene-play"
+   ],
+   "needs": [
+    "editor",
+    "gui"
+   ],
+   "probe": "InspectorEditsProbe",
+   "baselines": [],
+   "watch": [
+    "engine/src/Engine.Editor/Inspector/*.cs",
+    "engine/src/Engine.Editor/Model/SceneHistory.cs",
+    "engine/src/Engine.Editor/Model/ComponentEdits.cs"
+   ],
+   "manual": "기준 에디터와 후보 에디터를 번갈아 재는 성능 측정이다. README의 base=<기준 에디터> 경로를 정해 직접 실행한다.",
+   "steps": [
+    {
+     "kind": "probe",
+     "modes": [
+      "scene-play"
+     ],
+     "run": "dotnet build \"$qa\" -c Release -m:1 -p:UsedAvaloniaProducts="
+    },
+    {
+     "kind": "editor",
+     "modes": [
+      "scene-play"
+     ],
+     "gui": true,
+     "run": "$lock python3 $qa/editor.py samples/CollisionLab \"$work/inspector-edits\" 5   base=<기준 에디터>/MoNoon.app/Contents/MacOS/MoNoon,$bin/InspectorEditsProbe/release/InspectorEditsProbe.dll cand=$app,$bin/InspectorEditsProbe/release/InspectorEditsProbe.dll"
+    }
+   ]
+  },
+  {
+   "id": "CollisionLab.Spatial",
+   "samples": [
+    "CollisionLab"
+   ],
+   "modes": [
+    "release",
+    "native-aot"
+   ],
+   "needs": [
+    "templates"
+   ],
+   "baselines": [
+    "engine/tests/CollisionLab.Spatial/*.py (inline expected hashes)"
+   ],
+   "watch": [
+    "engine/src/Engine.Core/SpatialGrid.cs",
+    "engine/src/Engine.Core/ColliderGrid.cs",
+    "engine/src/Engine.Core/Physics2D.cs",
+    "engine/src/Engine.Core/ScenePhysics*.cs",
+    "engine/src/Engine.Core/CollisionGeometry.cs"
+   ],
+   "steps": [
+    {
+     "kind": "build",
+     "modes": [
+      "release"
+     ],
+     "run": "./monoon build samples/CollisionLab release --profile distribution --output \"$work/builds\""
+    },
+    {
+     "kind": "build",
+     "modes": [
+      "native-aot"
+     ],
+     "run": "./monoon build samples/CollisionLab native-aot --profile distribution --output \"$work/builds\""
+    },
+    {
+     "kind": "play",
+     "modes": [
+      "release"
+     ],
+     "run": "python3 \"$qa/verify.py\" --player \"$work/builds/CollisionLab.app/Contents/MacOS/MoNoonPlayer\" --output \"$work/release.log\""
+    },
+    {
+     "kind": "play",
+     "modes": [
+      "native-aot"
+     ],
+     "run": "python3 \"$qa/verify.py\" --player \"$work/builds/NativeAOT/CollisionLab.app/Contents/MacOS/MoNoonPlayer\" --output \"$work/native-aot.log\""
+    }
+   ]
+  },
+  {
+   "id": "CollisionLab.SplitLoading",
+   "samples": [
+    "CollisionLab"
+   ],
+   "modes": [
+    "scene-play",
+    "release",
+    "native-aot"
+   ],
+   "needs": [
+    "editor",
+    "gui",
+    "templates"
+   ],
+   "probe": "SplitLoadingProbe",
+   "baselines": [],
+   "watch": [
+    "engine/src/Engine.Core/SceneStreaming.cs",
+    "engine/src/Engine.Core/AdditiveScenes.cs",
+    "engine/src/Engine.Core/SceneResources.cs"
+   ],
+   "steps": [
+    {
+     "kind": "prepare",
+     "run": "python3 \"$qa/replay.py\" prepare \"$work/CollisionLab\""
+    },
+    {
+     "kind": "build",
+     "modes": [
+      "release"
+     ],
+     "run": "./monoon build \"$work/CollisionLab\" release --profile development --output \"$work/builds\""
+    },
+    {
+     "kind": "build",
+     "modes": [
+      "native-aot"
+     ],
+     "run": "./monoon build \"$work/CollisionLab\" native-aot --profile development --output \"$work/builds\""
+    },
+    {
+     "kind": "play",
+     "modes": [
+      "release"
+     ],
+     "run": "python3 \"$qa/replay.py\" run \"$work/builds/Development/CollisionLab.app/Contents/MacOS/MoNoonPlayer\" \"$work/release\" --runs 3"
+    },
+    {
+     "kind": "play",
+     "modes": [
+      "native-aot"
+     ],
+     "run": "python3 \"$qa/replay.py\" run \"$work/builds/Development/NativeAOT/CollisionLab.app/Contents/MacOS/MoNoonPlayer\" \"$work/native-aot\" --runs 3"
+    },
+    {
+     "kind": "probe",
+     "modes": [
+      "scene-play"
+     ],
+     "run": "dotnet build \"$qa\" -c Release -m:1 -p:UsedAvaloniaProducts="
+    },
+    {
+     "kind": "editor",
+     "modes": [
+      "scene-play"
+     ],
+     "gui": true,
+     "run": "$lock python3 \"$qa/editor.py\" $app \"$work/CollisionLab\" $bin/SplitLoadingProbe/release/SplitLoadingProbe.dll \"$work/scene-play\" 3"
+    }
+   ]
+  },
+  {
+   "id": "DisplayLab.Desktop",
+   "samples": [
+    "DisplayLab"
+   ],
+   "modes": [
+    "release"
+   ],
+   "needs": [
+    "gui",
+    "keyboard",
+    "templates"
+   ],
+   "baselines": [],
+   "watch": [
+    "engine/src/Engine.Core/DesktopDisplay.cs",
+    "engine/src/Engine.Desktop/SdlDesktopDisplay.cs",
+    "engine/src/Engine.Desktop/DesktopHost.cs"
+   ],
+   "steps": [
+    {
+     "kind": "build",
+     "modes": [
+      "release"
+     ],
+     "run": "./monoon build samples/DisplayLab release --profile distribution --output \"$work/builds\""
+    },
+    {
+     "kind": "prepare",
+     "run": "swiftc engine/tests/AudioLab.Vorbis/mac-input.swift -o \"$work/mac-input\""
+    },
+    {
+     "kind": "play",
+     "modes": [
+      "release"
+     ],
+     "gui": true,
+     "run": "$lock python3 \"$qa/verify_display.py\" \"$work/builds/DisplayLab.app/Contents/MacOS/MoNoonPlayer\" \"$work/results\" \"$work/mac-input\""
+    }
+   ]
+  },
+  {
+   "id": "DisplayLab.IntegerScale",
+   "samples": [
+    "DisplayLab"
+   ],
+   "modes": [
+    "scene-play",
+    "release",
+    "native-aot"
+   ],
+   "needs": [
+    "editor",
+    "gui",
+    "keyboard",
+    "templates"
+   ],
+   "probe": "IntegerScaleProbe",
+   "baselines": [],
+   "watch": [
+    "engine/src/Engine.Core/DesktopDisplay.cs",
+    "engine/src/Engine.Core/Presentation2D.cs",
+    "engine/src/Engine.Desktop/SdlDesktopDisplay.cs",
+    "engine/src/Engine.Desktop/SdlCanvas.cs",
+    "engine/src/Engine.Editor/Scene/MainWindow.GameView.cs"
+   ],
+   "steps": [
+    {
+     "kind": "prepare",
+     "run": "python3 \"$qa/verify.py\" prepare samples/DisplayLab \"$work/DisplayLab\""
+    },
+    {
+     "kind": "build",
+     "modes": [
+      "release"
+     ],
+     "run": "./monoon build \"$work/DisplayLab\" release --profile distribution --output \"$work/builds\""
+    },
+    {
+     "kind": "build",
+     "modes": [
+      "native-aot"
+     ],
+     "run": "./monoon build \"$work/DisplayLab\" native-aot --profile distribution --output \"$work/builds\""
+    },
+    {
+     "kind": "prepare",
+     "run": "swiftc engine/tests/AudioLab.Vorbis/mac-input.swift -o \"$work/mac-input\""
+    },
+    {
+     "kind": "play",
+     "modes": [
+      "release"
+     ],
+     "gui": true,
+     "run": "$lock python3 \"$qa/verify.py\" play \"$work/builds/DisplayLab.app/Contents/MacOS/MoNoonPlayer\" \"$work/release\" \"$work/mac-input\""
+    },
+    {
+     "kind": "play",
+     "modes": [
+      "native-aot"
+     ],
+     "gui": true,
+     "run": "$lock python3 \"$qa/verify.py\" play \"$work/builds/NativeAOT/DisplayLab.app/Contents/MacOS/MoNoonPlayer\" \"$work/aot\" \"$work/mac-input\""
+    },
+    {
+     "kind": "compare",
+     "modes": [
+      "release",
+      "native-aot"
+     ],
+     "run": "python3 \"$qa/verify.py\" compare \"$work/release\" \"$work/aot\""
+    },
+    {
+     "kind": "probe",
+     "modes": [
+      "scene-play"
+     ],
+     "run": "dotnet build \"$qa\" -c Release -m:1 -p:UsedAvaloniaProducts="
+    },
+    {
+     "kind": "editor",
+     "modes": [
+      "scene-play"
+     ],
+     "gui": true,
+     "run": "$lock python3 \"$qa/editor.py\" $app \"$work/DisplayLab\" $probe_dll \"$work/scene-play\""
+    }
+   ]
+  },
+  {
+   "id": "Input.Gamepad",
+   "samples": [],
+   "modes": [
+    "headless"
+   ],
+   "needs": [],
+   "probe": "Input.Gamepad",
+   "baselines": [],
+   "watch": [
+    "engine/src/Engine.Desktop/SdlGamepads.cs",
+    "engine/src/Engine.Core/InputActions.cs",
+    "engine/src/Engine.Core/GameInputRouter.cs"
+   ],
+   "steps": [
+    {
+     "kind": "play",
+     "modes": [
+      "headless"
+     ],
+     "run": "dotnet run --project engine/tests/Input.Gamepad -c Release"
+    }
+   ]
+  },
+  {
+   "id": "InventoryLab.BagGrid",
+   "samples": [
+    "InventoryLab"
+   ],
+   "modes": [
+    "scene-play",
+    "release",
+    "native-aot"
+   ],
+   "needs": [
+    "editor",
+    "gui",
+    "templates"
+   ],
+   "probe": "BagGridProbe",
+   "baselines": [],
+   "watch": [
+    "engine/src/Engine.Core/UiDragDrop.cs",
+    "engine/src/Engine.Core/ScreenUi*.cs",
+    "engine/src/Engine.Core/RenderGrid.cs"
+   ],
+   "steps": [
+    {
+     "kind": "prepare",
+     "run": "python3 \"$qa/verify.py\" prepare samples/InventoryLab \"$work/InventoryLab\""
+    },
+    {
+     "kind": "build",
+     "modes": [
+      "release"
+     ],
+     "run": "./monoon build \"$work/InventoryLab\" release --profile distribution --output \"$work/builds\""
+    },
+    {
+     "kind": "build",
+     "modes": [
+      "native-aot"
+     ],
+     "run": "./monoon build \"$work/InventoryLab\" native-aot --profile distribution --output \"$work/builds\""
+    },
+    {
+     "kind": "play",
+     "modes": [
+      "release"
+     ],
+     "run": "python3 \"$qa/verify.py\" play \"$work/builds/InventoryLab.app/Contents/MacOS/MoNoonPlayer\" \"$work/runs/release\""
+    },
+    {
+     "kind": "play",
+     "modes": [
+      "native-aot"
+     ],
+     "run": "python3 \"$qa/verify.py\" play \"$work/builds/NativeAOT/InventoryLab.app/Contents/MacOS/MoNoonPlayer\" \"$work/runs/native-aot\""
+    },
+    {
+     "kind": "probe",
+     "modes": [
+      "scene-play"
+     ],
+     "run": "dotnet build \"$qa\" -c Release -m:1 -p:UsedAvaloniaProducts="
+    },
+    {
+     "kind": "editor",
+     "modes": [
+      "scene-play"
+     ],
+     "gui": true,
+     "run": "$lock python3 \"$qa/editor.py\" $app \"$work/InventoryLab\" $bin/BagGridProbe/release/BagGridProbe.dll \"$work/runs/scene-play\""
+    },
+    {
+     "kind": "compare",
+     "modes": [
+      "scene-play",
+      "release",
+      "native-aot"
+     ],
+     "run": "python3 \"$qa/verify.py\" compare \"$work/runs\""
+    }
+   ]
+  },
+  {
+   "id": "InventoryLab.Bundles",
+   "samples": [],
+   "modes": [],
+   "needs": [
+    "keyboard"
+   ],
+   "baselines": [
+    "engine/tests/InventoryLab.Bundles/*.py (inline expected hashes)"
+   ],
+   "watch": [
+    "engine/src/Engine.Core/ContentBundle.cs",
+    "engine/src/Engine.Core/BundleMountCache.cs",
+    "engine/src/Engine.Core/ContentUpdates.cs"
+   ],
+   "manual": "실제 macOS 키 이벤트로 두 배포본의 시작 시간과 용량을 재는 측정이다. results/phase1-regression 스크립트를 따른다.",
+   "steps": []
+  },
+  {
+   "id": "InventoryLab.Crashes",
+   "samples": [
+    "InventoryLab"
+   ],
+   "modes": [
+    "release",
+    "native-aot"
+   ],
+   "needs": [
+    "gui",
+    "templates"
+   ],
+   "baselines": [],
+   "watch": [
+    "engine/src/Engine.Core/PlayerCrashReport.cs",
+    "engine/src/Engine.Player/CrashDiagnostics.cs",
+    "engine/src/Engine.Cli/CrashSymbols.cs",
+    "engine/src/Engine.Authoring/BuildSymbols.cs",
+    "engine/tests/fixtures/InventoryLab/**"
+   ],
+   "steps": [
+    {
+     "kind": "build",
+     "modes": [
+      "release"
+     ],
+     "run": "./monoon build samples/InventoryLab release --profile distribution --output \"$work/builds\""
+    },
+    {
+     "kind": "build",
+     "modes": [
+      "native-aot"
+     ],
+     "run": "./monoon build samples/InventoryLab native-aot --profile distribution --output \"$work/builds\""
+    },
+    {
+     "kind": "play",
+     "modes": [
+      "release",
+      "native-aot"
+     ],
+     "gui": true,
+     "run": "$lock python3 \"$qa/check.py\" \"$work/builds\""
+    }
+   ]
+  },
+  {
+   "id": "InventoryLab.DataList",
+   "samples": [
+    "InventoryLab"
+   ],
+   "modes": [
+    "release",
+    "native-aot"
+   ],
+   "needs": [
+    "templates"
+   ],
+   "baselines": [],
+   "watch": [
+    "engine/src/Engine.Core/ScreenUi.List.cs",
+    "engine/src/Engine.Core/GameTable.cs",
+    "engine/src/Engine.Core/GameData.cs"
+   ],
+   "steps": [
+    {
+     "kind": "build",
+     "modes": [
+      "release"
+     ],
+     "run": "./monoon build samples/InventoryLab release --profile distribution --output \"$work/builds\""
+    },
+    {
+     "kind": "build",
+     "modes": [
+      "native-aot"
+     ],
+     "run": "./monoon build samples/InventoryLab native-aot --profile distribution --output \"$work/builds\""
+    },
+    {
+     "kind": "play",
+     "modes": [
+      "release"
+     ],
+     "run": "python3 \"$qa/verify.py\" play \"$work/builds/InventoryLab.app/Contents/MacOS/MoNoonPlayer\" \"$work/release\""
+    },
+    {
+     "kind": "play",
+     "modes": [
+      "native-aot"
+     ],
+     "run": "python3 \"$qa/verify.py\" play \"$work/builds/NativeAOT/InventoryLab.app/Contents/MacOS/MoNoonPlayer\" \"$work/native-aot\""
+    }
+   ]
+  },
+  {
+   "id": "InventoryLab.Incremental",
+   "samples": [],
+   "modes": [
+    "headless"
+   ],
+   "needs": [
+    "templates"
+   ],
+   "baselines": [],
+   "watch": [
+    "engine/src/Engine.Authoring/ContentBuildCache.cs",
+    "engine/src/Engine.Authoring/GameBuild.cs",
+    "engine/src/Engine.Authoring/TileChunkBuild.cs",
+    "engine/src/Engine.Authoring/ShaderSheetBuild.cs",
+    "engine/src/Engine.Authoring/AtlasPacker.cs",
+    "engine/src/Engine.Cli/**",
+    "engine/tests/fixtures/InventoryLab/**"
+   ],
+   "steps": [
+    {
+     "kind": "build",
+     "modes": [
+      "headless"
+     ],
+     "run": "dotnet build engine/src/Engine.Cli -c Release -m:1"
+    },
+    {
+     "kind": "prepare",
+     "modes": [
+      "headless"
+     ],
+     "run": "python3 \"$qa/prepare.py\" \"$work/fixture\""
+    },
+    {
+     "kind": "compare",
+     "modes": [
+      "headless"
+     ],
+     "run": "python3 \"$qa/verify.py\" engine/.artifacts/bin/Engine.Cli/release/MoNoon.Cli \"$work/fixture\" engine/tests/fixtures/InventoryLab \"$work/results\" --dependencies"
+    }
+   ]
+  },
+  {
+   "id": "InventoryLab.Replay",
+   "samples": [
+    "InventoryLab"
+   ],
+   "modes": [
+    "release",
+    "native-aot"
+   ],
+   "needs": [
+    "templates"
+   ],
+   "baselines": [
+    "engine/tests/results/inventorylab-upgrade-x64/v2-input.save",
+    "engine/tests/InventoryLab.Replay/*.py (inline expected hashes)"
+   ],
+   "watch": [
+    "engine/src/Engine.Core/InputReplay.cs",
+    "engine/src/Engine.Core/PlayerStorage*.cs",
+    "engine/src/Engine.Player/ReplayCapture.cs",
+    "engine/tests/fixtures/InventoryLab/**",
+    "engine/tests/desktop_players.py"
+   ],
+   "omitted": "build_guest.py는 x64 게스트 실행기라 넣지 않았다(Mac에서는 ./monoon test replay가 같은 재생을 한다).",
+   "steps": [
+    {
+     "kind": "build",
+     "modes": [
+      "release"
+     ],
+     "run": "./monoon build samples/InventoryLab release --profile distribution --output \"$work/builds\""
+    },
+    {
+     "kind": "build",
+     "modes": [
+      "native-aot"
+     ],
+     "run": "./monoon build samples/InventoryLab native-aot --profile distribution --output \"$work/builds\""
+    },
+    {
+     "kind": "play",
+     "modes": [
+      "release",
+      "native-aot"
+     ],
+     "run": "./monoon test replay \"$work/builds\""
+    },
+    {
+     "kind": "play",
+     "modes": [
+      "release"
+     ],
+     "run": "python3 \"$qa/check_recovery.py\" \"$work/builds/InventoryLab.app/Contents/MacOS/MoNoonPlayer\" engine/tests/fixtures/InventoryLab \"$work/slot-recovery-release\""
+    }
+   ]
+  },
+  {
+   "id": "InventoryLab.RichText",
+   "samples": [
+    "InventoryLab"
+   ],
+   "modes": [
+    "scene-play",
+    "release",
+    "native-aot"
+   ],
+   "needs": [
+    "editor",
+    "gui",
+    "templates"
+   ],
+   "probe": "RichTextProbe",
+   "baselines": [],
+   "watch": [
+    "engine/src/Engine.Core/RichText.cs",
+    "engine/src/Engine.Core/WorldText2D.cs",
+    "engine/src/Engine.Desktop/SdlText.cs",
+    "engine/src/Engine.Desktop/TtfTextRasterizer.cs"
+   ],
+   "steps": [
+    {
+     "kind": "prepare",
+     "run": "python3 \"$qa/verify.py\" prepare samples/InventoryLab \"$work/InventoryLab\""
+    },
+    {
+     "kind": "build",
+     "modes": [
+      "release"
+     ],
+     "run": "./monoon build \"$work/InventoryLab\" release --profile distribution --output \"$work/builds\""
+    },
+    {
+     "kind": "build",
+     "modes": [
+      "native-aot"
+     ],
+     "run": "./monoon build \"$work/InventoryLab\" native-aot --profile distribution --output \"$work/builds\""
+    },
+    {
+     "kind": "play",
+     "modes": [
+      "release"
+     ],
+     "run": "python3 \"$qa/verify.py\" play \"$work/builds/InventoryLab.app/Contents/MacOS/MoNoonPlayer\" \"$work/runs/release\""
+    },
+    {
+     "kind": "play",
+     "modes": [
+      "native-aot"
+     ],
+     "run": "python3 \"$qa/verify.py\" play \"$work/builds/NativeAOT/InventoryLab.app/Contents/MacOS/MoNoonPlayer\" \"$work/runs/native-aot\""
+    },
+    {
+     "kind": "probe",
+     "modes": [
+      "scene-play"
+     ],
+     "run": "dotnet build \"$qa\" -c Release -m:1 -p:UsedAvaloniaProducts="
+    },
+    {
+     "kind": "editor",
+     "modes": [
+      "scene-play"
+     ],
+     "gui": true,
+     "run": "$lock python3 \"$qa/editor.py\" $app \"$work/InventoryLab\" $bin/RichTextProbe/release/RichTextProbe.dll \"$work/runs/scene-play\""
+    },
+    {
+     "kind": "compare",
+     "modes": [
+      "scene-play",
+      "release",
+      "native-aot"
+     ],
+     "run": "python3 \"$qa/verify.py\" compare \"$work/runs\""
+    }
+   ]
+  },
+  {
+   "id": "InventoryLab.ScriptFields",
+   "samples": [
+    "InventoryLab"
+   ],
+   "modes": [
+    "scene-play",
+    "release",
+    "native-aot"
+   ],
+   "needs": [
+    "editor",
+    "gui",
+    "templates"
+   ],
+   "probe": "ScriptFieldsProbe",
+   "baselines": [],
+   "watch": [
+    "engine/src/Engine.Authoring/ProjectScripts.Field*.cs",
+    "engine/src/Engine.Authoring/ScriptInspectorInfo.cs",
+    "engine/src/Engine.Core/ScriptValues.cs",
+    "engine/src/Engine.Editor/Inspector/MainWindow.ScriptCollections.cs",
+    "engine/src/Engine.Editor/Model/ScriptValueEdits.cs"
+   ],
+   "steps": [
+    {
+     "kind": "probe",
+     "modes": [
+      "scene-play"
+     ],
+     "run": "dotnet build $qa -c Release -m:1 -p:UsedAvaloniaProducts="
+    },
+    {
+     "kind": "prepare",
+     "run": "python3 $qa/verify.py prepare samples/InventoryLab \"$work/InventoryLab\""
+    },
+    {
+     "kind": "editor",
+     "modes": [
+      "scene-play"
+     ],
+     "gui": true,
+     "run": "$lock python3 $qa/verify.py editor $app \"$work/InventoryLab\" $probe_dll \"$work/out\" edit"
+    },
+    {
+     "kind": "editor",
+     "modes": [
+      "scene-play"
+     ],
+     "gui": true,
+     "run": "$lock python3 $qa/verify.py editor $app \"$work/InventoryLab\" $probe_dll \"$work/out\" reopen"
+    },
+    {
+     "kind": "build",
+     "modes": [
+      "release"
+     ],
+     "run": "./monoon build \"$work/InventoryLab\" release --profile distribution --output \"$work/builds\""
+    },
+    {
+     "kind": "build",
+     "modes": [
+      "native-aot"
+     ],
+     "run": "./monoon build \"$work/InventoryLab\" native-aot --profile distribution --output \"$work/builds\""
+    },
+    {
+     "kind": "play",
+     "modes": [
+      "release"
+     ],
+     "run": "python3 $qa/verify.py play \"$work/builds/InventoryLab.app/Contents/MacOS/MoNoonPlayer\" \"$work/release\""
+    },
+    {
+     "kind": "play",
+     "modes": [
+      "native-aot"
+     ],
+     "run": "python3 $qa/verify.py play \"$work/builds/NativeAOT/InventoryLab.app/Contents/MacOS/MoNoonPlayer\" \"$work/aot\""
+    },
+    {
+     "kind": "compare",
+     "modes": [
+      "scene-play",
+      "release",
+      "native-aot"
+     ],
+     "run": "python3 $qa/verify.py compare \"$work/out\" \"$work/release\" \"$work/aot\""
+    },
+    {
+     "kind": "compare",
+     "modes": [
+      "native-aot"
+     ],
+     "run": "python3 $qa/verify.py scan \"$work/builds/InventoryLab.app\" \"$work/builds/NativeAOT/InventoryLab.app\""
+    }
+   ]
+  },
+  {
+   "id": "InventoryLab.WorldText",
+   "samples": [
+    "InventoryLab"
+   ],
+   "modes": [
+    "scene-play",
+    "release",
+    "native-aot"
+   ],
+   "needs": [
+    "editor",
+    "gui",
+    "templates"
+   ],
+   "probe": "WorldTextProbe",
+   "baselines": [],
+   "watch": [
+    "engine/src/Engine.Core/WorldText2D.cs",
+    "engine/src/Engine.Desktop/SdlText.cs"
+   ],
+   "steps": [
+    {
+     "kind": "prepare",
+     "run": "python3 \"$qa/verify.py\" prepare samples/InventoryLab \"$work/InventoryLab\""
+    },
+    {
+     "kind": "build",
+     "modes": [
+      "release"
+     ],
+     "run": "./monoon build \"$work/InventoryLab\" release --profile distribution --output \"$work/builds\""
+    },
+    {
+     "kind": "build",
+     "modes": [
+      "native-aot"
+     ],
+     "run": "./monoon build \"$work/InventoryLab\" native-aot --profile distribution --output \"$work/builds\""
+    },
+    {
+     "kind": "play",
+     "modes": [
+      "release"
+     ],
+     "run": "python3 \"$qa/verify.py\" play \"$work/builds/InventoryLab.app/Contents/MacOS/MoNoonPlayer\" \"$work/runs/release\""
+    },
+    {
+     "kind": "play",
+     "modes": [
+      "native-aot"
+     ],
+     "run": "python3 \"$qa/verify.py\" play \"$work/builds/NativeAOT/InventoryLab.app/Contents/MacOS/MoNoonPlayer\" \"$work/runs/native-aot\""
+    },
+    {
+     "kind": "probe",
+     "modes": [
+      "scene-play"
+     ],
+     "run": "dotnet build \"$qa\" -c Release -m:1 -p:UsedAvaloniaProducts="
+    },
+    {
+     "kind": "editor",
+     "modes": [
+      "scene-play"
+     ],
+     "gui": true,
+     "run": "$lock python3 \"$qa/editor.py\" $app \"$work/InventoryLab\" $bin/WorldTextProbe/release/WorldTextProbe.dll \"$work/runs/scene-play\""
+    },
+    {
+     "kind": "compare",
+     "modes": [
+      "scene-play",
+      "release",
+      "native-aot"
+     ],
+     "run": "python3 \"$qa/verify.py\" compare \"$work/runs\""
+    }
+   ]
+  },
+  {
+   "id": "KeyRoom.AssetFields",
+   "samples": [
+    "CollisionLab",
+    "KeyRoom",
+    "ParticleLab"
+   ],
+   "modes": [
+    "scene-play",
+    "release",
+    "native-aot"
+   ],
+   "needs": [
+    "editor",
+    "gui",
+    "templates"
+   ],
+   "probe": "AssetFieldsProbe",
+   "baselines": [],
+   "watch": [
+    "engine/src/Engine.Editor/Inspector/MainWindow.ReferenceFields.cs",
+    "engine/src/Engine.Editor/Inspector/MainWindow.AssetInspector.cs",
+    "engine/src/Engine.Editor/Inspector/MainWindow.Inspector.cs",
+    "engine/src/Engine.Editor/Panels/ReferenceField.cs",
+    "engine/src/Engine.Editor/Panels/CurveField.cs"
+   ],
+   "steps": [
+    {
+     "kind": "probe",
+     "modes": [
+      "scene-play"
+     ],
+     "run": "dotnet build $qa -c Release -m:1 -p:UsedAvaloniaProducts="
+    },
+    {
+     "kind": "prepare",
+     "run": "python3 $qa/verify.py prepare samples/KeyRoom \"$work/edit/KeyRoom\""
+    },
+    {
+     "kind": "prepare",
+     "run": "python3 $qa/verify.py finder \"$work/finder\""
+    },
+    {
+     "kind": "editor",
+     "modes": [
+      "scene-play"
+     ],
+     "gui": true,
+     "run": "$lock python3 $qa/verify.py editor $app \"$work/edit/KeyRoom\" $probe_dll \"$work/ui\" edit \"$work/finder/FinderChime.wav\""
+    },
+    {
+     "kind": "editor",
+     "modes": [
+      "scene-play"
+     ],
+     "gui": true,
+     "run": "$lock python3 $qa/verify.py editor $app \"$work/edit/KeyRoom\" $probe_dll \"$work/scene-play\" trace"
+    },
+    {
+     "kind": "prepare",
+     "run": "rsync -a --exclude .monoon --exclude bin --exclude obj samples/CollisionLab/ \"$work/field/CollisionLab/\""
+    },
+    {
+     "kind": "editor",
+     "modes": [
+      "scene-play"
+     ],
+     "gui": true,
+     "run": "$lock python3 $qa/verify.py editor $app \"$work/field/CollisionLab\" $probe_dll \"$work/field/out\" field"
+    },
+    {
+     "kind": "prepare",
+     "run": "rsync -a --exclude .monoon --exclude .monoon-compiled --exclude bin --exclude obj samples/ParticleLab/ \"$work/curves/ParticleLab/\""
+    },
+    {
+     "kind": "editor",
+     "modes": [
+      "scene-play"
+     ],
+     "gui": true,
+     "run": "$lock python3 $qa/verify.py editor $app \"$work/curves/ParticleLab\" $probe_dll \"$work/curves/out\" curves"
+    },
+    {
+     "kind": "prepare",
+     "run": "python3 $qa/verify.py prepare samples/KeyRoom \"$work/ie/edit/KeyRoom\""
+    },
+    {
+     "kind": "editor",
+     "modes": [
+      "scene-play"
+     ],
+     "gui": true,
+     "run": "$lock python3 $qa/verify.py editor $app \"$work/ie/edit/KeyRoom\" $probe_dll \"$work/ie/ui\" inspect"
+    },
+    {
+     "kind": "editor",
+     "modes": [
+      "scene-play"
+     ],
+     "gui": true,
+     "run": "$lock python3 $qa/verify.py editor $app \"$work/ie/edit/KeyRoom\" $probe_dll \"$work/ie/scene-play\" trace"
+    },
+    {
+     "kind": "prepare",
+     "run": "rsync -a --exclude .monoon --exclude .monoon-compiled \"$work/ie/edit/KeyRoom/\" \"$work/ie/base/KeyRoom/\""
+    },
+    {
+     "kind": "prepare",
+     "run": "cp \"$work/ie/ui/inspect-base.scene\" \"$work/ie/base/KeyRoom/Scenes/KeyRoom.scene\"   # 피벗만 바꾸기 전 씬"
+    },
+    {
+     "kind": "build",
+     "modes": [
+      "release"
+     ],
+     "run": "./monoon build \"$work/ie/edit/KeyRoom\" release --profile distribution --output \"$work/ie/builds\""
+    },
+    {
+     "kind": "build",
+     "modes": [
+      "native-aot"
+     ],
+     "run": "./monoon build \"$work/ie/edit/KeyRoom\" native-aot --profile distribution --output \"$work/ie/builds\""
+    },
+    {
+     "kind": "build",
+     "modes": [
+      "release"
+     ],
+     "run": "./monoon build \"$work/ie/base/KeyRoom\" release --profile distribution --output \"$work/ie/base-builds\""
+    },
+    {
+     "kind": "play",
+     "modes": [
+      "release"
+     ],
+     "run": "python3 $qa/verify.py play \"$work/ie/builds/KeyRoom.app/Contents/MacOS/MoNoonPlayer\" \"$work/ie/release\""
+    },
+    {
+     "kind": "play",
+     "modes": [
+      "native-aot"
+     ],
+     "run": "python3 $qa/verify.py play \"$work/ie/builds/NativeAOT/KeyRoom.app/Contents/MacOS/MoNoonPlayer\" \"$work/ie/aot\""
+    },
+    {
+     "kind": "play",
+     "modes": [
+      "release"
+     ],
+     "run": "python3 $qa/verify.py play \"$work/ie/base-builds/KeyRoom.app/Contents/MacOS/MoNoonPlayer\" \"$work/ie/base-release\""
+    },
+    {
+     "kind": "compare",
+     "modes": [
+      "scene-play",
+      "release",
+      "native-aot"
+     ],
+     "run": "python3 $qa/verify.py compare \"$work/ie/scene-play\" \"$work/ie/release\" \"$work/ie/aot\""
+    },
+    {
+     "kind": "compare",
+     "modes": [
+      "release"
+     ],
+     "run": "python3 $qa/verify.py differs \"$work/ie/release\" \"$work/ie/base-release\""
+    }
+   ]
+  },
+  {
+   "id": "KeyRoom.ComponentKeys",
+   "samples": [
+    "KeyRoom"
+   ],
+   "modes": [
+    "scene-play",
+    "release",
+    "native-aot"
+   ],
+   "needs": [
+    "editor",
+    "gui",
+    "templates"
+   ],
+   "probe": "ComponentKeysProbe",
+   "baselines": [
+    "engine/tests/KeyRoom.ComponentKeys/Compare.inputreplay"
+   ],
+   "watch": [
+    "engine/src/Engine.Core/ComponentAnimation.cs",
+    "engine/src/Engine.Core/SceneComponent.cs",
+    "engine/src/Engine.Editor/Panels/ClipEditorWindow*.cs",
+    "engine/src/Engine.Editor/Panels/ClipTimelineTrack.cs"
+   ],
+   "steps": [
+    {
+     "kind": "prepare",
+     "run": "python3 \"$qa/verify.py\" prepare samples/KeyRoom \"$work/KeyRoom\""
+    },
+    {
+     "kind": "probe",
+     "modes": [
+      "scene-play"
+     ],
+     "run": "dotnet build \"$qa\" -c Release -m:1 -p:UsedAvaloniaProducts="
+    },
+    {
+     "kind": "build",
+     "modes": [
+      "release"
+     ],
+     "run": "./monoon build \"$work/KeyRoom\" release --profile distribution --output \"$work/products\""
+    },
+    {
+     "kind": "build",
+     "modes": [
+      "native-aot"
+     ],
+     "run": "./monoon build \"$work/KeyRoom\" native-aot --profile distribution --output \"$work/products\""
+    },
+    {
+     "kind": "play",
+     "modes": [
+      "release"
+     ],
+     "run": "python3 \"$qa/verify.py\" play \"$work/products/KeyRoom.app/Contents/MacOS/MoNoonPlayer\" \"$work/release\""
+    },
+    {
+     "kind": "play",
+     "modes": [
+      "native-aot"
+     ],
+     "run": "python3 \"$qa/verify.py\" play \"$work/products/NativeAOT/KeyRoom.app/Contents/MacOS/MoNoonPlayer\" \"$work/aot\""
+    },
+    {
+     "kind": "editor",
+     "modes": [
+      "scene-play"
+     ],
+     "gui": true,
+     "run": "$lock python3 \"$qa/editor.py\" $app \"$work/KeyRoom\" $bin/ComponentKeysProbe/release/ComponentKeysProbe.dll \"$work/editor\""
+    }
+   ]
+  },
+  {
+   "id": "KeyRoom.CopyPaste",
+   "samples": [
+    "KeyRoom"
+   ],
+   "modes": [
+    "scene-play",
+    "release",
+    "native-aot"
+   ],
+   "needs": [
+    "editor",
+    "gui",
+    "templates"
+   ],
+   "probe": "CopyPasteProbe",
+   "baselines": [],
+   "watch": [
+    "engine/src/Engine.Core/SceneDuplication.cs",
+    "engine/src/Engine.Editor/Hierarchy/MainWindow.Clipboard.cs"
+   ],
+   "steps": [
+    {
+     "kind": "prepare",
+     "run": "python3 \"$qa/verify.py\" prepare samples/KeyRoom \"$work/KeyRoom\""
+    },
+    {
+     "kind": "probe",
+     "modes": [
+      "scene-play"
+     ],
+     "run": "dotnet build \"$qa\" -c Release -m:1 -p:UsedAvaloniaProducts="
+    },
+    {
+     "kind": "editor",
+     "modes": [
+      "scene-play"
+     ],
+     "gui": true,
+     "run": "$lock python3 \"$qa/editor.py\" $app \"$work/KeyRoom\" $bin/CopyPasteProbe/release/CopyPasteProbe.dll \"$work/editor\""
+    },
+    {
+     "kind": "build",
+     "modes": [
+      "release"
+     ],
+     "run": "./monoon build \"$work/KeyRoom\" release --profile distribution --output \"$work/builds\""
+    },
+    {
+     "kind": "build",
+     "modes": [
+      "native-aot"
+     ],
+     "run": "./monoon build \"$work/KeyRoom\" native-aot --profile distribution --output \"$work/builds\""
+    },
+    {
+     "kind": "play",
+     "modes": [
+      "release"
+     ],
+     "run": "python3 \"$qa/verify.py\" play \"$work/builds/KeyRoom.app/Contents/MacOS/MoNoonPlayer\" \"$work/release\""
+    },
+    {
+     "kind": "play",
+     "modes": [
+      "native-aot"
+     ],
+     "run": "python3 \"$qa/verify.py\" play \"$work/builds/NativeAOT/KeyRoom.app/Contents/MacOS/MoNoonPlayer\" \"$work/native-aot\""
+    },
+    {
+     "kind": "compare",
+     "modes": [
+      "release"
+     ],
+     "run": "python3 \"$qa/verify.py\" forbidden \"$work/builds/KeyRoom.app\""
+    },
+    {
+     "kind": "compare",
+     "modes": [
+      "native-aot"
+     ],
+     "run": "python3 \"$qa/verify.py\" forbidden \"$work/builds/NativeAOT/KeyRoom.app\""
+    }
+   ]
+  },
+  {
+   "id": "KeyRoom.Desktop",
+   "samples": [],
+   "modes": [
+    "scene-play"
+   ],
+   "needs": [
+    "editor",
+    "gui"
+   ],
+   "baselines": [],
+   "watch": [
+    "engine/scripts/package-editor.py",
+    "engine/scripts/build-editor-mac.sh",
+    "engine/src/Engine.Editor/Shell/*.cs"
+   ],
+   "omitted": "retest.py windows|linux 와 verify_editor.py는 x64 VM 전용이라 넣지 않았다.",
+   "steps": [
+    {
+     "kind": "prepare",
+     "run": "python3 engine/scripts/package-editor.py keyroom --output \"$work/package\""
+    },
+    {
+     "kind": "editor",
+     "modes": [
+      "scene-play"
+     ],
+     "gui": true,
+     "run": "$lock \"$qa/mac/verify.sh\" editor/MoNoon.app \"$work/package/KeyRoom-sample.zip\" \"$work/editor-result\" engine/tests/results/editor-packaging/collected.save"
+    }
+   ]
+  },
+  {
+   "id": "KeyRoom.EditorBuild",
+   "samples": [
+    "KeyRoom"
+   ],
+   "modes": [
+    "scene-play"
+   ],
+   "needs": [
+    "editor",
+    "gui"
+   ],
+   "probe": "EditorBuildProbe",
+   "baselines": [],
+   "watch": [
+    "engine/src/Engine.Editor/Shell/MainWindow.Build.cs",
+    "engine/src/Engine.Authoring/GameBuild.cs",
+    "engine/src/Engine.Authoring/DesktopBuild.cs",
+    "engine/src/Engine.Authoring/NativeAotBuild.cs",
+    "engine/src/Engine.Authoring/BuildSettings.cs"
+   ],
+   "steps": [
+    {
+     "kind": "probe",
+     "modes": [
+      "scene-play"
+     ],
+     "run": "dotnet build \"$qa\" -c Release -m:1 -p:UsedAvaloniaProducts="
+    },
+    {
+     "kind": "editor",
+     "modes": [
+      "scene-play"
+     ],
+     "gui": true,
+     "run": "$lock python3 \"$qa/editor.py\" $app samples/KeyRoom $bin/EditorBuildProbe/release/EditorBuildProbe.dll \"$work/editor-build\""
+    }
+   ]
+  },
+  {
+   "id": "KeyRoom.EditorDocking",
+   "samples": [
+    "KeyRoom"
+   ],
+   "modes": [
+    "scene-play"
+   ],
+   "needs": [
+    "editor",
+    "gui"
+   ],
+   "probe": "DockingProbe",
+   "baselines": [],
+   "watch": [
+    "engine/src/Engine.Editor/Docking/*.cs"
+   ],
+   "steps": [
+    {
+     "kind": "probe",
+     "modes": [
+      "scene-play"
+     ],
+     "run": "dotnet build \"$qa\" -c Release -m:1 -p:UsedAvaloniaProducts="
+    },
+    {
+     "kind": "editor",
+     "modes": [
+      "scene-play"
+     ],
+     "gui": true,
+     "run": "$lock python3 $qa/editor.py $app samples/KeyRoom $bin/DockingProbe/release/DockingProbe.dll $work/monoon-docking"
+    }
+   ]
+  },
+  {
+   "id": "KeyRoom.EditorExtensions",
+   "samples": [
+    "KeyRoom"
+   ],
+   "modes": [
+    "scene-play"
+   ],
+   "needs": [
+    "editor",
+    "gui"
+   ],
+   "probe": "ExtensionsProbe",
+   "baselines": [],
+   "watch": [
+    "engine/src/Engine.Editor/Shell/EditorExtensions.cs",
+    "engine/src/Engine.Editor/Shell/MainWindow.Extensions.cs",
+    "engine/src/Engine.Authoring/ScriptInspectorInfo.cs"
+   ],
+   "steps": [
+    {
+     "kind": "probe",
+     "modes": [
+      "scene-play"
+     ],
+     "run": "dotnet build \"$qa\" -c Release -m:1 -p:UsedAvaloniaProducts="
+    },
+    {
+     "kind": "editor",
+     "modes": [
+      "scene-play"
+     ],
+     "gui": true,
+     "run": "$lock python3 $qa/editor.py $app samples/KeyRoom $bin/ExtensionsProbe/release/ExtensionsProbe.dll \"$work/extensions\""
+    }
+   ]
+  },
+  {
+   "id": "KeyRoom.EditorPanelsDetail",
+   "samples": [
+    "KeyRoom"
+   ],
+   "modes": [
+    "scene-play"
+   ],
+   "needs": [
+    "editor",
+    "gui"
+   ],
+   "probe": "PanelsDetailProbe",
+   "baselines": [],
+   "watch": [
+    "engine/src/Engine.Editor/Panels/*.cs",
+    "engine/src/Engine.Editor/PanelStyles.axaml"
+   ],
+   "steps": [
+    {
+     "kind": "probe",
+     "modes": [
+      "scene-play"
+     ],
+     "run": "dotnet build \"$qa\" -c Release -m:1 -p:UsedAvaloniaProducts="
+    },
+    {
+     "kind": "editor",
+     "modes": [
+      "scene-play"
+     ],
+     "gui": true,
+     "run": "$lock python3 $qa/editor.py $app samples/KeyRoom $bin/PanelsDetailProbe/release/PanelsDetailProbe.dll $work/monoon-panels"
+    }
+   ]
+  },
+  {
+   "id": "KeyRoom.EditorTheme",
+   "samples": [
+    "KeyRoom"
+   ],
+   "modes": [
+    "scene-play"
+   ],
+   "needs": [
+    "editor",
+    "gui"
+   ],
+   "probe": "EditorThemeProbe",
+   "baselines": [],
+   "watch": [
+    "engine/src/Engine.Editor/EditorStyles.axaml",
+    "engine/src/Engine.Editor/EditorTokens.cs",
+    "engine/src/Engine.Editor/EditorIcons.axaml",
+    "engine/src/Engine.Editor/PanelStyles.axaml"
+   ],
+   "steps": [
+    {
+     "kind": "probe",
+     "modes": [
+      "scene-play"
+     ],
+     "run": "dotnet build \"$qa\" -c Release -m:1 -p:UsedAvaloniaProducts="
+    },
+    {
+     "kind": "editor",
+     "modes": [
+      "scene-play"
+     ],
+     "gui": true,
+     "run": "$lock python3 \"$qa/editor.py\" $app samples/KeyRoom $bin/EditorThemeProbe/release/EditorThemeProbe.dll \"$work/theme\""
+    }
+   ]
+  },
+  {
+   "id": "KeyRoom.FieldRename",
+   "samples": [
+    "KeyRoom"
+   ],
+   "modes": [
+    "scene-play",
+    "release",
+    "native-aot"
+   ],
+   "needs": [
+    "editor",
+    "gui",
+    "templates"
+   ],
+   "probe": "FieldRenameProbe",
+   "baselines": [],
+   "watch": [
+    "engine/src/Engine.Authoring/ProjectScripts.FieldNames.cs",
+    "engine/src/Engine.Core/FormerlySerializedAsAttribute.cs",
+    "engine/src/Engine.Core/ScriptValues.cs"
+   ],
+   "steps": [
+    {
+     "kind": "prepare",
+     "run": "python3 \"$qa/verify.py\" prepare samples/KeyRoom \"$work/KeyRoom\""
+    },
+    {
+     "kind": "probe",
+     "modes": [
+      "scene-play"
+     ],
+     "run": "dotnet build \"$qa\" -c Release -m:1 -p:UsedAvaloniaProducts="
+    },
+    {
+     "kind": "editor",
+     "modes": [
+      "scene-play"
+     ],
+     "gui": true,
+     "run": "$lock python3 \"$qa/editor.py\" $app \"$work/KeyRoom\" $bin/FieldRenameProbe/release/FieldRenameProbe.dll \"$work/editor\""
+    },
+    {
+     "kind": "build",
+     "modes": [
+      "release"
+     ],
+     "run": "./monoon build \"$work/KeyRoom\" release --profile distribution --output \"$work/builds\""
+    },
+    {
+     "kind": "build",
+     "modes": [
+      "native-aot"
+     ],
+     "run": "./monoon build \"$work/KeyRoom\" native-aot --profile distribution --output \"$work/builds\""
+    },
+    {
+     "kind": "play",
+     "modes": [
+      "release"
+     ],
+     "run": "python3 \"$qa/verify.py\" play \"$work/builds/KeyRoom.app/Contents/MacOS/MoNoonPlayer\" \"$work/release\""
+    },
+    {
+     "kind": "play",
+     "modes": [
+      "native-aot"
+     ],
+     "run": "python3 \"$qa/verify.py\" play \"$work/builds/NativeAOT/KeyRoom.app/Contents/MacOS/MoNoonPlayer\" \"$work/native-aot\""
+    }
+   ]
+  },
+  {
+   "id": "KeyRoom.InputInteractions",
+   "samples": [
+    "KeyRoom"
+   ],
+   "modes": [
+    "scene-play",
+    "release",
+    "native-aot"
+   ],
+   "needs": [
+    "editor",
+    "gui",
+    "templates"
+   ],
+   "probe": "InputProbe",
+   "baselines": [],
+   "watch": [
+    "engine/src/Engine.Core/InputActions.cs",
+    "engine/src/Engine.Core/GameInputRouter.cs",
+    "engine/src/Engine.Editor/Panels/InputMapWindow.cs",
+    "engine/src/Engine.Editor/Panels/MainWindow.InputActions.cs"
+   ],
+   "steps": [
+    {
+     "kind": "probe",
+     "modes": [
+      "scene-play"
+     ],
+     "run": "dotnet build \"$qa\" -c Release -m:1 -p:UsedAvaloniaProducts="
+    },
+    {
+     "kind": "prepare",
+     "run": "python3 \"$qa/verify.py\" prepare samples/KeyRoom \"$work/KeyRoom\""
+    },
+    {
+     "kind": "build",
+     "modes": [
+      "release"
+     ],
+     "run": "./monoon build \"$work/KeyRoom\" release --profile distribution --output \"$work/builds\""
+    },
+    {
+     "kind": "build",
+     "modes": [
+      "native-aot"
+     ],
+     "run": "./monoon build \"$work/KeyRoom\" native-aot --profile distribution --output \"$work/builds\""
+    },
+    {
+     "kind": "play",
+     "modes": [
+      "release"
+     ],
+     "run": "python3 \"$qa/verify.py\" play \"$work/builds/KeyRoom.app/Contents/MacOS/MoNoonPlayer\" \"$work/release\""
+    },
+    {
+     "kind": "play",
+     "modes": [
+      "native-aot"
+     ],
+     "run": "python3 \"$qa/verify.py\" play \"$work/builds/NativeAOT/KeyRoom.app/Contents/MacOS/MoNoonPlayer\" \"$work/aot\""
+    },
+    {
+     "kind": "editor",
+     "modes": [
+      "scene-play"
+     ],
+     "gui": true,
+     "run": "$lock python3 \"$qa/editor.py\" $app \"$work/KeyRoom\" $bin/InputProbe/release/InputProbe.dll \"$work/scene-play\""
+    },
+    {
+     "kind": "compare",
+     "modes": [
+      "scene-play",
+      "release",
+      "native-aot"
+     ],
+     "run": "python3 \"$qa/verify.py\" check \"$work/scene-play\" \"$work/release\" \"$work/aot\""
+    }
+   ]
+  },
+  {
+   "id": "KeyRoom.InputMapEditor",
+   "samples": [
+    "KeyRoom"
+   ],
+   "modes": [
+    "scene-play"
+   ],
+   "needs": [
+    "editor",
+    "gui"
+   ],
+   "probe": "InputMapEditorProbe",
+   "baselines": [],
+   "watch": [
+    "engine/src/Engine.Core/InputActions.cs",
+    "engine/src/Engine.Editor/Panels/InputMapWindow.cs",
+    "engine/src/Engine.Editor/Panels/MainWindow.InputActions.cs"
+   ],
+   "steps": [
+    {
+     "kind": "probe",
+     "modes": [
+      "scene-play"
+     ],
+     "run": "dotnet build \"$qa\" -c Release -m:1 -p:UsedAvaloniaProducts="
+    },
+    {
+     "kind": "editor",
+     "modes": [
+      "scene-play"
+     ],
+     "gui": true,
+     "run": "$lock python3 $qa/editor.py $app $bin/InputMapEditorProbe/release/InputMapEditorProbe.dll \"$work/run\""
+    }
+   ]
+  },
+  {
+   "id": "KeyRoom.InspectorComponents",
+   "samples": [
+    "KeyRoom"
+   ],
+   "modes": [
+    "scene-play",
+    "release",
+    "native-aot"
+   ],
+   "needs": [
+    "editor",
+    "gui",
+    "templates"
+   ],
+   "probe": "InspectorComponentsProbe",
+   "baselines": [],
+   "watch": [
+    "engine/src/Engine.Core/SceneComponent.cs",
+    "engine/src/Engine.Core/ScriptLifecycle.cs",
+    "engine/src/Engine.Editor/Inspector/ComponentPicker.cs",
+    "engine/src/Engine.Editor/Inspector/ComponentRows.cs",
+    "engine/src/Engine.Editor/Inspector/ComponentSection.cs"
+   ],
+   "steps": [
+    {
+     "kind": "probe",
+     "modes": [
+      "scene-play"
+     ],
+     "run": "dotnet build $qa -c Release -m:1 -p:UsedAvaloniaProducts="
+    },
+    {
+     "kind": "prepare",
+     "run": "python3 $qa/verify.py prepare samples/KeyRoom \"$work/KeyRoom\""
+    },
+    {
+     "kind": "build",
+     "modes": [
+      "release"
+     ],
+     "run": "./monoon build \"$work/KeyRoom\" release --profile distribution --output \"$work/builds\""
+    },
+    {
+     "kind": "build",
+     "modes": [
+      "native-aot"
+     ],
+     "run": "./monoon build \"$work/KeyRoom\" native-aot --profile distribution --output \"$work/builds\""
+    },
+    {
+     "kind": "play",
+     "modes": [
+      "release"
+     ],
+     "run": "python3 $qa/verify.py play \"$work/builds/KeyRoom.app/Contents/MacOS/MoNoonPlayer\" \"$work/release\""
+    },
+    {
+     "kind": "play",
+     "modes": [
+      "native-aot"
+     ],
+     "run": "python3 $qa/verify.py play \"$work/builds/NativeAOT/KeyRoom.app/Contents/MacOS/MoNoonPlayer\" \"$work/aot\""
+    },
+    {
+     "kind": "compare",
+     "modes": [
+      "release",
+      "native-aot"
+     ],
+     "run": "python3 $qa/verify.py scan \"$work/builds/KeyRoom.app\" \"$work/builds/NativeAOT/KeyRoom.app\""
+    },
+    {
+     "kind": "prepare",
+     "run": "python3 $qa/verify.py prepare samples/KeyRoom \"$work/edit/KeyRoom\""
+    },
+    {
+     "kind": "editor",
+     "modes": [
+      "scene-play"
+     ],
+     "gui": true,
+     "run": "$lock python3 $qa/verify.py editor $app \"$work/edit/KeyRoom\" $probe_dll \"$work/scene-play\""
+    },
+    {
+     "kind": "compare",
+     "modes": [
+      "scene-play",
+      "release",
+      "native-aot"
+     ],
+     "run": "python3 $qa/verify.py compare \"$work/scene-play\" \"$work/release\" \"$work/aot\""
+    },
+    {
+     "kind": "editor",
+     "modes": [
+      "scene-play"
+     ],
+     "gui": true,
+     "run": "$lock python3 $qa/editor.py $app samples/KeyRoom $probe_dll \"$work/ui\""
+    }
+   ]
+  },
+  {
+   "id": "KeyRoom.ObjectGroups",
+   "samples": [],
+   "modes": [
+    "scene-play"
+   ],
+   "needs": [
+    "editor",
+    "gui"
+   ],
+   "probe": "ObjectGroupsProbe",
+   "baselines": [],
+   "watch": [
+    "engine/src/Engine.Core/ObjectGroups.cs",
+    "engine/src/Engine.Editor/Hierarchy/MainWindow.Hierarchy.cs",
+    "engine/scripts/package-editor.py"
+   ],
+   "steps": [
+    {
+     "kind": "probe",
+     "modes": [
+      "scene-play"
+     ],
+     "run": "dotnet build \"$qa\" -c Release -m:1 -p:UsedAvaloniaProducts="
+    },
+    {
+     "kind": "prepare",
+     "run": "python3 engine/scripts/package-editor.py keyroom --output \"$work/package\""
+    },
+    {
+     "kind": "editor",
+     "modes": [
+      "scene-play"
+     ],
+     "gui": true,
+     "run": "$lock python3 \"$qa/verify.py\" $app \"$work/package/KeyRoom-sample.zip\" $probe_dll \"$work/run\""
+    }
+   ]
+  },
+  {
+   "id": "KeyRoom.PlayFields",
+   "samples": [
+    "KeyRoom"
+   ],
+   "modes": [
+    "scene-play"
+   ],
+   "needs": [
+    "editor",
+    "gui"
+   ],
+   "probe": "PlayFieldsProbe",
+   "baselines": [],
+   "watch": [
+    "engine/src/Engine.Editor/Inspector/MainWindow.PlayInspector.cs",
+    "engine/src/Engine.Editor/Debugging/SceneDebugValues.cs"
+   ],
+   "steps": [
+    {
+     "kind": "probe",
+     "modes": [
+      "scene-play"
+     ],
+     "run": "dotnet build \"$qa\" -c Release -m:1 -p:UsedAvaloniaProducts="
+    },
+    {
+     "kind": "prepare",
+     "run": "python3 \"$qa/verify.py\" prepare samples/KeyRoom \"$work/KeyRoom\""
+    },
+    {
+     "kind": "editor",
+     "modes": [
+      "scene-play"
+     ],
+     "gui": true,
+     "run": "$lock python3 \"$qa/verify.py\" editor $app \"$work/KeyRoom\" $bin/PlayFieldsProbe/release/PlayFieldsProbe.dll \"$work/play\""
+    }
+   ]
+  },
+  {
+   "id": "KeyRoom.PlayInspector",
+   "samples": [],
+   "modes": [
+    "scene-play"
+   ],
+   "needs": [
+    "editor",
+    "gui",
+    "keyboard"
+   ],
+   "probe": "Probe",
+   "baselines": [],
+   "watch": [
+    "engine/src/Engine.Editor/Inspector/MainWindow.PlayInspector.cs",
+    "engine/src/Engine.Editor/Debugging/SceneDebugValues.cs",
+    "engine/scripts/package-editor.py"
+   ],
+   "steps": [
+    {
+     "kind": "probe",
+     "modes": [
+      "scene-play"
+     ],
+     "run": "dotnet build \"$qa\" -c Release -m:1 -p:UsedAvaloniaProducts="
+    },
+    {
+     "kind": "prepare",
+     "run": "python3 engine/scripts/package-editor.py keyroom --output \"$work/package\""
+    },
+    {
+     "kind": "prepare",
+     "run": "swiftc \"$qa/mac-input.swift\" -o \"$work/mac-input\""
+    },
+    {
+     "kind": "editor",
+     "modes": [
+      "scene-play"
+     ],
+     "gui": true,
+     "run": "$lock python3 \"$qa/verify_play.py\" $app \"$work/package/KeyRoom-sample.zip\" $probe_dll \"$work/run\" --mac-input \"$work/mac-input\""
+    }
+   ]
+  },
+  {
+   "id": "KeyRoom.PrefabStructure",
+   "samples": [
+    "KeyRoom"
+   ],
+   "modes": [
+    "scene-play",
+    "release",
+    "native-aot"
+   ],
+   "needs": [
+    "editor",
+    "gui",
+    "templates"
+   ],
+   "probe": "PrefabStructureProbe",
+   "baselines": [],
+   "watch": [
+    "engine/src/Engine.Core/PrefabStructure.cs",
+    "engine/src/Engine.Core/PrefabMerge.cs",
+    "engine/src/Engine.Core/Prefabs.cs",
+    "engine/src/Engine.Editor/Hierarchy/MainWindow.Prefabs.cs",
+    "engine/src/Engine.Editor/Inspector/MainWindow.Overrides.cs"
+   ],
+   "steps": [
+    {
+     "kind": "prepare",
+     "run": "python3 \"$qa/verify.py\" prepare samples/KeyRoom \"$work/KeyRoom\""
+    },
+    {
+     "kind": "probe",
+     "modes": [
+      "scene-play"
+     ],
+     "run": "dotnet build \"$qa\" -c Release -m:1 -p:UsedAvaloniaProducts="
+    },
+    {
+     "kind": "editor",
+     "modes": [
+      "scene-play"
+     ],
+     "gui": true,
+     "run": "$lock python3 \"$qa/editor.py\" $app \"$work/KeyRoom\" $bin/PrefabStructureProbe/release/PrefabStructureProbe.dll \"$work/editor\""
+    },
+    {
+     "kind": "build",
+     "modes": [
+      "release"
+     ],
+     "run": "./monoon build \"$work/KeyRoom\" release --profile distribution --output \"$work/builds\""
+    },
+    {
+     "kind": "build",
+     "modes": [
+      "native-aot"
+     ],
+     "run": "./monoon build \"$work/KeyRoom\" native-aot --profile distribution --output \"$work/builds\""
+    },
+    {
+     "kind": "play",
+     "modes": [
+      "release"
+     ],
+     "run": "python3 \"$qa/verify.py\" play \"$work/builds/KeyRoom.app/Contents/MacOS/MoNoonPlayer\" \"$work/release\""
+    },
+    {
+     "kind": "play",
+     "modes": [
+      "native-aot"
+     ],
+     "run": "python3 \"$qa/verify.py\" play \"$work/builds/NativeAOT/KeyRoom.app/Contents/MacOS/MoNoonPlayer\" \"$work/native-aot\""
+    }
+   ]
+  },
+  {
+   "id": "KeyRoom.Rebinding",
+   "samples": [
+    "KeyRoom"
+   ],
+   "modes": [
+    "scene-play",
+    "release",
+    "native-aot"
+   ],
+   "needs": [
+    "editor",
+    "gui",
+    "templates"
+   ],
+   "probe": "EditorProbe",
+   "baselines": [],
+   "watch": [
+    "engine/src/Engine.Core/InputRebinding.cs",
+    "engine/src/Engine.Core/InputActions.cs",
+    "engine/src/Engine.Core/PlayerStorage.cs"
+   ],
+   "steps": [
+    {
+     "kind": "prepare",
+     "run": "python3 \"$qa/verify.py\" prepare samples/KeyRoom \"$work/KeyRoom\""
+    },
+    {
+     "kind": "build",
+     "modes": [
+      "release"
+     ],
+     "run": "./monoon build \"$work/KeyRoom\" release --profile distribution --output \"$work/builds\""
+    },
+    {
+     "kind": "build",
+     "modes": [
+      "native-aot"
+     ],
+     "run": "./monoon build \"$work/KeyRoom\" native-aot --profile distribution --output \"$work/builds\""
+    },
+    {
+     "kind": "play",
+     "modes": [
+      "release"
+     ],
+     "run": "python3 \"$qa/verify.py\" play \"$work/builds/KeyRoom.app/Contents/MacOS/MoNoonPlayer\" \"$work/release\""
+    },
+    {
+     "kind": "play",
+     "modes": [
+      "native-aot"
+     ],
+     "run": "python3 \"$qa/verify.py\" play \"$work/builds/NativeAOT/KeyRoom.app/Contents/MacOS/MoNoonPlayer\" \"$work/native-aot\""
+    },
+    {
+     "kind": "probe",
+     "modes": [
+      "scene-play"
+     ],
+     "run": "dotnet build \"$qa\" -c Release -m:1 -p:UsedAvaloniaProducts="
+    },
+    {
+     "kind": "editor",
+     "modes": [
+      "scene-play"
+     ],
+     "gui": true,
+     "run": "$lock python3 \"$qa/editor.py\" $app \"$work/KeyRoom\" $bin/EditorProbe/release/EditorProbe.dll \"$work/scene-play\""
+    }
+   ]
+  },
+  {
+   "id": "KeyRoom.ScriptReload",
+   "samples": [
+    "KeyRoom"
+   ],
+   "modes": [
+    "scene-play"
+   ],
+   "needs": [
+    "editor",
+    "gui"
+   ],
+   "probe": "ReloadProbe",
+   "baselines": [],
+   "watch": [
+    "engine/src/Engine.Authoring/ScriptReload.cs",
+    "engine/src/Engine.Authoring/ProjectScripts.cs",
+    "engine/src/Engine.Core/ScriptRuntime.cs"
+   ],
+   "steps": [
+    {
+     "kind": "probe",
+     "modes": [
+      "scene-play"
+     ],
+     "run": "dotnet build \"$qa\" -c Release -m:1 -p:UsedAvaloniaProducts="
+    },
+    {
+     "kind": "editor",
+     "modes": [
+      "scene-play"
+     ],
+     "gui": true,
+     "run": "$lock python3 $qa/editor.py $app samples/KeyRoom $bin/ReloadProbe/release/ReloadProbe.dll \"$work/reload\""
+    }
+   ]
+  },
+  {
+   "id": "KeyRoom.ScriptWaits",
+   "samples": [
+    "KeyRoom"
+   ],
+   "modes": [
+    "scene-play",
+    "release",
+    "native-aot"
+   ],
+   "needs": [
+    "editor",
+    "gui",
+    "templates"
+   ],
+   "probe": "EditorProbe",
+   "baselines": [],
+   "watch": [
+    "engine/src/Engine.Core/ScriptRoutines.cs",
+    "engine/src/Engine.Core/ScriptLifecycle.cs"
+   ],
+   "steps": [
+    {
+     "kind": "prepare",
+     "run": "python3 \"$qa/verify.py\" prepare samples/KeyRoom \"$work/KeyRoom\""
+    },
+    {
+     "kind": "build",
+     "modes": [
+      "release"
+     ],
+     "run": "./monoon build \"$work/KeyRoom\" release --profile distribution --output \"$work/builds\""
+    },
+    {
+     "kind": "build",
+     "modes": [
+      "native-aot"
+     ],
+     "run": "./monoon build \"$work/KeyRoom\" native-aot --profile distribution --output \"$work/builds\""
+    },
+    {
+     "kind": "play",
+     "modes": [
+      "release"
+     ],
+     "run": "python3 \"$qa/verify.py\" play \"$work/builds/KeyRoom.app/Contents/MacOS/MoNoonPlayer\" \"$work/release\""
+    },
+    {
+     "kind": "play",
+     "modes": [
+      "native-aot"
+     ],
+     "run": "python3 \"$qa/verify.py\" play \"$work/builds/NativeAOT/KeyRoom.app/Contents/MacOS/MoNoonPlayer\" \"$work/native-aot\""
+    },
+    {
+     "kind": "probe",
+     "modes": [
+      "scene-play"
+     ],
+     "run": "dotnet build \"$qa\" -c Release -m:1 -p:UsedAvaloniaProducts="
+    },
+    {
+     "kind": "editor",
+     "modes": [
+      "scene-play"
+     ],
+     "gui": true,
+     "run": "$lock python3 \"$qa/editor.py\" $app \"$work/KeyRoom\" $bin/EditorProbe/release/EditorProbe.dll \"$work/scene-play\""
+    },
+    {
+     "kind": "compare",
+     "modes": [
+      "scene-play",
+      "release",
+      "native-aot"
+     ],
+     "run": "python3 \"$qa/verify.py\" compare \"$work/scene-play/scene-play.trace\" \"$work/release/release.trace\" \"$work/native-aot/native-aot.trace\""
+    }
+   ]
+  },
+  {
+   "id": "KeyRoom.Tweens",
+   "samples": [
+    "KeyRoom"
+   ],
+   "modes": [
+    "scene-play",
+    "release",
+    "native-aot"
+   ],
+   "needs": [
+    "editor",
+    "gui",
+    "templates"
+   ],
+   "probe": "TweensProbe",
+   "baselines": [],
+   "watch": [
+    "engine/src/Engine.Core/ScriptTweens.cs",
+    "engine/src/Engine.Core/Tween2D.cs"
+   ],
+   "steps": [
+    {
+     "kind": "prepare",
+     "run": "python3 \"$qa/verify.py\" prepare samples/KeyRoom \"$work/KeyRoom\""
+    },
+    {
+     "kind": "build",
+     "modes": [
+      "release"
+     ],
+     "run": "./monoon build \"$work/KeyRoom\" release --profile distribution --output \"$work/builds\""
+    },
+    {
+     "kind": "build",
+     "modes": [
+      "native-aot"
+     ],
+     "run": "./monoon build \"$work/KeyRoom\" native-aot --profile distribution --output \"$work/builds\""
+    },
+    {
+     "kind": "play",
+     "modes": [
+      "release"
+     ],
+     "run": "python3 \"$qa/verify.py\" play \"$work/builds/KeyRoom.app/Contents/MacOS/MoNoonPlayer\" \"$work/release\""
+    },
+    {
+     "kind": "play",
+     "modes": [
+      "native-aot"
+     ],
+     "run": "python3 \"$qa/verify.py\" play \"$work/builds/NativeAOT/KeyRoom.app/Contents/MacOS/MoNoonPlayer\" \"$work/aot\""
+    },
+    {
+     "kind": "probe",
+     "modes": [
+      "scene-play"
+     ],
+     "run": "dotnet build \"$qa\" -c Release -m:1 -p:UsedAvaloniaProducts="
+    },
+    {
+     "kind": "editor",
+     "modes": [
+      "scene-play"
+     ],
+     "gui": true,
+     "run": "$lock python3 \"$qa/editor.py\" $app \"$work/KeyRoom\" $bin/TweensProbe/release/TweensProbe.dll \"$work/scene-play\""
+    },
+    {
+     "kind": "compare",
+     "modes": [
+      "scene-play",
+      "release",
+      "native-aot"
+     ],
+     "run": "python3 \"$qa/verify.py\" compare \"$work/scene-play/scene-play.trace\" \"$work/release/release.trace\" \"$work/aot/aot.trace\""
+    }
+   ]
+  },
+  {
+   "id": "KeyRoom.UiLayout",
+   "samples": [],
+   "modes": [
+    "scene-play"
+   ],
+   "needs": [
+    "editor",
+    "gui",
+    "keyboard"
+   ],
+   "probe": "UiLayoutProbe",
+   "baselines": [
+    "engine/tests/KeyRoom.UiLayout/BagEdges.inputreplay"
+   ],
+   "watch": [
+    "engine/src/Engine.Core/ScreenUi*.cs",
+    "engine/src/Engine.Core/UiNineSlice.cs",
+    "engine/src/Engine.Editor/Scene/MainWindow.UiPreview.cs",
+    "engine/src/Engine.Editor/Scene/SceneViewport.UiPreview.cs",
+    "engine/tests/KeyRoom.PlayInspector/verify_play.py"
+   ],
+   "steps": [
+    {
+     "kind": "probe",
+     "modes": [
+      "scene-play"
+     ],
+     "run": "dotnet build \"$qa\" -c Release -m:1 -p:UsedAvaloniaProducts="
+    },
+    {
+     "kind": "prepare",
+     "run": "python3 engine/scripts/package-editor.py keyroom --output \"$work/package\""
+    },
+    {
+     "kind": "prepare",
+     "run": "swiftc engine/tests/KeyRoom.PlayInspector/mac-input.swift -o \"$work/mac-input\""
+    },
+    {
+     "kind": "editor",
+     "modes": [
+      "scene-play"
+     ],
+     "gui": true,
+     "run": "$lock python3 engine/tests/KeyRoom.PlayInspector/verify_play.py $app \"$work/package/KeyRoom-sample.zip\" $probe_dll \"$work/run\" --mac-input \"$work/mac-input\""
+    }
+   ]
+  },
+  {
+   "id": "KeyRoom.WorldCheckpoints",
+   "samples": [],
+   "modes": [
+    "release",
+    "native-aot"
+   ],
+   "needs": [
+    "templates"
+   ],
+   "baselines": [
+    "engine/tests/KeyRoom.WorldCheckpoints/fixtures/carry/collected.inputreplay",
+    "engine/tests/KeyRoom.WorldCheckpoints/fixtures/carry/collected.save",
+    "engine/tests/KeyRoom.WorldCheckpoints/fixtures/carry/dropped-restored.inputreplay",
+    "engine/tests/KeyRoom.WorldCheckpoints/fixtures/carry/dropped.inputreplay",
+    "engine/tests/KeyRoom.WorldCheckpoints/fixtures/carry/dropped.save",
+    "engine/tests/KeyRoom.WorldCheckpoints/fixtures/carry/held-restored.inputreplay",
+    "engine/tests/KeyRoom.WorldCheckpoints/fixtures/carry/held.inputreplay",
+    "engine/tests/KeyRoom.WorldCheckpoints/fixtures/carry/held.save",
+    "engine/tests/KeyRoom.WorldCheckpoints/fixtures/carry/outside.inputreplay",
+    "engine/tests/KeyRoom.WorldCheckpoints/fixtures/carry/outside.save",
+    "engine/tests/KeyRoom.WorldCheckpoints/fixtures/collect.inputreplay",
+    "engine/tests/KeyRoom.WorldCheckpoints/fixtures/collected-reload.inputreplay",
+    "engine/tests/KeyRoom.WorldCheckpoints/fixtures/collected.save",
+    "engine/tests/KeyRoom.WorldCheckpoints/fixtures/pending.save",
+    "engine/tests/KeyRoom.WorldCheckpoints/fixtures/restore.inputreplay",
+    "engine/tests/KeyRoom.WorldCheckpoints/fixtures/spawn.inputreplay",
+    "engine/tests/KeyRoom.WorldCheckpoints/fixtures/"
+   ],
+   "watch": [
+    "engine/src/Engine.Core/WorldCheckpoints.cs",
+    "engine/src/Engine.Core/PlayerStorage*.cs",
+    "engine/tests/desktop_players.py"
+   ],
+   "steps": [
+    {
+     "kind": "play",
+     "modes": [
+      "release",
+      "native-aot"
+     ],
+     "run": "python3 \"$qa/ci.py\" osx-arm64 \"$work/results\""
+    }
+   ]
+  },
+  {
+   "id": "ParticleLab.Editor",
+   "samples": [
+    "ParticleLab"
+   ],
+   "modes": [
+    "scene-play"
+   ],
+   "needs": [
+    "editor",
+    "gui"
+   ],
+   "probe": "ParticleEditorProbe",
+   "baselines": [
+    "engine/tests/results/particles/osx-arm64/curves-trace.tsv"
+   ],
+   "watch": [
+    "engine/src/Engine.Core/Particles2D.cs",
+    "engine/src/Engine.Editor/Panels/ParticlePanel.cs",
+    "engine/src/Engine.Editor/Panels/MainWindow.Particles.cs",
+    "engine/src/Engine.Editor/Model/ParticlePre*.cs",
+    "engine/src/Engine.Editor/Inspector/MainWindow.ParticleCurves.cs"
+   ],
+   "steps": [
+    {
+     "kind": "probe",
+     "modes": [
+      "scene-play"
+     ],
+     "run": "dotnet build \"$qa\" -c Release -m:1 -p:UsedAvaloniaProducts="
+    },
+    {
+     "kind": "editor",
+     "modes": [
+      "scene-play"
+     ],
+     "gui": true,
+     "run": "$lock python3 \"$qa/editor.py\" $app samples/ParticleLab $bin/ParticleEditorProbe/release/ParticleEditorProbe.dll \"$work/particle-editor\""
+    }
+   ]
+  },
+  {
+   "id": "ParticleLab.Reload",
+   "samples": [
+    "ParticleLab"
+   ],
+   "modes": [
+    "scene-play"
+   ],
+   "needs": [
+    "editor",
+    "gui"
+   ],
+   "probe": "ParticleReloadProbe",
+   "baselines": [],
+   "watch": [
+    "engine/src/Engine.Core/Particles2D.cs",
+    "engine/src/Engine.Editor/Model/ParticlePreview.cs",
+    "engine/src/Engine.Editor/Project/ProjectSpriteMonitor.cs"
+   ],
+   "steps": [
+    {
+     "kind": "probe",
+     "modes": [
+      "scene-play"
+     ],
+     "run": "dotnet build \"$qa\" -c Release -m:1 -p:UsedAvaloniaProducts="
+    },
+    {
+     "kind": "editor",
+     "modes": [
+      "scene-play"
+     ],
+     "gui": true,
+     "run": "$lock python3 \"$qa/editor.py\" $app samples/ParticleLab $bin/ParticleReloadProbe/release/ParticleReloadProbe.dll \"$work/particle-reload\""
+    }
+   ]
+  },
+  {
+   "id": "ParticleLab.Trace",
+   "samples": [
+    "ParticleLab"
+   ],
+   "modes": [
+    "scene-play",
+    "release",
+    "native-aot"
+   ],
+   "needs": [
+    "editor",
+    "gui",
+    "templates"
+   ],
+   "probe": "ParticlesProbe",
+   "baselines": [],
+   "watch": [
+    "engine/src/Engine.Core/Particles2D.cs",
+    "engine/src/Engine.Core/ParticleCollision2D.cs"
+   ],
+   "steps": [
+    {
+     "kind": "prepare",
+     "run": "scenes=\"Modules Sorting Stress Curves Rain Fireworks Presets\""
+    },
+    {
+     "kind": "prepare",
+     "run": "for s in $scenes; do python3 \"$qa/verify.py\" prepare samples/ParticleLab \"$work/$s/ParticleLab\" \"$s\"; done"
+    },
+    {
+     "kind": "build",
+     "modes": [
+      "release"
+     ],
+     "run": "for s in $scenes; do ./monoon build \"$work/$s/ParticleLab\" release --profile distribution --output \"$work/$s/builds\"; done"
+    },
+    {
+     "kind": "build",
+     "modes": [
+      "native-aot"
+     ],
+     "run": "for s in $scenes; do ./monoon build \"$work/$s/ParticleLab\" native-aot --profile distribution --output \"$work/$s/builds\"; done"
+    },
+    {
+     "kind": "play",
+     "modes": [
+      "release"
+     ],
+     "run": "for s in $scenes; do python3 \"$qa/verify.py\" play \"$work/$s/builds/ParticleLab.app/Contents/MacOS/MoNoonPlayer\" \"$work/$s/release\" \"$s\"; done"
+    },
+    {
+     "kind": "play",
+     "modes": [
+      "native-aot"
+     ],
+     "run": "for s in $scenes; do python3 \"$qa/verify.py\" play \"$work/$s/builds/NativeAOT/ParticleLab.app/Contents/MacOS/MoNoonPlayer\" \"$work/$s/aot\" \"$s\"; done"
+    },
+    {
+     "kind": "probe",
+     "modes": [
+      "scene-play"
+     ],
+     "run": "dotnet build \"$qa\" -c Release -m:1 -p:UsedAvaloniaProducts="
+    },
+    {
+     "kind": "prepare",
+     "run": "for s in $scenes; do python3 \"$qa/verify.py\" prepare samples/ParticleLab \"$work/$s/edit/ParticleLab\" \"$s\"; done"
+    },
+    {
+     "kind": "editor",
+     "modes": [
+      "scene-play"
+     ],
+     "gui": true,
+     "run": "for s in $scenes; do $lock python3 \"$qa/verify.py\" editor $app \"$work/$s/edit/ParticleLab\" $bin/ParticlesProbe/release/ParticlesProbe.dll \"$work/$s/scene-play\" \"$s\"; done"
+    },
+    {
+     "kind": "compare",
+     "modes": [
+      "scene-play",
+      "release",
+      "native-aot"
+     ],
+     "run": "for s in $scenes; do python3 \"$qa/verify.py\" compare \"$work/$s/scene-play\" \"$work/$s/release\" \"$work/$s/aot\"; done"
+    }
+   ]
+  },
+  {
+   "id": "PlatformerLab.Colliders",
+   "samples": [
+    "PlatformerLab"
+   ],
+   "modes": [
+    "scene-play",
+    "release",
+    "native-aot"
+   ],
+   "needs": [
+    "editor",
+    "gui",
+    "templates"
+   ],
+   "probe": "CollidersProbe",
+   "baselines": [
+    "engine/tests/PlatformerLab.Colliders/RoundTrip.inputreplay"
+   ],
+   "watch": [
+    "engine/src/Engine.Core/CollisionGeometry.cs",
+    "engine/src/Engine.Core/Physics2D.cs",
+    "engine/src/Engine.Core/Rigidbody2D.cs",
+    "engine/src/Engine.Editor/Scene/SceneViewport.Colliders.cs"
+   ],
+   "steps": [
+    {
+     "kind": "prepare",
+     "run": "python3 \"$qa/verify.py\" prepare samples/PlatformerLab \"$work/PlatformerLab\""
+    },
+    {
+     "kind": "prepare",
+     "run": "python3 \"$qa/verify.py\" prepare samples/PlatformerLab \"$work/edit-project\""
+    },
+    {
+     "kind": "build",
+     "modes": [
+      "release"
+     ],
+     "run": "./monoon build \"$work/PlatformerLab\" release --profile distribution --output \"$work/builds\""
+    },
+    {
+     "kind": "build",
+     "modes": [
+      "native-aot"
+     ],
+     "run": "./monoon build \"$work/PlatformerLab\" native-aot --profile distribution --output \"$work/builds\""
+    },
+    {
+     "kind": "play",
+     "modes": [
+      "release"
+     ],
+     "run": "python3 \"$qa/verify.py\" play \"$work/builds/PlatformerLab.app/Contents/MacOS/MoNoonPlayer\" \"$work/release\""
+    },
+    {
+     "kind": "play",
+     "modes": [
+      "native-aot"
+     ],
+     "run": "python3 \"$qa/verify.py\" play \"$work/builds/NativeAOT/PlatformerLab.app/Contents/MacOS/MoNoonPlayer\" \"$work/aot\""
+    },
+    {
+     "kind": "probe",
+     "modes": [
+      "scene-play"
+     ],
+     "run": "dotnet build \"$qa\" -c Release -m:1 -p:UsedAvaloniaProducts="
+    },
+    {
+     "kind": "editor",
+     "modes": [
+      "scene-play"
+     ],
+     "gui": true,
+     "run": "$lock python3 \"$qa/editor.py\" $app \"$work/edit-project\" $bin/CollidersProbe/release/CollidersProbe.dll \"$work/scene-play\""
+    },
+    {
+     "kind": "compare",
+     "modes": [
+      "scene-play",
+      "release",
+      "native-aot"
+     ],
+     "run": "python3 \"$qa/verify.py\" compare \"$work/scene-play\" \"$work/release\" \"$work/aot\""
+    }
+   ]
+  },
+  {
+   "id": "PlatformerLab.Effects",
+   "samples": [
+    "PlatformerLab"
+   ],
+   "modes": [
+    "scene-play",
+    "release",
+    "native-aot"
+   ],
+   "needs": [
+    "editor",
+    "gui",
+    "templates"
+   ],
+   "probe": "EffectsProbe",
+   "baselines": [],
+   "watch": [
+    "engine/src/Engine.Core/Effects2D.cs",
+    "engine/src/Engine.Core/Particles2D.cs",
+    "engine/src/Engine.Core/Lighting2D.cs",
+    "engine/src/Engine.Desktop/ShaderSheets.cs",
+    "engine/src/Engine.Authoring/ShaderSheetBuild.cs"
+   ],
+   "steps": [
+    {
+     "kind": "prepare",
+     "run": "python3 \"$qa/verify.py\" prepare samples/PlatformerLab \"$work/PlatformerLab\""
+    },
+    {
+     "kind": "build",
+     "modes": [
+      "release"
+     ],
+     "run": "./monoon build \"$work/PlatformerLab\" release --profile distribution --output \"$work/builds\""
+    },
+    {
+     "kind": "build",
+     "modes": [
+      "native-aot"
+     ],
+     "run": "./monoon build \"$work/PlatformerLab\" native-aot --profile distribution --output \"$work/builds\""
+    },
+    {
+     "kind": "play",
+     "modes": [
+      "release"
+     ],
+     "run": "python3 \"$qa/verify.py\" play \"$work/builds/PlatformerLab.app/Contents/MacOS/MoNoonPlayer\" \"$work/release\""
+    },
+    {
+     "kind": "play",
+     "modes": [
+      "native-aot"
+     ],
+     "run": "python3 \"$qa/verify.py\" play \"$work/builds/NativeAOT/PlatformerLab.app/Contents/MacOS/MoNoonPlayer\" \"$work/aot\""
+    },
+    {
+     "kind": "probe",
+     "modes": [
+      "scene-play"
+     ],
+     "run": "dotnet build \"$qa\" -c Release -m:1 -p:UsedAvaloniaProducts="
+    },
+    {
+     "kind": "editor",
+     "modes": [
+      "scene-play"
+     ],
+     "gui": true,
+     "run": "$lock python3 \"$qa/verify.py\" editor $app \"$work/PlatformerLab\" $bin/EffectsProbe/release/EffectsProbe.dll \"$work/scene-play\""
+    },
+    {
+     "kind": "compare",
+     "modes": [
+      "scene-play",
+      "release",
+      "native-aot"
+     ],
+     "run": "python3 \"$qa/verify.py\" compare \"$work/scene-play\" \"$work/release\" \"$work/aot\""
+    }
+   ]
+  },
+  {
+   "id": "PlatformerLab.Joints",
+   "samples": [
+    "PlatformerLab"
+   ],
+   "modes": [
+    "scene-play",
+    "release",
+    "native-aot"
+   ],
+   "needs": [
+    "editor",
+    "gui",
+    "templates"
+   ],
+   "probe": "JointsProbe",
+   "baselines": [
+    "engine/tests/PlatformerLab.Joints/Cross.inputreplay"
+   ],
+   "watch": [
+    "engine/src/Engine.Core/Physics2D.cs",
+    "engine/src/Engine.Core/ScenePhysicsWorld.cs",
+    "engine/src/Engine.Core/Rigidbody2D.cs"
+   ],
+   "steps": [
+    {
+     "kind": "prepare",
+     "run": "python3 \"$qa/verify.py\" prepare samples/PlatformerLab \"$work/PlatformerLab\""
+    },
+    {
+     "kind": "build",
+     "modes": [
+      "release"
+     ],
+     "run": "./monoon build \"$work/PlatformerLab\" release --profile distribution --output \"$work/builds\""
+    },
+    {
+     "kind": "build",
+     "modes": [
+      "native-aot"
+     ],
+     "run": "./monoon build \"$work/PlatformerLab\" native-aot --profile distribution --output \"$work/builds\""
+    },
+    {
+     "kind": "play",
+     "modes": [
+      "release"
+     ],
+     "run": "python3 \"$qa/verify.py\" play \"$work/builds/PlatformerLab.app/Contents/MacOS/MoNoonPlayer\" \"$work/release\""
+    },
+    {
+     "kind": "play",
+     "modes": [
+      "native-aot"
+     ],
+     "run": "python3 \"$qa/verify.py\" play \"$work/builds/NativeAOT/PlatformerLab.app/Contents/MacOS/MoNoonPlayer\" \"$work/aot\""
+    },
+    {
+     "kind": "probe",
+     "modes": [
+      "scene-play"
+     ],
+     "run": "dotnet build \"$qa\" -c Release -m:1 -p:UsedAvaloniaProducts="
+    },
+    {
+     "kind": "editor",
+     "modes": [
+      "scene-play"
+     ],
+     "gui": true,
+     "run": "$lock python3 \"$qa/editor.py\" $app \"$work/PlatformerLab\" $bin/JointsProbe/release/JointsProbe.dll \"$work/scene-play\""
+    },
+    {
+     "kind": "compare",
+     "modes": [
+      "scene-play",
+      "release",
+      "native-aot"
+     ],
+     "run": "python3 \"$qa/verify.py\" compare \"$work/scene-play\" \"$work/release\" \"$work/aot\""
+    }
+   ]
+  },
+  {
+   "id": "PlatformerLab.Lighting",
+   "samples": [
+    "PlatformerLab"
+   ],
+   "modes": [
+    "scene-play",
+    "release",
+    "native-aot"
+   ],
+   "needs": [
+    "editor",
+    "gui",
+    "templates"
+   ],
+   "probe": "LightingProbe",
+   "baselines": [],
+   "watch": [
+    "engine/src/Engine.Core/Lighting2D.cs",
+    "engine/src/Engine.Desktop/SdlSpriteMask.cs",
+    "engine/src/Engine.Desktop/SdlCanvas.cs"
+   ],
+   "steps": [
+    {
+     "kind": "prepare",
+     "run": "python3 \"$qa/verify.py\" prepare samples/PlatformerLab \"$work/PlatformerLab\""
+    },
+    {
+     "kind": "build",
+     "modes": [
+      "release"
+     ],
+     "run": "./monoon build \"$work/PlatformerLab\" release --profile distribution --output \"$work/builds\""
+    },
+    {
+     "kind": "build",
+     "modes": [
+      "native-aot"
+     ],
+     "run": "./monoon build \"$work/PlatformerLab\" native-aot --profile distribution --output \"$work/builds\""
+    },
+    {
+     "kind": "play",
+     "modes": [
+      "release"
+     ],
+     "run": "python3 \"$qa/verify.py\" play \"$work/builds/PlatformerLab.app/Contents/MacOS/MoNoonPlayer\" \"$work/release\""
+    },
+    {
+     "kind": "play",
+     "modes": [
+      "native-aot"
+     ],
+     "run": "python3 \"$qa/verify.py\" play \"$work/builds/NativeAOT/PlatformerLab.app/Contents/MacOS/MoNoonPlayer\" \"$work/aot\""
+    },
+    {
+     "kind": "probe",
+     "modes": [
+      "scene-play"
+     ],
+     "run": "dotnet build \"$qa\" -c Release -m:1 -p:UsedAvaloniaProducts="
+    },
+    {
+     "kind": "editor",
+     "modes": [
+      "scene-play"
+     ],
+     "gui": true,
+     "run": "$lock python3 \"$qa/verify.py\" editor $app \"$work/PlatformerLab\" $bin/LightingProbe/release/LightingProbe.dll \"$work/scene-play\""
+    },
+    {
+     "kind": "compare",
+     "modes": [
+      "scene-play",
+      "release",
+      "native-aot"
+     ],
+     "run": "python3 \"$qa/verify.py\" compare \"$work/scene-play\" \"$work/release\" \"$work/aot\""
+    }
+   ]
+  },
+  {
+   "id": "PlatformerLab.Parallax",
+   "samples": [
+    "PlatformerLab"
+   ],
+   "modes": [
+    "scene-play",
+    "release",
+    "native-aot"
+   ],
+   "needs": [
+    "editor",
+    "gui",
+    "templates"
+   ],
+   "probe": "ParallaxProbe",
+   "baselines": [],
+   "watch": [
+    "engine/src/Engine.Core/Parallax2D.cs",
+    "engine/src/Engine.Core/Camera2D.cs"
+   ],
+   "steps": [
+    {
+     "kind": "prepare",
+     "run": "python3 \"$qa/verify.py\" prepare samples/PlatformerLab \"$work/PlatformerLab\""
+    },
+    {
+     "kind": "build",
+     "modes": [
+      "release"
+     ],
+     "run": "./monoon build \"$work/PlatformerLab\" release --profile distribution --output \"$work/builds\""
+    },
+    {
+     "kind": "build",
+     "modes": [
+      "native-aot"
+     ],
+     "run": "./monoon build \"$work/PlatformerLab\" native-aot --profile distribution --output \"$work/builds\""
+    },
+    {
+     "kind": "play",
+     "modes": [
+      "release"
+     ],
+     "run": "python3 \"$qa/verify.py\" play \"$work/builds/PlatformerLab.app/Contents/MacOS/MoNoonPlayer\" \"$work/release\""
+    },
+    {
+     "kind": "play",
+     "modes": [
+      "native-aot"
+     ],
+     "run": "python3 \"$qa/verify.py\" play \"$work/builds/NativeAOT/PlatformerLab.app/Contents/MacOS/MoNoonPlayer\" \"$work/aot\""
+    },
+    {
+     "kind": "compare",
+     "modes": [
+      "release",
+      "native-aot"
+     ],
+     "run": "python3 \"$qa/verify.py\" snapshots \"$work/release\" \"$work/aot\""
+    },
+    {
+     "kind": "probe",
+     "modes": [
+      "scene-play"
+     ],
+     "run": "dotnet build \"$qa\" -c Release -m:1 -p:UsedAvaloniaProducts="
+    },
+    {
+     "kind": "editor",
+     "modes": [
+      "scene-play"
+     ],
+     "gui": true,
+     "run": "$lock python3 \"$qa/editor.py\" $app \"$work/PlatformerLab\" $bin/ParallaxProbe/release/ParallaxProbe.dll \"$work/scene-play\""
+    },
+    {
+     "kind": "compare",
+     "modes": [
+      "scene-play",
+      "release",
+      "native-aot"
+     ],
+     "run": "python3 \"$qa/verify.py\" compare \"$work/scene-play/scene-play.trace\" \"$work/release/release.trace\" \"$work/aot/aot.trace\""
+    }
+   ]
+  },
+  {
+   "id": "PlatformerLab.Paths",
+   "samples": [
+    "PlatformerLab"
+   ],
+   "modes": [
+    "scene-play",
+    "release",
+    "native-aot"
+   ],
+   "needs": [
+    "editor",
+    "gui",
+    "templates"
+   ],
+   "probe": "PathsProbe",
+   "baselines": [],
+   "watch": [
+    "engine/src/Engine.Core/MotionPath.cs",
+    "engine/src/Engine.Core/Lines2D.cs",
+    "engine/src/Engine.Editor/Scene/SceneViewport.Paths.cs"
+   ],
+   "steps": [
+    {
+     "kind": "prepare",
+     "run": "python3 \"$qa/verify.py\" prepare samples/PlatformerLab \"$work/PlatformerLab\""
+    },
+    {
+     "kind": "build",
+     "modes": [
+      "release"
+     ],
+     "run": "./monoon build \"$work/PlatformerLab\" release --profile distribution --output \"$work/builds\""
+    },
+    {
+     "kind": "build",
+     "modes": [
+      "native-aot"
+     ],
+     "run": "./monoon build \"$work/PlatformerLab\" native-aot --profile distribution --output \"$work/builds\""
+    },
+    {
+     "kind": "play",
+     "modes": [
+      "release"
+     ],
+     "run": "python3 \"$qa/verify.py\" play \"$work/builds/PlatformerLab.app/Contents/MacOS/MoNoonPlayer\" \"$work/release\""
+    },
+    {
+     "kind": "play",
+     "modes": [
+      "native-aot"
+     ],
+     "run": "python3 \"$qa/verify.py\" play \"$work/builds/NativeAOT/PlatformerLab.app/Contents/MacOS/MoNoonPlayer\" \"$work/aot\""
+    },
+    {
+     "kind": "probe",
+     "modes": [
+      "scene-play"
+     ],
+     "run": "dotnet build \"$qa\" -c Release -m:1 -p:UsedAvaloniaProducts="
+    },
+    {
+     "kind": "editor",
+     "modes": [
+      "scene-play"
+     ],
+     "gui": true,
+     "run": "$lock python3 \"$qa/editor.py\" $app \"$work/PlatformerLab\" $bin/PathsProbe/release/PathsProbe.dll \"$work/scene-play\""
+    },
+    {
+     "kind": "compare",
+     "modes": [
+      "scene-play",
+      "release",
+      "native-aot"
+     ],
+     "run": "python3 \"$qa/verify.py\" compare \"$work/scene-play\" \"$work/release\" \"$work/aot\""
+    }
+   ]
+  },
+  {
+   "id": "PlatformerLab.Shaders",
+   "samples": [],
+   "modes": [],
+   "needs": [],
+   "baselines": [],
+   "watch": [
+    "engine/src/Engine.Core/BakedShaderSheets.cs",
+    "engine/src/Engine.Desktop/ShaderSheets.cs",
+    "engine/src/Engine.Authoring/ShaderSheetBuild.cs",
+    "engine/src/Engine.Authoring/*ShaderContext.cs",
+    "engine/src/Engine.Authoring/ShaderPixels.cs"
+   ],
+   "manual": "창 캡처 33장을 손으로 맞춰 찍는 비교다. results/baked-shaders/README.md의 절차를 따른다.",
+   "steps": []
+  },
+  {
+   "id": "PlatformerLab.TileCollision",
+   "samples": [
+    "PlatformerLab"
+   ],
+   "modes": [
+    "scene-play",
+    "release",
+    "native-aot"
+   ],
+   "needs": [
+    "editor",
+    "gui",
+    "templates"
+   ],
+   "probe": "TileContactProbe",
+   "baselines": [
+    "engine/tests/PlatformerLab.TileCollision/Traverse.inputreplay"
+   ],
+   "watch": [
+    "engine/src/Engine.Core/TileCollision.cs",
+    "engine/src/Engine.Core/SceneContacts.cs",
+    "engine/src/Engine.Core/Tilemap2D.cs"
+   ],
+   "steps": [
+    {
+     "kind": "prepare",
+     "run": "python3 \"$qa/verify.py\" prepare samples/PlatformerLab \"$work/PlatformerLab\""
+    },
+    {
+     "kind": "build",
+     "modes": [
+      "release"
+     ],
+     "run": "./monoon build \"$work/PlatformerLab\" release --profile distribution --output \"$work/builds\""
+    },
+    {
+     "kind": "build",
+     "modes": [
+      "native-aot"
+     ],
+     "run": "./monoon build \"$work/PlatformerLab\" native-aot --profile distribution --output \"$work/builds\""
+    },
+    {
+     "kind": "play",
+     "modes": [
+      "release"
+     ],
+     "run": "python3 \"$qa/verify.py\" play \"$work/builds/PlatformerLab.app/Contents/MacOS/MoNoonPlayer\" \"$work/release\""
+    },
+    {
+     "kind": "play",
+     "modes": [
+      "native-aot"
+     ],
+     "run": "python3 \"$qa/verify.py\" play \"$work/builds/NativeAOT/PlatformerLab.app/Contents/MacOS/MoNoonPlayer\" \"$work/aot\""
+    },
+    {
+     "kind": "probe",
+     "modes": [
+      "scene-play"
+     ],
+     "run": "dotnet build \"$qa\" -c Release -m:1 -p:UsedAvaloniaProducts="
+    },
+    {
+     "kind": "editor",
+     "modes": [
+      "scene-play"
+     ],
+     "gui": true,
+     "run": "$lock python3 \"$qa/editor.py\" $app \"$work/PlatformerLab\" $bin/TileContactProbe/release/TileContactProbe.dll \"$work/scene-play\""
+    }
+   ]
+  },
+  {
+   "id": "Samples.GameText",
+   "samples": [],
+   "modes": [
+    "scene-play",
+    "release",
+    "native-aot"
+   ],
+   "needs": [
+    "editor",
+    "gui",
+    "templates"
+   ],
+   "probe": "GameTextProbe",
+   "baselines": [],
+   "watch": [
+    "engine/src/Engine.Desktop/SdlText.cs",
+    "engine/src/Engine.Desktop/TtfTextRasterizer.cs",
+    "engine/src/Engine.Core/RichText.cs",
+    "engine/src/Engine.Core/ScreenUi.Paint.cs"
+   ],
+   "steps": [
+    {
+     "kind": "prepare",
+     "run": "games=\"KeyRoom PlatformerLab SpriteLab\""
+    },
+    {
+     "kind": "probe",
+     "modes": [
+      "scene-play"
+     ],
+     "run": "dotnet build \"$qa\" -c Release -m:1 -p:UsedAvaloniaProducts="
+    },
+    {
+     "kind": "build",
+     "modes": [
+      "release"
+     ],
+     "run": "for g in $games; do ./monoon build samples/$g release --profile distribution --output \"$work/$g\"; done"
+    },
+    {
+     "kind": "build",
+     "modes": [
+      "native-aot"
+     ],
+     "run": "for g in $games; do ./monoon build samples/$g native-aot --profile distribution --output \"$work/$g\"; done"
+    },
+    {
+     "kind": "play",
+     "modes": [
+      "release"
+     ],
+     "run": "for g in $games; do python3 \"$qa/verify.py\" play $g \"$work/$g/$g.app/Contents/MacOS/MoNoonPlayer\" \"$work/runs/$g/release\"; done"
+    },
+    {
+     "kind": "play",
+     "modes": [
+      "native-aot"
+     ],
+     "run": "for g in $games; do python3 \"$qa/verify.py\" play $g \"$work/$g/NativeAOT/$g.app/Contents/MacOS/MoNoonPlayer\" \"$work/runs/$g/native-aot\"; done"
+    },
+    {
+     "kind": "prepare",
+     "run": "mkdir -p \"$work/projects\"; for g in $games; do rsync -a --exclude .monoon samples/$g \"$work/projects/\"; done"
+    },
+    {
+     "kind": "editor",
+     "modes": [
+      "scene-play"
+     ],
+     "gui": true,
+     "run": "for g in $games; do $lock python3 \"$qa/editor.py\" $g $app \"$work/projects/$g\" $bin/GameTextProbe/release/GameTextProbe.dll \"$work/runs/$g/scene-play\"; done"
+    },
+    {
+     "kind": "compare",
+     "modes": [
+      "scene-play",
+      "release",
+      "native-aot"
+     ],
+     "run": "for g in $games; do python3 \"$qa/verify.py\" compare $g \"$work/runs/$g\"; done"
+    }
+   ]
+  },
+  {
+   "id": "SeedLab.Autotile",
+   "samples": [
+    "SeedLab"
+   ],
+   "modes": [
+    "scene-play",
+    "release",
+    "native-aot"
+   ],
+   "needs": [
+    "editor",
+    "gui",
+    "templates"
+   ],
+   "probe": "AutotileProbe",
+   "baselines": [],
+   "watch": [
+    "engine/src/Engine.Core/TileGrid.cs",
+    "engine/src/Engine.Core/Tilemap2D.cs",
+    "engine/src/Engine.Core/RuntimeTiles.cs",
+    "engine/src/Engine.Editor/Panels/TilesetWindow*",
+    "engine/src/Engine.Editor/Model/TileStroke.cs",
+    "engine/src/Engine.Editor/Scene/SceneViewport.Tiles.cs"
+   ],
+   "steps": [
+    {
+     "kind": "prepare",
+     "run": "python3 \"$qa/verify.py\" prepare samples/SeedLab \"$work/SeedLab\""
+    },
+    {
+     "kind": "build",
+     "modes": [
+      "release"
+     ],
+     "run": "./monoon build \"$work/SeedLab\" release --profile distribution --output \"$work/builds\""
+    },
+    {
+     "kind": "build",
+     "modes": [
+      "native-aot"
+     ],
+     "run": "./monoon build \"$work/SeedLab\" native-aot --profile distribution --output \"$work/builds\""
+    },
+    {
+     "kind": "play",
+     "modes": [
+      "release"
+     ],
+     "run": "python3 \"$qa/verify.py\" play \"$work/builds/SeedLab.app/Contents/MacOS/MoNoonPlayer\" \"$work/release\""
+    },
+    {
+     "kind": "play",
+     "modes": [
+      "native-aot"
+     ],
+     "run": "python3 \"$qa/verify.py\" play \"$work/builds/NativeAOT/SeedLab.app/Contents/MacOS/MoNoonPlayer\" \"$work/native-aot\""
+    },
+    {
+     "kind": "compare",
+     "modes": [
+      "release",
+      "native-aot"
+     ],
+     "run": "python3 \"$qa/verify.py\" snapshots \"$work/release\" \"$work/native-aot\""
+    },
+    {
+     "kind": "prepare",
+     "run": "python3 \"$qa/verify.py\" prepare samples/SeedLab \"$work/editor-copy\""
+    },
+    {
+     "kind": "probe",
+     "modes": [
+      "scene-play"
+     ],
+     "run": "dotnet build \"$qa\" -c Release -m:1 -p:UsedAvaloniaProducts="
+    },
+    {
+     "kind": "editor",
+     "modes": [
+      "scene-play"
+     ],
+     "gui": true,
+     "run": "$lock python3 \"$qa/editor.py\" $app \"$work/editor-copy\" $bin/AutotileProbe/release/AutotileProbe.dll \"$work/scene-play\""
+    },
+    {
+     "kind": "compare",
+     "modes": [
+      "scene-play",
+      "release",
+      "native-aot"
+     ],
+     "run": "python3 \"$qa/verify.py\" compare \"$work/scene-play/scene-play.trace\" \"$work/release/release.trace\" \"$work/native-aot/native-aot.trace\""
+    }
+   ]
+  },
+  {
+   "id": "SeedLab.GridNavigation",
+   "samples": [
+    "SeedLab"
+   ],
+   "modes": [
+    "scene-play",
+    "release",
+    "native-aot"
+   ],
+   "needs": [
+    "editor",
+    "gui",
+    "templates"
+   ],
+   "probe": "RouteProbe",
+   "baselines": [],
+   "watch": [
+    "engine/src/Engine.Core/GridNavigation.cs",
+    "engine/src/Engine.Core/GridTurns.cs",
+    "engine/src/Engine.Core/Navigation2D.cs"
+   ],
+   "steps": [
+    {
+     "kind": "prepare",
+     "run": "python3 \"$qa/verify.py\" prepare samples/SeedLab \"$work/SeedLab\""
+    },
+    {
+     "kind": "build",
+     "modes": [
+      "release"
+     ],
+     "run": "./monoon build \"$work/SeedLab\" release --profile distribution --output \"$work/builds\""
+    },
+    {
+     "kind": "build",
+     "modes": [
+      "native-aot"
+     ],
+     "run": "./monoon build \"$work/SeedLab\" native-aot --profile distribution --output \"$work/builds\""
+    },
+    {
+     "kind": "play",
+     "modes": [
+      "release"
+     ],
+     "run": "python3 \"$qa/verify.py\" play \"$work/builds/SeedLab.app/Contents/MacOS/MoNoonPlayer\" \"$work/release\""
+    },
+    {
+     "kind": "play",
+     "modes": [
+      "native-aot"
+     ],
+     "run": "python3 \"$qa/verify.py\" play \"$work/builds/NativeAOT/SeedLab.app/Contents/MacOS/MoNoonPlayer\" \"$work/native-aot\""
+    },
+    {
+     "kind": "probe",
+     "modes": [
+      "scene-play"
+     ],
+     "run": "dotnet build \"$qa\" -c Release -m:1 -p:UsedAvaloniaProducts="
+    },
+    {
+     "kind": "editor",
+     "modes": [
+      "scene-play"
+     ],
+     "gui": true,
+     "run": "$lock python3 \"$qa/editor.py\" $app \"$work/SeedLab\" $bin/RouteProbe/release/RouteProbe.dll \"$work/scene-play\""
+    }
+   ]
+  },
+  {
+   "id": "SeedLab.NavigationFree",
+   "samples": [
+    "SeedLab"
+   ],
+   "modes": [
+    "scene-play",
+    "release",
+    "native-aot"
+   ],
+   "needs": [
+    "editor",
+    "gui",
+    "templates",
+    "window-tool"
+   ],
+   "probe": "CrowdProbe",
+   "baselines": [],
+   "watch": [
+    "engine/src/Engine.Core/NavArea2D.cs",
+    "engine/src/Engine.Core/NavCrowd2D.cs",
+    "engine/src/Engine.Core/Navigation2D.cs",
+    "engine/src/Engine.Editor/Scene/SceneViewport.Navigation.cs"
+   ],
+   "steps": [
+    {
+     "kind": "prepare",
+     "run": "python3 \"$qa/verify.py\" prepare samples/SeedLab \"$work/SeedLab\""
+    },
+    {
+     "kind": "build",
+     "modes": [
+      "release"
+     ],
+     "run": "./monoon build \"$work/SeedLab\" release --profile distribution --output \"$work/builds\""
+    },
+    {
+     "kind": "build",
+     "modes": [
+      "native-aot"
+     ],
+     "run": "./monoon build \"$work/SeedLab\" native-aot --profile distribution --output \"$work/builds\""
+    },
+    {
+     "kind": "play",
+     "modes": [
+      "release"
+     ],
+     "run": "python3 \"$qa/verify.py\" play \"$work/builds/SeedLab.app/Contents/MacOS/MoNoonPlayer\" \"$work/release\""
+    },
+    {
+     "kind": "play",
+     "modes": [
+      "native-aot"
+     ],
+     "run": "python3 \"$qa/verify.py\" play \"$work/builds/NativeAOT/SeedLab.app/Contents/MacOS/MoNoonPlayer\" \"$work/native-aot\""
+    },
+    {
+     "kind": "probe",
+     "modes": [
+      "scene-play"
+     ],
+     "run": "dotnet build \"$qa\" -c Release -m:1 -p:UsedAvaloniaProducts="
+    },
+    {
+     "kind": "editor",
+     "modes": [
+      "scene-play"
+     ],
+     "gui": true,
+     "run": "$lock python3 \"$qa/editor.py\" $app \"$work/SeedLab\" $bin/CrowdProbe/release/CrowdProbe.dll \"$work/scene-play\""
+    },
+    {
+     "kind": "compare",
+     "modes": [
+      "scene-play",
+      "release",
+      "native-aot"
+     ],
+     "run": "python3 \"$qa/verify.py\" compare \"$work/release\" \"$work/native-aot\" \"$work/scene-play\""
+    },
+    {
+     "kind": "editor",
+     "modes": [
+      "scene-play"
+     ],
+     "gui": true,
+     "run": "MONOON_QA_WINDOW=engine/.artifacts/clip-qa/window $lock python3 \"$qa/gizmo.py\" $app samples/SeedLab $bin/CrowdProbe/release/CrowdProbe.dll \"$work/gizmo\""
+    }
+   ]
+  },
+  {
+   "id": "SeedLab.TileTerrain",
+   "samples": [
+    "SeedLab"
+   ],
+   "modes": [
+    "scene-play",
+    "release",
+    "native-aot"
+   ],
+   "needs": [
+    "editor",
+    "gui",
+    "templates"
+   ],
+   "probe": "TerrainProbe",
+   "baselines": [],
+   "watch": [
+    "engine/src/Engine.Core/TileWorld.cs",
+    "engine/src/Engine.Core/TileGrid.cs",
+    "engine/src/Engine.Core/RuntimeTiles.cs",
+    "engine/src/Engine.Authoring/TileChunkBuild.cs"
+   ],
+   "steps": [
+    {
+     "kind": "prepare",
+     "run": "python3 \"$qa/verify.py\" prepare samples/SeedLab \"$work/SeedLab\""
+    },
+    {
+     "kind": "build",
+     "modes": [
+      "release"
+     ],
+     "run": "./monoon build \"$work/SeedLab\" release --profile distribution --output \"$work/builds\""
+    },
+    {
+     "kind": "build",
+     "modes": [
+      "native-aot"
+     ],
+     "run": "./monoon build \"$work/SeedLab\" native-aot --profile distribution --output \"$work/builds\""
+    },
+    {
+     "kind": "play",
+     "modes": [
+      "release"
+     ],
+     "run": "python3 \"$qa/verify.py\" play \"$work/builds/SeedLab.app/Contents/MacOS/MoNoonPlayer\" \"$work/release\" \"$work/SeedLab/Assets/Route.tileset\""
+    },
+    {
+     "kind": "play",
+     "modes": [
+      "native-aot"
+     ],
+     "run": "python3 \"$qa/verify.py\" play \"$work/builds/NativeAOT/SeedLab.app/Contents/MacOS/MoNoonPlayer\" \"$work/native-aot\" \"$work/SeedLab/Assets/Route.tileset\""
+    },
+    {
+     "kind": "probe",
+     "modes": [
+      "scene-play"
+     ],
+     "run": "dotnet build \"$qa\" -c Release -m:1 -p:UsedAvaloniaProducts="
+    },
+    {
+     "kind": "editor",
+     "modes": [
+      "scene-play"
+     ],
+     "gui": true,
+     "run": "$lock python3 \"$qa/editor.py\" $app \"$work/SeedLab\" $bin/TerrainProbe/release/TerrainProbe.dll \"$work/scene-play\""
+    }
+   ]
+  },
+  {
+   "id": "SpriteLab.Aseprite",
+   "samples": [
+    "SpriteLab"
+   ],
+   "modes": [
+    "scene-play",
+    "release",
+    "native-aot"
+   ],
+   "needs": [
+    "editor",
+    "gui",
+    "templates"
+   ],
+   "probe": "AsepriteProbe",
+   "baselines": [],
+   "watch": [
+    "engine/src/Engine.Authoring/AsepriteImporter.cs",
+    "engine/src/Engine.Authoring/SpriteSheetImporter.cs",
+    "engine/src/Engine.Core/SpriteAtlas.cs",
+    "engine/src/Engine.Core/SpriteClipTimeline.cs",
+    "engine/tests/fixtures/Aseprite/**"
+   ],
+   "steps": [
+    {
+     "kind": "prepare",
+     "run": "python3 \"$qa/verify.py\" prepare samples/SpriteLab \"$work/SpriteLab\""
+    },
+    {
+     "kind": "build",
+     "modes": [
+      "release"
+     ],
+     "run": "./monoon build \"$work/SpriteLab\" release --profile distribution --output \"$work/builds\""
+    },
+    {
+     "kind": "build",
+     "modes": [
+      "native-aot"
+     ],
+     "run": "./monoon build \"$work/SpriteLab\" native-aot --profile distribution --output \"$work/builds\""
+    },
+    {
+     "kind": "play",
+     "modes": [
+      "release"
+     ],
+     "run": "python3 \"$qa/verify.py\" play \"$work/builds/SpriteLab.app/Contents/MacOS/MoNoonPlayer\" \"$work/release\" \"$work/SpriteLab/Assets/ArrowCycle.aseprite\""
+    },
+    {
+     "kind": "play",
+     "modes": [
+      "native-aot"
+     ],
+     "run": "python3 \"$qa/verify.py\" play \"$work/builds/NativeAOT/SpriteLab.app/Contents/MacOS/MoNoonPlayer\" \"$work/native-aot\" \"$work/SpriteLab/Assets/ArrowCycle.aseprite\""
+    },
+    {
+     "kind": "compare",
+     "modes": [
+      "release"
+     ],
+     "run": "python3 \"$qa/verify.py\" forbidden \"$work/builds/SpriteLab.app\""
+    },
+    {
+     "kind": "compare",
+     "modes": [
+      "native-aot"
+     ],
+     "run": "python3 \"$qa/verify.py\" forbidden \"$work/builds/NativeAOT/SpriteLab.app\""
+    },
+    {
+     "kind": "probe",
+     "modes": [
+      "scene-play"
+     ],
+     "run": "dotnet build \"$qa\" -c Release -m:1 -p:UsedAvaloniaProducts="
+    },
+    {
+     "kind": "editor",
+     "modes": [
+      "scene-play"
+     ],
+     "gui": true,
+     "run": "$lock python3 \"$qa/editor.py\" $app \"$work/SpriteLab\" $bin/AsepriteProbe/release/AsepriteProbe.dll \"$work/scene-play\""
+    }
+   ]
+  }
+ ]
+}

@@ -1,0 +1,9 @@
+rate: 10
+shape: Circle
+radius: 40
+speed: {min: 2, max: 6}
+lifetime: {min: 2, max: 3}
+size: {min: 24, max: 36}
+endSize: 1.5
+color: {min: "#7A52A8"}
+blend: Multiply

@@ -41,7 +41,7 @@ internal static partial class CollisionGeometry
         if (shape.Vertices == null) return Dot(offset,normal) - shape.Radius;
         double gap = double.PositiveInfinity;
         foreach (var p in shape.Vertices) gap = Math.Min(gap, Dot(p + offset,normal));
-        return gap;
+        return gap - shape.Radius; // A capsule's rounding
     }
 
     private static Contact? CastFace(Shape2D shape, Vector2 travel, Shape2D face, bool query)

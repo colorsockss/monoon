@@ -101,8 +101,8 @@ public sealed partial class SceneGame
             var parent = local.ParentId is Guid p ? byId[p] : null;
             member.SetWorldPose(local.LocalMatrix * (parent?.MatrixAt(parent.Position) ?? Matrix3x2.Identity), parent?.Angle ?? 0);
             member.EditedBasis = false;
-            member.ActiveSelf = true;
-            member.ColliderEnabled = true;
+            member.ActiveSelf = i == 0 || local.Active; // the authored state; the rented root is shown
+            member.ColliderEnabled = member.ColliderConfig?.Enabled != false;
             member.Displacement = default;
             member.Trail?.Clear();
             member.Support = null;

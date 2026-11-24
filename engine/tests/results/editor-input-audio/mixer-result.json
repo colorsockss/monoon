@@ -1,0 +1,67 @@
+{
+  "messages": {
+    "same bus": "Audio ducking needs two different buses, \u221280\u20130 dB and attack/release of 0\u201310 seconds.",
+    "depth -90 dB": "Audio ducking needs two different buses, \u221280\u20130 dB and attack/release of 0\u201310 seconds.",
+    "depth \u002B3 dB": "Audio ducking needs two different buses, \u221280\u20130 dB and attack/release of 0\u201310 seconds.",
+    "release 11 s": "Audio ducking needs two different buses, \u221280\u20130 dB and attack/release of 0\u201310 seconds.",
+    "attack -1 s": "Audio ducking needs two different buses, \u221280\u20130 dB and attack/release of 0\u201310 seconds.",
+    "empty snapshot name": "Audio snapshots need unique names (1\u201364 characters) and gains between 0 and 1.",
+    "65-character name": "Audio snapshots need unique names (1\u201364 characters) and gains between 0 and 1.",
+    "duplicate snapshot": "Audio snapshots need unique names (1\u201364 characters) and gains between 0 and 1."
+  },
+  "columns-main1280": [
+    "tab 0: 6 rows, label x 26.0, field x 86.0, right 314.0, row heights 50, last row ends 363.0 of 460.0",
+    "tab 1: 9 rows, label x 26.0, field x 86.0, right 314.0, row heights 24/50, last row ends 450.0 of 460.0",
+    "tab 2: 6 rows, label x 26.0, field x 86.0, right 314.0, row heights 24, last row ends 207.0 of 460.0"
+  ],
+  "columns-main1600": [
+    "tab 0: 6 rows, label x 26.0, field x 86.0, right 314.0, row heights 50, last row ends 363.0 of 460.0",
+    "tab 1: 9 rows, label x 26.0, field x 86.0, right 314.0, row heights 24/50, last row ends 450.0 of 460.0",
+    "tab 2: 6 rows, label x 26.0, field x 86.0, right 314.0, row heights 24, last row ends 207.0 of 460.0"
+  ],
+  "columns-main1920": [
+    "tab 0: 6 rows, label x 26.0, field x 86.0, right 314.0, row heights 50, last row ends 363.0 of 460.0",
+    "tab 1: 9 rows, label x 26.0, field x 86.0, right 314.0, row heights 24/50, last row ends 450.0 of 460.0",
+    "tab 2: 6 rows, label x 26.0, field x 86.0, right 314.0, row heights 24, last row ends 207.0 of 460.0"
+  ],
+  "columns-dialog300": [
+    "tab 0: 6 rows, label x 26.0, field x 86.0, right 274.0, row heights 50, last row ends 363.0 of 460.0",
+    "tab 1: 9 rows, label x 26.0, field x 86.0, right 274.0, row heights 24/50, last row ends 450.0 of 460.0",
+    "tab 2: 6 rows, label x 26.0, field x 86.0, right 274.0, row heights 24, last row ends 207.0 of 460.0"
+  ],
+  "columns-dialog480": [
+    "tab 0: 6 rows, label x 26.0, field x 86.0, right 454.0, row heights 50, last row ends 363.0 of 460.0",
+    "tab 1: 9 rows, label x 26.0, field x 86.0, right 454.0, row heights 24/50, last row ends 450.0 of 460.0",
+    "tab 2: 6 rows, label x 26.0, field x 86.0, right 454.0, row heights 24, last row ends 207.0 of 460.0"
+  ],
+  "columns-long-name": [
+    "tab 0: 6 rows, label x 26.0, field x 86.0, right 314.0, row heights 50, last row ends 363.0 of 460.0",
+    "tab 1: 9 rows, label x 26.0, field x 86.0, right 314.0, row heights 24/50, last row ends 450.0 of 460.0",
+    "tab 2: 6 rows, label x 26.0, field x 86.0, right 314.0, row heights 24, last row ends 207.0 of 460.0"
+  ],
+  "bytes": {
+    "ui": 1188,
+    "yamlOnly": 1188,
+    "identical": true
+  },
+  "undo": "one Undo restores the stripped file, Redo the edited file, unchanged Save adds nothing",
+  "preview": {
+    "night": [
+      1,
+      0.6,
+      0.5,
+      1,
+      1,
+      1
+    ],
+    "depthInPlay": 0.1,
+    "afterCancel": [
+      1,
+      1,
+      1,
+      1,
+      1,
+      1
+    ]
+  }
+}

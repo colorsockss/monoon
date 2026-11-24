@@ -1,0 +1,6 @@
+qemu at start: 0
+bake 94x43 cells, 5 walls: 2.78 ms (cold, includes JIT); open cells 3760 with gate closed
+GridNavigation.FindPath µs/query: median 168.81 (range 167.40–170.11); 103 cells; 65301 B/query
+NavArea2D.FindPath  µs/query: median 91.21 (range 90.64–92.88); 5 points; 0 B in 2000 queries
+NavCrowd2D.Step 200 agents µs/tick: median 113.38 (range 112.44–162.42); worst tick median 1593.20 (range 1536.30–5505.80); 0 B; arrived tick 892; 2764 route queries (3.10/tick, at most 16)
+qemu at end: 0

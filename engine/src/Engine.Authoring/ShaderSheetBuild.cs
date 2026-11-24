@@ -16,7 +16,8 @@ internal sealed class ShaderSheetBuild
     internal void Collect(SceneObject obj, string project, ProjectAssets assets, Action<ShaderClip>? validate)
     {
         light |= obj.GetComponent<PointLight2DComponent>() != null;
-        particles |= obj.GetComponent<ParticleEmitter2DComponent>() != null;
+        particles |= obj.GetComponent<ParticleEmitter2DComponent>() is {} emitter &&
+            (emitter.Particles is not Guid effect || assets.LoadParticles(project, effect).Texture == null);
         if (obj.GetComponent<SpriteShader2DComponent>()?.Shader is Guid id && shaders.Add(id))
         {
             var clip = assets.LoadShader(project, id);

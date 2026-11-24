@@ -1,0 +1,9 @@
+using Engine.Core;
+
+// On the inactive coin's child: it must not tick or get OnEnable until a script turns the coin on.
+public sealed class CoinChildTicker : GameBehaviour
+{
+    public static int Ticks, Enables;
+    public override void OnEnable(ScriptLife life) => Enables++;
+    public override void FixedUpdate(ScriptTick tick) => Ticks++;
+}

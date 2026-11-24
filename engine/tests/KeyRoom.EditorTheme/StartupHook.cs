@@ -17,34 +17,14 @@ public static class StartupHook
 {
     private static readonly string Output = Environment.GetEnvironmentVariable("MONOON_THEME_EDITOR")!;
     private const BindingFlags Any = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic;
-    // MONOON_QA_SLOW scales waits and time limits for emulated x64 guests (TCG); 1 on a normal desktop.
-    private static readonly double Slow = double.TryParse(Environment.GetEnvironmentVariable("MONOON_QA_SLOW"), System.Globalization.CultureInfo.InvariantCulture, out var s) ? s : 1;
-    private static Task Delay(int ms) => Task.Delay((int)(ms * Slow));
     private const string LongName = "Door to the courtyard with an intentionally long object name for trimming";
 
-    public static void Initialize() => Task.Run(async () =>
-    {
-        while (Application.Current?.ApplicationLifetime is not IClassicDesktopStyleApplicationLifetime { MainWindow: not null })
-            await Task.Delay(100);
-        await Dispatcher.UIThread.InvokeAsync(async () =>
-        {
-            var life = (IClassicDesktopStyleApplicationLifetime)Application.Current!.ApplicationLifetime!;
-            try { await Run(life.MainWindow!); }
-            catch (Exception ex) { File.WriteAllText(Path.Combine(Output, "error.txt"), ex.ToString()); }
-            finally { life.Shutdown(); }
-        });
-    });
+    public static void Initialize() => Start(Path.Combine(Output, "error.txt"), life => Run(life.MainWindow!), allow: ["Select sheet cells"]);
 
     private static object? Call(object target, string method, params object?[] args) =>
         target.GetType().GetMethod(method, Any)!.Invoke(target, args);
     private static SceneDocument Scene(Window w) => (SceneDocument)w.GetType().GetProperty("Scene", Any)!.GetValue(w)!;
     private static void Click(Button b) => b.RaiseEvent(new RoutedEventArgs(Button.ClickEvent, b));
-    private static async Task Wait(Func<bool> ready, string what, int seconds = 60)
-    {
-        var deadline = DateTime.UtcNow.AddSeconds(seconds * Slow);
-        while (!ready()) { if (DateTime.UtcNow > deadline) throw new TimeoutException(what); await Delay(80); }
-    }
-
     private static void Capture(Visual area, string name)
     {
         using var bitmap = new RenderTargetBitmap(new PixelSize((int)Math.Ceiling(area.Bounds.Width), (int)Math.Ceiling(area.Bounds.Height)));
@@ -108,7 +88,7 @@ public static class StartupHook
     {
         var before = owner.OwnedWindows.ToHashSet();
         open();
-        await Wait(() => owner.OwnedWindows.Any(w => !before.Contains(w) && w.IsVisible), name);
+        await Until(() => owner.OwnedWindows.Any(w => !before.Contains(w) && w.IsVisible), name);
         var window = owner.OwnedWindows.First(w => !before.Contains(w));
         await Delay(700);
         Capture(window, name);
@@ -120,7 +100,7 @@ public static class StartupHook
     private static async Task Close(Window window, string name)
     {
         window.Close();
-        await Wait(() => !window.IsVisible, "closing " + name);
+        await Until(() => !window.IsVisible, "closing " + name);
     }
 
     // Former windows open as dock panels (roadmap 12.4): capture the panel and record the same facts as for a window.
@@ -128,7 +108,7 @@ public static class StartupHook
     {
         var dock = main.FindControl<Engine.Editor.DockHost>("Dock")!;
         open();
-        await Wait(() => dock.IsOpen(id) && dock.Panels.Any(p => Engine.Editor.DockHost.GetPanel(p) == id && p.IsVisible), name);
+        await Until(() => dock.IsOpen(id) && dock.Panels.Any(p => Engine.Editor.DockHost.GetPanel(p) == id && p.IsVisible), name);
         await Delay(700);
         var panel = dock.Panels.Single(p => Engine.Editor.DockHost.GetPanel(p) == id);
         Capture(panel, name);
@@ -144,13 +124,13 @@ public static class StartupHook
         var dock = main.FindControl<Engine.Editor.DockHost>("Dock")!;
         var tab = dock.GetVisualDescendants().OfType<Border>().Single(b => b.Classes.Contains("dockTab") && (string?)b.Tag == id);
         Click(tab.GetVisualDescendants().OfType<Button>().Single());
-        await Wait(() => !dock.IsOpen(id), "closing " + id);
+        await Until(() => !dock.IsOpen(id), "closing " + id);
     }
 
     private static async Task Run(Window main)
     {
         string root = Environment.GetEnvironmentVariable("MONOON_QA_PROJECT")!;
-        await Wait(() => Scene(main).Objects.Count > 1, "KeyRoom");
+        await Until(() => Scene(main).Objects.Count > 1, "KeyRoom");
         main.Activate();
         var door = Scene(main).Objects.First(o => o.Name == "Door");
         Call(main, "Select", door);
@@ -201,7 +181,7 @@ public static class StartupHook
         view.GetType().GetField("KeepSimulationActive", Any)!.SetValue(view, (Func<bool>)(() => true));
         var play = main.FindControl<Button>("PlayButton")!;
         Click(play);
-        await Wait(() => (bool)view.GetType().GetProperty("IsPlaying", Any)!.GetValue(view)!, "Play");
+        await Until(() => (bool)view.GetType().GetProperty("IsPlaying", Any)!.GetValue(view)!, "Play");
         main.FindControl<ToggleButton>("DebugButton")!.IsChecked = true;
         var profiler = main.FindControl<CheckBox>("FrameDebug")!;
         profiler.IsChecked = true;
@@ -209,7 +189,7 @@ public static class StartupHook
         await Delay(2500);
         Capture(main, "profiler-1280");
         Click(play);
-        await Wait(() => !(bool)view.GetType().GetProperty("IsPlaying", Any)!.GetValue(view)!, "Stop");
+        await Until(() => !(bool)view.GetType().GetProperty("IsPlaying", Any)!.GetValue(view)!, "Stop");
 
         var tokens = new Dictionary<string, string?>();
         foreach (var key in new[] { "EditorFontSize", "EditorFontSizeSmall", "EditorFieldLabelWidth", "EditorRowHeight", "EditorInputHeight", "EditorPanelPadding" })

@@ -27,7 +27,7 @@ def launch(phase):
     env = dict(os.environ, DOTNET_STARTUP_HOOKS=str(hook), MONOON_PANELS_OUTPUT=str(out),
                MONOON_PANELS_PHASE=phase, MONOON_USER_DATA=str(profile))
     with (out / f"{phase}-editor.log").open("wb") as log:
-        code = subprocess.run([str(editor), str(project)], env=env, stdout=log, stderr=log, timeout=900).returncode
+        code = subprocess.run([str(editor), str(project)], env=env, stdout=log, stderr=log, timeout=240 * float(os.environ.get('MONOON_QA_SLOW') or 1)).returncode
     if (out / f"{phase}-error.txt").exists():
         raise SystemExit(f"FAIL {phase}: " + (out / f"{phase}-error.txt").read_text(encoding="utf-8"))
     if code != 0 or not (out / f"{phase}.json").exists():

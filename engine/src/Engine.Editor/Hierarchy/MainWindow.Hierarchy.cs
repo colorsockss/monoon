@@ -76,6 +76,8 @@ public partial class MainWindow
         Viewport.LockedIds.Clear();
         Viewport.HiddenIds.UnionWith(EditorUserState.Marks(state.Hidden, MarksKey));
         Viewport.LockedIds.UnionWith(EditorUserState.Marks(state.Locked, MarksKey));
+        inspectorLock = EditorUserState.Marks(state.InspectorLock, MarksKey).Cast<Guid?>().FirstOrDefault();
+        SyncTabTools();
         Viewport.InvalidateUi();
     }
 
@@ -93,7 +95,7 @@ public partial class MainWindow
     private void RefreshRowMarks()
     {
         foreach (var row in Hierarchy.GetVisualDescendants().OfType<Grid>().Where(g => g.Classes.Contains("hierarchyRow")))
-            if (row.Tag is SceneObject obj) row.Children[1].Opacity = Viewport.PlayWorld == null && Viewport.IsHidden(obj) ? 0.5 : 1;
+            if (row.Tag is SceneObject obj) row.Children[1].Opacity = Viewport.PlayWorld == null && Viewport.IsEyeHidden(obj) ? 0.5 : 1;
     }
 
     // Icon, name, then the Scene eye and lock. Their columns are always reserved, so hovering or setting them never moves the name.
@@ -105,7 +107,7 @@ public partial class MainWindow
         var row = new Grid { ColumnDefinitions = new("16,4,*,2,14,14"), Background = Brushes.Transparent, Tag = obj, Classes = { "hierarchyRow" } };
         row.Children.Add(new PathIcon { Theme = (Avalonia.Styling.ControlTheme)this.FindResource("EditorIcon")!, Data = EditorTokens.ObjectIcon(obj).Clone(), Foreground = EditorTokens.Brush("EditorMuted") });
         var name = new TextBlock { Text = obj.Name, TextTrimming = TextTrimming.CharacterEllipsis, VerticalAlignment = Avalonia.Layout.VerticalAlignment.Center,
-            Opacity = Viewport.PlayWorld == null && Viewport.IsHidden(obj) ? 0.5 : 1 };
+            Opacity = Viewport.PlayWorld == null && Viewport.IsEyeHidden(obj) ? 0.5 : 1 };
         ToolTip.SetTip(name, obj.Name);
         Grid.SetColumn(name, 2);
         row.Children.Add(name);
@@ -147,7 +149,7 @@ public partial class MainWindow
         foreach (var obj in objects)
         {
             var item = new TreeViewItem { Header = obj.Name, Tag = obj, IsExpanded = !collapsed.Contains(obj.Id),
-                Opacity = Viewport.PlayWorld?.IsActive(obj.Id) == false ? 0.55 : 1,
+                Opacity = (Viewport.PlayWorld is { } world ? !world.IsActive(obj.Id) : !obj.ActiveInHierarchy) ? 0.55 : 1,
                 HeaderTemplate = new FuncDataTemplate<object>((_, _) => HierarchyRow(obj), supportsRecycling: false) };
             AutomationProperties.SetName(item, obj.Name);
             treeItems.Add(obj, item);
@@ -369,9 +371,9 @@ public partial class MainWindow
         bool allowed = new Rect(Hierarchy.Bounds.Size).Contains(point) && (item == null || dropTarget != null);
         bool export = prefabSource == null && project != null && new Rect(ProjectBrowser.Bounds.Size).Contains(e.GetPosition(ProjectBrowser));
         var reference = ReferenceTarget(e);
-        if (reference?.Tag is not ReferenceDrop { Extension: null }) reference = null;
-        HighlightReference(reference);
-        Hierarchy.Cursor = export || reference != null ? CopyFileCursor : allowed ? new Cursor(StandardCursorType.DragMove) : NoDropCursor;
+        bool takesObject = reference?.Tag is ReferenceDrop { Asset: null };
+        HighlightReference(reference, takesObject);
+        Hierarchy.Cursor = export || takesObject ? CopyFileCursor : reference != null ? NoDropCursor : allowed ? new Cursor(StandardCursorType.DragMove) : NoDropCursor;
         e.Handled = true;
     }
 
@@ -394,9 +396,9 @@ public partial class MainWindow
             e.Handled = true;
             return;
         }
-        if (source != null && reference is { Extension: null })
+        if (source != null && reference is { Asset: null })
         {
-            reference.Insert(source.Id);
+            reference.Insert([source.Id]);
             e.Handled = true;
             return;
         }

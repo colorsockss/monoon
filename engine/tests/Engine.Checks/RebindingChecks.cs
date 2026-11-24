@@ -4,6 +4,7 @@ using Engine.Core;
 
 internal static class RebindingChecks
 {
+    [Check(7000, "rebinding")] static void Registered(CheckRun c) => Run(c.Project, c.Scratch);
     private static void Check(bool ok, string message)
     {
         if (!ok) throw new Exception("Player rebinding: " + message);

@@ -1,0 +1,97 @@
+{
+  "multi_edit": {
+    "walls": 10,
+    "records": 3,
+    "undo": "each one step; scene text and overrides restored",
+    "edges": {
+      "1280": [
+        1130
+      ],
+      "1600": [
+        1450
+      ],
+      "1920": [
+        1770
+      ]
+    }
+  },
+  "override_rows": {
+    "rows": {
+      "1280": {
+        "bar": "1064,2",
+        "content_left": 1070,
+        "value_columns_same": true,
+        "sprite_dot": false
+      },
+      "1600": {
+        "bar": "1384,2",
+        "content_left": 1390,
+        "value_columns_same": true,
+        "sprite_dot": false
+      },
+      "1920": {
+        "bar": "1704,2",
+        "content_left": 1710,
+        "value_columns_same": true,
+        "sprite_dot": false
+      }
+    },
+    "transform_dot": true,
+    "revert": "Size row: width\u002Bheight, one step",
+    "apply": "name \u2192 Oak.prefab, one step"
+  },
+  "scrub": {
+    "move_speed": {
+      "what": "MoveSpeed scrub",
+      "undo_steps": 1
+    },
+    "clamp": 480,
+    "door_x": {
+      "what": "Door X scrub",
+      "undo_steps": 1
+    }
+  },
+  "asset_inspector": {
+    "door_png": "24x94",
+    "pivot": "0.5, 0.5 (2 records, Undo/Redo)",
+    "atlas": "Assets/Door Atlas.atlas",
+    "edges": {
+      "1280": [
+        1130
+      ],
+      "1600": [
+        1450
+      ],
+      "1920": [
+        1770
+      ]
+    },
+    "kinds": {
+      "Assets/Door.clip": {
+        "row": "Frames",
+        "value": "4",
+        "button": "Open Clip Editor"
+      },
+      "Assets/KeyRoomRules.data": {
+        "row": "Fields",
+        "value": "1",
+        "button": "Edit Data\u2026"
+      },
+      "Assets/Oak.prefab": {
+        "row": "Instances",
+        "value": "2 in this scene",
+        "button": "Open Prefab"
+      },
+      "Assets/QaSparks.particles": {
+        "row": "Particles",
+        "value": "max 256 \u00B7 30/s",
+        "button": "Open Particle Panel"
+      },
+      "Assets/QaLongNameDoorMaskForInspectorTrimmingChecks0123456789.png": {
+        "row": "Size",
+        "value": "8 \u00D7 8 px",
+        "button": ""
+      }
+    }
+  }
+}

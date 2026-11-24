@@ -14,18 +14,7 @@ public static class StartupHook
     private static readonly string Output = Environment.GetEnvironmentVariable("MONOON_STRUCTURE_EDITOR")!;
     private const BindingFlags Members = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic;
 
-    public static void Initialize() => Task.Run(async () =>
-    {
-        while (Application.Current?.ApplicationLifetime is not IClassicDesktopStyleApplicationLifetime { MainWindow: not null })
-            await Task.Delay(100);
-        await Dispatcher.UIThread.InvokeAsync(async () =>
-        {
-            var desktop = (IClassicDesktopStyleApplicationLifetime)Application.Current!.ApplicationLifetime!;
-            try { await Run(desktop.MainWindow!); }
-            catch (Exception ex) { File.WriteAllText(Path.Combine(Output, "error.txt"), ex.ToString()); }
-            finally { desktop.Shutdown(); }
-        });
-    });
+    public static void Initialize() => Start(Path.Combine(Output, "error.txt"), life => Run(life.MainWindow!), allow: ["Prefab Overrides"]);
 
     private static object? Call(Window w, string method, params object?[] args) => w.GetType().GetMethod(method, Members)!.Invoke(w, args);
     private static SceneDocument Scene(Window w) => (SceneDocument)w.GetType().GetProperty("Scene", Members)!.GetValue(w)!;
@@ -33,12 +22,6 @@ public static class StartupHook
     private static void Click(Button b) => b.RaiseEvent(new RoutedEventArgs(Button.ClickEvent, b));
     private static bool Structural(string? item) => item?.Contains(" (added") == true || item?.Contains(" (removed") == true;
     private static void Log(string line) => File.AppendAllText(Path.Combine(Output, "editor.txt"), line + "\n");
-
-    private static async Task Wait(Func<bool> ready, string what)
-    {
-        var deadline = DateTime.UtcNow.AddSeconds(90);
-        while (!ready()) { if (DateTime.UtcNow > deadline) throw new TimeoutException(what); await Task.Delay(80); }
-    }
 
     private static void Capture(Control area, string name)
     {
@@ -63,7 +46,7 @@ public static class StartupHook
     {
         string root = Environment.GetEnvironmentVariable("MONOON_QA_PROJECT")!;
         string prefab = Path.Combine(root, "Assets", "Chest.prefab"), sceneFile = Path.Combine(root, "Scenes", "PrefabWorkshop.scene");
-        await Wait(() => Scene(main).Objects.Count > 1, "KeyRoom");
+        await Until(() => Scene(main).Objects.Count > 1, "KeyRoom");
         await (Task)Call(main, "SwitchScene", "PrefabWorkshop")!;
         var chest = Scene(main).Objects.Single(o => o.Name == "Chest 2");
         Call(main, "Select", chest);
@@ -81,28 +64,28 @@ public static class StartupHook
         var overrides = main.FindControl<Button>("OverridesButton")!;
         Require(overrides.IsVisible, "Overrides… is hidden for a prefab root");
         Click(overrides);
-        await Wait(() => main.OwnedWindows.Any(w => w.Title == "Prefab Overrides" && w.IsVisible), "Prefab Overrides window");
+        await Until(() => main.OwnedWindows.Any(w => w.Title == "Prefab Overrides" && w.IsVisible), "Prefab Overrides window");
         var window = main.OwnedWindows.Single(w => w.Title == "Prefab Overrides");
-        await Task.Delay(300);
+        await Delay(300);
         var list = window.GetVisualDescendants().OfType<ListBox>().Single();
         string Items() => string.Join(" | ", list.Items.Select(i => i!.ToString()).Where(Structural));
         Log("listed   " + Items());
         Require(Items() == "Chest 2 · audioSource (added) | Lock (added object)", "Unexpected structural list: " + Items());
         list.SelectedItem = list.Items.Single(i => i!.ToString() == "Lock (added object)");
-        await Task.Delay(200);
+        await Delay(200);
         Capture(window, "overrides");
         Button Labeled(string text) => window.GetVisualDescendants().OfType<Button>().Single(b => b.Content as string == text);
         Click(Labeled("Apply to Source"));
-        await Wait(() => Items() == "Chest 2 · audioSource (added)", "list after applying the lock");
+        await Until(() => Items() == "Chest 2 · audioSource (added)", "list after applying the lock");
         string applied = State(main, prefab);
         Log("applied  " + applied);
         Require(applied == "source lock; Chest 1: lock 1, sound 0; Chest 2: lock 1, sound 1; Chest 3: lock 1, sound 0", applied);
         window.Width = window.MinWidth;
         list.SelectedItem = list.Items.Single(i => Structural(i!.ToString()));
-        await Task.Delay(300);
+        await Delay(300);
         Capture(window, "compact");
         Click(Labeled("Done"));
-        await Wait(() => !window.IsVisible, "closing overrides");
+        await Until(() => !window.IsVisible, "closing overrides");
 
         await (Task)Call(main, "RestoreEdit", false)!;
         Log("undo     " + State(main, prefab));

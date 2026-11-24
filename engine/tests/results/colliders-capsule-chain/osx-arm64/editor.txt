@@ -1,0 +1,7 @@
+Edge Collider 2D@1280: 6 fields at x=1130, 8 labels at x=1070
+Capsule Collider 2D@1280: 3 fields at x=1130, 4 labels at x=1070
+Edge Collider 2D@1600: 6 fields at x=1450, 8 labels at x=1390
+Capsule Collider 2D@1600: 3 fields at x=1450, 4 labels at x=1390
+Edge Collider 2D@1920: 6 fields at x=1770, 8 labels at x=1710
+Capsule Collider 2D@1920: 3 fields at x=1770, 4 labels at x=1710
+gizmos: capsule radius drag 11 -> 7, edge point drag, add, delete; 4 undo steps restore the authored scene

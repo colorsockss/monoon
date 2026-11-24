@@ -125,6 +125,7 @@ public partial class MainWindow
         if (!savingCurrent)
         {
             foldouts.Clear();
+            pendingEdit = null; // The edited fields belonged to the replaced scene.
             history.Reset(document);
         }
         RefreshProjectFiles(force: true);

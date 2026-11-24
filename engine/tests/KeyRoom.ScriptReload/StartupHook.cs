@@ -13,9 +13,6 @@ using Engine.Editor;
 // Scripts/ReloadProbe.cs, waits for the editor's own reload, then saves a syntax error and checks the old code keeps running.
 public static class StartupHook
 {
-    // MONOON_QA_SLOW scales waits and time limits for emulated x64 guests (TCG); 1 on a normal desktop.
-    private static readonly double Slow = double.TryParse(Environment.GetEnvironmentVariable("MONOON_QA_SLOW"), System.Globalization.CultureInfo.InvariantCulture, out var s) ? s : 1;
-    private static Task Delay(int ms) => Task.Delay((int)(ms * Slow));
     private static readonly string Output = Environment.GetEnvironmentVariable("MONOON_RELOAD_OUTPUT")!;
     private static readonly string Here = Environment.GetEnvironmentVariable("MONOON_RELOAD_HARNESS")!;
     private const BindingFlags Any = BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic;
@@ -23,26 +20,15 @@ public static class StartupHook
     private static Window main = null!;
     private static SceneViewport view = null!;
 
-    public static void Initialize() => Task.Run(async () =>
+    public static void Initialize() => Start(Path.Combine(Output, "error.txt"), async life =>
     {
-        while (Application.Current?.ApplicationLifetime is not IClassicDesktopStyleApplicationLifetime { MainWindow: not null })
-            await Delay(100);
-        await Dispatcher.UIThread.InvokeAsync(async () =>
-        {
-            var life = (IClassicDesktopStyleApplicationLifetime)Application.Current!.ApplicationLifetime!;
-            try
-            {
-                main = life.MainWindow!;
-                view = main.FindControl<SceneViewport>("Viewport")!;
-                await Until(() => main.IsVisible && Scene.Objects.Any(o => o.Name == "Reload probe"), "KeyRoom");
-                main.Width = 1280; main.Height = 800;
-                await Delay(800);
-                await Run();
-                File.WriteAllText(Path.Combine(Output, "reload.json"), JsonSerializer.Serialize(Result, new JsonSerializerOptions { WriteIndented = true }));
-            }
-            catch (Exception ex) { File.WriteAllText(Path.Combine(Output, "error.txt"), ex.ToString()); }
-            finally { life.Shutdown(); }
-        });
+        main = life.MainWindow!;
+        view = main.FindControl<SceneViewport>("Viewport")!;
+        await Until(() => main.IsVisible && Scene.Objects.Any(o => o.Name == "Reload probe"), "KeyRoom");
+        main.Width = 1280; main.Height = 800;
+        await Delay(800);
+        await Run();
+        File.WriteAllText(Path.Combine(Output, "reload.json"), JsonSerializer.Serialize(Result, new JsonSerializerOptions { WriteIndented = true }));
     });
 
     private static async Task Run()
@@ -89,11 +75,6 @@ public static class StartupHook
     }
 
     private static int Routines(GameSession game) => ((IList)typeof(SceneGame).GetField("routines", Any)!.GetValue(game.Current)!).Count;
-    private static async Task Until(Func<bool> done, string what, int seconds = 60)
-    {
-        var limit = DateTime.UtcNow.AddSeconds(seconds * Slow);
-        while (!done()) { if (DateTime.UtcNow > limit) throw new TimeoutException(what); await Delay(50); }
-    }
     private static object? Get(object target, string name) =>
         target.GetType().GetProperty(name, Any) is { } p ? p.GetValue(target) : target.GetType().GetField(name, Any)?.GetValue(target);
     private static object? Call(object target, string method, params object?[] args) =>

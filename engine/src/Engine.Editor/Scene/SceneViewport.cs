@@ -30,8 +30,10 @@ public sealed partial class SceneViewport : Decorator
     private readonly HashSet<string> spriteErrors = [];
     // Editor-only Scene view state (Hierarchy eye and lock): never saved in the scene and ignored by Play.
     internal readonly HashSet<Guid> HiddenIds = [], LockedIds = [];
-    internal bool IsHidden(SceneObject obj) => Marked(obj, HiddenIds);
-    internal bool IsPickable(SceneObject obj) => !Marked(obj, HiddenIds) && !Marked(obj, LockedIds);
+    // Inactive objects (SceneObject.Active, saved) are not drawn or picked either, as in Play.
+    internal bool IsHidden(SceneObject obj) => Marked(obj, HiddenIds) || !obj.ActiveInHierarchy;
+    internal bool IsEyeHidden(SceneObject obj) => Marked(obj, HiddenIds);
+    internal bool IsPickable(SceneObject obj) => !IsHidden(obj) && !Marked(obj, LockedIds);
     private static bool Marked(SceneObject obj, HashSet<Guid> ids)
     {
         for (var node = obj; node != null && ids.Count > 0; node = node.Parent)
@@ -44,6 +46,35 @@ public sealed partial class SceneViewport : Decorator
     private List<SceneObject>? editOrderObjects;
     private int editOrderCount;
     internal void InvalidateDrawOrder() => editOrder = null;
+    // What the selected objects feed into WorldDrawOrder when it is built: parent, size (foot) and the sorting fields of
+    // their Sorting Group, Tilemap and Sprite/Skeleton/Line/Trail renderer.
+    private readonly record struct OrderInputs(SceneObject Owner, Guid? Parent, float Width, float Height, int Layer, int Order, bool ByY, float Foot,
+        Tilemap2DComponent? Map, int MapLayer, int MapOrder, SortingGroup2DComponent? Group, int GroupLayer, int GroupOrder, bool GroupByY, float GroupFoot)
+    {
+        public static OrderInputs Of(SceneObject o)
+        {
+            var sprite = o.GetComponent<SpriteRendererComponent>();
+            var skeleton = o.GetComponent<SkeletonAnimator2DComponent>();
+            var line = o.GetComponent<Line2DComponent>();
+            var trail = o.GetComponent<Trail2DComponent>();
+            var text = o.GetComponent<Text2DComponent>();
+            var map = o.GetComponent<Tilemap2DComponent>();
+            var group = o.GetComponent<SortingGroup2DComponent>();
+            return new(o, o.ParentId, o.Width, o.Height,
+                sprite?.SortingLayer ?? skeleton?.SortingLayer ?? line?.SortingLayer ?? trail?.SortingLayer ?? text?.SortingLayer ?? 0,
+                sprite?.Order ?? skeleton?.Order ?? line?.Order ?? trail?.Order ?? text?.Order ?? 0, (sprite?.SortByY ?? text?.SortByY) == true, sprite?.FootOffset ?? 0,
+                map, map?.SortingLayer ?? 0, map?.Order ?? 0, group, group?.SortingLayer ?? 0, group?.Order ?? 0, group?.SortByY == true, group?.FootOffset ?? 0);
+        }
+    }
+    private OrderInputs[] editOrderSelection = [];
+    // A typed Inspector field changes only the selection: keep the draw order unless the selection's sorting inputs changed,
+    // and the UI preview unless a selected object is part of it (a canvas or widget).
+    internal void InvalidateSelectionUi()
+    {
+        if (!editOrderSelection.AsSpan().SequenceEqual(Selection.Select(OrderInputs.Of).ToArray())) editOrder = null;
+        if (Selection.Any(o => ScreenUi.IsWidget(o) || o.GetComponent<UiCanvasComponent>() != null)) previewUi = null;
+        RefreshScene();
+    }
     internal IEnumerable<(SceneObject Owner, Tilemap2DComponent? Map, int Layer, int Order)> EditItems()
     {
         var objects = Scene.Objects;
@@ -52,6 +83,7 @@ public sealed partial class SceneViewport : Decorator
             editOrder = new(objects, (index, _) => objects[index].WorldMatrix);
             editOrderObjects = objects;
             editOrderCount = objects.Count;
+            editOrderSelection = Selection.Select(OrderInputs.Of).ToArray();
         }
         var order = editOrder;
         order.Sample(1);
@@ -142,6 +174,8 @@ public sealed partial class SceneViewport : Decorator
     public event Action<string, Point>? PngDropped;
 
     private readonly bool spritePreview;
+    // Particle panel playback: the selected emitter in the edit view, or the panel's isolated effect in a sprite preview.
+    internal ParticlePreview? Particles;
     private SceneAppearance? previewFrame;
     private readonly Dictionary<string,System.Drawing.Size> previewSizes = [];
 

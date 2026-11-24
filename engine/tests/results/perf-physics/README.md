@@ -70,3 +70,62 @@ dotnet engine/.artifacts/bin/Physics2D/release/Physics2D.dll tiles .      # 타�
 - Windows·Linux x64(조정 담당자 몫, Windows는 보류). 위 해시가 x64에서도 같은지는 게스트에서 다시 봐야 한다.
 - QEMU 게스트가 꺼진 상태의 시간 측정.
 - F의 시간 이득(잡음 이하). 강체가 많은 씬이나 스트리밍 타일맵에서의 SyncPhysics 비용은 따로 재지 않았다.
+
+## 틱당 할당 제거 (16.4 후속)
+
+2026-11-24, macOS 27.0.1 / Apple M4 Max(arm64). 기준은 `7960ccc`(wip/next1, 16.4 포함)를 `git archive`로 푼 사본, 후보는 이 커밋이다. 측정 시작과 끝에 `qemu-system`은 실행 중이 아니었다(같은 시각에 이 워크트리의 게이트 빌드가 돌고 있었다). [16.4 기록](../colliders-capsule-chain/README.md)이 찾은 "고정 틱 120회 474,240 B"(틱당 약 4 KB)의 출처를 런타임 `GCAllocationTick` 이벤트(형식 이름)로 찾아 지웠다. 배포본에 추가된 의존성·파일은 없다. BRUTAL에 해당하는 기능은 없다(MoNoon 쪽 후보 수집·접촉 경로).
+
+### 원인과 바꾼 것
+
+| 원인(이벤트 비중) | 파일 | 바꾼 것 |
+| --- | --- | --- |
+| `Candidates`·`TileCandidates` 반복기 상태 기계(질의·이동·접촉마다 두 개) | [ScenePhysics.cs](../../../src/Engine.Core/ScenePhysics.cs), [SceneContacts.cs](../../../src/Engine.Core/SceneContacts.cs) 호출부 그대로 | 후보를 풀에서 빌린 `List<Obstacle>`에 즉시 채우고, `foreach`가 끝나면(`Dispose`) 목록을 돌려놓는 구조체 열거자를 반환한다. 질의가 중첩될 수 있어(접촉 콜백 안의 스크립트 질의) 호출마다 자기 목록을 쓴다. 후보와 순서는 같다 |
+| `Tilemap2D.InView` 반복기 두 개(내부 청크 반복기 포함), 넓은 범위의 `chunks.Keys` 반복기 | [Tilemap2D.cs](../../../src/Engine.Core/Tilemap2D.cs) | 같은 순서로 목록에 덧붙이는 내부 오버로드. 물리는 SceneGame의 재사용 목록, 타일 그리기는 스레드별 재사용 목록을 쓴다. 공개 `InView`는 같은 결과를 목록으로 돌려준다. `Keys` 대신 구조체 열거자 |
+| `UpdateUi`의 클릭 콜백 람다 두 개와 지역 변수 클로저(UI 이벤트가 없는 틱에도) | [SceneGame.cs](../../../src/Engine.Core/SceneGame.cs), [ScreenUi.Input.cs](../../../src/Engine.Core/ScreenUi.Input.cs) | 컨트롤 이벤트가 있는 틱에만 `DispatchControls`가 콜백을 만든다. `UiInput` 프로파일 구간은 그대로 매 틱 남는다 |
+| 회전한 충돌체의 도형을 질의마다 다시 만듦(`ForObject`의 클로저, `Hull`, 꼭짓점 배열) | [SceneGame.cs](../../../src/Engine.Core/SceneGame.cs) `Body.ShapeAt`, [CollisionGeometry.cs](../../../src/Engine.Core/CollisionGeometry.cs) | 마지막 각도(비트 비교)의 도형 하나를 보관한다. `SetWorldPose`가 지운다. `ForObject`의 LINQ 람다를 반복문으로 바꿔 원·캡슐 경로의 클로저 할당을 없앴다 |
+| `MoveGroup`의 법선 목록과 `All` 람다 | [ScenePhysics.cs](../../../src/Engine.Core/ScenePhysics.cs) | 재사용 목록과 반복문(NaN 판정 포함 같은 조건) |
+| 탐색 메시의 `Where(...).ToArray()` | [Navigation2D.cs](../../../src/Engine.Core/Navigation2D.cs) | 구조체 열거자에 맞춘 반복문(경로 계획마다, 틱마다가 아님) |
+
+`Overlap`의 결과 목록과 `IPhysics2D` 질의 결과는 스크립트가 가질 수 있는 공개 값이라 그대로 새로 만든다(이번 검사의 Raycast·Sweep은 구조체라 0). 계속 도는 원이 아닌 몸체는 새 각도마다 도형을 한 번 만든다(캡슐 약 600 B/틱). Box2D 도형을 공유하는 `Shape2D`를 제자리에서 바꾸면 접촉이 보관한 이전 도형이 바뀌므로 남겼다.
+
+### 측정 (할당은 JIT Release 같은 프로세스, `GC.GetAllocatedBytesForCurrentThread`)
+
+| 장면 | 기준 | 후보 |
+| --- | ---: | ---: |
+| 16.4 할당 장면(박스 7개, 120틱, 예열 240틱) | 474,240 B | 0 B |
+| 같은 장면, 캡슐 6개 + Edge 바닥 | 474,240 B | 0 B |
+| PlatformerLab Slopes(스크립트 대신 `DriveCharacter`로 왕복, 매 틱 Raycast, 400틱 한 바퀴) 바위가 멈춘 뒤 | 3,304,288 B (8,261 B/틱) | 0 B |
+| 같은 장면, 첫 세 바퀴(바위가 구르는 동안) | 3,415,632 · 3,402,528 · 3,358,384 B | 271,240 · 240,000 · 133,200 B |
+
+틱 시간(같은 Slopes 루프 4,000틱 평균, 기준·후보 번갈아 5회): 기준 30.26 µs [29.81–30.85], 후보 26.35 µs [25.88–29.07]. 중앙값 차이(3.9 µs)가 두 범위의 합(4.2 µs)보다 작아 **차이 없음**으로 적는다. 두 경로의 러너·바위 위치는 바이트 단위로 같았다.
+
+### 새 검사
+
+[PhysicsAllocationChecks](../../Engine.Checks/PhysicsAllocationChecks.cs)(`--only physics-alloc`, `physics` 묶음과 전체 실행): Slopes 씬에서 러너 스크립트를 빼고 검사가 `DriveCharacter`로 왕복시키며 매 틱 Raycast와 원 Sweep을 한다(캐릭터 모터 캡슐, 8 px 타일 이음새, Edge 체인, Box2D 캡슐 바위, 트리거). 바위가 멈출 때까지(최대 8바퀴) 예열한 뒤 400틱 할당이 0 B여야 한다.
+
+### 결정성 기준값 (후보로 만든 템플릿, 헤드리스)
+
+| 검사 | Release | Native AOT |
+| --- | --- | --- |
+| PlatformerLab.Joints 기록 SHA-256 | `2d523cd0…` | `2d523cd0…` |
+| PlatformerLab.TileCollision 기록 | `f30ed686…` | `f30ed686…` |
+| PlatformerLab.Paths 기록 | `e37de6c0…` | `e37de6c0…` |
+| PlatformerLab.Colliders Slopes 기록 | `635f9029…` | `635f9029…` |
+| CollisionLab.Spatial 대상 순서(1천·1만) | `32FA7AB7…`·`B5C817DB…` 통과 | 통과 |
+| BarrageLab.PrefabPools 명중 수 | 2,338 | 2,338 |
+| `Engine.Checks --only physics`(접촉 순서 `E55DF236…`, 캡슐·Edge 질의 답 `2BD6C0255E124F12`·`6C5627549756C4F1`, Slopes 기록 `7ed9c779`) | 통과 | – |
+| `./monoon test`(전체, 새 검사 포함) | 통과(`All checks passed.`) | – |
+
+### 재현
+
+```sh
+dotnet run --project engine/tests/Engine.Checks -c Release -- "$PWD" --only physics-alloc
+engine/scripts/build-players.sh
+# 각 하네스 README의 prepare → ./monoon build (release, native-aot) → verify.py play
+```
+
+### 확인하지 않은 것
+
+- Scene Play(에디터)에서의 위 기록. 바꾼 코드는 Release·Native AOT와 같은 `SceneGame` 경로다.
+- x64(조정 담당자 몫).
+- 회전을 계속하는 다각형·캡슐 몸체의 남은 할당(위 설명).

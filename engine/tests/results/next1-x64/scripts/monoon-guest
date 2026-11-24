@@ -1,0 +1,7 @@
+#!/bin/sh
+# Guest stand-in for ./monoon: "build" runs the CLI built on the Mac (no dotnet run/compile under TCG) for linux-x64;
+# everything else goes to the repository's own script (monoon.orig).
+set -eu
+repo=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
+if [ "${1:-}" = build ]; then exec dotnet "$repo/engine/.artifacts/bin/Engine.Cli/release/MoNoon.Cli.dll" "$@" --target linux-x64; fi
+exec sh "$repo/monoon.orig" "$@"

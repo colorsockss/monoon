@@ -19,17 +19,29 @@ public interface IGameObjects
     PrefabPoolStats PoolStats(PrefabReference prefab);
     bool TryMoveStep(Guid id, Vector2 displacement);
     SpritePool2D CreateSpritePool(Guid owner, int capacity);
+    // Particle Emitter 2D: plays the effect's cycle from the start (its time-0 bursts fire this tick).
+    [EngineFeature(EngineFeature.Particles)]
     bool EmitParticles(Guid id);
+    // Live particles as of the last game tick; writes up to destination.Length and returns the live count.
+    [EngineFeature(EngineFeature.Particles)]
+    int ReadParticles(Guid id, Span<Particle2D> destination) => 0;
+    // The emitter's births (sub-emitted ones included), deaths and collisions in the last game tick, and all dropped particles.
+    [EngineFeature(EngineFeature.Particles)]
+    ParticleEvents ReadParticleEvents(Guid id) => default;
     // Starts a Position Tween 2D or Path Follower 2D whose Play on start is off.
+    [EngineFeature(EngineFeature.Tweens)]
     bool PlayTween(Guid id);
     // Line 2D: world points replace the line's points; reading returns the drawn (flattened) points in world space.
     bool SetLinePoints(Guid id, ReadOnlySpan<Vector2> worldPoints);
     bool TryGetLinePoints(Guid id, List<Vector2> worldPoints);
     // Trail 2D: the points recorded on game ticks, oldest first, in world space.
     bool TryGetTrailPoints(Guid id, List<Vector2> worldPoints);
+    // Text 2D: replaces the drawn text, translation key included, until the scene ends.
+    bool SetWorldText(Guid id, string text) => false;
     bool PlayCutscene(Guid director);
     CutsceneState? Cutscene { get; }
     CutsceneExit? LastCutsceneExit { get; }
+    [EngineFeature(EngineFeature.Skeletons)]
     bool TryGetBonePose(Guid id,string bone,out BonePose2D pose);
     bool SetSprite(Guid id, SpriteReference sprite);
     bool TryGetSpriteColor(Guid id, out Color color) { color = default; return false; }
@@ -38,6 +50,8 @@ public interface IGameObjects
     bool IsColliderEnabled(Guid id);
     // Runs steps until their first wait. Stops when the owner is disabled or removed, or the scene ends.
     ScriptRoutine StartRoutine(Guid owner, IEnumerable<ScriptWait> steps);
+    // Script tweens: chain Move/Scale/Rotate/Color/Alpha/UiRect/Float/Delay steps on the returned handle. They stop with the object.
+    ScriptTween Tween(Guid id, TweenClock clock = TweenClock.Game);
     bool SetActive(Guid id, bool active);
     bool IsActive(Guid id);
     IReadOnlyList<Guid> FindByTag(string tag);
@@ -53,11 +67,17 @@ public interface IGameObjects
     bool HasScript(Guid id, string script);
     T? GetComponent<T>(Guid id) where T : class;
     IGameAnimator? Animator(Guid id);
+    [EngineFeature(EngineFeature.Tilemaps)]
     bool TryGetTileStream(Guid layer, out TileStreamState state);
+    [EngineFeature(EngineFeature.Tilemaps)]
     bool ReplaceTiles(Guid layer, int width, int height, ReadOnlySpan<int> tiles);
+    [EngineFeature(EngineFeature.Tilemaps)]
     bool TryGetTile(Guid layer, Point cell, out TileInfo info);
+    [EngineFeature(EngineFeature.Tilemaps)]
     bool SetTile(Guid layer, Point cell, int tile);
+    [EngineFeature(EngineFeature.Tilemaps)]
     GridNavigation? TileNavigation(Guid layer, Rectangle area);
+    [EngineFeature(EngineFeature.Tilemaps)]
     bool IsTileChunkLoaded(Guid layer,int x,int y);
     IBodyMotion2D Motion { get; }
     IPhysics2D Physics { get; }
@@ -187,7 +207,7 @@ public sealed partial class SceneGame
             body.SpawnedFrom=path;
             body.Origin = origin;
             body.SceneOwner = owner == null ? executingScene : owner.SceneOwner;
-            body.Active = p?.Active ?? true;
+            body.Active = body.ActiveSelf && (p?.Active ?? true);
             body.SetWorldPose(obj.LocalMatrix * (p?.MatrixAt(p.Position) ?? Matrix3x2.Identity), p?.Angle ?? 0);
             staged.Add(src.Id, body);
         }
@@ -235,10 +255,13 @@ public sealed partial class SceneGame
         if (prefabTemplates.TryGetValue(prefab.Id, out var cached) && cached.Path == path && Unchanged(cached.Files))
             return cached.Template;
         var project=world.ProjectDirectory!;
-        var exported = File.Exists(Path.Combine(project,".monoon-player"));
+        var exported = ProjectAssets.Exported(project);
         var file = Path.Combine(project,path);
         var stamps = new List<(string File, DateTime Written)> { (file, File.GetLastWriteTimeUtc(file)) }; // Before the read: a write during it is seen next time.
-        var template = exported ? SceneDocument.ReadAsset(file) : SceneDocument.ReadResolvedPrefab(project,assets!,prefab.Id);
+        // A branch on the switch itself lets trimming drop the prefab refresh path from Native AOT
+        // (`switch || exported` compiles to a non-short-circuit `or` that the trimmer cannot fold).
+        var template = ProjectAssets.ExportedGameOnly ? SceneDocument.ReadAsset(file)
+            : exported ? SceneDocument.ReadAsset(file) : SceneDocument.ReadResolvedPrefab(project,assets!,prefab.Id);
         template.ResolveAssets(assets!);
         if (template.Objects.Count(o => o.Parent == null) != 1) throw new InvalidDataException($"{path}: expected one root.");
         // Editor Play resolves nested prefabs from their own files; exported prefabs are already flattened.
@@ -414,5 +437,6 @@ public sealed partial class SceneGame
         IndexCameras();
         IndexAudio();
         tileLayers = bodies.Where(b => b.Map != null).ToArray();
+        IndexParticles();
     }
 }

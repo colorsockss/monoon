@@ -1,0 +1,128 @@
+AnimatorLab.Conditions: same 2, differ 6, linux-only 0, mac-only 0
+    differ native-aot/frames/0040.png linux bf61e1c9dd66 mac 847fdced22e8 10455/360000 px (2.90%), max 231
+    differ native-aot/frames/0095.png linux 33f25a6049ec mac bd78e83bb30c 9761/360000 px (2.71%), max 231
+    differ native-aot/frames/0215.png linux 7771a96cb1f8 mac 9c4cf0728280 10053/360000 px (2.79%), max 231
+    differ release/frames/0040.png linux bf61e1c9dd66 mac 847fdced22e8 10455/360000 px (2.90%), max 231
+    differ release/frames/0095.png linux 33f25a6049ec mac bd78e83bb30c 9761/360000 px (2.71%), max 231
+    differ release/frames/0215.png linux 7771a96cb1f8 mac 9c4cf0728280 10053/360000 px (2.79%), max 231
+AnimatorLab.Directions: same 2, differ 8, linux-only 0, mac-only 0
+    differ native-aot/frames/0030.png linux bf2f8aed6fd5 mac d152f95c3bfb 5569/360000 px (1.55%), max 231
+    differ native-aot/frames/0095.png linux 1c872dd6fed0 mac 2d87180970a7 5676/360000 px (1.58%), max 231
+    differ native-aot/frames/0240.png linux 60030d4dd976 mac 5195f0429db8 5437/360000 px (1.51%), max 231
+    differ native-aot/frames/0330.png linux 49fea8a547f0 mac 878df302b721 5772/360000 px (1.60%), max 231
+    differ release/frames/0030.png linux bf2f8aed6fd5 mac d152f95c3bfb 5569/360000 px (1.55%), max 231
+    differ release/frames/0095.png linux 1c872dd6fed0 mac 2d87180970a7 5676/360000 px (1.58%), max 231
+    differ release/frames/0240.png linux 60030d4dd976 mac 5195f0429db8 5437/360000 px (1.51%), max 231
+    differ release/frames/0330.png linux 49fea8a547f0 mac 878df302b721 5772/360000 px (1.60%), max 231
+AudioLab.Buses: same 0, differ 2, linux-only 0, mac-only 0
+    differ aot-ducking/ducking.json linux 7053d16b0606 mac d91154f91416
+    differ release-ducking/ducking.json linux 7053d16b0606 mac d91154f91416
+BarrageLab.Lines: same 4, differ 10, linux-only 0, mac-only 0
+    differ aot/captures/0060.png linux dfc94ca81b34 mac 6703784331ce 7199/360000 px (2.00%), max 225
+    differ aot/captures/0200.png linux dd3dfd3aa117 mac 1cdc2c2a13b0 7139/360000 px (1.98%), max 225
+    differ aot/captures/0330.png linux 332ec47729f1 mac b4e7a42155c0 7161/360000 px (1.99%), max 225
+    differ aot/captures/0425.png linux f07460a45303 mac a4b51e968c2c 7335/360000 px (2.04%), max 225
+    differ aot/captures/0470.png linux 38ed0fecefb7 mac 471f37f54f53 7134/360000 px (1.98%), max 225
+    differ release/captures/0060.png linux dfc94ca81b34 mac 6703784331ce 7199/360000 px (2.00%), max 225
+    differ release/captures/0200.png linux dd3dfd3aa117 mac 1cdc2c2a13b0 7139/360000 px (1.98%), max 225
+    differ release/captures/0330.png linux 332ec47729f1 mac b4e7a42155c0 7161/360000 px (1.99%), max 225
+    differ release/captures/0425.png linux f07460a45303 mac a4b51e968c2c 7335/360000 px (2.04%), max 225
+    differ release/captures/0470.png linux 38ed0fecefb7 mac 471f37f54f53 7134/360000 px (1.98%), max 225
+BarrageLab.PrefabPools: same 0, differ 6, linux-only 0, mac-only 0
+    differ barrage-aot-replay/instantiate.csv linux d1f9017868e5 mac d7858cb559d6
+    differ barrage-aot-replay/pool.csv linux 475a3bad2d87 mac e2d38919522b
+    differ barrage-aot-replay/summary.json linux dcb364cd6527 mac 79162eade27a
+    differ barrage-release-replay/instantiate.csv linux 10423e0c2445 mac 69a08a3d2533
+    differ barrage-release-replay/pool.csv linux 60170bb5bebf mac 5a4f60df8f23
+    differ barrage-release-replay/summary.json linux 4d57c250656a mac b999dc160dc3
+CameraLab.Framing: same 2, differ 0, linux-only 0, mac-only 0
+CollisionLab.Spatial: same 0, differ 0, linux-only 0, mac-only 0
+InventoryLab.BagGrid: same 22, differ 0, linux-only 0, mac-only 0
+InventoryLab.Replay: same 6, differ 1, linux-only 0, mac-only 0
+    differ slot-recovery-release/result.json linux bd106d5e8477 mac 4208ba8bdab8
+InventoryLab.ScriptFields: same 4, differ 0, linux-only 0, mac-only 0
+InventoryLab.WorldText: same 14, differ 0, linux-only 0, mac-only 0
+KeyRoom.InputInteractions: same 2, differ 0, linux-only 0, mac-only 0
+KeyRoom.InspectorComponents: same 10, differ 0, linux-only 0, mac-only 0
+KeyRoom.Tweens: same 2, differ 0, linux-only 0, mac-only 0
+ParticleLab.Trace: same 22, differ 34, linux-only 0, mac-only 0
+    differ Curves/aot/captures/0150.png linux 52df040d55b2 mac 3e695087a2b6 4036/360000 px (1.12%), max 225
+    differ Curves/aot/captures/0290.png linux d010761c1593 mac e3d8cf0baa6c 4036/360000 px (1.12%), max 225
+    differ Curves/release/captures/0150.png linux 52df040d55b2 mac 3e695087a2b6 4036/360000 px (1.12%), max 225
+    differ Curves/release/captures/0290.png linux d010761c1593 mac e3d8cf0baa6c 4036/360000 px (1.12%), max 225
+    differ Fireworks/aot/captures/0100.png linux 770bccdce9ad mac 1969007dd0c0 4482/360000 px (1.25%), max 225
+    differ Fireworks/aot/captures/0400.png linux 294936bd3450 mac e869330d0e42 4482/360000 px (1.25%), max 225
+    differ Fireworks/release/captures/0100.png linux 770bccdce9ad mac 1969007dd0c0 4482/360000 px (1.25%), max 225
+    differ Fireworks/release/captures/0400.png linux 294936bd3450 mac e869330d0e42 4482/360000 px (1.25%), max 225
+    differ Modules/aot/captures/0090.png linux f72f0dead1e9 mac 3ed240202160 3298/360000 px (0.92%), max 225
+    differ Modules/aot/captures/0300.png linux 7fe32ef9948d mac 2c00accfcfb4 3298/360000 px (0.92%), max 225
+    differ Modules/aot/captures/0590.png linux 54a33fd809cb mac 986bbbc98c0c 3298/360000 px (0.92%), max 225
+    differ Modules/aot/trace.tsv linux f7a9f16864e3 mac e62406276c4e
+    differ Modules/release/captures/0090.png linux f72f0dead1e9 mac 3ed240202160 3298/360000 px (0.92%), max 225
+    differ Modules/release/captures/0300.png linux 7fe32ef9948d mac 2c00accfcfb4 3298/360000 px (0.92%), max 225
+    differ Modules/release/captures/0590.png linux 54a33fd809cb mac 986bbbc98c0c 3298/360000 px (0.92%), max 225
+    differ Modules/release/trace.tsv linux f7a9f16864e3 mac e62406276c4e
+    differ Presets/aot/captures/0070.png linux abca71bfe5a8 mac 5e3bbeaf9bab 7955/360000 px (2.21%), max 225
+    differ Presets/aot/captures/0300.png linux a892c9d0ac2e mac 734617a21096 7954/360000 px (2.21%), max 225
+    differ Presets/release/captures/0070.png linux abca71bfe5a8 mac 5e3bbeaf9bab 7955/360000 px (2.21%), max 225
+    differ Presets/release/captures/0300.png linux a892c9d0ac2e mac 734617a21096 7954/360000 px (2.21%), max 225
+    differ Rain/aot/captures/0180.png linux ad0cc56cb000 mac 84ca5f58aa62 3438/360000 px (0.95%), max 225
+    differ Rain/aot/captures/0350.png linux a83d627d6888 mac f1ecdceb998b 3438/360000 px (0.95%), max 225
+    differ Rain/aot/trace.tsv linux 6c01802f4992 mac 9f592abd5377
+    differ Rain/release/captures/0180.png linux ad0cc56cb000 mac 84ca5f58aa62 3438/360000 px (0.95%), max 225
+    differ Rain/release/captures/0350.png linux a83d627d6888 mac f1ecdceb998b 3438/360000 px (0.95%), max 225
+    differ Rain/release/trace.tsv linux 6c01802f4992 mac 9f592abd5377
+    differ Sorting/aot/captures/0240.png linux 348fc12b6021 mac 6db00d2ce197 4005/360000 px (1.11%), max 225
+    differ Sorting/release/captures/0240.png linux 348fc12b6021 mac 6db00d2ce197 4005/360000 px (1.11%), max 225
+    differ Stress/aot/captures/0200.png linux 10d58c733f4e mac 34534abcf6a8 2926/360000 px (0.81%), max 225
+    differ Stress/aot/captures/0290.png linux 14c1e4b8399a mac cb4cdee24c41 2926/360000 px (0.81%), max 225
+    differ Stress/aot/trace.tsv linux 2626513d6904 mac 11e37a08d521
+    differ Stress/release/captures/0200.png linux 10d58c733f4e mac 34534abcf6a8 2926/360000 px (0.81%), max 225
+    differ Stress/release/captures/0290.png linux 14c1e4b8399a mac cb4cdee24c41 2926/360000 px (0.81%), max 225
+    differ Stress/release/trace.tsv linux 2626513d6904 mac 11e37a08d521
+PlatformerLab.Colliders: same 4, differ 0, linux-only 0, mac-only 0
+PlatformerLab.Joints: same 0, differ 4, linux-only 0, mac-only 0
+    differ aot/result.json linux 9728382a2f19 mac c4191ce2ac0d
+    differ aot/trace.tsv linux 86280b272090 mac 2d523cd08916
+    differ release/result.json linux 9728382a2f19 mac c4191ce2ac0d
+    differ release/trace.tsv linux 86280b272090 mac 2d523cd08916
+PlatformerLab.Lighting: same 0, differ 10, linux-only 0, mac-only 0
+    differ aot/captures/0001.png linux f9ee3a4a2d64 mac cf4234fbd026 5702/360000 px (1.58%), max 252
+    differ aot/captures/0020.png linux ce22a7bcf062 mac a69e4f9ecd1f 5703/360000 px (1.58%), max 252
+    differ aot/captures/0045.png linux d6c0784921ce mac ea78f6d5a682 5702/360000 px (1.58%), max 252
+    differ aot/captures/0070.png linux ddbbb8c73056 mac a302dc3cd00b 5701/360000 px (1.58%), max 252
+    differ aot/captures/0100.png linux 468ff44f54f1 mac 323944d1f73a 5703/360000 px (1.58%), max 252
+    differ release/captures/0001.png linux f9ee3a4a2d64 mac cf4234fbd026 5702/360000 px (1.58%), max 252
+    differ release/captures/0020.png linux ce22a7bcf062 mac a69e4f9ecd1f 5703/360000 px (1.58%), max 252
+    differ release/captures/0045.png linux d6c0784921ce mac ea78f6d5a682 5702/360000 px (1.58%), max 252
+    differ release/captures/0070.png linux ddbbb8c73056 mac a302dc3cd00b 5701/360000 px (1.58%), max 252
+    differ release/captures/0100.png linux 468ff44f54f1 mac 323944d1f73a 5703/360000 px (1.58%), max 252
+PlatformerLab.Parallax: same 2, differ 8, linux-only 0, mac-only 0
+    differ aot/frames/0000.png linux a3b8ad2a9f3d mac fb859c7da399 8867/360000 px (2.46%), max 99
+    differ aot/frames/0030.png linux bf27eb0f2746 mac 5ff8ebd3a093 8867/360000 px (2.46%), max 99
+    differ aot/frames/0060.png linux 7abf30178c8d mac 83826fc0f674 8867/360000 px (2.46%), max 99
+    differ aot/frames/0119.png linux 6bb571f3532c mac a12d330bb87e 8867/360000 px (2.46%), max 99
+    differ release/frames/0000.png linux a3b8ad2a9f3d mac fb859c7da399 8867/360000 px (2.46%), max 99
+    differ release/frames/0030.png linux bf27eb0f2746 mac 5ff8ebd3a093 8867/360000 px (2.46%), max 99
+    differ release/frames/0060.png linux 7abf30178c8d mac 83826fc0f674 8867/360000 px (2.46%), max 99
+    differ release/frames/0119.png linux 6bb571f3532c mac a12d330bb87e 8867/360000 px (2.46%), max 99
+PlatformerLab.Paths: same 4, differ 10, linux-only 0, mac-only 0
+    differ aot/captures/0040.png linux 6e4337a54f65 mac 940dea94d97c 15204/360000 px (4.22%), max 231
+    differ aot/captures/0150.png linux 3d3116c44d94 mac 070fc126b047 15100/360000 px (4.19%), max 231
+    differ aot/captures/0220.png linux 7d5b3f3cf2b8 mac 9cd453bf6655 15150/360000 px (4.21%), max 231
+    differ aot/captures/0300.png linux a3a1a287db11 mac a2aaa7c38e19 15171/360000 px (4.21%), max 231
+    differ aot/captures/0380.png linux d1e76f3e5a6e mac ccce64b320bf 12784/360000 px (3.55%), max 231
+    differ release/captures/0040.png linux 6e4337a54f65 mac 940dea94d97c 15204/360000 px (4.22%), max 231
+    differ release/captures/0150.png linux 3d3116c44d94 mac 070fc126b047 15100/360000 px (4.19%), max 231
+    differ release/captures/0220.png linux 7d5b3f3cf2b8 mac 9cd453bf6655 15150/360000 px (4.21%), max 231
+    differ release/captures/0300.png linux a3a1a287db11 mac a2aaa7c38e19 15171/360000 px (4.21%), max 231
+    differ release/captures/0380.png linux d1e76f3e5a6e mac ccce64b320bf 12784/360000 px (3.55%), max 231
+PlatformerLab.TileCollision: same 4, differ 0, linux-only 0, mac-only 0
+SeedLab.Autotile: same 2, differ 6, linux-only 0, mac-only 0
+    differ native-aot/frames/0005.png linux 447f671faaa4 mac b310b1749336 6026/360000 px (1.67%), max 158
+    differ native-aot/frames/0025.png linux cef4131fca0f mac a13eb44e60d5 6026/360000 px (1.67%), max 158
+    differ native-aot/frames/0045.png linux 79e06ab53397 mac 086bc8ab7a28 6026/360000 px (1.67%), max 158
+    differ release/frames/0005.png linux 447f671faaa4 mac b310b1749336 6026/360000 px (1.67%), max 158
+    differ release/frames/0025.png linux cef4131fca0f mac a13eb44e60d5 6026/360000 px (1.67%), max 158
+    differ release/frames/0045.png linux 79e06ab53397 mac 086bc8ab7a28 6026/360000 px (1.67%), max 158
+SeedLab.NavigationFree: same 4, differ 0, linux-only 0, mac-only 0

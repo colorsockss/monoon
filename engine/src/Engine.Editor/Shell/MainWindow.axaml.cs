@@ -33,9 +33,11 @@ public partial class MainWindow : Window
         prefabSource = source;
         savePrefabSource = saveSource;
         InitializeComponent();
+        DockHost.SetTabTools(InspectorPanel, InspectorTabTools); // before the dock builds its tabs
         InitializeDocking();
         InitializeMenus();
         OverridesButton.Click += (_, _) => RunAction(ShowPrefabOverrides);
+        InitializeScrub();
         InitializeDiagnostics();
         ImportAssetsButton.Click += (_,_) => RunAction(ChooseAssets);
         ReferencesButton.Click += (_,_) => RunAction(()=>InspectAssets(false));
@@ -46,6 +48,7 @@ public partial class MainWindow : Window
         NewDialogueButton.Click += (_, _) => RunAction(() => EditValues(null, false, dialogue: true));
         NewTilesetButton.Click += (_,_)=>RunAction(()=>EditTileset(null));
         Viewport.TilesChanged += (id,cells) => {
+            CommitEdit();
             history.RecordStroke(Scene,id,cells);
             QueueCheckpoint();
             UpdateTitle(); UpdateMenuState(); Status.Text=$"Painted {cells.Length} cells.";
@@ -78,8 +81,11 @@ public partial class MainWindow : Window
             field.ValueChanged += (_, _) => ChangeBounds(field);
         InitializeObjectRoles();
         ObjectName.LostFocus += (_, _) => CommitText();
+        ObjectActive.IsCheckedChanged += (_, _) => SetObjectActive(ObjectActive.IsChecked == true);
         ObjectName.TextChanged += (_, _) => UpdateMenuState();
-        AddHandler(GotFocusEvent, (_, _) => history.EndGroup(), RoutingStrategies.Tunnel);
+        // GotFocus only bubbles: a tunnel handler never ran, so focus changes did not end an edit group before.
+        AddHandler(GotFocusEvent, (_, _) => { CommitEdit(); history.EndGroup(); }, RoutingStrategies.Bubble, handledEventsToo: true);
+        AddHandler(KeyDownEvent, (_, e) => { if (e.Key == Key.Enter) { CommitEdit(); history.EndGroup(); } }, RoutingStrategies.Tunnel);
         ObjectName.KeyDown += (_, e) =>
         {
             if (e.Key == Key.Enter) { CommitText(); Viewport.Focus(); }
@@ -127,6 +133,7 @@ public partial class MainWindow : Window
 
     private async Task<bool> Save()
     {
+        CommitEdit();
         if (prefabSource != null)
         {
             Scene.NormalizeScriptFields();
@@ -200,7 +207,7 @@ public partial class MainWindow : Window
 
     private void UpdateTitle()
     {
-        SceneCaption.Text = sceneName + (history.IsDirty ? " *" : "");
+        SceneCaption.Text = sceneName + (history.IsDirty || pendingEdit != null ? " *" : "");
         Title = prefabSource == null ? "MoNoon" : $"Prefab · {Path.GetFileName(sceneName)}";
     }
 }

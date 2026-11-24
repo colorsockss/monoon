@@ -43,7 +43,7 @@ public partial class MainWindow
     }
 
     // Grid thumbnails, decoded once per file version. Bitmaps are not disposed here: a cleared entry may still be on screen.
-    private static class ProjectThumbnails
+    internal static class ProjectThumbnails
     {
         private static readonly Dictionary<string, (DateTime Stamp, Bitmap? Image)> cache = [];
         public static Bitmap? Get(string file)

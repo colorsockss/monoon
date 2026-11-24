@@ -32,6 +32,9 @@ public interface INavigation2D
     bool CanSee(Guid observer,Guid target,float radius,uint blockers=uint.MaxValue);
     bool TryGetFeet(Guid id,out Vector2 feet);
     IReadOnlyList<WalkPoint> FindWalkPath(Guid region,Guid actor,Vector2 goalFeet);
+    /// <summary>Top-down free movement (16.15): bakes the region's open cells for agents of radius Agent W / 2 from the
+    /// current static colliders and solid tiles in its mask. Call once at load (OnCreate) and keep the area.</summary>
+    NavArea2D? BakeArea(Guid region);
 }
 
 public sealed partial class SceneGame : INavigation2D
@@ -76,10 +79,23 @@ public sealed partial class SceneGame : INavigation2D
         // One snapshot per plan, including resident tile collision and kinematic poses.
         // Actors are not terrain and never punch temporary holes in their own routes.
         var query=bounds;query.Inflate(config.AgentWidth,config.AgentHeight);
-        var surfaces=Candidates(query,config.TerrainMask,false,actor)
-            .Where(o=>byId[o.Target.ObjectId].MotionOwner?.Rigid?.BodyType!=BodyType2D.Dynamic)
-            .ToArray();
+        var found=new List<Obstacle>();
+        foreach(var o in Candidates(query,config.TerrainMask,false,actor))
+            if(byId[o.Target.ObjectId].MotionOwner?.Rigid?.BodyType!=BodyType2D.Dynamic)found.Add(o);
+        var surfaces=found.ToArray();
         return agent.WalkPreview=WalkGraph.Find(bounds,count,config,surfaces,start,goalFeet);
+    }
+
+    public NavArea2D? BakeArea(Guid region)
+    {
+        if (!byId.TryGetValue(region,out var area) || !area.Active || area.Source.GetComponent<NavigationRegion2DComponent>() is not { Enabled: true } config) return null;
+        var bounds=Affine2D.Bounds(new(0,0,area.Size.X,area.Size.Y),area.MatrixAt(area.Position));
+        float radius=config.AgentWidth*.5f;
+        var query=bounds;query.Inflate(radius,radius);
+        var shapes=new List<Shape2D>();
+        foreach(var o in Candidates(query,config.TerrainMask,false,null))
+            if(byId[o.Target.ObjectId].MotionOwner?.Rigid?.BodyType!=BodyType2D.Dynamic)shapes.Add(o.Shape);
+        return NavArea2D.Bake(bounds,config.Spacing,radius,System.Runtime.InteropServices.CollectionsMarshal.AsSpan(shapes));
     }
 
     private static class WalkGraph

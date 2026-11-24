@@ -9,6 +9,7 @@ public sealed partial class ScreenUi
     private static bool Styled(UiTextComponent label) => label.RichText || label.RevealRate > 0;
     private void MeasureLines(Node n,ICanvas2D? canvas)
     {
+        if(!EngineFeatures.Text)return; // no labels without the text feature (roadmap 15.12)
         if(n.Label is not {} label || n.Field!=null || !label.Wrap && !Styled(label))return;
         var text=Label(n);
         float available=label.Wrap?Math.Max(1,n.AllocatedWidth-Math.Max(0,label.InsetX)):float.PositiveInfinity,size=label.Size*Preferences.TextScale;
@@ -24,6 +25,7 @@ public sealed partial class ScreenUi
     internal void AdvanceReveal(double seconds)
     {
         revealing = true;
+        if (!EngineFeatures.Text) return; // no labels to reveal (roadmap 15.12)
         foreach (var n in treeOrder)
         {
             if (n.Label is not { RevealRate: > 0 } label || n.Field != null) continue;

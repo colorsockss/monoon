@@ -4,12 +4,29 @@ using VYaml.Annotations;
 namespace Engine.Core;
 
 [YamlObject]
-public sealed partial record ActionBinding(string Name, string[] Controls);
+public sealed partial record ActionBinding(string Name, string[] Controls)
+{
+    // Roadmap 16.12. When GameInput.Triggered is true: null on the press; Hold once the action has been held Ticks game
+    // ticks; Tap on a release within Ticks of the press; DoubleTap on a second press within Ticks of the first.
+    public string? Interaction { get; init; }
+    public int? Ticks { get; init; }
+    // Game ticks a trigger stays available to Triggered/Consume (an input buffer); null or 0: only its own tick.
+    public int? Buffer { get; init; }
+    public const string Hold = "Hold", Tap = "Tap", DoubleTap = "DoubleTap";
+    internal int Window => Ticks ?? Interaction switch { Hold => 30, Tap => 12, _ => 18 };
+}
+
+// A 2D vector action: four actions combined into one vector, clamped to length 1 (GameInput.Vector).
+[YamlObject]
+public sealed partial record ActionVector(string Name, string Left, string Right, string Up, string Down);
 
 [YamlObject]
 public sealed partial record InputBindings
 {
     public ActionBinding[]? Actions { get; init; }
+    // The first vector is GameInput.Move. Without any, Move combines MoveLeft/MoveRight/MoveUp/MoveDown as before.
+    public ActionVector[]? Vectors { get; init; }
+    internal static readonly ActionVector[] DefaultVectors = [new("Move", "MoveLeft", "MoveRight", "MoveUp", "MoveDown")];
     // Read the former five key lists. New saves contain only the action map.
     public string? Left { get; init; }
     public string? Right { get; init; }
@@ -19,7 +36,7 @@ public sealed partial record InputBindings
 
     public static string[] Keys(string group) => group.Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
     public InputBindings AsMap() => Actions != null ? this with { Left=null, Right=null, Up=null, Down=null, Interact=null } :
-        new() { Actions = [
+        new() { Vectors = Vectors, Actions = [
             Direction("Left",Left,"Left,A"), Direction("Right",Right,"Right,D"),
             Direction("Up",Up,"Up,W"), Direction("Down",Down,"Down,S"),
             new("Interact",[.. Keys(Interact ?? "E,Space"), "Pad.South"]) ] };
@@ -35,7 +52,16 @@ public sealed partial record InputBindings
                 !a.Name.All(c => char.IsAsciiLetterOrDigit(c) || c == '_') || !names.Add(a.Name))
                 throw new InvalidDataException($"Invalid or duplicate action '{a?.Name}'. Use a unique name starting with a letter.");
             ValidateControls(a.Name,a.Controls);
+            if (a.Interaction is not (null or ActionBinding.Hold or ActionBinding.Tap or ActionBinding.DoubleTap) ||
+                a.Ticks is < 1 or > 3600 || a.Buffer is < 0 or > 3600)
+                throw new InvalidDataException($"{a.Name}: interaction must be Hold, Tap or DoubleTap, ticks 1–3600 and buffer 0–3600.");
         }
+        bool Known(string? action) => action != null && names.Contains(action);
+        var vectors = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+        foreach (var v in Vectors ?? [])
+            if (v?.Name is not { Length: >= 1 and <= 64 } name || !char.IsAsciiLetter(name[0]) || !name.All(c => char.IsAsciiLetterOrDigit(c) || c == '_') ||
+                !vectors.Add(name) || !Known(v.Left) || !Known(v.Right) || !Known(v.Up) || !Known(v.Down))
+                throw new InvalidDataException($"Invalid or duplicate vector '{v?.Name}'. Name four existing actions for left, right, up and down.");
     }
     internal static void ValidateControls(string name,string[]? controls)
     {
@@ -87,6 +113,17 @@ public readonly record struct GameInput(Vector2 Move, bool InteractPressed)
     public bool Pressed(string action) => Samples?.GetValueOrDefault(action).Pressed ??
         (InteractPressed && string.Equals(action,"Interact",StringComparison.OrdinalIgnoreCase));
     public bool Released(string action) => Samples?.GetValueOrDefault(action).Released ?? false;
+
+    // Roadmap 16.12. Owner/Tick are set by InputActions.Take; Tick is -1 for UI input, which has no interactions or buffers.
+    internal InputActions? Owner { get; init; }
+    internal long Tick { get; init; }
+    internal Vector2[]? Vectors { get; init; }
+    /// <summary>The action's interaction fired on this game tick, or within its buffer and not consumed yet. Same as Pressed without a rule.</summary>
+    public bool Triggered(string action) => Tick >= 0 && Owner?.Triggered(action, Tick, false) is bool b ? b : Pressed(action);
+    /// <summary>Like Triggered, and uses the trigger up so later ticks (and later scripts this tick) no longer see it.</summary>
+    public bool Consume(string action) => Tick >= 0 && Owner?.Triggered(action, Tick, true) is bool b ? b : Pressed(action);
+    /// <summary>A 2D vector action from GameSettings (length at most 1). Move is the first vector.</summary>
+    public Vector2 Vector(string name) => Owner?.VectorIndex(name) is int i and >= 0 && Vectors != null ? Vectors[i] : default;
 }
 
 public sealed partial class InputActions
@@ -101,6 +138,7 @@ public sealed partial class InputActions
         public readonly HashSet<string> Presses = new(StringComparer.OrdinalIgnoreCase);
         public readonly HashSet<string> Releases = new(StringComparer.OrdinalIgnoreCase);
         public Dictionary<string,GameInput.Sample>? Snapshot;
+        public Vector2[]? Vectors;
 
         public void Record(string name, float previous, float current, long timestamp)
         {
@@ -124,7 +162,8 @@ public sealed partial class InputActions
         }
         public void Clear()
         {
-            if (Presses.Count != 0 || Releases.Count != 0) Snapshot = null;
+            // Peaks too: a vector built from a peak must not outlive the tick it belongs to.
+            if (Presses.Count != 0 || Releases.Count != 0 || Peaks.Count != 0) Snapshot = null;
             Times.Clear();
             Presses.Clear();
             Releases.Clear();
@@ -145,10 +184,74 @@ public sealed partial class InputActions
     private InputDevice device;
     private Vector2 pointer;
     private bool inside;
+    // Roadmap 16.12: actions with an interaction or a buffer, judged once per game tick in Take.
+    private sealed class Rule(ActionBinding action)
+    {
+        public readonly string Name = action.Name;
+        public readonly string? Interaction = action.Interaction;
+        public readonly int Window = action.Window, Buffer = action.Buffer ?? 0;
+        public long Down = -1, FirstPress = -1, Fired = -1;
+        public bool Consumed;
+        public void Reset() { Down = FirstPress = Fired = -1; Consumed = false; }
+    }
+    private readonly Rule[] rules;
+    private readonly ActionVector[] vectors;
+    private long tick;
     public InputActions(InputBindings map)
     {
         map.Validate();
-        foreach (var a in map.AsMap().Actions!) { bindings.Add(a.Name,[..a.Controls]); defaults.Add(a.Name,[..a.Controls]); }
+        var actions = map.AsMap().Actions!;
+        foreach (var a in actions) { bindings.Add(a.Name,[..a.Controls]); defaults.Add(a.Name,[..a.Controls]); }
+        var judged = new List<Rule>();
+        foreach (var a in actions) if (a.Interaction != null || a.Buffer > 0) judged.Add(new Rule(a));
+        rules = judged.ToArray();
+        vectors = map.Vectors is { Length: > 0 } declared ? declared : InputBindings.DefaultVectors;
+    }
+    internal int VectorIndex(string name)
+    {
+        for (int i = 0; i < vectors.Length; i++) if (string.Equals(vectors[i].Name, name, StringComparison.OrdinalIgnoreCase)) return i;
+        return -1;
+    }
+    // null: no rule, so Triggered means Pressed.
+    internal bool? Triggered(string action, long at, bool consume)
+    {
+        foreach (var r in rules)
+        {
+            if (!string.Equals(r.Name, action, StringComparison.OrdinalIgnoreCase)) continue;
+            // Only the current tick's input answers: a GameInput kept from an earlier tick neither sees nor uses a trigger.
+            bool live = at == tick && r.Fired >= 0 && !r.Consumed && tick - r.Fired <= r.Buffer;
+            if (live && consume) r.Consumed = true;
+            return live;
+        }
+        return null;
+    }
+    private void Judge(InputHistory history)
+    {
+        tick++;
+        foreach (var r in rules)
+        {
+            bool pressed = history.Presses.Contains(r.Name), released = history.Releases.Contains(r.Name), held = values.GetValueOrDefault(r.Name) > 0;
+            bool fire = false;
+            switch (r.Interaction)
+            {
+                case null: fire = pressed; break;
+                case ActionBinding.Hold:
+                    if (pressed) r.Down = tick;
+                    fire = held && r.Down >= 0 && tick - r.Down + 1 == r.Window;
+                    break;
+                case ActionBinding.Tap:
+                    if (pressed) r.Down = tick;
+                    fire = released && r.Down >= 0 && tick - r.Down < r.Window;
+                    break;
+                case ActionBinding.DoubleTap:
+                    if (!pressed) break;
+                    fire = r.FirstPress >= 0 && tick - r.FirstPress <= r.Window;
+                    r.FirstPress = fire ? -1 : tick;
+                    break;
+            }
+            if (!held) r.Down = -1;
+            if (fire) { r.Fired = tick; r.Consumed = false; }
+        }
     }
     internal void EnableDialogueBindings()
     {
@@ -170,6 +273,7 @@ public sealed partial class InputActions
         values[action] = Strength(sources);
         gameHistory.Forget(action);
         uiHistory.Forget(action);
+        foreach (var r in rules) if (string.Equals(r.Name, action, StringComparison.OrdinalIgnoreCase)) r.Reset();
     }
     private float Strength(string[] sources)
     {
@@ -233,6 +337,7 @@ public sealed partial class InputActions
         gameHistory.Clear();
         uiHistory.Clear();
         gameHistory.Snapshot = uiHistory.Snapshot = null;
+        foreach (var r in rules) r.Reset();
     }
 
     public GameInput Take() => Take(gameHistory);
@@ -241,17 +346,27 @@ public sealed partial class InputActions
 
     private GameInput Take(InputHistory history)
     {
+        bool game = history == gameHistory;
+        if (game) Judge(history);
         if (history.Snapshot == null)
         {
             history.Snapshot = new(StringComparer.OrdinalIgnoreCase);
             foreach (var name in bindings.Keys)
                 history.Snapshot[name] = new(values.GetValueOrDefault(name), history.Presses.Contains(name), history.Releases.Contains(name), history.Times.GetValueOrDefault(name)?.ToArray());
+            // Vectors change only with the samples, so they are rebuilt (and allocated) only when the input changed.
+            history.Vectors = new Vector2[vectors.Length];
+            for (int i = 0; i < vectors.Length; i++)
+            {
+                var v = vectors[i];
+                var move = new Vector2(Axis(v.Right) - Axis(v.Left), Axis(v.Down) - Axis(v.Up));
+                history.Vectors[i] = move.LengthSquared() > 1 ? Vector2.Normalize(move) : move;
+            }
         }
         float Axis(string name) => Math.Max(values.GetValueOrDefault(name), history.Peaks.GetValueOrDefault(name));
-        var move = new Vector2(Axis("MoveRight") - Axis("MoveLeft"), Axis("MoveDown") - Axis("MoveUp"));
-        var frame = new GameInput(move.LengthSquared() > 1 ? Vector2.Normalize(move) : move, history.Presses.Contains("Interact"))
+        var frame = new GameInput(history.Vectors![0], history.Presses.Contains("Interact"))
         {
-            Samples = history.Snapshot, ActiveDevice = device, PointerInside = inside, PointerPosition = pointer
+            Samples = history.Snapshot, ActiveDevice = device, PointerInside = inside, PointerPosition = pointer,
+            Owner = this, Tick = game ? tick : -1, Vectors = history.Vectors
         };
         history.Clear();
         return frame;
@@ -263,4 +378,6 @@ public interface IGameCameras
     bool TryGetView(Guid id,out CameraView view);
     Guid? ActiveCameraId { get; }
     bool TrySetActive(Guid id);
+    // Parallax 2D: the world offset the active camera adds to the layer's drawn position at the last game tick.
+    bool TryGetParallaxOffset(Guid layer, out System.Numerics.Vector2 offset) { offset = default; return false; }
 }

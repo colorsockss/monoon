@@ -40,7 +40,12 @@ public sealed class ToggleControls : GameBehaviour
         if (tick.Input.Pressed("ShowControls")) Toggle(tick.Session);
     }
 
-    public override void OnUiClick(UiClick click) => Toggle(click.Session);
+    public override void OnUiClick(UiClick click)
+    {
+        // Press feedback on UI time, so it also plays while the game is paused.
+        click.Objects.Tween(click.ObjectId, TweenClock.Ui).UiRect(new(2, 2, -4, -4), .05f, TweenEase.EaseOut).UiRect(default, .08f, TweenEase.EaseIn);
+        Toggle(click.Session);
+    }
 
     private void Toggle(SessionState state)
     {

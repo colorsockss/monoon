@@ -1,0 +1,13 @@
+rate: 18
+shape: Circle
+radius: 30
+speed: {min: 10, max: 30}
+lifetime: {min: 2, max: 2.6}
+size: {min: 14, max: 18}
+color: {min: "#8EEDDA"}
+gravity: -25
+# Grows quickly, holds, then pops. Each particle picks its own point between the curve and the smaller Max curve.
+sizeOverLifetime:
+  smooth: true
+  keys: [{time: 0, value: 0, out: 6}, {time: 0.3, value: 1.4}, {time: 0.85, value: 1}, {time: 1, value: 0}]
+  max: [{time: 0, value: 0, out: 3}, {time: 0.3, value: 0.6}, {time: 0.85, value: 0.5}, {time: 1, value: 0}]

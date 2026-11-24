@@ -18,54 +18,19 @@ public static class StartupHook
     private static readonly string Step = Environment.GetEnvironmentVariable("MONOON_BUILD_STEP")!;
     private const BindingFlags Any = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic;
     private const string DialogTitle = "Build Game";
-    private static string? unexpected;
 
     public static void Initialize()
     {
         // The Native AOT build starts `dotnet publish`; it must not inherit this hook.
         Environment.SetEnvironmentVariable("DOTNET_STARTUP_HOOKS", null);
-        Start();
+        Start(Path.Combine(Output, "error.txt"), life => Run(life.MainWindow!), allow: [DialogTitle]);
     }
-
-    private static void Start() => Task.Run(async () =>
-    {
-        while (Application.Current?.ApplicationLifetime is not IClassicDesktopStyleApplicationLifetime { MainWindow: not null })
-            await Task.Delay(100);
-        await Dispatcher.UIThread.InvokeAsync(async () =>
-        {
-            var life = (IClassicDesktopStyleApplicationLifetime)Application.Current!.ApplicationLifetime!;
-            // Modal guard: an error box, file picker window or a second dialog would otherwise wait for a click forever.
-            var guard = new DispatcherTimer(TimeSpan.FromMilliseconds(100), DispatcherPriority.Normal, (_, _) =>
-            {
-                if (unexpected != null) return;
-                var other = life.Windows.FirstOrDefault(w => w != life.MainWindow && w.IsVisible && w.Title != DialogTitle);
-                if (other == null) return;
-                unexpected = $"Unexpected window '{other.Title}': " + string.Join(" | ", other.GetVisualDescendants().OfType<TextBlock>().Select(t => t.Text));
-                File.WriteAllText(Path.Combine(Output, "error.txt"), unexpected);
-                life.Shutdown(3);
-            });
-            guard.Start();
-            try { await Run(life.MainWindow!); }
-            catch (Exception ex) { if (unexpected == null) File.WriteAllText(Path.Combine(Output, "error.txt"), ex.ToString()); }
-            finally { guard.Stop(); life.Shutdown(); }
-        });
-    });
 
     private static object? Call(object target, string method, params object?[] args) =>
         target.GetType().GetMethod(method, Any)!.Invoke(target, args);
     private static SceneDocument Scene(Window w) => (SceneDocument)w.GetType().GetProperty("Scene", Any)!.GetValue(w)!;
     private static bool Busy(Window w) => (bool)w.GetType().GetField("busy", Any)!.GetValue(w)!;
     private static void Click(Button b) => b.RaiseEvent(new RoutedEventArgs(Button.ClickEvent, b));
-    private static async Task Wait(Func<bool> ready, string what, int seconds = 60)
-    {
-        var deadline = DateTime.UtcNow.AddSeconds(seconds);
-        while (!ready())
-        {
-            if (unexpected != null) throw new InvalidOperationException(unexpected);
-            if (DateTime.UtcNow > deadline) throw new TimeoutException(what);
-            await Task.Delay(80);
-        }
-    }
 
     private static void Capture(Visual area, string name)
     {
@@ -79,16 +44,15 @@ public static class StartupHook
     {
         Task? action = null;
         Call(main, "RunAction", (Func<Task>)(() => action = (Task)Call(main, "BuildGame")!));
-        await Wait(() => main.OwnedWindows.Any(w => w.Title == DialogTitle && w.IsVisible), "Build Game dialog");
-        await Task.Delay(500);
+        await Until(() => main.OwnedWindows.Any(w => w.Title == DialogTitle && w.IsVisible), "Build Game dialog");
+        await Delay(500);
         return (main.OwnedWindows.Single(w => w.Title == DialogTitle), action!);
     }
 
     private static async Task Finish(Window main, Task action, string what, int seconds)
     {
-        await Wait(() => action.IsCompleted && !Busy(main), what, seconds);
+        await Until(() => action.IsCompleted && !Busy(main), what, seconds);
         await action; // rethrows the editor's own failure
-        if (unexpected != null) throw new InvalidOperationException(unexpected);
     }
 
     private static Grid Rows(Window dialog) =>
@@ -145,7 +109,7 @@ public static class StartupHook
     private static async Task Run(Window main)
     {
         string root = Environment.GetEnvironmentVariable("MONOON_QA_PROJECT")!;
-        await Wait(() => Scene(main).Objects.Count > 1, "KeyRoom");
+        await Until(() => Scene(main).Objects.Count > 1, "KeyRoom");
         main.Activate();
         var result = new Dictionary<string, object?> { ["step"] = Step };
         if (Step == "release")
@@ -154,7 +118,7 @@ public static class StartupHook
             foreach (var (w, h) in new[] { (1280, 800), (1920, 1080) })
             {
                 main.Width = w; main.Height = h;
-                await Task.Delay(700);
+                await Delay(700);
                 var (d, action) = await Open(main);
                 if (layouts.Count == 0) result["initial"] = State(d);
                 Capture(d, $"dialog-{w}");
@@ -164,7 +128,7 @@ public static class StartupHook
             }
             result["layouts"] = layouts;
             main.Width = 1280; main.Height = 800;
-            await Task.Delay(500);
+            await Delay(500);
 
             var (dialog, save) = await Open(main);
             Select(Field<ComboBox>(dialog, "Platform"), "osx-arm64");
@@ -206,6 +170,12 @@ public static class StartupHook
             Click(FindButton(dialog, "Build"));
             await Finish(main, build, "Native AOT build", 1800);
         }
+        // What the build wrote to the Console, including the asset report summary, and how the panel shows it.
+        var rows = (System.Collections.IEnumerable)main.GetType().GetField("consoleRows", Any)!.GetValue(main)!;
+        result["console"] = rows.Cast<object>().Select(r => $"{r.GetType().GetProperty("Level")!.GetValue(r)}: {r.GetType().GetProperty("Message")!.GetValue(r)}").ToArray();
+        Call(main, "ShowConsole");
+        await Task.Delay(700);
+        Capture(main, $"console-{Step}");
         result["status"] = main.FindControl<TextBlock>("Status")!.Text;
         result["build_settings"] = File.ReadAllText(Path.Combine(root, BuildSettings.FileName));
         result["game_icon"] = GameSettings.Load(root).Icon is Guid id ? ProjectAssets.ReadManifest(root).PathFor(id) : null;

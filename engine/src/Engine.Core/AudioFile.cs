@@ -6,7 +6,12 @@ namespace Engine.Core;
 // Validated stream format. SDL_mixer probes the header without reading the audio payload.
 internal sealed record AudioFile(string Path, int Channels, int Rate, long Frames)
 {
-    private static readonly Lazy<bool> Library = new(() => { SdlMixer.Init(); return true; });
+    private static readonly Lazy<bool> Library = new(() =>
+    {
+        try { SdlMixer.Init(); }
+        catch (Exception missing) when (EngineFeatures.Missing(missing)) { throw EngineFeatures.Excluded(EngineFeature.Audio, missing); }
+        return true;
+    });
     internal static void Init() => _ = Library.Value;
 
     internal static bool IsSupported(string path) =>

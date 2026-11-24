@@ -56,3 +56,30 @@ var shortcut = grid.FindPath(start, goal, GridDirections.Eight);
 ```
 
 `Cells`는 시작 칸부터 목표 칸까지 순서대로 담는다. 시작과 목표가 같은 통행 가능 칸이면 한 칸과 비용 0을 돌려준다. 경로가 없거나 양 끝이 막혔으면 빈 목록을 돌려준다. 지형이 바뀌면 `SetEntryCost`로 반영하고 NPC의 현재 칸에서 `FindPath`를 다시 호출한다. 타일맵에서 비용을 읽으려면 `tick.Objects.TileNavigation`으로 그리드를 만든다. 이 그리드는 `SetTile`로 바뀐 셀의 비용을 자동으로 반영한다. [SeedLab 스크립트](../../samples/SeedLab/Scripts/CourierRoute.cs) · [플랫폼별 검증](../../engine/tests/results/grid-navigation/README.md)
+
+## 탑다운 자유 이동 길찾기
+
+SeedLab의 **Courier routes**에서 **C**를 누르면 **Crowd yard**가 열린다. 왼쪽의 배달원 200명이 벽과 기둥을 돌아 오른쪽 초록 구역의 자기 자리로 걸어간다. 격자 칸 단위가 아니라 픽셀 단위로 움직이고, 서로 겹치지 않게 비켜 간다.
+
+| 키 | 조작 |
+| --- | --- |
+| **Space** | 일시 정지 또는 계속 |
+| **O** | 첫 번째 벽 가운데의 노란 문을 열거나 닫는다. 모든 배달원이 지금 위치에서 다시 탐색한다. |
+| **R** | 출발점에서 다시 시작한다. |
+| **G** | Courier routes로 돌아간다. |
+
+### 걸을 수 있는 영역 굽기
+
+플랫폼 길찾기와 같은 **Navigation Region 2D**를 쓴다. 탑다운 길찾기에서는 **Spacing**이 칸 크기(px), **Agent W**의 절반이 유닛 반지름이고 **Mask**의 충돌 레이어가 장애물이다. Agent H와 Slope °는 쓰지 않는다. 칸 중심에 반지름 원을 놓았을 때 고체 콜라이더(트리거와 동적 강체 제외)나 Solid 타일에 닿지 않고 영역 안에 있으면 그 칸을 지나갈 수 있다. 영역은 최대 262,144칸이다.
+
+Hierarchy에서 영역을 선택하면 Scene 보기가 지나갈 수 있는 칸을 청록색으로 칠한다. Inspector의 **Top-down** 줄에 열린 칸 수가 표시된다. 미리보기는 게임과 같은 규칙으로 문서에서 굽는다. 콜라이더나 타일을 고친 뒤에는 0.5초 안에 다시 굽는다.
+
+### 스크립트에서 사용하기
+
+`OnCreate`에서 `tick.Objects.Navigation.BakeArea(regionId)`를 한 번 호출해 `NavArea2D`를 받아 둔다. 그 시점의 콜라이더와 로드된 타일로 굽는다. 프레임마다 굽지 않는다.
+
+- `FindPath(start, goal, points)`는 8방향 A* 경로를 시야로 줄여(string pulling) 모서리 지점만 `points`에 쓰고 점 개수를 돌려준다. 첫 점은 출발점, 끝 점은 목적지다. 목적지 칸이 막혔으면 가장 가까운 열린 칸 중심에서 끝나고, 길이 없으면 0이다. 버퍼보다 긴 경로는 중간 모서리에서 끊기므로(개수 = 버퍼 길이) 거기서 다시 요청한다.
+- `AddObstacle(rect)`·`RemoveObstacle(rect)`는 문이나 상자처럼 움직이는 장애물을 칸에 반영하고 `Revision`을 올린다.
+- `NavCrowd2D`는 유닛 여러 개를 함께 움직인다. `Add(start, goal)`로 넣고 `FixedUpdate`마다 `Step(tick.DeltaTime)`을 부른다. 다음 모서리로 `Speed`(px/s)만큼 이동하고, 겹친 이웃과는 겹친 거리의 절반씩 밀어내며, 앞을 막은 유닛은 옆으로 비켜 간다. 닫힌 칸에서는 축 하나로 미끄러진다. 영역이 바뀌거나 60틱마다 다시 탐색하며 한 틱의 탐색은 `MaxPlansPerStep`(기본 16)개까지다. `Positions`로 위치를 읽는다.
+
+모든 버퍼는 생성할 때 한 번 만든다. 그 뒤의 경로 요청, 장애물 변경과 `Step`은 메모리를 할당하지 않는다. 탐색은 정수 비용, 이동은 FMA 없는 스칼라 연산을 고정된 순서로 쓰므로 같은 입력이면 Scene Play, Release, Native AOT의 결과가 같다. 200명은 [스프라이트 풀](sprite-pools.md)로 그린다. [CrowdRun.cs](../../samples/SeedLab/Scripts/CrowdRun.cs) · [검증과 비용 측정](../../engine/tests/results/navigation-free/README.md)

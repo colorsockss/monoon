@@ -1,0 +1,13 @@
+# Hot sparks thrown up in bursts and pulled down by gravity, as from welding or a grinder.
+duration: 0.8
+rate: 0
+bursts: [{time: 0, count: 24}]
+maxParticles: 128
+spread: 120
+speed: {min: 120, max: 240}
+lifetime: {min: 0.3, max: 0.6}
+size: {min: 2, max: 3}
+color: {min: "#FFF2B0", max: "#FFC14D"}
+endSize: 0.4
+gravity: 420
+blend: Additive

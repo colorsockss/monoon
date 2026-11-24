@@ -9,9 +9,23 @@ public sealed partial class SceneGame : IPhysics2D
     public PhysicsQueryDiagnostics QueryDiagnostics { get; } = new();
     private ColliderGrid? queryGrid;
     private readonly record struct Obstacle(Shape2D Shape, PhysicsTarget Target);
-    private IEnumerable<Obstacle> Candidates(RectangleF bounds,uint mask,bool triggersIncluded,Guid? ignore,
+    // Filled eagerly into pooled lists, not iterators: a query per moving collider per tick allocated two state machines.
+    // Each call takes its own list because queries nest (a script query from a contact callback inside a sweep).
+    private readonly Stack<List<Obstacle>> spareObstacles = new();
+    private readonly List<(Point Cell, int Tile)> tileCells = [];
+    private struct ObstacleList(SceneGame owner, List<Obstacle> items) : IDisposable
+    {
+        private int index = -1;
+        public readonly ObstacleList GetEnumerator() => this;
+        public readonly Obstacle Current => items[index];
+        public bool MoveNext() => ++index < items.Count;
+        public readonly void Dispose() { items.Clear(); owner.spareObstacles.Push(items); }
+    }
+    private List<Obstacle> TakeObstacles() => spareObstacles.Count > 0 ? spareObstacles.Pop() : [];
+    private ObstacleList Candidates(RectangleF bounds,uint mask,bool triggersIncluded,Guid? ignore,
         int first=-1,int last=-1,int movingLayer=-1,Body? ignoreOwner=null,bool measure=false)
     {
+        var found = TakeObstacles();
         var indices = QueryDiagnostics.UseSpatialIndex ? queryGrid?.Find(bounds) : null;
         var source = triggersIncluded ? colliders : solids;
         int count = indices?.Count ?? source.Length;
@@ -22,14 +36,22 @@ public sealed partial class SceneGame : IPhysics2D
             if (indices != null && !triggersIncluded && body.ColliderConfig!.IsTrigger) continue;
             if (body.Collider is not {} c || !Allows(body,c.Layer,c.Mask,mask,ignore,first,last,movingLayer,ignoreOwner)) continue;
             var shape=body.ShapeAt(body.Position);
-            if (BoundsMeet(bounds,shape.Bounds)) yield return new(shape,new(body.Id,c.Layer,c.IsTrigger,null));
+            if (BoundsMeet(bounds,shape.Bounds)) found.Add(new(shape,new(body.Id,c.Layer,c.IsTrigger,null)));
         }
-        foreach (var obstacle in TileCandidates(bounds, mask, ignore, first, last, movingLayer, ignoreOwner))
-            yield return obstacle;
+        AddTileCandidates(found, bounds, mask, ignore, first, last, movingLayer, ignoreOwner, false);
+        return new(this, found);
     }
 
-    private IEnumerable<Obstacle> TileCandidates(RectangleF bounds, uint mask, Guid? ignore, int first, int last,
+    private ObstacleList TileCandidates(RectangleF bounds, uint mask, Guid? ignore, int first, int last,
         int movingLayer, Body? ignoreOwner, bool sweptMaps = false)
+    {
+        var found = TakeObstacles();
+        AddTileCandidates(found, bounds, mask, ignore, first, last, movingLayer, ignoreOwner, sweptMaps);
+        return new(this, found);
+    }
+
+    private void AddTileCandidates(List<Obstacle> found, RectangleF bounds, uint mask, Guid? ignore, int first, int last,
+        int movingLayer, Body? ignoreOwner, bool sweptMaps)
     {
         foreach (var body in tileLayers)
         {
@@ -49,10 +71,12 @@ public sealed partial class SceneGame : IPhysics2D
             var local=Affine2D.Bounds(search,Affine2D.Inverse(m));
             // Include the neighbouring solid cell when a ray ends exactly on its boundary.
             local.Inflate(.001f,.001f);
-            foreach (var (cell,id) in map.InView(Vector2.Zero,local))
+            tileCells.Clear();
+            map.InView(Vector2.Zero,local,tileCells);
+            foreach (var (cell,id) in tileCells)
             {
                 if (TileShape(body,cell,id,m) is not {} shape) continue;
-                if (BoundsMeet(search,shape.Bounds)) yield return new(shape,new(body.Id,map.CollisionLayer,false,cell));
+                if (BoundsMeet(search,shape.Bounds)) found.Add(new(shape,new(body.Id,map.CollisionLayer,false,cell)));
             }
         }
     }
@@ -153,10 +177,18 @@ public sealed partial class SceneGame : IPhysics2D
         return true;
     }
 
+    private readonly List<Vector2> moveNormals = new(4);
+    private static bool Facing(List<Vector2> normals, Vector2 along)
+    {
+        foreach (var v in normals) if (!(Vector2.Dot(v,along) >= -1e-5f)) return false;
+        return true;
+    }
     private MotionPath MoveGroup(ReadOnlySpan<Body> group,Vector2 target)
     {
+        // No colliders without the physics feature: the loop below would find no hits and give exactly this.
+        if (!EngineFeatures.Physics) return target == Vector2.Zero ? new(Vector2.Zero,Vector2.Zero,0,Vector2.Zero,0) : new(Vector2.Zero,Vector2.Zero,0,target,1);
         var position=Vector2.Zero; var bend=Vector2.Zero; float time=0,bendTime=0;
-        var normals=new List<Vector2>(4);
+        var normals=moveNormals;
         int first=group[0].Index,last=group[0].SubtreeEnd;
         for (int pass=0;pass<2 && position!=target;pass++)
         {
@@ -190,7 +222,7 @@ public sealed partial class SceneGame : IPhysics2D
             foreach (var n in normals)
             {
                 var along=remaining-n*Vector2.Dot(remaining,n);
-                if (along.LengthSquared()>slide.LengthSquared() && normals.All(v=>Vector2.Dot(v,along)>=-1e-5f)) slide=along;
+                if (along.LengthSquared()>slide.LengthSquared() && Facing(normals,along)) slide=along;
             }
             target=position+slide;
         }

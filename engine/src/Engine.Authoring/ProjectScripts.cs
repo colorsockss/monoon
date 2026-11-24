@@ -16,9 +16,13 @@ internal sealed partial record ScriptLocation(string ScriptId);
 public sealed partial class ProjectScripts : ScriptLibrary
 {
     // Register only when an authoring host loads this assembly; the player never references it.
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Usage", "CA2255", Justification = "Installs the source-project provider for authoring hosts.")]
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Usage", "CA2255", Justification = "Installs the source-project provider and the full YAML formatter set for authoring hosts.")]
     [System.Runtime.CompilerServices.ModuleInitializer]
-    internal static void RegisterSourceLibrary() => OpenSource = OpenAuthoringProject;
+    internal static void RegisterSourceLibrary()
+    {
+        OpenSource = OpenAuthoringProject;
+        ProjectYaml.ToolFormatters = VYaml.Serialization.BuiltinResolver.Instance;
+    }
 
     // Scene and nested prefab loads share one source compilation on the owning thread.
     // Current() verifies the source contents before reusing it.
@@ -51,7 +55,15 @@ public sealed partial class ProjectScripts : ScriptLibrary
         // Old symbols use an ID relative to Scripts. Relocated sources carry a project-relative path.
         public string DebugPath => Path == $"Scripts/{Id}.cs" ? Id + ".cs" : "./" + Path;
     }
-    internal sealed record Build(SourceFile[] Sources, Dictionary<string,ScriptDefinition> Components, byte[] Bytes, byte[] Symbols, string Factory);
+    internal sealed record Build(SourceFile[] Sources, Dictionary<string,ScriptDefinition> Components, byte[] Bytes, byte[] Symbols, string Factory)
+    {
+        // Scanned only when a game build asks; holds the compilation until then.
+        internal required Lazy<Dictionary<EngineFeature, string>> Features { get; init; }
+        // Editor-only field presentation, read from the source symbols (the game assembly has none of it).
+        public Dictionary<string, ScriptInspectorInfo> Inspector { get; init; } = [];
+    }
+    // Header, tooltip, range and the fields the Inspector leaves out (with the reason), for one attachable script.
+    public ScriptInspectorInfo? Inspector(string name) => Current().Inspector.GetValueOrDefault(name);
     private static readonly UTF8Encoding ScriptEncoding = new(false);
     private Build? cache;
     private static readonly Lazy<MetadataReference[]> References = new(() =>
@@ -135,6 +147,7 @@ public sealed partial class ProjectScripts : ScriptLibrary
             }));
         return files.ToArray();
     }
+    private static readonly CSharpParseOptions DebugDraw = CSharpParseOptions.Default.WithPreprocessorSymbols(ScriptDebug.Symbol);
     internal Build Current()
     {
         var files = Sources();
@@ -172,7 +185,8 @@ public sealed partial class ProjectScripts : ScriptLibrary
             using var stream = File.OpenRead(path);
             var text = SourceText.From(stream, ScriptEncoding, SourceHashAlgorithm.Sha256);
             if (text.ToString() != source.Text) throw new IOException($"Script changed during compilation: {source.Path}");
-            return CSharpSyntaxTree.ParseText(text, path: path);
+            // Scene Play keeps tick.Debug calls (roadmap 16.14); other compilations drop them.
+            return CSharpSyntaxTree.ParseText(text, DebugDraw, path: path);
         }
         var trees = files.Select(Parse).ToArray();
         var references = WithTests ? References.Value.Append(MetadataReference.CreateFromFile(typeof(ProjectTests).Assembly.Location)) : References.Value;
@@ -200,11 +214,16 @@ public sealed partial class ProjectScripts : ScriptLibrary
             }
         }
         var defs = new Dictionary<string,ScriptDefinition>(StringComparer.Ordinal);
+        var inspector = new Dictionary<string,ScriptInspectorInfo>(StringComparer.Ordinal);
+        var accessors = new System.Text.StringBuilder();
+        int accessorCount = 0;
         var factory = new System.Text.StringBuilder("namespace MoNoon.Generated { public static class ProjectScriptFactory { public static global::Engine.Core.GameBehaviour Create(global::Engine.Core.ScriptComponent component) { switch(component.Script) {");
         foreach (var f in files)
         {
             if (!candidates.TryGetValue(f.Id,out var t)) continue;
-            var fields = Fields(compilation,t,candidates);
+            var info = new ScriptInspectorInfo();
+            var fields = Fields(compilation,t,candidates,info);
+            inspector.Add(f.Id, info);
             var events = new List<string>();
             var handlers = new List<string>();
             var names = new HashSet<string>(StringComparer.Ordinal);
@@ -232,12 +251,21 @@ public sealed partial class ProjectScripts : ScriptLibrary
             foreach (var field in fields)
             {
                 var member = "instance.@" + field.Name;
+                // [SerializeField] private fields: an UnsafeAccessor ref, no reflection (Native AOT safe).
+                if (info.Declaring.TryGetValue(field.Name, out var symbol) && symbol.DeclaredAccessibility != Accessibility.Public)
+                {
+                    var accessor = $"__field{accessorCount++}_{field.Name}";
+                    accessors.AppendLine($"[global::System.Runtime.CompilerServices.UnsafeAccessor(global::System.Runtime.CompilerServices.UnsafeAccessorKind.Field, Name = {SymbolDisplay.FormatLiteral(field.Name,true)})] " +
+                        $"private static extern ref {symbol.Type.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat)} {accessor}({symbol.ContainingType.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat)} instance);");
+                    member = accessor + "(instance)";
+                }
                 var key = SymbolDisplay.FormatLiteral(field.Name,true);
                 if (field.FormerNames.Length != 0)
                 {
                     var aliases = string.Join(", ", field.FormerNames.Select(n => SymbolDisplay.FormatLiteral(n,true)));
                     key = $"component.SerializedFieldName({key}, {aliases})";
                 }
+                if (info.Reads.TryGetValue(field.Name, out var statement)) { factory.AppendLine(statement(key, member)); continue; }
                 var read = $"component.ReadOverride({key}, {member}{(field.TypedReference ? ".ObjectId" : "")})";
                 if (field.IsAssetList)
                     read = $"component.ReadAssetList({key}, {member}, static id => new global::{field.Type.GetElementType()!.FullName}(id))";
@@ -254,7 +282,9 @@ public sealed partial class ProjectScripts : ScriptLibrary
                 factory.AppendLine($"((global::Engine.Core.GameBehaviour)instance).RegisterGameEventHandler({SymbolDisplay.FormatLiteral(name,true)}, instance.@{name});");
             factory.AppendLine("return instance; }");
         }
-        factory.AppendLine("default: throw new global::System.IO.InvalidDataException(component.Script); } } } }");
+        factory.AppendLine("default: throw new global::System.IO.InvalidDataException(component.Script); } }");
+        factory.Append(accessors).AppendLine("} }");
+        var scripts = compilation;
         if (instrument != null) compilation = instrument(compilation);
         compilation = compilation.AddSyntaxTrees(CSharpSyntaxTree.ParseText(factory.ToString(),path: "MoNoon.Factory.g.cs", encoding: Encoding.UTF8));
         using var bytes = new MemoryStream();
@@ -263,7 +293,47 @@ public sealed partial class ProjectScripts : ScriptLibrary
             debugInformationFormat: DebugInformationFormat.PortablePdb, pdbFilePath: "MoNoon.GameScripts.pdb"));
         if (!result.Success) throw new InvalidDataException(string.Join(Environment.NewLine,
             result.Diagnostics.Where(d => d.Severity == DiagnosticSeverity.Error).Take(12)));
-        return new(files, defs, bytes.ToArray(), symbols.ToArray(), factory.ToString());
+        return new(files, defs, bytes.ToArray(), symbols.ToArray(), factory.ToString()) { Features = new(() => FeatureUses(scripts, files)), Inspector = inspector };
+    }
+
+    private static bool HasAttribute(ISymbol symbol, Type attribute) =>
+        symbol.GetAttributes().Any(a => a.AttributeClass?.ToDisplayString() == attribute.FullName);
+
+    private static bool Supported(ITypeSymbol type) => type is IArrayTypeSymbol array ? array.ElementType.ToDisplayString() == "System.Guid" || AssetType(array.ElementType) != null :
+        type is INamedTypeSymbol { TypeKind: TypeKind.Enum } ||
+        type.ToDisplayString() == typeof(Vector2).FullName || AssetType(type) != null ||
+        type.SpecialType is SpecialType.System_Int32 or SpecialType.System_Single or SpecialType.System_Double or SpecialType.System_Boolean or SpecialType.System_String ||
+        type.ToDisplayString() == "System.Guid" || type is INamedTypeSymbol { IsGenericType: true } g && g.ConstructedFrom.ToDisplayString() == "Engine.Core.ComponentReference<T>";
+
+    // [Conditional] attributes stay on the source symbols although the compiler leaves them out of the assembly.
+    private static ScriptFieldUi Presentation(IFieldSymbol field)
+    {
+        AttributeData? Find(Type attribute) => field.GetAttributes().FirstOrDefault(a => a.AttributeClass?.ToDisplayString() == attribute.FullName);
+        static float? Number(AttributeData? a, int index) =>
+            a != null && index < a.ConstructorArguments.Length && a.ConstructorArguments[index].Value is { } v ? Convert.ToSingle(v, CultureInfo.InvariantCulture) : null;
+        static string? Text(AttributeData? a) => a is { ConstructorArguments.Length: > 0 } ? a.ConstructorArguments[0].Value as string : null;
+        var range = Find(typeof(RangeAttribute));
+        var space = Find(typeof(SpaceAttribute));
+        var lines = Find(typeof(MultilineAttribute));
+        return new(Text(Find(typeof(TooltipAttribute))) ?? Summary(field.GetDocumentationCommentXml()), Text(Find(typeof(HeaderAttribute))),
+            space == null ? null : Number(space, 0) ?? 8, Number(range, 0) ?? Number(Find(typeof(MinAttribute)), 0), Number(range, 1),
+            lines == null ? null : (int)(Number(lines, 0) ?? 3), Find(typeof(HideInInspectorAttribute)) != null)
+        {
+            // 13.13: field drawers match an attribute class name (without "Attribute") or the C# type name.
+            Attributes = field.GetAttributes().Select(a => a.AttributeClass?.Name is { } n && n.EndsWith("Attribute", StringComparison.Ordinal) ? n[..^9] : a.AttributeClass?.Name ?? "").ToArray(),
+            TypeName = field.Type.ToDisplayString(SymbolDisplayFormat.MinimallyQualifiedFormat)
+        };
+    }
+
+    private static string? Summary(string? xml)
+    {
+        if (string.IsNullOrWhiteSpace(xml)) return null;
+        try
+        {
+            var text = System.Xml.Linq.XElement.Parse(xml).Element("summary")?.Value;
+            return string.IsNullOrWhiteSpace(text) ? null : string.Join(' ', text.Split((char[]?)null, StringSplitOptions.RemoveEmptyEntries));
+        }
+        catch (System.Xml.XmlException) { return null; }
     }
 
     private static Type? AssetType(ITypeSymbol symbol) =>
@@ -299,7 +369,7 @@ public sealed partial class ProjectScripts : ScriptLibrary
     }
 
     private static List<ScriptField> Fields(CSharpCompilation compilation, INamedTypeSymbol type,
-        Dictionary<string,INamedTypeSymbol> components)
+        Dictionary<string,INamedTypeSymbol> components, ScriptInspectorInfo info)
     {
         var fields = new List<ScriptField>();
         var guid = compilation.GetTypeByMetadataName("System.Guid");
@@ -307,40 +377,65 @@ public sealed partial class ProjectScripts : ScriptLibrary
         for (var level = type; level != null && level.ToDisplayString() != "Engine.Core.GameBehaviour"; level = level.BaseType)
         foreach (var field in level.GetMembers().OfType<IFieldSymbol>())
         {
-            if (!used.Add(field.Name) || field.DeclaredAccessibility != Accessibility.Public || field.IsStatic || field.IsReadOnly || field.IsConst) continue;
-            if (field.DeclaringSyntaxReferences.FirstOrDefault()?.GetSyntax() is not VariableDeclaratorSyntax variable) continue;
+            if (field.IsImplicitlyDeclared || !used.Add(field.Name)) continue;
+            var declarator = field.DeclaringSyntaxReferences.FirstOrDefault()?.GetSyntax() as VariableDeclaratorSyntax;
+            bool shown = field.DeclaredAccessibility == Accessibility.Public || HasAttribute(field, typeof(SerializeFieldAttribute));
+            // Fields the Inspector leaves out, for the Debug view; Expected ones also get the grey line under the section.
+            void Skip(string reason, bool expected) => info.Skipped.Add(new(field.Name,
+                field.Type.ToDisplayString(SymbolDisplayFormat.MinimallyQualifiedFormat), reason, declarator?.Initializer?.Value.ToString(), expected));
+            if (field.IsConst) { Skip("const", false); continue; }
+            if (field.IsStatic) { Skip("static", false); continue; }
+            if (field.IsReadOnly) { Skip("readonly", shown); continue; }
+            if (!shown) { Skip("private: add [SerializeField] to show it", false); continue; }
+            if (declarator is not { } variable) continue;
             var model = compilation.GetSemanticModel(variable.SyntaxTree);
             var expression = variable.Initializer?.Value;
+            int before = fields.Count;
+            AddField();
+            if (fields.Count == before) Skip(Supported(field.Type) || SupportedMore(field.Type) ? "set at run time (not a constant initializer)" :
+                field.Type is INamedTypeSymbol { TypeKind: TypeKind.Struct } s && s.DeclaringSyntaxReferences.Length > 0 && !s.IsSerializable
+                    ? "add [System.Serializable] to its struct to show it" : "unsupported type", true);
+            continue;
+            // The former loop body; it returns without adding a field the Inspector cannot show.
+            void AddField()
+            {
             void Add(ScriptField description)
             {
+                info.Declaring[field.Name] = field;
+                info.Fields[field.Name] = Presentation(field);
                 var names = field.GetAttributes().Where(a => a.AttributeClass?.ToDisplayString() == typeof(FormerlySerializedAsAttribute).FullName)
                     .Select(a => a.ConstructorArguments.FirstOrDefault().Value as string).ToArray();
                 if (names.Any(string.IsNullOrWhiteSpace))
                     throw new InvalidDataException($"{type.Name}.{field.Name}: a former field name cannot be empty.");
+                // 13.8: [ColorUsage] edits a string as a colour.
+                if (description.Type == typeof(string) && description.EnumNames == null && description.ColorAlpha == null &&
+                    field.GetAttributes().FirstOrDefault(a => a.AttributeClass?.ToDisplayString() == typeof(ColorUsageAttribute).FullName) is { } usage)
+                    description = description with { ColorAlpha = usage.ConstructorArguments is not [{ Value: false }] };
                 fields.Add(description with { FormerNames = names.Select(n => n!).ToArray() });
             }
+            if (AddMoreField(field, variable.Initializer == null ? null : (model.GetOperation(variable.Initializer) as IFieldInitializerOperation)?.Value, Add, info)) return;
             if (field.Type is IArrayTypeSymbol { Rank: 1 } array)
             {
                 var element = SymbolEqualityComparer.Default.Equals(array.ElementType, guid) ? typeof(Guid)
                     : AssetType(array.ElementType);
                 if (element != null) Add(new(field.Name, element.MakeArrayType(), Array.Empty<Guid>()));
-                continue;
+                return;
             }
             if (field.Type is INamedTypeSymbol { TypeKind: TypeKind.Enum } enumeration)
             {
                 var members = enumeration.GetMembers().OfType<IFieldSymbol>().Where(m => m.HasConstantValue).ToArray();
                 var constant = expression == null ? new Optional<object?>(null) : model.GetConstantValue(expression);
-                if (!constant.HasValue) continue;
+                if (!constant.HasValue) return;
                 var initialName = members.FirstOrDefault(m =>
                     Convert.ToDecimal(m.ConstantValue) == Convert.ToDecimal(constant.Value))?.Name;
                 Add(new(field.Name, typeof(string), initialName, EnumNames: members.Select(m => m.Name).ToArray()));
-                continue;
+                return;
             }
             if (field.Type.ToDisplayString() == typeof(Vector2).FullName)
             {
                 if (VectorDefault(expression == null ? null : model.GetOperation(expression)) is Vector2 vector)
                     Add(new(field.Name, typeof(Vector2), vector));
-                continue;
+                return;
             }
             Type? fieldType = field.Type.SpecialType switch
             {
@@ -361,15 +456,16 @@ public sealed partial class ProjectScripts : ScriptLibrary
                     throw new InvalidDataException($"{type.Name}.{field.Name}: choose a concrete built-in or attachable script as the component target.");
                 fieldType = typeof(Guid);
             }
-            if (fieldType == null) continue;
+            if (fieldType == null) return;
             object? initial = fieldType == typeof(string) ? null : Activator.CreateInstance(fieldType);
             if (variable.Initializer is { } initializer)
             {
                 var constant = compilation.GetSemanticModel(variable.SyntaxTree).GetConstantValue(initializer.Value);
-                if (!constant.HasValue) continue; // Runtime-initialized fields remain the script's own state.
+                if (!constant.HasValue) return; // Runtime-initialized fields remain the script's own state.
                 initial = Convert.ChangeType(constant.Value, fieldType, CultureInfo.InvariantCulture);
             }
             Add(new ScriptField(field.Name, fieldType, initial,targetScript,targetBuiltIn));
+            }
         }
         var owners = fields.ToDictionary(f => f.Name, f => f.Name, StringComparer.Ordinal);
         foreach (var field in fields)

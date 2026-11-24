@@ -5,6 +5,7 @@ using SkiaSharp;
 
 internal static class BakedShaderChecks
 {
+    [Check(3100, StopAfter = "effects")] static void Registered(CheckRun c) => Run(c.Repository, c.Scratch);
     internal static void Run(string repository, string scratch)
     {
         string sample = Path.Combine(repository, "samples", "PlatformerLab");

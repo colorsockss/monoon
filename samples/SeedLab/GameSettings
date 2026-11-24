@@ -3,7 +3,7 @@ gameTitle: SeedLab
 width: 800
 height: 450
 startScene: 0cfbf6ac-2359-53aa-abc6-f603bdf4dbee
-includedScenes: [0cfbf6ac-2359-53aa-abc6-f603bdf4dbee, fecb609a-9302-5710-a253-9ccc6e859b64]
+includedScenes: [0cfbf6ac-2359-53aa-abc6-f603bdf4dbee, fecb609a-9302-5710-a253-9ccc6e859b64, ec43fb3c-96cf-5ba3-9a32-cb3a85c67e40, 620cbdb0-f61b-59bf-beed-2647e824c624]
 input:
   actions:
   - name: MoveLeft
@@ -38,3 +38,5 @@ input:
     controls: ["M"]
   - name: PaintMud
     controls: ["B"]
+  - name: CrowdLab
+    controls: ["C"]

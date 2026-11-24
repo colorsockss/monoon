@@ -12,34 +12,23 @@ using Engine.Desktop;
 // draws the chosen frames with the Scene panel's canvas (SdlCanvas + SDL_ttf, as in the player) on an offscreen surface.
 public static class StartupHook
 {
-    public static void Initialize() => Task.Run(async () =>
+    public static void Initialize() => Start(Path.Combine(Environment.GetEnvironmentVariable("MONOON_GAME_TEXT_EDITOR")!, "error.txt"), async life =>
     {
-        while (Application.Current?.ApplicationLifetime is not IClassicDesktopStyleApplicationLifetime { MainWindow: not null })
-            await Task.Delay(100);
-        await Dispatcher.UIThread.InvokeAsync(async () =>
-        {
-            string output = Environment.GetEnvironmentVariable("MONOON_GAME_TEXT_EDITOR")!;
-            var life = (IClassicDesktopStyleApplicationLifetime)Application.Current!.ApplicationLifetime!;
-            try
-            {
-                var main = life.MainWindow!;
-                var viewport = main.FindControl<Control>("Viewport")!;
-                var scene = viewport.GetType().GetProperty("Scene")!;
-                while (scene.GetValue(viewport) is not SceneDocument { Objects.Count: > 0 }) await Task.Delay(100);
-                await Task.Delay(1000);
-                var project = GameSettings.Load(Environment.GetEnvironmentVariable("MONOON_QA_PROJECT")!);
-                var frames = File.ReadAllText(Path.Combine(output, "captures.txt")).Split(',').Select(int.Parse).ToHashSet();
-                var captures = Directory.CreateDirectory(Path.Combine(output, "captures")).FullName;
-                var play = main.FindControl<Button>("PlayButton")!;
-                play.RaiseEvent(new RoutedEventArgs(Button.ClickEvent, play));
-                var game = (GameSession)viewport.GetType().GetField("game", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(viewport)!;
-                game.LoadFailed += message => throw new InvalidDataException(message);
-                Replay(game, project.ProjectId!.Value, output, frames, captures);
-                play.RaiseEvent(new RoutedEventArgs(Button.ClickEvent, play));
-            }
-            catch (Exception ex) { File.WriteAllText(Path.Combine(output, "error.txt"), ex.ToString()); }
-            finally { life.Shutdown(); }
-        });
+        string output = Environment.GetEnvironmentVariable("MONOON_GAME_TEXT_EDITOR")!;
+        var main = life.MainWindow!;
+        var viewport = main.FindControl<Control>("Viewport")!;
+        var scene = viewport.GetType().GetProperty("Scene")!;
+        await Until(() => scene.GetValue(viewport) is SceneDocument { Objects.Count: > 0 }, "scene open");
+        await Delay(1000);
+        var project = GameSettings.Load(Environment.GetEnvironmentVariable("MONOON_QA_PROJECT")!);
+        var frames = File.ReadAllText(Path.Combine(output, "captures.txt")).Split(',').Select(int.Parse).ToHashSet();
+        var captures = Directory.CreateDirectory(Path.Combine(output, "captures")).FullName;
+        var play = main.FindControl<Button>("PlayButton")!;
+        play.RaiseEvent(new RoutedEventArgs(Button.ClickEvent, play));
+        var game = (GameSession)viewport.GetType().GetField("game", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(viewport)!;
+        game.LoadFailed += message => throw new InvalidDataException(message);
+        Replay(game, project.ProjectId!.Value, output, frames, captures);
+        play.RaiseEvent(new RoutedEventArgs(Button.ClickEvent, play));
     });
 
     private static unsafe void Replay(GameSession game, Guid project, string output, HashSet<int> frames, string captures)

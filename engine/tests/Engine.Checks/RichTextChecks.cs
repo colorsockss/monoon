@@ -3,6 +3,7 @@ using Engine.Core;
 
 internal static class RichTextChecks
 {
+    [Check(1600, StopAfter = "rich-text")] static void Registered(CheckRun c) => Run(c.Repository);
     internal static void Run(string repo)
     {
         // Latin is half an em, everything else a full em, like the provisional UI measure.

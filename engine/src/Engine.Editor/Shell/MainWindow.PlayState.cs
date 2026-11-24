@@ -47,7 +47,7 @@ public partial class MainWindow
             editSelection = Selected?.Id;
             try {
                 if (project != null && (scriptDebugger != null || ScriptIdeProject.Exists(project))) ScriptIdeProject.Generate(project, scriptDebugger);
-                Viewport.Play(scriptDebugger); WriteLog(new(GameLogLevel.Info,$"Play started: {sceneName}",null,0)); }
+                Viewport.Play(scriptDebugger); ReloadPlayParticles(); WriteLog(new(GameLogLevel.Info,$"Play started: {sceneName}",null,0)); }
             catch (Exception ex) { LogError(ex.Message); Status.Text = ex.Message; return; }
         }
         SyncPlayInspector();

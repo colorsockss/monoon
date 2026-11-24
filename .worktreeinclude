@@ -1,0 +1,4 @@
+# Gitignored files Claude Code copies into the worktrees it creates. engine/scripts/bootstrap-worktree.sh does the same
+# (and links the player-template cache) for any other git worktree.
+engine/.artifacts/native/osx-arm64/libSDL3.dylib
+engine/.artifacts/native/osx-arm64/libBrutalScenePanel.dylib

@@ -3,6 +3,7 @@ using Engine.Core;
 
 internal static class TimeChecks
 {
+    [Check(8500)] static void Registered(CheckRun c) => Run(c.Scene);
     public static void Run(SceneDocument scene)
     {
         using var session = new GameSession(scene);

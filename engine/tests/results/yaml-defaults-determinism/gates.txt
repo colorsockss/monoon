@@ -1,0 +1,17 @@
+PlatformerLab.Joints exit 0
+PlatformerLab.Paths exit 0
+BarrageLab.Lines exit 0
+particles Modules exit 0
+particles Sorting exit 0
+particles Stress exit 0
+pools release exit 0
+PASS same 2338 hits from 7200 bullets; reused 6721 of 7200
+pools aot exit 0
+PASS same 2338 hits from 7200 bullets; reused 6721 of 7200
+replay exit 0
+PASS InventoryLab input replay: live recording, headless Release and headless Native AOT produced identical saves (171 bytes, SHA-256 EED41DEFCBD7987A527DEB677C60DA8151AD0DE1616C717C646E92B26E70F795).
+world exit 0
+Coin collected.
+Headless replay completed: 25 frames, 6 events.
+PASS CarryCoin collected: 833 bytes SHA-256 93dd4173f332b972b6873156d2bff5c55ba617ab2675026f540234acbf131182
+YD-GATES-DONE

@@ -8,6 +8,7 @@ using Microsoft.CodeAnalysis.CSharp;
 
 internal static class SceneScriptDebugChecks
 {
+    [Check(6400)] static void Registered(CheckRun c) => Run(c.Scratch);
     internal static void Run(string scratch)
     {
         string root = Directory.CreateDirectory(Path.Combine(scratch,"Debug Project")).FullName;

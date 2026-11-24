@@ -1,0 +1,8 @@
+rate: 50
+space: Local
+spread: 360
+speed: {min: 4, max: 10}
+lifetime: {min: 0.8, max: 1.2}
+size: {min: 4, max: 6}
+color: {min: "#FF9DE2"}
+endSize: 0.2

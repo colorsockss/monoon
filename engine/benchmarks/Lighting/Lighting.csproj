@@ -1,0 +1,5 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- AssemblyName Engine.Checks: Engine.Core exposes SceneGame internals to that assembly. -->
+  <PropertyGroup><OutputType>Exe</OutputType><AssemblyName>Engine.Checks</AssemblyName><Optimize>true</Optimize><TieredPGO>true</TieredPGO><AllowUnsafeBlocks>true</AllowUnsafeBlocks></PropertyGroup>
+  <ItemGroup><ProjectReference Include="../../src/Engine.Authoring/Engine.Authoring.csproj" /></ItemGroup>
+</Project>

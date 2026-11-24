@@ -7,10 +7,11 @@ public sealed class ListeningWalk : GameBehaviour
 {
     public Guid Music, Beacon, Levels, Readout;
     public Guid MusicSlider, EffectsList, MasterMute;
-    private bool beacon, music = true;
+    public Guid Line, VoiceList;
+    private bool beacon, music = true, night;
     private GameData settings;
     private float musicPercent, masterGain;
-    private int effectsPreset;
+    private int effectsPreset, voicePreset;
     private bool muted;
     private string lastStatus = "", lastLevels = "";
 
@@ -27,6 +28,7 @@ public sealed class ListeningWalk : GameBehaviour
         life.Ui.SetSliderValue(MusicSlider, (float)(settings?.GetNumber("musicPercent", mixer.Levels.Music * 100) ?? mixer.Levels.Music * 100));
         life.Ui.SetSelectedIndex(EffectsList, (int)Math.Clamp(settings?.GetNumber("effectsPreset", 1) ?? 1, 0, 2));
         life.Ui.SetToggleValue(MasterMute, settings?.GetBool("muted") ?? false);
+        life.Ui.SetSelectedIndex(VoiceList, (int)Math.Clamp(settings?.GetNumber("voicePreset", 2) ?? 2, 0, 2));
         ApplyWidgets(life.Ui, mixer, life.Session, false);
     }
 
@@ -35,18 +37,22 @@ public sealed class ListeningWalk : GameBehaviour
         float volume = ui.SliderValue(MusicSlider) ?? 80;
         int preset = ui.SelectedIndex(EffectsList) ?? 1;
         bool mute = ui.ToggleValue(MasterMute) == true;
-        if (save && (volume, preset, mute) == (musicPercent, effectsPreset, muted)) return;
-        (musicPercent, effectsPreset, muted) = (volume, preset, mute);
-        mixer.Levels = new MixerLevels(mute ? 0 : masterGain, volume / 100f, preset switch { 0 => .375f, 2 => 1f, _ => .75f });
+        int voice = ui.SelectedIndex(VoiceList) ?? 2;
+        if (save && (volume, preset, mute, voice) == (musicPercent, effectsPreset, muted, voicePreset)) return;
+        (musicPercent, effectsPreset, muted, voicePreset) = (volume, preset, mute, voice);
+        mixer.Levels = mixer.Levels with { Master = mute ? 0 : masterGain, Music = volume / 100f, Effects = Preset(preset), Voice = Preset(voice) };
         var applied = mixer.Levels;
-        session.Log(FormattableString.Invariant($"Mixer: music={applied.Music:0.###} effects={applied.Effects:0.###} master={applied.Master:0.###}"));
+        session.Log(FormattableString.Invariant($"Mixer: music={applied.Music:0.###} effects={applied.Effects:0.###} voice={applied.Level(AudioBus.Voice):0.###} master={applied.Master:0.###}"));
         if (!save || settings == null) return;
         settings.Set("musicPercent", volume);
         settings.Set("effectsPreset", preset);
         settings.Set("muted", mute);
+        settings.Set("voicePreset", voice);
         try { session.Storage.SaveSettings(settings); }
         catch (Exception ex) when (ex is IOException or UnauthorizedAccessException) { session.Log(ex.Message, GameLogLevel.Error); }
     }
+
+    private static float Preset(int index) => index switch { 0 => .375f, 2 => 1f, _ => .75f };
 
     public override void FixedUpdate(ScriptTick tick)
     {
@@ -66,6 +72,13 @@ public sealed class ListeningWalk : GameBehaviour
             music = !music;
             if (music) audio.Play(Music); else audio.Stop(Music);
         }
+        // The project's ducking rule lowers the music by 8 dB while the line plays; Night blends two bus multipliers.
+        if (tick.Input.Pressed("Talk")) audio.Play(Line);
+        if (tick.Input.Pressed("Night"))
+        {
+            night = !night;
+            audio.TransitionTo(night ? "Night" : null, 1.5f);
+        }
         if (tick.Input.Pressed("MoveUp")) tick.Ui.SetSliderValue(MusicSlider, musicPercent == 20 ? 80 : 20);
         if (tick.Input.Pressed("MoveDown")) tick.Ui.SetSelectedIndex(EffectsList, effectsPreset == 0 ? 1 : 0);
         if (tick.Input.Pressed("MasterMute")) tick.Ui.SetToggleValue(MasterMute, !muted);
@@ -74,7 +87,8 @@ public sealed class ListeningWalk : GameBehaviour
         var x = Math.Clamp(tick.Position.X + tick.Direction.X * 600 * tick.DeltaTime, 144, 624);
         tick.Move(new Vector2(x - tick.Position.X, 0));
         var status = $"Listener X  {x + 16:0}     |     Beacon  {(beacon ? "on" : "off")}     |     Music  {(music ? "playing" : "fading / stopped")}";
-        var line = $"Master  {levels.Master:P0}       Music  {levels.Music:P0}       Effects  {levels.Effects:P0}";
+        var line = $"Master  {levels.Master:P0}     Music  {levels.Music:P0}     Effects  {levels.Effects:P0}     Voice  {levels.Level(AudioBus.Voice):P0}" +
+            (night ? "     Night" : "") + (audio.IsPlaying(Line) ? "     Talking" : "");
         if (lastStatus != status) { lastStatus = status; tick.Ui.SetText(Readout, status); }
         if (lastLevels != line) { lastLevels = line; tick.Ui.SetText(Levels, line); }
     }

@@ -82,6 +82,7 @@ public partial class MainWindow
             foreach(var png in inputs.Where(SpriteAssets.IsPng)) Engine.Desktop.SdlCanvas.ReadPngSize(png);
             return ProjectImport.Copy(root,folder,inputs);
         });
+        foreach(var warning in AssetBuildReport.ImportWarnings(root,paths)) WriteLog(new(GameLogLevel.Warning,"Warning: "+warning,null,0));
         catalogFiles=null;
         BrowseFolder(ParentPath(paths[0]),paths[0]);
         if(clipEditor is {} clip) clip.SetCatalog(ProjectAssets.Scan(root));

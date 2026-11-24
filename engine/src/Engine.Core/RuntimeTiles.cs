@@ -2,7 +2,8 @@ using System.Drawing;
 
 namespace Engine.Core;
 
-/// <summary>One cell of a tile layer. Tile 0 is empty. Display is the resolved art (an auto-terrain variant or the tile itself).</summary>
+/// <summary>One cell of a tile layer. Tile 0 is empty. Display is the art drawn at the current game time (an auto-terrain
+/// variant, random pick or animation frame, or the tile itself).</summary>
 public readonly record struct TileInfo(int Tile, int Display, string? Terrain, int MoveCost, bool Solid);
 
 public sealed partial class SceneGame
@@ -34,6 +35,7 @@ public sealed partial class SceneGame
         }
         // Never edit the authored component. Invalid input also leaves the current run intact.
         body.Map = map with { Chunks = chunks.ToArray() };
+        if (body.Palette != null) body.Map = body.Map.Resolved(body.Palette);
         foreach (var (grid, origin) in body.Grids ?? [])
             for (int y = 0; y < grid.Height; y++)
             for (int x = 0; x < grid.Width; x++) grid.SetEntryCost(new(x, y), EntryCost(body, new(origin.X + x, origin.Y + y)));
@@ -57,7 +59,7 @@ public sealed partial class SceneGame
         var map = body.Map!;
         int id = map.Get(cell);
         if (id != 0 && body.Palette?.Tiles.GetValueOrDefault(id) is {} tile)
-            info = new(id, map.DisplayTile(body.Palette, cell, id), tile.Terrain, tile.EntryCost(), tile.Solid);
+            info = new(id, body.Palette.Animated(map.DisplayTile(body.Palette, cell, id), Time.GameSeconds), tile.Terrain, tile.EntryCost(), tile.Solid);
         return true;
     }
 
@@ -77,6 +79,7 @@ public sealed partial class SceneGame
             // Never edit the authored component; chunk dictionaries are immutable and shared.
             var map = body.Map! with { };
             map.Set(cell, tile);
+            if (body.Palette != null) map.Refresh(body.Palette, cell, _ => true);
             body.Map = map;
         }
         foreach (var (grid, origin) in body.Grids ?? [])

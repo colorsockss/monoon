@@ -30,6 +30,45 @@ public partial class MainWindow
         { LogError(ex.Message); Status.Text = ex.Message; return null; }
     }
 
+    // 13.13: an extension's own scene changes, recorded as one Undo step (the object-diff history finds what changed).
+    // refresh false: a field drawer already shows its new value, and rebuilding the Inspector would take its focus.
+    internal bool ExtensionRecordEdit(bool refresh = true)
+    {
+        if (Viewport.IsPlaying) return false;
+        CommitEdit();
+        var before = history.CurrentSnapshot(); // the last recorded state, so it changes only when this records
+        RecordEdit(Selected?.Id);
+        bool recorded = history.CurrentSnapshot() != before;
+        if (recorded && refresh) RefreshComponentList();
+        return recorded;
+    }
+
+    internal void ExtensionSetField(ScriptComponent component, string name, object? value)
+    {
+        if (Viewport.IsPlaying) throw new InvalidOperationException("Stop Play before changing the scene.");
+        if (scripts == null) throw new InvalidOperationException("Open a project first.");
+        var field = scripts.Get(component.Script).Fields.FirstOrDefault(f => f.Name == name)
+            ?? throw new InvalidDataException($"{component.Script} has no Inspector field '{name}'.");
+        var json = value switch
+        {
+            null => (System.Text.Json.JsonElement?)null,
+            System.Text.Json.JsonElement e => e,
+            System.Numerics.Vector2 v => System.Text.Json.JsonSerializer.SerializeToElement(new { x = v.X, y = v.Y }),
+            Enum e => System.Text.Json.JsonSerializer.SerializeToElement(e.ToString()),
+            _ => System.Text.Json.JsonSerializer.SerializeToElement(value, value.GetType()),
+        };
+        var fallback = field.Default switch
+        {
+            null => (System.Text.Json.JsonElement?)null,
+            System.Text.Json.JsonElement e => e,
+            System.Numerics.Vector2 v => System.Text.Json.JsonSerializer.SerializeToElement(new { x = v.X, y = v.Y }),
+            var d => System.Text.Json.JsonSerializer.SerializeToElement(d, d.GetType()),
+        };
+        if (json == null || fallback is { } d2 && System.Text.Json.JsonElement.DeepEquals(json.Value, d2)) component.Values.Remove(name);
+        else component.Values[name] = json.Value;
+        ExtensionRecordEdit(refresh: false);
+    }
+
     // Recompiles Editor/ and rebuilds the extension menu, Inspectors and panels. A compile error leaves no extension loaded.
     private void RefreshExtensions()
     {

@@ -1,0 +1,13 @@
+# Glowing embers rising from a fire, drifting on a noise field.
+rate: 24
+maxParticles: 96
+shape: Circle
+radius: 6
+spread: 40
+speed: {min: 20, max: 50}
+lifetime: {min: 1, max: 1.8}
+size: {min: 2, max: 4}
+color: {min: "#FFB347", max: "#FF5A1F"}
+gravity: -30
+noise: {strength: 40, frequency: 0.05}
+blend: Additive

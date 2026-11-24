@@ -1,4 +1,6 @@
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using Engine.Core;
 
@@ -26,16 +28,24 @@ internal static class CrashDiagnostics
 
     private static CrashFrame Capture(StackFrame frame)
     {
-#if MONOON_COMPILED_SCRIPTS
-        var method = DiagnosticMethodInfo.Create(frame);
-        string name = method == null ? "(unknown)" : $"{method.DeclaringTypeName}.{method.Name}";
-        var ip = frame.GetNativeIP();
-        var image = frame.GetNativeImageBase();
-        // A Native AOT player links the compiled game scripts and engine into the main image.
-        if (ip > image && image != 0 && image == MainImage.Value)
-            return new(name, ImageOffset: $"0x{ip - image:x}");
-        return new(name);
-#else
+        // Native AOT links the compiled game scripts and engine into the main image: report image offsets for the dSYM.
+        // Release (JIT with ReadyToRun) keeps IL metadata: report module, token and IL offset for the portable PDBs.
+        if (!RuntimeFeature.IsDynamicCodeSupported)
+        {
+            var method = DiagnosticMethodInfo.Create(frame);
+            string name = method == null ? "(unknown)" : $"{method.DeclaringTypeName}.{method.Name}";
+            var ip = frame.GetNativeIP();
+            var image = frame.GetNativeImageBase();
+            if (ip > image && image != 0 && image == MainImage.Value)
+                return new(name, ImageOffset: $"0x{ip - image:x}");
+            return new(name);
+        }
+        return Managed(frame);
+    }
+
+    [UnconditionalSuppressMessage("Trimming", "IL2026", Justification = "Frames come from code that ran, so its method metadata was kept; a trimmed-away method reports (unknown).")]
+    private static CrashFrame Managed(StackFrame frame)
+    {
         var method = frame.GetMethod();
         if (method == null) return new("(unknown)");
         string name = $"{method.DeclaringType?.FullName}.{method.Name}";
@@ -44,10 +54,8 @@ internal static class CrashDiagnostics
         int offset = frame.GetILOffset();
         return new(name, module.Assembly.GetName().Name, module.ModuleVersionId.ToString("D"),
             method.MetadataToken, offset < 0 ? null : offset);
-#endif
     }
 
-#if MONOON_COMPILED_SCRIPTS
     private static readonly Lazy<nint> MainImage = new(() =>
     {
         if (OperatingSystem.IsMacOS()) return GetMacImageHeader(0);
@@ -57,5 +65,4 @@ internal static class CrashDiagnostics
 
     [DllImport("/usr/lib/libSystem.B.dylib", EntryPoint = "_dyld_get_image_header")]
     private static extern nint GetMacImageHeader(uint index);
-#endif
 }

@@ -20,6 +20,15 @@ public sealed class KeyRoomTools : IEditorExtension
             place.Click += (_, _) => inspector.Editor.PlacePrefab(Coin);
             inspector.Row("Place", place);
         });
+        // Every [InputAction] string field: a list of the project's input actions instead of free text. A pick is one Undo step.
+        editor.AddFieldDrawer("InputAction", field =>
+        {
+            var actions = GameSettings.Load(field.Editor.ProjectDirectory).Input.Actions?.Select(a => a.Name).ToList() ?? [];
+            if (field.Value is string current && !actions.Contains(current)) actions.Add(current); // keep an unknown name visible
+            var picker = new ComboBox { ItemsSource = actions, SelectedItem = field.Value, HorizontalAlignment = Avalonia.Layout.HorizontalAlignment.Stretch };
+            picker.SelectionChanged += (_, _) => { if (picker.SelectedItem is string name && name != field.Value as string) field.Set(name); };
+            return picker;
+        });
         editor.AddPanel("Coins", context =>
         {
             var count = new TextBlock();

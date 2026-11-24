@@ -1,0 +1,41 @@
+[
+  {
+    "window": [
+      1280,
+      800
+    ],
+    "panel": [
+      878,
+      695
+    ],
+    "renderScaling": 2,
+    "fit": 2.195,
+    "devicePixelsPerGamePixel": 2
+  },
+  {
+    "window": [
+      1600,
+      1000
+    ],
+    "panel": [
+      1198,
+      895
+    ],
+    "renderScaling": 2,
+    "fit": 2.995,
+    "devicePixelsPerGamePixel": 2
+  },
+  {
+    "window": [
+      1920,
+      1080
+    ],
+    "panel": [
+      1518,
+      975
+    ],
+    "renderScaling": 2,
+    "fit": 3.795,
+    "devicePixelsPerGamePixel": 3
+  }
+]

@@ -4,6 +4,7 @@ using Engine.Core;
 
 internal static class CameraChecks
 {
+    [Check(4500)] static void Registered(CheckRun c) => Run(c.Repository, c.Scratch);
     private static void Check(bool value,string why) { if (!value) throw new Exception("Camera: "+why); }
     private static void Near(float a,float b,string why) => Check(Math.Abs(a-b)<.002f,$"{why}: {a} vs {b}");
     private static CameraView Read(SceneGame g,Guid id) => g.TryGetView(id,out var view)?view:throw new Exception("Missing camera view");

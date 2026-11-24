@@ -1,0 +1,85 @@
+schemaVersion: 31
+objects:
+- id: ba2de42e-3a5d-4ff9-b089-c3b372527160
+  name: Rockets
+  tag: Particles
+  x: 400
+  y: 440
+  width: 1
+  height: 1
+  components:
+  - type: particleEmitter2D
+    particles: 4fa7d9f3-6d8f-43ed-b6b7-40e6526ee08b
+    trigger: Start
+- id: 82bc2d8a-f651-4c17-b0c7-96e0d5b6f7dc
+  name: Burst
+  tag: Particles
+  parentId: ba2de42e-3a5d-4ff9-b089-c3b372527160
+  x: 0
+  y: 0
+  width: 1
+  height: 1
+  components:
+  - type: particleEmitter2D
+    particles: b6aaa729-aaf8-4712-99e8-e8c64f54bb89
+    trigger: Manual
+- id: 2a0e31bc-be57-41d3-ad2d-5b33044b570e
+  name: Camera
+  x: 400
+  y: 225
+  width: 1
+  height: 1
+  components:
+  - type: camera2D
+  - type: script
+    script: "LabControls"
+    values: {"Next": {"Id": "5b0f3c1e-8a2d-4f6b-9c3e-7d1a2b4c6e80"}}
+- id: 34c50c71-5da1-49d9-93e7-19ee8b087d9a
+  name: HUD
+  x: 0
+  y: 0
+  width: 800
+  height: 450
+  components:
+  - type: uiCanvas
+- id: b74c6e39-0d0e-445f-8f80-051b28d64e8f
+  name: Top strip
+  parentId: 34c50c71-5da1-49d9-93e7-19ee8b087d9a
+  x: 0
+  y: 0
+  width: 800
+  height: 44
+  components:
+  - type: uiRect
+  - type: uiImage
+    color: "#141E2B"
+- id: b0db20ca-7195-4f12-9d6c-98aadc76a2a1
+  name: Title
+  parentId: 34c50c71-5da1-49d9-93e7-19ee8b087d9a
+  x: 16
+  y: 7
+  width: 360
+  height: 32
+  components:
+  - type: uiRect
+  - type: uiText
+    text: "Particle Lab · 서브 방출기(불꽃놀이)"
+    size: 22
+    color: "#F4F6F4"
+    insetX: 0
+    insetY: 0
+- id: e94b0126-e514-402a-aaf2-147e7699396a
+  name: Hint
+  parentId: 34c50c71-5da1-49d9-93e7-19ee8b087d9a
+  x: 400
+  y: 11
+  width: 384
+  height: 26
+  components:
+  - type: uiRect
+  - type: uiText
+    text: "N 다음 씬"
+    size: 15
+    color: "#8EEDDA"
+    insetX: 0
+    insetY: 0

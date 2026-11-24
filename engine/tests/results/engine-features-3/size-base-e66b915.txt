@@ -1,0 +1,8 @@
+PASS Native AOT kit has no VYaml generated Serialize code (356 Deserialize methods remain)
+KeyRoom release: app 33,050,394 B, executable 124,712 B, (baseline 33,044,250 / 124,712)
+KeyRoom native-aot: app 15,858,263 B, executable 8,719,936 B, (baseline 15,858,263 / 8,719,936)
+PlatformerLab release: app 30,309,210 B, executable 124,712 B, (baseline 30,303,066 / 124,712)
+PlatformerLab native-aot: app 13,060,557 B, executable 8,371,424 B, (baseline 13,060,557 / 8,371,424)
+InventoryLab release: app 83,730,908 B, executable 124,712 B, (baseline 83,724,764 / 124,712)
+InventoryLab native-aot: app 66,497,359 B, executable 8,404,448 B, (baseline 66,480,847 / 8,387,936)
+PASS build size baseline: 6 osx-arm64 distribution builds within +1%

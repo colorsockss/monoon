@@ -1,0 +1,95 @@
+schemaVersion: 31
+objects:
+- id: 1a01f057-5ef2-48f0-9590-360cac38d9e7
+  name: Bubbles
+  tag: Particles
+  x: 150
+  y: 300
+  width: 1
+  height: 1
+  components:
+  - type: particleEmitter2D
+    particles: d0276b21-8d4d-4940-a0b5-d012870e64b5
+    trigger: Start
+- id: a92ad0b4-e052-4198-b4db-0091906d073d
+  name: Flame
+  tag: Particles
+  x: 400
+  y: 360
+  width: 1
+  height: 1
+  components:
+  - type: particleEmitter2D
+    particles: 9166b88b-32ab-4954-93e8-8b76e7148858
+    trigger: Start
+- id: e81e895f-f6a2-422c-b8f5-22029ac1cbc4
+  name: Pinwheels
+  tag: Particles
+  x: 650
+  y: 80
+  width: 1
+  height: 1
+  components:
+  - type: particleEmitter2D
+    particles: b1706141-b1eb-4c45-8360-a5ae71c929d1
+    trigger: Start
+- id: 593a2036-d5fe-48e8-9570-aaed84925218
+  name: Camera
+  x: 400
+  y: 225
+  width: 1
+  height: 1
+  components:
+  - type: camera2D
+  - type: script
+    script: "LabControls"
+    values: {"Next": {"Id": "7e2161fc-ae90-4d97-bc8f-46e35a980108"}}
+- id: 4ad5a9f6-d115-4b55-9dfb-e29cc10ef670
+  name: HUD
+  x: 0
+  y: 0
+  width: 800
+  height: 450
+  components:
+  - type: uiCanvas
+- id: b3b1bc26-5ac6-40d2-b482-dfbcfa5a1429
+  name: Top strip
+  parentId: 4ad5a9f6-d115-4b55-9dfb-e29cc10ef670
+  x: 0
+  y: 0
+  width: 800
+  height: 44
+  components:
+  - type: uiRect
+  - type: uiImage
+    color: "#141E2B"
+- id: c9ab3e02-565d-47a4-adc7-5016e35a49d5
+  name: Title
+  parentId: 4ad5a9f6-d115-4b55-9dfb-e29cc10ef670
+  x: 16
+  y: 7
+  width: 360
+  height: 32
+  components:
+  - type: uiRect
+  - type: uiText
+    text: "Particle Lab · 수명 곡선·그라데이션"
+    size: 22
+    color: "#F4F6F4"
+    insetX: 0
+    insetY: 0
+- id: e9cb4640-df97-4e31-8d02-0d1d27d28771
+  name: Hint
+  parentId: 4ad5a9f6-d115-4b55-9dfb-e29cc10ef670
+  x: 400
+  y: 11
+  width: 384
+  height: 26
+  components:
+  - type: uiRect
+  - type: uiText
+    text: "N 다음 씬"
+    size: 15
+    color: "#8EEDDA"
+    insetX: 0
+    insetY: 0

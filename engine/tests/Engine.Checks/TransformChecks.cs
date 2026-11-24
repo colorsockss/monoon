@@ -3,6 +3,7 @@ using Engine.Core;
 
 internal static class TransformChecks
 {
+    [Check(8600)] static void Registered(CheckRun c) => Run(c.Scratch);
     internal static void Run(string root)
     {
         var scene = SceneDocument.Load(Path.Combine(root,"Scenes","KeyRoom.scene"));

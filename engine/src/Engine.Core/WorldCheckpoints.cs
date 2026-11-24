@@ -20,7 +20,8 @@ internal sealed record SavedBasis(float M11, float M12, float M21, float M22, bo
     internal Matrix3x2 At(Vector2 origin) => new(M11, M12, M21, M22, origin.X, origin.Y);
 }
 
-// Every constructor argument is part of the on-disk schema, including nullable overrides.
+// Every constructor argument is part of the on-disk schema, including nullable overrides. The player reads and writes the
+// schema by hand (WorldCheckpointJsonCodec); this context is the reference GameJsonWriterChecks compares it against.
 [JsonSourceGenerationOptions(JsonSerializerDefaults.Web, RespectRequiredConstructorParameters = true,
     GenerationMode = JsonSourceGenerationMode.Metadata)]
 [JsonSerializable(typeof(WorldCheckpoint))]
@@ -39,7 +40,7 @@ public sealed partial class SessionState
         if (scenes.Count == 0) { data.Values.Remove(key); return; }
         bool extended = scenes.Values.Any(scene => scene.Objects.Any(NeedsHierarchyPose) ||
             scene.Prefabs.Any(prefab => prefab.Objects.Any(NeedsHierarchyPose)));
-        data.Values[key] = JsonSerializer.SerializeToElement(new WorldCheckpoint(extended ? 2 : 1, scenes), WorldCheckpointJson.Default.WorldCheckpoint);
+        data.Values[key] = WorldCheckpointJsonCodec.Write(new WorldCheckpoint(extended ? 2 : 1, scenes));
 
         static bool NeedsHierarchyPose(SavedObject obj) => obj.Reparented != null || obj.Pose?.Basis != null;
     }
@@ -50,7 +51,7 @@ public sealed partial class SessionState
         if (data.Values.TryGetValue(key, out var value))
         {
             WorldCheckpoint? checkpoint;
-            try { checkpoint = value.Deserialize(WorldCheckpointJson.Default.WorldCheckpoint); }
+            try { checkpoint = WorldCheckpointJsonCodec.Read(value); }
             catch (JsonException ex) { throw new InvalidDataException("Invalid world checkpoint.", ex); }
             if (checkpoint is not { Version: 1 or 2, Scenes: not null } || checkpoint.Scenes.ContainsKey(Guid.Empty))
                 throw new InvalidDataException("Unsupported world checkpoint.");

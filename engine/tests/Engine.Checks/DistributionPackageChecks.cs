@@ -4,6 +4,7 @@ using Engine.Core;
 
 internal static class DistributionPackageChecks
 {
+    [Check(500, StopAfter = "packages", Templates = true)] static void Registered(CheckRun c) => Run(c.Repository, c.Scratch);
     internal static void Run(string repository, string scratch)
     {
         const string password = "pfx-Secret-7319!";

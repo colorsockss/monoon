@@ -16,26 +16,12 @@ public static class StartupHook
     private const BindingFlags Any = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic;
     private static readonly Guid Field = Guid.Parse("ae245142-c47c-52aa-8b4f-5c867bdef887"), Lab = Guid.Parse("5750e5bb-1700-5a5b-94c2-b6bd02a0356c");
 
-    public static void Initialize() => Task.Run(async () =>
-    {
-        while (Application.Current?.ApplicationLifetime is not IClassicDesktopStyleApplicationLifetime { MainWindow: not null })
-            await Task.Delay(100);
-        await Dispatcher.UIThread.InvokeAsync(async () =>
-        {
-            var life = (IClassicDesktopStyleApplicationLifetime)Application.Current!.ApplicationLifetime!;
-            try { await Test(life.MainWindow!); }
-            catch (Exception ex) { File.WriteAllText(Path.Combine(Output, "error.txt"), ex.ToString()); }
-            finally { life.Shutdown(); }
-        });
-    });
+    public static void Initialize() => Start(Path.Combine(Output, "error.txt"), life => Test(life.MainWindow!));
 
     private static void Click(Button button) => button.RaiseEvent(new RoutedEventArgs(Button.ClickEvent, button));
     private static void Require(bool value, string message) { if (!value) throw new InvalidDataException(message); }
-    private static async Task Until(Func<bool> done, string what, int seconds = 120)
-    {
-        var limit = DateTime.UtcNow.AddSeconds(seconds);
-        while (!done()) { if (DateTime.UtcNow > limit) throw new TimeoutException(what); await Task.Delay(10); }
-    }
+    // Frame-counting waits: keep the 10 ms poll so input lands on the same frames as before.
+    private static Task Until(Func<bool> done, string what, int seconds = 30) => Probe.Until(done, what, seconds, poll: 10);
 
     private static async Task Test(Window main)
     {

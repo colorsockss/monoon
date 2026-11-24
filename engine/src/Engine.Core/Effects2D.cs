@@ -59,7 +59,7 @@ public sealed partial record SpriteShader2DComponent : SceneComponent
     public Guid? Shader { get; set; }
 }
 
-[DisplayName("Point Light 2D"), YamlObject]
+[DisplayName("Point Light 2D"), YamlObject, EngineFeature(EngineFeature.Lighting)]
 public sealed partial record PointLight2DComponent : SceneComponent
 {
     public PointLight2DComponent() { }
@@ -70,6 +70,8 @@ public sealed partial record PointLight2DComponent : SceneComponent
     public float Flicker { get; set; }
     public float Frequency { get; set; } = 2;
     public string Color { get; set; } = "#FFD087";
+    // With a Global Light 2D in the scene: colliders and solid tiles inside the radius block this light (roadmap 16.7).
+    public bool Shadows { get; set; }
 
     internal void Validate(string name)
     {
@@ -78,106 +80,41 @@ public sealed partial record PointLight2DComponent : SceneComponent
             throw new InvalidDataException($"{name}: invalid point light radius, intensity, flicker, frequency or color.");
     }
 
-    internal void Draw(ICanvas2D canvas, ShaderClip sheet, Vector2 center, RectangleF visible, Matrix3x2 view, double seconds)
+    // The falloff square and its tint at this time; false when it is off screen or dark.
+    internal bool Shade(Vector2 center, RectangleF visible, double seconds, out RectangleF area, out Color tint)
     {
-        var area = new RectangleF(center.X-Radius,center.Y-Radius,Radius*2,Radius*2);
-        if (!visible.IntersectsWith(area) || Intensity == 0) return;
+        area = new RectangleF(center.X-Radius,center.Y-Radius,Radius*2,Radius*2);
+        tint = default;
+        if (!visible.IntersectsWith(area) || Intensity == 0) return false;
         double phase = seconds * Frequency * Math.Tau;
         double wave = .5 + .34 * Math.Sin(phase) + .16 * Math.Sin(phase * 2.71);
         double brightness = Intensity * (1 - Flicker * wave);
         SceneObject.TryColor(Color,out var rgb);
-        canvas.DrawShader(sheet,0,area,view,System.Drawing.Color.FromArgb((int)Math.Round(255*brightness),rgb),true);
-    }
-}
-
-public enum ParticleTrigger { Manual, Landing }
-
-[DisplayName("Particle Emitter 2D"), YamlObject]
-public sealed partial record ParticleEmitter2DComponent : SceneComponent
-{
-    public ParticleEmitter2DComponent() { }
-    [YamlConstructor] public ParticleEmitter2DComponent(int count=16, float lifetime=.55f, float speed=70,
-        float gravity=130, float size=5, string color="#E6BE8C") =>
-        (Count,Lifetime,Speed,Gravity,Size,Color) = (count,lifetime,speed,gravity,size,color);
-    public ParticleTrigger Trigger { get; set; }
-    public int Count { get; set; } = 16;
-    public float Lifetime { get; set; } = .55f;
-    public float Speed { get; set; } = 70;
-    public float Gravity { get; set; } = 130;
-    public float Size { get; set; } = 5;
-    public string Color { get; set; } = "#E6BE8C";
-    internal void Validate(string name)
-    {
-        if (!Enum.IsDefined(Trigger) || Count is <1 or >256 || Lifetime is not (>0 and <=60) ||
-            Speed is not (>=0 and <=4096) || Gravity is not (>=-4096 and <=4096) ||
-            Size is not (>0 and <=256) || !SceneObject.TryColor(Color,out _))
-            throw new InvalidDataException($"{name}: invalid particle trigger, count, lifetime, speed, gravity, size or color.");
-    }
-}
-
-internal sealed class ParticleBurst(Guid owner, ParticleEmitter2DComponent config)
-{
-    private readonly record struct Particle(Vector2 Origin, Vector2 Velocity, float Size, double Birth);
-    private readonly List<Particle> particles = [];
-    private readonly Random random = new(owner.GetHashCode());
-    private bool airborne;
-
-    internal void Reset() { particles.Clear(); airborne=false; }
-    internal void Step(bool inAir, Vector2 origin, double now)
-    {
-        int expired = 0;
-        while (expired < particles.Count && now - particles[expired].Birth >= config.Lifetime) expired++;
-        if (expired > 0) particles.RemoveRange(0,expired);
-        if (config.Trigger == ParticleTrigger.Landing && airborne && !inAir) Emit(origin,now);
-        airborne = inAir;
-    }
-
-    internal void Emit(Vector2 origin, double now)
-    {
-        int excess = particles.Count + config.Count - 512;
-        if (excess > 0) particles.RemoveRange(0,excess);
-        for (int i=0; i<config.Count; i++)
-        {
-            int sign = (i & 1) == 0 ? -1 : 1;
-            var velocity = new Vector2(sign*(.35f+.65f*random.NextSingle()),-(.25f+.6f*random.NextSingle())) * config.Speed;
-            particles.Add(new(origin,velocity,config.Size*(.65f+.7f*random.NextSingle()),now));
-        }
-    }
-
-    internal void Draw(ICanvas2D canvas, ShaderClip sheet, RectangleF frame, Matrix3x2 view, double now)
-    {
-        SceneObject.TryColor(config.Color,out var rgb);
-        foreach (var p in particles)
-        {
-            float age=(float)(now-p.Birth);
-            if (age<0 || age>=config.Lifetime) continue;
-            float life=1-age/config.Lifetime;
-            var point=p.Origin+p.Velocity*age+new Vector2(0,config.Gravity*.5f*age*age);
-            float size=p.Size*(.55f+.45f*life);
-            var area=new RectangleF(point.X-size,point.Y-size*.5f,size*2,size);
-            if (frame.IntersectsWith(area))
-                canvas.DrawShader(sheet,0,area,view,System.Drawing.Color.FromArgb((int)(life*255),rgb),false);
-        }
-    }
-}
-
-public sealed partial class SceneGame
-{
-    private Body[] emitters=[], lights=[];
-    private float effectStep;
-    private static Vector2 EmitterOrigin(Body b) => Affine2D.Transform(new(b.Size.X*.5f,b.Size.Y-2),b.MatrixAt(b.Position));
-
-    public bool EmitParticles(Guid id)
-    {
-        if (!byId.TryGetValue(id,out var b) || !b.Active || b.Particles == null) return false;
-        b.Particles.Emit(EmitterOrigin(b),Time.GameSeconds);
+        tint = System.Drawing.Color.FromArgb((int)Math.Round(255*brightness),rgb);
         return true;
     }
 
-    private void StepEffects(float seconds)
+    internal void Draw(ICanvas2D canvas, ShaderClip sheet, Vector2 center, RectangleF visible, Matrix3x2 view, double seconds)
     {
-        effectStep=seconds;
-        foreach (var b in emitters)
-            if (b.Active) b.Particles!.Step(b.MotionOwner is { Support:null },EmitterOrigin(b),Time.GameSeconds);
+        if (Shade(center, visible, seconds, out var area, out var tint)) canvas.DrawShader(sheet,0,area,view,tint,true);
     }
+}
+
+// Darkness for the whole scene (roadmap 16.7): the world is multiplied by a lightmap cleared to Color, and Point Light 2D
+// adds to it instead of to the screen. Sorting layers from UnlitLayer up, and the UI, draw after it at full brightness.
+[DisplayName("Global Light 2D"), YamlObject, EngineFeature(EngineFeature.Lighting)]
+public sealed partial record GlobalLight2DComponent : SceneComponent
+{
+    public GlobalLight2DComponent() { }
+    [YamlConstructor] public GlobalLight2DComponent(string color="#202430", int unlitLayer=32767) => (Color,UnlitLayer) = (color,unlitLayer);
+    public string Color { get; set; } = "#202430";
+    public int UnlitLayer { get; set; } = 32767;
+
+    internal void Validate(string name)
+    {
+        if (!SceneObject.TryColor(Color,out _) || UnlitLayer is < -32768 or > 32767)
+            throw new InvalidDataException($"{name}: invalid global light color or unlit layer.");
+    }
+
+    internal Color Ambient() { SceneObject.TryColor(Color,out var rgb); return System.Drawing.Color.FromArgb(255,rgb); }
 }

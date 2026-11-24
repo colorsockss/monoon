@@ -3,6 +3,7 @@ using Engine.Core;
 
 internal static class UiThemeChecks
 {
+    [Check(9100)] static void Registered(CheckRun c) => Run(c.Project);
     internal static void Run(string project)
     {
         var guide = SceneDocument.Load(Path.Combine(project, "Scenes", "RoomGuide.scene"));

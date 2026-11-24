@@ -60,6 +60,29 @@ private static IEnumerable<ScriptWait> ShowHint(SessionState session)
 
 **직접 확인하기** — KeyRoom을 Play하고 왼쪽으로 가서 열쇠를 얻는다. 0.5초 안에 **P**로 정지하면 안내가 나타나지 않는다. 정지한 채 **.**(마침표, 프로젝트의 **StepGame** 액션)을 누를 때마다 한 틱씩 진행되고, **P**로 재개하면 문이 열린 뒤 30틱째에 안내가 표시된다. 에디터 Scene Play에서는 도구 모음의 **Step**도 같은 동작을 한다. 열쇠를 얻은 직후 **F6**으로 문을 제거하면 안내가 표시되지 않는다. [세 실행 경로의 재생 기록](../../engine/tests/results/script-waits/README.md)
 
+## 트윈으로 값 움직이기
+
+`objects.Tween(오브젝트 ID)`가 돌려준 핸들에 단계를 이어 붙이면 순서대로 재생한다. 각 단계는 시작할 때의 현재 값에서 목표 값으로 이동하고, 끝난 단계의 남은 시간은 다음 단계로 넘어가 전체 길이가 정확히 합과 같다. 여러 속성을 함께 움직이려면 같은 오브젝트에 `Tween`을 여러 번 시작한다.
+
+| 단계 | 바꾸는 값 |
+| --- | --- |
+| `Move(Vector2, 초, ease)` · `Scale(Vector2, …)` · `Rotate(도, …)` | 로컬 Transform(`SetLocalTransform`과 같은 경로) |
+| `Color(Color, …)` · `Alpha(0–1, …)` | 스프라이트를 그리는 RGB와 불투명도(클립의 Tint·Opacity 키와 같은 값) |
+| `UiRect(RectangleF, …)` | UI 요소의 배치 결과에 더하는 오프셋. X·Y는 이동, Width·Height는 크기 변화이고 자식도 함께 움직인다. `default`로 끝나면 원래 배치로 돌아간다. |
+| `Float(시작, 끝, 초, Action<float>, …)` | 임의 값. 매 단계마다 콜백을 부른다. 콜백을 필드에 담아 두면 할당하지 않는다. |
+| `Delay(초)` | 아무것도 바꾸지 않고 기다린다. |
+
+`ease`는 Position Tween 2D와 같은 `Linear`·`EaseIn`·`EaseOut`·`EaseInOut`(기본값)이다. 두 번째 인수 `TweenClock.Ui`를 주면 UI 시간으로 재생해 정지 중에도 움직인다. 기본값 `TweenClock.Game`은 게임 시간을 따라 정지·한 틱 진행·배속을 따른다. 게임 시간 트윈은 대기 루틴과 같은 위치(스크립트·접촉 이벤트 다음)에서, UI 시간 트윈은 `UpdateUi` 다음에서 진행한다. 오브젝트가 꺼지거나 제거되면 트윈이 끝나고, 핸들의 `IsPlaying`·`Stop()`으로 상태를 읽고 멈춘다. 끝난 핸들은 이후 호출을 무시한다. 트윈과 단계는 구조체 배열에 담아 다시 쓰므로 재생 중에는 할당하지 않는다. 같은 오브젝트에서 컴포넌트 속성 키 클립이 Tint·Opacity를 재생하면 그 틱의 클립 값이 트윈 색을 덮어쓴다.
+
+KeyRoom의 [SatchelPop](../../samples/KeyRoom/Scripts/SatchelPop.cs)은 코인을 얻으면 가방을 중심 기준으로 1.4배 키웠다가(0.1초) 돌아오고(0.15초) 그동안 금색으로 깜빡인다. [ToggleControls](../../samples/KeyRoom/Scripts/ToggleControls.cs)는 **Controls** 버튼을 누르면 UI 시간으로 2px 들어갔다 나온다.
+
+```csharp
+tick.Objects.Tween(tick.ObjectId).Scale(new(1.4f, 1.4f), .1f, TweenEase.EaseOut).Scale(Vector2.One, .15f, TweenEase.EaseIn);
+click.Objects.Tween(click.ObjectId, TweenClock.Ui).UiRect(new(2, 2, -4, -4), .05f, TweenEase.EaseOut).UiRect(default, .08f, TweenEase.EaseIn);
+```
+
+UI 요소의 현재 위치는 `tick.Ui.Bounds(id)`로 읽는다. [세 실행 경로의 다섯 시점 값](../../engine/tests/results/engine-features-1/README.md#163-스크립트-트윈-api)
+
 ## 오브젝트 참조 목록
 
 컴포넌트에 `public Guid[] Choices = [];`를 선언한다. Hierarchy에서 오브젝트를 필드의 **Drop object here**에 놓으면 끝에 추가되고, 특정 행에 놓으면 그 행 앞에 추가된다. Inspector 안에서는 오브젝트 이름을 잡아 다른 행에 놓아 그 번호로 옮긴다. **−**는 해당 참조 한 개를 제거한다. 각 편집은 **Cmd+Z**(Windows·Linux는 **Ctrl+Z**) 한 번으로 되돌릴 수 있다.
@@ -152,6 +175,35 @@ objects.SetColliderEnabled(door, false);
 
 KeyRoom의 기본 설정에서는 먼저 오른쪽 문에 부딪힌 뒤 왼쪽으로 가서 열쇠를 얻는다. 문은 Frames 목록의 마지막 스프라이트인 `DoorOpen3.png`로 바꾸고 충돌체를 끈다. DoorLock에서 호출한 `PlayThenShowSprite()`는 열림 클립을 한 차례 표시한 후 새 스프라이트를 보여 준다. 기존 열린 문 PNG는 투명해서 통로가 비어 보인다. Scene Play에서 Door를 선택하면 Inspector의 실행 상태에 현재 이미지와 충돌체 상태가 표시된다. 오른쪽으로 통과하면 두 번째 방에 도착한다. Stop하면 원래 닫힌 문과 충돌체가 돌아온다. 저장된 열쇠 진행을 불러오면 열린 상태로 시작한다. [열쇠 스크립트](../../samples/KeyRoom/Scripts/KeySequence.cs)
 
+## 디버그 선·원·텍스트 그리기
+
+`FixedUpdate`의 `tick.Debug`와 `UpdateUi`의 `tick.Debug`로 월드 좌표에 선·원·텍스트를 그린다. 모든 Primary·Extra 화면 위에 그리고 미니맵에는 그리지 않는다. 게임 상태에는 영향을 주지 않는다.
+
+| API | 그리는 것 |
+| --- | --- |
+| `tick.Debug.Line(from, to, color, width = 1)` | 두 월드 점 사이의 선. 너비는 화면 픽셀이다. |
+| `tick.Debug.Circle(center, radius, color, width = 1)` | 월드 반지름의 원 윤곽(32분할) |
+| `tick.Debug.Text(position, text, color, size = 12)` | 왼쪽 위가 월드 점에 오는 텍스트. 크기는 화면 픽셀이다. |
+
+`FixedUpdate`에서 그린 도형은 다음 게임 틱까지, `UpdateUi`에서 그린 도형은 다음 UI 프레임까지 보인다. 계속 보이려면 매 틱 다시 호출한다. 게임 시간을 멈추면 마지막 틱의 도형이 남는다. 한 종류당 4,096개까지 그리고 나머지는 버린다. 좌표가 유한하지 않은 호출도 버린다. 목록은 용량을 유지하므로 같은 수를 계속 그리면 프레임마다 할당하지 않는다.
+
+**Scene Play와 개발용 빌드(`--profile development`)에서만 그린다.** 두 경로는 스크립트를 `MONOON_DEBUG_DRAW` 기호로 컴파일한다. 배포용 빌드에서는 C# 컴파일러가 `tick.Debug.…` 호출을 인수 계산과 함께 지우고(`[Conditional]`), 게시 단계가 그리기 경로를 트리밍 기능 스위치 `MoNoon.ScriptDebugDraw=false`로 제거한다. 디버그 전용 상태나 계산은 `#if MONOON_DEBUG_DRAW`로 감싸면 배포본에 남지 않는다.
+
+```csharp
+#if MONOON_DEBUG_DRAW
+        if (tick.Input.Pressed("DebugDraw")) gizmos = !gizmos;
+        if (gizmos)
+        {
+            var center = tick.Position + new Vector2(16, 16);
+            tick.Debug.Circle(center, 40, Color.Gold, 2);
+            tick.Debug.Line(center, partnerView.Center, Color.Cyan, 2);
+            tick.Debug.Text(center + new Vector2(-36, 44), $"{center.X:0}, {center.Y:0}", Color.White);
+        }
+#endif
+```
+
+CameraLab을 Play하고 **G**를 누르면 플레이어 주위의 금색 원, 두 번째 카메라 중심까지의 하늘색 선, 좌표 텍스트가 켜진다. [FieldPlayer.cs](../../samples/CameraLab/Scripts/FieldPlayer.cs) · [세 경로와 배포본 비교 기록](../../engine/tests/results/engine-features-2/README.md#1614-스크립트-디버그-그리기)
+
 ## 외부 IDE로 Scene Play 디버깅
 
 1. MoNoon의 **Preferences → External script editor**에서 C# 확장이 활성화된 VS Code를 선택한다. KeyRoom을 연 뒤 **Project → Open C# Project…**를 누르면 현재 에디터에 연결할 VS Code 작업 공간이 열린다.
@@ -228,6 +280,71 @@ KeyRoom의 상자·문 규칙은 [ChestTests.cs](../../samples/KeyRoom/Tests/Che
 기존의 일반 `Guid` 오브젝트 참조와 `FixedUpdate`, 트리거, UI 콜백은 그대로 쓸 수 있다. 이전에 서로 다른 폴더에 같은 이름의 **전역 클래스**를 두었다면, 각각 다른 C# 네임스페이스에 넣어 전체 타입 이름을 구분한다. 파일 경로를 유지하면 기존 씬·프리팹의 스크립트 ID를 바꿀 필요가 없다.
 
 일반 Release는 `Game/.monoon-compiled/MoNoon.GameScripts.dll` 하나에 프로젝트 스크립트를 담는다. Native AOT는 같은 소스와 생성된 필드 연결 코드를 실행 파일에 정적으로 컴파일한다. 새로 내보낼 때는 현재 빌더와 같은 엔진 버전의 템플릿·AOT 키트를 사용한다. 콘텐츠 버전이 같아도 이전 Release 템플릿에 새 스크립팅 API가 없을 수 있다. 소스에서 업데이트한 경우 저장소 루트에서 `./engine/scripts/build-players.sh`로 템플릿과 키트를 함께 갱신한다. [버전 확인과 업그레이드 절차](upgrade.md)
+
+## 숫자·색·플래그·배열·목록·사전·구조체 필드
+
+InventoryLab의 [SupplyTuning](../../samples/InventoryLab/Scripts/SupplyTuning.cs)은 아래 종류를 하나씩 가진다. 오브젝트에 붙이면 Inspector에서 편집하고, 생성된 연결 코드가 `ScriptValues`로 저장 값을 읽는다(리플렉션 없음, Native AOT 지원). 저장 값이 없으면 스크립트의 초기화식 값을 그대로 쓴다.
+
+| 필드 타입 | Inspector | 저장 형식 |
+| --- | --- | --- |
+| `long`, `uint` | 숫자 상자 | 숫자 |
+| `System.Drawing.Color` | 견본 + 색 선택 창 + `#RRGGBB[AA]` 입력 | `"#RRGGBBAA"`(알파 255면 `#RRGGBB`) |
+| `[ColorUsage(false)] string` | 같은 색 필드(`false`면 알파 없음) | 입력한 hex 문자열 |
+| `[Flags] enum` | 이름 버튼 + 0이 아닌 멤버마다 체크 | `"Food, Gem"`(아무것도 없으면 `""`) |
+| `int[]`·`long[]`·`uint[]`·`float[]`·`double[]`·`bool[]`·`string[]` | 행마다 번호·입력·×, 머리 행에 개수와 + | JSON 배열(초기화식이 없으면 `null`) |
+| `List<T>`(T는 위 원소 타입) | 배열과 같다 | JSON 배열 |
+| `Dictionary<string 또는 int, T>` | 행마다 번호·키·값·×. 키는 확정 때 검사(중복·int 아님 거부) | JSON 객체(삽입 순서) |
+| `[Serializable] struct` | 머리 행의 요약과 펼치기 단추, 펼치면 멤버 행 | 멤버 JSON 객체 |
+
+구조체는 한 단계만 지원한다. 멤버는 공개 인스턴스 필드 중 숫자·`bool`·`string`·enum·`Vector2`·`Color`만 표시·저장하고, 나머지 멤버(배열, 다른 구조체, `readonly`)는 코드 값을 유지한다. 매개변수 없는 생성자를 직접 선언한 구조체와 `[Serializable]`이 없는 구조체는 **Not shown**으로 이유를 알린다. 초기화식은 상수, `{ 1, 2 }`·`[1, 2]`·`new int[3]`, `new() { 4, 5 }`, `new() { ["herb"] = 3 }`·`{ { 1, "one" } }`, `new Wave { Count = 2 }`, `Color.White`·`Color.FromArgb(…)`까지 기본값으로 읽는다. 그 밖의 초기화식(메서드 호출 등)은 **Not shown: set at run time**이다.
+
+```csharp
+[Flags] public enum SupplyTags { Food = 1, Gem = 2, Key = 4, Quest = 8 }
+[Serializable] public struct RestockWave { public int Count; public float Delay; public CrateRarity Rarity; public string Label; }
+
+public sealed class SupplyTuning : GameBehaviour
+{
+    public long Seed = 20261124;
+    public Color CrateTint = Color.FromArgb(214, 168, 92);
+    public SupplyTags Tags = SupplyTags.Food | SupplyTags.Gem;
+    public int[] StackSizes = { 5, 3, 1 };
+    public List<int> Restock = new() { 2, 4 };
+    public Dictionary<string, int> Prices = new() { ["herb"] = 3, ["gem"] = 10 };
+    public RestockWave FirstWave = new RestockWave { Count = 3, Delay = 1.5f };
+}
+```
+
+배포본 크기: 이 종류를 쓰지 않는 게임은 Release·Native AOT 모두 0 B 늘어난다(쓰지 않는 읽기 코드는 잘린다). SupplyTuning을 넣은 InventoryLab은 Native AOT 실행 파일이 33,136 B(0.40%) 늘었고, 그중 `List<int>`와 `Dictionary<string, int>` 두 필드가 16,528 B다. 값 형식 제네릭은 게임이 선언한 원소 타입마다 따로 컴파일되므로 꼭 필요한 곳에만 쓴다. [검증 기록](../../engine/tests/results/inspector-fields/README.md)
+
+## Inspector 필드 속성과 툴팁
+
+Unity와 같은 이름의 속성으로 Inspector 표시를 정한다. 모두 `Engine.Core`에 있고 `[Conditional("MONOON_EDITOR")]`라서 컴파일러가 게임 어셈블리에서 뺀다. 에디터는 스크립트 원본(Roslyn 심볼)에서 읽으므로 Release `MoNoon.GameScripts.dll`과 Native AOT 실행 파일에는 속성 데이터가 없다.
+
+| 속성 | Inspector |
+| --- | --- |
+| `[Tooltip("…")]` | 필드 행의 툴팁. 없으면 `/// <summary>` 주석을 쓴다. |
+| `[Header("…")]` | 필드 위의 굵은 제목 |
+| `[Space(12)]` | 필드 위의 빈 간격(px, 기본 8) |
+| `[Range(min, max)]` | int·float·double 필드에 슬라이더와 숫자 상자. 범위 밖 값은 경계로 저장한다. |
+| `[Min(value)]` | 그보다 작은 값은 그 값으로 저장한다. |
+| `[Multiline(4)]` | string 필드를 여러 줄 상자로 |
+| `[HideInInspector]` | 저장·로드는 그대로 하고 표시만 하지 않는다. |
+| `[ColorUsage(showAlpha)]` | string 필드를 색 필드로(위 표) |
+| `[SerializeField]` | private·protected 필드를 공개 필드처럼 표시하고 저장한다. 게임은 생성된 연결 코드가 `UnsafeAccessor`로 값을 넣는다(리플렉션 없음, Native AOT 지원). |
+
+```csharp
+public sealed class PlayerMovement : GameBehaviour
+{
+    /// <summary>Walking speed in pixels per second.</summary>
+    [Header("Movement"), FormerlySerializedAs("Speed"), Range(60, 480)]
+    public float MoveSpeed = 240f;
+
+    [Tooltip("How far a coin can be picked up or dropped, in pixels.")]
+    [SerializeField, Min(16)] private float coinReach = 128f;
+}
+```
+
+공개 필드나 `[SerializeField]` 필드라도 Inspector가 표시할 수 없으면(지원하지 않는 타입, `readonly`, 상수가 아닌 초기화식) 섹션 끝에 **Not shown: 이름 (이유)**가 회색으로 나온다. 그 필드는 코드가 정한 값을 그대로 쓴다. Inspector의 [Debug 보기](editor.md#inspector-잠금과-debug-보기)는 private 필드까지 초기화식과 함께 보여 준다. [검증 기록](../../engine/tests/results/inspector-components/README.md)
 
 ## Inspector 필드 이름 바꾸기
 

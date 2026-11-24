@@ -1,0 +1,16 @@
+rate: 30
+shape: Box
+width: 60
+height: 20
+spread: 40
+speed: {min: 10, max: 30}
+lifetime: {min: 3, max: 4}
+size: {min: 14, max: 22}
+color: {min: "#C8D8E8"}
+forceY: -12
+drag: 0.6
+# Gusts from a seeded value-noise field and a wind that turns from left to right over each puff's life.
+noise: {strength: 90, frequency: 0.015, scroll: 0.3}
+velocityX: {smooth: true, keys: [{time: 0, value: -30}, {time: 1, value: 40}]}
+colorOverLifetime: {alphas: [{time: 0, alpha: 0}, {time: 0.2, alpha: 0.5}, {time: 1, alpha: 0}]}
+sizeOverLifetime: {keys: [{time: 0, value: 0.5}, {time: 1, value: 1.6}]}

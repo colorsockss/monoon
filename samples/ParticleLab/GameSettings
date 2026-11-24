@@ -1,0 +1,14 @@
+projectId: 78fa20ac-f557-51e2-b1d4-4fa8d6384536
+gameTitle: ParticleLab
+width: 800
+height: 450
+startScene: b702dcb2-01f9-5904-ad61-e62f4a348991
+includedScenes: [b702dcb2-01f9-5904-ad61-e62f4a348991, 6db609a5-d21e-5bc7-836b-5f8da0e88055, f94d7d8d-773d-5014-b991-2f1ef4d32f9d, 43a905f1-9900-4bef-8133-3b4f3b6df589, 7e2161fc-ae90-4d97-bc8f-46e35a980108, 84d527d9-a291-423c-befc-8f1e98fccf08, 5b0f3c1e-8a2d-4f6b-9c3e-7d1a2b4c6e80]
+input:
+  actions:
+  - name: Next
+    controls: ["N"]
+  - name: Burst
+    controls: ["Space", "1"]
+  - name: Stress
+    controls: ["2"]

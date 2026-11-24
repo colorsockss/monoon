@@ -3,6 +3,7 @@ using System.Numerics;
 
 internal static class RigidBodyChecks
 {
+    [Check(3700, "physics")] static void Registered(CheckRun c) => Run(c.Repository, c.Scratch);
     private const float Step = 1f / 60;
 
     public static void Run(string repository, string scratch)

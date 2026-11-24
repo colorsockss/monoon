@@ -63,6 +63,7 @@ public sealed partial class ScreenUi
                 firstOption = 0;
                 OptionBounds(n);
                 break;
+            case UiButtonComponent { Draggable: true }: Carry(n); break;
             case UiButtonComponent: controlEvents.Enqueue((n.Object.Id, null)); break;
         }
     }
@@ -152,6 +153,7 @@ public sealed partial class ScreenUi
 
     private void DrawOptions(ICanvas2D canvas, float x, float y, float scale)
     {
+        if (!EngineFeatures.Text) return; // dropdowns are controls, the text feature (roadmap 15.12)
         if (dropdownId is not Guid id || byId[id] is not { Control: UiDropdownComponent d } n) return;
         var box = OptionBounds(n);
         int hover = pointer is {} p ? OptionAt(n, p.X, p.Y) : -1;

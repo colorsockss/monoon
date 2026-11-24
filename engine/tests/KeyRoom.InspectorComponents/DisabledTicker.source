@@ -1,0 +1,9 @@
+using Engine.Core;
+
+// Attached with enabled: false: a turned-off script is left out of the world, so Runs stays 0.
+public sealed class DisabledTicker : GameBehaviour
+{
+    public static int Runs;
+    public override void OnCreate(ScriptLife life) => Runs++;
+    public override void FixedUpdate(ScriptTick tick) => Runs++;
+}

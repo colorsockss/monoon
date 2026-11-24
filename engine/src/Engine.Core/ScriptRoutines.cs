@@ -119,6 +119,7 @@ public sealed partial class SceneGame
     // Start order decides resume order. Routines started during this pass wait for the next one.
     private void StepRoutines(bool ui)
     {
+        if (tweenCount > 0) StepTweens(ui);
         if (routines.Count == 0) return;
         int count = routines.Count;
         for (int i = 0; i < count; i++)

@@ -4,6 +4,7 @@ using Engine.Core;
 
 internal static class TurnReplayChecks
 {
+    [Check(2300, StopAfter = "turn")] static void Registered(CheckRun c) => Run(c.Repository, c.Scratch);
     internal static void Run(string repository, string scratch)
     {
         var setup = new GridRunRules("test/v1", 1, 42, 3, 2, 1, 1);

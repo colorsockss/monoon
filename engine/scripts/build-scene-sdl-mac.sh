@@ -5,6 +5,12 @@ cache="$PWD/.artifacts/native"
 patchfile="$PWD/native/macos/SDL-3.4.12-pr16658.patch"
 archive="$cache/downloads/SDL3-3.4.12.tar.gz"
 sha=f07b958a9ac5020fb7a44cadb957f658b2149c3c8abb4f63145fac9303249db7
+if [ ! -f "$archive" ] && [ "${MONOON_ALLOW_SDL_DOWNLOAD:-}" != 1 ]; then
+  echo "error: $archive is missing and the patched libSDL3.dylib must be rebuilt." >&2
+  echo "  In a git worktree run engine/scripts/bootstrap-worktree.sh (copies the library from the main checkout)." >&2
+  echo "  To download SDL 3.4.12 from GitHub instead, set MONOON_ALLOW_SDL_DOWNLOAD=1." >&2
+  exit 1
+fi
 mkdir -p "$cache/downloads"
 stage=$(mktemp -d "$cache/stage.XXXXXX")
 trap 'rm -rf "$stage"' EXIT

@@ -1,0 +1,12 @@
+rate: 90
+shape: Edge
+width: 180
+direction: 100
+speed: {min: 220, max: 260}
+lifetime: {min: 0.5, max: 0.7}
+size: {min: 1.5, max: 2}
+aspect: 4
+rotation: {min: 10, max: 10}
+color: {min: "#9FC8FFC0"}
+endAlpha: 1
+gravity: 300

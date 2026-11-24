@@ -17,6 +17,10 @@ SCENARIOS = {
                           # Run right onto the moving deck; the ferry cutscene opens its dialogue panel; Return advances.
                           events=[(10, 193, 'Right'), (290, 'Return'), (350, 'Return')],
                           captures=[260, 320, 380]),
+    # Roadmap 15.13: builds ship a repacked Icons.atlas (only Arrow's cell); Scene Play draws the project's full atlas.
+    # No input; the animated copy switches ArrowCycle cells at 4.0 s.
+    'SpriteLab': dict(project='4394934e-c0de-4350-a585-27a682237b83', start='4394934e-c0de-4350-a585-27a682237b83', frames=300,
+                      events=[], captures=[5, 120, 250, 290]),
 }
 MODES = ['scene-play', 'release', 'native-aot']
 
@@ -29,8 +33,9 @@ def recording(name, path):
         for at, pressed in ((down, 'true'), (up, 'false')):
             lines.append((at, f'- frame: {at}\n  timeTicks: {at * 166667}\n  input: {{kind: key, control: "{key}", down: {pressed}}}\n'))
     lines.sort(key=lambda item: item[0])
+    events = ''.join(text for _, text in lines)
     path.write_text(f'version: 1\nproject: {s["project"]}\nstartScene: {s["start"]}\nframeTicks: [' +
-                    ', '.join(['166667'] * s['frames']) + ']\nevents:\n' + ''.join(text for _, text in lines), encoding='utf-8')
+                    ', '.join(['166667'] * s['frames']) + ']\nevents:' + ('\n' + events if events else ' []\n'), encoding='utf-8')
 
 
 def play(name, exe, out):

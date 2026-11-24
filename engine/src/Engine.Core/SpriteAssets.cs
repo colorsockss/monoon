@@ -19,8 +19,12 @@ public static class SpriteAssets
 
 // The editor and the running game use the same draw command and fallback.
 public readonly record struct SceneAppearance(string? Image, Color Color, SpriteRegion? Source = null, SpriteCanvas? Canvas = null,
-    bool FlipX = false, bool FlipY = false, bool PixelSnap = false, string? Mask = null)
+    bool FlipX = false, bool FlipY = false, bool PixelSnap = false, string? Mask = null,
+    SpriteDrawMode Mode = SpriteDrawMode.Simple, UiBorders? Slice = null)
 {
+    // The tile of a Tiled or Sliced sprite in pixels: its atlas cell or whole PNG. Empty until the canvas has the image.
+    public Size TileSize(ICanvas2D canvas) => Source is {} cell ? new(cell.Width, cell.Height) : Image == null ? Size.Empty : canvas.SpriteSize(Image);
+
     public static SceneAppearance From(SceneObject obj, string? project, ProjectAssets? assets = null)
     {
         return obj.GetComponent<SpriteRendererComponent>() is {} renderer
@@ -41,7 +45,7 @@ public readonly record struct SceneAppearance(string? Image, Color Color, Sprite
                 throw new InvalidDataException($"Sprite Renderer: missing PNG mask {id}.");
             mask = Path.Combine(project,name);
         }
-        return new(image,color,packed?.Entry.Source,packed?.Entry.Canvas,r.FlipX,r.FlipY,r.PixelSnap,mask);
+        return new(image,color,packed?.Entry.Source,packed?.Entry.Canvas,r.FlipX,r.FlipY,r.PixelSnap,mask,r.DrawMode ?? SpriteDrawMode.Simple,r.Slice);
     }
 
     public void Draw(ICanvas2D canvas, RectangleF local, Matrix3x2 matrix)
@@ -51,6 +55,13 @@ public readonly record struct SceneAppearance(string? Image, Color Color, Sprite
         if (FlipX || FlipY)
             matrix = Matrix3x2.CreateScale(FlipX ? -1 : 1, FlipY ? -1 : 1,
                 new Vector2(local.X+local.Width/2, local.Y+local.Height/2)) * matrix;
+        if (Mode != SpriteDrawMode.Simple && Mask == null && TileSize(canvas) is { IsEmpty: false } tile &&
+            (Slice == null || (long)Slice.Left + Slice.Right < tile.Width && (long)Slice.Top + Slice.Bottom < tile.Height))
+        {
+            if (!canvas.DrawGrid(Image, local, matrix, Color, Source, tile, Slice, Mode == SpriteDrawMode.Tiled))
+                canvas.DrawAffine(null, local, matrix, Color.Magenta);
+            return;
+        }
         if (Source is {} src && Canvas is {} trim) local = trim.Place(local,src);
         bool drawn = Mask == null ? canvas.DrawAffine(Image,local,matrix,Color,Source) :
             canvas.DrawFiltered(new SpriteFilter(Image, Source, Canvas, Mask),local,matrix,Color);

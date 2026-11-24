@@ -8,7 +8,9 @@
 
 1. Play를 멈추고 **Project → Input Actions…**로 Input Actions 패널을 연다. **+ Action**을 누르고 액션 이름을 입력한다. 이름은 영문자로 시작하고 영문자·숫자·밑줄을 포함해 64자까지 허용한다. 대소문자만 다른 이름은 같은 액션이다.
 2. 행의 **+ Bind**를 누른 후 키, 마우스 버튼·휠 또는 패드 버튼·스틱·트리거를 조작한다. 새 입력은 행 끝에 추가된다. **Esc**는 입력 대기를 취소한다. **Controls** 칸에서 쉼표로 직접 편집할 수도 있다. 예를 들어 `H, Mouse.Right, Pad.Start`를 `J, Mouse.Right`로 바꾸면 기존 H와 Start 연결은 사라진다.
-3. 빈 Controls는 연결 없는 액션으로 남고, **×**는 액션 자체를 삭제한다. **Save**를 누르면 프로젝트 루트의 YAML 파일 `GameSettings`에 저장된다. 다음 Play와 새로 내보내는 게임 모두 이 맵을 사용한다. 예전 프로젝트의 Left·Right·Up·Down·Interact 설정은 읽을 수 있고, 다음 설정 저장부터 액션 목록으로 기록된다.
+3. **Interaction**, **Ticks**, **Buffer** 칸은 [홀드·탭·더블탭과 입력 버퍼](#홀드탭더블탭과-입력-버퍼) 규칙이다. Press는 규칙 없음이다. Ticks를 비우면 고른 상호작용의 기본값(칸에 흐리게 표시)을, Buffer를 비우면 버퍼 없음을 쓴다.
+4. 아래 **Vector** 목록은 네 액션을 묶은 [2D 벡터](#2d-벡터-액션)다. **+ Vector**로 추가하고 이름과 Left·Right·Up·Down 액션 이름을 적는다. 첫 번째 벡터가 `tick.Input.Move`다.
+5. 빈 Controls는 연결 없는 액션으로 남고, **×**는 액션 자체를 삭제한다. **Save**를 누르면 프로젝트 루트의 YAML 파일 `GameSettings`에 저장된다. 다음 Play와 새로 내보내는 게임 모두 이 맵을 사용한다. 예전 프로젝트의 Left·Right·Up·Down·Interact 설정은 읽을 수 있고, 다음 설정 저장부터 액션 목록으로 기록된다. 잘못된 값(범위 밖 Ticks·Buffer, 없는 액션을 가리키는 벡터, 중복 이름)은 패널 아래에 런타임 GameSettings 검증과 같은 문구로 표시되고 저장하지 않는다. 저장 한 번은 Undo 한 번으로 되돌리며, 바꾼 것 없이 Save하면 파일을 쓰지 않는다.
 
 | KeyRoom 기본 액션 | 키보드 | 마우스 | 패드 |
 | --- | --- | --- | --- |
@@ -30,11 +32,46 @@
 | --- | --- |
 | `tick.Input.Pressed("Jump")` / `Released("Jump")` | 액션의 첫 입력을 누른 틱 / 마지막 입력을 놓은 틱. 두 키가 연결되어 있어도 하나가 남아 있으면 해제되지 않는다. 틱 사이에 키를 눌렀다 놓으면 두 값 모두 참일 수 있다. |
 | `tick.Input.Held("Jump")` / `Value("Jump")` | 현재 눌려 있는지 / 연결된 입력 중 가장 큰 세기(0~1). 버튼은 0 또는 1이며 스틱·트리거는 중간값을 낸다. |
-| `tick.Input.Move` / `InteractPressed` | 네 이동 액션을 합친 벡터 / Interact를 누른 순간. Move에는 아날로그 세기가 반영되고 대각선 최대 속도는 일정하다. |
+| `tick.Input.Move` / `InteractPressed` | 네 이동 액션을 합친 벡터([첫 번째 2D 벡터 액션](#2d-벡터-액션)) / Interact를 누른 순간. Move에는 아날로그 세기가 반영되고 대각선 최대 속도는 일정하다. |
+| `tick.Input.Triggered("Jump")` / `Consume("Jump")` / `Vector("Aim")` | [홀드·탭·더블탭과 입력 버퍼](#홀드탭더블탭과-입력-버퍼)의 판정 / 판정을 사용 처리 / [2D 벡터 액션](#2d-벡터-액션) |
 | `tick.Input.PointerPosition` / `PointerInside` | 게임 화면 왼쪽 위를 (0, 0)으로 한 논리 좌표 / 게임 화면 안인지 여부. 아래로 갈수록 Y가 커진다. 검은 여백에서 시작한 클릭은 액션을 누르지 않는다. |
 | `tick.Input.ActiveDevice` | 최근 입력 기기: Keyboard, Pointer, Gamepad. 게임 영역 안에서 마우스를 움직여도 Pointer로 바뀐다. |
 
 게임 UI가 먼저 입력을 받는다. UI 버튼을 활성화한 클릭이나 키는 같은 틱에 게임 액션까지 누르지 않는다. Esc는 Play 중지 또는 게임 종료에 쓰인다. 패드는 SDL이 인식한 첫 번째 게임패드 한 대를 사용한다. 스틱은 중심에서 20%, 트리거는 10% 이내의 작은 움직임을 무시한다. 연결을 끊거나 창이 포커스를 잃었을 때 이동이 계속되지 않는다.
+
+## 홀드·탭·더블탭과 입력 버퍼
+
+액션에 `interaction`, `ticks`, `buffer`를 정하면 `tick.Input.Triggered("이름")`이 그 규칙으로 판정한다. 판정은 60Hz 게임 틱 단위라 입력 재생과 세 실행 경로에서 같은 틱에 나온다. Input Actions 패널의 Interaction·Ticks·Buffer 칸에서 정하며, 저장 결과는 아래처럼 `GameSettings`에 직접 적은 파일을 엔진이 저장한 것과 바이트 단위로 같다. [패널 검증](../../engine/tests/results/editor-input-audio/README.md)
+
+```yaml
+input:
+  actions:
+  - {name: Charge, controls: [J, Pad.West], interaction: Hold, ticks: 30}
+  - {name: Flick, controls: [U], interaction: Tap, ticks: 12}
+  - {name: Dash, controls: [O], interaction: DoubleTap, ticks: 15}
+  - {name: Jump, controls: [Space, Pad.South], buffer: 8}
+```
+
+| `interaction` | `Triggered`가 참인 틱 | `ticks` 기본값 |
+| --- | --- | --- |
+| 없음 | 누른 틱(`Pressed`와 같음) | — |
+| `Hold` | 누른 틱을 1로 세어 `ticks`번째 틱까지 계속 누르고 있을 때 한 번 | 30 |
+| `Tap` | 누른 뒤 `ticks` 틱이 지나기 전에 놓은 틱 | 12 |
+| `DoubleTap` | 첫 입력에서 `ticks` 틱 이내의 두 번째 입력 틱. 판정된 두 입력은 다음 판정에 다시 쓰지 않는다. | 18 |
+
+`buffer: N`은 판정을 N틱 동안 더 유지한다. `tick.Input.Consume("Jump")`는 판정이 남아 있으면 참을 반환하고 그 자리에서 사용 처리해, 같은 틱의 다른 스크립트와 다음 틱은 더 이상 보지 못한다. 착지 직전에 누른 점프를 착지 틱에 쓰는 식이다. 규칙이 없는 액션의 `Triggered`·`Consume`은 `Pressed`와 같다. `ticks`는 1–3600, `buffer`는 0–3600이다. 판정은 게임 입력(`FixedUpdate`)에만 있고 `UpdateUi`의 입력에서는 `Pressed`와 같다. 이전 틱에 받아 둔 `GameInput`은 판정을 보거나 쓰지 않는다. 재바인딩하면 그 액션의 판정 상태를 비운다.
+
+## 2D 벡터 액션
+
+Input Actions 패널의 Vector 목록(또는 `GameSettings`의 `vectors`)에 네 액션을 묶은 벡터를 선언하고 `tick.Input.Vector("Aim")`으로 읽는다. 길이는 1을 넘지 않아 대각선도 같은 세기다. **첫 번째 벡터가 `tick.Input.Move`다.** `vectors`가 없으면 예전처럼 `MoveLeft`·`MoveRight`·`MoveUp`·`MoveDown`을 묶은 `Move`를 쓰므로, 기존 프로젝트는 그대로 동작하고 새 프로젝트는 이동 액션 이름을 자유롭게 정할 수 있다.
+
+```yaml
+  vectors:
+  - {name: Walk, left: MoveLeft, right: MoveRight, up: MoveUp, down: MoveDown}
+  - {name: Aim, left: AimLeft, right: AimRight, up: AimUp, down: AimDown}
+```
+
+벡터는 입력이 바뀐 틱에만 다시 계산하고, 키를 누르고 있는 동안에는 틱마다 할당하지 않는다. KeyRoom 복사본에 위 설정을 넣고 같은 입력을 Scene Play·Release·Native AOT에서 재생해 판정 틱을 비교한 기록이 [KeyRoom.InputInteractions](../../engine/tests/KeyRoom.InputInteractions)다. [Mac 기록](../../engine/tests/results/engine-features-2/README.md#1612-입력-상호작용과-버퍼)
 
 ## 실행 중 바꾸기
 

@@ -4,6 +4,7 @@ using Engine.Core;
 
 internal static class SpriteSortingChecks
 {
+    [Check(7100)] static void Registered(CheckRun c) => Run(c.Project, c.Scratch);
     internal static void Run(string project, string scratch)
     {
         CheckGroups(scratch);

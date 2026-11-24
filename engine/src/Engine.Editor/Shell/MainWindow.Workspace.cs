@@ -14,7 +14,7 @@ public partial class MainWindow
     private SceneRecovery? recovery;
     private readonly List<NativeMenuItem> projectCommands = [];
     private readonly DispatcherTimer checkpointTimer = new() { Interval = TimeSpan.FromMilliseconds(450) };
-    private string? pendingSnapshot;
+    private Func<string>? pendingSnapshot;
     private string? migrationReport;
 
     private void InitializeWorkspace(NativeMenu fileMenu, NativeMenu projectMenu)
@@ -63,7 +63,7 @@ public partial class MainWindow
         if (recovery == null || pendingSnapshot == null) return;
         try
         {
-            recovery.Checkpoint(pendingSnapshot);
+            recovery.Checkpoint(pendingSnapshot());
             pendingSnapshot = null;
         }
         catch (Exception ex) { LogError(ex.Message); Status.Text = $"Recovery checkpoint failed: {ex.Message}"; }

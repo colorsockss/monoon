@@ -1,0 +1,33 @@
+using System;
+using System.Globalization;
+using System.IO;
+using System.Numerics;
+using Engine.Core;
+
+// Test-only observer copied into a disposable KeyRoom. Writes the game tick of every judgement and vector change.
+// A "landing" every 20 ticks consumes a buffered Leap press, like a platformer jump buffer.
+public sealed class TraceInput : GameBehaviour
+{
+    private string last = "";
+
+    public override void FixedUpdate(ScriptTick tick)
+    {
+        if (Environment.GetEnvironmentVariable("MONOON_INPUT_TRACE") is not { Length: > 0 } path) return;
+        var input = tick.Input;
+        long t = tick.Session.Time.TickCount;
+        string events = "";
+        foreach (var action in new[] { "Charge", "Flick", "Dash", "Leap" })
+        {
+            if (input.Pressed(action)) events += $" press:{action}";
+            if (input.Released(action)) events += $" release:{action}";
+            if (input.Triggered(action)) events += $" trigger:{action}";
+        }
+        if (t % 20 == 0 && input.Consume("Leap")) events += " land:Leap";
+        if (t % 20 == 0 && input.Triggered("Leap")) events += " still:Leap";
+        static string V(Vector2 v) => v.X.ToString("R", CultureInfo.InvariantCulture) + "," + v.Y.ToString("R", CultureInfo.InvariantCulture);
+        string vectors = $"walk={V(input.Vector("Walk"))} aim={V(input.Vector("Aim"))} move={V(input.Move)}";
+        if (events.Length == 0 && vectors == last) return;
+        last = vectors;
+        File.AppendAllText(path, $"{t}|{events.Trim()}|{vectors}\n");
+    }
+}

@@ -1,0 +1,30 @@
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
+using System.Linq;
+using Engine.Core;
+
+// Attached beside SupplyTuning only in the disposable test project (roadmap 13.8). On the first tick it writes every SupplyTuning
+// field of its object, one per line, to MONOON_FIELD_TRACE. Scene Play, Release and Native AOT must write the same bytes.
+public sealed class FieldTrace : GameBehaviour
+{
+    private bool done;
+
+    private static string Seq<T>(IEnumerable<T>? values) =>
+        values == null ? "null" : string.Join(",", values.Select(v => Convert.ToString(v, CultureInfo.InvariantCulture)));
+    private static string F(float value) => value.ToString("R", CultureInfo.InvariantCulture);
+
+    public override void FixedUpdate(ScriptTick tick)
+    {
+        if (done || Environment.GetEnvironmentVariable("MONOON_FIELD_TRACE") is not { Length: > 0 } path) return;
+        done = true;
+        var s = tick.Objects.GetComponent<SupplyTuning>(tick.ObjectId) ?? throw new InvalidDataException("No SupplyTuning beside FieldTrace.");
+        var wave = s.FirstWave;
+        File.WriteAllText(path, string.Join("\n",
+            $"Seed={s.Seed}", $"SlotMask={s.SlotMask}", $"CrateTint={s.CrateTint.ToArgb():X8}", $"LabelColor={s.LabelColor}", $"Tags={s.Tags}",
+            $"StackSizes={Seq(s.StackSizes)}", $"Weights={Seq(s.Weights?.Select(F))}", $"Names={Seq(s.Names)}", $"Unlocked={Seq(s.Unlocked)}",
+            $"Restock={Seq(s.Restock)}", $"Prices={Seq(s.Prices?.Select(p => p.Key + ":" + p.Value))}",
+            $"FirstWave={wave.Count},{F(wave.Delay)},{wave.Rarity},{wave.Label}", $"PriceOf(gem)={s.PriceOf("gem")}") + "\n");
+    }
+}

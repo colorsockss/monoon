@@ -14,8 +14,6 @@ using Engine.Editor;
 // the Place Coin menu command, the CollectCoin Inspector, the Coins panel, and an extension compile error.
 public static class StartupHook
 {
-    // MONOON_QA_SLOW scales waits and time limits for emulated x64 guests (TCG); 1 on a normal desktop.
-    private static readonly double Slow = double.TryParse(Environment.GetEnvironmentVariable("MONOON_QA_SLOW"), System.Globalization.CultureInfo.InvariantCulture, out var s) ? s : 1;
     private static readonly string Output = Environment.GetEnvironmentVariable("MONOON_EXT_OUTPUT")!;
     private const BindingFlags Any = BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic;
     private static readonly Dictionary<string, object?> Result = [];
@@ -23,27 +21,16 @@ public static class StartupHook
     private static SceneViewport view = null!;
     private static DockHost dock = null!;
 
-    public static void Initialize() => Task.Run(async () =>
+    public static void Initialize() => Start(Path.Combine(Output, "error.txt"), async life =>
     {
-        while (Application.Current?.ApplicationLifetime is not IClassicDesktopStyleApplicationLifetime { MainWindow: not null })
-            await Delay(100);
-        await Dispatcher.UIThread.InvokeAsync(async () =>
-        {
-            var life = (IClassicDesktopStyleApplicationLifetime)Application.Current!.ApplicationLifetime!;
-            try
-            {
-                main = life.MainWindow!;
-                view = main.FindControl<SceneViewport>("Viewport")!;
-                dock = main.FindControl<DockHost>("Dock")!;
-                await Until(() => main.IsVisible && Scene.Objects.Any(o => o.Name == "Coin counter"), "KeyRoom");
-                Result["os"] = System.Runtime.InteropServices.RuntimeInformation.RuntimeIdentifier;
-                await Resize(1280, 800);
-                await Run();
-                File.WriteAllText(Path.Combine(Output, "extensions.json"), JsonSerializer.Serialize(Result, new JsonSerializerOptions { WriteIndented = true }));
-            }
-            catch (Exception ex) { File.WriteAllText(Path.Combine(Output, "error.txt"), ex.ToString()); }
-            finally { life.Shutdown(); }
-        });
+        main = life.MainWindow!;
+        view = main.FindControl<SceneViewport>("Viewport")!;
+        dock = main.FindControl<DockHost>("Dock")!;
+        await Until(() => main.IsVisible && Scene.Objects.Any(o => o.Name == "Coin counter"), "KeyRoom");
+        Result["os"] = System.Runtime.InteropServices.RuntimeInformation.RuntimeIdentifier;
+        await Resize(1280, 800);
+        await Run();
+        File.WriteAllText(Path.Combine(Output, "extensions.json"), JsonSerializer.Serialize(Result, new JsonSerializerOptions { WriteIndented = true }));
     });
 
     private static async Task Run()
@@ -88,6 +75,31 @@ public static class StartupHook
         await Until(() => CoinCount() == coins, "Undo Place Coin");
         Step("undo_both", CoinCount());
 
+        // 13.13: the [InputAction] field drawer of KeyRoomTools on RoomGuide.Action: a list of the project's actions in the usual row;
+        // a pick saves through FieldDrawer.Set (one Undo step), Undo puts back the default (no saved key), Redo the pick.
+        var guideOwner = Scene.Objects.First(o => o.Components.OfType<ScriptComponent>().Any(s => s.Script == "RoomGuide"));
+        Call(main, "Select", guideOwner);
+        await Until(() => Label("Action") is { } l && Input(l) is ComboBox, "RoomGuide Action drawer");
+        await Delay(400);
+        var drawer = (ComboBox)Input(Label("Action")!);
+        var items = drawer.Items.OfType<string>().ToArray();
+        // Undo replaces the object entries, so look the component up each time.
+        string? Saved() => Scene.Objects.First(o => o.Id == guideOwner.Id).Components.OfType<ScriptComponent>().First(s => s.Script == "RoomGuide")
+            .Values.TryGetValue("Action", out var v) ? v.GetString() : null;
+        var before = Saved();
+        drawer.SelectedItem = "Interact";
+        await Delay(300);
+        var picked = Saved();
+        Choose("Edit", "Undo");
+        await Until(() => Saved() == before, "Undo drawer pick");
+        Choose("Edit", "Redo");
+        await Until(() => Saved() == "Interact", "Redo drawer pick");
+        await Until(() => Label("Action") is { } l && Input(l) is ComboBox, "drawer after Redo");
+        Step("drawer", new { items, before, picked, shown = (Input(Label("Action")!) as ComboBox)?.SelectedItem, rows = Rows("Guide", "Action") });
+        ScreenCapture("drawer-1280");
+        Choose("Edit", "Undo");
+        await Until(() => Saved() == before, "Undo drawer pick again");
+
         // A compile error in Editor/ unloads the extensions and names file:line in the Console; fixing it restores them.
         string project = Scene.ProjectDirectory!;
         string broken = Path.Combine(project, "Editor", "Broken.cs");
@@ -107,12 +119,6 @@ public static class StartupHook
 
     // ---- helpers
     private static void Require(bool value, string message) { if (!value) throw new InvalidDataException(message); }
-    private static Task Delay(int ms) => Task.Delay((int)(ms * Slow));
-    private static async Task Until(Func<bool> done, string what, int seconds = 60)
-    {
-        var limit = DateTime.UtcNow.AddSeconds(seconds * Slow);
-        while (!done()) { if (DateTime.UtcNow > limit) throw new TimeoutException(what); await Delay(50); }
-    }
     private static object? Get(object target, string name) =>
         target.GetType().GetProperty(name, Any) is { } p ? p.GetValue(target) : target.GetType().GetField(name, Any)?.GetValue(target);
     private static object? Call(object target, string method, params object?[] args) =>

@@ -1,0 +1,14 @@
+PASS Project + → New Particle Effect → Dust writes the preset as Assets/Dust.particles, one Undo record {'created_records': 1, 'same_as_preset': True, 'undo_removed': True, 'heading_center_offset': 0, 'button_inside': True}
+PASS Undo removes the new asset and its .meta
+PASS the panel heading keeps title and preset button on one centre line {'created_records': 1, 'same_as_preset': True, 'undo_removed': True, 'heading_center_offset': 0, 'button_inside': True}
+PASS the Particle panel stays enabled during Play and its preview runs {'enabled': True, 'isolated_ticks': 38, 'playing': True}
+PASS colour #00FF00: one Undo record while Play keeps running
+PASS colour #00FF00: Info: Particles reloaded: Assets/Presets/Embers.particles (2 emitter(s) kept their particles, 0 restarted).
+PASS max particles 96 → 80: one Undo record while Play keeps running
+PASS max particles 96 → 80: Info: Particles reloaded: Assets/Presets/Embers.particles (0 emitter(s) kept their particles, 2 restarted).
+PASS the colour change kept both prefabs' live embers [24, 24] → [30, 31]
+PASS after one lifetime every ember of Torch and Brazier is the new colour [['00FF00'], ['00FF00']]
+PASS a new Max particles restarted both emitters [34, 32] → [0, 0]
+PASS the panel saved the asset
+PASS after Stop, two Undo steps restore the asset bytes
+PASS particle reload in /private/tmp/claude-501/-Users-paare-codex-project-brutal-engine/d9b5815d-691b-46f7-b17a-6ed9a224a15b/scratchpad/reload2

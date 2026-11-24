@@ -7,12 +7,14 @@ namespace Engine.Core;
 [DisplayName("UI Canvas"), YamlObject]
 public sealed partial record UiCanvasComponent : SceneComponent
 {
+    internal override bool CanDisable => false;
     public int Order { get; set; }
 }
 
 [DisplayName("UI Rect"), YamlObject]
 public sealed partial record UiRectComponent : SceneComponent
 {
+    internal override bool CanDisable => false;
     public UiRectComponent() { }
     [YamlConstructor] public UiRectComponent(string anchor = "TopLeft", string showIf = "")
         => (Anchor, ShowIf) = (anchor, showIf);
@@ -38,6 +40,7 @@ public sealed partial record UiImageComponent : SceneComponent
 }
 
 [DisplayName("UI Text"), YamlObject]
+[EngineFeature(EngineFeature.Text)]
 public sealed partial record UiTextComponent : SceneComponent
 {
     public UiTextComponent() { }
@@ -64,6 +67,11 @@ public sealed partial record UiButtonComponent : UiControlComponent
 {
     public UiButtonComponent() { }
     [YamlConstructor] public UiButtonComponent(bool interactable = true) => Interactable = interactable;
+    /// <summary>A slot: drag it onto another slot, or activate it to pick it up and activate another to drop it (OnUiDrop).
+    /// Activation does not raise OnUiClick. Only true is stored, so existing scenes and prefab revisions keep their bytes.</summary>
+    [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault), YamlIgnore]
+    public bool Draggable { get; set; }
+    [System.Text.Json.Serialization.JsonIgnore, YamlMember("draggable")] internal bool? StoredDraggable { get => Draggable ? true : null; set => Draggable = value == true; }
 }
 
 public sealed partial class SceneDocument
@@ -137,9 +145,13 @@ public interface IGameUi
     string? SelectedItem(Guid list);
     bool SelectItem(Guid list, string itemId);
     int ListRowCount(Guid list);
+    /// <summary>The widget's laid-out box in game pixels this frame, including a UiRect tween's offset.</summary>
+    System.Drawing.RectangleF? Bounds(Guid widget);
 }
 public readonly record struct UiValueChanged(Guid ObjectId, float Value, SessionState Session, IGameUi Ui, IGameObjects Objects);
 public readonly record struct UiClick(Guid ObjectId, SessionState Session, IGameUi Ui, IGameObjects Objects);
+/// <summary>A draggable slot dropped on another: delivered to the target's components, or its nearest parent that has any.</summary>
+public readonly record struct UiDrop(Guid Source, Guid Target, SessionState Session, IGameUi Ui, IGameObjects Objects);
 
 /// <summary>One layout for painting, picking and keyboard navigation, in game resolution units.</summary>
 public sealed partial class ScreenUi : IGameUi
@@ -154,7 +166,8 @@ public sealed partial class ScreenUi : IGameUi
         internal ButtonPaint[]? Palette;
         internal RectangleF Box,Clip;
         internal float Content,Offset,Measured,MeasuredWidth,Cursor;
-        internal int Placed;
+        internal int Placed,Columns;
+        internal float CellWidth,RowHeight;
         internal float AllocatedWidth,LineWidth,LineSize;
         internal string? LineSource;
         internal Type? FontBackend;

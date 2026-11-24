@@ -1,0 +1,21 @@
+# CameraLab distribution builds, osx-arm64: fdc1eb3 engine (before) vs 16.14 engine + FieldPlayer tick.Debug calls (after).
+# Files whose size differs (bytes path). Every other file of both apps has the same size.
+19c19
+< 1367 CameraLab.app/Contents/MacOS/Game/GameSettings
+---
+> 1409 CameraLab.app/Contents/MacOS/Game/GameSettings
+85c85
+< 1367 NativeAOT/CameraLab.app/Contents/MacOS/Game/GameSettings
+---
+> 1409 NativeAOT/CameraLab.app/Contents/MacOS/Game/GameSettings
+# Native AOT MoNoonPlayer sections (size -m), before vs after
+7c7
+< 	Section __const: 2033495
+---
+> 	Section __const: 2033575
+25c25
+< 	Section hydrated: 1948376 (zerofill)
+---
+> 	Section hydrated: 1948456 (zerofill)
+# unchanged: Section __managedcode: 4506408
+# __const/hydrated +80: two CallerFilePath strings name the kit folder (bootstrap cache path vs worktree player-templates path).

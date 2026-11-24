@@ -1,0 +1,14 @@
+rate: 40
+shape: Box
+width: 70
+height: 4
+direction: -90
+spread: 60
+speed: {min: 60, max: 120}
+lifetime: {min: 2, max: 3}
+size: {min: 3, max: 5}
+color: {min: "#FFD36B", max: "#FF6B3D"}
+gravity: 260
+blend: Additive
+# Raycasts against the crate's box collider (and the tiles) for up to 32 cinders per tick.
+collision: {mode: Colliders, bounce: 0.5, dampen: 0.1, maxQueries: 32}

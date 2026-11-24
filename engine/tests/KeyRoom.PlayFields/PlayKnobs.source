@@ -1,0 +1,15 @@
+using System.Numerics;
+using Engine.Core;
+
+public enum Facing { Down, Up, Left, Right }
+
+// Attached to the Player only in the disposable test project (roadmap 13.11): one bool, enum, Vector2, string and colour field
+// that the Play Inspector edits while the game runs.
+public sealed class PlayKnobs : GameBehaviour
+{
+    public bool Frozen;
+    public Facing Facing = Facing.Down;
+    public Vector2 Push = new(1, 2);
+    public string Banner = "hello";
+    [ColorUsage(false)] public string Glow = "#336699";
+}

@@ -4,11 +4,20 @@ using Color = System.Drawing.Color;
 
 namespace Engine.Editor;
 
-// Points and tangent handles of a Line 2D or Path Follower 2D, edited in the Scene view.
-internal sealed record PathEdit(PathPoint[] Points, Matrix3x2 ToWorld, Action<PathPoint[]> Set, bool PinFirst, bool Closed)
+// Points and tangent handles of a Line 2D or Path Follower 2D, or the corner points of an Edge Collider 2D (no tangents),
+// edited in the Scene view.
+internal sealed record PathEdit(PathPoint[] Points, Matrix3x2 ToWorld, Action<PathPoint[]> Set, bool PinFirst, bool Closed, int MinPoints = 2)
 {
     public static PathEdit? Of(SceneObject obj)
     {
+        // The collider wins over a Line 2D drawn on the same object.
+        if (obj.GetComponent<EdgeCollider2DComponent>() is { } edge)
+        {
+            // Edge points are in size units (0–1 spans the object); the gizmo works in local pixels.
+            float w = obj.Width > 0 ? obj.Width : 1, h = obj.Height > 0 ? obj.Height : 1;
+            return new(edge.Points.Select(v => new PathPoint(v.X * w, v.Y * h)).ToArray(), obj.WorldMatrix,
+                p => edge.Points = p.Select(q => new ColliderVertex(q.X / w, q.Y / h)).ToArray(), false, edge.Loop, edge.Loop ? 3 : 2);
+        }
         if (obj.GetComponent<PathFollower2DComponent>() is { } follower)
         {
             // Same origin as the runtime follower: the first point sits at the object's start position in its parent's space.
@@ -42,7 +51,7 @@ internal sealed record PathEdit(PathPoint[] Points, Matrix3x2 ToWorld, Action<Pa
         return list.ToArray();
     }
 
-    public bool CanRemove(int index) => Points.Length > 2 && !(PinFirst && index == 0);
+    public bool CanRemove(int index) => Points.Length > Math.Max(2, MinPoints) && !(PinFirst && index == 0);
     public PathPoint[] Remove(int index) => Points.Where((_, i) => i != index).ToArray();
 
     // Corner -> smooth handles along the neighbours' direction (a third of the way); smooth -> corner.

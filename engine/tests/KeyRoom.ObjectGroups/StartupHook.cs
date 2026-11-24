@@ -18,30 +18,12 @@ public static class StartupHook
     private static readonly string Output = Environment.GetEnvironmentVariable("MONOON_GROUP_QA")!;
     private const string Group = "수집품";
 
-    public static void Initialize() => Task.Run(async () =>
-    {
-        try
-        {
-            while (Application.Current?.ApplicationLifetime is not IClassicDesktopStyleApplicationLifetime { MainWindow: not null })
-                await Task.Delay(100);
-            await Dispatcher.UIThread.InvokeAsync(async () => await Run());
-        }
-        catch (Exception ex) { File.WriteAllText(Path.Combine(Output, "error.txt"), ex.ToString()); }
-    });
+    // No shutdown here: the run ends itself or the outside driver closes the editor.
+    public static void Initialize() => Start(Path.Combine(Output, "error.txt"), _ => Run(), allow: ["Prefab · *"], shutdown: false);
 
     private static void Check(bool yes, string what)
     {
         if (!yes) throw new InvalidOperationException(what);
-    }
-
-    private static async Task Wait(Func<bool> ready, string what)
-    {
-        long start = Environment.TickCount64;
-        while (!ready())
-        {
-            if (Environment.TickCount64 - start > 120000) throw new TimeoutException(what);
-            await Task.Delay(80);
-        }
     }
 
     private static void Click(Button b) => b.RaiseEvent(new RoutedEventArgs(Button.ClickEvent, b));
@@ -69,15 +51,15 @@ public static class StartupHook
         var main = ((IClassicDesktopStyleApplicationLifetime)Application.Current!.ApplicationLifetime!).MainWindow!;
         var project = Path.Combine(Output, "KeyRoom");
         var path = Path.Combine(project, "Assets", "Coin.prefab");
-        await Wait(() => main.IsVisible && main.FindControl<TreeView>("Hierarchy")!.Items.Count > 1, "KeyRoom");
+        await Until(() => main.IsVisible && main.FindControl<TreeView>("Hierarchy")!.Items.Count > 1, "KeyRoom");
         var edit = main.GetType().GetMethod("EditPrefabSource", Private)!;
         async Task EditPrefab(bool write)
         {
             var closing = (Task)edit.Invoke(main, ["Assets/Coin.prefab"])!;
-            await Wait(() => main.OwnedWindows.Any(w => w.IsVisible), "Coin prefab source window");
+            await Until(() => main.OwnedWindows.Any(w => w.IsVisible), "Coin prefab source window");
             var prefab = main.OwnedWindows.Single(w => w.IsVisible);
             prefab.Width = 850; prefab.Height = 640;
-            await Task.Delay(200);
+            await Delay(200);
             var tag = prefab.FindControl<TextBox>("ObjectTag")!;
             var groups = prefab.FindControl<TextBox>("ObjectGroups")!;
             if (write)
@@ -86,7 +68,7 @@ public static class StartupHook
                 Type(tag, "Coin");
                 Type(groups, Group);
                 Click(prefab.FindControl<Button>("PlayButton")!); // Save Prefab in the source window.
-                await Wait(() => File.ReadAllText(path).Contains(Group), "Save Prefab");
+                await Until(() => File.ReadAllText(path).Contains(Group), "Save Prefab");
             }
             else
             {
@@ -104,7 +86,7 @@ public static class StartupHook
         if (!main.IsActive)
         {
             File.WriteAllText(Path.Combine(Output, "focus-main"), "");
-            await Wait(() => main.IsActive, "KeyRoom window focus after closing the prefab");
+            await Until(() => main.IsActive, "KeyRoom window focus after closing the prefab");
         }
 
         var play = main.FindControl<Button>("PlayButton")!;
@@ -113,18 +95,18 @@ public static class StartupHook
         async Task<GameSession> Start()
         {
             Click(play);
-            await Wait(() => Session() != null, "Start Play");
+            await Until(() => Session() != null, "Start Play");
             return Session()!;
         }
         var query = main.FindControl<TextBox>("RoleQuery")!;
         var caption = main.FindControl<TextBlock>("RoleMatches")!;
         async Task Shows(string value)
         {
-            await Wait(() => caption.Text == value && caption.IsEffectivelyVisible, "Debug query " + value);
+            await Until(() => caption.Text == value && caption.IsEffectivelyVisible, "Debug query " + value);
         }
         var game = await Start();
         main.FindControl<ToggleButton>("DebugButton")!.IsChecked = true;
-        await Wait(() => query.IsEffectivelyVisible, "Debug controls");
+        await Until(() => query.IsEffectivelyVisible, "Debug controls");
         Type(query, Group);
         await Shows("0");
         var changes = new List<object>();
@@ -149,7 +131,7 @@ public static class StartupHook
         Record("pickup-tick", members, tagged, 0);
         await Shows("0");
         Click(play);
-        await Wait(() => Session() == null, "Stop");
+        await Until(() => Session() == null, "Stop");
         game = await Start();
         main.FindControl<ToggleButton>("DebugButton")!.IsChecked = true;
         var oldRoom = game.Current;
@@ -168,7 +150,7 @@ public static class StartupHook
         for (int i = 0; i < 160 && game.State.PendingScene == null; i++) Step(Vector2.UnitX);
         Check(game.State.PendingScene != null && !game.State.Has("coin"), "Expected exit transition with a live coin");
         Record("leaving-with-coin", members, tagged, 1);
-        await Wait(() =>
+        await Until(() =>
         {
             if (game.Current == oldRoom) game.UpdateUi(default, 1f / 60);
             return game.Current != oldRoom;

@@ -4,6 +4,7 @@ using Engine.Core;
 // the file stays out of game builds.
 internal static class BuildSettingsChecks
 {
+    [Check(600, StopAfter = "build-settings", Templates = true)] static void Registered(CheckRun c) => Run(c.Repository, c.Scratch);
     internal static void Run(string repository, string scratch)
     {
         var root = Directory.CreateDirectory(Path.Combine(scratch, "BuildSettingsProject")).FullName;

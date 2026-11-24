@@ -27,7 +27,7 @@ def check(ok, message):
 
 env = dict(os.environ, DOTNET_STARTUP_HOOKS=str(hook), MONOON_EXT_OUTPUT=str(out), MONOON_USER_DATA=str(out / "profile"))
 with (out / "editor.log").open("wb") as log:
-    code = subprocess.run([str(editor), str(project)], env=env, stdout=log, stderr=log, timeout=900).returncode
+    code = subprocess.run([str(editor), str(project)], env=env, stdout=log, stderr=log, timeout=240 * float(os.environ.get('MONOON_QA_SLOW') or 1)).returncode
 if (out / "error.txt").exists():
     raise SystemExit("FAIL editor: " + (out / "error.txt").read_text(encoding="utf-8"))
 result = json.loads((out / "extensions.json").read_text(encoding="utf-8"))
@@ -46,6 +46,10 @@ for width in (1280, 1600, 1920):
           all(r["column"] == panel["inspector_name_column"] for r in panel["rows"]),
           f"{width}px: Coins panel rows use the Inspector padding and label column ({panel['padding']} / {panel['rows'][0]['column']})")
 check(result["inspector_coin_text"].endswith("in this scene"), f"Inspector row text: {result['inspector_coin_text']}")
+drawer = result["drawer"]
+check("RoomGuide" in drawer["items"] and "Interact" in drawer["items"] and drawer["before"] is None and drawer["picked"] == "Interact" and
+      drawer["shown"] == "Interact" and drawer["rows"]["input_drift"] == 0 and drawer["rows"]["label_drift"] == 0,
+      f"13.13 [InputAction] drawer lists the actions, saves a pick as one Undo step and sits on the Guide row's columns ({drawer})")
 check(result["panel_place"]["shown"] == str(result["panel_place"]["after"]), f"panel button placed a coin and the count updated ({result['panel_place']})")
 error = result["extension_compile_error"]
 check(error["File"] and error["File"].endswith("Editor/Broken.cs") and error["Line"] == 3 and error["menu"] == 0 and not error["panel"],

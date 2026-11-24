@@ -12,7 +12,7 @@ objects:
   name: Title
   x: 64
   y: 42
-  width: 680
+  width: 620
   height: 44
   parentId: 9d663022-e81f-52cf-84ab-c216209f4b08
   components:
@@ -20,6 +20,17 @@ objects:
   - type: uiText
     text: "Display settings"
     size: 32
+- id: 5cd1e3ab-a276-5ae5-a737-5518faf81365
+  name: Pixel badge
+  x: 696
+  y: 42
+  width: 48
+  height: 48
+  parentId: 9d663022-e81f-52cf-84ab-c216209f4b08
+  components:
+  - type: uiRect
+  - type: uiImage
+    sprite: 98e16811-8451-5cf9-93dc-6cd272a5f85f
 - id: 812e8296-8f61-5c91-8f2f-3aa644376baa
   name: Subtitle
   x: 64

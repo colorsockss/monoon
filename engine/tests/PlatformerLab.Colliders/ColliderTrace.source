@@ -1,0 +1,23 @@
+using System;
+using System.Globalization;
+using System.IO;
+using Engine.Core;
+
+// Attached to the Runner only in the disposable test project. Each row observes the preceding physics step: the capsule
+// runner (x y), whether it stands on something, and the Box2D capsule boulder resting on the edge chain (x y angle°).
+public sealed class ColliderTrace : GameBehaviour
+{
+    private static readonly Guid Boulder = new("b3e266e6-a156-4923-9472-4c39d1870550");
+    private int frame;
+    public override void FixedUpdate(ScriptTick tick)
+    {
+        var path = Environment.GetEnvironmentVariable("MONOON_COLLIDER_TRACE");
+        if (string.IsNullOrEmpty(path)) return;
+        tick.Objects.Motion.TryGetMotion(tick.ObjectId, out var body);
+        string boulder = "";
+        if (tick.Objects.TryGetWorldMatrix(Boulder, out var m))
+            boulder = string.Create(CultureInfo.InvariantCulture, $" {m.Translation.X:F4} {m.Translation.Y:F4} {MathF.Atan2(m.M12, m.M11) * 180 / MathF.PI:F3}");
+        File.AppendAllText(path, string.Create(CultureInfo.InvariantCulture,
+            $"{frame++} {tick.Position.X:F4} {tick.Position.Y:F4} {(body.Grounded ? 1 : 0)}{boulder}\n"));
+    }
+}

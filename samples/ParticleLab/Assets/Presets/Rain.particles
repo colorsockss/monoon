@@ -1,0 +1,14 @@
+# Slanted rain streaks from a line above the view. Add collision (Tiles) to make drops hit the ground.
+rate: 60
+maxParticles: 128
+shape: Edge
+width: 200
+direction: 100
+speed: {min: 260, max: 300}
+lifetime: {min: 0.5, max: 0.6}
+size: {min: 1.5, max: 2}
+aspect: 5
+rotation: {min: 10, max: 10}
+color: {min: "#9FC8FFB0"}
+endAlpha: 1
+gravity: 200

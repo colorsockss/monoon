@@ -47,6 +47,8 @@ def attest(guest, output):
     scripts = data / ".monoon-compiled"
     bundle = scripts / "MoNoon.GameScripts.dll"
     if not bundle.is_file():
+        bundle = data.parent / "MoNoon.GameScripts.dll"  # per-game Release publish (roadmap 15.7)
+    if not bundle.is_file():
         bundle = scripts / "ToggleControls.dll"
     if bundle.is_file():
         expected["button_script_sha256"] = bundle.relative_to(root).as_posix()

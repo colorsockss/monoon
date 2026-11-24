@@ -1,0 +1,38 @@
+using System;
+using System.IO;
+using Engine.Core;
+
+// Attached to the Camera only in the disposable test project. One row per game tick: tick, number of emitters (objects
+// tagged Particles), live particles, an FNV-1a hash of every particle's position, size and age bits and colour, and each
+// emitter's born/died/collided/dropped counts for the tick (ReadParticleEvents), comma-separated in tag order.
+public sealed class ParticleTrace : GameBehaviour
+{
+    private static readonly Particle2D[] buffer = new Particle2D[65536];
+    private int frame;
+
+    private static ulong Mix(ulong hash, uint value) => (hash ^ value) * 1099511628211UL;
+
+    public override void FixedUpdate(ScriptTick tick)
+    {
+        if (Environment.GetEnvironmentVariable("MONOON_PARTICLE_TRACE") is not { Length: > 0 } path) return;
+        ulong hash = 14695981039346656037UL;
+        int total = 0, emitters = 0;
+        var events = new System.Text.StringBuilder();
+        foreach (var id in tick.Objects.FindByTag("Particles"))
+        {
+            var e = tick.Objects.ReadParticleEvents(id);
+            events.Append(events.Length == 0 ? "" : ",").Append($"{e.Born}/{e.Died}/{e.Collided}/{e.Dropped}");
+            int n = tick.Objects.ReadParticles(id, buffer);
+            emitters++;
+            total += n;
+            hash = Mix(hash, (uint)n);
+            for (int i = 0; i < Math.Min(n, buffer.Length); i++)
+            {
+                var p = buffer[i];
+                hash = Mix(Mix(Mix(Mix(Mix(hash, BitConverter.SingleToUInt32Bits(p.Position.X)), BitConverter.SingleToUInt32Bits(p.Position.Y)),
+                    BitConverter.SingleToUInt32Bits(p.Size)), BitConverter.SingleToUInt32Bits(p.Age)), (uint)p.Color.ToArgb());
+            }
+        }
+        File.AppendAllText(path, $"{frame++} {emitters} {total} {hash:x16} {events}\n");
+    }
+}

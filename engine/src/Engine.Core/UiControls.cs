@@ -3,6 +3,7 @@ using VYaml.Annotations;
 
 namespace Engine.Core;
 
+[EngineFeature(EngineFeature.Text)]
 public abstract record UiControlComponent : SceneComponent
 {
     internal override string Kind => nameof(UiButtonComponent);
@@ -63,7 +64,8 @@ public sealed partial record UiToggleComponent : UiControlComponent
 public sealed partial record UiDropdownComponent : UiControlComponent
 {
     public UiDropdownComponent() { }
-    [YamlConstructor] public UiDropdownComponent(bool interactable = true) => Interactable = interactable;
+    [YamlConstructor] public UiDropdownComponent(bool interactable = true, string[]? options = null) =>
+        (Interactable, Options) = (interactable, options ?? Options);
     public string[] Options { get; set; } = ["Option 1", "Option 2"];
     public int Initial { get; set; }
     internal override float DefaultValue => Initial;

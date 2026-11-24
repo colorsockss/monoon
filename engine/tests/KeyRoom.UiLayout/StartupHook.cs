@@ -20,31 +20,16 @@ public static class StartupHook
     private static int sequence;
     private static bool Emulated => Environment.GetEnvironmentVariable("MONOON_EMULATED_UI") == "1";
 
-    public static void Initialize() => Task.Run(async () =>
-    {
-        try
-        {
-            while (Application.Current?.ApplicationLifetime is not IClassicDesktopStyleApplicationLifetime {MainWindow: not null})
-                await Task.Delay(100);
-            await Dispatcher.UIThread.InvokeAsync(async () => await Run());
-        }
-        catch (Exception ex) { File.WriteAllText(Path.Combine(Output, "error.txt"), ex.ToString()); }
-    });
+    // No shutdown here: the run ends itself or the outside driver closes the editor.
+    public static void Initialize() => Start(Path.Combine(Output, "error.txt"), _ => Run(), allow: ["UI Layout Preview"], shutdown: false);
 
     private static void Check(bool ok, string name)
     {
         if (!ok) throw new InvalidDataException(name);
     }
 
-    private static async Task Until(Func<bool> ok, string name)
-    {
-        long start = Environment.TickCount64;
-        while (!ok())
-        {
-            if (Environment.TickCount64 - start > 300000) throw new TimeoutException(name);
-            await Task.Delay(80);
-        }
-    }
+    // Waits on the outside input driver: keep the old limit.
+    private static Task Until(Func<bool> ok, string name) => Probe.Until(ok, name, 300, poll: 80);
 
     private static void Click(Button button) => button.RaiseEvent(new RoutedEventArgs(Button.ClickEvent, button));
     private static T Property<T>(object target, string name) => (T)target.GetType().GetProperty(name, Members)!.GetValue(target)!;
@@ -99,7 +84,7 @@ public static class StartupHook
                 foreach (int windowWidth in new[] { 310, 270 })
                 {
                     dialog.Width = windowWidth;
-                    await Task.Delay(150);
+                    await Delay(150);
                     double x = width.TranslatePoint(default, dialog)!.Value.X;
                     foreach (var field in new Control[] { height, language, scale })
                     {
@@ -183,7 +168,7 @@ public static class StartupHook
                     (midX,button.Top,0,1), (midX,button.Bottom,0,-1) })
             {
                 await Pointer(x-3*dx,y-3*dy);
-                await Task.Delay(160);
+                await Delay(160);
                 Check(ui.ActiveInputMode == bag.Id, "Outside click closed the bag");
                 await Pointer(x+3*dx,y+3*dy);
                 await Until(() => ui.ActiveInputMode == null, "Inside click closes bag");

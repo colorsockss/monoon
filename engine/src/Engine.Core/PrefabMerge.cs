@@ -11,11 +11,11 @@ internal static class PrefabMerge
     {
         var node = JsonNode.Parse(ProjectYaml.Decode<JsonElement>(ProjectYaml.Encode(obj)).GetRawText())!.AsObject();
         node.Remove("prefab");
-        return JsonSerializer.SerializeToElement(node, GameJson.Default.JsonNode);
+        return JsonElements.Of(node);
     }
 
     internal static SceneObject Restore(JsonNode node) =>
-        ProjectYaml.Decode<SceneObject>(ProjectYaml.Encode(JsonSerializer.SerializeToElement(node, GameJson.Default.JsonNode)));
+        ProjectYaml.Decode<SceneObject>(ProjectYaml.Encode(JsonElements.Of(node)));
 
     internal static JsonNode Merge(JsonElement baseline, SceneObject local, JsonElement incoming)
     {

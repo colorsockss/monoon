@@ -9,31 +9,20 @@ using Engine.Core;
 // Loaded into the packaged editor with DOTNET_STARTUP_HOOKS. Starts Scene Play, replays the wait recording and stops.
 public static class StartupHook
 {
-    public static void Initialize() => Task.Run(async () =>
+    public static void Initialize() => Start(Path.Combine(Environment.GetEnvironmentVariable("MONOON_WAIT_EDITOR")!, "error.txt"), async life =>
     {
-        while (Application.Current?.ApplicationLifetime is not IClassicDesktopStyleApplicationLifetime { MainWindow: not null })
-            await Task.Delay(100);
-        await Dispatcher.UIThread.InvokeAsync(async () =>
-        {
-            string output = Environment.GetEnvironmentVariable("MONOON_WAIT_EDITOR")!;
-            var life = (IClassicDesktopStyleApplicationLifetime)Application.Current!.ApplicationLifetime!;
-            try
-            {
-                var main = life.MainWindow!;
-                var viewport = main.FindControl<Control>("Viewport")!;
-                var scene = viewport.GetType().GetProperty("Scene")!;
-                while (((SceneDocument)scene.GetValue(viewport)!).Objects.All(o => o.Name != "Wait trace")) await Task.Delay(100);
-                var play = main.FindControl<Button>("PlayButton")!;
-                var project = GameSettings.Load(Environment.GetEnvironmentVariable("MONOON_QA_PROJECT")!);
-                play.RaiseEvent(new RoutedEventArgs(Button.ClickEvent, play));
-                var game = (GameSession)viewport.GetType().GetField("game", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(viewport)!;
-                game.LoadFailed += message => throw new InvalidDataException(message);
-                InputReplay.Load(Path.Combine(output, "wait.inputreplay")).Play(game, project.ProjectId!.Value);
-                play.RaiseEvent(new RoutedEventArgs(Button.ClickEvent, play));
-                await Task.Delay(200);
-            }
-            catch (Exception ex) { File.WriteAllText(Path.Combine(output, "error.txt"), ex.ToString()); }
-            finally { life.Shutdown(); }
-        });
+        string output = Environment.GetEnvironmentVariable("MONOON_WAIT_EDITOR")!;
+        var main = life.MainWindow!;
+        var viewport = main.FindControl<Control>("Viewport")!;
+        var scene = viewport.GetType().GetProperty("Scene")!;
+        await Until(() => ((SceneDocument)scene.GetValue(viewport)!).Objects.Any(o => o.Name == "Wait trace"), "Wait trace");
+        var play = main.FindControl<Button>("PlayButton")!;
+        var project = GameSettings.Load(Environment.GetEnvironmentVariable("MONOON_QA_PROJECT")!);
+        play.RaiseEvent(new RoutedEventArgs(Button.ClickEvent, play));
+        var game = (GameSession)viewport.GetType().GetField("game", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(viewport)!;
+        game.LoadFailed += message => throw new InvalidDataException(message);
+        InputReplay.Load(Path.Combine(output, "wait.inputreplay")).Play(game, project.ProjectId!.Value);
+        play.RaiseEvent(new RoutedEventArgs(Button.ClickEvent, play));
+        await Delay(200);
     });
 }

@@ -2,6 +2,7 @@ using Engine.Core;
 
 internal static class ScriptRoutineChecks
 {
+    [Check(5900)] static void Registered(CheckRun c) => Run();
     internal static void Run()
     {
         var scene = SceneDocument.Empty(new());

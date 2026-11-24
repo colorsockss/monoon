@@ -26,7 +26,7 @@ public sealed partial class SceneGame
         private static RectangleF? Bounds(Body body, float fraction)
         {
             // These drawables can extend beyond their owner's rectangle.
-            if (body.Map != null || body.Skeleton != null || body.SpritePool != null || body.Line != null || body.Trail != null) return null;
+            if (body.Map != null || body.Skeleton != null || body.SpritePool != null || body.Line != null || body.Trail != null || body.Particles != null || body.Parallax != null || body.Text != null) return null;
             return Affine2D.Bounds(new(0, 0, body.Size.X, body.Size.Y),
                 body.MatrixAt(body.At(fraction), body.AngleAt(fraction)));
         }

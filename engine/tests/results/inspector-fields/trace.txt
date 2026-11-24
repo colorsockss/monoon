@@ -1,0 +1,13 @@
+Seed=9000000000
+SlotMask=4294967295
+CrateTint=40102030
+LabelColor=#ABCDEF
+Tags=Gem, Key
+StackSizes=5,7,1,9
+Weights=0.5,0.3
+Names=moss,gem,key
+Unlocked=True,True,True
+Restock=2,4,6
+Prices=herb:3,key:25,an intentionally long supply crate dictionary key for trimming:99
+FirstWave=8,1.5,Epic,Evening
+PriceOf(gem)=0

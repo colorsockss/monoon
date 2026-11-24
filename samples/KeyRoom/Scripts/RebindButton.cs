@@ -3,7 +3,7 @@ using Engine.Core;
 // One cell of the controls screen: shows and captures the first keyboard or pad control of an action.
 public sealed class RebindButton : GameBehaviour
 {
-    public string Action = "Interact";
+    [InputAction] public string Action = "Interact";
     public bool Gamepad;
     private string shown;
 

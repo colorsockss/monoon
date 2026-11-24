@@ -1,0 +1,31 @@
+{
+  "field10000": {
+    "objects": 10010,
+    "searched": "Collider 9994",
+    "matches": 1,
+    "open_ms": [
+      3.8805,
+      3.8211,
+      4.5801,
+      5.4863,
+      5.5293
+    ],
+    "search_filter_ms": [
+      2.7845,
+      2.37,
+      2.145,
+      3.1866,
+      2.8026
+    ],
+    "search_stall_ms": [
+      79.4978,
+      4.1133,
+      3.7345,
+      7.4824,
+      6.8216
+    ],
+    "median_open_ms": 4.5801,
+    "median_stall_ms": 6.8216,
+    "max_stall_ms": 79.4978
+  }
+}

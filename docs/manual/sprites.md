@@ -14,7 +14,7 @@
 2. 캐릭터처럼 여러 장으로 그리려면 몸통이나 공통 부모에 **Add Component → Sorting Group 2D**를 붙인다. **그룹의 Use foot Y**를 켜고 나무와 그룹의 **Layer / Order**를 같게 둔다. 장비는 그 아래에 배치한다. 그룹 안에서는 몸통의 Order를 0, 가방을 20, 버클을 22로 두면 버클이 가방 위에 그려진다. 자식에 다시 그룹을 두면 그 그룹도 내부 순서를 유지한다.
 3. **Play**에서 아래로 걸으면 발의 월드 Y가 커진다. 발이 나무 기준보다 아래로 내려가면 캐릭터 전체가 나무 앞에 그려진다. KeyRoom 첫 방에서는 시작점에서 **↓ / S**로 나무를 지나고 **↑ / W**로 되돌아가 볼 수 있다. [Mac 실행 화면](../../engine/tests/results/y-sorting/README.md)
 
-먼저 **Layer**, 그다음 **Order**가 작은 항목부터 그린다. 둘 다 같을 때 고정 순서 항목을 먼저 그리고 Y 정렬 항목을 발의 월드 Y가 작은 순서로 그린다. 발 Y까지 같으면 씬에 저장된 오브젝트 순서를 따른다. 캐릭터의 장비 순서는 그룹 안에서만 비교한다. 씬 편집과 클릭 선택도 같은 앞뒤 순서를 사용한다.
+먼저 **Layer**, 그다음 **Order**가 작은 항목부터 그린다. 둘 다 같을 때 고정 순서 항목을 먼저 그리고 Y 정렬 항목을 발의 월드 Y가 작은 순서로 그린다. 발 Y까지 같으면 씬에 저장된 오브젝트 순서를 따른다. 캐릭터의 장비 순서는 그룹 안에서만 비교한다. 씬 편집과 클릭 선택도 같은 앞뒤 순서를 사용한다. 월드 이름표([Text 2D](game-ui.md#월드에-붙는-이름표와-데미지-숫자))도 같은 Layer·Order·Use foot Y로 스프라이트 사이에 끼어 그려진다.
 
 ## 색상, 반전과 마스크
 
@@ -22,13 +22,26 @@
 
 **Pixel snap**은 마지막에 그릴 원점만 반올림한다. Scene 편집에서는 월드 픽셀, Play와 게임에서는 카메라를 적용한 게임 해상도 픽셀을 기준으로 한다. 이동 값과 충돌 위치는 바뀌지 않는다. **Mask → Choose mask PNG…**로 이미지를 지정하면 마스크의 알파가 스프라이트의 알파에 곱해진다. 흰색·검은색 모두 불투명하면 그대로 보이고, 투명한 곳은 보이지 않는다. 마스크는 트림 전 크기에 맞춰져 그림과 같이 뒤집힌다. **None**으로 해제한다. 이 설정은 같은 오브젝트에서 재생되는 애니메이션에도 적용된다.
 
+## 반복 타일과 9-slice 스프라이트
+
+Sprite Renderer의 `drawMode`로 그리는 방식을 고른다. 기본값 **Simple**은 오브젝트 사각형에 그림 하나를 늘려 그린다. **Tiled**는 PNG(아틀라스 셀이면 그 셀)를 원래 픽셀 크기(월드 1단위 = 1픽셀, Transform의 Scale을 곱함)로 오브젝트 너비·높이만큼 반복하고, 마지막 줄은 잘라 그린다. **Sliced**는 `slice`의 left·top·right·bottom 픽셀을 테두리로 두고 모서리는 원래 크기, 변은 한 방향, 가운데는 양방향으로 늘린다. Tiled에 `slice`를 함께 두면 변과 가운데를 늘리는 대신 반복한다.
+
+```yaml
+- type: spriteRenderer
+  asset: Assets/SignBoard.png
+  drawMode: Sliced
+  slice: {left: 4, top: 4, right: 4, bottom: 4}
+```
+
+배포 게임은 회전·반전 없이 X·Y 배율이 같은 스프라이트를 BRUTAL의 `SDL_RenderTextureTiled`·`SDL_RenderTexture9Grid`·`SDL_RenderTexture9GridTiled` 한 번으로 그린다. 회전하거나 뒤집은 스프라이트는 같은 조각을 스프라이트 배치로 그리므로 드로우콜은 늘지 않는다. 두 경로 모두 프레임마다 할당하지 않는다. 마스크를 지정한 스프라이트는 Simple로 그린다. Inspector의 Sprite Renderer에서 **Draw**(Simple·Tiled·Sliced)를 고르고, Sliced(또는 Tiled에서 **Slice borders**를 켠 경우)는 **Slice L·R**·**Slice T·B** 행에 PNG 픽셀로 테두리를 넣는다. Sliced로 처음 바꾸면 PNG 크기에 맞춰 최대 8픽셀 테두리가 들어간다. 모드 변경과 테두리 확정은 각각 Undo 한 번이다. 씬 YAML에 직접 써도 된다. 예제는 [PlatformerLab Parallax 씬](../../samples/PlatformerLab/Scenes/Parallax.scene)의 언덕·나무·땅(Tiled)과 표지판(Sliced)이다.
+
 ## PNG 여러 장을 아틀라스로 묶기
 
 1. **Project → + → New Sprite Atlas…**에서 이름을 입력한다. 프로젝트의 PNG를 체크하거나 **Import PNGs…**로 외부 PNG 여러 장을 가져온 뒤 **Pack**을 누른다.
 2. Inspector나 클립 타임라인에서 평소처럼 **원본 PNG**를 고른다. 엔진이 원본 ID로 아틀라스의 현재 셀을 찾는다. 기존에 지정한 스프라이트도 다시 연결할 필요가 없다.
 3. 원본 그림을 바꾸거나 추가했다면 Project에서 `.atlas`를 더블클릭해 **Repack**을 누른다. 투명 테두리를 잘라내고 가장자리 픽셀을 한 칸씩 복제해 배치한다. 셀 위치가 달라져도 씬·클립은 같은 원본 ID를 가리킨다. 소스 파일을 이동할 때는 `.meta`도 함께 옮긴다.
 
-한 PNG는 한 아틀라스에만 넣을 수 있다. 시트의 최대 크기는 4096×4096이다. 원본 파일, `.atlas`, 프로젝트 루트 `.monoon-atlas/`를 함께 보관한다. `.atlas`는 YAML이고 실제 시트는 내용 해시가 이름인 PNG다. 재패킹이 실패해도 이전 시트는 유지된다. 빌드에는 참조되는 세대만 포함된다. 원본 시트에서 좌표로 잘라 쓴 클립, UI, 타일맵 또는 마스크가 원본을 필요로 하면 그 PNG도 함께 배포된다.
+한 PNG는 한 아틀라스에만 넣을 수 있다. 시트의 최대 크기는 4096×4096이다. 원본 파일, `.atlas`, 프로젝트 루트 `.monoon-atlas/`를 함께 보관한다. `.atlas`는 YAML이고 실제 시트는 내용 해시가 이름인 PNG다. 재패킹이 실패해도 이전 시트는 유지된다. 빌드에는 참조되는 세대만 포함된다. 빌드가 쓰는 셀이 시트의 70%보다 적으면 쓰는 셀만 다시 패킹한 시트를 배포한다(프로젝트 파일은 그대로다). [빌드용 아틀라스 재패킹](build.md#빌드용-아틀라스-재패킹) 원본 시트에서 좌표로 잘라 쓴 클립, UI, 타일맵 또는 마스크가 원본을 필요로 하면 그 PNG도 함께 배포된다.
 
 [SpriteLab 샘플](../../samples/SpriteLab)에서 왼쪽은 원본, 가운데는 반전·색상·마스크를 적용한 그림이다. 오른쪽은 같은 설정에서 화살표와 점을 번갈아 재생하는 클립으로, `ArrowCycle.aseprite`에서 가져왔다. [Aseprite 파일 가져오기](#aseprite-파일-가져오기)
 
@@ -74,8 +87,8 @@ Aseprite에서 같은 경로에 다시 저장하면 시트와 클립이 다시 �
 ## 파라미터로 애니메이션 전환하기
 
 1. 프로젝트에 사용할 클립을 만든 뒤 **Project → + → New Animator Controller…**를 연다. **States → Add…**에서 상태에 이름과 클립을 지정한다. **Set Entry**로 처음 재생할 상태를 선택한다.
-2. **Parameters**에서 Bool, Float, Trigger를 추가한다. Bool은 참·거짓, Float는 숫자 비교에 사용한다. Trigger는 한 번 켜지며, 해당 조건으로 전환하면 소비된다.
-3. **Transitions**에서 출발 상태, 도착 상태와 조건을 지정한다. 규칙마다 조건은 하나다. 한 틱에 여러 규칙이 맞으면 목록 위쪽 규칙 하나를 선택하고 새 클립의 첫 프레임부터 재생한다. ↑·↓로 우선순위를 바꿀 수 있다.
+2. **Parameters**에서 Bool, Int, Float, Trigger, Vector2를 추가한다(Vector2는 [방향 세트](#48방향-클립-세트)용). Bool은 참·거짓, Int와 Float는 숫자 비교에 사용한다. Int의 기본값과 비교값은 정수다. Trigger는 한 번 켜지며, 그 Trigger를 조건으로 쓴 전환이 일어날 때 소비된다. 막힌 전환의 Trigger는 켜진 채 남는다.
+3. **Transitions**에서 출발 상태, 도착 상태와 조건을 지정한다. **Add condition**으로 조건 행을 더하면 모든 행이 참일 때만 전환한다(AND). **Exit time**은 출발 상태에 들어온 뒤 그 클립을 재생한 비율이다. 1이면 클립 한 번이 끝난 다음 틱부터 전환할 수 있다. 조건 없이 Exit time만 둘 수도 있다. **From**에서 **Any State**를 고르면 모든 상태에서 검사하고, 이미 도착 상태에 있으면 다시 들어가지 않는다. 한 틱에 여러 규칙이 맞으면 목록 위쪽 규칙 하나를 선택하고 새 클립의 첫 프레임부터 재생한다. ↑·↓로 우선순위를 바꿀 수 있다. 실행 중에는 현재 상태에서 나가는 규칙의 조건만 검사하며 메모리를 할당하지 않는다.
 4. **Preview**에서 파라미터를 직접 조작한다. 현재 상태와 프레임, 이벤트 발생 횟수와 최근 네 이벤트가 표시된다. **Restart**로 기본값부터 다시 확인하고 **Save Controller**로 `.animator`를 저장한다.
 5. 씬 오브젝트의 **Sprite Animator → Controller**에서 에셋을 고른다. **Play on start**를 켜면 자동 재생한다. 단일 클립은 기존 **Clip** 필드로 재생할 수 있다.
 
@@ -97,7 +110,26 @@ public override void OnAnimationEvent(ScriptAnimationEvent frame)
 }
 ```
 
-`SetFloat`, `SetTrigger`도 같은 핸들에서 호출한다. `Play()`는 진입 상태부터 재생을 시작한다. 같은 컨트롤러를 연결한 여러 오브젝트는 각자 자신의 파라미터와 현재 프레임을 가진다. [AnimatorLab 샘플](../../samples/AnimatorLab) · [Mac 검증 화면](../../engine/tests/results/animator/README.md)
+`SetInt`, `SetFloat`, `SetTrigger`, `SetVector2`도 같은 핸들에서 호출한다. `Play()`는 진입 상태부터 재생을 시작한다. 같은 컨트롤러를 연결한 여러 오브젝트는 각자 자신의 파라미터와 현재 프레임을 가진다. [AnimatorLab 샘플](../../samples/AnimatorLab) · [Mac 검증 화면](../../engine/tests/results/animator/README.md)
+
+**AnimatorLab Guard 씬에서 조건 시험하기.** Project에서 **Scenes → Guard.scene**을 열고 Play한다. **→**는 걷기(Speed 1), **←**는 정지와 콤보 초기화, **Space**는 공격(Combo +1, Attack Trigger), **↑**는 피격(Hit), **↓**는 공중·착지 전환이다. 걷기는 Speed > 0.1 **그리고** Grounded일 때만 시작한다. 공격은 Combo < 3일 때만 나가고, 클립이 끝나면 Exit time 1로 Recover를 거쳐 Idle로 돌아온다. 피격은 Any State 규칙이라 어느 상태에서든 Hurt로 가며, 공중에 있으면 Hurt 클립이 끝나도 착지할 때까지 머문다. Combo가 3에 이르면 남은 공격 입력(켜진 Attack Trigger)은 대기하다가 **←**로 콤보를 0으로 돌리면 바로 나간다. [Guard.animator](../../samples/AnimatorLab/Assets/Guard.animator) · [미리보기·Scene Play·Release·Native AOT 기록](../../engine/tests/results/engine-features-3/README.md#165-애니메이터-조건-확장)
+
+### 4·8방향 클립 세트
+
+탑다운 캐릭터처럼 바라보는 방향마다 클립이 다른 상태는 방향 세트로 만든다.
+
+1. **Parameters**에 **Vector2** 파라미터(예: Move)를 추가한다. 기본값은 (0, 0)이고 전환 조건에는 쓰지 않는다.
+2. **States → Edit…**의 **Clips**에서 **4 directions** 또는 **8 directions**를 고르고 **Parameter**에 그 Vector2를 지정한다. 방향마다 클립을 하나씩 고른다. 4방향은 N·E·S·W, 8방향은 N·NE·E·SE·S·SW·W·NW다. 월드 +Y가 아래쪽이므로 N은 화면 위쪽, 즉 (0, −1)이다.
+3. 스크립트에서 `animator.SetVector2("Move", 방향)`을 호출한다. 길이는 상관없다.
+
+- 매 틱 벡터에 가장 가까운 방향을 고른다. 경계에서 클립이 깜빡이지 않도록 지금 방향은 벡터가 30°(8방향) 또는 60°(4방향) 넘게 벗어날 때까지 유지한다. 가장 가까운 방향으로 바뀌는 지점보다 7.5°·15° 늦다.
+- (0, 0)이면 마지막 방향을 유지한다. 처음 방향은 S다. 4방향 상태가 대각선 방향을 이어받으면 시계 방향으로 바로 앞의 축을 보여 준다(NE → N, SE → E).
+- 방향이 바뀌어도 재생 위치는 이어진다. 걷기 주기가 처음부터 다시 시작하지 않는다.
+- `animator.Facing`은 마지막으로 보여 준 방향 번호(0 N, 1 NE, … 7 NW)다. `AnimationState.Compass[animator.Facing]`로 이름을 얻는다.
+- 방향 선택은 곱셈·덧셈과 비교만 쓴다. 삼각함수를 쓰지 않아 모든 CPU와 Native AOT에서 같은 클립을 고르고, 틱마다 메모리를 할당하지 않는다.
+- **Preview**에서는 Vector2를 X·Y 두 칸으로 입력하고, 상태 옆에 현재 방향이 표시된다.
+
+**AnimatorLab Scout 씬에서 시험하기.** **Scenes → Scout.scene**을 열고 Play한다. 방향키를 누르는 동안 8방향으로 걷고(Walk), 놓으면 4방향 Idle이 마지막 방향을 바라본다. **Space**는 정사각형 둘레를 따라 천천히 한 바퀴 도는 벡터를 넣는다. 각 방향이 가장 가까운 경계를 지나서도 잠시 유지되는 것을 볼 수 있다. [Scout.animator](../../samples/AnimatorLab/Assets/Scout.animator) · [미리보기·Scene Play·Release·Native AOT 기록](../../engine/tests/results/engine-features-3/README.md#165-48방향-클립-세트)
 
 
 ## 선과 궤적

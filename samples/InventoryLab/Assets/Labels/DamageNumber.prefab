@@ -1,0 +1,16 @@
+schemaVersion: 40
+objects:
+- id: ff3ed6e6-0650-4749-b8a4-c84467a380be
+  name: "Damage number"
+  x: 0
+  y: 0
+  width: 40
+  height: 18
+  components:
+  - type: text2D
+    text: "0"
+    size: 14
+    color: "#FFE070"
+    sortingLayer: 3
+  - type: script
+    script: "Labels/RisingNumber"

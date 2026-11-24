@@ -14,18 +14,7 @@ public static class StartupHook
     private const BindingFlags Private = BindingFlags.Instance | BindingFlags.NonPublic;
     private static readonly string Output = Environment.GetEnvironmentVariable("MONOON_KEYS_EDITOR")!;
 
-    public static void Initialize() => Task.Run(async () =>
-    {
-        while (Application.Current?.ApplicationLifetime is not IClassicDesktopStyleApplicationLifetime {MainWindow:not null})
-            await Task.Delay(80);
-        await Dispatcher.UIThread.InvokeAsync(async () =>
-        {
-            var life = (IClassicDesktopStyleApplicationLifetime)Application.Current!.ApplicationLifetime!;
-            try { await Run(life.MainWindow!); }
-            catch (Exception ex) { File.WriteAllText(Path.Combine(Output,"error.txt"),ex.ToString()); }
-            finally { life.Shutdown(); }
-        });
-    });
+    public static void Initialize() => Start(Path.Combine(Output, "error.txt"), life => Run(life.MainWindow!));
 
     private static object? Call(object target,string name,params object[] args)
         => target.GetType().GetMethod(name,Private)!.Invoke(target,args);
@@ -38,7 +27,7 @@ public static class StartupHook
     {
         var view = main.FindControl<Control>("Viewport")!;
         var sceneProp = view.GetType().GetProperty("Scene")!;
-        while (((SceneDocument)sceneProp.GetValue(view)!).Objects.All(o=>o.Name!="Chest Lid")) await Task.Delay(100);
+        await Until(() => ((SceneDocument)sceneProp.GetValue(view)!).Objects.Any(o => o.Name == "Chest Lid"), "Chest Lid");
         var project = Environment.GetEnvironmentVariable("MONOON_QA_PROJECT")!;
         // The clip timeline is a dock panel (roadmap 12.4); Width still narrows it like the former window.
         async Task<ContentControl> Open(string clip)
@@ -49,7 +38,7 @@ public static class StartupHook
         void Close(ContentControl editor) => editor.GetType().GetMethod("Close",Type.EmptyTypes)!.Invoke(editor,null);
         var edited = await Open("LidMotion");
         edited.Width = 420;
-        await Task.Delay(180);
+        await Delay(180);
         var prop = edited.FindControl<ComboBox>("KeyProperty")!;
         var time = edited.FindControl<TextBox>("KeyTime")!;
         var value = edited.FindControl<TextBox>("KeyValue")!;
@@ -57,10 +46,10 @@ public static class StartupHook
         foreach (double width in new[] { 710,420 })
         {
             edited.Width=width;
-            await Task.Delay(150);
+            await Delay(150);
             var write=edited.FindControl<Button>("WriteKey")!;
             write.BringIntoView();
-            await Task.Delay(120);
+            await Delay(120);
             var scroller=edited.FindControl<ScrollViewer>("StageScroll")!;
             double y=write.TranslatePoint(default,scroller)!.Value.Y;
             Check(y>=0 && y+write.Bounds.Height<=scroller.Bounds.Height+1,"Set Key must be reachable in the scrollable stage");
@@ -97,7 +86,7 @@ public static class StartupHook
                 readings.Add(new { label,tick,rotation=pose.Rotation ?? 0,scaleX=pose.ScaleX ?? 1,scaleY=pose.ScaleY ?? 1,argb=c.ToArgb().ToString("X8") });
             }
             SpritePose(edited,.25);
-            await Task.Delay(150);
+            await Delay(150);
             var panel=edited.FindControl<Control>("Properties")!;
             using var shot=new RenderTargetBitmap(new((int)Math.Ceiling(panel.Bounds.Width),(int)Math.Ceiling(panel.Bounds.Height)));
             shot.Render(panel); shot.Save(Path.Combine(Output,label+"-keys.png"));

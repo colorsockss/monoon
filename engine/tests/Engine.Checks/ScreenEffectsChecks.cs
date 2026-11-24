@@ -4,6 +4,7 @@ using Engine.Core;
 
 internal static class ScreenEffectsChecks
 {
+    [Check(4700, "screen-effects")] static void Registered(CheckRun c) => Run(c.Repository, c.Scratch);
     private static void Check(bool value, string why) { if (!value) throw new Exception("Screen effects: " + why); }
 
     internal static void Run(string repository, string scratch)

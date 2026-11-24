@@ -1,0 +1,16 @@
+development-release plain: gold=0 cyan=0 bytes=27208
+development-release gizmos: gold=446 cyan=562 bytes=28677
+development-aot plain: gold=0 cyan=0 bytes=27208
+development-aot gizmos: gold=446 cyan=562 bytes=28677
+distribution-release plain: gold=0 cyan=0 bytes=27208
+distribution-release gizmos: gold=0 cyan=0 bytes=27208
+distribution-aot plain: gold=0 cyan=0 bytes=27208
+distribution-aot gizmos: gold=0 cyan=0 bytes=27208
+PASS development: G draws the gold circle and the cyan line (446, 562 pixels)
+PASS development: no gizmos without G
+PASS distribution: the frame after G is byte-identical to the frame without G
+PASS development and distribution draw the same frame without G
+PASS development: G draws the gold circle and the cyan line (446, 562 pixels)
+PASS development: no gizmos without G
+PASS distribution: the frame after G is byte-identical to the frame without G
+PASS development and distribution draw the same frame without G

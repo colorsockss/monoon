@@ -4,6 +4,7 @@ using Engine.Core;
 
 internal static class DiagnosticsChecks
 {
+    [Check(5400)] static void Registered(CheckRun c) => Run(c.Project);
     private sealed class Canvas : ICanvas2D, IDiagnosticLines
     {
         public readonly List<(Vector2 A,Vector2 B,Color Color)> Lines=[];

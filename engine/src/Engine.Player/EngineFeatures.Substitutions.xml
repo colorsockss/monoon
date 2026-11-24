@@ -1,0 +1,10 @@
+<linker>
+  <!-- Native AOT only (roadmap 15.12). VYaml's generated module initializer registers a formatter for every [YamlObject] type,
+       enum and array the engine reads, so every component and asset format keeps its Deserialize code. The player registers
+       them from Engine.Core/PlayerYamlRegistration.cs instead, with each feature's formatters behind its switch. -->
+  <assembly fullname="Engine.Core">
+    <type fullname="VYaml.Generated.VYamlRegistration_Engine_Core">
+      <method signature="System.Void Register()" body="stub" />
+    </type>
+  </assembly>
+</linker>

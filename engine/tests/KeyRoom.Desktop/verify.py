@@ -418,7 +418,9 @@ def main():
     content = {f.relative_to(data).as_posix(): hashlib.sha256(f.read_bytes()).hexdigest() for f in docs}
     output = args.output.resolve()
     output.mkdir(parents=True, exist_ok=True)
-    script = data / ".monoon-compiled/MoNoon.GameScripts.dll"
+    script = executable.parent / "MoNoon.GameScripts.dll"  # per-game Release publish (roadmap 15.7)
+    if not script.is_file():
+        script = data / ".monoon-compiled/MoNoon.GameScripts.dll"
     if not script.is_file():  # Retest older exports with their original templates.
         script = data / ".monoon-compiled/ToggleControls.dll"
     result = dict(os=platform.platform(), machine=platform.machine(), renderer=os.getenv("SDL_RENDER_DRIVER", "default"),

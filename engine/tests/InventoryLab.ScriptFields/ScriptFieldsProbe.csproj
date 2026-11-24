@@ -1,0 +1,9 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../../src/Engine.Editor/Engine.Editor.csproj"/>
+    <Compile Include="../Shared/Probe.cs" Link="Probe.cs"/>
+  </ItemGroup>
+</Project>

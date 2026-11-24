@@ -7,6 +7,7 @@ using Engine.Core;
 // amount of game-thread time per update on object creation and uploads.
 internal static class SplitLoadingChecks
 {
+    [Check(8000, StopAfter = "split-loading")] static void Registered(CheckRun c) => Run(c.Scratch, c.Scene);
     private const int Scripted = 600, Files = 12;
     private const double ScriptMs = .5, UploadMs = 3, DecodeMs = 15, Budget = 4;
 

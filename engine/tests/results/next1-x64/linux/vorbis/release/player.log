@@ -1,0 +1,3 @@
+ERROR: You are using the SDL disk i/o audio driver!
+ERROR:  Writing to file [/run/n1x64/run/results/h/AudioLab.Vorbis/vorbis/release/device.f32], format=F32LE channels=2 freq=48000.
+Mixer: music=0.8 effects=0.75 voice=1 master=0.8

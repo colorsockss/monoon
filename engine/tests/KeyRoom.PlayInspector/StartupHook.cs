@@ -20,26 +20,11 @@ public static class StartupHook
     private const BindingFlags Members = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic;
     private static int sequence;
 
-    public static void Initialize() => Task.Run(async () =>
-    {
-        try
-        {
-            while (Application.Current?.ApplicationLifetime is not IClassicDesktopStyleApplicationLifetime { MainWindow: not null })
-                await Task.Delay(100);
-            await Dispatcher.UIThread.InvokeAsync(async () => await Run());
-        }
-        catch (Exception error) { File.WriteAllText(Path.Combine(Output, "error.txt"), error.ToString()); }
-    });
+    // No shutdown here: the run ends itself or the outside driver closes the editor.
+    public static void Initialize() => Start(Path.Combine(Output, "error.txt"), _ => Run(), shutdown: false);
 
-    private static async Task Until(Func<bool> condition, string message)
-    {
-        var deadline = DateTime.UtcNow.AddMinutes(2);
-        while (!condition())
-        {
-            if (DateTime.UtcNow > deadline) throw new TimeoutException(message);
-            await Task.Delay(70);
-        }
-    }
+    // Waits on verify_play.py's OS input and counts stable 70 ms samples: keep the old limit and poll.
+    private static Task Until(Func<bool> condition, string message) => Probe.Until(condition, message, 120, poll: 70);
 
     private static void Check(bool ok, string message)
     {

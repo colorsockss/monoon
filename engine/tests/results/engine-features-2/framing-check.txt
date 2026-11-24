@@ -1,0 +1,8 @@
+PASS release: first 520 ticks of the camera trace match scene-play byte for byte
+PASS aot: first 520 ticks of the camera trace match scene-play byte for byte
+PASS 542 ticks traced
+PASS dead zone: the main camera holds while the player walks 30 ticks left from rest
+PASS look-ahead: camera moves on tick 215, player only -9.1 px from its centre
+PASS group framing zooms between 0.446 and 1.000
+PASS framing zoom stays between the bounds fit and the camera Zoom
+PASS players cross at tick 48: the partner view eases in to 0.893 (tick 56) and out to 0.494

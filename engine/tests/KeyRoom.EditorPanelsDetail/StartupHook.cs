@@ -21,9 +21,6 @@ public static class StartupHook
     private static readonly string Output = Environment.GetEnvironmentVariable("MONOON_PANELS_OUTPUT")!;
     private static readonly string Phase = Environment.GetEnvironmentVariable("MONOON_PANELS_PHASE")!;
     private const BindingFlags Any = BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic;
-    // MONOON_QA_SLOW scales waits and time limits for emulated x64 guests (TCG); 1 on a normal desktop.
-    private static readonly double Slow = double.TryParse(Environment.GetEnvironmentVariable("MONOON_QA_SLOW"), System.Globalization.CultureInfo.InvariantCulture, out var s) ? s : 1;
-    private static Task Delay(int ms) => Task.Delay((int)(ms * Slow));
     // How each window capture was taken: screencapture -l on macOS, RenderTargetBitmap (no native Scene view) elsewhere.
     private static readonly Dictionary<string, string> Captures = [];
     private const string LongName = "Door to the courtyard with an intentionally long object name for trimming";
@@ -31,37 +28,21 @@ public static class StartupHook
     private static Window main = null!;
     private static SceneViewport view = null!;
 
-    public static void Initialize() => Task.Run(async () =>
+    public static void Initialize() => Start(Path.Combine(Output, $"{Phase}-error.txt"), async life =>
     {
-        while (Application.Current?.ApplicationLifetime is not IClassicDesktopStyleApplicationLifetime { MainWindow: not null })
-            await Task.Delay(100);
-        await Dispatcher.UIThread.InvokeAsync(async () =>
-        {
-            var life = (IClassicDesktopStyleApplicationLifetime)Application.Current!.ApplicationLifetime!;
-            try
-            {
-                main = life.MainWindow!;
-                view = main.FindControl<SceneViewport>("Viewport")!;
-                await Until(() => main.IsVisible && Find<TreeView>("Hierarchy").Items.Count > 1, "KeyRoom");
-                Result["os"] = System.Runtime.InteropServices.RuntimeInformation.RuntimeIdentifier;
-                Result["captures"] = Captures;
-                main.Width = 1280; main.Height = 800;
-                await Delay(800);
-                await (Phase switch { "save" => SavePhase(), "first" => First(), "restart" => Restart(), _ => throw new ArgumentException(Phase) });
-                File.WriteAllText(Path.Combine(Output, $"{Phase}.json"), JsonSerializer.Serialize(Result, new JsonSerializerOptions { WriteIndented = true }));
-            }
-            catch (Exception ex) { File.WriteAllText(Path.Combine(Output, $"{Phase}-error.txt"), ex.ToString()); }
-            finally { life.Shutdown(); }
-        });
+        main = life.MainWindow!;
+        view = main.FindControl<SceneViewport>("Viewport")!;
+        await Until(() => main.IsVisible && Find<TreeView>("Hierarchy").Items.Count > 1, "KeyRoom");
+        Result["os"] = System.Runtime.InteropServices.RuntimeInformation.RuntimeIdentifier;
+        Result["captures"] = Captures;
+        main.Width = 1280; main.Height = 800;
+        await Delay(800);
+        await (Phase switch { "save" => SavePhase(), "first" => First(), "restart" => Restart(), _ => throw new ArgumentException(Phase) });
+        File.WriteAllText(Path.Combine(Output, $"{Phase}.json"), JsonSerializer.Serialize(Result, new JsonSerializerOptions { WriteIndented = true }));
     });
 
     // ---- helpers
     private static void Require(bool value, string message) { if (!value) throw new InvalidDataException(message); }
-    private static async Task Until(Func<bool> done, string what, int seconds = 60)
-    {
-        var limit = DateTime.UtcNow.AddSeconds(seconds * Slow);
-        while (!done()) { if (DateTime.UtcNow > limit) throw new TimeoutException(what); await Delay(50); }
-    }
     private static T Find<T>(string name) where T : Control => main.FindControl<T>(name) ?? throw new InvalidDataException($"{name} not found");
     private static object? Get(object target, string name) =>
         target.GetType().GetProperty(name, Any) is { } p ? p.GetValue(target) : target.GetType().GetField(name, Any)?.GetValue(target);
@@ -392,13 +373,13 @@ public static class StartupHook
         Capture(Find<Border>("InspectorPanel"), "inspector-multi");
         Call(main, "Select", door);
         await Delay(400);
-        // Long ComboBox values trim (Door's audio clip and animation clip pickers).
-        var combos = Find<StackPanel>("Inspector").GetVisualDescendants().OfType<ComboBox>().Where(c => c.IsEffectivelyVisible && c.SelectedItem != null).ToList();
+        // Long object-field values trim (Door's sound and animation clip fields, 13.7/13.17).
+        var combos = Find<StackPanel>("Inspector").GetVisualDescendants().OfType<Border>().Where(c => c.IsEffectivelyVisible && c.GetType().Name == "ReferenceField").ToList();
         var shownCombos = combos.Select(c =>
         {
-            var text = c.GetVisualDescendants().OfType<TextBlock>().FirstOrDefault(t => t.Text == c.SelectedItem!.ToString());
-            return new { value = c.SelectedItem!.ToString(), trims = text?.TextTrimming == TextTrimming.CharacterEllipsis, inside = text != null && In(text).Right <= In(c).Right + .5,
-                box_template = c.SelectionBoxItemTemplate != null };
+            var text = (TextBlock)c.GetType().GetProperty("Text", Any)!.GetValue(c)!;
+            return new { value = text.Text, trims = text.TextTrimming == TextTrimming.CharacterEllipsis, inside = In(text).Right <= In(c).Right + .5,
+                box_template = true };
         }).ToList();
         Require(shownCombos.Count >= 2 && shownCombos.All(c => c.trims && c.inside), $"ComboBox values: {JsonSerializer.Serialize(shownCombos)}");
         Capture(Find<Border>("InspectorPanel"), "inspector-folded");

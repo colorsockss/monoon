@@ -1,0 +1,16 @@
+PlatformerLab.Joints exit 0 release 2d523cd089166006 aot 2d523cd089166006 want 2d523cd0 PASS
+PlatformerLab.TileCollision exit 0 release f30ed6864b3cf99f aot f30ed6864b3cf99f want f30ed686 PASS
+PlatformerLab.Paths exit 0 release e37de6c0f9c517db aot e37de6c0f9c517db want e37de6c0 PASS
+PlatformerLab.Colliders exit 0 release 635f90291c2c788f aot 635f90291c2c788f want 635f9029 PASS
+particles exit 1
+audio exit 0
+PASS release-ducking: pauses -8.0000..-8.0000 dB over 16639 samples (max error 4.66e-09), baseline again from frame 62719; default ced6c800, ducking f6c485bb
+PASS aot-ducking: pauses -8.0000..-8.0000 dB over 16639 samples (max error 4.66e-09), baseline again from frame 62719; default ced6c800, ducking f6c485bb
+PASS 2 runs: first four loops f6c485bb776456a8acfcc1ef2dd8c45c6a490d08a62b4e0abd1f4a49df8b30ed
+replay exit 0
+PASS InventoryLab input replay: live recording, headless Release and headless Native AOT produced identical saves (171 bytes, SHA-256 EED41DEFCBD7987A527DEB677C60DA8151AD0DE1616C717C646E92B26E70F795).
+world exit 0
+Coin collected.
+Headless replay completed: 25 frames, 6 events.
+PASS CarryCoin collected: 833 bytes SHA-256 93dd4173f332b972b6873156d2bff5c55ba617ab2675026f540234acbf131182
+AOT-SIZE-GATES-DONE

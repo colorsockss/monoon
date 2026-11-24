@@ -54,7 +54,7 @@ public sealed partial record SkeletonRig(RigBone[] Bones, FootChain[]? Feet=null
 
 public enum SkeletonClock { Time, Travel }
 
-[DisplayName("Skeleton Animator 2D"), YamlObject]
+[DisplayName("Skeleton Animator 2D"), YamlObject, EngineFeature(EngineFeature.Skeletons)]
 public sealed partial record SkeletonAnimator2DComponent : SceneComponent
 {
     public SkeletonAnimator2DComponent() { }
@@ -72,7 +72,7 @@ public sealed partial record SkeletonAnimator2DComponent : SceneComponent
     }
 }
 
-[DisplayName("Foot IK 2D"), YamlObject]
+[DisplayName("Foot IK 2D"), YamlObject, EngineFeature(EngineFeature.Skeletons)]
 public sealed partial record FootIK2DComponent : SceneComponent
 {
     public FootIK2DComponent() { }

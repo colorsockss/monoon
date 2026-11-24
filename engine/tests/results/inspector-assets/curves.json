@@ -1,0 +1,12 @@
+{
+  "curves": {
+    "asset": "Flame.particles",
+    "key0": 1.5,
+    "alpha1": 0.5,
+    "samples": 64,
+    "drawn_equals_runtime": true,
+    "undo_steps": 2,
+    "runtime_first": 1.5,
+    "runtime_mid": 0.69206345
+  }
+}

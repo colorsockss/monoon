@@ -1,0 +1,55 @@
+schemaVersion: 9
+objects:
+- id: ecb5e0b6-663d-5b19-96e8-419725e8545d
+  name: Scout
+  x: 336
+  y: 161
+  width: 128
+  height: 128
+  components:
+  - type: spriteRenderer
+    assetId: aae6e949-fab4-5103-9471-2acb7e5cae73
+    asset: Assets/Scout.png
+  - type: spriteAnimator
+    controller: a479d851-40b2-5b8e-b036-bd6d9b7cd961
+    playOnStart: true
+  - type: script
+    script: ScoutDemo
+    values:
+      StateLabel: "2e63017d-57d3-578a-98bc-5ede329956e4"
+- id: 038695ea-28d3-5d73-b21b-dea83d963096
+  name: Main Camera
+  x: 400
+  y: 225
+  components:
+  - type: camera2D
+    zoom: 1
+- id: c7e68e1a-01cf-5c65-afef-347f9d20c562
+  name: Canvas
+  components:
+  - type: uiCanvas
+- id: b779476f-3a20-5a0c-ae58-28f762bb2c54
+  name: Scout controls
+  parentId: c7e68e1a-01cf-5c65-afef-347f9d20c562
+  x: 28
+  y: 25
+  width: 740
+  height: 33
+  components:
+  - type: uiRect
+  - type: uiText
+    text: "Arrows walk in 8 directions (Idle faces 4)   Space sweeps a slow turn"
+    size: 17
+- id: 2e63017d-57d3-578a-98bc-5ede329956e4
+  name: Scout state
+  parentId: c7e68e1a-01cf-5c65-afef-347f9d20c562
+  x: 28
+  y: 350
+  width: 740
+  height: 37
+  components:
+  - type: uiRect
+  - type: uiText
+    text: "Idle  S"
+    size: 21
+defaultCameraId: 038695ea-28d3-5d73-b21b-dea83d963096

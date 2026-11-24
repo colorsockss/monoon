@@ -1,0 +1,38 @@
+1||walk=0,0 aim=0,0 move=0,0
+11|press:Charge|walk=0,0 aim=0,0 move=0,0
+40|trigger:Charge|walk=0,0 aim=0,0 move=0,0
+51|release:Charge|walk=0,0 aim=0,0 move=0,0
+61|press:Charge|walk=0,0 aim=0,0 move=0,0
+71|release:Charge|walk=0,0 aim=0,0 move=0,0
+81|press:Flick|walk=0,0 aim=0,0 move=0,0
+85|release:Flick trigger:Flick|walk=0,0 aim=0,0 move=0,0
+91|press:Flick|walk=0,0 aim=0,0 move=0,0
+111|release:Flick|walk=0,0 aim=0,0 move=0,0
+121|press:Dash|walk=0,0 aim=0,0 move=0,0
+122|release:Dash|walk=0,0 aim=0,0 move=0,0
+131|press:Dash trigger:Dash|walk=0,0 aim=0,0 move=0,0
+132|release:Dash|walk=0,0 aim=0,0 move=0,0
+151|press:Dash|walk=0,0 aim=0,0 move=0,0
+152|release:Dash|walk=0,0 aim=0,0 move=0,0
+171|press:Dash|walk=0,0 aim=0,0 move=0,0
+172|release:Dash|walk=0,0 aim=0,0 move=0,0
+181|press:Dash trigger:Dash|walk=0,0 aim=0,0 move=0,0
+182|release:Dash|walk=0,0 aim=0,0 move=0,0
+196|press:Leap trigger:Leap|walk=0,0 aim=0,0 move=0,0
+197|release:Leap trigger:Leap|walk=0,0 aim=0,0 move=0,0
+198|trigger:Leap|walk=0,0 aim=0,0 move=0,0
+199|trigger:Leap|walk=0,0 aim=0,0 move=0,0
+200|trigger:Leap land:Leap|walk=0,0 aim=0,0 move=0,0
+226|press:Leap trigger:Leap|walk=0,0 aim=0,0 move=0,0
+227|release:Leap trigger:Leap|walk=0,0 aim=0,0 move=0,0
+228|trigger:Leap|walk=0,0 aim=0,0 move=0,0
+229|trigger:Leap|walk=0,0 aim=0,0 move=0,0
+230|trigger:Leap|walk=0,0 aim=0,0 move=0,0
+231|trigger:Leap|walk=0,0 aim=0,0 move=0,0
+232|trigger:Leap|walk=0,0 aim=0,0 move=0,0
+233|trigger:Leap|walk=0,0 aim=0,0 move=0,0
+234|trigger:Leap|walk=0,0 aim=0,0 move=0,0
+241||walk=1,0 aim=0,0 move=1,0
+251||walk=1,0 aim=-0.70710677,-0.70710677 move=1,0
+261||walk=1,0 aim=0,0 move=1,0
+271||walk=0,0 aim=0,0 move=0,0

@@ -1,0 +1,60 @@
+{
+  "preset": {
+    "created_records": 1,
+    "same_as_preset": true,
+    "undo_removed": true,
+    "heading_center_offset": 0,
+    "button_inside": true
+  },
+  "panel_during_play": {
+    "enabled": true,
+    "isolated_ticks": 38,
+    "playing": true
+  },
+  "edits": [
+    {
+      "edit": "colour #00FF00",
+      "records": 1,
+      "log": "Info: Particles reloaded: Assets/Presets/Embers.particles (2 emitter(s) kept their particles, 0 restarted).",
+      "expected": true,
+      "playing": true,
+      "counts_before": [
+        24,
+        24
+      ],
+      "counts_after": [
+        30,
+        31
+      ]
+    },
+    {
+      "edit": "max particles 96 \u2192 80",
+      "records": 1,
+      "log": "Info: Particles reloaded: Assets/Presets/Embers.particles (0 emitter(s) kept their particles, 2 restarted).",
+      "expected": true,
+      "playing": true,
+      "counts_before": [
+        34,
+        32
+      ],
+      "counts_after": [
+        0,
+        0
+      ]
+    }
+  ],
+  "colours_after": [
+    [
+      "00FF00"
+    ],
+    [
+      "00FF00"
+    ]
+  ],
+  "file_max_particles": 80,
+  "undo_restores_file": true,
+  "console": [
+    "Info: Particles reloaded: Assets/Presets/Embers.particles (2 emitter(s) kept their particles, 0 restarted).",
+    "Info: Particles reloaded: Assets/Presets/Embers.particles (0 emitter(s) kept their particles, 2 restarted)."
+  ]
+}

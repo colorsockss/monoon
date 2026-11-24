@@ -25,7 +25,7 @@ public partial class MainWindow
             v=>{ camera.Output=v; RefreshComponentList(); }));
         if (camera.Output==Camera2DComponent.Primary)
         {
-            bool start=Selected?.Id==Scene.Camera?.Id;
+            bool start=Inspected?.Id==Scene.Camera?.Id;
             var button=new Button { Content=start?"Start camera":"Set as start camera",IsEnabled=!start };
             button.Click+=SetStartCamera;row("",button);
         }
@@ -38,13 +38,27 @@ public partial class MainWindow
         }
         row("Zoom",Field(camera.Zoom,.05m,32,.05m,v=>camera.Zoom=v));
         var objects=new List<ObjectReference> { new(Guid.Empty,"None") };
-        objects.AddRange((Viewport.PlayWorld?.Objects??Scene.Objects).Where(o=>o.Id!=Selected?.Id)
+        objects.AddRange((Viewport.PlayWorld?.Objects??Scene.Objects).Where(o=>o.Id!=Inspected?.Id)
             .Select(o=>new ObjectReference(o.Id,ObjectPath(o))));
         var current=objects.Find(x=>x.Id==(camera.Follow??Guid.Empty));
         if (current==null) { current=new(camera.Follow!.Value,"Missing target"); objects.Add(current); }
         var follow=Choices(objects.ToArray(),current,o=>camera.Follow=o.Id==Guid.Empty?null:o.Id);
         ToolTip.SetTip(follow,"Follow the object's world center."); row("Follow",follow);
         row("Half-life",Field(camera.HalfLife,0,3600,.05m,v=>camera.HalfLife=v));
+        // 16.11: the dead zone pair shares the field column like Bounds' X / Y.
+        var zone=new Grid { ColumnDefinitions=new("*,*"), ColumnSpacing=3 };
+        var zoneWidth=Field(camera.DeadZoneWidth,0,1000000,1,v=>camera.DeadZoneWidth=v);
+        var zoneHeight=Field(camera.DeadZoneHeight,0,1000000,1,v=>camera.DeadZoneHeight=v);
+        zoneWidth.ShowButtonSpinner=zoneHeight.ShowButtonSpinner=false; Grid.SetColumn(zoneHeight,1); zone.Children.Add(zoneWidth); zone.Children.Add(zoneHeight);
+        ToolTip.SetTip(zone,"World pixels the target can move before the camera follows."); row("Deadzone",zone);
+        var lead=Field(camera.LookAhead,0,(decimal)Camera2DComponent.MaxLookAhead,.05m,v=>camera.LookAhead=v);
+        ToolTip.SetTip(lead,"Look-ahead: seconds of the target's velocity to aim ahead."); row("Lead time",lead);
+        var group=new TextBox { Text=camera.FrameGroup, Watermark="No group" };
+        ToolTip.SetTip(group,"Object group to keep in view together with Follow. The camera zooms out to fit it.");
+        group.LostFocus+=(_,_)=> { var v=string.IsNullOrWhiteSpace(group.Text)?null:group.Text.Trim(); if (v!=camera.FrameGroup) { camera.FrameGroup=v; MarkDirty(group); } };
+        row("Frame",group);
+        var padding=Field(camera.FramePadding,0,1000000,1,v=>camera.FramePadding=v);
+        ToolTip.SetTip(padding,"World pixels kept around the framed group."); row("Padding",padding);
         Box("Bounds",()=>camera.Bounds,b=>camera.Bounds=b,new(0,0,Scene.Settings.Width,Scene.Settings.Height),false);
         Box("Viewport",()=>camera.Viewport,b=>camera.Viewport=b,camera.DefaultViewport(),true);
 
@@ -80,7 +94,7 @@ public partial class MainWindow
                         write(next);
                         // Refresh if clamping changed another displayed coordinate.
                         if (normalized) Avalonia.Threading.Dispatcher.UIThread.Post(RefreshIfAdjusted);
-                        void RefreshIfAdjusted() { if (Selected?.GetComponent<Camera2DComponent>()==camera &&
+                        void RefreshIfAdjusted() { if (Inspected?.GetComponent<Camera2DComponent>()==camera &&
                             (next.Width!=r.Width && origin || next.Height!=r.Height && origin ||
                              (origin?(x?next.X:next.Y):(x?next.Width:next.Height))!=v)) RefreshComponentList(); }
                     });

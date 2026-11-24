@@ -1,0 +1,16 @@
+# A puff of dust when something lands: one burst along the ground that spreads, grows and fades.
+duration: 0.5
+looping: false
+rate: 0
+bursts: [{time: 0, count: 18}]
+maxParticles: 64
+shape: Edge
+width: 24
+spread: 150
+speed: {min: 20, max: 60}
+lifetime: {min: 0.4, max: 0.7}
+size: {min: 6, max: 10}
+aspect: 0.6
+color: {min: "#C8B89A", max: "#A08C70"}
+endSize: 1.6
+gravity: 40

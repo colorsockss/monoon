@@ -24,9 +24,23 @@ internal static partial class CollisionGeometry
         {
             Span<float2> p = stackalloc float2[points.Length];
             for (int i = 0; i < p.Length; i++) p[i] = F(points[i]);
-            var hull = points.Length <= 8 ? Box2D.ComputeHull(p, p.Length) : default;
+            B2Hull hull = default;
+            try { if (points.Length <= 8) hull = Box2D.ComputeHull(p, p.Length); }
+            catch (Exception missing) when (EngineFeatures.Missing(missing)) { throw EngineFeatures.Excluded(EngineFeature.Physics, missing); }
             if (hull.Count < 3) throw new InvalidDataException("Expected a convex outline of 3–8 vertices that Box2D can represent.");
             Polygon = Box2D.MakePolygon(in hull, 0);
+        }
+        // A capsule (radius > 0) or segment as Box2D's two-vertex rounded polygon, as b2MakeCapsule builds it (an inline
+        // function the native library does not export). Box2D's polygon collide, distance and cast functions accept it.
+        public Hull(Vector2 a, Vector2 b, float radius)
+        {
+            var axis = Vector2.Normalize(b - a);
+            var polygon = new B2Polygon { Count = 2, Radius = radius, Centroid = F((a + b) * .5f) };
+            polygon.Vertices[0] = F(a);
+            polygon.Vertices[1] = F(b);
+            polygon.Normals[0] = new(axis.Y, -axis.X);
+            polygon.Normals[1] = new(-axis.Y, axis.X);
+            Polygon = polygon;
         }
     }
 
@@ -56,10 +70,15 @@ internal static partial class CollisionGeometry
     }
     internal static void Validate(Collider2DComponent c,string name)
     {
-        if (c.Layer is <0 or >31 || c is CircleCollider2DComponent r && !(r.Radius>=0 && float.IsFinite(r.Radius)))
+        if (c.Layer is <0 or >31 || c is CircleCollider2DComponent r && !(r.Radius>=0 && float.IsFinite(r.Radius)) ||
+            c is CapsuleCollider2DComponent k && !(k.Radius>=0 && float.IsFinite(k.Radius)))
             throw new InvalidDataException($"{name}: invalid collider layer (0–31) or radius.");
         if (c is PolygonCollider2DComponent p && !Convex(p.Points.Select(v=>new Vector2(v.X,v.Y)).ToArray()))
             throw new InvalidDataException($"{name}: expected 3–8 vertices in convex boundary order.");
+        if (c is EdgeCollider2DComponent e && e.Points is var points && (points.Length < (e.Loop ? 3 : 2) ||
+            points.Length > EdgeCollider2DComponent.MaxPoints || points.Any(v => !float.IsFinite(v.X) || !float.IsFinite(v.Y)) ||
+            points.Where((v, i) => i > 0 && v == points[i - 1]).Any()))
+            throw new InvalidDataException($"{name}: an edge needs 2–{EdgeCollider2DComponent.MaxPoints} finite points (3 for a loop) without repeats.");
     }
     internal static bool Pair(Collider2DComponent a,Collider2DComponent b) =>
         (a.Mask & 1u<<b.Layer)!=0 && (b.Mask & 1u<<a.Layer)!=0;
@@ -72,17 +91,38 @@ internal static partial class CollisionGeometry
         m.Translation=Vector2.Zero;
         var size=new Vector2(o.Width,o.Height);
         if (collider is CircleCollider2DComponent c)
+            return Shape2D.Circle(Affine2D.Transform(size*.5f,m),MinorScale(m)*(c.Radius>0?c.Radius:Math.Min(size.X,size.Y)*.5f));
+        if (collider is CapsuleCollider2DComponent k)
         {
-            // Keep a circle under nonuniform scale / shear: use the smaller singular value.
-            double a=Dot(new(m.M11,m.M12),new(m.M11,m.M12)), b=Dot(new(m.M21,m.M22),new(m.M21,m.M22));
-            double h=Dot(new(m.M11,m.M12),new(m.M21,m.M22));
-            double major=Math.Sqrt(.5*(a+b+Math.Sqrt((a-b)*(a-b)+4*h*h)));
-            float scale=(float)(Math.Abs((double)m.M11*m.M22-(double)m.M12*m.M21)/major);
-            return Shape2D.Circle(Affine2D.Transform(size*.5f,m),scale*(c.Radius>0?c.Radius:Math.Min(size.X,size.Y)*.5f));
+            float half=Math.Min(size.X,size.Y)*.5f, r=k.Radius>0?Math.Min(k.Radius,half):half;
+            var axis=size.Y>=size.X?new Vector2(0,size.Y*.5f-r):new Vector2(size.X*.5f-r,0);
+            return Shape2D.CapsuleOf(Affine2D.Transform(size*.5f-axis,m),Affine2D.Transform(size*.5f+axis,m),MinorScale(m)*r);
         }
         if (collider is PolygonCollider2DComponent p)
-            return Shape2D.Hull(p.Points.Select(v=>Affine2D.Transform(new Vector2(v.X,v.Y)*size,m)).ToArray());
+            return Shape2D.Hull(Placed(p.Points,size,m));
+        if (collider is EdgeCollider2DComponent e)
+        {
+            var points=Placed(e.Points,size,m);
+            // A mirrored object keeps the authored Box2D collision side.
+            if (m.GetDeterminant()<0) Array.Reverse(points);
+            return Shape2D.Chain(points,e.Loop);
+        }
         return Tile(new(0,0,size.X,size.Y),TileGrid.Orthogonal,m);
+    }
+    // A loop, not a captured lambda: the closure was allocated on every call, even for circles and capsules.
+    private static Vector2[] Placed(ColliderVertex[] points,Vector2 size,Matrix3x2 m)
+    {
+        var placed=new Vector2[points.Length];
+        for (int i=0;i<placed.Length;i++) placed[i]=Affine2D.Transform(new Vector2(points[i].X,points[i].Y)*size,m);
+        return placed;
+    }
+    // Keep a round shape under nonuniform scale / shear: use the smaller singular value.
+    private static float MinorScale(Matrix3x2 m)
+    {
+        double a=Dot(new(m.M11,m.M12),new(m.M11,m.M12)), b=Dot(new(m.M21,m.M22),new(m.M21,m.M22));
+        double h=Dot(new(m.M11,m.M12),new(m.M21,m.M22));
+        double major=Math.Sqrt(.5*(a+b+Math.Sqrt((a-b)*(a-b)+4*h*h)));
+        return (float)(Math.Abs((double)m.M11*m.M22-(double)m.M12*m.M21)/major);
     }
     internal static Shape2D Tile(RectangleF rect,string layout,Matrix3x2 matrix)
     {
@@ -100,6 +140,7 @@ internal static partial class CollisionGeometry
             ref readonly var polygon = ref hull.Polygon;
             for (int i = 0; i < polygon.Count; i++) proxy.Points[i] = polygon.Vertices[i] + F(s.Offset);
             proxy.Count = polygon.Count;
+            proxy.Radius = polygon.Radius;
         }
         else if (s.Vertices != null)
         {
@@ -145,6 +186,7 @@ internal static partial class CollisionGeometry
     /// <summary>Signed distance between the shapes (negative while overlapping) and the normal out of b toward a.</summary>
     internal static float Separation(in Shape2D a, in Shape2D b, out Vector2 normal)
     {
+        if (a.Parts != null || b.Parts != null) return Nearest(a, b, out normal, out _);
         var input = new B2DistanceInput { ProxyA = Proxy(b), ProxyB = Proxy(a), TransformA = B2Transform.Identity,
             TransformB = B2Transform.Identity, UseRadii = true };
         var cache = new B2SimplexCache();
@@ -177,6 +219,13 @@ internal static partial class CollisionGeometry
     // The middle of the touching features: Box2D manifold points, or the closest point on the target.
     internal static Vector2 ContactPoint(Shape2D moving,Shape2D target,Vector2 normal)
     {
+        if (moving.Parts != null || target.Parts != null)
+        {
+            Nearest(moving, target, out _, out int part);
+            if (part < 0) return moving.Offset;
+            return target.Parts != null ? ContactPoint(moving, target.Parts[part].Translated(target.Offset), normal)
+                : ContactPoint(moving.Parts![part].Translated(moving.Offset), target, normal);
+        }
         var manifold = Manifold(moving, target);
         if (manifold.PointCount == 0)
         {
@@ -196,6 +245,20 @@ internal static partial class CollisionGeometry
 
     internal readonly record struct Contact(float Time,Vector2 Normal);
 
+    // An edge chain against a shape: the deepest (or closest) of its segments. Only one side is a chain.
+    private static float Nearest(in Shape2D a, in Shape2D b, out Vector2 normal, out int part)
+    {
+        float best = float.PositiveInfinity;
+        (normal, part) = (Vector2.UnitX, -1);
+        var parts = b.Parts ?? a.Parts!;
+        for (int i = 0; i < parts.Length; i++)
+        {
+            float d = b.Parts != null ? Separation(a, parts[i].Translated(b.Offset), out var n) : Separation(parts[i].Translated(a.Offset), b, out n);
+            if (d < best) (best, normal, part) = (d, n, i);
+        }
+        return best;
+    }
+
     internal static bool Overlap(Shape2D a,Shape2D b) => b.FaceNormal == default
         ? Cast(a,Vector2.Zero,b,false,false) != null
         : Cast(Shape2D.PointAt(b.Offset + b.Vertices![0]), b.Vertices[1] - b.Vertices[0], a, true, false) != null;
@@ -205,6 +268,17 @@ internal static partial class CollisionGeometry
     internal static Contact? Cast(Shape2D a,Vector2 travel,Shape2D b,bool query,bool movement)
     {
         if (b.FaceNormal != default) return CastFace(a, travel, b, query);
+        if (a.Parts != null || b.Parts != null)
+        {
+            // The earliest segment of an edge chain; a tie keeps the first, like tiles in cell order.
+            Contact? first = null;
+            var parts = b.Parts ?? a.Parts!;
+            for (int i = 0; i < parts.Length; i++)
+                if ((b.Parts != null ? Cast(a, travel, parts[i].Translated(b.Offset), query, movement)
+                        : Cast(parts[i].Translated(a.Offset), travel, b, query, movement)) is {} hit && (first == null || hit.Time < first.Value.Time))
+                    first = hit;
+            return first;
+        }
         double speed = Math.Sqrt(Dot(travel, travel));
         double velocityEps = 1e-6 * speed;
         float near = Separation(a, b, out var n);
@@ -226,7 +300,14 @@ internal static partial class CollisionGeometry
             // Rays are exact in Box2D. Polygons are relative to their outline origin.
             var ray = new B2RayCastInput { Origin = F(a.Offset - b.Offset), Translation = F(travel), MaxFraction = 1 };
             B2CastOutput output;
-            if (b.Poly is {} hull) output = Box2D.RayCastPolygon(in ray, in hull.Polygon);
+            if (b.Poly is { Polygon.Count: 2 } round)
+            {
+                // Box2D's polygon ray clips against edge planes only, so a two-vertex segment would be an infinite line.
+                ref readonly var p = ref round.Polygon;
+                if (p.Radius > 0) { var capsule = new B2Capsule { Center1 = p.Vertices[0], Center2 = p.Vertices[1], Radius = p.Radius }; output = Box2D.RayCastCapsule(in ray, in capsule); }
+                else { var segment = new B2Segment { Point1 = p.Vertices[0], Point2 = p.Vertices[1] }; output = Box2D.RayCastSegment(in ray, in segment, false); }
+            }
+            else if (b.Poly is {} hull) output = Box2D.RayCastPolygon(in ray, in hull.Polygon);
             else { var circle = new B2Circle { Radius = b.Radius }; output = Box2D.RayCastCircle(in ray, in circle); }
             if (!output.Hit) return null;
             t = output.Fraction;

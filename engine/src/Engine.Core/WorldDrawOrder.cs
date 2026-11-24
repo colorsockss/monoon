@@ -88,9 +88,11 @@ internal sealed class WorldDrawOrder
             var skeleton = obj.GetComponent<SkeletonAnimator2DComponent>();
             var line = obj.GetComponent<Line2DComponent>();
             var trail = obj.GetComponent<Trail2DComponent>();
-            Add(sprite?.SortingLayer ?? skeleton?.SortingLayer ?? line?.SortingLayer ?? trail?.SortingLayer ?? 0,
-                sprite?.Order ?? skeleton?.Order ?? line?.Order ?? trail?.Order ?? 0,
-                sprite?.SortByY == true, sprite?.FootOffset ?? 0);
+            var particles = obj.GetComponent<ParticleEmitter2DComponent>();
+            var text = obj.GetComponent<Text2DComponent>();
+            Add(sprite?.SortingLayer ?? skeleton?.SortingLayer ?? line?.SortingLayer ?? trail?.SortingLayer ?? particles?.SortingLayer ?? text?.SortingLayer ?? 0,
+                sprite?.Order ?? skeleton?.Order ?? line?.Order ?? trail?.Order ?? particles?.Order ?? text?.Order ?? 0,
+                (sprite?.SortByY ?? text?.SortByY) == true, sprite?.FootOffset ?? 0);
         }
 
         movingEntries = moving.ToArray();

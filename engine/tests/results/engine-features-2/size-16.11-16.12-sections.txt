@@ -1,0 +1,35 @@
+# CameraLab (sample unchanged since 16.14) distribution Native AOT MoNoonPlayer, size -m: 16.14 engine (before) vs 16.11+16.12 engine (after)
+1,3c1,3
+< Segment __TEXT: 7421952
+< 	Section __text: 507316
+< 	Section __managedcode: 4506408
+---
+> Segment __TEXT: 7438336
+> 	Section __text: 507368
+> 	Section __managedcode: 4517064
+7c7
+< 	Section __const: 2033575
+---
+> 	Section __const: 2040599
+10c10
+< 	Section __unwind_info: 270808
+---
+> 	Section __unwind_info: 271128
+17c17
+< Segment __DATA: 2670592
+---
+> Segment __DATA: 2686976
+20,21c20,21
+< 	Section .dotnet_eh_table: 476061
+< 	Section __data: 103752
+---
+> 	Section .dotnet_eh_table: 476903
+> 	Section __data: 104184
+25,26c25,26
+< 	Section hydrated: 1948456 (zerofill)
+< 	Section __bss: 104968 (zerofill)
+---
+> 	Section hydrated: 1957424 (zerofill)
+> 	Section __bss: 105392 (zerofill)
+# executable: 8,139,200 -> 8,155,760 B
+# first 16.12 draft (LINQ Where/Select/ToArray in the InputActions constructor): __managedcode 4,517,128, __const 2,044,391, executable 8,172,288

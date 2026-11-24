@@ -4,6 +4,7 @@ using Engine.Editor;
 
 internal static class WorkspaceChecks
 {
+    [Check(4100)] static void Registered(CheckRun c) => Run(c.Project, c.Scratch);
     internal static void Run(string keyRoom, string temp)
     {
         string workspace = Directory.CreateDirectory(Path.Combine(temp, "WorkspaceTests")).FullName;

@@ -1,0 +1,161 @@
+width: 800
+height: 450
+projectId: 64fb4cd6-2469-5cec-ba6d-9a49e61f42e7
+uiTheme: c08eff10-71b4-4da8-b33f-5482bcc4c531
+startScene: 64fb4cd6-2469-5cec-ba6d-9a49e61f42e7
+includedScenes:
+- 64fb4cd6-2469-5cec-ba6d-9a49e61f42e7
+- 97ae2562-6e93-5e7a-be3b-45ec603896c6
+- 25fc2224-7695-4e19-a05c-d8524a2ffe50
+- c1676878-57dc-5d9d-b1e0-508e0a525a08
+- 98b900c4-6465-5df6-b547-6f8744d7123f
+- cd60e7de-8966-4519-aabb-7209fb04fe2f
+localization:
+  table: 2c898767-c577-57f0-bb09-2fc866cbc6df
+  fallbackLocale: en
+  defaultFont: aaf6f4bb-1621-5fe0-a2fc-cd954da2cae7
+  fallbackFonts:
+  - 0d164d8e-969a-52f8-a1f0-7a5ba90fb719
+accessibility:
+  locale: en
+  textScale: 1
+  highContrast: false
+mixer:
+  master: 1
+  music: 1
+  effects: 1
+input:
+  actions:
+  - name: MoveLeft
+    controls:
+    - Left
+    - A
+    - Pad.DpadLeft
+    - Pad.LeftStickLeft
+  - name: MoveRight
+    controls:
+    - Right
+    - D
+    - Pad.DpadRight
+    - Pad.LeftStickRight
+  - name: MoveUp
+    controls:
+    - Up
+    - W
+    - Pad.DpadUp
+    - Pad.LeftStickUp
+  - name: MoveDown
+    controls:
+    - Down
+    - S
+    - Pad.DpadDown
+    - Pad.LeftStickDown
+  - name: Interact
+    controls:
+    - E
+    - Space
+    - Pad.South
+  - name: ShowControls
+    controls:
+    - H
+    - Mouse.Right
+    - Pad.Start
+  - name: PauseGame
+    controls:
+    - P
+    - Pad.Back
+  - name: StepGame
+    controls:
+    - Period
+  - name: SlotOne
+    controls:
+    - "1"
+  - name: SlotTwo
+    controls:
+    - "2"
+  - name: CarryCoin
+    controls:
+    - C
+  - name: NudgeCoin
+    controls:
+    - N
+  - name: SaveGame
+    controls:
+    - F5
+  - name: RemoveDoor
+    controls:
+    - F6
+  - name: RemoveKey
+    controls:
+    - F7
+  - name: LoadGame
+    controls:
+    - F9
+  - name: MovementWorkshop
+    controls:
+    - F3
+  - name: PointerWorkshop
+    controls:
+    - F8
+  - name: RoomGuide
+    controls:
+    - M
+    - Pad.North
+  - name: OpenBag
+    controls:
+    - I
+    - Pad.West
+  - name: MenuBack
+    controls:
+    - Backspace
+    - I
+    - Pad.East
+  - name: ChangeLanguage
+    controls:
+    - L
+  - name: KeyBindings
+    controls:
+    - K
+    - Pad.RightShoulder
+  - name: Charge
+    controls:
+    - J
+    interaction: Hold
+    ticks: 30
+  - name: Flick
+    controls:
+    - U
+    interaction: Tap
+    ticks: 12
+  - name: Dash
+    controls:
+    - O
+    interaction: DoubleTap
+    ticks: 15
+  - name: Leap
+    controls:
+    - Y
+    buffer: 8
+  - name: AimLeft
+    controls:
+    - V
+  - name: AimRight
+    controls:
+    - B
+  - name: AimUp
+    controls:
+    - T
+  - name: AimDown
+    controls:
+    - G
+  vectors:
+  - name: Walk
+    left: MoveLeft
+    right: MoveRight
+    up: MoveUp
+    down: MoveDown
+  - name: Aim
+    left: AimLeft
+    right: AimRight
+    up: AimUp
+    down: AimDown

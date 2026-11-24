@@ -67,7 +67,8 @@ internal sealed class TileWorld : IDisposable
             Path.Combine(project ?? throw new InvalidDataException("Chunk files need a game directory."),Folder);
         try
         {
-            foreach (var r in source.ChunkFiles ?? Bake(source,palette,directory))
+            foreach (var r in source.ChunkFiles ?? (ProjectAssets.ExportedGameOnly
+                ? throw new InvalidDataException("Exported streamed tilemaps need baked chunk files.") : Bake(source,palette,directory)))
             {
                 if (r == null || r.Hash?.Length != 64 || !r.Hash.All(char.IsAsciiHexDigit) ||
                     !index.TryAdd(new(r.X,r.Y),r.Hash))
@@ -124,15 +125,7 @@ internal sealed class TileWorld : IDisposable
     // shortcut: a neighbour's edge toward a third, unloaded page keeps its baked bit; exact unless that page was also edited while unloaded neighbours were absent.
     private void Refresh(Point cell, TilePalette? palette)
     {
-        if (palette == null) return;
-        var edges = TileGrid.IsHex(Map.Layout) ? Tilemap2DComponent.HexEdges : Tilemap2DComponent.SquareEdges;
-        for (int i = -1; i < edges.Length; i++)
-        {
-            Point p = i < 0 ? cell : new(cell.X + edges[i].X, cell.Y + edges[i].Y);
-            int brush = Map.Get(p);
-            if (!resident.Contains(Key(p)) || brush == 0) continue;
-            Map.SetVisual(p,Map.Variant(palette,p,brush,n => resident.Contains(Key(n)),Map.DisplayTile(palette,p,brush)),brush);
-        }
+        if (palette != null) Map.Refresh(palette,cell,n => resident.Contains(Key(n)));
     }
 
     public void Dispose()
@@ -154,6 +147,11 @@ public sealed partial class SceneGame
         byId.TryGetValue(layer,out var b) && !removed.Contains(layer) && b.Stream?.Contains(new(x,y)) == true;
 
     private void UpdateTileWorlds()
+    {
+        if (EngineFeatures.Tilemaps) UpdateTileStreams();
+    }
+
+    private void UpdateTileStreams()
     {
         foreach (var layer in tileLayers)
         {

@@ -1,0 +1,10 @@
+duration: 2
+prewarm: true
+rate: 14
+spread: 30
+speed: {min: 15, max: 25}
+lifetime: {min: 2, max: 3}
+size: {min: 10, max: 14}
+endSize: 3
+color: {min: "#8A8A8A"}
+blend: Multiply

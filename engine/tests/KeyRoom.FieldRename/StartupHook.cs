@@ -13,18 +13,7 @@ public static class StartupHook
     private static readonly string Output = Environment.GetEnvironmentVariable("MONOON_RENAME_EDITOR")!;
     private const BindingFlags Members = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic;
 
-    public static void Initialize() => Task.Run(async () =>
-    {
-        while (Application.Current?.ApplicationLifetime is not IClassicDesktopStyleApplicationLifetime { MainWindow: not null })
-            await Task.Delay(100);
-        await Dispatcher.UIThread.InvokeAsync(async () =>
-        {
-            var desktop = (IClassicDesktopStyleApplicationLifetime)Application.Current!.ApplicationLifetime!;
-            try { await Run(desktop, desktop.MainWindow!); }
-            catch (Exception ex) { File.WriteAllText(Path.Combine(Output,"error.txt"),ex.ToString()); }
-            finally { desktop.Shutdown(); }
-        });
-    });
+    public static void Initialize() => Start(Path.Combine(Output, "error.txt"), life => Run(life, life.MainWindow!), allow: ["Prefab · *"]);
 
     private static object? Call(Window w, string method, params object[] args) =>
         w.GetType().GetMethod(method, Members)!.Invoke(w, args);
@@ -35,8 +24,7 @@ public static class StartupHook
     {
         Call(w, "Select", Scene(w).Objects.Single(o => o.Name == name));
         TextBox? Box() => w.GetVisualDescendants().OfType<TextBox>().SingleOrDefault(b => AutomationProperties.GetName(b) == field);
-        var deadline = DateTime.UtcNow.AddSeconds(90);
-        while (Box() == null && DateTime.UtcNow < deadline) await Task.Delay(80);
+        try { await Until(() => Box() != null, "Inspector field"); } catch (TimeoutException) { } // reported below with the visible labels
         var box = Box() ?? throw new InvalidDataException($"Missing Inspector field {name}.{field}: " +
             string.Join(" ", w.GetVisualDescendants().OfType<TextBlock>().Select(b => b.Text).TakeLast(30)));
         Require(box.Text == expected.ToString(), $"{name}.{field}: expected {expected}, got {box.Text}");
@@ -47,7 +35,7 @@ public static class StartupHook
     {
         string root = Environment.GetEnvironmentVariable("MONOON_QA_PROJECT")!;
         string asset = "Assets/MovementPlayer.prefab", sceneFile = Path.Combine(root,"Scenes/MovementWorkshop.scene");
-        while (!Scene(main).Objects.Any(o => o.Name == "Player")) await Task.Delay(100);
+        await Until(() => Scene(main).Objects.Any(o => o.Name == "Player"), "Player");
         Task Open(string name) => (Task)Call(main,"SwitchScene",name)!;
         async Task Source(string field, bool save)
         {

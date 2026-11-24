@@ -4,6 +4,7 @@ using Engine.Core;
 
 internal static class ComponentKeyChecks
 {
+    [Check(8300)] static void Registered(CheckRun c) => Run(c.Scene.ProjectDirectory!);
     private sealed class Canvas : ICanvas2D
     {
         internal readonly List<(string? Path, Matrix3x2 Matrix, Color Tint)> Calls = [];

@@ -9,26 +9,18 @@ using Engine.Core;
 // verify.py then sends the same keys to the editor window as to the exported players.
 public static class StartupHook
 {
-    public static void Initialize() => Task.Run(async () =>
+    // No shutdown: verify.py drives the open editor and closes it. Errors (and unexpected windows) go to the ticket.
+    public static void Initialize() => Start(Environment.GetEnvironmentVariable("MONOON_QA_TICKET")!, async life =>
     {
-        while (Application.Current?.ApplicationLifetime is not IClassicDesktopStyleApplicationLifetime { MainWindow: not null })
-            await Task.Delay(100);
-        await Dispatcher.UIThread.InvokeAsync(async () =>
-        {
-            var ticket = Environment.GetEnvironmentVariable("MONOON_QA_TICKET")!;
-            try
-            {
-                var main = ((IClassicDesktopStyleApplicationLifetime)Application.Current!.ApplicationLifetime!).MainWindow!;
-                var viewport = main.FindControl<Control>("Viewport")!;
-                var scene = viewport.GetType().GetProperty("Scene")!;
-                while (((SceneDocument)scene.GetValue(viewport)!).Objects.All(o => o.Name != "Screen Effects")) await Task.Delay(100);
-                await Task.Delay(500);
-                var play = main.FindControl<Button>("PlayButton")!;
-                play.RaiseEvent(new RoutedEventArgs(Button.ClickEvent, play));
-                viewport.Focus();
-                File.WriteAllText(ticket, "playing");
-            }
-            catch (Exception ex) { File.WriteAllText(ticket, "error " + ex); }
-        });
-    });
+        var ticket = Environment.GetEnvironmentVariable("MONOON_QA_TICKET")!;
+        var main = life.MainWindow!;
+        var viewport = main.FindControl<Control>("Viewport")!;
+        var scene = viewport.GetType().GetProperty("Scene")!;
+        await Until(() => ((SceneDocument)scene.GetValue(viewport)!).Objects.Any(o => o.Name == "Screen Effects"), "Screen Effects");
+        await Delay(500);
+        var play = main.FindControl<Button>("PlayButton")!;
+        play.RaiseEvent(new RoutedEventArgs(Button.ClickEvent, play));
+        viewport.Focus();
+        File.WriteAllText(ticket, "playing");
+    }, shutdown: false);
 }

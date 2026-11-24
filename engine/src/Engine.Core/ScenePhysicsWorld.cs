@@ -29,7 +29,9 @@ public sealed partial class SceneGame
     private void EnsurePhysicsWorld()
     {
         if (!physicsWorld.IsNull()) return;
-        var def = B2WorldDef.Default;
+        B2WorldDef def;
+        try { def = B2WorldDef.Default; }
+        catch (Exception missing) when (EngineFeatures.Missing(missing)) { throw EngineFeatures.Excluded(EngineFeature.Physics, missing); }
         def.Gravity = new(0, 1); // Each body scales it by its own Rigidbody 2D gravity (px/s²).
         def.RestitutionThreshold = 25;
         def.MaxContactPushSpeed = 300;
@@ -43,6 +45,7 @@ public sealed partial class SceneGame
 
     private void DisposePhysics()
     {
+        if (!EngineFeatures.Physics) return;
         if (physicsWorld.IsNull()) return;
         physicsWorld.Dispose();
         physicsWorld = default;
@@ -195,7 +198,42 @@ public sealed partial class SceneGame
 
     private static unsafe void AddShape(B2Body body, Shape2D s, Vector2 origin, float angle, B2ShapeDef def, float feet = 0)
     {
-        if (s.Poly != null)
+        if (s.Parts != null)
+        {
+            // An edge collider is a Box2D chain: smooth along its vertices and one-sided. An open chain's first and last
+            // points are ghosts, extended along its end segments.
+            int n = s.Vertices!.Length;
+            if (s.Parts.Length == 0) return;
+            bool loop = s.Parts.Length == n;
+            var points = new float2[loop ? n : n + 2];
+            for (int i = 0; i < n; i++) points[loop ? i : i + 1] = F(Local(s.Vertices[i] + s.Offset, origin, angle));
+            if (!loop)
+            {
+                points[0] = points[1] + (points[1] - points[2]);
+                points[n + 1] = points[n] + (points[n] - points[n - 1]);
+            }
+            fixed (float2* p = points)
+            {
+                var chainDef = B2ChainDef.Default;
+                chainDef.Points = p;
+                chainDef.Count = points.Length;
+                chainDef.IsLoop = loop;
+                chainDef.Filter = def.Filter;
+                chainDef.Materials = &def.Material;
+                chainDef.MaterialCount = 1;
+                body.CreateChain(in chainDef);
+            }
+        }
+        else if (s.Poly is { Polygon.Count: 2 } round)
+        {
+            // A capsule. A character's capsule stops Feet above its lowest point, like its polygon below.
+            var a = Local(s.Vertices![0] + s.Offset, origin, angle);
+            var b = Local(s.Vertices[1] + s.Offset, origin, angle);
+            float r = round.Polygon.Radius, top = Math.Max(a.Y, b.Y) - feet;
+            var capsule = new B2Capsule { Center1 = F(a with { Y = Math.Min(a.Y, top) }), Center2 = F(b with { Y = Math.Min(b.Y, top) }), Radius = r };
+            if (r > 0) body.CreateCapsuleShape(in def, in capsule);
+        }
+        else if (s.Poly != null)
         {
             Span<float2> points = stackalloc float2[s.Vertices!.Length];
             float bottom = float.MinValue;

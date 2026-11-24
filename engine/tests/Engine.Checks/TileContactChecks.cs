@@ -4,6 +4,7 @@ using Engine.Core;
 
 internal static class TileContactChecks
 {
+    [Check(900, "physics")] static void Registered(CheckRun c) => Run();
     internal static void Run()
     {
         static void Require(bool value, string reason)

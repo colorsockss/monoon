@@ -12,6 +12,9 @@ internal sealed class EditorUserState
     public Dictionary<string, List<Guid>> Hidden { get; set; } = [];
     public Dictionary<string, List<Guid>> Locked { get; set; } = [];
     public bool ProjectGrid { get; set; }
+    // Inspector lock (one object per scene path) and the edit-mode Debug view.
+    public Dictionary<string, List<Guid>> InspectorLock { get; set; } = [];
+    public bool InspectorDebug { get; set; }
 
     internal static string FilePath => Path.Combine(Path.GetDirectoryName(MainWindow.LayoutPath)!, "editor-state.json");
 

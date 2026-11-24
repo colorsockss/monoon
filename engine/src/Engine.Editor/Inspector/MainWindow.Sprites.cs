@@ -15,15 +15,6 @@ public partial class MainWindow
         Patterns = ["*.png", "*.PNG"], AppleUniformTypeIdentifiers = ["public.png"], MimeTypes = ["image/png"]
     };
 
-    private async Task<ImportedPng?> ChoosePng()
-    {
-        var files = await StorageProvider.OpenFilePickerAsync(new FilePickerOpenOptions
-        {
-            Title = "Choose a PNG", FileTypeFilter = [PngType]
-        });
-        return files.FirstOrDefault()?.TryGetLocalPath() is { } path ? await ImportPng(path) : null;
-    }
-
     private async Task<ImportedPng?> ImportPng(string path)
     {
         if (project == null && !await Save()) return null;
@@ -37,47 +28,68 @@ public partial class MainWindow
         return png;
     }
 
-    private void SpriteMenuClick(object? sender, RoutedEventArgs e)
+    // 16.2: Draw (Simple, Tiled, Sliced) and the Left/Top/Right/Bottom borders in PNG pixels (Sliced always, Tiled optionally:
+    // it then repeats the edges and middle instead of stretching them). Simple stores neither, so untouched scenes keep their
+    // bytes. A mode change or the Tiled borders check is one Undo step; a border is applied while typing and recorded once.
+    private Control DrawRows(SceneObject owner, SpriteRendererComponent sprite)
     {
-        if (sender is not Button { DataContext: SpriteFields fields } button || Selected is not { } owner) return;
-        var menu = new MenuFlyout();
-        var square = new MenuItem { Header = "Square", IsEnabled = !fields.IsSquare };
-        var png = new MenuItem { Header = "Choose PNG…" };
-        square.Click += (_, _) => SetSprite(owner, fields.Sprite, null);
-        png.Click += (_, _) => RunAction(async () =>
+        var rows = new StackPanel { Spacing = 2 };
+        bool Current() => Inspected == owner && ReferenceEquals(sprite, owner.GetComponent<SpriteRendererComponent>());
+        var mode = new ComboBox { ItemsSource = Enum.GetValues<SpriteDrawMode>(), SelectedItem = sprite.DrawMode ?? SpriteDrawMode.Simple,
+            HorizontalAlignment = Avalonia.Layout.HorizontalAlignment.Stretch };
+        Avalonia.Automation.AutomationProperties.SetName(mode, "Draw mode");
+        ToolTip.SetTip(mode, "Simple stretches the sprite, Tiled repeats it, Sliced keeps the borders and stretches the middle.");
+        mode.SelectionChanged += (_, _) =>
         {
-            if (await ChoosePng() is { } imported) SetSprite(owner, fields.Sprite, imported.Asset);
-        });
-        menu.Items.Add(square);
-        menu.Items.Add(png);
-        menu.ShowAt(button);
-
+            if (!Current() || mode.SelectedItem is not SpriteDrawMode picked || picked == (sprite.DrawMode ?? SpriteDrawMode.Simple)) return;
+            sprite.DrawMode = picked == SpriteDrawMode.Simple ? null : picked;
+            if (picked == SpriteDrawMode.Simple) sprite.Slice = null;
+            else if (picked == SpriteDrawMode.Sliced) sprite.Slice ??= DefaultSlice();
+            MarkDirty();
+            RefreshComponentList();
+        };
+        rows.Children.Add(FieldRows.Row("Draw", mode));
+        UiBorders DefaultSlice()
+        {
+            var size = sprite.Asset != null && project != null && File.Exists(Path.Combine(project, sprite.Asset)) ? SpriteRegion.ReadPngSize(Path.Combine(project, sprite.Asset)) : new System.Drawing.Size(17, 17);
+            int x = Math.Clamp((size.Width - 1) / 2, 0, 8), y = Math.Clamp((size.Height - 1) / 2, 0, 8);
+            return new UiBorders(x, y, x, y);
+        }
+        if (sprite.DrawMode == SpriteDrawMode.Tiled)
+        {
+            var borders = new CheckBox { Content = "Slice borders", IsChecked = sprite.Slice != null };
+            ToolTip.SetTip(borders, "Keep the corners and repeat the edges and middle.");
+            borders.IsCheckedChanged += (_, _) =>
+            {
+                if (!Current()) return;
+                sprite.Slice = borders.IsChecked == true ? sprite.Slice ?? DefaultSlice() : null;
+                MarkDirty();
+                RefreshComponentList();
+            };
+            rows.Children.Add(FieldRows.Row("", borders));
+        }
+        if (sprite is { DrawMode: not null, Slice: { } edges })
+        {
+            NumericUpDown Border(string name, int value, Func<UiBorders, int, UiBorders> with) => FieldRows.Number(name + " slice border", value, 0, 4096, 1, (v, commit) =>
+            {
+                if (!Current() || sprite.Slice is not { } now) return;
+                sprite.Slice = with(now, (int)v);
+                if (commit) MarkDirty(); else Viewport.RefreshScene();
+            });
+            rows.Children.Add(FieldRows.Row("Slice L·R", FieldRows.Split(Border("Left", edges.Left, (b, v) => b with { Left = v }), Border("Right", edges.Right, (b, v) => b with { Right = v }))));
+            rows.Children.Add(FieldRows.Row("Slice T·B", FieldRows.Split(Border("Top", edges.Top, (b, v) => b with { Top = v }), Border("Bottom", edges.Bottom, (b, v) => b with { Bottom = v }))));
+        }
+        return rows;
     }
 
     private void SetSprite(SceneObject owner, SpriteRendererComponent sprite, string? asset)
     {
-        if (Selected != owner || !ReferenceEquals(owner.GetComponent<SpriteRendererComponent>(), sprite) ||
+        if (Inspected != owner || !ReferenceEquals(owner.GetComponent<SpriteRendererComponent>(), sprite) ||
             sprite.Asset == asset) return;
         sprite.Asset = asset;
         sprite.AssetId = project != null && asset != null ? ProjectAssets.Scan(project).IdFor(asset) : null;
         Select(owner);
         MarkDirty();
-    }
-
-    private void SpriteMaskClick(object? sender,RoutedEventArgs e)
-    {
-        if (sender is not Button { DataContext: SpriteFields fields } button || Selected is not {} owner) return;
-        var menu=new MenuFlyout();
-        void Set(Guid? id)
-        {
-            if (Selected!=owner || !ReferenceEquals(fields.Sprite,owner.GetComponent<SpriteRendererComponent>()) || fields.Sprite.Mask==id) return;
-            fields.Sprite.Mask=id; Select(owner); MarkDirty();
-        }
-        var clear=new MenuItem { Header="None",IsEnabled=fields.Sprite.Mask.HasValue };
-        clear.Click+=(_,_)=>Set(null); menu.Items.Add(clear);
-        var choose=new MenuItem { Header="Choose mask PNG…" };
-        choose.Click+=(_,_)=>RunAction(async()=>{ if (await ChoosePng() is {} png) Set(ProjectAssets.Scan(project!).IdFor(png.Asset)); });
-        menu.Items.Add(choose); menu.ShowAt(button);
     }
 
     private ComponentSection? spriteDropTarget;
@@ -86,7 +98,7 @@ public partial class MainWindow
     {
         if (busy || Viewport.IsPlaying || InspectorPanel.InputHitTest(point) is not Visual visual) return null;
         var section = visual as ComponentSection ?? visual.FindAncestorOfType<ComponentSection>();
-        return section?.DataContext is AttachedComponent row && row.Owner == Selected && (tiles ? row.Component is Tilemap2DComponent : row.Component is SpriteRendererComponent)
+        return section?.DataContext is AttachedComponent row && row.Owner == Inspected && (tiles ? row.Component is Tilemap2DComponent : row.Component is SpriteRendererComponent)
             ? section : null;
     }
 
@@ -109,10 +121,12 @@ public partial class MainWindow
 
     private void InitializeSpriteDrops()
     {
-        DragDrop.SetAllowDrop(AttachedComponents, true);
-        AttachedComponents.AddHandler(DragDrop.DragOverEvent, SpriteFileDrag);
-        AttachedComponents.AddHandler(DragDrop.DragLeaveEvent, (_, _) => HighlightSpriteTarget(null));
-        AttachedComponents.AddHandler(DragDrop.DropEvent, SpriteFileDrag);
+        // Finder files: an object field under the pointer takes the files it accepts (13.17); elsewhere on a Sprite Renderer
+        // section a PNG replaces the sprite as before.
+        DragDrop.SetAllowDrop(InspectorPanel, true);
+        InspectorPanel.AddHandler(DragDrop.DragOverEvent, ReferenceFileDrag);
+        InspectorPanel.AddHandler(DragDrop.DragLeaveEvent, (_, _) => { HighlightSpriteTarget(null); HighlightReference(null); });
+        InspectorPanel.AddHandler(DragDrop.DropEvent, ReferenceFileDrag);
     }
 
     private void SpriteFileDrag(object? sender, DragEventArgs e)
@@ -127,28 +141,27 @@ public partial class MainWindow
         if (dropped && section != null) DropOnSprite(section, path!);
     }
 
-    private void SquareColorChanged(object? sender, TextChangedEventArgs e)
+    // The Sprite Renderer's code-built rows inside the XAML template (13.9 tint).
+    private SpriteFields SpriteFieldsFor(SpriteRendererComponent sprite, Action changed)
     {
-        if (sender is not TextBox { DataContext: SpriteFields fields } box ||
-            !ReferenceEquals(Selected?.GetComponent<SpriteRendererComponent>(), fields.Sprite)) return;
-        var color = box.Text?.Trim().ToUpperInvariant();
-        if (!SceneObject.TryColor(color, out _) || fields.ColorText == color) return;
-        fields.Sprite.Tint = color!;
-        fields.RefreshColor();
-        Viewport.RefreshScene();
-        MarkDirty(box);
-    }
-
-    private void SquareColorCommitted(object? sender, RoutedEventArgs e)
-    {
-        if (sender is not TextBox { DataContext: SpriteFields fields } box) return;
-        if (!SceneObject.TryColor(box.Text?.Trim(), out _)) Status.Text = "Enter a color in #RRGGBB format.";
-        box.SetCurrentValue(TextBox.TextProperty, fields.ColorText);
-    }
-
-    private void SquareColorKeyDown(object? sender, KeyEventArgs e)
-    {
-        if (e.Key == Key.Enter) Viewport.Focus();
+        var fields = new SpriteFields(sprite, project, changed);
+        var tint = new ColorField("Sprite tint", fields.ColorText, alpha: false);
+        tint.Changed += (hex, commit) =>
+        {
+            if (!ReferenceEquals(Inspected?.GetComponent<SpriteRendererComponent>(), sprite)) return;
+            sprite.Tint = hex;
+            if (commit) MarkDirty(); else Viewport.RefreshScene();
+        };
+        var owner = Inspected!;
+        Guid? current = sprite.AssetId ?? (sprite.Asset != null && project != null ? InspectorAssets(project).IdFor(sprite.Asset) : null);
+        var image = AssetField("Sprite", SpriteAssets.IsPng, current, id =>
+            SetSprite(owner, sprite, id is Guid picked && project != null ? InspectorAssets(project).PathFor(picked) : null), none: "Square");
+        var mask = AssetField("Mask", SpriteAssets.IsPng, sprite.Mask, id =>
+        {
+            if (Inspected != owner || !ReferenceEquals(sprite, owner.GetComponent<SpriteRendererComponent>()) || sprite.Mask == id) return;
+            sprite.Mask = id; Select(owner); MarkDirty();
+        });
+        return fields with { ColorEditor = tint, SpriteEditor = image, MaskEditor = mask, DrawEditor = DrawRows(owner, sprite) };
     }
 
     private async Task PlaceSprite(string path, Point world)
@@ -165,6 +178,9 @@ public partial class MainWindow
             Y = (float)Math.Round(world.Y - height / 2.0)
         };
         obj.AddComponent(new SpriteRendererComponent { Asset = png.Asset, AssetId=ProjectAssets.Scan(project!).IdFor(png.Asset) });
+        // The PNG's import pivot (13.16, asset Inspector).
+        if (File.Exists(Path.Combine(project!, png.Asset + ".meta")) && ProjectYaml.Read<AssetMeta>(Path.Combine(project!, png.Asset + ".meta")) is { } meta)
+            (obj.PivotX, obj.PivotY) = (meta.PivotX ?? 0, meta.PivotY ?? 0);
         Scene.Objects.Add(obj);
         FinishObjectChange(obj);
     }

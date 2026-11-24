@@ -3,6 +3,7 @@ using Engine.Core;
 
 internal static class DataListChecks
 {
+    [Check(9300)] static void Registered(CheckRun c) => Run();
     internal sealed class Items(int count) : IUiListSource
     {
         internal readonly List<(string Id, string Name, int Count)> Rows = Enumerable.Range(1, count)

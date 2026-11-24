@@ -1,0 +1,12 @@
+schemaVersion: 31
+objects:
+- id: a1b2c3d4-0e1f-4a2b-9c3d-4e5f6a7b8c91
+  name: Torch
+  tag: Particles
+  width: 1
+  height: 1
+  components:
+  - type: particleEmitter2D
+    particles: 1e7b3a52-7c4f-4d9b-8f32-6b8d4cae2f12
+    trigger: Start
+    seed: 11

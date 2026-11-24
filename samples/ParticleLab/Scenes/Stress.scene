@@ -1,0 +1,73 @@
+schemaVersion: 31
+objects:
+- id: 42f3800e-efec-5ffd-9951-2a25072b51e5
+  name: Storm
+  tag: Particles
+  x: 400
+  y: 250
+  width: 1
+  height: 1
+  components:
+  - type: particleEmitter2D
+    particles: e8ed8761-0097-5383-a724-349053e61b13
+    trigger: Start
+- id: 74fa5541-06ec-5a54-9cf0-c81d0441b804
+  name: Camera
+  x: 400
+  y: 225
+  width: 1
+  height: 1
+  components:
+  - type: camera2D
+  - type: script
+    script: "LabControls"
+    values: {"Next": {"Id": "43a905f1-9900-4bef-8133-3b4f3b6df589"}}
+- id: 0a7815cb-e06b-59c4-80d8-408d77fa856c
+  name: HUD
+  x: 0
+  y: 0
+  width: 800
+  height: 450
+  components:
+  - type: uiCanvas
+- id: f5b408f9-7d97-5df9-b215-991948ff13e5
+  name: Top strip
+  parentId: 0a7815cb-e06b-59c4-80d8-408d77fa856c
+  x: 0
+  y: 0
+  width: 800
+  height: 44
+  components:
+  - type: uiRect
+  - type: uiImage
+    color: "#141E2B"
+- id: 6dc1e2d5-afc8-5d8c-859b-e2c1de7966fb
+  name: Title
+  parentId: 0a7815cb-e06b-59c4-80d8-408d77fa856c
+  x: 16
+  y: 7
+  width: 360
+  height: 32
+  components:
+  - type: uiRect
+  - type: uiText
+    text: "Particle Lab · 10,240개"
+    size: 22
+    color: "#F4F6F4"
+    insetX: 0
+    insetY: 0
+- id: 0bd3c8cd-c82e-5d08-a91e-f8efd18413d6
+  name: Hint
+  parentId: 0a7815cb-e06b-59c4-80d8-408d77fa856c
+  x: 400
+  y: 11
+  width: 384
+  height: 26
+  components:
+  - type: uiRect
+  - type: uiText
+    text: "N 다음 씬"
+    size: 15
+    color: "#8EEDDA"
+    insetX: 0
+    insetY: 0

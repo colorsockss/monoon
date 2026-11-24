@@ -195,6 +195,7 @@ public partial class MainWindow
         else if (entry.Name.EndsWith(ProjectAssets.Tileset)) RunAction(() => EditTileset(entry.RelativePath));
         else if (entry.Name.EndsWith(AnimationController.Extension)) RunAction(() => EditAnimator(entry.RelativePath));
         else if (entry.Name.EndsWith(ProjectAssets.Clip)) RunAction(() => EditClip(entry.RelativePath));
+        else if (entry.Name.EndsWith(ParticleEffect.Extension)) OpenParticlePanel(entry.RelativePath);
         else if (entry.Name.EndsWith(CutsceneSequence.Extension) || entry.Name.EndsWith(SkeletonRig.Extension) || entry.Name.EndsWith(ShaderClip.Extension) || entry.IsSource) RunAction(() => OpenProjectSource(entry.RelativePath));
         else if (entry.RelativePath.StartsWith("Scenes/", StringComparison.Ordinal) && entry.Name.EndsWith(Suffix, StringComparison.Ordinal))
         {
@@ -218,7 +219,9 @@ public partial class MainWindow
         if (row?.DataContext is not ProjectEntry entry) return;
         EndFileDrag();
         var selection = ProjectBrowser.SelectedItems!;
-        if (clipEditor != null && !entry.IsFolder && SpriteAssets.IsPng(entry.Name))
+        // Cmd-click and Shift-click pick several files: PNG frames for the Clip editor, assets for an array field (13.17).
+        bool Pickable(ProjectEntry p) => !p.IsFolder && (clipEditor == null || SpriteAssets.IsPng(p.Name));
+        if (Pickable(entry))
         {
             bool toggle = (e.KeyModifiers & (KeyModifiers.Meta | KeyModifiers.Control)) != 0;
             if (toggle)
@@ -231,7 +234,7 @@ public partial class MainWindow
                 int a = ProjectBrowser.Items.IndexOf(anchor), b = ProjectBrowser.Items.IndexOf(entry);
                 selection.Clear();
                 foreach (var png in ProjectBrowser.Items.OfType<ProjectEntry>().Skip(Math.Min(a,b)).Take(Math.Abs(a-b)+1)
-                    .Where(p => !p.IsFolder && SpriteAssets.IsPng(p.Name))) selection.Add(png);
+                    .Where(Pickable)) selection.Add(png);
             }
             else if (!selection.Contains(entry)) { selection.Clear(); selection.Add(entry); }
         }
@@ -287,7 +290,12 @@ public partial class MainWindow
     }
 
     private static bool AcceptsProjectEntry(ReferenceDrop target, ProjectEntry entry) =>
-        !entry.IsFolder && target.Extension is {} ext && entry.Name.EndsWith(ext, StringComparison.OrdinalIgnoreCase);
+        !entry.IsFolder && target.Asset?.Invoke(entry.RelativePath) == true;
+
+    // What a Project drag carries: the pressed entry, or every selected entry when it is one of several selected (13.17).
+    private ProjectEntry[] DraggedEntries(FilePress press) =>
+        ProjectBrowser.SelectedItems?.OfType<ProjectEntry>().ToArray() is { Length: > 1 } many && many.Contains(press.Entry)
+            ? ProjectBrowser.Items.OfType<ProjectEntry>().Where(many.Contains).ToArray() : [press.Entry];
 
     private void FileMoved(object? sender, PointerEventArgs e)
     {
@@ -297,7 +305,7 @@ public partial class MainWindow
         if (reference?.Tag is ReferenceDrop target)
         {
             bool accepted = AcceptsProjectEntry(target, press.Entry);
-            HighlightReference(accepted ? reference : null);
+            HighlightReference(reference, accepted);
             HighlightSpriteTarget(null);
             InspectorPanel.Classes.Remove("scriptDrop");
             ProjectBrowser.Cursor = accepted ? CopyFileCursor : NoDropCursor;
@@ -332,12 +340,16 @@ public partial class MainWindow
         if (!dragged)
         {
             if (press.DoubleClick) OpenEntry(entry);
+            else if (!entry.IsFolder) InspectAsset(entry.RelativePath); // on release, so a drag keeps the object Inspector (13.16)
             return;
         }
         if (ReferenceTarget(e)?.Tag is ReferenceDrop target)
         {
-            if (AcceptsProjectEntry(target, entry) && ProjectAssets.Scan(project).IdFor(entry.RelativePath) is Guid id)
-                target.Insert(id);
+            var assets = ProjectAssets.Scan(project);
+            var ids = DraggedEntries(press).Where(p => AcceptsProjectEntry(target, p)).Select(p => assets.IdFor(p.RelativePath))
+                .OfType<Guid>().Take(target.Many ? int.MaxValue : 1).ToArray();
+            if (!AcceptsProjectEntry(target, entry)) Status.Text = $"{entry.Name} is not the kind of asset this field takes.";
+            else if (ids.Length > 0) target.Insert(ids);
         }
         else if (FolderDrop(e, entry) is {} destination)
         {

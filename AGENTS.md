@@ -35,6 +35,7 @@
 # 로컬 테스트
 
 - 개발 중 회귀 검사는 이 Mac과 기존 Windows·Linux VM에서 실행한다. [로컬 테스트 명령](docs/manual/build.md#로컬-회귀-검사)을 따른다.
+- 에이전트의 워크트리 준비, GUI 잠금, 하네스·결과 기록, 병렬 작업 규칙은 [에이전트 작업 흐름](docs/manual/agent-workflow.md)을 따른다.
 
 # 검증용 도구 설치
 

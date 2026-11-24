@@ -1,0 +1,140 @@
+{
+  "active_enabled": {
+    "door_opacity": 0.55,
+    "door_drawn": false,
+    "camera_check": false,
+    "overrides": [
+      "Courtyard oak \u00B7 name",
+      "Courtyard oak \u00B7 width",
+      "Courtyard oak \u00B7 height",
+      "Courtyard oak \u00B7 active",
+      "Courtyard oak \u00B7 spriteRenderer.enabled"
+    ]
+  },
+  "script_fields": {
+    "header": "Movement",
+    "slider": {
+      "Minimum": 60,
+      "Maximum": 480
+    },
+    "clamped": 16,
+    "speed_box": {
+      "x": 1216,
+      "right": 1272,
+      "height": 24
+    },
+    "reach_box": {
+      "x": 1130,
+      "right": 1272,
+      "height": 24
+    }
+  },
+  "component_menu": {
+    "groups": [
+      "Rendering",
+      "Physics",
+      "UI",
+      "Audio",
+      "Animation",
+      "Navigation",
+      "Scripts"
+    ],
+    "col": [
+      "Box Collider 2D",
+      "Circle Collider 2D",
+      "Polygon Collider 2D",
+      "CollectCoin"
+    ],
+    "menus": [
+      {
+        "width": 220,
+        "icon_x": 5,
+        "label_x": 25
+      },
+      {
+        "width": 360,
+        "icon_x": 5,
+        "label_x": 25
+      },
+      {
+        "width": 180,
+        "icon_x": 5,
+        "label_x": 25
+      }
+    ],
+    "undone": [
+      "Paste Component as New (Door collider \u2192 Chest)",
+      "Paste Component Values (Exit \u2192 Wall)",
+      "Reset (Door Sprite Renderer)",
+      "Move Up (Door Box Collider 2D)",
+      "Move Down (Door DoorLock)",
+      "Remove (Door Audio Source)"
+    ]
+  },
+  "warnings": {
+    "warning": "Rigidbody 2D without a collider on this object or its children: it does not collide."
+  },
+  "alignment": [
+    {
+      "label": "window 1280",
+      "sections": 8,
+      "title_x": 1122,
+      "icon_x": 1098,
+      "check_x": 1102,
+      "name_x": 1130
+    },
+    {
+      "label": "window 1600",
+      "sections": 8,
+      "title_x": 1442,
+      "icon_x": 1418,
+      "check_x": 1422,
+      "name_x": 1450
+    },
+    {
+      "label": "window 1920",
+      "sections": 8,
+      "title_x": 1762,
+      "icon_x": 1738,
+      "check_x": 1742,
+      "name_x": 1770
+    },
+    {
+      "label": "long name 1280",
+      "sections": 8,
+      "title_x": 1122,
+      "icon_x": 1098,
+      "check_x": 1102,
+      "name_x": 1130
+    }
+  ],
+  "lock_debug": {
+    "kept": true,
+    "object_keys": [
+      "id",
+      "parentId",
+      "name",
+      "x",
+      "y",
+      "width",
+      "height",
+      "rotation",
+      "scaleX",
+      "scaleY",
+      "pivotX",
+      "pivotY",
+      "shear"
+    ],
+    "debug_panels": 6,
+    "movement_keys": [
+      "type",
+      "script",
+      "values"
+    ]
+  },
+  "scene": {
+    "path": "/private/tmp/claude-501/-Users-paare-codex-project-brutal-engine/d9b5815d-691b-46f7-b17a-6ed9a224a15b/scratchpad/ic-rerun/ui/KeyRoom/Scenes/KeyRoom.scene",
+    "sha": "F629E573045F74304240D32DBF0080C933B644C15E214C678F9FB889ADC5431F",
+    "state": "{\n  \u0022Version\u0022: 1,\n  \u0022Folds\u0022: {},\n  \u0022Hidden\u0022: {},\n  \u0022Locked\u0022: {},\n  \u0022ProjectGrid\u0022: false,\n  \u0022InspectorLock\u0022: {\n    \u0022/private/tmp/claude-501/-Users-paare-codex-project-brutal-engine/d9b5815d-691b-46f7-b17a-6ed9a224a15b/scratchpad/ic-rerun/ui/KeyRoom/Scenes/KeyRoom.scene\u0022: [\n      \u00229fa91386-59b8-4ddc-890c-875cbec2ae49\u0022\n    ]\n  },\n  \u0022InspectorDebug\u0022: false\n}"
+  }
+}

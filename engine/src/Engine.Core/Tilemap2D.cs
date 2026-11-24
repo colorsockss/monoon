@@ -11,20 +11,27 @@ public sealed partial record TileSize(int Width, int Height);
 [YamlObject]
 public sealed partial record TileDefinition(int Id, SpriteRegion Source, bool Solid)
 {
-    // A terrain brush uses 16 (square) or 64 (axial) sheet cells in mask order.
+    // A terrain brush uses 16 (4 edges), 64 (6 axial edges) or 47 (8 neighbours, blob) sheet cells in mask order.
     public TileCollision? Collision { get; init; }
     public int AutoEdges { get; init; }
+    // 2+: the cell is picked per position from this many alternatives (a single tile: it and the following sheet cells;
+    // a terrain brush: its fully connected cell and the cells after the terrain block). The seed fixes the pattern.
+    // Nullable so files without random tiles are written exactly as before.
+    public int? RandomTiles { get; init; }
+    public int? RandomSeed { get; init; }
+    // 2+: the tile cycles through itself and the following sheet cells at Fps frames per second of game time. Every cell
+    // of the tile shows the same frame (one clock per tileset), so cells hold no animation state.
+    public int? Frames { get; init; }
+    public int? Fps { get; init; }
     // Gameplay terrain kind and grid navigation weight. Unset cost: 1, or 0 (blocked) for solid tiles.
     public string? Terrain { get; init; }
     public int? MoveCost { get; init; }
     public int EntryCost() => MoveCost ?? (Solid ? 0 : 1);
 }
 [YamlObject]
-public sealed partial record Tileset(Guid Image, TileSize TileSize, int Margin, int Spacing, TileDefinition[] Tiles)
+// NextId: never recycle a retired ID when the image is sliced again.
+public sealed partial record Tileset(Guid Image, TileSize TileSize, int Margin, int Spacing, TileDefinition[] Tiles, int NextId = 1)
 {
-    // Never recycle a retired ID when the image is sliced again.
-    public int NextId { get; init; } = 1;
-
     public static Tileset Load(string path) => ProjectYaml.Read<Tileset>(path);
 
     public TilePalette Resolve(string root, ProjectAssets assets, string name)
@@ -48,29 +55,84 @@ public sealed partial record Tileset(Guid Image, TileSize TileSize, int Margin, 
         var regions = tiles.Values.DistinctBy(t => t.Source).ToDictionary(t => t.Source, t => t.Id);
         int dx = TileSize.Width + Spacing, dy = TileSize.Height + Spacing;
         int columns = (size.Width - 2 * Margin + Spacing) / dx;
-        foreach (var tile in tiles.Values.Where(t => t.AutoEdges != 0))
+        int Cell(SpriteRegion source) => (source.Y-Margin)/dy * columns + (source.X-Margin)/dx;
+        int At(TileDefinition tile, int index, string what)
         {
-            if (tile.AutoEdges is not (4 or 6) || columns <= 0 || tile.Source.X < Margin || tile.Source.Y < Margin ||
-                (tile.Source.X-Margin)%dx != 0 || (tile.Source.Y-Margin)%dy != 0)
-                throw new InvalidDataException($"{name}: invalid auto terrain on tile #{tile.Id}.");
-            var variants = new int[1 << tile.AutoEdges];
-            int first = (tile.Source.Y-Margin)/dy * columns + (tile.Source.X-Margin)/dx;
-            for (int mask=0; mask<variants.Length; mask++)
+            var region = new SpriteRegion(Margin+index%columns*dx, Margin+index/columns*dy, TileSize.Width, TileSize.Height);
+            return regions.TryGetValue(region, out var id) ? id :
+                throw new InvalidDataException($"{name}: tile #{tile.Id} needs {what}.");
+        }
+        foreach (var tile in tiles.Values.Where(t => t.AutoEdges != 0 || t.RandomTiles != null || t.Frames != null || t.Fps != null))
+        {
+            if (tile.AutoEdges is not (0 or 4 or 6 or 8) || tile.RandomTiles is < 2 or > 64 || columns <= 0 || tile.Source.X < Margin ||
+                tile.Source.Y < Margin || (tile.Source.X-Margin)%dx != 0 || (tile.Source.Y-Margin)%dy != 0)
+                throw new InvalidDataException($"{name}: invalid auto terrain or random tiles on tile #{tile.Id}.");
+            int first = Cell(tile.Source), cells = tile.AutoEdges switch { 8 => 47, 0 => 0, var e => 1 << e };
+            if (tile.Frames != null || tile.Fps != null)
             {
-                int index = first+mask;
-                var region = new SpriteRegion(Margin+index%columns*dx, Margin+index/columns*dy, TileSize.Width, TileSize.Height);
-                if (!regions.TryGetValue(region, out variants[mask]))
-                    throw new InvalidDataException($"{name}: tile #{tile.Id} needs {variants.Length} consecutive sheet cells; missing mask {mask}.");
+                if (tile.Frames is not (>= 2 and <= 64) || tile.Fps is not (>= 1 and <= 60) || tile.AutoEdges != 0 || tile.RandomTiles != null)
+                    throw new InvalidDataException($"{name}: tile #{tile.Id} needs 2 to 64 frames at 1 to 60 FPS and no terrain or random brush.");
+                var frames = new int[tile.Frames.Value];
+                frames[0] = tile.Id;
+                for (int i = 1; i < frames.Length; i++) frames[i] = At(tile, first + i, $"{frames.Length - 1} frame sheet cells after it");
+                palette.Frames.Add(tile.Id, new(frames, tile.Fps.Value));
+                continue;
             }
-            palette.Variants.Add(tile.Id, variants);
+            int full = tile.Id;
+            if (cells != 0)
+            {
+                var art = new int[cells];
+                for (int mask=0; mask<cells; mask++) art[mask] = At(tile, first+mask, $"{cells} consecutive sheet cells; missing mask {mask}");
+                // Eight neighbours: index the art by the raw 8-bit mask so drawing needs no reduction step.
+                var variants = art;
+                if (cells == 47)
+                {
+                    variants = new int[256];
+                    for (int mask = 0; mask < 256; mask++) variants[mask] = art[Blob[mask]];
+                }
+                palette.Variants.Add(tile.Id, variants);
+                full = variants[^1];
+            }
+            if (tile.RandomTiles is not { } count) continue;
+            var choices = new int[count];
+            choices[0] = full;
+            for (int i=1; i<choices.Length; i++)
+                choices[i] = At(tile, first + Math.Max(cells, 1) + i - 1, $"{choices.Length - 1} random sheet cells after it");
+            palette.Randoms.Add(tile.Id, choices);
+            palette.Seeds.Add(tile.Id, tile.RandomSeed ?? 0);
         }
         return palette;
+    }
+
+    // 8-neighbour blob: bits N 1, E 2, S 4, W 8, NE 16, SE 32, SW 64, NW 128. A corner counts only when both of its edges
+    // connect, leaving 47 masks; the sheet holds them in ascending order (the first 16 equal the 4-edge sheet).
+    internal static readonly byte[] Blob = BlobOrder();
+    private static byte[] BlobOrder()
+    {
+        static int Reduce(int m) => m & 15 | ((m & 3) == 3 ? m & 16 : 0) | ((m & 6) == 6 ? m & 32 : 0) |
+            ((m & 12) == 12 ? m & 64 : 0) | ((m & 9) == 9 ? m & 128 : 0);
+        var rank = new byte[256];
+        for (int m = 0; m < 256; m++) rank[Reduce(m)] = 1;
+        for (int r = 0, n = 0; r < 256; r++) if (rank[r] != 0) rank[r] = (byte)n++;
+        var blob = new byte[256];
+        for (int m = 0; m < 256; m++) blob[m] = rank[Reduce(m)];
+        return blob;
     }
 }
 
 public sealed record TilePalette(string Image, IReadOnlyDictionary<int, TileDefinition> Tiles)
 {
     internal Dictionary<int,int[]> Variants { get; } = [];
+    internal Dictionary<int,int[]> Randoms { get; } = [];
+    internal Dictionary<int,int> Seeds { get; } = [];
+    internal Dictionary<int,TileFrames> Frames { get; } = [];
+    // The shared clock: one frame pick per animated tile per draw; cells only look their tile up.
+    internal void Clock(double seconds)
+    {
+        foreach (var frames in Frames.Values) frames.Current = frames.At(seconds);
+    }
+    internal int Animated(int display) => Frames.Count != 0 && Frames.TryGetValue(display, out var frames) ? frames.Current : display;
+    internal int Animated(int display, double seconds) => Frames.Count != 0 && Frames.TryGetValue(display, out var frames) ? frames.At(seconds) : display;
     public static TilePalette Load(string root, ProjectAssets assets, Guid id)
     {
         var relative = assets.PathFor(id);
@@ -80,17 +142,26 @@ public sealed record TilePalette(string Image, IReadOnlyDictionary<int, TileDefi
     }
 }
 
+internal sealed class TileFrames(int[] tiles, int fps)
+{
+    public readonly int[] Tiles = tiles;
+    public readonly int Fps = fps;
+    public int Current = tiles[0];
+    public int At(double seconds) => Tiles[(int)((long)Math.Floor(Math.Max(0, seconds) * Fps) % Tiles.Length)];
+}
+
 [YamlObject]
 public readonly partial record struct TileCell(int Index, int Tile);
 [YamlObject]
 public sealed partial record TileChunk(int X, int Y, TileCell[] Cells);
 
-[DisplayName("Tilemap 2D"), YamlObject]
+[DisplayName("Tilemap 2D"), YamlObject, EngineFeature(EngineFeature.Tilemaps)]
 public sealed partial record Tilemap2DComponent : SceneComponent
 {
+    internal override bool CanDisable => false;
     public Tilemap2DComponent() { }
-    [YamlConstructor] public Tilemap2DComponent(string layout = TileGrid.Orthogonal, uint collisionMask = uint.MaxValue)
-        => (Layout, CollisionMask) = (layout, collisionMask);
+    [YamlConstructor] public Tilemap2DComponent(string layout = TileGrid.Orthogonal, uint collisionMask = uint.MaxValue, TileSize? cellSize = null)
+        => (Layout, CollisionMask, CellSize) = (layout, collisionMask, cellSize ?? CellSize);
     public int CollisionLayer { get; set; }
     public uint CollisionMask { get; set; } = uint.MaxValue;
     public Guid? Tileset { get; set; }
@@ -132,6 +203,15 @@ public sealed partial record Tilemap2DComponent : SceneComponent
     private static bool ValidChunk(int n) => n >= (int.MinValue >> 5) && n <= (int.MaxValue >> 5);
     private static int Index(Point p) => ((p.Y & 31) << 5) + (p.X & 31);
     public int Get(Point p) => chunks.TryGetValue(new(p.X >> 5, p.Y >> 5), out var cells) ? cells.GetValueOrDefault(Index(p)) : 0;
+    // Particle collision keeps dense copies of chunks; a new reference here means the cells changed.
+    internal object CellVersion() => chunks;
+    internal int[]? DenseChunk(Point key)
+    {
+        if (!chunks.TryGetValue(key, out var cells)) return null;
+        var dense = new int[1024];
+        foreach (var (index, tile) in cells) dense[index] = tile;
+        return dense;
+    }
     public void Set(Point p, int tile)
     {
         if (tile < 0) throw new ArgumentOutOfRangeException(nameof(tile));
@@ -156,24 +236,64 @@ public sealed partial record Tilemap2DComponent : SceneComponent
     {
         if (visuals.TryGetValue(new(cell.X >> 5,cell.Y >> 5), out var baked))
             return baked.GetValueOrDefault(Index(cell),brush);
-        return Variant(palette,cell,brush,_ => true,brush);
+        return resolved ? brush : Variant(palette,cell,brush,_ => true,brush);
+    }
+    // Runtime copies resolve every cell's art once, so drawing a frame never inspects neighbours or hashes positions.
+    private bool resolved;
+    internal Tilemap2DComponent Resolved(TilePalette palette)
+    {
+        var copy = this with { visuals = ImmutableDictionary<Point, ImmutableDictionary<int,int>>.Empty, resolved = false };
+        foreach (var (key, cells) in chunks)
+            foreach (var (index, tile) in cells)
+            {
+                var cell = Position(key,index);
+                copy.SetVisual(cell,copy.Variant(palette,cell,tile,_ => true,tile),tile);
+            }
+        copy.resolved = true;
+        return copy;
+    }
+    // Re-resolve an edited cell and its neighbours whose pages are known (all of them unless streamed).
+    internal void Refresh(TilePalette palette, Point cell, Func<Point,bool> known)
+    {
+        var around = TileGrid.IsHex(Layout) ? HexEdges : SquareNeighbours;
+        for (int i = -1; i < around.Length; i++)
+        {
+            Point p = i < 0 ? cell : new(cell.X + around[i].X, cell.Y + around[i].Y);
+            if (!known(p)) continue;
+            int brush = Get(p);
+            SetVisual(p, brush == 0 ? 0 : Variant(palette,p,brush,known,DisplayTile(palette,p,brush)), brush);
+        }
     }
     // Edges toward unknown cells keep their bit from the previous art, when it is a variant of the same brush.
     internal int Variant(TilePalette palette, Point cell, int brush, Func<Point,bool> known, int previous)
     {
-        if (!palette.Variants.TryGetValue(brush,out var variants)) return brush;
-        bool hex = TileGrid.IsHex(Layout);
-        if (variants.Length != (hex ? 64 : 16)) return brush;
-        int old = Array.IndexOf(variants,previous), mask = 0;
-        for (int i=0; i<(hex ? 6 : 4); i++)
+        int display = brush;
+        palette.Randoms.TryGetValue(brush, out var random);
+        if (palette.Variants.TryGetValue(brush,out var variants))
         {
-            var d = (hex ? HexEdges : SquareEdges)[i];
-            long x = (long)cell.X+d.X, y = (long)cell.Y+d.Y;
-            if (x is < int.MinValue or > int.MaxValue || y is < int.MinValue or > int.MaxValue) continue;
-            Point n = new((int)x,(int)y);
-            if (known(n) ? Get(n) == brush : old >= 0 && (old >> i & 1) != 0) mask |= 1 << i;
+            bool hex = TileGrid.IsHex(Layout);
+            if (hex != (variants.Length == 64)) return brush;
+            var around = hex ? HexEdges : variants.Length == 256 ? SquareNeighbours : SquareEdges;
+            int old = random != null && Array.IndexOf(random,previous) >= 0 ? variants.Length - 1 : Array.IndexOf(variants,previous), mask = 0;
+            for (int i=0; i<around.Length; i++)
+            {
+                var d = around[i];
+                long x = (long)cell.X+d.X, y = (long)cell.Y+d.Y;
+                if (x is < int.MinValue or > int.MaxValue || y is < int.MinValue or > int.MaxValue) continue;
+                Point n = new((int)x,(int)y);
+                if (known(n) ? Get(n) == brush : old >= 0 && (old >> i & 1) != 0) mask |= 1 << i;
+            }
+            display = variants[mask];
+            if (display != variants[^1]) return display;
         }
-        return variants[mask];
+        return random != null ? random[Pick(cell, palette.Seeds[brush], random.Length)] : display;
+    }
+    // Integer hash of the cell and seed: the same on every platform, and repainting a cell restores its choice.
+    internal static int Pick(Point cell, int seed, int count)
+    {
+        uint h = unchecked((uint)cell.X * 0x8DA6B343u ^ (uint)cell.Y * 0xD8163841u ^ (uint)seed * 0xCB1AB31Fu);
+        h ^= h >> 16; h *= 0x7FEB352Du; h ^= h >> 15; h *= 0x846CA68Bu; h ^= h >> 16;
+        return (int)(h % (uint)count);
     }
     internal void SetVisual(Point cell, int display, int brush)
     {
@@ -182,6 +302,8 @@ public sealed partial record Tilemap2DComponent : SceneComponent
         visuals = visuals.SetItem(key,display == brush ? baked.Remove(Index(cell)) : baked.SetItem(Index(cell),display));
     }
     internal static readonly Point[] SquareEdges = [new(0,-1),new(1,0),new(0,1),new(-1,0)];
+    // The four edges, then the corners NE, SE, SW, NW (blob mask bits 16..128).
+    internal static readonly Point[] SquareNeighbours = [..SquareEdges,new(1,-1),new(1,1),new(-1,1),new(-1,-1)];
     internal static readonly Point[] HexEdges = [new(1,0),new(0,1),new(-1,1),new(-1,0),new(0,-1),new(1,-1)];
 
     public Point CellAt(Vector2 origin, double x, double y) =>
@@ -209,22 +331,27 @@ public sealed partial record Tilemap2DComponent : SceneComponent
 
     public IEnumerable<(Point Cell, int Tile)> InView(Vector2 origin, RectangleF view)
     {
+        var cells = new List<(Point, int)>();
+        InView(origin, view, cells);
+        return cells;
+    }
+
+    // Appends the cells in the same order as the public overload, without allocating (physics queries every tick, drawing).
+    internal void InView(Vector2 origin, RectangleF view, List<(Point Cell, int Tile)> into)
+    {
         var (first,last) = CellRange(origin,view);
         int left = first.X >> 5, top = first.Y >> 5, right = last.X >> 5, bottom = last.Y >> 5;
-        IEnumerable<Point> Candidates()
+        if ((long)(right - left + 1) * (bottom - top + 1) > chunks.Count)
         {
-            if ((long)(right - left + 1) * (bottom - top + 1) > chunks.Count)
-            {
-                foreach (var key in chunks.Keys)
-                    if (key.X >= left && key.X <= right && key.Y >= top && key.Y <= bottom) yield return key;
-            }
-            else
-                for (int y = top; y <= bottom; y++)
-                    for (int x = left; x <= right; x++) yield return new(x, y);
+            foreach (var (key, _) in chunks) // The struct enumerator: Keys allocates an iterator. Same order.
+                if (key.X >= left && key.X <= right && key.Y >= top && key.Y <= bottom) Chunk(key);
         }
-        foreach (var key in Candidates())
+        else
+            for (int y = top; y <= bottom; y++)
+                for (int x = left; x <= right; x++) Chunk(new(x, y));
+        void Chunk(Point key)
         {
-            if (!chunks.TryGetValue(key, out var cells)) continue;
+            if (!chunks.TryGetValue(key, out var cells)) return;
             // A small view probes its cells in index order instead of walking the whole chunk; same cells, same order.
             int left0 = Math.Max(first.X, key.X * 32), right0 = Math.Min(last.X, key.X * 32 + 31);
             int top0 = Math.Max(first.Y, key.Y * 32), bottom0 = Math.Min(last.Y, key.Y * 32 + 31);
@@ -232,13 +359,13 @@ public sealed partial record Tilemap2DComponent : SceneComponent
             {
                 for (long y = top0; y <= bottom0; y++) // long: the last chunk ends at int.MaxValue
                     for (long x = left0; x <= right0; x++)
-                        if (cells.TryGetValue(Index(new((int)x, (int)y)), out var tile)) yield return (new((int)x, (int)y), tile);
-                continue;
+                        if (cells.TryGetValue(Index(new((int)x, (int)y)), out var tile)) into.Add((new((int)x, (int)y), tile));
+                return;
             }
             foreach (var (index, tile) in cells)
             {
                 var cell = Position(key, index);
-                if (cell.X >= first.X && cell.X <= last.X && cell.Y >= first.Y && cell.Y <= last.Y) yield return (cell, tile);
+                if (cell.X >= first.X && cell.X <= last.X && cell.Y >= first.Y && cell.Y <= last.Y) into.Add((cell, tile));
             }
         }
     }
@@ -257,22 +384,28 @@ public sealed partial record Tilemap2DComponent : SceneComponent
                 throw new InvalidDataException($"{name}: missing tile #{tile} at {cell}.");
     }
 
-    public void Draw(ICanvas2D canvas, TilePalette palette, Matrix3x2 world, RectangleF view, Matrix3x2 camera)
+    [ThreadStatic] private static List<(Point Cell, int Tile)>? drawCells;
+    private static List<(Point Cell, int Tile)> DrawCells => drawCells ??= [];
+
+    public void Draw(ICanvas2D canvas, TilePalette palette, Matrix3x2 world, RectangleF view, Matrix3x2 camera, double seconds = 0)
     {
+        palette.Clock(seconds);
         var localView = Affine2D.Bounds(view,Affine2D.Inverse(world));
-        foreach (var (cell,id) in InView(Vector2.Zero,localView))
+        var cells = DrawCells; cells.Clear(); InView(Vector2.Zero,localView,cells);
+        foreach (var (cell,id) in cells)
         {
             var rect = Bounds(Vector2.Zero,cell);
-            if (localView.IntersectsWith(rect) && palette.Tiles.TryGetValue(DisplayTile(palette,cell,id),out var tile))
+            if (localView.IntersectsWith(rect) && palette.Tiles.TryGetValue(palette.Animated(DisplayTile(palette,cell,id)),out var tile))
                 canvas.DrawAffine(palette.Image,rect,world*camera,Color.White,tile.Source,Layout);
         }
     }
 
     public void Draw(ICanvas2D canvas, TilePalette palette, Vector2 origin, RectangleF view, Vector2 offset, float zoom)
     {
-        foreach (var (cell, id) in InView(origin, view))
+        var cells = DrawCells; cells.Clear(); InView(origin, view, cells);
+        foreach (var (cell, id) in cells)
         {
-            if (!palette.Tiles.TryGetValue(DisplayTile(palette,cell,id), out var tile)) continue;
+            if (!palette.Tiles.TryGetValue(palette.Animated(DisplayTile(palette,cell,id)), out var tile)) continue;
             var rect = Bounds(origin, cell);
             if (view.IntersectsWith(rect))
                 canvas.DrawTile(palette.Image, new((rect.X - offset.X) * zoom, (rect.Y - offset.Y) * zoom, rect.Width * zoom, rect.Height * zoom), tile.Source, Layout);

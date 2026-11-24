@@ -1,0 +1,40 @@
+using System;
+using System.Drawing;
+using System.Globalization;
+using System.IO;
+using System.Text;
+using Engine.Core;
+
+// Added to the test copy only: records the crowd the shipped CrowdRun simulates (the call compiles away without this file).
+public sealed partial class CrowdRun
+{
+    private static readonly RectangleF[] Walls = {
+        new RectangleF(232, 120, 24, 130), new RectangleF(232, 300, 24, 116), new RectangleF(432, 72, 24, 258),
+        new RectangleF(540, 110, 40, 40), new RectangleF(540, 230, 40, 40) };
+    private ulong traceHash = 14695981039346656037;
+    private bool traceDone;
+
+    partial void Traced(ScriptTick tick, NavCrowd2D crowd, int ticks)
+    {
+        string path = Environment.GetEnvironmentVariable("MONOON_CROWD_TRACE");
+        if (string.IsNullOrEmpty(path) || traceDone) return;
+        var positions = crowd.Positions;
+        foreach (var p in positions)
+        {
+            traceHash = (traceHash ^ (uint)BitConverter.SingleToInt32Bits(p.X)) * 1099511628211;
+            traceHash = (traceHash ^ (uint)BitConverter.SingleToInt32Bits(p.Y)) * 1099511628211;
+            foreach (var w in Walls)
+                if (w.Contains(p.X, p.Y)) File.AppendAllText(path, string.Create(CultureInfo.InvariantCulture, $"inside {ticks} {p.X:R} {p.Y:R}\n"));
+        }
+        int arrived = crowd.ArrivedCount;
+        if (tick.Input.Pressed("ToggleGate")) File.AppendAllText(path, $"gate {ticks}\n");
+        if (ticks % 30 == 0 || arrived == positions.Length)
+            File.AppendAllText(path, string.Create(CultureInfo.InvariantCulture, $"tick {ticks} {arrived} {traceHash:X16}\n"));
+        if (arrived < positions.Length) return;
+        var text = new StringBuilder();
+        text.Append(CultureInfo.InvariantCulture, $"done {ticks} {traceHash:X16}\n");
+        foreach (var p in positions) text.Append(CultureInfo.InvariantCulture, $"{p.X:R} {p.Y:R}\n");
+        File.AppendAllText(path, text.ToString());
+        traceDone = true;
+    }
+}

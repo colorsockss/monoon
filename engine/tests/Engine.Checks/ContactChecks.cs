@@ -3,6 +3,7 @@ using Engine.Core;
 
 internal static class ContactChecks
 {
+    [Check(5200, "contacts", "physics")] static void Registered(CheckRun c) => Run(c.Project);
     private sealed class Listener : GameBehaviour
     {
         internal readonly List<(Guid Other,string Phase)> Events = [];

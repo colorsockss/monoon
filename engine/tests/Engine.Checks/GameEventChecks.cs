@@ -3,6 +3,7 @@ using Engine.Core;
 
 internal static class GameEventChecks
 {
+    [Check(10000)] static void Registered(CheckRun c) => Run(c.Scratch);
     internal static void Run(string scratch)
     {
         var root = Path.Combine(scratch, ".event-checks");

@@ -15,6 +15,12 @@
     <Compile Include="../../src/Engine.Editor/Model/SceneHistory.cs" Link="Editor/SceneHistory.cs"/>
     <Compile Include="../../src/Engine.Editor/Model/ProjectPathEdit.cs" Link="Editor/ProjectPathEdit.cs"/>
     <Compile Include="../../src/Engine.Editor/Model/PrefabFileEdit.cs" Link="Editor/PrefabFileEdit.cs"/>
+    <Compile Include="../../src/Engine.Editor/Model/ParticlePreview.cs" Link="Editor/ParticlePreview.cs"/>
+    <Compile Include="../../src/Engine.Editor/Model/ComponentEdits.cs" Link="Editor/ComponentEdits.cs"/>
+    <Compile Include="../../src/Engine.Editor/Model/MultiEdits.cs" Link="Editor/MultiEdits.cs"/>
+    <Compile Include="../../src/Engine.Editor/Model/ScriptValueEdits.cs" Link="Editor/ScriptValueEdits.cs"/>
+    <Compile Include="../../src/Engine.Editor/Inspector/ComponentPicker.cs" Link="Editor/ComponentPicker.cs"/>
+    <Compile Include="../../src/Engine.Editor/Model/ParticlePresets.cs" Link="Editor/ParticlePresets.cs"/>
   </ItemGroup>
   <ItemGroup><ProjectReference Include="../../src/Engine.Authoring/Engine.Authoring.csproj"/></ItemGroup>
 </Project>

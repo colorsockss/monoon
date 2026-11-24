@@ -5,6 +5,7 @@ using Engine.Core;
 
 internal static class ContentUpdateChecks
 {
+    [Check(1400)] static void Registered(CheckRun c) => Run(c.Scratch);
     internal static void Run(string scratch)
     {
         const string asset = "Assets/Quotes/Greeting.data";

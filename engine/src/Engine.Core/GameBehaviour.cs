@@ -42,7 +42,7 @@ public sealed partial record ScriptComponent : SceneComponent
     }
 
     internal void WriteReferences(string field, Guid[] ids) =>
-        Values[field] = JsonSerializer.SerializeToElement(ids, GameJson.Default.GuidArray);
+        Values[field] = JsonElements.Of(ids);
 
     public T[] ReadAssetList<T>(string name, T[] initial, Converter<Guid,T> wrap) =>
         Values.ContainsKey(name) ? Array.ConvertAll(ReadReferences(name, false), wrap) : initial;
@@ -53,6 +53,16 @@ public sealed partial record ScriptComponent : SceneComponent
         if (stored.ValueKind == JsonValueKind.String && Enum.GetNames<T>().Contains(stored.GetString()) &&
             Enum.TryParse<T>(stored.GetString(), out var value)) return value;
         throw new InvalidDataException($"{Script}.{name} is not a declared {typeof(T).Name} value.");
+    }
+
+    // 13.8: a field's saved JSON for the generated factory's typed readers (ScriptValues).
+    public bool TryValue(string name, out JsonElement value) => Values.TryGetValue(name, out value);
+
+    public T ReadFlags<T>(string name, T initial) where T : struct, Enum
+    {
+        if (!Values.TryGetValue(name, out var stored)) return initial;
+        try { return ScriptValues.Enum(stored, initial, flags: true); }
+        catch (InvalidDataException ex) { throw new InvalidDataException($"{Script}.{name}: {ex.Message}"); }
     }
 
     public Vector2 ReadVector(string name, Vector2 initial)
@@ -72,13 +82,16 @@ public sealed partial record ScriptComponent : SceneComponent
     {
         if (!Values.TryGetValue(name, out var stored)) return initialValue;
         if (typeof(T) == typeof(Guid[])) return (T)(object)ReadReferences(name, true);
-        try
-        {
-            var info = (System.Text.Json.Serialization.Metadata.JsonTypeInfo<T>)GameJson.Default.GetTypeInfo(typeof(T))!;
-            var value = stored.Deserialize(info) ?? initialValue;
-            return value is Guid id ? (T)(object)InstanceId(id) : value;
-        }
-        catch (JsonException) { return initialValue; }
+        // Asset references by hand: their JsonSerializer object converters cost ~0.1 MB of Native AOT code (aot-size-2).
+        if (typeof(T) == typeof(SceneReference)) return JsonElements.ReadReference(stored, out var id) ? (T)(object)new SceneReference(id) : initialValue;
+        if (typeof(T) == typeof(SpriteReference)) return JsonElements.ReadReference(stored, out var id) ? (T)(object)new SpriteReference(id) : initialValue;
+        if (typeof(T) == typeof(PrefabReference)) return JsonElements.ReadReference(stored, out var id) ? (T)(object)new PrefabReference(id) : initialValue;
+        if (typeof(T) == typeof(DataReference)) return JsonElements.ReadReference(stored, out var id) ? (T)(object)new DataReference(id) : initialValue;
+        if (typeof(T) == typeof(TableReference)) return JsonElements.ReadReference(stored, out var id) ? (T)(object)new TableReference(id) : initialValue;
+        // Primitive fields by hand too, so a player keeps no JsonSerializer code at all (aot-feature-switches C1).
+        if (!JsonElements.ReadField<T>(stored, out var value)) return initialValue;
+        value ??= initialValue;
+        return value is Guid guid ? (T)(object)InstanceId(guid) : value;
     }
 
     internal ScriptComponent Duplicate(IReadOnlyDictionary<Guid, SceneObject> copies, ScriptLibrary? library)
@@ -103,7 +116,7 @@ public sealed partial record ScriptComponent : SceneComponent
         }
         foreach (var field in definition.Fields)
             if (field.Type == typeof(Guid) && field.Value(this) is Guid id && copies.TryGetValue(id, out var target))
-                copy.Values[field.Name] = JsonSerializer.SerializeToElement(target.Id, GameJson.Default.Guid);
+                copy.Values[field.Name] = JsonElements.Of(target.Id);
             else if (field.IsObjectList && Values.ContainsKey(field.Name))
                 copy.WriteReferences(field.Name, ReadReferences(field.Name, true)
                     .Select(entry => copies.TryGetValue(entry, out var obj) ? obj.Id : entry).ToArray());
@@ -125,6 +138,7 @@ public abstract partial class GameBehaviour
     public virtual void OnAnimationEvent(ScriptAnimationEvent frame) { }
     public virtual void OnUiValueChanged(UiValueChanged change) { }
     public virtual void OnUiClick(UiClick click) { }
+    public virtual void OnUiDrop(UiDrop drop) { }
     public virtual void OnTriggerEnter(ScriptContact contact) { }
     public virtual void OnTriggerStay(ScriptContact contact) { }
     public virtual void OnTriggerExit(ScriptContact contact) { }
@@ -138,6 +152,8 @@ public readonly record struct ScriptAnimationEvent(Guid ObjectId, AnimationMarke
 public readonly record struct UiTick(Guid ObjectId, SessionState Session, IGameUi Ui, GameInput Input, double DeltaTime)
 {
     public GameTime Time => Session.Time;
+    /// <summary>Debug lines, circles and text for this UI frame (Scene Play and development builds only).</summary>
+    public ScriptDebug Debug => new(Session.LiveWorld, true);
 }
 
 public readonly record struct ScriptLife(Guid ObjectId, SessionState Session, IGameObjects Objects, IGameUi Ui);
@@ -166,6 +182,8 @@ public readonly struct ScriptTick
     public GameInput Input { get; }
     public Vector2 Direction => Input.Move;
     public float DeltaTime { get; }
+    /// <summary>Debug lines, circles and text for this game tick (Scene Play and development builds only).</summary>
+    public ScriptDebug Debug => new(Objects as SceneGame, false);
     public void Move(Vector2 displacement)
     {
         var total = body.Displacement + displacement;

@@ -1,0 +1,66 @@
+# 5 alternating rounds, 2026-11-24, Apple M4 Max, qemu not running. base = af1599a (P.1–P.3) bench, others = this branch
+run 1
+base null	alive=1024	us/frame=16.2	ns/particle=15.9	B/frame=0.0
+base null	alive=10240	us/frame=167.0	ns/particle=16.3	B/frame=0.0
+null	alive=1024	us/frame=14.2	ns/particle=13.8	B/frame=0.0
+null	alive=10240	us/frame=144.0	ns/particle=14.1	B/frame=0.0
+null+curves	alive=1024	us/frame=18.1	ns/particle=17.7	B/frame=0.0
+null+curves	alive=10240	us/frame=182.6	ns/particle=17.8	B/frame=0.0
+null+curves+noise	alive=1024	us/frame=26.6	ns/particle=26.0	B/frame=0.0
+null+curves+noise	alive=10240	us/frame=266.5	ns/particle=26.0	B/frame=0.0
+null+tiles	alive=1024	us/frame=21.6	ns/particle=21.1	B/frame=0.0
+null+tiles	alive=10240	us/frame=231.4	ns/particle=22.6	B/frame=0.0
+null+curves+noise+tiles	alive=1024	us/frame=34.4	ns/particle=33.6	B/frame=0.0
+null+curves+noise+tiles	alive=10240	us/frame=349.4	ns/particle=34.1	B/frame=0.0
+run 2
+base null	alive=1024	us/frame=16.1	ns/particle=15.7	B/frame=0.0
+base null	alive=10240	us/frame=167.0	ns/particle=16.3	B/frame=0.0
+null	alive=1024	us/frame=14.2	ns/particle=13.9	B/frame=0.0
+null	alive=10240	us/frame=144.9	ns/particle=14.2	B/frame=0.0
+null+curves	alive=1024	us/frame=18.3	ns/particle=17.9	B/frame=0.0
+null+curves	alive=10240	us/frame=183.2	ns/particle=17.9	B/frame=0.0
+null+curves+noise	alive=1024	us/frame=25.8	ns/particle=25.2	B/frame=0.0
+null+curves+noise	alive=10240	us/frame=267.6	ns/particle=26.1	B/frame=0.0
+null+tiles	alive=1024	us/frame=21.7	ns/particle=21.1	B/frame=0.0
+null+tiles	alive=10240	us/frame=219.9	ns/particle=21.5	B/frame=0.0
+null+curves+noise+tiles	alive=1024	us/frame=34.4	ns/particle=33.6	B/frame=0.0
+null+curves+noise+tiles	alive=10240	us/frame=343.9	ns/particle=33.6	B/frame=0.0
+run 3
+base null	alive=1024	us/frame=16.2	ns/particle=15.9	B/frame=0.0
+base null	alive=10240	us/frame=162.3	ns/particle=15.8	B/frame=0.0
+null	alive=1024	us/frame=14.2	ns/particle=13.9	B/frame=0.0
+null	alive=10240	us/frame=145.9	ns/particle=14.2	B/frame=0.0
+null+curves	alive=1024	us/frame=18.5	ns/particle=18.1	B/frame=0.0
+null+curves	alive=10240	us/frame=185.1	ns/particle=18.1	B/frame=0.0
+null+curves+noise	alive=1024	us/frame=26.5	ns/particle=25.9	B/frame=0.0
+null+curves+noise	alive=10240	us/frame=270.0	ns/particle=26.4	B/frame=0.0
+null+tiles	alive=1024	us/frame=22.5	ns/particle=22.0	B/frame=0.0
+null+tiles	alive=10240	us/frame=224.9	ns/particle=22.0	B/frame=0.0
+null+curves+noise+tiles	alive=1024	us/frame=34.9	ns/particle=34.1	B/frame=0.0
+null+curves+noise+tiles	alive=10240	us/frame=352.0	ns/particle=34.4	B/frame=0.0
+run 4
+base null	alive=1024	us/frame=16.4	ns/particle=16.1	B/frame=0.0
+base null	alive=10240	us/frame=167.0	ns/particle=16.3	B/frame=0.0
+null	alive=1024	us/frame=14.5	ns/particle=14.2	B/frame=0.0
+null	alive=10240	us/frame=151.1	ns/particle=14.8	B/frame=0.0
+null+curves	alive=1024	us/frame=18.5	ns/particle=18.0	B/frame=0.0
+null+curves	alive=10240	us/frame=185.6	ns/particle=18.1	B/frame=0.0
+null+curves+noise	alive=1024	us/frame=26.7	ns/particle=26.1	B/frame=0.0
+null+curves+noise	alive=10240	us/frame=275.7	ns/particle=26.9	B/frame=0.0
+null+tiles	alive=1024	us/frame=22.1	ns/particle=21.6	B/frame=0.0
+null+tiles	alive=10240	us/frame=224.5	ns/particle=21.9	B/frame=0.0
+null+curves+noise+tiles	alive=1024	us/frame=34.1	ns/particle=33.3	B/frame=0.0
+null+curves+noise+tiles	alive=10240	us/frame=344.5	ns/particle=33.6	B/frame=0.0
+run 5
+base null	alive=1024	us/frame=15.9	ns/particle=15.6	B/frame=0.0
+base null	alive=10240	us/frame=166.7	ns/particle=16.3	B/frame=0.0
+null	alive=1024	us/frame=14.2	ns/particle=13.9	B/frame=0.0
+null	alive=10240	us/frame=145.4	ns/particle=14.2	B/frame=0.0
+null+curves	alive=1024	us/frame=18.3	ns/particle=17.8	B/frame=0.0
+null+curves	alive=10240	us/frame=185.8	ns/particle=18.1	B/frame=0.0
+null+curves+noise	alive=1024	us/frame=27.5	ns/particle=26.8	B/frame=0.0
+null+curves+noise	alive=10240	us/frame=273.1	ns/particle=26.7	B/frame=0.0
+null+tiles	alive=1024	us/frame=22.0	ns/particle=21.5	B/frame=0.0
+null+tiles	alive=10240	us/frame=223.8	ns/particle=21.9	B/frame=0.0
+null+curves+noise+tiles	alive=1024	us/frame=34.9	ns/particle=34.1	B/frame=0.0
+null+curves+noise+tiles	alive=10240	us/frame=349.0	ns/particle=34.1	B/frame=0.0

@@ -3,6 +3,7 @@ using Engine.Core;
 
 internal static class PlayerDataChecks
 {
+    [Check(8100)] static void Registered(CheckRun c) => Run(c.Scratch, c.Scene);
     private static void Check(bool ok, string message)
     {
         if (!ok) throw new Exception(message);

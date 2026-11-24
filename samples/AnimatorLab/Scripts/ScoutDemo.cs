@@ -1,0 +1,41 @@
+using System;
+using System.Numerics;
+using Engine.Core;
+
+// Drives Scout.animator: the arrow keys set the Move vector (Idle shows 4 directions, Walk 8); Space sweeps one slow lap
+// around a square so the turn passes every direction boundary, where the animator keeps the old clip a little longer.
+public sealed class ScoutDemo : GameBehaviour
+{
+    public Guid StateLabel;
+    private int lap = -1;
+    private string shownState;
+    private int shownFacing = -1;
+
+    public override void FixedUpdate(ScriptTick tick)
+    {
+        var animator = tick.Objects.Animator(tick.ObjectId)!;
+        var input = tick.Input;
+        if (input.Pressed("Interact")) lap = lap < 0 ? 0 : -1;
+        Vector2 move;
+        if (lap >= 0)
+        {
+            move = Sweep(lap / 2);
+            if (++lap == 128) lap = -1;
+        }
+        else
+            move = new((input.Held("MoveRight") ? 1 : 0) - (input.Held("MoveLeft") ? 1 : 0),
+                       (input.Held("MoveDown") ? 1 : 0) - (input.Held("MoveUp") ? 1 : 0));
+        animator.SetVector2("Move", move);
+        animator.SetFloat("Speed", move == Vector2.Zero ? 0 : 1);
+        if (animator.State == shownState && animator.Facing == shownFacing) return;
+        (shownState, shownFacing) = (animator.State, animator.Facing);
+        tick.Ui.SetText(StateLabel, $"{shownState}  {AnimationState.Compass[shownFacing]}");
+    }
+
+    // Point i of 64 on the square [-1, 1]^2, clockwise on screen from the top-right corner, in steps of 1/8 (exact in float).
+    private static Vector2 Sweep(int i)
+    {
+        float k = i % 16 / 8f;
+        return (i / 16) switch { 0 => new(1, -1 + k), 1 => new(1 - k, 1), 2 => new(-1, 1 - k), _ => new(-1 + k, -1) };
+    }
+}

@@ -11,6 +11,7 @@
     <Compile Include="../../../samples/InventoryLab/Scripts/Dialogue/DialogueGraph.cs" Link="Dialogue/DialogueGraph.cs" />
     <AvaloniaResource Include="Assets/MoNoon.png" />
     <AvaloniaResource Include="Assets/MoNoon.macOS.png" />
+    <PackageReference Include="Avalonia.Controls.ColorPicker" Version="11.3.23" />
     <ProjectReference Include="../Engine.Core/Engine.Core.csproj" />
     <ProjectReference Include="../Engine.Authoring/Engine.Authoring.csproj" />
     <PackageReference Include="Avalonia.Desktop" Version="11.3.23" />

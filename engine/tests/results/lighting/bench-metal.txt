@@ -1,0 +1,27 @@
+qemu: 0 processes at start
+run=1	metal	off	median_ms=0.585	p95_ms=0.838	mean_ms=0.620	draws=7.0	B/frame=352.0	rebuilds/frame=0.00
+run=1	metal	8	median_ms=0.814	p95_ms=0.889	mean_ms=0.842	draws=31.0	B/frame=352.0	rebuilds/frame=3.89
+run=1	metal	0	median_ms=0.544	p95_ms=0.588	mean_ms=0.541	draws=6.0	B/frame=352.0	rebuilds/frame=0.00
+run=1	metal	4	median_ms=0.651	p95_ms=0.757	mean_ms=0.685	draws=19.0	B/frame=352.0	rebuilds/frame=1.37
+run=1	metal	8n	median_ms=0.540	p95_ms=0.594	mean_ms=0.543	draws=8.0	B/frame=352.0	rebuilds/frame=0.00
+run=2	metal	off	median_ms=0.562	p95_ms=0.605	mean_ms=0.547	draws=7.0	B/frame=352.0	rebuilds/frame=0.00
+run=2	metal	8	median_ms=0.839	p95_ms=0.920	mean_ms=0.850	draws=31.0	B/frame=352.0	rebuilds/frame=3.89
+run=2	metal	0	median_ms=0.638	p95_ms=0.706	mean_ms=0.616	draws=6.0	B/frame=352.0	rebuilds/frame=0.00
+run=2	metal	4	median_ms=0.651	p95_ms=0.945	mean_ms=0.731	draws=19.0	B/frame=352.0	rebuilds/frame=1.37
+run=2	metal	8n	median_ms=0.535	p95_ms=0.582	mean_ms=0.540	draws=8.0	B/frame=352.0	rebuilds/frame=0.00
+run=3	metal	off	median_ms=0.493	p95_ms=0.546	mean_ms=0.500	draws=7.0	B/frame=352.0	rebuilds/frame=0.00
+run=3	metal	8	median_ms=0.831	p95_ms=1.030	mean_ms=0.878	draws=31.0	B/frame=352.0	rebuilds/frame=3.89
+run=3	metal	0	median_ms=0.456	p95_ms=0.598	mean_ms=0.475	draws=6.0	B/frame=352.0	rebuilds/frame=0.00
+run=3	metal	4	median_ms=0.693	p95_ms=0.840	mean_ms=0.715	draws=19.0	B/frame=352.0	rebuilds/frame=1.37
+run=3	metal	8n	median_ms=0.567	p95_ms=0.610	mean_ms=0.555	draws=8.0	B/frame=352.0	rebuilds/frame=0.00
+run=4	metal	off	median_ms=0.530	p95_ms=0.581	mean_ms=0.534	draws=7.0	B/frame=352.0	rebuilds/frame=0.00
+run=4	metal	8	median_ms=0.829	p95_ms=0.951	mean_ms=0.876	draws=31.0	B/frame=352.0	rebuilds/frame=3.89
+run=4	metal	0	median_ms=0.541	p95_ms=0.586	mean_ms=0.547	draws=6.0	B/frame=352.0	rebuilds/frame=0.00
+run=4	metal	4	median_ms=0.667	p95_ms=0.780	mean_ms=0.697	draws=19.0	B/frame=352.0	rebuilds/frame=1.37
+run=4	metal	8n	median_ms=0.512	p95_ms=0.640	mean_ms=0.513	draws=8.0	B/frame=352.0	rebuilds/frame=0.00
+run=5	metal	off	median_ms=0.565	p95_ms=0.633	mean_ms=0.572	draws=7.0	B/frame=352.0	rebuilds/frame=0.00
+run=5	metal	8	median_ms=0.846	p95_ms=0.978	mean_ms=0.879	draws=31.0	B/frame=352.0	rebuilds/frame=3.89
+run=5	metal	0	median_ms=0.542	p95_ms=0.594	mean_ms=0.545	draws=6.0	B/frame=352.0	rebuilds/frame=0.00
+run=5	metal	4	median_ms=0.643	p95_ms=0.836	mean_ms=0.688	draws=19.0	B/frame=352.0	rebuilds/frame=1.37
+run=5	metal	8n	median_ms=0.502	p95_ms=0.550	mean_ms=0.502	draws=8.0	B/frame=352.0	rebuilds/frame=0.00
+qemu: 0 processes at end

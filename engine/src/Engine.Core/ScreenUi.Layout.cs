@@ -43,6 +43,16 @@ public sealed partial class ScreenUi
     private bool Enabled(Node n)=>ReceivesInput(n.Object.Id)&&(n.Control!=null||n.Field!=null)&&interactOverrides.GetValueOrDefault(n.Object.Id,n.Control?.Interactable??true);
     private bool Shown(Node n)=>n.Box.Width>0 && n.Box.Height>0 && Visible(n) && n.Box.IntersectsWith(n.Clip);
     private static bool Horizontal(Node n)=>n.Layout?.Axis=="Horizontal";
+    // Grid and Wrap place children row by row in equal cells; they scroll vertically like a vertical layout.
+    private static bool Flow(Node n)=>n.Layout?.Axis is "Grid" or "Wrap";
+    private void Cells(Node n)
+    {
+        var l=n.Layout!;float widest=0;
+        foreach(var child in n.Children)if(Visible(child))widest=Math.Max(widest,child.MeasuredWidth);
+        float inner=Math.Max(0,n.AllocatedWidth-2*l.Padding);
+        n.Columns=l.Axis=="Grid"&&l.Columns is int fixedColumns?fixedColumns:widest+l.Gap>0?Math.Max(1,(int)((inner+l.Gap)/(widest+l.Gap))):1;
+        n.CellWidth=l.Stretch?Math.Max(0,(inner-(n.Columns-1)*l.Gap)/n.Columns):widest;
+    }
     private static float Extent(Node n)=>Horizontal(n)?n.Box.Width:n.Box.Height;
     private static float Limit(Node n)=>Math.Max(0,n.Content-Extent(n));
     private float Height(Node n)=>Math.Max(n.Object.Height,n.Label==null&&n.Field==null&&n.Control is not UiDropdownComponent?0:Math.Max(0,n.Label?.InsetY??3)+(n.Rich?.Height??(n.Label?.Size??16)*Preferences.TextScale*1.4f*Math.Max(1,n.Lines.Length)));
@@ -65,24 +75,36 @@ public sealed partial class ScreenUi
             float w=0;int count=0;
             foreach(var child in n.Children)if(Visible(child)){
                 if(Horizontal(n))w+=(count++>0?l.Gap:0)+child.MeasuredWidth;
-                else w=Math.Max(w,child.MeasuredWidth);
+                else {w=Math.Max(w,child.MeasuredWidth);count++;}
             }
+            if(Flow(n)&&l.Axis=="Grid"&&l.Columns is int columns&&count>0)w=Math.Min(columns,count)*w+(Math.Min(columns,count)-1)*l.Gap;
             n.MeasuredWidth=Math.Max(n.MeasuredWidth,w+2*l.Padding);
         }
         foreach(var n in treeOrder)
         {
             var p=n.Parent;
             if (n.Canvas) n.AllocatedWidth = screen.Width;
+            else if (p != null && Flow(p)) n.AllocatedWidth = p.Layout!.Stretch ? p.CellWidth : n.MeasuredWidth;
             else if (p != null && (p.Layout != null || p.Scroll))
                 n.AllocatedWidth = !Horizontal(p) && (p.Layout?.Stretch ?? true)
                     ? Math.Max(0, p.AllocatedWidth - 2 * (p.Layout?.Padding ?? 0)) : n.MeasuredWidth;
             else n.AllocatedWidth = PinnedSize(p?.AllocatedWidth ?? screen.Width, n.MeasuredWidth, n.Rect?.Left, n.Rect?.Right);
+            if (Flow(n)) Cells(n);
             MeasureLines(n,metrics);
         }
         for(int i=treeOrder.Length-1;i>=0;i--)
         {
             var n=treeOrder[i]; n.Measured=Height(n);n.Cursor=n.Layout?.Padding??0;n.Placed=0;
             if(n.Layout==null&&!n.Scroll)continue;
+            if(Flow(n))
+            {
+                var l=n.Layout!;float row=0;int cells=0;
+                foreach(var child in n.Children)if(Visible(child)){row=Math.Max(row,child.Measured);cells++;}
+                int rows=(cells+n.Columns-1)/n.Columns;
+                n.RowHeight=row;n.Content=2*l.Padding+rows*row+Math.Max(0,rows-1)*l.Gap;
+                if(!n.Scroll)n.Measured=Math.Max(n.Measured,n.Content);
+                continue;
+            }
             bool h=Horizontal(n);float pad=n.Layout?.Padding??0,gap=n.Layout?.Gap??0,length=2*pad,cross=0;int count=0;
             foreach(var child in n.Children)
             {
@@ -102,6 +124,12 @@ public sealed partial class ScreenUi
             var p=n.Parent; var b=p?.Box??screen;
             n.Clip=p==null?screen:p.Scroll?RectangleF.Intersect(p.Box,p.Clip):p.Clip;
             if(n.Canvas)n.Box=screen;
+            else if(p!=null && Flow(p))
+            {
+                var l=p.Layout!;int k=p.Placed;if(Visible(n))p.Placed++;
+                n.Box=new(b.X+l.Padding+k%p.Columns*(p.CellWidth+l.Gap),b.Y+l.Padding+k/p.Columns*(p.RowHeight+l.Gap)-p.Offset,
+                    l.Stretch?p.CellWidth:n.MeasuredWidth,l.Stretch?p.RowHeight:n.Measured);
+            }
             else if(p!=null && (p.Layout!=null||p.Scroll))
             {
                 float pad=p.Layout?.Padding??0;bool stretch=p.Layout?.Stretch??true,h=Horizontal(p);
@@ -121,6 +149,8 @@ public sealed partial class ScreenUi
                 float y = PinnedStart(b.Height, h, n.Rect?.Top, n.Rect?.Bottom, (a / 3) * .5f, delta.Y);
                 n.Box = new(b.X + x, b.Y + y, w, h);
             }
+            if (boxOffsets.Count > 0 && boxOffsets.TryGetValue(n.Object.Id, out var d))
+                n.Box = new(n.Box.X + d.X, n.Box.Y + d.Y, Math.Max(0, n.Box.Width + d.Width), Math.Max(0, n.Box.Height + d.Height));
             n.Offset=n.Scroll?Math.Clamp(n.Offset,0,Limit(n)):0;
             PlaceListRow(n);
         }
@@ -131,8 +161,18 @@ public sealed partial class ScreenUi
                 if (Enabled(nodes[i]) && Hit(nodes[i], point.X, point.Y)) { hovered = nodes[i].Object.Id; break; }
         if (pressed is Guid captured && (!byId.TryGetValue(captured, out var down) || !Enabled(down) || !Visible(down))) pressed = null;
         if(focus is Guid id&&(!byId.TryGetValue(id,out var f)||!Enabled(f)||!Visible(f)))SetFocus(null);
+        if(carried is Guid held&&(!byId.TryGetValue(held,out var c)||!Enabled(c)||!Visible(c)))(carried,dragging)=(null,false);
     }
     public RectangleF? Bounds(Guid id){Arrange();return byId.GetValueOrDefault(id)?.Box;}
+    // Script tweens (UiRect): an offset added to the laid-out box; children lay out inside the moved box. Empty removes it.
+    private readonly Dictionary<Guid, RectangleF> boxOffsets = [];
+    public RectangleF BoxOffset(Guid id) => boxOffsets.GetValueOrDefault(id);
+    public bool SetBoxOffset(Guid id, RectangleF offset)
+    {
+        if (!byId.ContainsKey(id)) return false;
+        if (offset == RectangleF.Empty) boxOffsets.Remove(id); else boxOffsets[id] = offset;
+        return true;
+    }
     public float ScrollOffset(Guid id){Arrange();return byId.GetValueOrDefault(id)?.Offset??0;}
     public SceneObject? Pick(float x,float y){Arrange();return nodes.LastOrDefault(n=>IsWidget(n.Object)&&Hit(n,x,y))?.Object;}
     private bool Hit(Node n,float x,float y)=>n.Box.Contains(x,y)&&n.Clip.Contains(x,y)&&Visible(n);

@@ -3,6 +3,7 @@ using Engine.Editor;
 
 internal static class MultiInspectorChecks
 {
+    [Check(9400)] static void Registered(CheckRun c) => Run(c.Scratch);
     internal static void Run(string project)
     {
         var scene = SceneDocument.OpenForEditing(Path.Combine(project, "Scenes", "WallWorkshop.scene"));

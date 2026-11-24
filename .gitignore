@@ -2,10 +2,13 @@ bin/
 obj/
 /engine/.artifacts/
 /editor/
-/player-templates/
+/player-templates
+/.monoon-cache/
 /game-builds/
 /samples/dist/
 .DS_Store
 /.test-env/
 **/.monoon/ide/
 .monoon-build-cache/
+/.claude/worktrees/
+/.claude/settings.local.json

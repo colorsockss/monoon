@@ -4,6 +4,7 @@ using Engine.Core;
 
 internal static class CollisionChecks
 {
+    [Check(5100, "physics")] static void Registered(CheckRun c) => Run(c.Repository);
     private static void Check(bool valid,string name) { if (!valid) throw new Exception("Physics: "+name); }
     private static void Near(float actual,float expected,string name) => Check(Math.Abs(actual-expected)<.001f,$"{name}: {actual} vs {expected}");
     private static PhysicsHit Hit(PhysicsHit? h) => h??throw new Exception("Missing physics hit");

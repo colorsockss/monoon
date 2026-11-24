@@ -4,6 +4,7 @@ using Engine.Core;
 // Copy objects from one scene and paste them into the same scene and into another one.
 internal static class ObjectClipboardChecks
 {
+    [Check(9900)] static void Registered(CheckRun c) => Run(c.Scratch);
     private static void Check(bool ok, string why) { if (!ok) throw new Exception("Object clipboard: " + why); Console.WriteLine("PASS " + why); }
     private static JsonElement Ref(Guid id) => JsonDocument.Parse($"\"{id}\"").RootElement.Clone();
     private static Guid Field(SceneObject obj, string script, string name) => obj.Components.OfType<ScriptComponent>().Single(s => s.Script == script).ReadOverride(name, Guid.Empty);

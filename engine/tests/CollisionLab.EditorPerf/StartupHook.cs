@@ -15,34 +15,10 @@ public static class StartupHook
     private static readonly string Output = Environment.GetEnvironmentVariable("MONOON_EDITOR_PERF")!;
     private const BindingFlags Any = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic;
 
-    public static void Initialize() => Task.Run(async () =>
-    {
-        while (Application.Current?.ApplicationLifetime is not IClassicDesktopStyleApplicationLifetime { MainWindow: not null })
-            await Task.Delay(100);
-        await Dispatcher.UIThread.InvokeAsync(async () =>
-        {
-            var life = (IClassicDesktopStyleApplicationLifetime)Application.Current!.ApplicationLifetime!;
-            // A dialog (for example the unsaved-scene prompt) would wait for a click: fail fast instead of hanging.
-            var guard = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(250) };
-            guard.Tick += (_, _) =>
-            {
-                if (life.Windows.FirstOrDefault(w => w != life.MainWindow && w.IsVisible) is not { } dialog) return;
-                File.WriteAllText(Path.Combine(Output, "error.txt"), $"unexpected window: {dialog.Title}");
-                Environment.Exit(3);
-            };
-            guard.Start();
-            try { await Test(life.MainWindow!); }
-            catch (Exception ex) { File.WriteAllText(Path.Combine(Output, "error.txt"), ex.ToString()); }
-            finally { life.Shutdown(); }
-        });
-    });
+    public static void Initialize() => Start(Path.Combine(Output, "error.txt"), life => Test(life.MainWindow!));
 
     private static void Require(bool value, string message) { if (!value) throw new InvalidDataException(message); }
-    private static async Task Until(Func<bool> done, string what, int seconds = 120)
-    {
-        var limit = DateTime.UtcNow.AddSeconds(seconds);
-        while (!done()) { if (DateTime.UtcNow > limit) throw new TimeoutException(what); await Task.Delay(20); }
-    }
+    private static Task Until(Func<bool> done, string what, int seconds = 30) => Probe.Until(done, what, seconds, poll: 20);
     private static object? Call(object target, string name, params object?[] args) =>
         target.GetType().GetMethod(name, Any)!.Invoke(target, args);
 
@@ -86,6 +62,21 @@ public static class StartupHook
         Same("redo");
         a = scene.Objects.Single(o => o.Id == a.Id);
         b = scene.Objects.Single(o => o.Id == b.Id);
+        // A typed Inspector field (TextBox/NumericUpDown) keeps the order unless it changed a sorting input of the selection.
+        Call(main, "Select", a);
+        Shown();
+        object? Kept() => view.GetType().GetField("editOrder", Any)!.GetValue(view);
+        var built = Kept();
+        var field = new NumericUpDown();
+        a.Name = "Typed name";
+        Call(main, "MarkDirty", field);
+        Require(built != null && ReferenceEquals(Kept(), built), "a typed name keeps the draw order");
+        Same("typed name");
+        a.GetComponent<SpriteRendererComponent>()!.Order = -3;
+        Call(main, "MarkDirty", field);
+        Require(Kept() == null, "a typed sorting order rebuilds the draw order");
+        Same("typed sorting order");
+        Require(Rank(a) < Rank(b), "typed lower order draws first");
         a.GetComponent<SpriteRendererComponent>()!.Order = 0;
         a.GetComponent<SpriteRendererComponent>()!.SortByY = b.GetComponent<SpriteRendererComponent>()!.SortByY = true;
         a.Y = b.Y + 100;
@@ -114,7 +105,7 @@ public static class StartupHook
         await (Task)Call(main, "SwitchScene", "Field10000")!;
         await Until(() => Scene().Objects.Count > 10000, "Field10000 open");
         main.UpdateLayout();
-        await Task.Delay(500);
+        await Delay(500);
         var scene = Scene();
         var tree = (System.Collections.IDictionary)main.GetType().GetField("treeItems", Any)!.GetValue(main)!;
 
@@ -149,7 +140,7 @@ public static class StartupHook
         var enterLayout = Measure(main.UpdateLayout);
         var world = (SceneGame)type.GetProperty("PlayWorld", Any)!.GetValue(view)!;
         Require(world.Objects.Count > 10000, "play world");
-        await Task.Delay(1000);
+        await Delay(1000);
         main.UpdateLayout();
 
         var target = world.Objects[^1];

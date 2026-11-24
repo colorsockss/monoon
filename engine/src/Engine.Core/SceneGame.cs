@@ -22,23 +22,38 @@ public sealed partial class SceneGame : IGameObjects, IGame2D, IGameCameras, IDi
         public SceneAppearance Appearance = SceneAppearance.From(obj, project, assets);
         public readonly CutsceneSequence? Sequence = obj.GetComponent<CutsceneDirectorComponent>()?.Sequence is Guid sequence
             ? assets?.LoadSequence(project!, sequence) ?? throw new InvalidDataException($"{obj.Name}: a cutscene requires a project.") : null;
-        public readonly PositionTween? Tween = obj.GetComponent<PositionTween2DComponent>() is {} tween ? new(tween) : null;
-        public readonly PathMotion? Follower = obj.GetComponent<PathFollower2DComponent>() is {} follower ? new(follower) : null;
+        public readonly PositionTween? Tween = obj.GetComponent<PositionTween2DComponent>() is not {} tween ? null
+            : EngineFeatures.Tweens ? new(tween) : throw EngineFeatures.Disabled(EngineFeature.Tweens, obj.Name);
+        public readonly Parallax2DComponent? Parallax = obj.GetComponent<Parallax2DComponent>();
+        public Vector2 CameraHome; // A camera's first view centre; parallax layers measure its travel from here.
+        public readonly PathMotion? Follower = obj.GetComponent<PathFollower2DComponent>() is not {} follower ? null
+            : EngineFeatures.Tweens ? new(follower) : throw EngineFeatures.Disabled(EngineFeature.Tweens, obj.Name);
         public readonly LineRenderer? Line = obj.GetComponent<Line2DComponent>() is {} line ? new(line) : null;
         public readonly TrailRenderer? Trail = obj.GetComponent<Trail2DComponent>() is {} trail ? new(trail) : null;
+        public readonly WorldTextLabel? Text = obj.GetComponent<Text2DComponent>() is not {} text ? null
+            : EngineFeatures.Text ? new(text) : throw EngineFeatures.Disabled(EngineFeature.Text, obj.Name);
         public readonly SkeletonAnimator2DComponent? SkeletonConfig=obj.GetComponent<SkeletonAnimator2DComponent>();
-        public readonly SkeletonPose? Skeleton=obj.GetComponent<SkeletonAnimator2DComponent>()?.Rig is Guid rig
-            ? new(assets?.LoadRig(project!,rig) ?? throw new InvalidDataException($"{obj.Name}: rig requires a project.")) : null;
+        // Roadmap 15.12: a feature's runtime object is created only behind its switch; a Native AOT game built without the
+        // feature rejects the component (only unseen content can have one), so ILC drops the code it would reach.
+        public readonly SkeletonPose? Skeleton=obj.GetComponent<SkeletonAnimator2DComponent>()?.Rig is not Guid rig ? null
+            : !EngineFeatures.Skeletons ? throw EngineFeatures.Disabled(EngineFeature.Skeletons, obj.Name)
+            : new(assets?.LoadRig(project!,rig) ?? throw new InvalidDataException($"{obj.Name}: rig requires a project."));
         public readonly FootIK2DComponent? FootIK=obj.GetComponent<FootIK2DComponent>();
         public PhysicsFilter? FootFilter;
         public readonly ShaderClip? Shader = obj.GetComponent<SpriteShader2DComponent>()?.Shader is Guid id
             ? assets?.LoadShader(project!,id) ?? throw new InvalidDataException($"{obj.Name}: shader requires a project.") : null;
-        public readonly PointLight2DComponent? Light = obj.GetComponent<PointLight2DComponent>();
-        public readonly ParticleBurst? Particles = obj.GetComponent<ParticleEmitter2DComponent>() is {} emitter ? new(obj.Id,emitter) : null;
+        public readonly PointLight2DComponent? Light = obj.GetComponent<PointLight2DComponent>() is not {} light ? null
+            : EngineFeatures.Lighting ? light : throw EngineFeatures.Disabled(EngineFeature.Lighting, obj.Name);
+        public readonly ParticleSystem2D? Particles = obj.GetComponent<ParticleEmitter2DComponent>() is not {} emitter ? null
+            : !EngineFeatures.Particles ? throw EngineFeatures.Disabled(EngineFeature.Particles, obj.Name) : new(obj,emitter,
+            emitter.Legacy ? emitter.LegacyEffect() : emitter.Particles is Guid fx
+                ? assets?.LoadParticles(project!,fx) ?? throw new InvalidDataException($"{obj.Name}: particles require a project.") : new());
         public readonly bool Interface = ScreenUi.IsWidget(obj) || obj.GetComponent<UiCanvasComponent>() != null;
         public TileWorld? Stream;
-        public Tilemap2DComponent? Map = obj.GetComponent<Tilemap2DComponent>();
+        public Tilemap2DComponent? Map = obj.GetComponent<Tilemap2DComponent>() is not {} map ? null
+            : EngineFeatures.Tilemaps ? map : throw EngineFeatures.Disabled(EngineFeature.Tilemaps, obj.Name);
         public TilePalette? Palette;
+        public ParticleTiles? ParticleTiles;
         // Tile query shapes in world space (ScenePhysics.TileShape) and the pose, layout and cell size they were built for.
         public Dictionary<Point,(int Tile, Shape2D? Shape)>? TileShapes;
         public Matrix3x2 TileShapePose;
@@ -46,7 +61,8 @@ public sealed partial class SceneGame : IGameObjects, IGame2D, IGameCameras, IDi
         public TileSize? TileShapeSize;
         public List<(GridNavigation Grid, System.Drawing.Point Origin)>? Grids;
         public string? Sound;
-        public readonly AudioSourceComponent? AudioSource=obj.GetComponent<AudioSourceComponent>();
+        public readonly AudioSourceComponent? AudioSource=obj.GetComponent<AudioSourceComponent>() is not {} source ? null
+            : EngineFeatures.Audio ? source : throw EngineFeatures.Disabled(EngineFeature.Audio, obj.Name);
         public bool AutoStarted;
         public AudioPlayback? Playback;
         public AnimationPlayer? Animation;
@@ -63,8 +79,9 @@ public sealed partial class SceneGame : IGameObjects, IGame2D, IGameCameras, IDi
             }
         }
         public Action<AnimationMarker>? FrameEvent;
-        public readonly Collider2DComponent? ColliderConfig = obj.GetComponent<Collider2DComponent>();
-        public bool ColliderEnabled = true;
+        public readonly Collider2DComponent? ColliderConfig = obj.GetComponent<Collider2DComponent>() is not {} collider ? null
+            : EngineFeatures.Physics ? collider : throw EngineFeatures.Disabled(EngineFeature.Physics, obj.Name);
+        public bool ColliderEnabled = obj.GetComponent<Collider2DComponent>()?.Enabled != false;
         public long ContactRevision;
         public Shape2D EndShape;
         public RectangleF ContactBounds;
@@ -72,10 +89,14 @@ public sealed partial class SceneGame : IGameObjects, IGame2D, IGameCameras, IDi
         public bool InSweep;
         public bool Moved => translations.Count != 0 || StartAngle != Angle;
         public Collider2DComponent? Collider => ColliderEnabled ? ColliderConfig : null;
-        private Shape2D geometry = CollisionGeometry.ForObject(obj);
-        public readonly Rigidbody2DComponent? Rigid = obj.GetComponent<Rigidbody2DComponent>();
-        public readonly CharacterMotor2DComponent? Motor = obj.GetComponent<CharacterMotor2DComponent>();
-        public readonly Joint2DComponent[] Joints = obj.Components.OfType<Joint2DComponent>().ToArray();
+        // Without the physics feature no object has a collider, and ForObject gives default.
+        private Shape2D geometry = EngineFeatures.Physics ? CollisionGeometry.ForObject(obj) : default;
+        public readonly Rigidbody2DComponent? Rigid = obj.GetComponent<Rigidbody2DComponent>() is not {} rigid ? null
+            : EngineFeatures.Physics ? rigid : throw EngineFeatures.Disabled(EngineFeature.Physics, obj.Name);
+        public readonly CharacterMotor2DComponent? Motor = obj.GetComponent<CharacterMotor2DComponent>() is not {} motor ? null
+            : EngineFeatures.Physics ? motor : throw EngineFeatures.Disabled(EngineFeature.Physics, obj.Name);
+        public readonly Joint2DComponent[] Joints = obj.Components.OfType<Joint2DComponent>().ToArray() is not { Length: > 0 } joints ? []
+            : EngineFeatures.Physics ? joints : throw EngineFeatures.Disabled(EngineFeature.Physics, obj.Name);
         // Box2D state (ScenePhysicsWorld.cs): the body this object owns, its exact shape inputs and last synced pose.
         public Brutal.Box2DApi.B2Body Physics;
         public Brutal.Box2DApi.B2Joint?[]? PhysicsJoints;
@@ -98,10 +119,18 @@ public sealed partial class SceneGame : IGameObjects, IGame2D, IGameCameras, IDi
         public Vector2 Velocity;
         public float Spin, InvMass, MinGroundCos;
         public Shape2D ShapeAt(Vector2 origin) => ShapeAt(origin, Angle);
-        public Shape2D ShapeAt(Vector2 origin, float angle) => angle == 0 ? geometry.Translated(origin) :
-            CollisionGeometry.ForObject(Source, MatrixAt(Vector2.Zero, angle)).Translated(origin);
+        public Shape2D ShapeAt(Vector2 origin, float angle) => angle == 0 ? geometry.Translated(origin) : Turned(angle).Translated(origin);
+        // The last turned shape: contacts, sweeps and queries ask for the same angle several times per tick.
+        private float turnedAngle = float.NaN;
+        private Shape2D turned;
+        private Shape2D Turned(float angle)
+        {
+            if (BitConverter.SingleToInt32Bits(angle) != BitConverter.SingleToInt32Bits(turnedAngle))
+                (turned, turnedAngle) = (EngineFeatures.Physics ? CollisionGeometry.ForObject(Source, MatrixAt(Vector2.Zero, angle)) : default, angle);
+            return turned;
+        }
         public float AngleAt(float time) => StartAngle + (Angle - StartAngle) * time;
-        public bool Active = true, ActiveSelf = true, NotifiedActive;
+        public bool Active = obj.Active, ActiveSelf = obj.Active, NotifiedActive;
         public bool Spawning; // Rented from a prefab pool during this tick.
         private Matrix3x2 Basis = obj.WorldMatrix;
         public readonly Guid? InitialParent = obj.ParentId;
@@ -111,7 +140,10 @@ public sealed partial class SceneGame : IGameObjects, IGame2D, IGameCameras, IDi
             Angle = angle;
             Position = matrix.Translation;
             Basis = angle == 0 ? matrix : matrix * Matrix3x2.CreateRotation(-angle);
-            geometry = CollisionGeometry.ForObject(Source, Basis);
+            // Same result as ForObject without a collider, minus its component scan (tweens and clip poses call this every tick).
+            geometry = default;
+            if (EngineFeatures.Physics) if (ColliderConfig != null) geometry = CollisionGeometry.ForObject(Source, Basis);
+            turnedAngle = float.NaN;
             PoseRevision++;
             BeginStep();
             QueryGrid?.Update(ColliderOrdinal);
@@ -125,8 +157,9 @@ public sealed partial class SceneGame : IGameObjects, IGame2D, IGameCameras, IDi
             return matrix;
         }
         public Vector2 Position = obj.WorldPosition;
-        public Vector2 CameraStart, CameraEnd;
-        public bool CameraReady;
+        public Vector2 CameraStart, CameraEnd, CameraTarget;
+        public float CameraZoomStart, CameraZoomEnd;
+        public bool CameraReady, CameraTracked;
         public int Index, SubtreeEnd;
         private Vector2 start = obj.WorldPosition;
         private readonly List<MotionPath> translations = [];
@@ -197,6 +230,7 @@ public sealed partial class SceneGame : IGameObjects, IGame2D, IGameCameras, IDi
         return true;
     }
     private readonly ShaderClip particleSheet = ShaderClip.Puff, lightSheet = ShaderClip.LightFalloff;
+    private ParticleTexture? particleTexture;
     private readonly GameSettings settings;
     public Size LogicalSize => settings.Resolution;
     public static readonly Color Background = Color.FromArgb(24, 33, 45);
@@ -218,7 +252,8 @@ public sealed partial class SceneGame : IGameObjects, IGame2D, IGameCameras, IDi
         ownsScripts = sharedScripts == null;
         State = state ?? new();
         ownsAudio=state==null;
-        if(ownsAudio) Mixer.Levels=scene.Settings.Mixer;
+        // Without the audio feature no sound plays, so the mixer is never configured, fed or opened (roadmap 15.12).
+        if (EngineFeatures.Audio) if(ownsAudio) Mixer.Configure(scene.Settings);
         world = new SceneDocument { ProjectDirectory = scene.ProjectDirectory, Settings = scene.Settings,
             DefaultCameraId = scene.DefaultCameraId };
         var copies = scene.Objects.ToDictionary(obj => obj.Id, obj => obj.RuntimeCopy());
@@ -272,6 +307,7 @@ public sealed partial class SceneGame : IGameObjects, IGame2D, IGameCameras, IDi
         Ui.InputModeChanged += Actions.ChangeInputMode;
         Ui.PointerCanceled += CancelWorldPointer;
         Reindex();
+        foreach (var b in parentFirst) if (b.Source.ParentId is Guid parent && !byId[parent].Active) b.Active = false; // inactive ancestors
         UpdateTileWorlds();
         RegisterLife(parentFirst);
         built = -1;
@@ -284,6 +320,9 @@ public sealed partial class SceneGame : IGameObjects, IGame2D, IGameCameras, IDi
     private Body CreateBody(SceneObject obj)
     {
         var scene = world;
+        // obj is this world's own copy. Turned-off components are left out; a collider stays, disabled (SetColliderEnabled).
+        foreach (var c in obj.Components)
+            if (!c.Enabled && c is not Collider2DComponent) { obj.Components = obj.Components.RemoveAll(x => !x.Enabled && x is not Collider2DComponent); break; }
         var body = new Body(obj, world.ProjectDirectory, assets);
         if (body.Sequence != null) Actions.EnableDialogueBindings();
         if (body.Rigid is {} rigid)
@@ -302,7 +341,7 @@ public sealed partial class SceneGame : IGameObjects, IGame2D, IGameCameras, IDi
                 throw new InvalidDataException($"{obj.Name}: missing {format} asset {id}.");
             return Path.Combine(scene.ProjectDirectory!, path);
         }
-        if (body.Map is { } map)
+        if (EngineFeatures.Tilemaps) if (body.Map is { } map)
         {
             if (map.Tileset is Guid id)
             {
@@ -317,7 +356,11 @@ public sealed partial class SceneGame : IGameObjects, IGame2D, IGameCameras, IDi
                 ownedWorlds.Add(body.Stream);
                 body.Map = body.Stream.Map;
             }
-            else map.ValidateTiles(body.Palette,obj.Name);
+            else
+            {
+                map.ValidateTiles(body.Palette,obj.Name);
+                if (body.Palette != null) body.Map = map.Resolved(body.Palette);
+            }
         }
         if (obj.GetComponent<SpriteAnimatorComponent>() is {} animator && (animator.Controller != null || animator.Clip != null))
         {
@@ -367,7 +410,8 @@ public sealed partial class SceneGame : IGameObjects, IGame2D, IGameCameras, IDi
         foreach (var b in items)
         {
             if (b.Shader != null) shader?.Invoke(b.Shader);
-            if (b.Particles != null) shader?.Invoke(particleSheet);
+            if (b.Particles?.Effect.Resolved?.Path is {} particles) sprite(particles);
+            else if (b.Particles != null) shader?.Invoke(particleSheet);
             if (b.Light != null) shader?.Invoke(lightSheet);
             if (b.Appearance.Mask is {} mask) sprite(mask);
             if (b.Appearance.Image is {} image) sprite(image);
@@ -404,19 +448,9 @@ public sealed partial class SceneGame : IGameObjects, IGame2D, IGameCameras, IDi
         Simulate(revision == Ui.InputModeRevision ? input : default, seconds);
     }
 
-    public void UpdateUi(GameInput input, double seconds)
+    private void DispatchControls(int revision)
     {
-        ObjectDisposedException.ThrowIf(closing,this);
-        int revision = Ui.InputModeRevision;
-        Ui.ValidateInputModes();
-        if (Time.IsPaused) CancelWorldPointer();
-        Time.AdvanceUi(seconds);
-        Ui.AdvanceReveal(seconds);
-        started = true;
-        FlushLife();
-        UpdateDialogue(input);
-        if (modalFrame) input = default;
-        using (FrameProfiler.Sample(FrameProfiler.UiInput)) Ui.Dispatch(id => NotifyControl(id, null), (id, value) => NotifyControl(id, value));
+        Ui.Dispatch(id => NotifyControl(id, null), (id, value) => NotifyControl(id, value), dropHandler ??= NotifyDrop);
         void NotifyControl(Guid id, float? value)
         {
             var button = Array.Find(bodies, b => b.Id == id)!;
@@ -433,6 +467,22 @@ public sealed partial class SceneGame : IGameObjects, IGame2D, IGameCameras, IDi
                 catch (Exception ex) { throw ScriptFailure(behaviour, value.HasValue ? nameof(GameBehaviour.OnUiValueChanged) : nameof(GameBehaviour.OnUiClick), ex); }
             }
         }
+    }
+
+    public void UpdateUi(GameInput input, double seconds)
+    {
+        ObjectDisposedException.ThrowIf(closing,this);
+        int revision = Ui.InputModeRevision;
+        Ui.ValidateInputModes();
+        if (Time.IsPaused) CancelWorldPointer();
+        Time.AdvanceUi(seconds);
+        Ui.AdvanceReveal(seconds);
+        started = true;
+        FlushLife();
+        UpdateDialogue(input);
+        if (modalFrame) input = default;
+        // The click callbacks capture locals; build them only on ticks that have control events.
+        using (FrameProfiler.Sample(FrameProfiler.UiInput)) if (Ui.HasControlEvents) DispatchControls(revision);
         foreach (var body in parentFirst)
         {
             using var scope = EnterScene(body);
@@ -496,10 +546,11 @@ public sealed partial class SceneGame : IGameObjects, IGame2D, IGameCameras, IDi
             using (FrameProfiler.Sample(FrameProfiler.Move)) translation = MoveGroup(group, body.Displacement);
             foreach (var member in group) member.Translate(translation);
         }
-        if (rigidBodies.Length > 0) using (FrameProfiler.Sample(FrameProfiler.Rigidbodies)) StepRigidBodies(seconds);
-        using (FrameProfiler.Sample(FrameProfiler.Animation)) foreach (var body in skeletons) if (body.Active) body.Skeleton!.Step(this,body,seconds);
+        if (EngineFeatures.Physics) if (rigidBodies.Length > 0) using (FrameProfiler.Sample(FrameProfiler.Rigidbodies)) StepRigidBodies(seconds);
+        if (EngineFeatures.Skeletons) using (FrameProfiler.Sample(FrameProfiler.Animation)) foreach (var body in skeletons) if (body.Active) body.Skeleton!.Step(this,body,seconds);
         using (FrameProfiler.Sample(FrameProfiler.Effects)) { StepEffects(seconds); StepTrails(); }
-        using (FrameProfiler.Sample(FrameProfiler.Contacts)) DispatchContacts();
+        // Contacts need colliders or tile collision, both physics.
+        if (EngineFeatures.Physics) using (FrameProfiler.Sample(FrameProfiler.Contacts)) DispatchContacts();
         StepRoutines(ui: false);
         CommitChanges();
         using (FrameProfiler.Sample(FrameProfiler.Cameras)) StepCameras(seconds);
@@ -522,8 +573,10 @@ public sealed partial class SceneGame : IGameObjects, IGame2D, IGameCameras, IDi
         using (FrameProfiler.Sample(FrameProfiler.RenderWorld))
         {
             if (ViewCamera is { Active:true } lens) DrawCamera(canvas,lens,interpolation);
-            if (playback is {} p) DrawDialogue(canvas,p);
-            else foreach (var extra in overlays) if (extra.Active) DrawCamera(canvas,extra,interpolation);
+            // A cutscene (text feature) replaces the extra views with its dialogue.
+            if (!EngineFeatures.Text) DrawOverlays(canvas,interpolation);
+            else if (playback is {} p) DrawDialogue(canvas,p);
+            else DrawOverlays(canvas,interpolation);
         }
         if (screen.Adjusted) canvas.EndColorAdjust(screen.Multiply,screen.Lift);
         if (playback == null) using (FrameProfiler.Sample(FrameProfiler.UiDraw)) Ui.Draw(canvas);
@@ -531,6 +584,11 @@ public sealed partial class SceneGame : IGameObjects, IGame2D, IGameCameras, IDi
         if (screen.Fade.A > 0) canvas.FillRectangle(all,screen.Fade);
         if (screen.Flash.A > 0) canvas.FillRectangle(all,screen.Flash);
         screen = ScreenFrame.None;
+    }
+
+    private void DrawOverlays(ICanvas2D canvas, float interpolation)
+    {
+        foreach (var extra in overlays) if (extra.Active) DrawCamera(canvas,extra,interpolation);
     }
 
     private ScreenFrame screen = ScreenFrame.None;
@@ -560,17 +618,21 @@ public sealed partial class SceneGame : IGameObjects, IGame2D, IGameCameras, IDi
         double effectTime=Math.Max(0,Time.GameSeconds-(1-interpolation)*effectStep);
         var ranks = UseRenderGrid ? renderGrid?.Ranks(frame, drawOrder) : null;
         int count = ranks?.Count ?? drawOrder.Items.Length;
+        var global = EngineFeatures.Lighting ? GlobalLight() : null;
+        bool unlit = global == null;
         for (int i = 0; i < count; i++)
         {
             var item = drawOrder.Items[ranks == null ? i : ranks[i]];
+            if (EngineFeatures.Lighting) if (!unlit && item.Layer >= global!.UnlitLayer) { DrawLighting(canvas,global,port,frame,view,interpolation,effectTime); unlit = true; }
             var body = bodies[item.Index];
             if (!body.Active || body.Interface) continue;
             var matrix = DrawMatrix(item.Index, interpolation);
             if (item.Map != null)
             {
-                if (body.Palette != null) body.Map!.Draw(canvas,body.Palette,matrix,frame,view);
+                if (EngineFeatures.Tilemaps) if (body.Palette != null) body.Map!.Draw(canvas,body.Palette,matrix,frame,view,effectTime);
                 continue;
             }
+            if (body.Parallax != null) { DrawParallax(canvas, body, lens, shot, matrix, view); continue; }
             var local = new RectangleF(0,0,body.Size.X,body.Size.Y);
             body.SpritePool?.Draw(canvas, frame, view, interpolation);
             body.Trail?.Draw(canvas, TrailCenter(body, matrix), effectTime, view);
@@ -581,15 +643,18 @@ public sealed partial class SceneGame : IGameObjects, IGame2D, IGameCameras, IDi
                 if (body.Shader is {} shader) canvas.DrawShader(shader,shader.FrameAt(effectTime),local,matrix*view,Color.White,false);
             }
             body.Line?.Draw(canvas, matrix, view);
-            body.Skeleton?.Draw(canvas,matrix,view,frame,interpolation);
+            if (EngineFeatures.Text) body.Text?.Draw(canvas, body.Text.Text(Ui), body.Size, matrix, view, frame);
+            if (EngineFeatures.Skeletons) body.Skeleton?.Draw(canvas,matrix,view,frame,interpolation);
+            if (EngineFeatures.Particles) body.Particles?.Draw(canvas,particleTexture ??= new(null,particleSheet,[particleSheet.Region(0)]),frame,matrix,view,effectTime);
         }
-        foreach (var b in emitters) if (b.Active) b.Particles!.Draw(canvas,particleSheet,frame,view,effectTime);
-        foreach (var b in lights) if (b.Active)
+        if (EngineFeatures.Lighting) if (!unlit) DrawLighting(canvas,global!,port,frame,view,interpolation,effectTime);
+        if (EngineFeatures.Lighting) if (global == null) foreach (var b in lights) if (b.Active)
         {
             var center=Affine2D.Transform(b.Size*.5f,b.MatrixAt(b.At(interpolation),b.AngleAt(interpolation)));
             b.Light!.Draw(canvas,lightSheet,center,frame,view,effectTime);
         }
         if(Diagnostics is {} debug && canvas is IDiagnosticLines lines) DrawDiagnostics(lines,debug,shot,interpolation);
+        if (ScriptDebug.IsSupported && lens.Camera!.Output!=Camera2DComponent.Minimap) DebugShapes.Draw(this,canvas,shot);
         if (lens.Camera is { Output:Camera2DComponent.Minimap, ShowViews:true })
         {
             if (camera?.Active==true) OutlineView(camera,Color.White);

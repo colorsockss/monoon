@@ -1,0 +1,3346 @@
+{
+ "host": {
+  "rid": "linux-x64",
+  "platform": "Linux-6.1.0-56-cloud-amd64-x86_64-with-glibc2.36",
+  "machine": "x86_64",
+  "python": "3.11.2",
+  "dotnet": "10.0.101",
+  "slow": "10",
+  "timeout_scale": "15"
+ },
+ "mac-package-KeyRoom": {
+  "status": "pass",
+  "layout": {
+   "files": 113,
+   "bytes": 38041474,
+   "exe_bytes": 78256,
+   "exe_mode": "-rwxr-xr-x",
+   "native": {
+    "libSDL3.so": "-> libSDL3.so.0",
+    "libSDL3.so.0": 4211016,
+    "libSDL3_ttf.so": 2368696,
+    "libSDL3_mixer.so": 404464,
+    "libbox2d.so": 376200
+   },
+   "forbidden": [],
+   "deps_missing": [],
+   "deps_native_not_shipped": [
+    "createdump",
+    "libSDL3.so.0.4.12",
+    "libSDL3_mixer.so.0",
+    "libSDL3_mixer.so.0.2.4",
+    "libSDL3_ttf.so.0",
+    "libSDL3_ttf.so.0.2.2",
+    "libbox2d.so.3",
+    "libbox2d.so.3.1.1",
+    "libclrgc.so",
+    "libclrgcexp.so",
+    "libcoreclrtraceptprovider.so",
+    "libmscordaccore.so",
+    "libmscordbi.so"
+   ],
+   "tar_libSDL3.so": "link -> libSDL3.so.0",
+   "tar_modes": {
+    "MoNoonPlayer": "-rwxr-xr-x",
+    "install-desktop-entry.sh": "-rwxr-xr-x",
+    "Game/GameSettings": "-rw-r--r--",
+    "libSDL3.so.0": "-rwxr--r--",
+    "libSDL3_ttf.so": "-rwxr--r--",
+    "libSDL3_mixer.so": "-rwxr--r--",
+    "libbox2d.so": "-rwxr--r--",
+    "MoNoonPlayer.deps.json": "-rw-r--r--"
+   },
+   "executables": [
+    "Licenses/BRUTAL/BRUTAL-BOX2D-THIRD-PARTY-NOTICES.txt",
+    "Licenses/BRUTAL/BRUTAL-SDL-MIXER-THIRD-PARTY-NOTICES.txt",
+    "Licenses/BRUTAL/BRUTAL-SDL-THIRD-PARTY-NOTICES.txt",
+    "Licenses/BRUTAL/BRUTAL-SDL-TTF-THIRD-PARTY-NOTICES.txt",
+    "Licenses/BRUTAL/CONTRIBUTORS.md",
+    "Licenses/BRUTAL/LICENSE.txt",
+    "Licenses/BRUTAL/NOTICE.txt",
+    "MoNoonPlayer",
+    "install-desktop-entry.sh",
+    "libSDL3.so.0",
+    "libSDL3_mixer.so",
+    "libSDL3_ttf.so",
+    "libSystem.Globalization.Native.so",
+    "libSystem.IO.Compression.Native.so",
+    "libSystem.Native.so",
+    "libSystem.Net.Security.Native.so",
+    "libSystem.Security.Cryptography.Native.OpenSsl.so",
+    "libbox2d.so",
+    "libclrjit.so",
+    "libcoreclr.so",
+    "libhostfxr.so",
+    "libhostpolicy.so"
+   ]
+  },
+  "smoke": {
+   "code": 0,
+   "tail": [
+    "PASS player smoke: Scenes/KeyRoom.scene (0 control presses)"
+   ]
+  },
+  "desktop": "[Desktop Entry]\nType=Application\nName=KeyRoom\nExec=\"/tmp/products/mac/KeyRoom/KeyRoom-linux-x64/MoNoonPlayer\"\nIcon=/tmp/products/mac/KeyRoom/KeyRoom-linux-x64/KeyRoom.png\nTerminal=false\nCategories=Game;\n",
+  "checkpoints": [
+   "collect.save",
+   "collected-reload.save",
+   "collected.save",
+   "dropped-restored.save",
+   "dropped.save",
+   "held-restored.save",
+   "held.save",
+   "mac-roundtrip.save",
+   "outside.save",
+   "restore.save",
+   "slot-001.save",
+   "slot-001.save",
+   "slot-001.save",
+   "slot-002.save",
+   "slot-002.save",
+   "slot-002.save",
+   "spawn.save"
+  ],
+  "seconds": 40
+ },
+ "mac-package-SpriteLab": {
+  "status": "pass",
+  "layout": {
+   "files": 82,
+   "bytes": 32364706,
+   "exe_bytes": 78256,
+   "exe_mode": "-rwxr-xr-x",
+   "native": {
+    "libSDL3.so": "-> libSDL3.so.0",
+    "libSDL3.so.0": 4211016
+   },
+   "forbidden": [],
+   "deps_missing": [],
+   "deps_native_not_shipped": [
+    "createdump",
+    "libSDL3.so.0.4.12",
+    "libSDL3_mixer.so",
+    "libSDL3_mixer.so.0",
+    "libSDL3_mixer.so.0.2.4",
+    "libSDL3_ttf.so",
+    "libSDL3_ttf.so.0",
+    "libSDL3_ttf.so.0.2.2",
+    "libbox2d.so",
+    "libbox2d.so.3",
+    "libbox2d.so.3.1.1",
+    "libclrgc.so",
+    "libclrgcexp.so",
+    "libcoreclrtraceptprovider.so",
+    "libmscordaccore.so",
+    "libmscordbi.so"
+   ],
+   "tar_libSDL3.so": "link -> libSDL3.so.0",
+   "tar_modes": {
+    "MoNoonPlayer": "-rwxr-xr-x",
+    "install-desktop-entry.sh": "-rwxr-xr-x",
+    "Game/GameSettings": "-rw-r--r--",
+    "libSDL3.so.0": "-rwxr--r--",
+    "MoNoonPlayer.deps.json": "-rw-r--r--"
+   },
+   "executables": [
+    "Licenses/BRUTAL/BRUTAL-SDL-THIRD-PARTY-NOTICES.txt",
+    "Licenses/BRUTAL/CONTRIBUTORS.md",
+    "Licenses/BRUTAL/LICENSE.txt",
+    "Licenses/BRUTAL/NOTICE.txt",
+    "MoNoonPlayer",
+    "install-desktop-entry.sh",
+    "libSDL3.so.0",
+    "libSystem.Globalization.Native.so",
+    "libSystem.IO.Compression.Native.so",
+    "libSystem.Native.so",
+    "libSystem.Net.Security.Native.so",
+    "libSystem.Security.Cryptography.Native.OpenSsl.so",
+    "libclrjit.so",
+    "libcoreclr.so",
+    "libhostfxr.so",
+    "libhostpolicy.so"
+   ]
+  },
+  "smoke": {
+   "code": 0,
+   "tail": [
+    "PASS player smoke: Scenes/Sprites.scene (0 control presses)"
+   ]
+  },
+  "captures": {
+   "0005.png": "44afce2f4d98b3d91bf68c1dfac122d41ccaae27dce2dd8d5812df226babc24f",
+   "0120.png": "44afce2f4d98b3d91bf68c1dfac122d41ccaae27dce2dd8d5812df226babc24f",
+   "0250.png": "dc5b028e2c9c15ea3c9618544bccefbcd5a7f45b23cfce7ac749ab2dd3f8facc",
+   "0290.png": "44afce2f4d98b3d91bf68c1dfac122d41ccaae27dce2dd8d5812df226babc24f"
+  },
+  "seconds": 7
+ },
+ "h-PlatformerLab.Joints": {
+  "status": "pass",
+  "code": 0,
+  "steps": [
+   {
+    "kind": "prepare",
+    "modes": null,
+    "seconds": 1,
+    "ok": true
+   },
+   {
+    "kind": "build",
+    "modes": [
+     "release"
+    ],
+    "seconds": 459,
+    "ok": true
+   },
+   {
+    "kind": "build",
+    "modes": [
+     "native-aot"
+    ],
+    "seconds": 440,
+    "ok": true
+   },
+   {
+    "kind": "play",
+    "modes": [
+     "release"
+    ],
+    "seconds": 4,
+    "ok": true
+   },
+   {
+    "kind": "play",
+    "modes": [
+     "native-aot"
+    ],
+    "seconds": 1,
+    "ok": true
+   }
+  ],
+  "products": {
+   "PlatformerLab-linux-x64/native-aot": {
+    "files": 46,
+    "bytes": 15018971,
+    "exe_bytes": 7878936,
+    "exe_mode": "-rwxr-xr-x",
+    "native": {
+     "libSDL3.so": "-> libSDL3.so.0",
+     "libSDL3.so.0": 4211016,
+     "libSDL3_ttf.so": 2368696,
+     "libbox2d.so": 376200
+    },
+    "forbidden": [],
+    "smoke": {
+     "code": 0,
+     "tail": [
+      "PASS player smoke: Scenes/Joints.scene (0 control presses)"
+     ]
+    }
+   },
+   "PlatformerLab-linux-x64/release": {
+    "files": 108,
+    "bytes": 35419256,
+    "exe_bytes": 78256,
+    "exe_mode": "-rwxr-xr-x",
+    "native": {
+     "libSDL3.so": "-> libSDL3.so.0",
+     "libSDL3.so.0": 4211016,
+     "libSDL3_ttf.so": 2368696,
+     "libbox2d.so": 376200
+    },
+    "forbidden": [],
+    "deps_missing": [],
+    "deps_native_not_shipped": [
+     "createdump",
+     "libSDL3.so.0.4.12",
+     "libSDL3_mixer.so",
+     "libSDL3_mixer.so.0",
+     "libSDL3_mixer.so.0.2.4",
+     "libSDL3_ttf.so.0",
+     "libSDL3_ttf.so.0.2.2",
+     "libbox2d.so.3",
+     "libbox2d.so.3.1.1",
+     "libclrgc.so",
+     "libclrgcexp.so",
+     "libcoreclrtraceptprovider.so",
+     "libmscordaccore.so",
+     "libmscordbi.so"
+    ],
+    "smoke": {
+     "code": 0,
+     "tail": [
+      "PASS player smoke: Scenes/Joints.scene (0 control presses)"
+     ]
+    }
+   }
+  },
+  "pairs": {
+   "release = aot": {
+    "same": 5,
+    "differ": [],
+    "only_release": [],
+    "only_aot": []
+   }
+  },
+  "seconds": 910
+ },
+ "done": "2026-11-24 15:25:41",
+ "mac-package-InventoryLab": {
+  "status": "pass",
+  "layout": {
+   "files": 95,
+   "bytes": 88844477,
+   "exe_bytes": 78256,
+   "exe_mode": "-rwxr-xr-x",
+   "native": {
+    "libSDL3.so": "-> libSDL3.so.0",
+    "libSDL3.so.0": 4211016,
+    "libSDL3_ttf.so": 2368696,
+    "libSDL3_mixer.so": 404464
+   },
+   "forbidden": [],
+   "deps_missing": [],
+   "deps_native_not_shipped": [
+    "createdump",
+    "libSDL3.so.0.4.12",
+    "libSDL3_mixer.so.0",
+    "libSDL3_mixer.so.0.2.4",
+    "libSDL3_ttf.so.0",
+    "libSDL3_ttf.so.0.2.2",
+    "libbox2d.so",
+    "libbox2d.so.3",
+    "libbox2d.so.3.1.1",
+    "libclrgc.so",
+    "libclrgcexp.so",
+    "libcoreclrtraceptprovider.so",
+    "libmscordaccore.so",
+    "libmscordbi.so"
+   ],
+   "tar_libSDL3.so": "link -> libSDL3.so.0",
+   "tar_modes": {
+    "MoNoonPlayer": "-rwxr-xr-x",
+    "install-desktop-entry.sh": "-rwxr-xr-x",
+    "Game/GameSettings": "-rw-r--r--",
+    "libSDL3.so.0": "-rwxr--r--",
+    "libSDL3_ttf.so": "-rwxr--r--",
+    "libSDL3_mixer.so": "-rwxr--r--",
+    "MoNoonPlayer.deps.json": "-rw-r--r--"
+   },
+   "executables": [
+    "Licenses/BRUTAL/BRUTAL-SDL-MIXER-THIRD-PARTY-NOTICES.txt",
+    "Licenses/BRUTAL/BRUTAL-SDL-THIRD-PARTY-NOTICES.txt",
+    "Licenses/BRUTAL/BRUTAL-SDL-TTF-THIRD-PARTY-NOTICES.txt",
+    "Licenses/BRUTAL/CONTRIBUTORS.md",
+    "Licenses/BRUTAL/LICENSE.txt",
+    "Licenses/BRUTAL/NOTICE.txt",
+    "MoNoonPlayer",
+    "install-desktop-entry.sh",
+    "libSDL3.so.0",
+    "libSDL3_mixer.so",
+    "libSDL3_ttf.so",
+    "libSystem.Globalization.Native.so",
+    "libSystem.IO.Compression.Native.so",
+    "libSystem.Native.so",
+    "libSystem.Net.Security.Native.so",
+    "libSystem.Security.Cryptography.Native.OpenSsl.so",
+    "libclrjit.so",
+    "libcoreclr.so",
+    "libhostfxr.so",
+    "libhostpolicy.so"
+   ]
+  },
+  "smoke": {
+   "code": 0,
+   "tail": [
+    "PASS player smoke: Scenes/Inventory.scene (0 control presses)"
+   ]
+  },
+  "herbalist": {
+   "bytes": 171,
+   "sha256": "eed41defcbd7987a527deb677c60da8151ad0de1616c717c646e92b26e70f795",
+   "equal_fixture": true
+  },
+  "recovery": [
+   "PASS player smoke: Scenes/Inventory.scene (1 control presses)",
+   "PASS player smoke: Scenes/Inventory.scene (6 control presses)",
+   "PASS edited-count: claimed, herbs=3, gems=1, repeat claim stayed at reward"
+  ],
+  "seconds": 52
+ },
+ "mac-package-PlatformerLab": {
+  "status": "pass",
+  "layout": {
+   "files": 110,
+   "bytes": 35420347,
+   "exe_bytes": 78256,
+   "exe_mode": "-rwxr-xr-x",
+   "native": {
+    "libSDL3.so": "-> libSDL3.so.0",
+    "libSDL3.so.0": 4211016,
+    "libSDL3_ttf.so": 2368696,
+    "libbox2d.so": 376200
+   },
+   "forbidden": [],
+   "deps_missing": [],
+   "deps_native_not_shipped": [
+    "createdump",
+    "libSDL3.so.0.4.12",
+    "libSDL3_mixer.so",
+    "libSDL3_mixer.so.0",
+    "libSDL3_mixer.so.0.2.4",
+    "libSDL3_ttf.so.0",
+    "libSDL3_ttf.so.0.2.2",
+    "libbox2d.so.3",
+    "libbox2d.so.3.1.1",
+    "libclrgc.so",
+    "libclrgcexp.so",
+    "libcoreclrtraceptprovider.so",
+    "libmscordaccore.so",
+    "libmscordbi.so"
+   ],
+   "tar_libSDL3.so": "link -> libSDL3.so.0",
+   "tar_modes": {
+    "MoNoonPlayer": "-rwxr-xr-x",
+    "install-desktop-entry.sh": "-rwxr-xr-x",
+    "Game/GameSettings": "-rw-r--r--",
+    "libSDL3.so.0": "-rwxr--r--",
+    "libSDL3_ttf.so": "-rwxr--r--",
+    "libbox2d.so": "-rwxr--r--",
+    "MoNoonPlayer.deps.json": "-rw-r--r--"
+   },
+   "executables": [
+    "Licenses/BRUTAL/BRUTAL-BOX2D-THIRD-PARTY-NOTICES.txt",
+    "Licenses/BRUTAL/BRUTAL-SDL-THIRD-PARTY-NOTICES.txt",
+    "Licenses/BRUTAL/BRUTAL-SDL-TTF-THIRD-PARTY-NOTICES.txt",
+    "Licenses/BRUTAL/CONTRIBUTORS.md",
+    "Licenses/BRUTAL/LICENSE.txt",
+    "Licenses/BRUTAL/NOTICE.txt",
+    "MoNoonPlayer",
+    "install-desktop-entry.sh",
+    "libSDL3.so.0",
+    "libSDL3_ttf.so",
+    "libSystem.Globalization.Native.so",
+    "libSystem.IO.Compression.Native.so",
+    "libSystem.Native.so",
+    "libSystem.Net.Security.Native.so",
+    "libSystem.Security.Cryptography.Native.OpenSsl.so",
+    "libbox2d.so",
+    "libclrjit.so",
+    "libcoreclr.so",
+    "libhostfxr.so",
+    "libhostpolicy.so"
+   ]
+  },
+  "smoke": {
+   "code": 0,
+   "tail": [
+    "PASS player smoke: Scenes/Joints.scene (0 control presses)"
+   ]
+  },
+  "joints": {
+   "trace.tsv": "86280b2720904f090b26987e53f53c07c0d3ae378bdc12ac35c568658e01f79b",
+   "result.json": "9728382a2f19666414ae3594858106da528972376162259d2f8c844d3880dd6f"
+  },
+  "seconds": 11
+ },
+ "h-PlatformerLab.TileCollision": {
+  "status": "pass",
+  "code": 0,
+  "steps": [
+   {
+    "kind": "prepare",
+    "modes": null,
+    "seconds": 0,
+    "ok": true
+   },
+   {
+    "kind": "build",
+    "modes": [
+     "release"
+    ],
+    "seconds": 461,
+    "ok": true
+   },
+   {
+    "kind": "build",
+    "modes": [
+     "native-aot"
+    ],
+    "seconds": 437,
+    "ok": true
+   },
+   {
+    "kind": "play",
+    "modes": [
+     "release"
+    ],
+    "seconds": 6,
+    "ok": true
+   },
+   {
+    "kind": "play",
+    "modes": [
+     "native-aot"
+    ],
+    "seconds": 2,
+    "ok": true
+   }
+  ],
+  "products": {
+   "PlatformerLab-linux-x64/native-aot": {
+    "files": 46,
+    "bytes": 15018956,
+    "exe_bytes": 7878920,
+    "exe_mode": "-rwxr-xr-x",
+    "native": {
+     "libSDL3.so": "-> libSDL3.so.0",
+     "libSDL3.so.0": 4211016,
+     "libSDL3_ttf.so": 2368696,
+     "libbox2d.so": 376200
+    },
+    "forbidden": [],
+    "smoke": {
+     "code": 0,
+     "tail": [
+      "PASS player smoke: Scenes/Platform.scene (0 control presses)"
+     ]
+    }
+   },
+   "PlatformerLab-linux-x64/release": {
+    "files": 108,
+    "bytes": 35418233,
+    "exe_bytes": 78256,
+    "exe_mode": "-rwxr-xr-x",
+    "native": {
+     "libSDL3.so": "-> libSDL3.so.0",
+     "libSDL3.so.0": 4211016,
+     "libSDL3_ttf.so": 2368696,
+     "libbox2d.so": 376200
+    },
+    "forbidden": [],
+    "deps_missing": [],
+    "deps_native_not_shipped": [
+     "createdump",
+     "libSDL3.so.0.4.12",
+     "libSDL3_mixer.so",
+     "libSDL3_mixer.so.0",
+     "libSDL3_mixer.so.0.2.4",
+     "libSDL3_ttf.so.0",
+     "libSDL3_ttf.so.0.2.2",
+     "libbox2d.so.3",
+     "libbox2d.so.3.1.1",
+     "libclrgc.so",
+     "libclrgcexp.so",
+     "libcoreclrtraceptprovider.so",
+     "libmscordaccore.so",
+     "libmscordbi.so"
+    ],
+    "smoke": {
+     "code": 0,
+     "tail": [
+      "PASS player smoke: Scenes/Platform.scene (0 control presses)"
+     ]
+    }
+   }
+  },
+  "pairs": {
+   "release = aot": {
+    "same": 2,
+    "differ": [],
+    "only_release": [],
+    "only_aot": []
+   }
+  },
+  "seconds": 910
+ },
+ "h-PlatformerLab.Paths": {
+  "status": "pass",
+  "code": 0,
+  "steps": [
+   {
+    "kind": "prepare",
+    "modes": null,
+    "seconds": 1,
+    "ok": true
+   },
+   {
+    "kind": "build",
+    "modes": [
+     "release"
+    ],
+    "seconds": 478,
+    "ok": true
+   },
+   {
+    "kind": "build",
+    "modes": [
+     "native-aot"
+    ],
+    "seconds": 437,
+    "ok": true
+   },
+   {
+    "kind": "play",
+    "modes": [
+     "release"
+    ],
+    "seconds": 5,
+    "ok": true
+   },
+   {
+    "kind": "play",
+    "modes": [
+     "native-aot"
+    ],
+    "seconds": 2,
+    "ok": true
+   }
+  ],
+  "products": {
+   "PlatformerLab-linux-x64/native-aot": {
+    "files": 46,
+    "bytes": 15019002,
+    "exe_bytes": 7878920,
+    "exe_mode": "-rwxr-xr-x",
+    "native": {
+     "libSDL3.so": "-> libSDL3.so.0",
+     "libSDL3.so.0": 4211016,
+     "libSDL3_ttf.so": 2368696,
+     "libbox2d.so": 376200
+    },
+    "forbidden": [],
+    "smoke": {
+     "code": 0,
+     "tail": [
+      "PASS player smoke: Scenes/Paths.scene (0 control presses)"
+     ]
+    }
+   },
+   "PlatformerLab-linux-x64/release": {
+    "files": 108,
+    "bytes": 35418279,
+    "exe_bytes": 78256,
+    "exe_mode": "-rwxr-xr-x",
+    "native": {
+     "libSDL3.so": "-> libSDL3.so.0",
+     "libSDL3.so.0": 4211016,
+     "libSDL3_ttf.so": 2368696,
+     "libbox2d.so": 376200
+    },
+    "forbidden": [],
+    "deps_missing": [],
+    "deps_native_not_shipped": [
+     "createdump",
+     "libSDL3.so.0.4.12",
+     "libSDL3_mixer.so",
+     "libSDL3_mixer.so.0",
+     "libSDL3_mixer.so.0.2.4",
+     "libSDL3_ttf.so.0",
+     "libSDL3_ttf.so.0.2.2",
+     "libbox2d.so.3",
+     "libbox2d.so.3.1.1",
+     "libclrgc.so",
+     "libclrgcexp.so",
+     "libcoreclrtraceptprovider.so",
+     "libmscordaccore.so",
+     "libmscordbi.so"
+    ],
+    "smoke": {
+     "code": 0,
+     "tail": [
+      "PASS player smoke: Scenes/Paths.scene (0 control presses)"
+     ]
+    }
+   }
+  },
+  "pairs": {
+   "release = aot": {
+    "same": 12,
+    "differ": [],
+    "only_release": [],
+    "only_aot": []
+   }
+  },
+  "seconds": 925
+ },
+ "h-BarrageLab.Lines": {
+  "status": "pass",
+  "code": 0,
+  "steps": [
+   {
+    "kind": "prepare",
+    "modes": null,
+    "seconds": 0,
+    "ok": true
+   },
+   {
+    "kind": "build",
+    "modes": [
+     "release"
+    ],
+    "seconds": 457,
+    "ok": true
+   },
+   {
+    "kind": "build",
+    "modes": [
+     "native-aot"
+    ],
+    "seconds": 417,
+    "ok": true
+   },
+   {
+    "kind": "play",
+    "modes": [
+     "release"
+    ],
+    "seconds": 7,
+    "ok": true
+   },
+   {
+    "kind": "play",
+    "modes": [
+     "native-aot"
+    ],
+    "seconds": 2,
+    "ok": true
+   }
+  ],
+  "products": {
+   "BarrageLab-linux-x64/release": {
+    "files": 84,
+    "bytes": 35254678,
+    "exe_bytes": 78256,
+    "exe_mode": "-rwxr-xr-x",
+    "native": {
+     "libSDL3.so": "-> libSDL3.so.0",
+     "libSDL3.so.0": 4211016,
+     "libSDL3_ttf.so": 2368696,
+     "libbox2d.so": 376200
+    },
+    "forbidden": [],
+    "deps_missing": [],
+    "deps_native_not_shipped": [
+     "createdump",
+     "libSDL3.so.0.4.12",
+     "libSDL3_mixer.so",
+     "libSDL3_mixer.so.0",
+     "libSDL3_mixer.so.0.2.4",
+     "libSDL3_ttf.so.0",
+     "libSDL3_ttf.so.0.2.2",
+     "libbox2d.so.3",
+     "libbox2d.so.3.1.1",
+     "libclrgc.so",
+     "libclrgcexp.so",
+     "libcoreclrtraceptprovider.so",
+     "libmscordaccore.so",
+     "libmscordbi.so"
+    ],
+    "smoke": {
+     "code": 0,
+     "tail": [
+      "PASS player smoke: Scenes/Laser.scene (0 control presses)"
+     ]
+    }
+   },
+   "BarrageLab-linux-x64/native-aot": {
+    "files": 22,
+    "bytes": 14113417,
+    "exe_bytes": 7079080,
+    "exe_mode": "-rwxr-xr-x",
+    "native": {
+     "libSDL3.so": "-> libSDL3.so.0",
+     "libSDL3.so.0": 4211016,
+     "libSDL3_ttf.so": 2368696,
+     "libbox2d.so": 376200
+    },
+    "forbidden": [],
+    "smoke": {
+     "code": 0,
+     "tail": [
+      "PASS player smoke: Scenes/Laser.scene (0 control presses)"
+     ]
+    }
+   }
+  },
+  "pairs": {
+   "release = aot": {
+    "same": 9,
+    "differ": [],
+    "only_release": [],
+    "only_aot": []
+   }
+  },
+  "seconds": 886
+ },
+ "h-PlatformerLab.Colliders": {
+  "status": "pass",
+  "code": 0,
+  "steps": [
+   {
+    "kind": "prepare",
+    "modes": null,
+    "seconds": 0,
+    "ok": true
+   },
+   {
+    "kind": "prepare",
+    "modes": null,
+    "seconds": 1,
+    "ok": true
+   },
+   {
+    "kind": "build",
+    "modes": [
+     "release"
+    ],
+    "seconds": 465,
+    "ok": true
+   },
+   {
+    "kind": "build",
+    "modes": [
+     "native-aot"
+    ],
+    "seconds": 448,
+    "ok": true
+   },
+   {
+    "kind": "play",
+    "modes": [
+     "release"
+    ],
+    "seconds": 4,
+    "ok": true
+   },
+   {
+    "kind": "play",
+    "modes": [
+     "native-aot"
+    ],
+    "seconds": 1,
+    "ok": true
+   }
+  ],
+  "products": {
+   "PlatformerLab-linux-x64/native-aot": {
+    "files": 46,
+    "bytes": 15018958,
+    "exe_bytes": 7878920,
+    "exe_mode": "-rwxr-xr-x",
+    "native": {
+     "libSDL3.so": "-> libSDL3.so.0",
+     "libSDL3.so.0": 4211016,
+     "libSDL3_ttf.so": 2368696,
+     "libbox2d.so": 376200
+    },
+    "forbidden": [],
+    "smoke": {
+     "code": 0,
+     "tail": [
+      "PASS player smoke: Scenes/Slopes.scene (0 control presses)"
+     ]
+    }
+   },
+   "PlatformerLab-linux-x64/release": {
+    "files": 108,
+    "bytes": 35418747,
+    "exe_bytes": 78256,
+    "exe_mode": "-rwxr-xr-x",
+    "native": {
+     "libSDL3.so": "-> libSDL3.so.0",
+     "libSDL3.so.0": 4211016,
+     "libSDL3_ttf.so": 2368696,
+     "libbox2d.so": 376200
+    },
+    "forbidden": [],
+    "deps_missing": [],
+    "deps_native_not_shipped": [
+     "createdump",
+     "libSDL3.so.0.4.12",
+     "libSDL3_mixer.so",
+     "libSDL3_mixer.so.0",
+     "libSDL3_mixer.so.0.2.4",
+     "libSDL3_ttf.so.0",
+     "libSDL3_ttf.so.0.2.2",
+     "libbox2d.so.3",
+     "libbox2d.so.3.1.1",
+     "libclrgc.so",
+     "libclrgcexp.so",
+     "libcoreclrtraceptprovider.so",
+     "libmscordaccore.so",
+     "libmscordbi.so"
+    ],
+    "smoke": {
+     "code": 0,
+     "tail": [
+      "PASS player smoke: Scenes/Slopes.scene (0 control presses)"
+     ]
+    }
+   }
+  },
+  "pairs": {
+   "release = aot": {
+    "same": 5,
+    "differ": [],
+    "only_release": [],
+    "only_aot": []
+   }
+  },
+  "seconds": 923
+ },
+ "h-CollisionLab.Spatial": {
+  "status": "pass",
+  "code": 0,
+  "steps": [
+   {
+    "kind": "build",
+    "modes": [
+     "release"
+    ],
+    "seconds": 531,
+    "ok": true
+   },
+   {
+    "kind": "build",
+    "modes": [
+     "native-aot"
+    ],
+    "seconds": 518,
+    "ok": true
+   },
+   {
+    "kind": "play",
+    "modes": [
+     "release"
+    ],
+    "seconds": 20,
+    "ok": true
+   },
+   {
+    "kind": "play",
+    "modes": [
+     "native-aot"
+    ],
+    "seconds": 8,
+    "ok": true
+   }
+  ],
+  "products": {
+   "CollisionLab-linux-x64/release": {
+    "files": 83,
+    "bytes": 41313999,
+    "exe_bytes": 78256,
+    "exe_mode": "-rwxr-xr-x",
+    "native": {
+     "libSDL3.so": "-> libSDL3.so.0",
+     "libSDL3.so.0": 4211016,
+     "libSDL3_ttf.so": 2368696,
+     "libbox2d.so": 376200
+    },
+    "forbidden": [],
+    "deps_missing": [],
+    "deps_native_not_shipped": [
+     "createdump",
+     "libSDL3.so.0.4.12",
+     "libSDL3_mixer.so",
+     "libSDL3_mixer.so.0",
+     "libSDL3_mixer.so.0.2.4",
+     "libSDL3_ttf.so.0",
+     "libSDL3_ttf.so.0.2.2",
+     "libbox2d.so.3",
+     "libbox2d.so.3.1.1",
+     "libclrgc.so",
+     "libclrgcexp.so",
+     "libcoreclrtraceptprovider.so",
+     "libmscordaccore.so",
+     "libmscordbi.so"
+    ],
+    "smoke": {
+     "code": 0,
+     "tail": [
+      "PASS player smoke: Scenes/CollisionLab.scene (0 control presses)"
+     ]
+    }
+   },
+   "CollisionLab-linux-x64/native-aot": {
+    "files": 21,
+    "bytes": 20194130,
+    "exe_bytes": 7087672,
+    "exe_mode": "-rwxr-xr-x",
+    "native": {
+     "libSDL3.so": "-> libSDL3.so.0",
+     "libSDL3.so.0": 4211016,
+     "libSDL3_ttf.so": 2368696,
+     "libbox2d.so": 376200
+    },
+    "forbidden": [],
+    "smoke": {
+     "code": 0,
+     "tail": [
+      "PASS player smoke: Scenes/CollisionLab.scene (0 control presses)"
+     ]
+    }
+   }
+  },
+  "pairs": {},
+  "seconds": 1080
+ },
+ "h-ParticleLab.Trace": {
+  "status": "pass",
+  "code": 0,
+  "steps": [
+   {
+    "kind": "prepare",
+    "modes": null,
+    "seconds": 0,
+    "ok": true
+   },
+   {
+    "kind": "prepare",
+    "modes": null,
+    "seconds": 4,
+    "ok": true
+   },
+   {
+    "kind": "build",
+    "modes": [
+     "release"
+    ],
+    "seconds": 3182,
+    "ok": true
+   },
+   {
+    "kind": "build",
+    "modes": [
+     "native-aot"
+    ],
+    "seconds": 3141,
+    "ok": true
+   },
+   {
+    "kind": "play",
+    "modes": [
+     "release"
+    ],
+    "seconds": 34,
+    "ok": true
+   },
+   {
+    "kind": "play",
+    "modes": [
+     "native-aot"
+    ],
+    "seconds": 9,
+    "ok": true
+   },
+   {
+    "kind": "prepare",
+    "modes": null,
+    "seconds": 4,
+    "ok": true
+   }
+  ],
+  "products": {
+   "ParticleLab-linux-x64/native-aot": {
+    "files": 57,
+    "bytes": 14726250,
+    "exe_bytes": 7654728,
+    "exe_mode": "-rwxr-xr-x",
+    "native": {
+     "libSDL3.so": "-> libSDL3.so.0",
+     "libSDL3.so.0": 4211016,
+     "libSDL3_ttf.so": 2368696,
+     "libbox2d.so": 376200
+    },
+    "forbidden": [],
+    "smoke": {
+     "code": 0,
+     "tail": [
+      "PASS player smoke: Scenes/Curves.scene (0 control presses)"
+     ]
+    }
+   },
+   "ParticleLab-linux-x64/release": {
+    "files": 119,
+    "bytes": 35227351,
+    "exe_bytes": 78256,
+    "exe_mode": "-rwxr-xr-x",
+    "native": {
+     "libSDL3.so": "-> libSDL3.so.0",
+     "libSDL3.so.0": 4211016,
+     "libSDL3_ttf.so": 2368696,
+     "libbox2d.so": 376200
+    },
+    "forbidden": [],
+    "deps_missing": [],
+    "deps_native_not_shipped": [
+     "createdump",
+     "libSDL3.so.0.4.12",
+     "libSDL3_mixer.so",
+     "libSDL3_mixer.so.0",
+     "libSDL3_mixer.so.0.2.4",
+     "libSDL3_ttf.so.0",
+     "libSDL3_ttf.so.0.2.2",
+     "libbox2d.so.3",
+     "libbox2d.so.3.1.1",
+     "libclrgc.so",
+     "libclrgcexp.so",
+     "libcoreclrtraceptprovider.so",
+     "libmscordaccore.so",
+     "libmscordbi.so"
+    ],
+    "smoke": {
+     "code": 0,
+     "tail": [
+      "PASS player smoke: Scenes/Curves.scene (0 control presses)"
+     ]
+    }
+   }
+  },
+  "pairs": {
+   "Curves/release = aot": {
+    "same": 6,
+    "differ": [],
+    "only_release": [],
+    "only_aot": []
+   },
+   "Fireworks/release = aot": {
+    "same": 6,
+    "differ": [],
+    "only_release": [],
+    "only_aot": []
+   },
+   "Modules/release = aot": {
+    "same": 7,
+    "differ": [],
+    "only_release": [],
+    "only_aot": []
+   },
+   "Presets/release = aot": {
+    "same": 6,
+    "differ": [],
+    "only_release": [],
+    "only_aot": []
+   },
+   "Rain/release = aot": {
+    "same": 6,
+    "differ": [],
+    "only_release": [],
+    "only_aot": []
+   },
+   "Sorting/release = aot": {
+    "same": 5,
+    "differ": [],
+    "only_release": [],
+    "only_aot": []
+   },
+   "Stress/release = aot": {
+    "same": 6,
+    "differ": [],
+    "only_release": [],
+    "only_aot": []
+   }
+  },
+  "seconds": 6379
+ },
+ "h-BarrageLab.PrefabPools": {
+  "status": "pass",
+  "code": 0,
+  "steps": [
+   {
+    "kind": "build",
+    "modes": [
+     "release"
+    ],
+    "seconds": 465,
+    "ok": true
+   },
+   {
+    "kind": "build",
+    "modes": [
+     "native-aot"
+    ],
+    "seconds": 440,
+    "ok": true
+   },
+   {
+    "kind": "play",
+    "modes": [
+     "release"
+    ],
+    "seconds": 33,
+    "ok": true
+   },
+   {
+    "kind": "play",
+    "modes": [
+     "native-aot"
+    ],
+    "seconds": 27,
+    "ok": true
+   }
+  ],
+  "products": {
+   "BarrageLab-linux-x64/native-aot": {
+    "files": 22,
+    "bytes": 14105122,
+    "exe_bytes": 7070888,
+    "exe_mode": "-rwxr-xr-x",
+    "native": {
+     "libSDL3.so": "-> libSDL3.so.0",
+     "libSDL3.so.0": 4211016,
+     "libSDL3_ttf.so": 2368696,
+     "libbox2d.so": 376200
+    },
+    "forbidden": [],
+    "smoke": {
+     "code": 0,
+     "tail": [
+      "PASS player smoke: Scenes/Barrage.scene (0 control presses)"
+     ]
+    }
+   },
+   "BarrageLab-linux-x64/release": {
+    "files": 84,
+    "bytes": 35247919,
+    "exe_bytes": 78256,
+    "exe_mode": "-rwxr-xr-x",
+    "native": {
+     "libSDL3.so": "-> libSDL3.so.0",
+     "libSDL3.so.0": 4211016,
+     "libSDL3_ttf.so": 2368696,
+     "libbox2d.so": 376200
+    },
+    "forbidden": [],
+    "deps_missing": [],
+    "deps_native_not_shipped": [
+     "createdump",
+     "libSDL3.so.0.4.12",
+     "libSDL3_mixer.so",
+     "libSDL3_mixer.so.0",
+     "libSDL3_mixer.so.0.2.4",
+     "libSDL3_ttf.so.0",
+     "libSDL3_ttf.so.0.2.2",
+     "libbox2d.so.3",
+     "libbox2d.so.3.1.1",
+     "libclrgc.so",
+     "libclrgcexp.so",
+     "libcoreclrtraceptprovider.so",
+     "libmscordaccore.so",
+     "libmscordbi.so"
+    ],
+    "smoke": {
+     "code": 0,
+     "tail": [
+      "PASS player smoke: Scenes/Barrage.scene (0 control presses)"
+     ]
+    }
+   }
+  },
+  "pairs": {},
+  "seconds": 967
+ },
+ "h-InventoryLab.Replay": {
+  "status": "pass",
+  "code": 0,
+  "steps": [
+   {
+    "kind": "build",
+    "modes": [
+     "release"
+    ],
+    "seconds": 497,
+    "ok": true
+   },
+   {
+    "kind": "build",
+    "modes": [
+     "native-aot"
+    ],
+    "seconds": 455,
+    "ok": true
+   },
+   {
+    "kind": "play",
+    "modes": [
+     "release"
+    ],
+    "seconds": 35,
+    "ok": true
+   }
+  ],
+  "products": {
+   "InventoryLab-linux-x64/release": {
+    "files": 93,
+    "bytes": 88843399,
+    "exe_bytes": 78256,
+    "exe_mode": "-rwxr-xr-x",
+    "native": {
+     "libSDL3.so": "-> libSDL3.so.0",
+     "libSDL3.so.0": 4211016,
+     "libSDL3_ttf.so": 2368696,
+     "libSDL3_mixer.so": 404464
+    },
+    "forbidden": [],
+    "deps_missing": [],
+    "deps_native_not_shipped": [
+     "createdump",
+     "libSDL3.so.0.4.12",
+     "libSDL3_mixer.so.0",
+     "libSDL3_mixer.so.0.2.4",
+     "libSDL3_ttf.so.0",
+     "libSDL3_ttf.so.0.2.2",
+     "libbox2d.so",
+     "libbox2d.so.3",
+     "libbox2d.so.3.1.1",
+     "libclrgc.so",
+     "libclrgcexp.so",
+     "libcoreclrtraceptprovider.so",
+     "libmscordaccore.so",
+     "libmscordbi.so"
+    ],
+    "smoke": {
+     "code": 0,
+     "tail": [
+      "PASS player smoke: Scenes/Inventory.scene (0 control presses)"
+     ]
+    }
+   },
+   "InventoryLab-linux-x64/native-aot": {
+    "files": 31,
+    "bytes": 67544666,
+    "exe_bytes": 7050120,
+    "exe_mode": "-rwxr-xr-x",
+    "native": {
+     "libSDL3.so": "-> libSDL3.so.0",
+     "libSDL3.so.0": 4211016,
+     "libSDL3_ttf.so": 2368696,
+     "libSDL3_mixer.so": 404464
+    },
+    "forbidden": [],
+    "smoke": {
+     "code": 0,
+     "tail": [
+      "PASS player smoke: Scenes/Inventory.scene (0 control presses)"
+     ]
+    }
+   }
+  },
+  "extra": {
+   "release": {
+    "bytes": 171,
+    "sha256": "eed41defcbd7987a527deb677c60da8151ad0de1616c717c646e92b26e70f795",
+    "equal_fixture": true
+   },
+   "native-aot": {
+    "bytes": 171,
+    "sha256": "eed41defcbd7987a527deb677c60da8151ad0de1616c717c646e92b26e70f795",
+    "equal_fixture": true
+   }
+  },
+  "pairs": {},
+  "seconds": 1007
+ },
+ "h-KeyRoom.InputInteractions": {
+  "status": "pass",
+  "code": 0,
+  "steps": [
+   {
+    "kind": "prepare",
+    "modes": null,
+    "seconds": 1,
+    "ok": true
+   },
+   {
+    "kind": "build",
+    "modes": [
+     "release"
+    ],
+    "seconds": 479,
+    "ok": true
+   },
+   {
+    "kind": "build",
+    "modes": [
+     "native-aot"
+    ],
+    "seconds": 436,
+    "ok": true
+   },
+   {
+    "kind": "play",
+    "modes": [
+     "release"
+    ],
+    "seconds": 4,
+    "ok": true
+   },
+   {
+    "kind": "play",
+    "modes": [
+     "native-aot"
+    ],
+    "seconds": 1,
+    "ok": true
+   }
+  ],
+  "products": {
+   "KeyRoom-linux-x64/release": {
+    "files": 110,
+    "bytes": 38047262,
+    "exe_bytes": 78256,
+    "exe_mode": "-rwxr-xr-x",
+    "native": {
+     "libSDL3.so": "-> libSDL3.so.0",
+     "libSDL3.so.0": 4211016,
+     "libSDL3_ttf.so": 2368696,
+     "libSDL3_mixer.so": 404464,
+     "libbox2d.so": 376200
+    },
+    "forbidden": [],
+    "deps_missing": [],
+    "deps_native_not_shipped": [
+     "createdump",
+     "libSDL3.so.0.4.12",
+     "libSDL3_mixer.so.0",
+     "libSDL3_mixer.so.0.2.4",
+     "libSDL3_ttf.so.0",
+     "libSDL3_ttf.so.0.2.2",
+     "libbox2d.so.3",
+     "libbox2d.so.3.1.1",
+     "libclrgc.so",
+     "libclrgcexp.so",
+     "libcoreclrtraceptprovider.so",
+     "libmscordaccore.so",
+     "libmscordbi.so"
+    ],
+    "smoke": {
+     "code": 0,
+     "tail": [
+      "PASS player smoke: Scenes/KeyRoom.scene (0 control presses)"
+     ]
+    }
+   },
+   "KeyRoom-linux-x64/native-aot": {
+    "files": 48,
+    "bytes": 16939473,
+    "exe_bytes": 7299432,
+    "exe_mode": "-rwxr-xr-x",
+    "native": {
+     "libSDL3.so": "-> libSDL3.so.0",
+     "libSDL3.so.0": 4211016,
+     "libSDL3_ttf.so": 2368696,
+     "libSDL3_mixer.so": 404464,
+     "libbox2d.so": 376200
+    },
+    "forbidden": [],
+    "smoke": {
+     "code": 0,
+     "tail": [
+      "PASS player smoke: Scenes/KeyRoom.scene (0 control presses)"
+     ]
+    }
+   }
+  },
+  "pairs": {
+   "release = aot": {
+    "same": 3,
+    "differ": [],
+    "only_release": [],
+    "only_aot": []
+   }
+  },
+  "seconds": 924
+ },
+ "h-CameraLab.Framing": {
+  "status": "pass",
+  "code": 0,
+  "steps": [
+   {
+    "kind": "prepare",
+    "modes": null,
+    "seconds": 1,
+    "ok": true
+   },
+   {
+    "kind": "build",
+    "modes": [
+     "release"
+    ],
+    "seconds": 457,
+    "ok": true
+   },
+   {
+    "kind": "build",
+    "modes": [
+     "native-aot"
+    ],
+    "seconds": 426,
+    "ok": true
+   },
+   {
+    "kind": "play",
+    "modes": [
+     "release"
+    ],
+    "seconds": 4,
+    "ok": true
+   },
+   {
+    "kind": "play",
+    "modes": [
+     "native-aot"
+    ],
+    "seconds": 1,
+    "ok": true
+   },
+   {
+    "kind": "prepare",
+    "modes": null,
+    "seconds": 1,
+    "ok": true
+   }
+  ],
+  "products": {
+   "CameraLab-linux-x64/release": {
+    "files": 78,
+    "bytes": 34870708,
+    "exe_bytes": 78256,
+    "exe_mode": "-rwxr-xr-x",
+    "native": {
+     "libSDL3.so": "-> libSDL3.so.0",
+     "libSDL3.so.0": 4211016,
+     "libSDL3_ttf.so": 2368696
+    },
+    "forbidden": [],
+    "deps_missing": [],
+    "deps_native_not_shipped": [
+     "createdump",
+     "libSDL3.so.0.4.12",
+     "libSDL3_mixer.so",
+     "libSDL3_mixer.so.0",
+     "libSDL3_mixer.so.0.2.4",
+     "libSDL3_ttf.so.0",
+     "libSDL3_ttf.so.0.2.2",
+     "libbox2d.so",
+     "libbox2d.so.3",
+     "libbox2d.so.3.1.1",
+     "libclrgc.so",
+     "libclrgcexp.so",
+     "libcoreclrtraceptprovider.so",
+     "libmscordaccore.so",
+     "libmscordbi.so"
+    ],
+    "smoke": {
+     "code": 0,
+     "tail": [
+      "PASS player smoke: Scenes/CameraLab.scene (0 control presses)"
+     ]
+    }
+   },
+   "CameraLab-linux-x64/native-aot": {
+    "files": 16,
+    "bytes": 13520439,
+    "exe_bytes": 6846520,
+    "exe_mode": "-rwxr-xr-x",
+    "native": {
+     "libSDL3.so": "-> libSDL3.so.0",
+     "libSDL3.so.0": 4211016,
+     "libSDL3_ttf.so": 2368696
+    },
+    "forbidden": [],
+    "smoke": {
+     "code": 0,
+     "tail": [
+      "PASS player smoke: Scenes/CameraLab.scene (0 control presses)"
+     ]
+    }
+   }
+  },
+  "pairs": {
+   "release = aot": {
+    "same": 8,
+    "differ": [],
+    "only_release": [],
+    "only_aot": []
+   }
+  },
+  "seconds": 892
+ },
+ "h-SeedLab.Autotile": {
+  "status": "pass",
+  "code": 0,
+  "steps": [
+   {
+    "kind": "prepare",
+    "modes": null,
+    "seconds": 1,
+    "ok": true
+   },
+   {
+    "kind": "build",
+    "modes": [
+     "release"
+    ],
+    "seconds": 462,
+    "ok": true
+   },
+   {
+    "kind": "build",
+    "modes": [
+     "native-aot"
+    ],
+    "seconds": 429,
+    "ok": true
+   },
+   {
+    "kind": "play",
+    "modes": [
+     "release"
+    ],
+    "seconds": 4,
+    "ok": true
+   },
+   {
+    "kind": "play",
+    "modes": [
+     "native-aot"
+    ],
+    "seconds": 1,
+    "ok": true
+   },
+   {
+    "kind": "compare",
+    "modes": [
+     "release",
+     "native-aot"
+    ],
+    "seconds": 0,
+    "ok": true
+   },
+   {
+    "kind": "prepare",
+    "modes": null,
+    "seconds": 0,
+    "ok": true
+   }
+  ],
+  "products": {
+   "SeedLab-linux-x64/native-aot": {
+    "files": 27,
+    "bytes": 14544011,
+    "exe_bytes": 7424248,
+    "exe_mode": "-rwxr-xr-x",
+    "native": {
+     "libSDL3.so": "-> libSDL3.so.0",
+     "libSDL3.so.0": 4211016,
+     "libSDL3_ttf.so": 2368696,
+     "libbox2d.so": 376200
+    },
+    "forbidden": [],
+    "smoke": {
+     "code": 0,
+     "tail": [
+      "PASS player smoke: Scenes/Meadow.scene (0 control presses)"
+     ]
+    }
+   },
+   "SeedLab-linux-x64/release": {
+    "files": 89,
+    "bytes": 35429704,
+    "exe_bytes": 78256,
+    "exe_mode": "-rwxr-xr-x",
+    "native": {
+     "libSDL3.so": "-> libSDL3.so.0",
+     "libSDL3.so.0": 4211016,
+     "libSDL3_ttf.so": 2368696,
+     "libbox2d.so": 376200
+    },
+    "forbidden": [],
+    "deps_missing": [],
+    "deps_native_not_shipped": [
+     "createdump",
+     "libSDL3.so.0.4.12",
+     "libSDL3_mixer.so",
+     "libSDL3_mixer.so.0",
+     "libSDL3_mixer.so.0.2.4",
+     "libSDL3_ttf.so.0",
+     "libSDL3_ttf.so.0.2.2",
+     "libbox2d.so.3",
+     "libbox2d.so.3.1.1",
+     "libclrgc.so",
+     "libclrgcexp.so",
+     "libcoreclrtraceptprovider.so",
+     "libmscordaccore.so",
+     "libmscordbi.so"
+    ],
+    "smoke": {
+     "code": 0,
+     "tail": [
+      "PASS player smoke: Scenes/Meadow.scene (0 control presses)"
+     ]
+    }
+   }
+  },
+  "pairs": {
+   "release = native-aot": {
+    "same": 5,
+    "differ": [],
+    "only_release": [
+     "release.trace"
+    ],
+    "only_aot": [
+     "native-aot.trace"
+    ]
+   }
+  },
+  "seconds": 901
+ },
+ "h-AnimatorLab.Conditions": {
+  "status": "pass",
+  "code": 0,
+  "steps": [
+   {
+    "kind": "prepare",
+    "modes": null,
+    "seconds": 1,
+    "ok": true
+   },
+   {
+    "kind": "build",
+    "modes": [
+     "release"
+    ],
+    "seconds": 463,
+    "ok": true
+   },
+   {
+    "kind": "build",
+    "modes": [
+     "native-aot"
+    ],
+    "seconds": 419,
+    "ok": true
+   },
+   {
+    "kind": "play",
+    "modes": [
+     "release"
+    ],
+    "seconds": 4,
+    "ok": true
+   },
+   {
+    "kind": "play",
+    "modes": [
+     "native-aot"
+    ],
+    "seconds": 1,
+    "ok": true
+   },
+   {
+    "kind": "compare",
+    "modes": [
+     "release",
+     "native-aot"
+    ],
+    "seconds": 1,
+    "ok": true
+   },
+   {
+    "kind": "prepare",
+    "modes": null,
+    "seconds": 0,
+    "ok": true
+   }
+  ],
+  "products": {
+   "AnimatorLab-linux-x64/release": {
+    "files": 104,
+    "bytes": 34806499,
+    "exe_bytes": 78256,
+    "exe_mode": "-rwxr-xr-x",
+    "native": {
+     "libSDL3.so": "-> libSDL3.so.0",
+     "libSDL3.so.0": 4211016,
+     "libSDL3_ttf.so": 2368696
+    },
+    "forbidden": [],
+    "deps_missing": [],
+    "deps_native_not_shipped": [
+     "createdump",
+     "libSDL3.so.0.4.12",
+     "libSDL3_mixer.so",
+     "libSDL3_mixer.so.0",
+     "libSDL3_mixer.so.0.2.4",
+     "libSDL3_ttf.so.0",
+     "libSDL3_ttf.so.0.2.2",
+     "libbox2d.so",
+     "libbox2d.so.3",
+     "libbox2d.so.3.1.1",
+     "libclrgc.so",
+     "libclrgcexp.so",
+     "libcoreclrtraceptprovider.so",
+     "libmscordaccore.so",
+     "libmscordbi.so"
+    ],
+    "smoke": {
+     "code": 0,
+     "tail": [
+      "PASS player smoke: Scenes/Guard.scene (0 control presses)"
+     ]
+    }
+   },
+   "AnimatorLab-linux-x64/native-aot": {
+    "files": 42,
+    "bytes": 13474454,
+    "exe_bytes": 6817640,
+    "exe_mode": "-rwxr-xr-x",
+    "native": {
+     "libSDL3.so": "-> libSDL3.so.0",
+     "libSDL3.so.0": 4211016,
+     "libSDL3_ttf.so": 2368696
+    },
+    "forbidden": [],
+    "smoke": {
+     "code": 0,
+     "tail": [
+      "PASS player smoke: Scenes/Guard.scene (0 control presses)"
+     ]
+    }
+   }
+  },
+  "pairs": {
+   "release = native-aot": {
+    "same": 5,
+    "differ": [],
+    "only_release": [
+     "release.trace"
+    ],
+    "only_aot": [
+     "native-aot.trace"
+    ]
+   }
+  },
+  "seconds": 891
+ },
+ "h-AnimatorLab.Directions": {
+  "status": "pass",
+  "code": 0,
+  "steps": [
+   {
+    "kind": "prepare",
+    "modes": null,
+    "seconds": 1,
+    "ok": true
+   },
+   {
+    "kind": "build",
+    "modes": [
+     "release"
+    ],
+    "seconds": 465,
+    "ok": true
+   },
+   {
+    "kind": "build",
+    "modes": [
+     "native-aot"
+    ],
+    "seconds": 428,
+    "ok": true
+   },
+   {
+    "kind": "play",
+    "modes": [
+     "release"
+    ],
+    "seconds": 4,
+    "ok": true
+   },
+   {
+    "kind": "play",
+    "modes": [
+     "native-aot"
+    ],
+    "seconds": 2,
+    "ok": true
+   },
+   {
+    "kind": "compare",
+    "modes": [
+     "release",
+     "native-aot"
+    ],
+    "seconds": 0,
+    "ok": true
+   },
+   {
+    "kind": "prepare",
+    "modes": null,
+    "seconds": 0,
+    "ok": true
+   }
+  ],
+  "products": {
+   "AnimatorLab-linux-x64/release": {
+    "files": 104,
+    "bytes": 34806499,
+    "exe_bytes": 78256,
+    "exe_mode": "-rwxr-xr-x",
+    "native": {
+     "libSDL3.so": "-> libSDL3.so.0",
+     "libSDL3.so.0": 4211016,
+     "libSDL3_ttf.so": 2368696
+    },
+    "forbidden": [],
+    "deps_missing": [],
+    "deps_native_not_shipped": [
+     "createdump",
+     "libSDL3.so.0.4.12",
+     "libSDL3_mixer.so",
+     "libSDL3_mixer.so.0",
+     "libSDL3_mixer.so.0.2.4",
+     "libSDL3_ttf.so.0",
+     "libSDL3_ttf.so.0.2.2",
+     "libbox2d.so",
+     "libbox2d.so.3",
+     "libbox2d.so.3.1.1",
+     "libclrgc.so",
+     "libclrgcexp.so",
+     "libcoreclrtraceptprovider.so",
+     "libmscordaccore.so",
+     "libmscordbi.so"
+    ],
+    "smoke": {
+     "code": 0,
+     "tail": [
+      "PASS player smoke: Scenes/Scout.scene (0 control presses)"
+     ]
+    }
+   },
+   "AnimatorLab-linux-x64/native-aot": {
+    "files": 42,
+    "bytes": 13474454,
+    "exe_bytes": 6817640,
+    "exe_mode": "-rwxr-xr-x",
+    "native": {
+     "libSDL3.so": "-> libSDL3.so.0",
+     "libSDL3.so.0": 4211016,
+     "libSDL3_ttf.so": 2368696
+    },
+    "forbidden": [],
+    "smoke": {
+     "code": 0,
+     "tail": [
+      "PASS player smoke: Scenes/Scout.scene (0 control presses)"
+     ]
+    }
+   }
+  },
+  "pairs": {
+   "release = native-aot": {
+    "same": 6,
+    "differ": [],
+    "only_release": [
+     "release.trace"
+    ],
+    "only_aot": [
+     "native-aot.trace"
+    ]
+   }
+  },
+  "seconds": 903
+ },
+ "h-PlatformerLab.Lighting": {
+  "status": "pass",
+  "code": 0,
+  "steps": [
+   {
+    "kind": "prepare",
+    "modes": null,
+    "seconds": 0,
+    "ok": true
+   },
+   {
+    "kind": "build",
+    "modes": [
+     "release"
+    ],
+    "seconds": 474,
+    "ok": true
+   },
+   {
+    "kind": "build",
+    "modes": [
+     "native-aot"
+    ],
+    "seconds": 446,
+    "ok": true
+   },
+   {
+    "kind": "play",
+    "modes": [
+     "release"
+    ],
+    "seconds": 6,
+    "ok": true
+   },
+   {
+    "kind": "play",
+    "modes": [
+     "native-aot"
+    ],
+    "seconds": 2,
+    "ok": true
+   }
+  ],
+  "products": {
+   "PlatformerLab-linux-x64/native-aot": {
+    "files": 46,
+    "bytes": 15018900,
+    "exe_bytes": 7878920,
+    "exe_mode": "-rwxr-xr-x",
+    "native": {
+     "libSDL3.so": "-> libSDL3.so.0",
+     "libSDL3.so.0": 4211016,
+     "libSDL3_ttf.so": 2368696,
+     "libbox2d.so": 376200
+    },
+    "forbidden": [],
+    "smoke": {
+     "code": 0,
+     "tail": [
+      "PASS player smoke: Scenes/Cave.scene (0 control presses)"
+     ]
+    }
+   },
+   "PlatformerLab-linux-x64/release": {
+    "files": 108,
+    "bytes": 35416129,
+    "exe_bytes": 78256,
+    "exe_mode": "-rwxr-xr-x",
+    "native": {
+     "libSDL3.so": "-> libSDL3.so.0",
+     "libSDL3.so.0": 4211016,
+     "libSDL3_ttf.so": 2368696,
+     "libbox2d.so": 376200
+    },
+    "forbidden": [],
+    "deps_missing": [],
+    "deps_native_not_shipped": [
+     "createdump",
+     "libSDL3.so.0.4.12",
+     "libSDL3_mixer.so",
+     "libSDL3_mixer.so.0",
+     "libSDL3_mixer.so.0.2.4",
+     "libSDL3_ttf.so.0",
+     "libSDL3_ttf.so.0.2.2",
+     "libbox2d.so.3",
+     "libbox2d.so.3.1.1",
+     "libclrgc.so",
+     "libclrgcexp.so",
+     "libcoreclrtraceptprovider.so",
+     "libmscordaccore.so",
+     "libmscordbi.so"
+    ],
+    "smoke": {
+     "code": 0,
+     "tail": [
+      "PASS player smoke: Scenes/Cave.scene (0 control presses)"
+     ]
+    }
+   }
+  },
+  "pairs": {
+   "release = aot": {
+    "same": 7,
+    "differ": [],
+    "only_release": [],
+    "only_aot": []
+   }
+  },
+  "seconds": 932
+ },
+ "h-InventoryLab.WorldText": {
+  "status": "pass",
+  "code": 0,
+  "steps": [
+   {
+    "kind": "prepare",
+    "modes": null,
+    "seconds": 2,
+    "ok": true
+   },
+   {
+    "kind": "build",
+    "modes": [
+     "release"
+    ],
+    "seconds": 488,
+    "ok": true
+   },
+   {
+    "kind": "build",
+    "modes": [
+     "native-aot"
+    ],
+    "seconds": 465,
+    "ok": true
+   },
+   {
+    "kind": "play",
+    "modes": [
+     "release"
+    ],
+    "seconds": 8,
+    "ok": true
+   },
+   {
+    "kind": "play",
+    "modes": [
+     "native-aot"
+    ],
+    "seconds": 5,
+    "ok": true
+   }
+  ],
+  "products": {
+   "InventoryLab-linux-x64/release": {
+    "files": 93,
+    "bytes": 88843399,
+    "exe_bytes": 78256,
+    "exe_mode": "-rwxr-xr-x",
+    "native": {
+     "libSDL3.so": "-> libSDL3.so.0",
+     "libSDL3.so.0": 4211016,
+     "libSDL3_ttf.so": 2368696,
+     "libSDL3_mixer.so": 404464
+    },
+    "forbidden": [],
+    "deps_missing": [],
+    "deps_native_not_shipped": [
+     "createdump",
+     "libSDL3.so.0.4.12",
+     "libSDL3_mixer.so.0",
+     "libSDL3_mixer.so.0.2.4",
+     "libSDL3_ttf.so.0",
+     "libSDL3_ttf.so.0.2.2",
+     "libbox2d.so",
+     "libbox2d.so.3",
+     "libbox2d.so.3.1.1",
+     "libclrgc.so",
+     "libclrgcexp.so",
+     "libcoreclrtraceptprovider.so",
+     "libmscordaccore.so",
+     "libmscordbi.so"
+    ],
+    "smoke": {
+     "code": 0,
+     "tail": [
+      "PASS player smoke: Scenes/Labels.scene (0 control presses)"
+     ]
+    }
+   },
+   "InventoryLab-linux-x64/native-aot": {
+    "files": 31,
+    "bytes": 67544666,
+    "exe_bytes": 7050120,
+    "exe_mode": "-rwxr-xr-x",
+    "native": {
+     "libSDL3.so": "-> libSDL3.so.0",
+     "libSDL3.so.0": 4211016,
+     "libSDL3_ttf.so": 2368696,
+     "libSDL3_mixer.so": 404464
+    },
+    "forbidden": [],
+    "smoke": {
+     "code": 0,
+     "tail": [
+      "PASS player smoke: Scenes/Labels.scene (0 control presses)"
+     ]
+    }
+   }
+  },
+  "pairs": {
+   "runs/release = native-aot": {
+    "same": 27,
+    "differ": [],
+    "only_release": [],
+    "only_aot": []
+   }
+  },
+  "seconds": 978
+ },
+ "h-InventoryLab.BagGrid": {
+  "status": "pass",
+  "code": 0,
+  "steps": [
+   {
+    "kind": "prepare",
+    "modes": null,
+    "seconds": 4,
+    "ok": true
+   },
+   {
+    "kind": "build",
+    "modes": [
+     "release"
+    ],
+    "seconds": 494,
+    "ok": true
+   },
+   {
+    "kind": "build",
+    "modes": [
+     "native-aot"
+    ],
+    "seconds": 457,
+    "ok": true
+   },
+   {
+    "kind": "play",
+    "modes": [
+     "release"
+    ],
+    "seconds": 8,
+    "ok": true
+   },
+   {
+    "kind": "play",
+    "modes": [
+     "native-aot"
+    ],
+    "seconds": 5,
+    "ok": true
+   }
+  ],
+  "products": {
+   "InventoryLab-linux-x64/release": {
+    "files": 93,
+    "bytes": 88847659,
+    "exe_bytes": 78256,
+    "exe_mode": "-rwxr-xr-x",
+    "native": {
+     "libSDL3.so": "-> libSDL3.so.0",
+     "libSDL3.so.0": 4211016,
+     "libSDL3_ttf.so": 2368696,
+     "libSDL3_mixer.so": 404464
+    },
+    "forbidden": [],
+    "deps_missing": [],
+    "deps_native_not_shipped": [
+     "createdump",
+     "libSDL3.so.0.4.12",
+     "libSDL3_mixer.so.0",
+     "libSDL3_mixer.so.0.2.4",
+     "libSDL3_ttf.so.0",
+     "libSDL3_ttf.so.0.2.2",
+     "libbox2d.so",
+     "libbox2d.so.3",
+     "libbox2d.so.3.1.1",
+     "libclrgc.so",
+     "libclrgcexp.so",
+     "libcoreclrtraceptprovider.so",
+     "libmscordaccore.so",
+     "libmscordbi.so"
+    ],
+    "smoke": {
+     "code": 0,
+     "tail": [
+      "PASS player smoke: Scenes/BagGrid.scene (0 control presses)"
+     ]
+    }
+   },
+   "InventoryLab-linux-x64/native-aot": {
+    "files": 31,
+    "bytes": 67545854,
+    "exe_bytes": 7050120,
+    "exe_mode": "-rwxr-xr-x",
+    "native": {
+     "libSDL3.so": "-> libSDL3.so.0",
+     "libSDL3.so.0": 4211016,
+     "libSDL3_ttf.so": 2368696,
+     "libSDL3_mixer.so": 404464
+    },
+    "forbidden": [],
+    "smoke": {
+     "code": 0,
+     "tail": [
+      "PASS player smoke: Scenes/BagGrid.scene (0 control presses)"
+     ]
+    }
+   }
+  },
+  "pairs": {
+   "runs/release = native-aot": {
+    "same": 31,
+    "differ": [],
+    "only_release": [],
+    "only_aot": []
+   }
+  },
+  "seconds": 980
+ },
+ "h-SeedLab.NavigationFree": {
+  "status": "pass",
+  "code": 0,
+  "steps": [
+   {
+    "kind": "prepare",
+    "modes": null,
+    "seconds": 0,
+    "ok": true
+   },
+   {
+    "kind": "build",
+    "modes": [
+     "release"
+    ],
+    "seconds": 465,
+    "ok": true
+   },
+   {
+    "kind": "build",
+    "modes": [
+     "native-aot"
+    ],
+    "seconds": 430,
+    "ok": true
+   },
+   {
+    "kind": "play",
+    "modes": [
+     "release"
+    ],
+    "seconds": 6,
+    "ok": true
+   },
+   {
+    "kind": "play",
+    "modes": [
+     "native-aot"
+    ],
+    "seconds": 3,
+    "ok": true
+   }
+  ],
+  "products": {
+   "SeedLab-linux-x64/native-aot": {
+    "files": 27,
+    "bytes": 14543683,
+    "exe_bytes": 7424168,
+    "exe_mode": "-rwxr-xr-x",
+    "native": {
+     "libSDL3.so": "-> libSDL3.so.0",
+     "libSDL3.so.0": 4211016,
+     "libSDL3_ttf.so": 2368696,
+     "libbox2d.so": 376200
+    },
+    "forbidden": [],
+    "smoke": {
+     "code": 0,
+     "tail": [
+      "PASS player smoke: Scenes/Survey.scene (0 control presses)"
+     ]
+    }
+   },
+   "SeedLab-linux-x64/release": {
+    "files": 89,
+    "bytes": 35426896,
+    "exe_bytes": 78256,
+    "exe_mode": "-rwxr-xr-x",
+    "native": {
+     "libSDL3.so": "-> libSDL3.so.0",
+     "libSDL3.so.0": 4211016,
+     "libSDL3_ttf.so": 2368696,
+     "libbox2d.so": 376200
+    },
+    "forbidden": [],
+    "deps_missing": [],
+    "deps_native_not_shipped": [
+     "createdump",
+     "libSDL3.so.0.4.12",
+     "libSDL3_mixer.so",
+     "libSDL3_mixer.so.0",
+     "libSDL3_mixer.so.0.2.4",
+     "libSDL3_ttf.so.0",
+     "libSDL3_ttf.so.0.2.2",
+     "libbox2d.so.3",
+     "libbox2d.so.3.1.1",
+     "libclrgc.so",
+     "libclrgcexp.so",
+     "libcoreclrtraceptprovider.so",
+     "libmscordaccore.so",
+     "libmscordbi.so"
+    ],
+    "smoke": {
+     "code": 0,
+     "tail": [
+      "PASS player smoke: Scenes/Survey.scene (0 control presses)"
+     ]
+    }
+   }
+  },
+  "pairs": {
+   "release = native-aot": {
+    "same": 3,
+    "differ": [],
+    "only_release": [],
+    "only_aot": []
+   }
+  },
+  "seconds": 907
+ },
+ "h-KeyRoom.Tweens": {
+  "status": "pass",
+  "code": 0,
+  "steps": [
+   {
+    "kind": "prepare",
+    "modes": null,
+    "seconds": 1,
+    "ok": true
+   },
+   {
+    "kind": "build",
+    "modes": [
+     "release"
+    ],
+    "seconds": 469,
+    "ok": true
+   },
+   {
+    "kind": "build",
+    "modes": [
+     "native-aot"
+    ],
+    "seconds": 449,
+    "ok": true
+   },
+   {
+    "kind": "play",
+    "modes": [
+     "release"
+    ],
+    "seconds": 4,
+    "ok": true
+   },
+   {
+    "kind": "play",
+    "modes": [
+     "native-aot"
+    ],
+    "seconds": 1,
+    "ok": true
+   }
+  ],
+  "products": {
+   "KeyRoom-linux-x64/release": {
+    "files": 110,
+    "bytes": 38044595,
+    "exe_bytes": 78256,
+    "exe_mode": "-rwxr-xr-x",
+    "native": {
+     "libSDL3.so": "-> libSDL3.so.0",
+     "libSDL3.so.0": 4211016,
+     "libSDL3_ttf.so": 2368696,
+     "libSDL3_mixer.so": 404464,
+     "libbox2d.so": 376200
+    },
+    "forbidden": [],
+    "deps_missing": [],
+    "deps_native_not_shipped": [
+     "createdump",
+     "libSDL3.so.0.4.12",
+     "libSDL3_mixer.so.0",
+     "libSDL3_mixer.so.0.2.4",
+     "libSDL3_ttf.so.0",
+     "libSDL3_ttf.so.0.2.2",
+     "libbox2d.so.3",
+     "libbox2d.so.3.1.1",
+     "libclrgc.so",
+     "libclrgcexp.so",
+     "libcoreclrtraceptprovider.so",
+     "libmscordaccore.so",
+     "libmscordbi.so"
+    ],
+    "smoke": {
+     "code": 0,
+     "tail": [
+      "PASS player smoke: Scenes/KeyRoom.scene (0 control presses)"
+     ]
+    }
+   },
+   "KeyRoom-linux-x64/native-aot": {
+    "files": 48,
+    "bytes": 16938854,
+    "exe_bytes": 7299432,
+    "exe_mode": "-rwxr-xr-x",
+    "native": {
+     "libSDL3.so": "-> libSDL3.so.0",
+     "libSDL3.so.0": 4211016,
+     "libSDL3_ttf.so": 2368696,
+     "libSDL3_mixer.so": 404464,
+     "libbox2d.so": 376200
+    },
+    "forbidden": [],
+    "smoke": {
+     "code": 0,
+     "tail": [
+      "PASS player smoke: Scenes/KeyRoom.scene (0 control presses)"
+     ]
+    }
+   }
+  },
+  "pairs": {
+   "release = aot": {
+    "same": 4,
+    "differ": [],
+    "only_release": [
+     "release.trace"
+    ],
+    "only_aot": [
+     "aot.trace"
+    ]
+   }
+  },
+  "seconds": 927
+ },
+ "h-PlatformerLab.Parallax": {
+  "status": "pass",
+  "code": 0,
+  "steps": [
+   {
+    "kind": "prepare",
+    "modes": null,
+    "seconds": 0,
+    "ok": true
+   },
+   {
+    "kind": "build",
+    "modes": [
+     "release"
+    ],
+    "seconds": 463,
+    "ok": true
+   },
+   {
+    "kind": "build",
+    "modes": [
+     "native-aot"
+    ],
+    "seconds": 435,
+    "ok": true
+   },
+   {
+    "kind": "play",
+    "modes": [
+     "release"
+    ],
+    "seconds": 14,
+    "ok": true
+   },
+   {
+    "kind": "play",
+    "modes": [
+     "native-aot"
+    ],
+    "seconds": 1,
+    "ok": true
+   },
+   {
+    "kind": "compare",
+    "modes": [
+     "release",
+     "native-aot"
+    ],
+    "seconds": 1,
+    "ok": true
+   }
+  ],
+  "products": {
+   "PlatformerLab-linux-x64/native-aot": {
+    "files": 46,
+    "bytes": 15027388,
+    "exe_bytes": 7887160,
+    "exe_mode": "-rwxr-xr-x",
+    "native": {
+     "libSDL3.so": "-> libSDL3.so.0",
+     "libSDL3.so.0": 4211016,
+     "libSDL3_ttf.so": 2368696,
+     "libbox2d.so": 376200
+    },
+    "forbidden": [],
+    "smoke": {
+     "code": 0,
+     "tail": [
+      "PASS player smoke: Scenes/Parallax.scene (0 control presses)"
+     ]
+    }
+   },
+   "PlatformerLab-linux-x64/release": {
+    "files": 108,
+    "bytes": 35422009,
+    "exe_bytes": 78256,
+    "exe_mode": "-rwxr-xr-x",
+    "native": {
+     "libSDL3.so": "-> libSDL3.so.0",
+     "libSDL3.so.0": 4211016,
+     "libSDL3_ttf.so": 2368696,
+     "libbox2d.so": 376200
+    },
+    "forbidden": [],
+    "deps_missing": [],
+    "deps_native_not_shipped": [
+     "createdump",
+     "libSDL3.so.0.4.12",
+     "libSDL3_mixer.so",
+     "libSDL3_mixer.so.0",
+     "libSDL3_mixer.so.0.2.4",
+     "libSDL3_ttf.so.0",
+     "libSDL3_ttf.so.0.2.2",
+     "libbox2d.so.3",
+     "libbox2d.so.3.1.1",
+     "libclrgc.so",
+     "libclrgcexp.so",
+     "libcoreclrtraceptprovider.so",
+     "libmscordaccore.so",
+     "libmscordbi.so"
+    ],
+    "smoke": {
+     "code": 0,
+     "tail": [
+      "PASS player smoke: Scenes/Parallax.scene (0 control presses)"
+     ]
+    }
+   }
+  },
+  "pairs": {
+   "release = aot": {
+    "same": 6,
+    "differ": [],
+    "only_release": [
+     "release.trace"
+    ],
+    "only_aot": [
+     "aot.trace"
+    ]
+   }
+  },
+  "seconds": 920
+ },
+ "win-x64-release-KeyRoom": {
+  "status": "fail",
+  "error": "Traceback (most recent call last):\n  File \"/run/n1x64/run/guest.py\", line 50, in run_step\n    result = {'status': 'pass', **(fn() or {})}\n                                   ^^^^\n  File \"/run/n1x64/run/guest.py\", line 348, in _\n    if target == 'win-x64': assert info['code'] == 0, info  # osx-arm64: success or a clear message, both recorded\n                                   ^^^^^^^^^^^^^^^^^\nAssertionError: {'code': 1, 'seconds': 66, 'tail': ['/run/n1x64/run/repo/player-templates/native-aot/src/Engine.Core/Engine.Core.csproj : error NU1101: Unable to find package Microsoft.AspNetCore.App.Runtime.win-x64. No packages exist with this id in source(s): /home/debian/monoon-buildtools/feed, /run/n1x64/run/feed [/run/n1x64/run/repo/player-templates/native-aot/src/Engine.Player/Engine.Player.csproj]', '/run/n1x64/run/repo/player-templates/native-aot/src/Engine.Desktop/Engine.Desktop.csproj : error NU1101: Unable to find package Microsoft.AspNetCore.App.Runtime.win-x64. No packages exist with this id in source(s): /home/debian/monoon-buildtools/feed, /run/n1x64/run/feed [/run/n1x64/run/repo/player-templates/native-aot/src/Engine.Player/Engine.Player.csproj]', '  Failed to restore /run/n1x64/run/repo/player-templates/native-aot/src/Engine.Core/Engine.Core.csproj (in 298 ms).', '  Failed to restore /run/n1x64/run/repo/player-templates/native-aot/src/Engine.Desktop/Engine.Desktop.csproj (in 337 ms).']}\n",
+  "seconds": 66
+ },
+ "g-KeyRoom": {
+  "status": "pass",
+  "code": 0,
+  "steps": [
+   {
+    "kind": "prepare",
+    "modes": null,
+    "seconds": 1,
+    "ok": true
+   },
+   {
+    "kind": "build",
+    "modes": [
+     "release"
+    ],
+    "seconds": 483,
+    "ok": true
+   },
+   {
+    "kind": "build",
+    "modes": [
+     "native-aot"
+    ],
+    "seconds": 450,
+    "ok": true
+   },
+   {
+    "kind": "play",
+    "modes": [
+     "release"
+    ],
+    "seconds": 5,
+    "ok": true
+   },
+   {
+    "kind": "play",
+    "modes": [
+     "native-aot"
+    ],
+    "seconds": 2,
+    "ok": true
+   },
+   {
+    "kind": "compare",
+    "modes": [
+     "release",
+     "native-aot"
+    ],
+    "seconds": 0,
+    "ok": true
+   },
+   {
+    "kind": "prepare",
+    "modes": null,
+    "seconds": 1,
+    "ok": true
+   }
+  ],
+  "products": {
+   "KeyRoom-linux-x64/release": {
+    "files": 110,
+    "bytes": 38048384,
+    "exe_bytes": 78256,
+    "exe_mode": "-rwxr-xr-x",
+    "native": {
+     "libSDL3.so": "-> libSDL3.so.0",
+     "libSDL3.so.0": 4211016,
+     "libSDL3_ttf.so": 2368696,
+     "libSDL3_mixer.so": 404464,
+     "libbox2d.so": 376200
+    },
+    "forbidden": [],
+    "deps_missing": [],
+    "deps_native_not_shipped": [
+     "createdump",
+     "libSDL3.so.0.4.12",
+     "libSDL3_mixer.so.0",
+     "libSDL3_mixer.so.0.2.4",
+     "libSDL3_ttf.so.0",
+     "libSDL3_ttf.so.0.2.2",
+     "libbox2d.so.3",
+     "libbox2d.so.3.1.1",
+     "libclrgc.so",
+     "libclrgcexp.so",
+     "libcoreclrtraceptprovider.so",
+     "libmscordaccore.so",
+     "libmscordbi.so"
+    ],
+    "smoke": {
+     "code": 0,
+     "tail": [
+      "PASS player smoke: Scenes/KeyRoom.scene (0 control presses)"
+     ]
+    }
+   },
+   "KeyRoom-linux-x64/native-aot": {
+    "files": 48,
+    "bytes": 16944723,
+    "exe_bytes": 7303560,
+    "exe_mode": "-rwxr-xr-x",
+    "native": {
+     "libSDL3.so": "-> libSDL3.so.0",
+     "libSDL3.so.0": 4211016,
+     "libSDL3_ttf.so": 2368696,
+     "libSDL3_mixer.so": 404464,
+     "libbox2d.so": 376200
+    },
+    "forbidden": [],
+    "smoke": {
+     "code": 0,
+     "tail": [
+      "PASS player smoke: Scenes/KeyRoom.scene (0 control presses)"
+     ]
+    }
+   }
+  },
+  "extra": {
+   "release": [
+    "collect.save",
+    "collected-reload.save",
+    "collected.save",
+    "dropped-restored.save",
+    "dropped.save",
+    "held-restored.save",
+    "held.save",
+    "mac-roundtrip.save",
+    "outside.save",
+    "restore.save",
+    "slot-001.save",
+    "slot-001.save",
+    "slot-001.save",
+    "slot-002.save",
+    "slot-002.save",
+    "slot-002.save",
+    "spawn.save"
+   ],
+   "native-aot": [
+    "collect.save",
+    "collected-reload.save",
+    "collected.save",
+    "dropped-restored.save",
+    "dropped.save",
+    "held-restored.save",
+    "held.save",
+    "mac-roundtrip.save",
+    "outside.save",
+    "restore.save",
+    "slot-001.save",
+    "slot-001.save",
+    "slot-001.save",
+    "slot-002.save",
+    "slot-002.save",
+    "slot-002.save",
+    "spawn.save"
+   ]
+  },
+  "pairs": {
+   "release = aot": {
+    "same": 7,
+    "differ": [],
+    "only_release": [],
+    "only_aot": []
+   }
+  },
+  "seconds": 986
+ },
+ "g-AudioLab": {
+  "status": "fail",
+  "error": "Traceback (most recent call last):\n  File \"/run/n1x64/run/guest.py\", line 51, in run_step\n    result = {'status': 'pass', **(fn() or {})}\n                                   ^^^^\n  File \"/run/n1x64/run/guest.py\", line 353, in <lambda>\n    ('g-AudioLab', lambda: harness('AudioLab.Buses', vorbis_extra))]\n                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/run/n1x64/run/guest.py\", line 200, in harness\n    raise Failed(f'{hid}: exit {code}, bad products {bad}, {tail}', detail)\nFailed: AudioLab.Buses: exit 99, bad products [], []\n",
+  "code": 0,
+  "steps": [
+   {
+    "kind": "prepare",
+    "modes": null,
+    "seconds": 1,
+    "ok": true
+   },
+   {
+    "kind": "build",
+    "modes": [
+     "release"
+    ],
+    "seconds": 949,
+    "ok": true
+   },
+   {
+    "kind": "build",
+    "modes": [
+     "native-aot"
+    ],
+    "seconds": 884,
+    "ok": true
+   },
+   {
+    "kind": "play",
+    "modes": [
+     "release"
+    ],
+    "seconds": 24,
+    "ok": true
+   },
+   {
+    "kind": "play",
+    "modes": [
+     "native-aot"
+    ],
+    "seconds": 17,
+    "ok": true
+   },
+   {
+    "kind": "compare",
+    "modes": [
+     "release"
+    ],
+    "seconds": 1,
+    "ok": true
+   },
+   {
+    "kind": "compare",
+    "modes": [
+     "native-aot"
+    ],
+    "seconds": 1,
+    "ok": true
+   }
+  ],
+  "products": {
+   "AudioLab-linux-x64/release": {
+    "files": 82,
+    "bytes": 35302025,
+    "exe_bytes": 78256,
+    "exe_mode": "-rwxr-xr-x",
+    "native": {
+     "libSDL3.so": "-> libSDL3.so.0",
+     "libSDL3.so.0": 4211016,
+     "libSDL3_ttf.so": 2368696,
+     "libSDL3_mixer.so": 404464
+    },
+    "forbidden": [],
+    "deps_missing": [],
+    "deps_native_not_shipped": [
+     "createdump",
+     "libSDL3.so.0.4.12",
+     "libSDL3_mixer.so.0",
+     "libSDL3_mixer.so.0.2.4",
+     "libSDL3_ttf.so.0",
+     "libSDL3_ttf.so.0.2.2",
+     "libbox2d.so",
+     "libbox2d.so.3",
+     "libbox2d.so.3.1.1",
+     "libclrgc.so",
+     "libclrgcexp.so",
+     "libcoreclrtraceptprovider.so",
+     "libmscordaccore.so",
+     "libmscordbi.so"
+    ],
+    "smoke": {
+     "code": 0,
+     "tail": [
+      "Mixer: music=0.8 effects=0.75 voice=1 master=0.8",
+      "PASS player smoke: Scenes/AudioLab.scene (0 control presses)"
+     ]
+    }
+   },
+   "AudioLab-linux-x64/native-aot": {
+    "files": 20,
+    "bytes": 14019820,
+    "exe_bytes": 6880280,
+    "exe_mode": "-rwxr-xr-x",
+    "native": {
+     "libSDL3.so": "-> libSDL3.so.0",
+     "libSDL3.so.0": 4211016,
+     "libSDL3_ttf.so": 2368696,
+     "libSDL3_mixer.so": 404464
+    },
+    "forbidden": [],
+    "smoke": {
+     "code": 0,
+     "tail": [
+      "Mixer: music=0.8 effects=0.75 voice=1 master=0.8",
+      "PASS player smoke: Scenes/AudioLab.scene (0 control presses)"
+     ]
+    }
+   }
+  },
+  "extra_error": "Traceback (most recent call last):\n  File \"/run/n1x64/run/guest.py\", line 192, in harness\n    try: detail['extra'] = extra(work, out)\n                           ^^^^^^^^^^^^^^^^\n  File \"/run/n1x64/run/guest.py\", line 331, in vorbis_extra\n    C = load('ci_vorbis', repo / 'engine/tests/AudioLab.Vorbis/ci.py')\n        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/run/n1x64/run/guest.py\", line 254, in load\n    m = importlib.util.module_from_spec(spec); sys.modules[name] = m; spec.loader.exec_module(m)\n                                                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"<frozen importlib._bootstrap_external>\", line 940, in exec_module\n  File \"<frozen importlib._bootstrap>\", line 241, in _call_with_frames_removed\n  File \"/run/n1x64/run/repo/engine/tests/AudioLab.Vorbis/ci.py\", line 14, in <module>\n    from measure import BLOCK, PERIOD, RATE, read_capture\nModuleNotFoundError: No module named 'measure'\n",
+  "pairs": {
+   "release-default = aot-default": {
+    "same": 1,
+    "differ": [
+     "device.f32",
+     "mix.f32",
+     "player.log"
+    ],
+    "only_release": [],
+    "only_aot": []
+   },
+   "release-ducking = aot-ducking": {
+    "same": 2,
+    "differ": [
+     "device.f32",
+     "mix.f32",
+     "player.log"
+    ],
+    "only_release": [],
+    "only_aot": []
+   }
+  },
+  "seconds": 1879
+ },
+ "h-InventoryLab.ScriptFields": {
+  "status": "pass",
+  "code": 0,
+  "steps": [
+   {
+    "kind": "prepare",
+    "modes": null,
+    "seconds": 3,
+    "ok": true
+   },
+   {
+    "kind": "build",
+    "modes": [
+     "release"
+    ],
+    "seconds": 536,
+    "ok": true
+   },
+   {
+    "kind": "build",
+    "modes": [
+     "native-aot"
+    ],
+    "seconds": 452,
+    "ok": true
+   },
+   {
+    "kind": "play",
+    "modes": [
+     "release"
+    ],
+    "seconds": 11,
+    "ok": true
+   },
+   {
+    "kind": "play",
+    "modes": [
+     "native-aot"
+    ],
+    "seconds": 4,
+    "ok": true
+   },
+   {
+    "kind": "compare",
+    "modes": [
+     "native-aot"
+    ],
+    "seconds": 1,
+    "ok": true
+   }
+  ],
+  "products": {
+   "InventoryLab-linux-x64/release": {
+    "files": 93,
+    "bytes": 88855564,
+    "exe_bytes": 78256,
+    "exe_mode": "-rwxr-xr-x",
+    "native": {
+     "libSDL3.so": "-> libSDL3.so.0",
+     "libSDL3.so.0": 4211016,
+     "libSDL3_ttf.so": 2368696,
+     "libSDL3_mixer.so": 404464
+    },
+    "forbidden": [],
+    "deps_missing": [],
+    "deps_native_not_shipped": [
+     "createdump",
+     "libSDL3.so.0.4.12",
+     "libSDL3_mixer.so.0",
+     "libSDL3_mixer.so.0.2.4",
+     "libSDL3_ttf.so.0",
+     "libSDL3_ttf.so.0.2.2",
+     "libbox2d.so",
+     "libbox2d.so.3",
+     "libbox2d.so.3.1.1",
+     "libclrgc.so",
+     "libclrgcexp.so",
+     "libcoreclrtraceptprovider.so",
+     "libmscordaccore.so",
+     "libmscordbi.so"
+    ],
+    "smoke": {
+     "code": 0,
+     "tail": [
+      "PASS player smoke: Scenes/Inventory.scene (0 control presses)"
+     ]
+    }
+   },
+   "InventoryLab-linux-x64/native-aot": {
+    "files": 31,
+    "bytes": 67570703,
+    "exe_bytes": 7075256,
+    "exe_mode": "-rwxr-xr-x",
+    "native": {
+     "libSDL3.so": "-> libSDL3.so.0",
+     "libSDL3.so.0": 4211016,
+     "libSDL3_ttf.so": 2368696,
+     "libSDL3_mixer.so": 404464
+    },
+    "forbidden": [],
+    "smoke": {
+     "code": 0,
+     "tail": [
+      "PASS player smoke: Scenes/Inventory.scene (0 control presses)"
+     ]
+    }
+   }
+  },
+  "pairs": {
+   "release = aot": {
+    "same": 22,
+    "differ": [],
+    "only_release": [],
+    "only_aot": []
+   }
+  },
+  "seconds": 1018
+ },
+ "aot-size-variants": {
+  "status": "pass",
+  "head-size": {
+   "files": 31,
+   "bytes": 67544666,
+   "exe_bytes": 7050120,
+   "exe_mode": "-rwxr-xr-x",
+   "native": {
+    "libSDL3.so": "-> libSDL3.so.0",
+    "libSDL3.so.0": 4211016,
+    "libSDL3_ttf.so": 2368696,
+    "libSDL3_mixer.so": 404464
+   },
+   "forbidden": [],
+   "smoke": {
+    "code": 0,
+    "tail": [
+     "PASS player smoke: Scenes/Inventory.scene (0 control presses)"
+    ]
+   }
+  },
+  "head-speed": {
+   "files": 31,
+   "bytes": 67720154,
+   "exe_bytes": 7225608,
+   "exe_mode": "-rwxr-xr-x",
+   "native": {
+    "libSDL3.so": "-> libSDL3.so.0",
+    "libSDL3.so.0": 4211016,
+    "libSDL3_ttf.so": 2368696,
+    "libSDL3_mixer.so": 404464
+   },
+   "forbidden": [],
+   "build_seconds": 463,
+   "smoke": {
+    "code": 0,
+    "tail": [
+     "PASS player smoke: Scenes/Inventory.scene (0 control presses)"
+    ]
+   },
+   "herbalist": {
+    "bytes": 171,
+    "sha256": "eed41defcbd7987a527deb677c60da8151ad0de1616c717c646e92b26e70f795",
+    "equal_fixture": true
+   }
+  },
+  "base-d523ec7": {
+   "files": 34,
+   "bytes": 83126311,
+   "exe_bytes": 13098472,
+   "exe_mode": "-rwxr-xr-x",
+   "native": {
+    "libSDL3.so": 4211016,
+    "libSDL3.so.0": 4211016,
+    "libSDL3_ttf.so": 2368696,
+    "libSDL3_mixer.so": 404464,
+    "libbox2d.so": 376200
+   },
+   "forbidden": [],
+   "build_seconds": 513,
+   "smoke": {
+    "code": 0,
+    "tail": [
+     "PASS player smoke: Scenes/Inventory.scene (0 control presses)"
+    ]
+   },
+   "herbalist": {
+    "bytes": 171,
+    "sha256": "eed41defcbd7987a527deb677c60da8151ad0de1616c717c646e92b26e70f795",
+    "equal_fixture": true
+   }
+  },
+  "seconds": 992
+ },
+ "guest-package-SpriteLab": {
+  "status": "pass",
+  "release": {
+   "layout": {
+    "files": 82,
+    "bytes": 32364194,
+    "exe_bytes": 78256,
+    "exe_mode": "-rwxr-xr-x",
+    "native": {
+     "libSDL3.so": "-> libSDL3.so.0",
+     "libSDL3.so.0": 4211016
+    },
+    "forbidden": [],
+    "deps_missing": [],
+    "deps_native_not_shipped": [
+     "createdump",
+     "libSDL3.so.0.4.12",
+     "libSDL3_mixer.so",
+     "libSDL3_mixer.so.0",
+     "libSDL3_mixer.so.0.2.4",
+     "libSDL3_ttf.so",
+     "libSDL3_ttf.so.0",
+     "libSDL3_ttf.so.0.2.2",
+     "libbox2d.so",
+     "libbox2d.so.3",
+     "libbox2d.so.3.1.1",
+     "libclrgc.so",
+     "libclrgcexp.so",
+     "libcoreclrtraceptprovider.so",
+     "libmscordaccore.so",
+     "libmscordbi.so"
+    ],
+    "tar_libSDL3.so": "link -> libSDL3.so.0",
+    "tar_modes": {
+     "MoNoonPlayer": "-rwxr-xr-x",
+     "install-desktop-entry.sh": "-rwxr-xr-x",
+     "Game/GameSettings": "-rw-r--r--",
+     "libSDL3.so.0": "-rwxr--r--",
+     "MoNoonPlayer.deps.json": "-rw-r--r--"
+    },
+    "executables": [
+     "Licenses/BRUTAL/BRUTAL-SDL-THIRD-PARTY-NOTICES.txt",
+     "Licenses/BRUTAL/CONTRIBUTORS.md",
+     "Licenses/BRUTAL/LICENSE.txt",
+     "Licenses/BRUTAL/NOTICE.txt",
+     "MoNoonPlayer",
+     "install-desktop-entry.sh",
+     "libSDL3.so.0",
+     "libSystem.Globalization.Native.so",
+     "libSystem.IO.Compression.Native.so",
+     "libSystem.Native.so",
+     "libSystem.Net.Security.Native.so",
+     "libSystem.Security.Cryptography.Native.OpenSsl.so",
+     "libclrjit.so",
+     "libcoreclr.so",
+     "libhostfxr.so",
+     "libhostpolicy.so"
+    ]
+   },
+   "smoke": {
+    "code": 0,
+    "tail": [
+     "PASS player smoke: Scenes/Sprites.scene (0 control presses)"
+    ]
+   },
+   "captures": {
+    "0005.png": "44afce2f4d98b3d91bf68c1dfac122d41ccaae27dce2dd8d5812df226babc24f",
+    "0120.png": "44afce2f4d98b3d91bf68c1dfac122d41ccaae27dce2dd8d5812df226babc24f",
+    "0250.png": "dc5b028e2c9c15ea3c9618544bccefbcd5a7f45b23cfce7ac749ab2dd3f8facc",
+    "0290.png": "44afce2f4d98b3d91bf68c1dfac122d41ccaae27dce2dd8d5812df226babc24f"
+   }
+  },
+  "native-aot": {
+   "layout": {
+    "files": 20,
+    "bytes": 10880277,
+    "exe_bytes": 6630440,
+    "exe_mode": "-rwxr-xr-x",
+    "native": {
+     "libSDL3.so": "-> libSDL3.so.0",
+     "libSDL3.so.0": 4211016
+    },
+    "forbidden": [],
+    "tar_libSDL3.so": "link -> libSDL3.so.0",
+    "tar_modes": {
+     "MoNoonPlayer": "-rwxr-xr-x",
+     "install-desktop-entry.sh": "-rwxr-xr-x",
+     "Game/GameSettings": "-rw-r--r--",
+     "libSDL3.so.0": "-rwxr--r--"
+    },
+    "executables": [
+     "Licenses/BRUTAL/BRUTAL-SDL-THIRD-PARTY-NOTICES.txt",
+     "Licenses/BRUTAL/CONTRIBUTORS.md",
+     "Licenses/BRUTAL/LICENSE.txt",
+     "Licenses/BRUTAL/NOTICE.txt",
+     "MoNoonPlayer",
+     "install-desktop-entry.sh",
+     "libSDL3.so.0"
+    ]
+   },
+   "smoke": {
+    "code": 0,
+    "tail": [
+     "PASS player smoke: Scenes/Sprites.scene (0 control presses)"
+    ]
+   },
+   "captures": {
+    "0005.png": "44afce2f4d98b3d91bf68c1dfac122d41ccaae27dce2dd8d5812df226babc24f",
+    "0120.png": "44afce2f4d98b3d91bf68c1dfac122d41ccaae27dce2dd8d5812df226babc24f",
+    "0250.png": "dc5b028e2c9c15ea3c9618544bccefbcd5a7f45b23cfce7ac749ab2dd3f8facc",
+    "0290.png": "44afce2f4d98b3d91bf68c1dfac122d41ccaae27dce2dd8d5812df226babc24f"
+   }
+  },
+  "seconds": 848
+ },
+ "monoon-test-fast": {
+  "status": "fail",
+  "error": "Traceback (most recent call last):\n  File \"/run/n1x64/run/guest.py\", line 54, in run_step\n    result = {'status': 'pass', **(fn() or {})}\n                                   ^^^^\n  File \"/run/n1x64/run/guest.py\", line 445, in _\n    assert r.returncode == 0, [l for l in lines if 'FAIL' in l or 'Exception' in l][:5] or lines[-5:]\n           ^^^^^^^^^^^^^^^^^\nAssertionError: ['System.Exception: engine/tests/harnesses.json is out of date: add __pycache__; remove .']\n",
+  "seconds": 1031
+ },
+ "h-AudioLab.Vorbis": {
+  "status": "pass",
+  "products": {
+   "AudioLab-linux-x64/release": {
+    "files": 82,
+    "bytes": 35302025,
+    "exe_bytes": 78256,
+    "exe_mode": "-rwxr-xr-x",
+    "native": {
+     "libSDL3.so": "-> libSDL3.so.0",
+     "libSDL3.so.0": 4211016,
+     "libSDL3_ttf.so": 2368696,
+     "libSDL3_mixer.so": 404464
+    },
+    "forbidden": [],
+    "deps_missing": [],
+    "deps_native_not_shipped": [
+     "createdump",
+     "libSDL3.so.0.4.12",
+     "libSDL3_mixer.so.0",
+     "libSDL3_mixer.so.0.2.4",
+     "libSDL3_ttf.so.0",
+     "libSDL3_ttf.so.0.2.2",
+     "libbox2d.so",
+     "libbox2d.so.3",
+     "libbox2d.so.3.1.1",
+     "libclrgc.so",
+     "libclrgcexp.so",
+     "libcoreclrtraceptprovider.so",
+     "libmscordaccore.so",
+     "libmscordbi.so"
+    ]
+   },
+   "AudioLab-linux-x64/native-aot": {
+    "files": 20,
+    "bytes": 14019820,
+    "exe_bytes": 6880280,
+    "exe_mode": "-rwxr-xr-x",
+    "native": {
+     "libSDL3.so": "-> libSDL3.so.0",
+     "libSDL3.so.0": 4211016,
+     "libSDL3_ttf.so": 2368696,
+     "libSDL3_mixer.so": 404464
+    },
+    "forbidden": []
+   }
+  },
+  "vorbis": {
+   "release-first-attempt": "SDL disk output differs from the captured mix or contains an audible discontinuity (silent 512-frame blocks: 292, device without them equals the capture: True)",
+   "release": {
+    "loop_frames": 57600,
+    "fade_in_frames": 19200,
+    "fade_out_frames": 28800,
+    "stop_frame": 243712,
+    "captured_frames": 272896,
+    "seam_left": 0.0028032755944877863,
+    "seam_right": 0.006734627764672041,
+    "interior_peak_left": 0.006416382442694157,
+    "interior_peak_right": 0.007272647228091955,
+    "max_envelope_error": 9.533596845967551e-06,
+    "first_four_loops_sha256": "ddacda7e39eaedd80c08ff02dee9b27eb7888f22ccc2d53bc9816457bdc8f9e8",
+    "device_offset_bytes": 188416,
+    "device_bytes": 2867200,
+    "frames_before_f": 239616
+   },
+   "native-aot": {
+    "loop_frames": 57600,
+    "fade_in_frames": 19200,
+    "fade_out_frames": 28800,
+    "stop_frame": 245760,
+    "captured_frames": 274944,
+    "seam_left": 0.0028032755944877863,
+    "seam_right": 0.006734627764672041,
+    "interior_peak_left": 0.006416382442694157,
+    "interior_peak_right": 0.007272647228091955,
+    "max_envelope_error": 9.533596845967551e-06,
+    "first_four_loops_sha256": "ddacda7e39eaedd80c08ff02dee9b27eb7888f22ccc2d53bc9816457bdc8f9e8",
+    "device_offset_bytes": 114688,
+    "device_bytes": 2785280,
+    "frames_before_f": 239616
+   }
+  },
+  "seconds": 788
+ }
+}

@@ -1,0 +1,754 @@
+PASS asset names: CON, com1, LPT9.txt reserved; CONX, COM10, A.CON allowed
+PASS script names: Con, lpt3 reserved; Console, COM0 allowed
+PASS device names match the previous patterns for 270 names
+PASS determinism API scan: 212 simulation source files, 1 drawing-only file allowed
+PASS distribution packages: tar modes, desktop entry, zip layout, skipped signtool, redacted password
+PASS build settings defaults, round trip, CLI overrides and build output exclusion
+PASS asset report and reachability exclusion (release): 34 shipped, unreferenced Assets/Unused/BigUnused.png, Assets/Unused/BigUnused.wav, Assets/Chest.prefab, Assets/Unused/Art.clip, Assets/WallSegment.prefab, Assets/Unused/Art.png
+PASS frame profiler: samples are inert without an installed profiler
+PASS frame profiler: repeated calls merge into one node per caller with their call count
+PASS frame profiler: self time excludes nested samples and inclusive time contains them
+PASS frame profiler: Total sums a marker across the tree
+PASS frame profiler: recursive samples count every call but time only the outermost
+PASS frame profiler: samples deeper than the limit are counted as dropped and stay balanced
+PASS frame profiler: a frame cannot end inside a sample and other threads are ignored
+PASS frame profiler: Uninstall stops sampling
+PASS frame profiler: the ring keeps the newest frames in order
+PASS frame profiler: a frame is selected by number and the slowest frame holds the heavy sample
+PASS frame profiler: Restart discards the frame in progress
+PASS frame profiler: 20,000 samples and 20 frames allocate 0 bytes when installed and 0 when not
+PASS frame profiler: 37 raycasts and 11 overlaps in one script tick appear under that script's FixedUpdate
+PASS frame profiler: a frame with three fixed ticks counts three times the queries
+PASS frame profiler: a player without a build receipt ignores the capture request
+PASS frame profiler: a distribution build installs no profiler and writes no capture
+PASS frame profiler: a development build installs the capture profiler
+PASS frame profiler: streaming 50 more frames to CSV allocates 0 bytes
+PASS frame profiler: CSV rows list each frame's tree depth-first with parents; writing shows up in the next frame
+PASS tile collision: convex validation, transformed one-way normals, front/back sweeps, overlap and finite endpoints
+PASS grid navigation: costs, corner clearance, blocked endpoints, stable snapshots and long scores
+PASS content bundles: isolated mounts, GUIDs, cleanup, folder validation, damaged and missing archives.
+PASS data mods: persisted selection, third-party files, GUID and hash, conflicts, rollback and original content.
+PASS content updates: deterministic package, SHA-256, game/build compatibility, failed preflight, original and last-good content, mods, live mounts and reset.
+PASS dialogue: standalone package imports its story, prefab and scripts idempotently
+PASS dialogue: imported dialogue prefab starts without a quest journal or inventory
+PASS dialogue: edited line, option order and retargeted branch round-trip through YAML
+PASS dialogue: missing handler, rejected action and invalid choice preserve the current node
+PASS dialogue: successful choice executes one action before following its branch
+PASS dialogue: restore resumes at the saved line and an ending choice closes the dialogue
+PASS dialogue: unknown saved node preserves the active conversation
+PASS dialogue: save rejects a dangling branch
+PASS rich text: tags style text without adding characters; an icon counts as one, the largest size sets the line height
+PASS rich text: unknown or malformed tags stay literal: <color=red>x</color>
+PASS rich text: unknown or malformed tags stay literal: a < b > c
+PASS rich text: unknown or malformed tags stay literal: <icon=gem>
+PASS rich text: unknown or malformed tags stay literal: </b>x
+PASS rich text: unknown or malformed tags stay literal: <b>x</i>
+PASS rich text: plain labels draw tags as text
+PASS rich text: size tags follow the text scale accessibility setting
+PASS rich text: long Korean line wraps without losing characters
+PASS rich text: Korean wraps between words, never starts a line with a space and fits the width
+PASS rich text: a word wider than the line breaks between characters but keeps closing punctuation on the previous line
+PASS rich text: a reveal draws only revealed elements; bold is drawn twice from the same glyphs
+PASS rich text: a partly revealed run reuses the whole cached label and clips it
+PASS rich text: with shaped runs the width and the reveal clip follow the cluster edges, kerning included
+PASS rich text: colors and icons are drawn
+PASS rich text: previews before play show the whole label
+PASS rich text: the reveal advances by rate × UI time
+PASS rich text: skip shows the rest once
+PASS rich text: new text starts hidden before the next UI update
+PASS rich text: a hidden label reveals again when shown
+PASS rich text: the UI draws a revealing label
+PASS rich text: the UI clips the partly revealed run
+PASS rich text: scene validation rejects a negative reveal rate
+PASS rich text: InventoryLab resolves the herbalist's translated line in Korean and its herb icon
+PASS rich text: the same key resolves the English line
+PASS rich text: the long Korean line wraps to two or three lines in the dialogue box (3)
+PASS deck: package matches the sample and imports idempotently
+PASS deck: deck prefab starts in a project without CardLab scripts or other packages
+PASS deck: initial seed 42 order and no draw or shuffle when every card is in hand
+PASS deck: discard-only shuffle has a stable second order
+PASS deck: restore seed, shuffle index, hand, discard and remaining draw order
+PASS deck: restore continues through a one-card recycle without recycling held cards
+PASS deck: invalid hand [dew, dew, dew, dew, dew, dew] preserves live deck
+PASS deck: invalid hand [unknown] preserves live deck
+PASS deck: invalid hand [] preserves live deck
+PASS deck: invalid hand [null] preserves live deck
+PASS deck: duplicate definitions, non-first hand play and negative seed round trip
+PASS quest: standalone package contains matching sources, assets and stable IDs
+PASS quest: imported journal prefab plays without the inventory package or sample scripts
+PASS quest: no retroactive credit or repeated acceptance
+PASS quest: other items and early claims cannot advance a quest
+PASS quest: progress is capped and a full bag keeps the reward available
+PASS quest: retry with space grants exactly one reward including re-entrant and repeated requests
+PASS quest: one checkpoint restores the reward and its receipt together
+PASS quest: invalid receipt preserves both live bag and journal
+PASS quest: v1 inventory migrates in memory with its original slot order and a fresh journal
+PASS quest: v2 checkpoint restores the existing quest and starts outside the conversation
+PASS quest: explicit save upgrades the legacy checkpoint
+PASS inventory: package imports matched sources and is idempotent
+PASS inventory: imported prefab opens and plays with a resolved item table in an independent project
+PASS inventory: pickup splits over stack limit
+PASS inventory: full inventory rejects the whole pickup
+PASS inventory: partial stacks precede earlier empty slots
+PASS inventory: freed slot accepts another item; insufficient quantity is preserved
+PASS inventory: YAML round trip preserves slot order and holes
+PASS inventory: invalid save leaves existing contents intact
+PASS sprite pool: capacity rejects only the new spawn
+PASS sprite pool: partially visible sprite is retained at the edge
+PASS sprite pool: reused slot resets interpolation and preserves spawn order
+PASS sprite pool: camera culling uses interpolated extents
+PASS sprite pool: 10,000 steady-state spawn, draw and return cycles allocate zero managed bytes
+PASS sprite pool: allocation-per-spawn control retires each offscreen bullet
+PASS sprite pool: sample exceeds 2,000 live sprites and recycles more slots than capacity
+PASS sprite pool: stopping fire drains every projectile
+PASS sprite pool: restart reproduces the same pattern and counts in individual mode
+PASS prefab pool: an empty pool instantiates once and calls OnRent after OnEnable
+PASS prefab pool: a newly spawned instance waits one tick like Instantiate
+PASS prefab pool: rented collider enters the wall
+PASS prefab pool: contact continues as Stay
+PASS prefab pool: Return calls OnReturn before OnDisable and leaves tag and group lists
+PASS prefab pool: Return rejects an already returned or non-pooled object
+PASS prefab pool: a pooled instance neither sends events nor appears in physics queries
+PASS prefab pool: the remaining collider receives Exit after Return
+PASS prefab pool: a returned instance is not saved in a world checkpoint
+PASS prefab pool: Rent reuses the returned instance without OnCreate
+PASS prefab pool: parent, transform, child active state, collider and tag/group membership are reset
+PASS prefab pool: the reused instance publishes to its own prefab receiver once
+PASS prefab pool: a reused instance also waits one tick
+PASS prefab pool: the next life starts a new contact and script state was reset in OnRent
+PASS prefab pool: second return
+PASS prefab pool: same-tick return and rent ends the old contact instead of continuing it
+PASS prefab pool: the replacement contact begins on the following tick
+PASS prefab pool: a destroyed rented instance is never handed out again
+PASS prefab pool: a pooled instance can still be destroyed
+PASS prefab pool: a destroyed pooled instance is skipped
+PASS prefab pool: BarrageLab fires 3,600 pooled bullets at moving targets
+PASS prefab pool: reused bullets record the same hits, exits and live count as Instantiate/Destroy
+PASS prefab pool: pooled bullets are reused after the warm-up
+PASS prefab pool: steady-state allocation 14,701,104 B pooled vs 101,401,048 B instantiate/destroy
+PASS rhythm: inclusive timing windows and both neighboring samples
+PASS rhythm: first-beat offset and fractional tempo without accumulated drift
+PASS rhythm: render-ahead alone does not start the rhythm clock
+PASS rhythm: timestamped presses survive delayed ticks, repeats and a second tap on the same beat
+PASS rhythm: clock follows device consumption across the eight-beat audio loop
+PASS rhythm: clock stops at the last delivered sample when the output stalls
+PASS rhythm: restart waits for the new voice to reach the output
+PASS rhythm: restarted source uses its own origin after old queued audio
+PASS turn replay: blocked, open and wait commands each occupy exactly one turn
+PASS turn replay: frozen recording replays every checkpoint
+PASS turn replay: changed movement rules stop at the first divergent turn
+PASS turn replay: a replay with an impossible checkpoint is rejected
+PASS turn replay: one press is one grid turn even across 21 ticks, and YAML contains the observed positions
+PASS turn replay: new session loads the original seed and spawn at turn zero
+PASS turn replay: manual replay uses saved commands and ignores gameplay inputs at each turn
+PASS turn replay: automatic replay finishes at the recorded location without replacing the saved run
+PASS generation: SplitMix64 integer stream matches the frozen v1 vector
+PASS generation: named numeric streams are independent of draws from their parent
+PASS generation: zero-sized random range rejected
+PASS generation: seed 42, layout v1: all 375 tile IDs match the golden map
+PASS generation: thin and rectangular mazes keep a closed border, span every room and exit at maximum distance
+PASS generation: all physics cells follow the generated board
+PASS generation: next seed replaces old walls and passages
+PASS generation: previous seed restores every collision cell
+PASS generation: out-of-range seed leaves the map and current player alone
+PASS generation: custom seed replaces the player exactly once and installs the new map
+PASS generation: a blocked grid turn leaves the explorer centered beside the generated wall
+PASS generation: rebuild reproduces the collision map and resets the pawn
+PASS generation: the explorer can walk the generated route and activate the gold exit
+PASS generation: multi-chunk substitution and failed update are atomic
+PASS generation: zeros clear the runtime map; the authored layer remains empty
+PASS cutscene: sample sequence resolves by GUID and retains speaker order
+PASS cutscene: Completed: boarding while holding Right takes the far shot
+PASS cutscene: Completed: the world advances while walking and jumping are blocked
+PASS cutscene: a second director or camera request cannot steal the shot
+PASS cutscene: a held advance stops at the second line
+PASS cutscene: a new press displays the last line
+PASS cutscene: Completed: previous non-default camera and UI return; dismissal does not jump
+PASS cutscene: Completed: movement relative to shuttle and a fresh jump work without retriggering
+PASS cutscene: Skipped: boarding while holding Right takes the far shot
+PASS cutscene: Skipped: the world advances while walking and jumping are blocked
+PASS cutscene: a second director or camera request cannot steal the shot
+PASS cutscene: Skipped: previous non-default camera and UI return; dismissal does not jump
+PASS cutscene: Skipped: movement relative to shuttle and a fresh jump work without retriggering
+PASS cutscene: Interrupted: boarding while holding Right takes the far shot
+PASS cutscene: Interrupted: the world advances while walking and jumping are blocked
+PASS cutscene: a second director or camera request cannot steal the shot
+PASS cutscene: Interrupted: previous non-default camera and UI return; dismissal does not jump
+PASS cutscene: Interrupted: movement relative to shuttle and a fresh jump work without retriggering
+PASS cutscene: the guided approach also triggers on contact
+PASS cutscene: skipping immediately during the guided route releases the motor on the next tick
+PASS cutscene: an empty sequence is rejected before playback
+PASS rig: both stance soles stay on the incline; swing clears it; occupied shuttle travels out and back (version: 1
+PASS rig: rider stays on the kinematic tween through both reversals
+PASS rig: jump releases IK contact
+PASS rig: airborne animation keeps joints connected and bone lengths fixed
+PASS rig: preview does not edit authored transforms
+PASS rig: cyclic or forward parent links are rejected before playback
+PASS rig: half-time Ease In advances one quarter in the parent's local direction
+PASS rig: one-shot tween clamps to the endpoint across a long step
+PASS rig: ping-pong preserves time across multiple reversals
+PASS effects: SkSL changes the torch silhouette and keeps its transparent border
+PASS effects: point light fades from its center to zero outside the radius
+PASS effects: dust has a transparent soft edge
+PASS effects: starting on the floor produces no landing burst
+PASS effects: landing emits 22 world-space particles once and they expire while the player moves
+PASS effects: fixed steps cover the shader loop and vary the light intensity
+PASS effects: scripts can emit a manual burst
+PASS effects: disabling the emitter clears its particles
+PASS effects: effect settings round-trip through scene YAML
+PASS effects: 1,000 rounds of dust, light and torch shader draws allocate 0 B after warm-up
+PASS particles: start size and colour stay between their two values and circle particles start inside the radius
+PASS particles: start speed spans 10–20 px/s (10.00–20.00)
+PASS particles: lifetimes between 1 and 2 s expire each particle on its own (swap-remove): 2000 971 0
+PASS particles: Point shape places particles on its area
+PASS particles: Edge shape places particles on its area
+PASS particles: Box shape places particles on its area
+PASS particles: Cone shape places particles on its area
+PASS particles: a 3-cycle burst of 7 fires at 0.5, 0.75 and 1.0 s (ticks 29,45,60)
+PASS particles: a looping 0.5 s cycle repeats its time-0 burst every 30 ticks
+PASS particles: 37 particles per second over 10 s of 60 Hz ticks emit 370
+PASS particles: prewarm matches one duration simulated with the same seed
+PASS particles: a seed replays the same particles and another seed changes them
+PASS particles: local-space particles move with the emitter and world-space ones stay where they were emitted
+PASS particles: a full pool keeps its particles and counts the dropped ones
+PASS particles: a manual emitter waits for Play and then fires its time-0 burst
+PASS particles: particles draw inside the sorting order (back,particles,front)
+PASS particles: an unmigrated emitter still plays its inline settings (schema 19)
+PASS particles: migrate writes one shared .particles asset per distinct setting and schema 31 emitters that reference it
+PASS particles: a second migrate changes nothing
+PASS particles: 10,240 additive and 120 multiply particles step and draw through SdlCanvas with 0 B allocated over 120 frames
+PASS shader export: packaged descriptor and sheet retain GUID, all frame pixels, light falloff and timing after bundle mounting.
+PASS navigation: solid wall occludes sight and mask can exclude it
+PASS navigation: a thin blocking wall cannot be walked through
+PASS navigation: next plan uses current active colliders
+PASS navigation: unsupported route disappears
+PASS navigation: inactive target is invisible
+PASS navigation: planner connects the patrol deck and incline
+PASS navigation: player starts outside sight
+PASS navigation: unconnected landing across the shuttle gap has no walk route
+PASS navigation: guard patrols without a target
+PASS navigation: chase moves the physical enemy down the slope (315.54187, 234.217)
+PASS navigation: lost player returns guard to the patrol deck and resumes walking
+PASS tile world: brush connects both sides of a negative chunk boundary
+PASS tile world: erase updates the untouched adjacent tile
+PASS tile world: cancel restores both visuals from logical brush IDs
+PASS tile world: a different brush does not connect
+PASS tile world: unloaded neighbor is absent but cross-page art retains its west connection
+PASS tile world: a corrupt page is rejected only when requested
+PASS tile world: return reloads page data from disk
+PASS tile world: missing focus releases every resident cell
+PASS tile world: opposite axial hex edges choose complementary masks
+PASS tile world: isometric adjacency uses shared grid edges
+PASS tile world: only initial focus window is resident before first tick
+PASS tile world: runner crosses two boundaries and returns; residency and physics swap both ways (x=77.5)
+PASS tile world: Play leaves authored pages intact
+PASS tile terrain: terrain names and move costs survive a save and reload
+PASS tile terrain: unset cost blocks solid tiles and defaults to 1 elsewhere
+PASS tile terrain: a negative move cost is rejected when the tileset resolves
+PASS tile terrain: door and mud cells report tileset terrain; the closed door collides
+PASS tile terrain: route dots are drawn as cells on the planned northern corridor
+PASS tile terrain: closed door: 16-step northern route
+PASS tile terrain: one door cell swap removes its collider, opens the grid and moves the route dots
+PASS tile terrain: open door: 10-step route through the swapped cell
+PASS tile terrain: closing restores the solid door
+PASS tile terrain: painted mud uses the tileset cost; the route moves south
+PASS tile terrain: painted north: 12-step route across three southern mud cells
+PASS tile terrain: clearing the paint restores floor and the northern plan
+PASS tile terrain: painting mid-walk re-plans from {X=2,Y=3} and avoids the new mud
+PASS tile terrain: M swaps every mud cell to dry mud
+PASS tile terrain: a wall written with SetTile collides and blocks a bound grid
+PASS tile terrain: mud written with SetTile costs 12 in a bound grid
+PASS tile terrain: ReplaceTiles refreshes bound grids; empty cells block
+PASS tile terrain: missing tile layers are refused
+PASS tile terrain: Play leaves the authored layer untouched
+PASS tile terrain: baked pages match the authored map
+PASS tile terrain: a streamed edit re-resolves the neighbour's baked border art
+PASS tile terrain: clearing a cell across a page boundary disconnects the neighbour
+PASS tile terrain: edits are reapplied when evicted pages reload
+PASS tile terrain: cells of unloaded pages cannot be edited
+PASS platformer: ramp, moving platform, joint swing and relative slip (climb 90.00, ride 124.1269, slip 0.0000, swing 29.7698, joint error 0.014580 px)
+PASS platformer: jump releases the moving support
+PASS platformer: dynamic contacts share impulse by inverse mass (39.834, 40.333)
+PASS platformer: off-center impulse produces angular velocity
+PASS platformer: fast body stops at a static wall without tunnelling
+PASS platformer: vertical platform carries its rider and stops under a ceiling
+PASS platformer: nested rigid body simulates independently of its parent
+PASS platformer: slope above motor limit blocks ascent (158.0, 300.0)
+PASS platformer: YAML joint target and authored pose survive Play
+PASS joints: runner crosses the rope bridge and both pulley decks (version: 1
+PASS joints: revolute bridge sags under the runner and keeps its pivots together (lowest plank 319.4, pivot gap 0.311 px)
+PASS joints: pulley decks move opposite within the ±16 px slider limits (16.01, -16.00)
+PASS joints: revolute motor turns at its speed about its pivot (180.0 °/s, hub 8.00,8.00)
+PASS joints: revolute limit holds −10°…30° (0.0°, 30.1°)
+PASS joints: distance spring stretches and oscillates around its length (0.8…66.7 px)
+PASS joints: rigid distance joint keeps its length (0.007 px)
+PASS joints: slider motor runs to its upper limit along the axis (450.01, 0.00)
+PASS joints: soft weld sags on its spring (4.3 px)
+PASS joints: friction 0 slides down a 20° slope, friction 1 holds (1510.4, 0.00 px)
+PASS joints: restitution 0.8 bounces back up (155.6)
+PASS workspace: independent edits on the same object merge
+PASS workspace: same-field conflict resolves to Local
+PASS workspace: same-field conflict resolves to Disk
+PASS workspace: settings undo updates the saved project
+PASS workspace: external settings edits survive Undo
+PASS workspace: open session draft is excluded
+PASS workspace: orphan retains recovery and merge base
+PASS workspace: package carries the editor extension source with the prefab, sprite, table and scripts
+PASS workspace: install package and repeat with stable IDs; the extension stays out of the game scripts
+PASS workspace: conflicting package preserves existing file
+PASS workspace: new template project has its own save identity, intact references and working KeyRoom Play
+PASS workspace: migration backs up original file and identity before conversion
+PASS project move: destination conflict leaves references intact
+PASS project move: case-only rename keeps ID and sidecar
+PASS project move: one Undo restores exact scene bytes and casing
+PASS project move: undo retains later unrelated disk edit
+PASS project move: scene and prefab resolve the original C# types at the new source paths
+PASS project move: relocated script metadata survives template round trip and Play
+PASS project move: Undo removes only generated script metadata
+PASS audio: gapless streamed loops, exact fades, bus isolation, listener pan/attenuation/fallback, source lifecycle, 96-voice stealing, WAV/YAML compatibility; preparing 96 MiB allocated 104 bytes
+PASS Vorbis: staged import, audio search, sample counts, independent simultaneous decoders, repeating loop and invalid files.
+PASS camera tracking, fixed/render interpolation, bounds/zoom, split/overlay/HUD order, odd viewports, reference remapping, validation and YAML
+PASS screen shake/zoom determinism, comfort scaling, colour layer order, fade/flash, rumble off, cursor validation and saved settings
+PASS lines and paths: line, trail and path follower round-trip through YAML as scene version 30
+PASS lines and paths: a path follower refuses a second position driver (tween)
+PASS lines and paths: a curved line is a mitred ribbon of its flattened points with a start-to-end gradient
+PASS lines and paths: scripts replace a line's points in world space and read them back
+PASS lines and paths: constant speed along the curve: 1.49914–1.50003 px per tick (1.5 expected)
+PASS lines and paths: the kinematic path platform carries a character motor (largest slip 0.0001 px)
+PASS lines and paths: the trail keeps at most its point budget (8 of 8) inside its lifetime
+PASS lines and paths: the trail fades from its head to its tail
+PASS lines and paths: the same ticks leave the same trail points
+PASS lines and paths: a deactivated object drops its trail
+PASS lines and paths: PlatformerLab Paths: the runner rides the path lift over the pillar to the goal (359 ticks)
+PASS spatial grid: ordered ties, cell edges, overflow, hierarchy transforms, reparent, enable and removal
+PASS collision geometry: shape casts, tangent/endpoint, overlap, filters, affine circle, sensor crossing, YAML validation and legacy defaults
+PASS paired solid and trigger enter/stay/exit, swept trigger crossing, masks and removal during callbacks
+PASS contact callback order over 15414 events matches the plain sweep (SHA-256 E55DF23661A36B7D)
+PASS KeyRoom plate 0/closed, 1/closed, 2/open, crate alone/open, walk through, last leaves/closed
+PASS world pointer picking, UI priority, capture across camera motion/viewports, local grab, click and cancellation
+PASS diagnostics: no debug drawing by default
+PASS diagnostics: physics outlines use the camera viewport and distinguish solid and trigger
+PASS diagnostics: selection ray respects viewport, ignores its owner and records the actual trigger hit
+PASS diagnostics: overlap trace matches query results
+PASS diagnostics: bounded query history records misses and expires by simulation tick
+PASS diagnostics: turning off queries clears traces and live inspection reads runtime activation
+PASS diagnostics: movement sweep and live world position do not mutate the scene
+PASS diagnostics: spawned prefab origin and destruction are visible immediately
+PASS diagnostics: runtime log keeps severity and caller location
+PASS diagnostics: GameLog writes script logs unchanged, errors to stderr
+PASS diagnostics: GameLog keeps BRUTAL's per-call SDL trace off
+PASS controller YAML, per-instance parameters, ordered bool/float/trigger transitions, exact and skipped frame events, script callbacks
+PASS Sprite atlas trim, padded pixels, mask alpha/tint, flip/snap, repack, static/animated export
+PASS routines: a routine runs to its first wait when started
+PASS routines: Frames(3) resumes on the third tick
+PASS routines: Until resumes on the first tick after its condition holds
+PASS routines: pause holds game waits while UiSeconds keeps counting
+PASS routines: each Step advances game waits by one tick
+PASS routines: Seconds(0.5) resumes exactly 30 game ticks after it started, paused frames excluded
+PASS routines: routines resuming on the same tick keep their start order
+PASS routines: disabling the owner stops its routine and runs finally blocks
+PASS routines: re-enabling the owner does not resume a cancelled routine
+PASS routines: an inactive owner cannot start a routine
+PASS routines: a routine that disables its own owner stops after that step
+PASS routines: removing the owner stops its routine
+PASS routines: a failing routine reports its method and stops
+PASS routines: ending the scene stops every routine
+PASS ChestTests.InteractSpawnsOneCoin
+PASS ChestTests.WalkingIntoTheCoinCollectsIt
+PASS ChestTests.ChestNeedsToBeWithinReach
+PASS DoorTests.ClosedDoorStopsPlayer
+PASS DoorTests.KeyOpensDoorThenHintAfterHalfSecond
+PASS DoorTests.PauseAndStepDelayTheHint
+PASS DoorTests.RemovingTheDoorCancelsTheHint
+PASS DoorTests.RecordedWalkTakesTheKey
+PASS DoorTests.OpenDoorLeadsToSecondRoom
+PASS KeyRoom chest and door project tests
+PASS Aseprite RGBA/indexed layers, opacity, linked cels, tags, sheet/clip import, reimport, SpriteLab sample
+PASS shared project compilation and invalidation; typed Inspector, duplicate and prefab references; lifecycle order, activation, destruction and fresh Play
+PASS script field renames: aliases, current-key precedence, reference IDs, stable canonical keys and conflicting declarations
+PASS source breakpoint coverage, actual captured argument and local, continuation result
+PASS relocated Scene Play source, exact portable PDB checksum, fresh debug script and packaged Release module
+PASS script reload: Editor/ C# files are not game scripts
+PASS script reload: v1 counts one per tick
+PASS script reload: behaviours come from the new assembly
+PASS script reload: int and project enum fields keep their live values
+PASS script reload: a reference to a reloaded behaviour points at its replacement
+PASS script reload: ComponentReference<ProjectType> keeps its object
+PASS script reload: new fields get defaults and removed fields are dropped
+PASS script reload: a field whose type changed resets with a warning
+PASS script reload: running routines stop with a Console note
+PASS script reload: the next tick runs the new code
+PASS script reload: a compile error names file:line and the previous code keeps running
+PASS script reload: game scripts cannot reference the editor API or Editor/ types
+PASS project input map: YAML migration, named edges, device changes, rebind, focus, letterbox and UI capture
+PASS KeyRoom input mode stack, held keys, keyboard/gamepad/pointer routing, focus and lifetime
+PASS player rebinding: a secondary control of the same action moves to the first slot
+PASS player rebinding: binding a device the action lacked removes the control from its old action
+PASS player rebinding: restore brings back removed controls
+PASS player rebinding: saved map round trips through GameData
+PASS player rebinding: invalid or unknown saved entries fall back to defaults
+PASS player rebinding: another device cancels the capture
+PASS player rebinding: unbindable keys keep waiting
+PASS player rebinding: the captured press does not trigger the action
+PASS player rebinding: default keyboard prompt
+PASS player rebinding: K opens the controls screen on the first keyboard binding
+PASS player rebinding: columns line up inside the panel {X=180,Y=66,Width=440,Height=318}, restore {X=195,Y=334,Width=150,Height=28}
+PASS player rebinding: Return starts capture, key repeat does not finish it
+PASS player rebinding: capturing C swaps it with Carry coin's E
+PASS player rebinding: screen and HUD prompt show the swap
+PASS player rebinding: player.settings stores only changed actions
+PASS player rebinding: Esc cancels a keyboard capture
+PASS player rebinding: a key cancels a pad capture
+PASS player rebinding: pad capture swaps with Room guide and the pad prompt follows
+PASS player rebinding: K closes the controls screen
+PASS player rebinding: the old key no longer opens the chest
+PASS player rebinding: the new key opens the chest
+PASS player rebinding: restart restores the key and its prompt
+PASS player rebinding: after restart E stays on Carry coin
+PASS player rebinding: after restart C opens the chest
+PASS player rebinding: Restore defaults resets every action and clears the saved map
+PASS player rebinding: restored defaults persist across a restart
+PASS Y sorting: crossing in both directions, interpolated feet, fixed layers, stable ties, nested groups, transforms and YAML
+PASS KeyRoom bag title, item and quest switch en→ko and ko→en on the first L input frame
+PASS all 120 Korean syllables in the KeyRoom table have packaged glyphs
+PASS SDL_ttf game text: packaged Korean fonts render any syllable; cluster edges match the measured width.
+PASS shared KeyRoom UI/item/quest translations, per-row locale fallback, primary/fallback Korean pixel matching
+PASS input recording preserves event order, held frames and elapsed ticks, discards unconsumed input and rejects invalid recordings.
+PASS rename conflict leaves project untouched
+PASS double-extension migration preserves YAML bytes, manifest-only IDs, absent assets and unrelated files
+PASS migration conflict preserves existing and legacy files
+PASS import preserves asset IDs, prefab revisions and instance edits
+PASS only migrated project files are replaced
+PASS legacy project gains a stable save identity
+PASS opening a YAML project leaves files untouched
+PASS script field strings, numbers, lists, null and references retain their types after reopening
+PASS hand-authored YAML uses engine defaults
+PASS 115 YAML types read omitted keys as their declared defaults
+PASS physics queries against transformed orthogonal, isometric and hexagonal solid tiles; shapes follow SetTile and moves
+PASS tile stroke interpolation, rectangle, eraser cancellation, mixed Undo/Redo and save point
+PASS all projected tile layouts: pick/cull at corners, brush across negative chunks, save/reopen, angled sliding and fast solid collision
+PASS diagonal slide across chunk boundary, decorative tile traversal and foreground ordering
+PASS tile coordinates, deep copies, prefab instances, visible chunks and swept wall collision
+PASS project: a script asset list reports the source field and index
+PASS project: KeyRoom has no unresolved saved references
+PASS project: scene and prefab expose typed dependencies in both directions
+PASS project: typed searches span project folders
+PASS project: invalid table edits preserve the previous file
+PASS project: deleted targets report source and field despite retained manifest ID
+PASS project: failed batch does not publish its valid first asset
+PASS project: restore imports reuse sidecars and clear missing links
+PASS project: conflicting import does not duplicate the source identity
+PASS project: damaged typed script IDs are not treated as None
+PASS project: editor reopens a scene with a missing prefab and preserves the saved instance for repair
+PASS project: typed keys and values round trip
+PASS scene streaming: additive UI shares the primary world and preloads only new textures
+PASS scene streaming: adding the same scene twice is idempotent
+PASS scene streaming: close input removes the guide and releases its last texture reference
+PASS scene streaming: camera-less sector uses the host collision world, remaps duplicate IDs and spawns its own prefab
+PASS scene streaming: group and tag indices are current inside additive lifecycle callbacks
+PASS scene streaming: unload removes sector collision and unparented runtime children, preserving player state
+PASS scene streaming: unloading the final scene owner drops its cached YAML data
+PASS scene streaming: failed runtime prefab preparation leaves no half-spawned object or group member
+PASS scene streaming: failed native preparation preserves active UI, scene, and shared resources
+PASS scene streaming: a failed scene can be retried
+PASS scene streaming: replacement transition blocks simulation and UI input
+PASS scene streaming: cancel keeps the old world and resumes input
+PASS scene streaming: async replace commits callbacks, unloads all added scenes and keeps shared key texture
+PASS scene streaming: missing scene preserves the committed room
+PASS scene streaming: primary scene cannot be removed without a replacement
+PASS scene streaming: session disposal releases last shared texture once
+PASS split loading: synchronous, one-step async and split loads produce the same objects, poses, OnCreate calls and resident files
+PASS split loading: split replacement reports monotonic progress over 101 updates
+PASS split loading: a split additive load completes
+PASS split loading: object creation stays within 4 ms per update (at most 9 components per update, 100 updates)
+PASS split loading: uploads of 3 ms stop once the 4 ms budget is spent (at most 2 per update)
+PASS split loading: the running room keeps simulating every update while the field loads (274 → 440)
+PASS split loading: files decode on worker threads and every decoded buffer is consumed
+PASS split loading: budget 0 stages the whole scene in one update and uploads one file per update
+PASS split loading: cancel while creating objects releases uploads and 0 decoded buffers back to 7 resident files
+PASS split loading: cancel while decoding and uploading files releases uploads and 5 decoded buffers back to 7 resident files
+PASS split loading: a canceled split load can be started again
+PASS split loading: unloading the field returns to the room's resident files
+PASS player data: legacy slot is backed up byte-for-byte
+PASS player data: valid YAML with modified values restores the previous slot
+PASS player data: the next load reads the repaired primary
+PASS player data: a missing primary remains discoverable and can be restored
+PASS player data: saving directly over a damaged primary preserves the good backup
+PASS player data: valid newer primary never falls back or downgrades
+PASS player data: interrupted rotation still reads the previously committed primary
+PASS player data: interrupted rotation still verifies its old backup
+PASS player data: two damaged copies are reported and preserved
+PASS player data: deleting a slot removes the backup and checksums
+PASS player data: new desktop profile uses the logical resolution, windowed mode and VSync
+PASS player data: desktop options round trip independently of game settings
+PASS player data: nested YAML and typed values round trip
+PASS player data: migration is sequential, explicit, and leaves the source intact
+PASS player data: concurrent writer cannot replace a locked profile
+PASS player data: damaged and newer saves are preserved
+PASS player data: slot deletion leaves preferences intact
+PASS player data: data reference survives rename and cached values stay isolated
+PASS player data: N moves the spawned coin 16 pixels under Chest
+PASS player data: slot one saves an opened chest with pending loot
+PASS player data: collected the pending coin
+PASS player data: second room and preferences use independent files
+PASS player data: new session restores settings and exactly one uncollected coin
+PASS player data: F9 restores the saved coin ID, parent and edited position after restart
+PASS player data: repeated load cannot duplicate loot
+PASS player data: collected checkpoint keeps the chest open and the instance absent after repeated F9 and E
+PASS player data: second slot restores the second room and its progression
+PASS player data: v2 pending loot restores at its original location
+PASS player data: next explicit save adopts stable instance identity for legacy loot
+PASS player data: legacy checkpoint migrates and reopens the unlocked door
+PASS world checkpoint: move the authored ancestor
+PASS world checkpoint: nested instance position
+PASS world checkpoint: stable identity, nested instances and moving authored parent
+PASS world checkpoint: authored and member removals, selected properties and untracked transient
+PASS world checkpoint: remapped script field keeps its instance ID
+PASS world checkpoint: invalid prefab leaves the playing scene and its state intact
+PASS world checkpoint: another room's slot retains the visited room across restart
+PASS world checkpoint: legacy slot clears all remembered worlds
+PASS component curves, invalid key rejection, KeyRoom affine draw and RGBA modulation
+PASS runtime Transform: carry/drop, F5/F9, collision footprint, child corners, cycles and isolated scene
+PASS time: half speed accumulates before the first fixed tick
+PASS time: short movement survives UI frames until a game tick
+PASS time: pause freezes held movement, game time and tick count
+PASS time: unscaled repeating timer advances through pause while game timer waits
+PASS time: unscaled keyboard action opens help while paused
+PASS time: UI clicks close help while paused
+PASS time: one step executes exactly one tick and holds the current pose at 4x
+PASS time: paused Interact was not replayed on step
+PASS time: 4x resumes with four fixed ticks and one game-timer expiry
+PASS time: timer cancellation
+PASS time: invalid scale preserves previous speed
+PASS time: UI can switch scenes while paused, retaining both clocks
+PASS time: a new Play starts at normal speed with fresh clocks
+PASS time: KeyRoom door animation and one-second camera timer both stop
+PASS time: six manual ticks advance the door animation
+PASS time: door camera still active after 58 game ticks
+PASS time: camera timer expires on the 60th game tick at 2x
+PASS affine hierarchy, pivot, nonuniform mirrored reparent, world corners, YAML/Play/prefab, transformed trigger and unfused transform
+PASS Native AOT kit path resolves symlinks
+PASS right anchor uses game width
+PASS topmost duplicate wins picking
+PASS reparent across anchors preserves UI position
+PASS UI-only menu runs without world camera
+PASS UI-only menu receives keyboard focus
+PASS dynamic text leaves asset unchanged
+PASS disabled button leaves navigation
+PASS hidden group removes child from hit testing
+PASS UI survives Undo snapshot restore
+PASS v6 HUD converts in memory without overwriting source
+PASS converted HUD saves and reopens using UI components only
+PASS regional locale falls back to Korean
+PASS stack uses shared padding, gap and stretched width
+PASS clipped content cannot be picked or scrolled from outside
+PASS wheel reveals the bottom row and its hit area
+PASS hiding a row reflows content and clamps scroll
+PASS reverse Tab reveals a clipped button
+PASS wraparound reveals the first input
+PASS marked text replaces the previous composition without committing
+PASS limit counts graphemes instead of UTF-16 units
+PASS backspace removes one complete emoji cluster
+PASS larger type reflows rows and leaves authored sizes intact
+PASS directional pad and stick navigate and reveal offscreen targets
+PASS pad cancel leaves UI focus
+PASS missing translation uses the authored base text
+PASS narrow translated text wraps and contributes to stack height
+PASS horizontal scroll reveals the focused column
+PASS UI edge pins, legacy anchor, resize, collapsed rect, YAML, layout precedence and session settings across scenes
+PASS UI theme: button #33566A
+PASS UI theme: button #33566A
+PASS UI theme: button #437879
+PASS UI theme: button #1E414B
+PASS UI theme: button #365F86
+PASS UI theme: drag-out cancels the click
+PASS UI theme: button #1E414B
+PASS UI theme: button #365F86
+PASS UI theme: keyboard activation fires once
+PASS UI theme: button #343F49
+PASS UI theme: disabled button ignores input
+PASS UI theme: Korean 200% reflows inside panel
+PASS UI theme: four corners retain source size on enlarged panel
+PASS UI theme: only the inside edge activates
+PASS UI theme: asymmetric margins scale with the viewport
+PASS UI theme: undersized destinations do not overlap
+PASS UI theme: button #33566A
+PASS UI theme: button #365F86
+PASS UI theme: button #343F49
+PASS UI theme: button #33566A
+PASS UI theme: button #365F86
+PASS UI theme: button #343F49
+PASS UI theme: button #33566A
+PASS UI theme: button #365F86
+PASS UI theme: button #343F49
+PASS UI controls: drag, snapping, pad navigation, popup capture, cancellation, value events and authored state
+PASS data list recycling: 1,000 items use 8 row objects
+PASS data list navigation: pad focus follows data items and scrolls with recycled rows
+PASS data list sorting: item-0040 stays selected after sorting and is the use target
+PASS data list: wheel, pointer use, filtering, script selection, leaving and re-entering keep item IDs
+PASS Inspector multi-edit: mixed masks, high bits, no-op, one Undo, per-instance overrides and Redo.
+PASS placing a nested prefab preserves its link
+PASS variant and instance override separate properties of the same component
+PASS nested source update propagates through a variant with stable child IDs
+PASS duplicated link keeps independent overrides
+PASS revert restores variant defaults and keeps scene placement
+PASS runtime instantiation resolves the nested variant
+PASS cyclic prefab update leaves the source intact
+PASS isolated variant edits propagate and preserve child identity
+PASS applying a child property updates siblings and preserves unrelated overrides
+PASS reverting one property preserves applied values and placement
+PASS scene and prefab reopen with matching selected properties
+PASS applying a script reference translates the instance ID through the source to each sibling
+PASS a scene-only object reference cannot leak into a prefab source
+PASS a stale open source cannot overwrite a newer applied property
+PASS parent and child receive a group transform exactly once
+PASS cancel restores the original affine transform
+PASS an added child and component are listed as two structural overrides
+PASS apply one added child: the lock reaches every chest while the sound stays on Chest 2
+PASS the source receives only the selected child
+PASS undo restores the source and both instance overrides
+PASS save and reopen: the lock reaches every chest while the sound stays on Chest 2
+PASS reverting the added component removes only the sound
+PASS an added component with a scene-only reference cannot reach the source
+PASS a removed child is listed
+PASS reverting a removed child restores the same object under its parent
+PASS a removed component is listed
+PASS reverting a removed component restores its saved values
+PASS applying a removed component updates the source and every chest
+PASS applying a removed child deletes it from the source and every chest
+PASS reverting an added child deletes it from the instance
+PASS the final scene reopens without stale overrides
+PASS clipboard text is marked as copied objects
+PASS a nested selection pastes each subtree once with new IDs
+PASS children keep their names under the pasted parent
+PASS a reference into the copy follows the copy and one to the same scene stays
+PASS the prefab link maps to the pasted instance and its child
+PASS in another scene a reference to the source scene stays as a missing reference
+PASS the saved scene keeps the missing reference and the prefab link
+PASS a scene with a missing pasted reference runs
+PASS invalid clipboard text is rejected without changing the scene
+PASS invalid clipboard text is rejected without changing the scene
+PASS invalid clipboard text is rejected without changing the scene
+PASS game events: duplicated hierarchy remaps the receiver
+PASS game events: deleting an authored target prunes only its own connections
+PASS game events: generated sender dispatches once to the configured receiver
+PASS game events: disable/enable does not duplicate a handler
+PASS game events: spawned sender reaches only its own prefab receiver
+PASS game events: removed targets and retained delegates on destroyed senders are inert
+PASS game events: scene replacement reuses authored IDs without reviving old senders
+PASS game events: additive ID collisions and unload isolate primary and incoming event connections
+PASS game events: an obsolete handler is reported during content validation
+PASS game events: destroying a receiver in one handler cancels its remaining callbacks
+PASS duplicate camera subtree
+PASS start camera fallback
+PASS camera history restore
+PASS start camera round trip
+PASS v1 camera migration
+PASS v2 camera migration
+PASS v3 camera migration
+PASS v4 camera migration
+PASS v5 camera migration
+PASS recover missing start camera
+PASS empty scene save and play guidance
+PASS stable sorting ties
+PASS sprite draw order
+PASS script error file and line
+PASS short diagonal movement
+PASS one interact per press
+PASS external sprite overwrite, stable sheet references, retry after partial writes and invalid crops
+PASS KeyRoom sheet source, all four frames and open renderer sprite over 60 rendered ticks
+PASS clip preview and actual KeyRoom door draw: 116 fixed ticks, loop=False
+PASS clip preview and actual KeyRoom door draw: 116 fixed ticks, loop=True
+PASS fresh session
+PASS release outside cancels UI click
+PASS screen button invokes project script once
+PASS focused button ignores repeated keydown
+PASS door collider initially blocks
+PASS runtime tint and invalid edits leave the authored renderer intact
+PASS pickup plays the door sound once
+PASS opened door stays active, changes sprite and leaves movement and physics queries
+PASS re-enabling and disabling the same collider updates queries immediately
+PASS open play instance preserves the authored door
+PASS screen-space key HUD
+PASS finished animation draws the assigned open PNG
+PASS enter next room with key: 
+PASS failed switch retains room
+PASS KeyRoom chest spawns one trigger; player collects it; scene unchanged
+PASS runtime prefab parent, internal references, active state and subtree lifetime
+PASS runtime prefab template cache keeps instances independent and rereads a changed file
+PASS unique prefab instance IDs
+PASS source update propagated
+PASS instance placement preserved
+PASS instance placement preserved
+PASS prefab internal and external references
+PASS move PNG without breaking sprite
+PASS failed asset preload preserves running scene
+PASS app and source use the same external template for osx-arm64
+PASS standalone osx-arm64
+PASS each native library ships once, without debugger natives, for osx-arm64
+PASS distribution dylibs are stripped and validly re-signed
+PASS game data uses asset extensions for osx-arm64
+PASS referenced YAML data exported for osx-arm64
+PASS referenced YAML table exported for osx-arm64
+PASS one shared project assembly for osx-arm64
+PASS fresh session
+PASS release outside cancels UI click
+PASS screen button invokes project script once
+PASS focused button ignores repeated keydown
+PASS door collider initially blocks
+PASS runtime tint and invalid edits leave the authored renderer intact
+PASS pickup plays the door sound once
+PASS opened door stays active, changes sprite and leaves movement and physics queries
+PASS re-enabling and disabling the same collider updates queries immediately
+PASS open play instance preserves the authored door
+PASS screen-space key HUD
+PASS finished animation draws the assigned open PNG
+PASS enter next room with key: 
+PASS failed switch retains room
+PASS KeyRoom chest spawns one trigger; player collects it; scene unchanged
+PASS app and source use the same external template for win-x64
+PASS standalone win-x64
+PASS each native library ships once, without debugger natives, for win-x64
+PASS game data uses asset extensions for win-x64
+PASS referenced YAML data exported for win-x64
+PASS referenced YAML table exported for win-x64
+PASS one shared project assembly for win-x64
+PASS fresh session
+PASS release outside cancels UI click
+PASS screen button invokes project script once
+PASS focused button ignores repeated keydown
+PASS door collider initially blocks
+PASS runtime tint and invalid edits leave the authored renderer intact
+PASS pickup plays the door sound once
+PASS opened door stays active, changes sprite and leaves movement and physics queries
+PASS re-enabling and disabling the same collider updates queries immediately
+PASS open play instance preserves the authored door
+PASS screen-space key HUD
+PASS finished animation draws the assigned open PNG
+PASS enter next room with key: 
+PASS failed switch retains room
+PASS KeyRoom chest spawns one trigger; player collects it; scene unchanged
+PASS app and source use the same external template for linux-x64
+PASS standalone linux-x64
+PASS each native library ships once, without debugger natives, for linux-x64
+PASS game data uses asset extensions for linux-x64
+PASS referenced YAML data exported for linux-x64
+PASS referenced YAML table exported for linux-x64
+PASS one shared project assembly for linux-x64
+PASS fresh session
+PASS release outside cancels UI click
+PASS screen button invokes project script once
+PASS focused button ignores repeated keydown
+PASS door collider initially blocks
+PASS runtime tint and invalid edits leave the authored renderer intact
+PASS pickup plays the door sound once
+PASS opened door stays active, changes sprite and leaves movement and physics queries
+PASS re-enabling and disabling the same collider updates queries immediately
+PASS open play instance preserves the authored door
+PASS screen-space key HUD
+PASS finished animation draws the assigned open PNG
+PASS enter next room with key: 
+PASS failed switch retains room
+PASS KeyRoom chest spawns one trigger; player collects it; scene unchanged
+All checks passed.
+exit=0

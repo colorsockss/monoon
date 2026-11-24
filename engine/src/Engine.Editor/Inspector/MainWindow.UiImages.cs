@@ -40,14 +40,14 @@ public partial class MainWindow
             ToolTip.SetTip(first,firstLabel+" border in PNG pixels"); ToolTip.SetTip(last,lastLabel+" border in PNG pixels");
             var pair=new Grid {ColumnDefinitions=new("*,*"),ColumnSpacing=4};
             pair.Children.Add(first);Grid.SetColumn(last,1);pair.Children.Add(last);row(firstLabel[0]+" / "+lastLabel[0],pair);
-            void Changed()
+            void Changed(NumericUpDown field)
             {
                 if(first.Value is not {} start || last.Value is not {} end ||
                     start!=decimal.Truncate(start) || end!=decimal.Truncate(end) || start+end>=extent) return;
                 first.Maximum=extent-1-end; last.Maximum=extent-1-start;
-                apply((int)start,(int)end);MarkDirty(pair);
+                apply((int)start,(int)end);MarkDirty(field);
             }
-            first.ValueChanged+=(_,_)=>Changed();last.ValueChanged+=(_,_)=>Changed();
+            first.ValueChanged+=(_,_)=>Changed(first);last.ValueChanged+=(_,_)=>Changed(last);
         }
     }
 }

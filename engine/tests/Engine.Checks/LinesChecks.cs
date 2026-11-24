@@ -4,6 +4,8 @@ using Engine.Core;
 
 internal static class LinesChecks
 {
+    [Check(4800, "lines")]
+    static void Registered(CheckRun c) { Run(c.Scratch); RunPaths(c.Repository, c.Scratch); }
     private const float Step = 1f / 60;
     private static void Check(bool value, string why)
     {

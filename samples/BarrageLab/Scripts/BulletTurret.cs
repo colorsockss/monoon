@@ -36,8 +36,9 @@ public sealed class BulletTurret : GameBehaviour
             var center = tick.Position + new Vector2(9, 9);
             for (int i = 0; i < Volley; i++)
             {
-                var (sin, cos) = MathF.SinCos(sweep + (i - (Volley - 1) * .5f) * .16f);
-                var direction = new Vector2(cos, sin);
+                // Separate Sin/Cos: MathF.SinCos gives different last bits under JIT and Native AOT.
+                float angle = sweep + (i - (Volley - 1) * .5f) * .16f;
+                var direction = new Vector2(MathF.Cos(angle), MathF.Sin(angle));
                 var at = center + direction * 14 - new Vector2(3, 3);
                 Guid id;
                 if (pooled) id = objects.Rent(Bullet, at);

@@ -3,6 +3,7 @@ using Engine.Core;
 
 internal static class RuntimeTransformChecks
 {
+    [Check(8400)] static void Registered(CheckRun c) => Run(c.Scene);
     internal static void Run(SceneDocument scene)
     {
         var player = scene.Objects.Single(o => o.Name == "Player");

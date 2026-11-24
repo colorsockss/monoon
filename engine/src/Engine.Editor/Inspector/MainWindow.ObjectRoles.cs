@@ -16,7 +16,7 @@ public partial class MainWindow
             box.PropertyChanged += (_, e) =>
             {
                 if (e.Property != TextBox.TextProperty || refreshing || Viewport.IsPlaying ||
-                    Selected is not {} owner || owner != roleFieldOwner || !box.IsKeyboardFocusWithin) return;
+                    Inspected is not {} owner || owner != roleFieldOwner || !box.IsKeyboardFocusWithin) return;
                 if (box == ObjectTag) owner.Tag = box.Text;
                 else owner.Groups = [box.Text ?? ""];
                 MarkDirty(box);

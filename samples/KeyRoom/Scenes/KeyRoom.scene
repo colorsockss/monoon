@@ -29,6 +29,8 @@ objects:
   - type: spriteRenderer
     order: 20
     squareColor: "#BB504A"
+  - type: script
+    script: SatchelPop
 - id: b6d5d8c0-a8ea-5c41-8b0e-af85769fea68
   parentId: 51c1580c-0444-5d49-84bc-ad7df3a3add4
   name: Satchel flap

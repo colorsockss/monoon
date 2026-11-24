@@ -3,6 +3,7 @@ using Engine.Core;
 
 internal static class ContentBundleChecks
 {
+    [Check(1200)] static void Registered(CheckRun c) => Run(c.Scratch);
     internal static void Run(string scratch)
     {
         string game = Directory.CreateDirectory(Path.Combine(scratch, "bundled", "Game")).FullName;

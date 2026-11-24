@@ -3,6 +3,8 @@ set -eu
 cd "$(dirname "$0")/.."
 if [ "$#" = 0 ]; then set -- osx-arm64 win-x64 linux-x64; fi
 players=${MONOON_PLAYERS_DIR:-"$(dirname "$PWD")/player-templates"}
+# bootstrap-worktree.sh may link player-templates to the shared cache; build local templates instead of writing into it.
+if [ -z "${MONOON_PLAYERS_DIR:-}" ] && [ -L "$players" ]; then rm "$players"; fi
 mkdir -p "$players"
 stage=$(mktemp -d "$players/.publish.XXXXXX")
 trap 'rm -rf "$stage"' EXIT

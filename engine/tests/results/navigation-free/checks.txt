@@ -1,0 +1,2 @@
+PASS navigation-free routes: wall detour 4 points, blocked start, dynamic gap, truncated resume, sealed goal, 0 B after warm-up
+PASS navigation-free yard: editor bake = runtime bake (3775 of 4042 cells open), 200/200 arrived at tick 892, closest pair 10.0 px, trace FNV 56FDB4FCD37C034E

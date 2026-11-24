@@ -1,0 +1,50 @@
+PASS Scene view previews only the selected emitter (1)
+PASS Play all previews every Curves emitter (3)
+PASS preview tick 0: 0 particles d94d12186c0f2fb7 = trace 0 d94d12186c0f2fb7
+PASS preview tick 1: 1 particles df05d557bc67e3cb = trace 1 df05d557bc67e3cb
+PASS preview tick 60: 98 particles de85a6f6d65d7ee6 = trace 98 de85a6f6d65d7ee6
+PASS preview tick 150: 140 particles eb93aed7f93d1472 = trace 140 eb93aed7f93d1472
+PASS preview tick 299: 148 particles 6bb50c12e0bbb553 = trace 148 6bb50c12e0bbb553
+PASS scrub to 1.5 s equals playing 90 ticks {'tick': 90, 'scene_same': True, 'isolated_same': True, 'isolated_count': 77}
+PASS preview plays at the fixed tick {'ticks_advanced': 119, 'wrapped': False, 'files_unchanged': True}
+PASS two seconds of preview playback change no scene or asset file
+PASS size curve key 2 drag: one Undo record (1)
+PASS size curve key 2 drag: Undo restores the asset bytes, Redo reapplies them
+PASS gradient colour key 2 drag: one Undo record (1)
+PASS gradient colour key 2 drag: Undo restores the asset bytes, Redo reapplies them
+PASS start colour via ColorView: one Undo record (1)
+PASS start colour via ColorView: Undo restores the asset bytes, Redo reapplies them
+PASS curve key written 0.3, 1.25
+PASS curve and gradient editors draw the runtime LUT
+PASS the panel shows the restored asset after Undo
+PASS gradient key written at 0.5
+PASS ColorView colour written #3366CC
+PASS scene file unchanged; every file back to its original bytes after Undo
+PASS selecting another curve or gradient key does not move any field
+panel-1280: window 1280px, panel 878px, 46 rows, label x [216.0], field x [276.0]
+PASS panel-1280: labels and fields share one left edge
+PASS panel-1280: label and field centres within 1px (0)
+PASS panel-1280: input fields share one height [24]
+PASS panel-1280: clipped labels trim with a tooltip [], fields inside the panel []
+panel-1600: window 1600px, panel 1198px, 46 rows, label x [216.0], field x [276.0]
+PASS panel-1600: labels and fields share one left edge
+PASS panel-1600: label and field centres within 1px (0)
+PASS panel-1600: input fields share one height [24]
+PASS panel-1600: clipped labels trim with a tooltip [], fields inside the panel []
+panel-1920: window 1920px, panel 1518px, 46 rows, label x [216.0], field x [276.0]
+PASS panel-1920: labels and fields share one left edge
+PASS panel-1920: label and field centres within 1px (0)
+PASS panel-1920: input fields share one height [24]
+PASS panel-1920: clipped labels trim with a tooltip [], fields inside the panel []
+panel-880: window 880px, panel 478px, 46 rows, label x [215.0], field x [275.0]
+PASS panel-880: labels and fields share one left edge
+PASS panel-880: label and field centres within 1px (0)
+PASS panel-880: input fields share one height [24]
+PASS panel-880: clipped labels trim with a tooltip [], fields inside the panel []
+panel-1280-long-name: window 1280px, panel 878px, 46 rows, label x [216.0], field x [276.0]
+PASS panel-1280-long-name: labels and fields share one left edge
+PASS panel-1280-long-name: label and field centres within 1px (0)
+PASS panel-1280-long-name: input fields share one height [24]
+PASS panel-1280-long-name: clipped labels trim with a tooltip [], fields inside the panel []
+PASS long object name trims in the panel title with a tooltip {'trimmed': True, 'tip': True, 'inside': True}
+PASS Particle panel in <결과 폴더>

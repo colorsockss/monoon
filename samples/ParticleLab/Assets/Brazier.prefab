@@ -1,0 +1,27 @@
+schemaVersion: 31
+objects:
+- id: b2c3d4e5-1f2a-4b3c-8d4e-5f6a7b8c9da2
+  name: Brazier
+  tag: Particles
+  width: 1
+  height: 1
+  components:
+  - type: particleEmitter2D
+    particles: 1e7b3a52-7c4f-4d9b-8f32-6b8d4cae2f12
+    trigger: Start
+    seed: 23
+    offsetX: 0
+    offsetY: 0
+- id: e3d4c5b6-2a3b-4c4d-9e5f-6a7b8c9dae13
+  name: Brazier smoke
+  tag: Particles
+  parentId: b2c3d4e5-1f2a-4b3c-8d4e-5f6a7b8c9da2
+  x: 0
+  y: -24
+  width: 1
+  height: 1
+  components:
+  - type: particleEmitter2D
+    particles: 2f8c4b63-8d5a-4eac-9a43-7c9e5dbf3a23
+    trigger: Start
+    seed: 29

@@ -10,7 +10,7 @@
 4. **Play 진입**: Play 버튼부터 Play Hierarchy 재구성까지와 그 레이아웃.
 5. **활성 전환**: 마지막 충돌체에 `SetActive(false/true)`를 6회 번갈아 호출하고 `SyncPlayInspector`와 레이아웃 시간을 잰다. 풀 Rent/Return과 같은 `HierarchyRevision` 증가다. 매번 해당 행의 투명도(비활성 0.55, 활성 1), 선택 유지, 접은 Canvas 행 유지, 다른 행 투명도 1을 확인한다.
 6. **Play 전체 재구성**: 구조가 바뀔 때 남는 비용으로 `RebuildHierarchy`와 레이아웃 3회. 선택·접힘 유지를 확인한다.
-7. **편집 뷰 그리기 순서 검사**(기본 씬 `CollisionLab`으로 돌아가서): Square 두 개 추가, Sprite Order 변경, 실행 취소·다시 실행, Sort by Y 설정, 기록 전 위치 이동(드래그 중과 같음), 부모 변경, 삭제 뒤마다 `SceneViewport.EditItems()`가 새로 만든 `SceneDocument.WorldItems()`와 같은 순서인지 확인한다. 끝나면 복사본 씬을 저장해 닫을 때 확인 창이 뜨지 않게 한다.
+7. **편집 뷰 그리기 순서 검사**(기본 씬 `CollisionLab`으로 돌아가서): Square 두 개 추가, Sprite Order 변경, 실행 취소·다시 실행, 입력 필드 편집(이름은 보관한 순서를 그대로 쓰고 Sprite Order는 다시 만든다), Sort by Y 설정, 기록 전 위치 이동(드래그 중과 같음), 부모 변경, 삭제 뒤마다 `SceneViewport.EditItems()`가 새로 만든 `SceneDocument.WorldItems()`와 같은 순서인지 확인한다. 끝나면 복사본 씬을 저장해 닫을 때 확인 창이 뜨지 않게 한다.
 
 ```sh
 engine/scripts/build-editor-mac.sh

@@ -14,6 +14,6 @@ env = dict(os.environ, DOTNET_STARTUP_HOOKS=str(hook), MONOON_QA_PROJECT=str(pro
            MONOON_LINES_WAIT='Path lift', MONOON_LINES_EDIT='1',
            MONOON_LINE_TRACE=str(out / 'trace.tsv'), MONOON_USER_DATA=str(out / 'profile'))
 with (out / 'editor.log').open('wb') as log:
-    subprocess.run([str(editor), str(project)], env=env, stdout=log, stderr=log, timeout=900, check=True)
+    subprocess.run([str(editor), str(project)], env=env, stdout=log, stderr=log, timeout=240 * float(os.environ.get('MONOON_QA_SLOW') or 1), check=True)
 if (out / 'error.txt').exists(): raise RuntimeError((out / 'error.txt').read_text(encoding='utf-8'))
 check(out)

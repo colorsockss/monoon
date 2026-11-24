@@ -16,9 +16,11 @@ MoNoon Engine
   monoon profile <capture.csv> [--frame <number>]  Print a development build's slowest or chosen frame
   monoon content-update pack <exported Game directory> <replacement directory> <output.bundle>
   monoon test                                  Run the full engine regression suite
+  monoon test --tier fast                      Same without the checks that need player-templates/
   monoon test inventorylab <build-directory> [--profile <development|distribution>]
   monoon test replay <build-directory>          Replay the recorded InventoryLab quest in both players
   monoon test project <project>                Run the project's Tests/ scripts headless
+  monoon test size [--update]                  Check (or record) the osx-arm64 build size baseline
   monoon ci                                    Prepare templates, build and check InventoryLab
 HELP
 }
@@ -29,8 +31,12 @@ case "${1:-}" in
         shift
         if [ "$#" -eq 0 ]; then
             run_project tests/Engine.Checks "$repo"
+        elif [ "$1" = --tier ] && [ "$#" -eq 2 ] && { [ "$2" = fast ] || [ "$2" = full ]; }; then
+            run_project tests/Engine.Checks "$repo" --tier "$2"
         elif [ "$1" = project ] && [ "$#" -eq 2 ]; then
             run_project src/Engine.Cli test project "$2"
+        elif [ "$1" = size ] && { [ "$#" -eq 1 ] || { [ "$#" -eq 2 ] && [ "$2" = --update ]; }; }; then
+            run_project tests/Engine.Checks "$repo" --only build-size ${2:+--update}
         elif [ "$1" = replay ] && [ "$#" -eq 2 ]; then
             run_project tests/Engine.Checks "$repo" --inventory-replay "$2"
         elif [ "$1" = inventorylab ]; then
@@ -62,6 +68,7 @@ case "${1:-}" in
         "$repo/monoon" build samples/InventoryLab release --profile distribution --output "$output"
         "$repo/monoon" build samples/InventoryLab native-aot --profile distribution --output "$output"
         "$repo/monoon" test inventorylab "$output" --profile distribution
-        "$repo/monoon" test replay "$output" ;;
+        "$repo/monoon" test replay "$output"
+        if [ "$target" = osx-arm64 ]; then "$repo/monoon" test size; fi ;;
     *) usage >&2; exit 2 ;;
 esac

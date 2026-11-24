@@ -12,5 +12,14 @@
     <ProjectReference Include="../Engine.Desktop/Engine.Desktop.csproj"/>
     <None Update="MoNoonSdlPlayer.version;MoNoonContent.version;MoNoonShaderSheets.version;MoNoonVorbis.version;MoNoonUiControls.version;MoNoonObjectGroups.version;MoNoonUiPins.version;MoNoonComponentKeys.version;MoNoonTileCollision.version;MoNoonBox2D.version;MoNoonLines.version" CopyToPublishDirectory="PreserveNewest" CopyToOutputDirectory="PreserveNewest"/>
   </ItemGroup>
+  <!-- Players published per game (Native AOT, trimmed Release) only run exported games: lets trimming drop loose-project
+       code (ProjectAssets.ExportedGameOnly). The shared Release template keeps it off. -->
+  <ItemGroup Condition="'$(PublishAot)' == 'true' or '$(MoNoonGameReferences)' != ''">
+    <RuntimeHostConfigurationOption Include="MoNoon.ExportedGameOnly" Value="true" Trim="true" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(PublishAot)' == 'true'">
+    <IlcArg Include="--substitution:$(MSBuildThisFileDirectory)VYaml.Substitutions.xml" />
+    <IlcArg Include="--substitution:$(MSBuildThisFileDirectory)EngineFeatures.Substitutions.xml" />
+  </ItemGroup>
   <Import Project="PlayerDistribution.targets" />
 </Project>

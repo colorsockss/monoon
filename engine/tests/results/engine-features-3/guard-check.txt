@@ -1,0 +1,28 @@
+PASS guard-release.trace: 320 traced ticks
+PASS guard-release.trace: every tick matches the independent model
+PASS guard-release.trace: visits Attack, Hurt, Idle, Recover, Walk
+PASS guard-native-aot.trace: 320 traced ticks
+PASS guard-native-aot.trace: every tick matches the independent model
+PASS guard-native-aot.trace: visits Attack, Hurt, Idle, Recover, Walk
+PASS Release and Native AOT frame 40 PNGs are identical
+PASS Release and Native AOT frame 95 PNGs are identical
+PASS Release and Native AOT frame 215 PNGs are identical
+PASS preview.trace: 320 traced ticks
+PASS preview.trace: every tick matches the independent model
+PASS preview.trace: visits Attack, Hurt, Idle, Recover, Walk
+PASS guard-scene-play.trace: 320 traced ticks
+PASS guard-scene-play.trace: every tick matches the independent model
+PASS guard-scene-play.trace: visits Attack, Hurt, Idle, Recover, Walk
+PASS preview.trace: 320 traced ticks
+PASS preview.trace: every tick matches the independent model
+PASS preview.trace: visits Attack, Hurt, Idle, Recover, Walk
+PASS guard-scene-play.trace: 320 traced ticks
+PASS guard-scene-play.trace: every tick matches the independent model
+PASS guard-scene-play.trace: visits Attack, Hurt, Idle, Recover, Walk
+PASS guard-release.trace: 320 traced ticks
+PASS guard-release.trace: every tick matches the independent model
+PASS guard-release.trace: visits Attack, Hurt, Idle, Recover, Walk
+PASS guard-native-aot.trace: 320 traced ticks
+PASS guard-native-aot.trace: every tick matches the independent model
+PASS guard-native-aot.trace: visits Attack, Hurt, Idle, Recover, Walk
+PASS 4 paths trace the same state and frame on all 320 ticks

@@ -1,0 +1,63 @@
+shippedBytes: 69203253
+bytesByType:
+  ".wav": 67108908
+  ".ttf": 2054744
+  ".scene": 29087
+  ".license": 4534
+  (none): 2557
+  ".data": 1862
+  ".table": 1075
+  ".png": 486
+unreferencedBytes: 771
+warnings:
+- Assets/Market/MarketMorning.wav is 64.0 MiB of PCM WAV; import it as Ogg Vorbis to ship less.
+shipped:
+- path: Assets/Market/MarketMorning.wav
+  bytes: 67108908
+  reason: Scenes/Inventory.scene > Market ambience > AudioSource
+  bundle: Assets/Market
+- path: Assets/Fonts/NanumGothic-Regular.ttf
+  bytes: 2054744
+  reason: GameSettings localization
+- path: Scenes/Inventory.scene
+  bytes: 21778
+  reason: GameSettings includedScenes
+- path: Scenes/Catalog.scene
+  bytes: 7309
+  reason: GameSettings includedScenes
+- path: Assets/Fonts/NanumGothic-Regular.ttf.license
+  bytes: 4534
+  reason: GameSettings localization
+- path: Assets/Dialogue/Herbalist.data
+  bytes: 1862
+  reason: Scenes/Inventory.scene > Bag > Dialogue/DialoguePlayer.Story
+  bundle: Assets/Dialogue
+- path: ".monoon-assets"
+  bytes: 1370
+  reason: build metadata
+- path: GameSettings
+  bytes: 1186
+  reason: build metadata
+- path: Assets/Text/Herbalist.table
+  bytes: 643
+  reason: GameSettings localization
+- path: Assets/Icons/Herb.png
+  bytes: 486
+  reason: Scenes/Inventory.scene > Merchant line > UiText icon herb
+- path: Assets/Quests/Collection.table
+  bytes: 242
+  reason: Scenes/Inventory.scene > Bag > Quests/QuestLog.Catalog
+  bundle: Assets/Quests
+- path: Assets/Inventory/Items.table
+  bytes: 190
+  reason: Scenes/Inventory.scene > Bag > Inventory/InventoryContainer.Catalog
+- path: ".monoon-player"
+  bytes: 1
+  reason: build metadata
+unreferenced:
+- path: Assets/Inventory/Bag.prefab
+  bytes: 281
+- path: Assets/Quests/Journal.prefab
+  bytes: 246
+- path: Assets/Dialogue/Herbalist.prefab
+  bytes: 244

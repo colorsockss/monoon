@@ -1,0 +1,7 @@
+frames:
+- sprite: e6d4a1e7-b8ab-4a4e-98a7-3276ad74a946
+  seconds: 0.2
+  event: Swing
+- sprite: 42500eb3-358b-4dca-aaca-fc496b73f8d6
+  seconds: 0.2
+loop: false

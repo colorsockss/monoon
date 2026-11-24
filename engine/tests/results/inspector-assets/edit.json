@@ -1,0 +1,202 @@
+{
+  "colours": [
+    {
+      "what": "Sprite tint",
+      "undo_steps": 1
+    },
+    {
+      "what": "Start color",
+      "undo_steps": 1
+    },
+    {
+      "what": "Color",
+      "undo_steps": 1
+    }
+  ],
+  "draw_mode": {
+    "mode": {
+      "what": "Door draw mode Sliced",
+      "undo_steps": 1
+    },
+    "border": {
+      "what": "Door slice left 3",
+      "undo_steps": 1
+    },
+    "slice": "UiBorders { Left = 3, Top = 8, Right = 8, Bottom = 8 }"
+  },
+  "sprite_drop": {
+    "drag": {
+      "paths": [
+        "Assets/Key.png"
+      ],
+      "highlight": [
+        "referenceDrop"
+      ],
+      "rows_unmoved": true
+    },
+    "undo": {
+      "what": "Door sprite \u2190 Key.png",
+      "undo_steps": 1
+    }
+  },
+  "sound_reject": {
+    "paths": [
+      "Assets/Coin.png"
+    ],
+    "highlight": [
+      "referenceReject"
+    ],
+    "rows_unmoved": true
+  },
+  "sound_drop": {
+    "project": {
+      "paths": [
+        "Assets/QaChime.wav"
+      ],
+      "highlight": [
+        "referenceDrop"
+      ],
+      "rows_unmoved": true
+    },
+    "project_undo": {
+      "what": "Door sound \u2190 QaChime.wav",
+      "undo_steps": 1
+    },
+    "finder": "Assets/FinderChime.wav",
+    "finder_undo": {
+      "what": "Door sound \u2190 Finder FinderChime.wav",
+      "undo_steps": 1
+    }
+  },
+  "ping": {
+    "field": "Sprite",
+    "project_row": "Assets/Key.png",
+    "flashed": true,
+    "selection_unchanged": true
+  },
+  "picker": {
+    "thumbnails": 10,
+    "search": "LongName",
+    "matches": [
+      "None",
+      "Assets/QaLongNameDoorMaskForInspectorTrimmingChecks0123456789.png"
+    ],
+    "undo": {
+      "what": "Door mask \u2190 picker",
+      "undo_steps": 1
+    }
+  },
+  "alignment": [
+    {
+      "width": 1280,
+      "controls": 32,
+      "object_fields": 3,
+      "lefts": [
+        1130
+      ],
+      "rights": [
+        1272
+      ],
+      "odd": [],
+      "heights": [
+        24
+      ],
+      "long_name_inside": true
+    },
+    {
+      "width": 1600,
+      "controls": 32,
+      "object_fields": 3,
+      "lefts": [
+        1450
+      ],
+      "rights": [
+        1592
+      ],
+      "odd": [],
+      "heights": [
+        24
+      ],
+      "long_name_inside": true
+    },
+    {
+      "width": 1920,
+      "controls": 32,
+      "object_fields": 3,
+      "lefts": [
+        1770
+      ],
+      "rights": [
+        1912
+      ],
+      "odd": [],
+      "heights": [
+        24
+      ],
+      "long_name_inside": true
+    }
+  ],
+  "array_drop": {
+    "drag": {
+      "paths": [
+        "Assets/Coin.png",
+        "Assets/Key.png"
+      ],
+      "highlight": [
+        "referenceDrop"
+      ],
+      "rows_unmoved": true
+    },
+    "before": 3,
+    "after": 5,
+    "undo": {
+      "what": "Key Frames \u002B= Coin, Key",
+      "undo_steps": 1
+    }
+  },
+  "multi_drop": {
+    "drag": {
+      "paths": [
+        "Assets/Oak.png"
+      ],
+      "highlight": [
+        "referenceDrop"
+      ],
+      "rows_unmoved": true
+    },
+    "undo": {
+      "what": "two walls \u2190 Oak.png",
+      "undo_steps": 1
+    }
+  },
+  "particle_texture": {
+    "drag": {
+      "paths": [
+        "Assets/Coin.png"
+      ],
+      "highlight": [
+        "referenceDrop"
+      ],
+      "rows_unmoved": true
+    },
+    "reject": {
+      "paths": [
+        "Assets/QaChime.wav"
+      ],
+      "highlight": [
+        "referenceReject"
+      ],
+      "rows_unmoved": true
+    },
+    "undo_steps": 1
+  },
+  "saved": {
+    "door_sprite": "Assets/Key.png",
+    "door_sprite_id": "fb750913-c06a-50c4-beae-cb27d559af91",
+    "door_sound": "Assets/FinderChime.wav",
+    "door_sound_id": "735702a5-92bd-47de-b71c-a2d69fa871f9",
+    "particle_texture": "Assets/Coin.png",
+    "particle_texture_id": "909cfb8c-893f-41a9-8e82-6d8ef5c2abb6",
+    "tint": "#C05030"
+  }
+}

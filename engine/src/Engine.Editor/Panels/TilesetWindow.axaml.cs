@@ -14,6 +14,8 @@ internal partial class TilesetWindow : EditorPanel
     private readonly SceneDocument scene;
     private readonly SpriteCache<Bitmap> images = new(p => new Bitmap(p));
     private readonly Dictionary<SpriteRegion, int> terrain = [];
+    private readonly Dictionary<SpriteRegion, (int Count, int Seed)> random = [];
+    private readonly Dictionary<SpriteRegion, (int Count, int Fps)> frames = [];
     // Gameplay terrain name and navigation cost, separate from the auto-terrain brush above.
     private readonly Dictionary<SpriteRegion, (string? Name, int? Cost)> ground = [];
     private sealed record CollisionDraft(int Mode, string Points);
@@ -47,6 +49,8 @@ internal partial class TilesetWindow : EditorPanel
             collisions[tile.Source] = new(tile.Collision is {} shape ? shape.OneWay ? 3 : 2 : tile.Solid ? 1 : 0,
                 string.Join("  ", (tile.Collision?.Vertices ?? []).Select(p => FormattableString.Invariant($"{p.X:R},{p.Y:R}"))));
             terrain[tile.Source] = tile.AutoEdges;
+            random[tile.Source] = (tile.RandomTiles ?? 0, tile.RandomSeed ?? 0);
+            frames[tile.Source] = (tile.Frames ?? 0, tile.Fps ?? 8);
             ground[tile.Source] = (tile.Terrain, tile.MoveCost);
         }
         foreach (var field in new[] { CellW, CellH, MarginBox, Gap }) field.ValueChanged += (_, _) => Slice();
@@ -66,8 +70,18 @@ internal partial class TilesetWindow : EditorPanel
             PreviewCollision(tile);
         };
         TerrainMode.SelectionChanged += (_, _) => {
-            if (!updating && Selected is {} tile) terrain[tile.Source] = TerrainMode.SelectedIndex switch { 1 => 4, 2 => 6, _ => 0 };
+            if (!updating && Selected is {} tile) terrain[tile.Source] = TerrainMode.SelectedIndex switch { 1 => 4, 2 => 6, 3 => 8, _ => 0 };
         };
+        foreach (var box in new[] { RandomCount, RandomSeedBox })
+            box.ValueChanged += (_, _) =>
+            {
+                if (!updating && Selected is {} tile) random[tile.Source] = ((int)(RandomCount.Value ?? 0), (int)(RandomSeedBox.Value ?? 0));
+            };
+        foreach (var box in new[] { FrameCount, FrameFps })
+            box.ValueChanged += (_, _) =>
+            {
+                if (!updating && Selected is {} tile) frames[tile.Source] = ((int)(FrameCount.Value ?? 0), (int)(FrameFps.Value ?? 8));
+            };
         TerrainName.PropertyChanged += (_, change) =>
         {
             if (!updating && change.Property == TextBox.TextProperty && Selected is {} tile)
@@ -96,7 +110,15 @@ internal partial class TilesetWindow : EditorPanel
         VerticesRow.IsVisible = draft.Mode >= 2;
         PointsBox.Text = draft.Points;
         TerrainMode.IsEnabled = tile != null;
-        TerrainMode.SelectedIndex = (tile == null ? 0 : terrain.GetValueOrDefault(tile.Source)) switch { 4 => 1, 6 => 2, _ => 0 };
+        TerrainMode.SelectedIndex = (tile == null ? 0 : terrain.GetValueOrDefault(tile.Source)) switch { 4 => 1, 6 => 2, 8 => 3, _ => 0 };
+        var (count, seed) = tile == null ? default : random.GetValueOrDefault(tile.Source);
+        RandomCount.IsEnabled = RandomSeedBox.IsEnabled = tile != null;
+        RandomCount.Value = count == 0 ? null : count;
+        RandomSeedBox.Value = seed;
+        var (frameCount, fps) = tile == null ? (0, 8) : frames.GetValueOrDefault(tile.Source, (0, 8));
+        FrameCount.IsEnabled = FrameFps.IsEnabled = tile != null;
+        FrameCount.Value = frameCount == 0 ? null : frameCount;
+        FrameFps.Value = fps;
         var (name, cost) = tile == null ? default : ground.GetValueOrDefault(tile.Source);
         TerrainName.IsEnabled = MoveCostBox.IsEnabled = tile != null;
         TerrainName.Text = name;
@@ -173,6 +195,10 @@ internal partial class TilesetWindow : EditorPanel
                 throw new IOException("Choose a visible filename that works on all platforms.");
             if (relative == null && File.Exists(file)) throw new IOException("A tileset with this name already exists.");
             var tiles = sliced.Values.Select(t => WithCollision(t) with { AutoEdges = terrain.GetValueOrDefault(t.Source),
+                RandomTiles = random.GetValueOrDefault(t.Source) is { Count: > 1 } r ? r.Count : null,
+                RandomSeed = random.GetValueOrDefault(t.Source) is { Count: > 1, Seed: not 0 } s ? s.Seed : null,
+                Frames = frames.GetValueOrDefault(t.Source) is { Count: > 1 } f ? f.Count : null,
+                Fps = frames.GetValueOrDefault(t.Source) is { Count: > 1 } g ? g.Fps : null,
                 Terrain = ground.GetValueOrDefault(t.Source).Name, MoveCost = ground.GetValueOrDefault(t.Source).Cost }).ToList();
             var retained = tiles.Select(t => t.Id).ToHashSet();
             foreach (var old in original?.Tiles ?? [])

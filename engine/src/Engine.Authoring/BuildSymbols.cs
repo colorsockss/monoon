@@ -10,6 +10,8 @@ public sealed record GameBuildResult(string Product, string? SymbolDirectory)
 {
     public string? ContentReport { get; init; }
     public IReadOnlyList<string> ContentDecisions { get; init; } = [];
+    public string? AssetReport { get; init; }
+    public IReadOnlyList<string> AssetSummary { get; init; } = [];
 }
 
 internal static class BuildSymbols
@@ -41,8 +43,7 @@ internal static class BuildSymbols
         }
         else
         {
-            foreach (var dll in new[] { "MoNoonPlayer.dll", "Engine.Core.dll", "Engine.Desktop.dll",
-                Path.Combine("Game", ".monoon-compiled", ProjectScripts.AssemblyFile) })
+            foreach (var dll in new[] { "MoNoonPlayer.dll", "Engine.Core.dll", "Engine.Desktop.dll", ScriptAssembly(bin) })
             {
                 string path = Path.Combine(bin, dll);
                 string key = dll.Replace(Path.DirectorySeparatorChar, '/');
@@ -56,6 +57,10 @@ internal static class BuildSymbols
 
         if (archive != null) MoveSymbols(bin, archive);
     }
+
+    // A per-game Release publish links the scripts next to the player; a template-copy Release loads them from Game/.
+    internal static string ScriptAssembly(string bin) => File.Exists(Path.Combine(bin, ProjectScripts.AssemblyFile))
+        ? ProjectScripts.AssemblyFile : Path.Combine("Game", ".monoon-compiled", ProjectScripts.AssemblyFile);
 
     internal static Guid VerifyPortablePdb(string assembly, string? path = null)
     {

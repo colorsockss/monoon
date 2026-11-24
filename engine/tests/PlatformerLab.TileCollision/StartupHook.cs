@@ -10,23 +10,9 @@ using Engine.Core;
 
 public static class StartupHook
 {
-    // MONOON_QA_SLOW scales waits and time limits for emulated x64 guests (TCG); 1 on a normal desktop.
-    private static readonly double Slow = double.TryParse(Environment.GetEnvironmentVariable("MONOON_QA_SLOW"), System.Globalization.CultureInfo.InvariantCulture, out var s) ? s : 1;
-    private static Task Delay(int ms) => Task.Delay((int)(ms * Slow));
     private static readonly string Output = Environment.GetEnvironmentVariable("MONOON_TILE_EDITOR")!;
     private const BindingFlags Private = BindingFlags.NonPublic | BindingFlags.Instance;
-    public static void Initialize() => Task.Run(async () =>
-    {
-        while (Application.Current?.ApplicationLifetime is not IClassicDesktopStyleApplicationLifetime { MainWindow: not null })
-            await Delay(100);
-        await Dispatcher.UIThread.InvokeAsync(async () =>
-        {
-            var life = (IClassicDesktopStyleApplicationLifetime)Application.Current!.ApplicationLifetime!;
-            try { await Test(life, life.MainWindow!); }
-            catch (Exception ex) { File.WriteAllText(Path.Combine(Output,"error.txt"),ex.ToString()); }
-            finally { life.Shutdown(); }
-        });
-    });
+    public static void Initialize() => Start(Path.Combine(Output, "error.txt"), life => Test(life, life.MainWindow!));
 
     private static void Click(Button button) => button.RaiseEvent(new RoutedEventArgs(Button.ClickEvent,button));
     private static void Require(bool value, string message) { if (!value) throw new InvalidDataException(message); }
@@ -35,7 +21,7 @@ public static class StartupHook
     {
         var view = main.FindControl<Control>("Viewport")!;
         var scene = view.GetType().GetProperty("Scene")!;
-        while (((SceneDocument)scene.GetValue(view)!).Objects.All(o => o.Name != "Runner")) await Delay(100);
+        await Until(() => ((SceneDocument)scene.GetValue(view)!).Objects.Any(o => o.Name == "Runner"), "Runner");
         async Task Edit(string asset, SpriteRegion cell, int mode, string? input, string expected, bool capture)
         {
             var closing = (Task)main.GetType().GetMethod("EditTileset",Private)!.Invoke(main,[asset])!;

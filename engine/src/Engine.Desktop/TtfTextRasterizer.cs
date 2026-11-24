@@ -1,6 +1,7 @@
 using System.Text;
 using Brutal.SdlApi;
 using Brutal.SdlApi.Ttf;
+using Engine.Core;
 
 namespace Engine.Desktop;
 
@@ -52,7 +53,8 @@ public sealed unsafe class TtfTextRasterizer : IGameTextRasterizer
             if (fonts.Count > 0) return fonts[0];
             if (!initialized)
             {
-                if (SdlTtf.PInvoke.Init() == 0) throw new InvalidOperationException(Sdl.PInvoke.GetError());
+                try { if (SdlTtf.PInvoke.Init() == 0) throw new InvalidOperationException(Sdl.PInvoke.GetError()); }
+                catch (Exception missing) when (EngineFeatures.Missing(missing)) { throw EngineFeatures.Excluded(EngineFeature.Text, missing); }
                 initialized = true;
             }
             bool packaged = paths.Count > 0;

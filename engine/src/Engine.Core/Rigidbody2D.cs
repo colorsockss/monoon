@@ -7,8 +7,10 @@ namespace Engine.Core;
 public enum BodyType2D { Dynamic, Kinematic, Static }
 
 [DisplayName("Rigidbody 2D"), YamlObject]
+[EngineFeature(EngineFeature.Physics)]
 public sealed partial record Rigidbody2DComponent : SceneComponent
 {
+    internal override bool CanDisable => false;
     public const float DefaultFriction = .6f;
     public Rigidbody2DComponent() { }
     // YAML fills omitted members from these defaults, not from the property initializers.
@@ -36,6 +38,7 @@ public sealed partial record Rigidbody2DComponent : SceneComponent
 }
 
 /// <summary>A Box2D joint from this object to <see cref="Connected"/>, or to the world when it is empty.</summary>
+[EngineFeature(EngineFeature.Physics)]
 public abstract record Joint2DComponent : SceneComponent
 {
     public Guid? Connected { get; set; }
@@ -138,6 +141,7 @@ public sealed partial record WeldJoint2DComponent : Joint2DComponent
 }
 
 [DisplayName("Character Motor 2D"), YamlObject]
+[EngineFeature(EngineFeature.Physics)]
 public sealed partial record CharacterMotor2DComponent : SceneComponent
 {
     public CharacterMotor2DComponent() { }

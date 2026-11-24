@@ -16,24 +16,10 @@ using Engine.Desktop;
 // Inspector rows at three widths. Then it replays the recording in Play and draws the chosen frames with the SDL canvas.
 public static class StartupHook
 {
-    // MONOON_QA_SLOW scales waits and time limits for emulated x64 guests (TCG); 1 on a normal desktop.
-    private static readonly double Slow = double.TryParse(Environment.GetEnvironmentVariable("MONOON_QA_SLOW"), System.Globalization.CultureInfo.InvariantCulture, out var s) ? s : 1;
-    private static Task Delay(int ms) => Task.Delay((int)(ms * Slow));
     private static readonly string Output = Environment.GetEnvironmentVariable("MONOON_LINES_EDITOR")!;
     private const BindingFlags Any = BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance;
 
-    public static void Initialize() => Task.Run(async () =>
-    {
-        while (Application.Current?.ApplicationLifetime is not IClassicDesktopStyleApplicationLifetime { MainWindow: not null })
-            await Delay(100);
-        await Dispatcher.UIThread.InvokeAsync(async () =>
-        {
-            var life = (IClassicDesktopStyleApplicationLifetime)Application.Current!.ApplicationLifetime!;
-            try { await Test(life.MainWindow!); }
-            catch (Exception ex) { File.WriteAllText(Path.Combine(Output, "error.txt"), ex.ToString()); }
-            finally { life.Shutdown(); }
-        });
-    });
+    public static void Initialize() => Start(Path.Combine(Output, "error.txt"), life => Test(life.MainWindow!));
 
     private static void Click(Button button) => button.RaiseEvent(new RoutedEventArgs(Button.ClickEvent, button));
     private static void Require(bool value, string message) { if (!value) throw new InvalidDataException(message); }
@@ -45,7 +31,7 @@ public static class StartupHook
         var scene = view.GetType().GetProperty("Scene")!;
         SceneDocument Scene() => (SceneDocument)scene.GetValue(view)!;
         string wait = Environment.GetEnvironmentVariable("MONOON_LINES_WAIT")!;
-        while (Scene().Objects.All(o => o.Name != wait)) await Delay(100);
+        await Until(() => Scene().Objects.Any(o => o.Name == wait), wait);
         await Delay(500);
         main.Width = 1280; main.Height = 900;
         if (Environment.GetEnvironmentVariable("MONOON_LINES_EDIT") == "1") await EditPath(main, view, Scene);
@@ -147,7 +133,8 @@ public static class StartupHook
         section.BringIntoView(); // The panel capture then shows the path rows.
         Dispatcher.UIThread.RunJobs();
         var fields = section.GetVisualDescendants().OfType<Control>()
-            .Where(c => c.IsEffectivelyVisible && (c is NumericUpDown or ComboBox or CheckBox || c is Grid g && g.Children.OfType<Button>().Count() == 3) &&
+            .Where(c => c.IsEffectivelyVisible && c.Name != "EnabledCheck" && (c is NumericUpDown or ComboBox or CheckBox ||
+                c is Grid g && g.Children.OfType<Button>().Count() == 3 && !g.Children.Any(h => h.Name == "HeaderToggle")) && // not the section header
                         c.GetVisualAncestors().OfType<NumericUpDown>().FirstOrDefault() == null).ToList();
         var labels = section.GetVisualDescendants().OfType<TextBlock>().Where(t => t.IsEffectivelyVisible && t.Classes.Contains("fieldLabel")).ToList();
         var columns = fields.Select(f => Math.Round(In(f, main).X, 1)).Distinct().ToArray();

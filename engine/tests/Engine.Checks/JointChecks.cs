@@ -4,6 +4,7 @@ using Engine.Core;
 // PlatformerLab Joints scene: a revolute rope bridge and Box2D slider decks tied by the PulleyPair script.
 internal static class JointChecks
 {
+    [Check(3800, "physics")] static void Registered(CheckRun c) => Run(c.Repository, c.Scratch);
     private const float Step = 1f / 60;
     // Same timeline as engine/tests/PlatformerLab.Joints/Cross.inputreplay (frame: key down/up).
     internal static readonly (int Frame, string Key, bool Down)[] Route =

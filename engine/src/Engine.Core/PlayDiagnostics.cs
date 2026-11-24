@@ -68,7 +68,15 @@ public sealed partial class SceneGame
         void Line(Vector2 a,Vector2 b,Color color,float width=1.5f)=>canvas.DrawLine(shot.WorldToScreen(a),shot.WorldToScreen(b),width,color);
         void Shape(Shape2D shape,Color color,float width=1.5f)
         {
-            if(shape.Vertices is {} p){
+            void Ring(Vector2 c,float r){var previous=c+new Vector2(r,0);
+                for(int i=1;i<=32;i++){float angle=i*(MathF.Tau/32);var point=c+r*new Vector2(MathF.Cos(angle),MathF.Sin(angle));Line(previous,point,color,width);previous=point;}}
+            if(shape.Parts is {} parts){
+                foreach(var part in parts) Line(part.Vertices![0]+shape.Offset,part.Vertices[1]+shape.Offset,color,width);
+            }else if(shape.Vertices is [var a,var b] && shape.Radius>0){
+                var side=Vector2.Normalize(new Vector2(b.Y-a.Y,a.X-b.X))*shape.Radius;
+                Line(a+side+shape.Offset,b+side+shape.Offset,color,width);Line(a-side+shape.Offset,b-side+shape.Offset,color,width);
+                Ring(a+shape.Offset,shape.Radius);Ring(b+shape.Offset,shape.Radius);
+            }else if(shape.Vertices is {} p){
                 for(int i=0;i<p.Length;i++) Line(p[i]+shape.Offset,p[(i+1)%p.Length]+shape.Offset,color,width);
             }else if(shape.Radius>0){
                 var previous=shape.Offset+new Vector2(shape.Radius,0);

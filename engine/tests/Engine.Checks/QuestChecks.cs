@@ -7,6 +7,7 @@ using MoNoon.Quests;
 
 internal static class QuestChecks
 {
+    [Check(1800, StopAfter = "quest")] static void Registered(CheckRun c) => Run(c.Repository, c.Scratch);
     internal static void Run(string repo, string scratch)
     {
         var sample = Path.Combine(repo, "samples", "InventoryLab");

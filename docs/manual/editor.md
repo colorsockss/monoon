@@ -35,7 +35,7 @@ python3 engine/scripts/package-editor.py keyroom
 | --- | --- |
 | Hierarchy | 이름을 눌러 선택하고 삼각형으로 자식을 펼친다. 이름 왼쪽 아이콘은 오브젝트의 주 컴포넌트 종류(스프라이트·충돌체·카메라·UI 등, 없으면 Transform)다. 빈 곳의 우클릭 메뉴는 루트, 항목의 우클릭 메뉴는 해당 오브젝트 아래에 항목을 만든다. 탭 아래 도구 줄의 검색 필드에 이름 일부를 입력하면 일치하는 오브젝트와 그 부모만 남고, Esc로 지운다. 도구 줄 **+**는 Square를 만든다. |
 | Scene | 머리줄 왼쪽에서 이동·회전·크기·Rect 도구와 Snap을 고른다. 스프라이트를 드래그해 배치한다. 빈 영역을 드래그해 이동하고 스크롤로 포인터 주변을 확대·축소한다. 타일 편집 중에는 우클릭 드래그로 이동한다. **Scene → Frame Camera**로 카메라 프레임을 다시 찾는다. |
-| Inspector | 탭 바로 아래부터 이름과 Transform을 편집한다. 자식은 **Local pos.**, UI는 **Offset**으로 표시된다. 컴포넌트 머리말 왼쪽에 종류 아이콘이 있고, 머리말을 눌러 접고 편다. 접은 상태는 컴포넌트 종류별로 사용자 설정에 기억되어 다른 오브젝트와 다음 실행에도 같다. 머리말 오른쪽 톱니바퀴 메뉴에서 **Remove**(스크립트는 **Edit Script**도)를 고른다. 여러 개를 선택하거나 Play 중이거나 프리팹 인스턴스를 선택하면 탭 아래에 한 줄짜리 작업 줄이 나타나 선택 개수, **Apply selected**, **Overrides…**를 보여 준다. 긴 선택 값(예: `Assets/Unlock.wav`)은 말줄임표로 줄고 툴팁에 전체 값이 나온다. |
+| Inspector | 탭 바로 아래부터 이름과 Transform을 편집한다. 자식은 **Local pos.**, UI는 **Offset**으로 표시된다. 컴포넌트 머리말 왼쪽에 종류 아이콘이 있고, 머리말을 눌러 접고 편다. 접은 상태는 컴포넌트 종류별로 사용자 설정에 기억되어 다른 오브젝트와 다음 실행에도 같다. 이름 입력 상자 바로 왼쪽 체크는 오브젝트의 활성 상태, 머리말의 체크는 컴포넌트 켜짐이다([활성과 켜짐](#오브젝트-활성과-컴포넌트-켜짐)). 머리말 오른쪽 톱니바퀴 메뉴는 [컴포넌트 명령](#컴포넌트-메뉴)을 연다. 탭의 자물쇠와 정보 버튼은 [잠금과 Debug 보기](#inspector-잠금과-debug-보기)다. 저장이나 Play에서 문제가 될 설정은 섹션 위에 노란 한 줄로 알린다([경고 줄](#컴포넌트-경고-줄)). 여러 개를 선택하면 값이 다른 필드는 `—`로 보이고 함께 편집된다([여러 오브젝트](#inspector에서-여러-오브젝트-함께-편집하기)). 프리팹 인스턴스의 오버라이드는 행에 [표시](#inspector의-오버라이드-표시)되고, 숫자 레이블은 [끌어서](#숫자-레이블-끌기와-range-슬라이더) 바꾸며, Project에서 파일을 클릭하면 [에셋 Inspector](#에셋-inspector)가 된다. 여러 개를 선택하거나 Play 중이거나 프리팹 인스턴스를 선택하면 탭 아래에 한 줄짜리 작업 줄이 나타나 선택 개수, **Apply all**·**Apply selected**([Play 중 값 조정](play-diagnostics.md#play-중-값-조정과-선택-적용)), **Overrides…**를 보여 준다. 긴 선택 값(예: `Assets/Unlock.wav`)은 말줄임표로 줄고 툴팁에 전체 값이 나온다. |
 | Project | 탭 아래 도구 줄에 검색 필드, 격자 보기 전환, **+**가 있다. 그 아래 경로 줄에 프로젝트 이름부터 현재 폴더까지 폴더 버튼이 이어지고, 버튼을 누르면 그 폴더로 간다. 경로가 길면 앞쪽 폴더가 `…`로 줄고 현재 폴더는 항상 보인다. 왼쪽 위쪽 화살표(**Parent folder**)는 한 단계 위로 간다. 폴더를 더블클릭해 들어가고 파일을 더블클릭하면 종류에 맞는 편집기가 열린다. 파일을 경로 줄의 폴더 버튼이나 위쪽 화살표에 놓으면 그 폴더로 옮긴다. 격자 보기에서는 PNG가 축소 이미지로, 다른 파일은 종류 아이콘으로 76px 칸에 표시된다. 보기 방식은 사용자 설정에 기억된다. Project 패널 너비가 360px 이상이면(예: **Window → Layout → Animation**의 아래쪽 탭) 왼쪽에 폴더 트리가 나타나 파일 영역과 같은 폴더를 선택한다. 검색과 **+**에서 [에셋 검색·임포트, 참조 확인, 데이터·테이블 편집](project-assets.md)을 할 수 있다. |
 
 ### Scene에서 숨기기와 잠그기
@@ -76,6 +76,7 @@ Hierarchy, Project, Scene, Game, Inspector와 아래 도구 패널은 각각 독
 | --- | --- |
 | Console | **Project → Console…**, Play의 **Debug → Console…** |
 | Profiler | Play의 **Debug → Profiler**, **Run → Frame Profiler** |
+| Particle | Inspector의 Particle Emitter 2D **Edit in Particle panel**, Project의 `.particles` 더블클릭, **Window → Particle** ([파티클 패널](effects.md#particle-패널)) |
 | Animator | Project의 `.controller` 더블클릭, **+ → New Animator Controller…** |
 | Clip | Project의 `.clip` 더블클릭, **+ → New Animation Clip…** |
 | Tileset | Project의 `.tileset` 더블클릭, **+ → New Tileset…** |
@@ -86,7 +87,7 @@ Hierarchy, Project, Scene, Game, Inspector와 아래 도구 패널은 각각 독
 에셋 편집기는 종류마다 패널 하나를 쓴다. 같은 에셋을 다시 열면 그 탭으로 이동한다. 다른 에셋을 열면 열린 편집기를 닫고 새 에셋으로 바꾼다. 저장하지 않은 클립이나 애니메이터가 있으면 먼저 저장 여부를 묻고, **Cancel**을 고르면 기존 편집기가 남는다. 탭 제목에는 에셋 이름과 종류가 표시되고 클립은 저장하지 않은 변경이 있으면 `*`가 붙는다. 데이터 에셋과 테이블은 같은 Data 패널을 쓴다. 편집기의 **Save** 또는 **Cancel**·**Close**를 누르면 패널이 닫힌다.
 
 - 편집기가 패널보다 작게 줄어들 수 없을 때는 패널 안에서 스크롤된다.
-- Play 중에는 Animator·Tileset·Input Actions·Dialogue·Data 편집기가 비활성 상태로 남는다. Stop하면 다시 편집할 수 있다. Clip은 Play 중에도 편집할 수 있다.
+- Play 중에는 Animator·Tileset·Input Actions·Dialogue·Data 편집기와 Particle 패널이 비활성 상태로 남는다. Stop하면 다시 편집할 수 있다. Clip은 Play 중에도 편집할 수 있다.
 - Clip에 포커스가 있으면 **File → Save Scene**(⌘S)과 **Edit → Undo / Redo**는 클립에 적용된다. 다른 편집기의 텍스트 필드에서는 그 필드의 Undo가 적용된다.
 - 씬이나 프로젝트를 바꾸거나 에디터를 닫으면 열린 편집기도 닫는다. 저장하지 않은 클립·애니메이터는 먼저 묻는다.
 
@@ -99,7 +100,7 @@ Scene 탭은 편집 화면이다. 머리줄 왼쪽의 도구 버튼과 Snap 토�
 | Game 패널 머리줄 | 동작 |
 | --- | --- |
 | 해상도 메뉴 | 프로젝트 게임 해상도(**Project → Game Resolution…**와 같은 값)를 고른다. 320×180·640×360·800×450·1280×720·1920×1080과 현재 값이 있고 **Custom…**은 해상도 창을 연다. 고르면 프로젝트 설정에 저장되며 Play 중에는 바꿀 수 없다. |
-| 배율 메뉴 | **Fit**은 패널에 맞춰 그린다. **1×–4×**는 게임 픽셀 하나를 패널 1–4단위로 고정해 그린다. 넘치는 부분은 잘린다. |
+| 배율 메뉴 | **Fit**은 패널에 맞춰 그린다. 프로젝트가 정수 배율을 켜면 Fit도 장치 픽셀 기준 정수 배율로 내림한다. **1×–4×**는 게임 픽셀 하나를 패널 1–4단위로 고정해 그린다. 넘치는 부분은 잘린다. |
 | **Stats** | 최근 60프레임 평균 FPS와 프레임 시간, 마지막 프레임의 SDL 그리기 호출 수를 표시한다. |
 
 Play의 **Debug** 도구(충돌체·질의·레이·Profiler·Console)는 Game 패널 아래에 열린다. [실행 진단](play-diagnostics.md)
@@ -151,10 +152,16 @@ Hierarchy에서 첫 오브젝트를 클릭하고 마지막 오브젝트를 **Shi
 
 도구는 Scene 탭 머리줄 왼쪽의 버튼으로도 고르고, 옆의 자석 버튼으로 Snap을 켠다. 고른 도구는 강조색으로 표시된다. 단축키는 Scene에 포커스를 두고 사용한다. 단일 오브젝트는 자신의 피벗, 그룹은 선택 영역의 중심을 사용한다. 부모와 자식을 함께 골라도 자식의 로컬 변환은 유지된다. 드래그 도중 **Esc**로 취소하고, 드래그를 마친 뒤 **Cmd+Z**로 그룹 전체를 한 번에 되돌린다. 화면 UI는 앵커·레이아웃의 오프셋으로 편집한다.
 
+### Inspector에서 여러 오브젝트 함께 편집하기
+
+여러 오브젝트를 고르면 Inspector에 Transform과 공통 컴포넌트가 입력 필드로 나온다. 모든 오브젝트에서 같은 값은 그대로, 서로 다른 값은 `—`로 보인다(체크는 반쯤 찬 상태). Transform의 숫자, 내장 컴포넌트의 체크·숫자·선택·글자, 스크립트의 bool·int·float·double·string·enum 필드를 바꿀 수 있다. Enter·포커스 이동·화살표 한 번·[레이블 끌기](#숫자-레이블-끌기와-range-슬라이더)로 값을 확정하면 고른 오브젝트 모두에 같은 값이 들어가고 Undo 한 번으로 기록된다. 값은 오버라이드 목록과 같은 저장 키 경로(컴포넌트·필드)로 쓰므로 프리팹 인스턴스에는 하나씩 고쳤을 때와 같은 오버라이드가 생기고, Undo는 값과 오버라이드를 함께 되돌린다. 스크립트 필드는 `[Range]`·`[Min]` 안으로 맞추고, 기본값과 같으면 저장 키를 지운다. 참조·Vector2 필드는 공통 값만 보여 준다(에셋 필드는 [놓기·고르기](#에셋오브젝트-필드)로 함께 바꾼다).
+
+예: WallWorkshop의 벽 10개(같은 `WallSegment.prefab`)를 고르고 **Size → W**에 80을 넣고, **Box Collider 2D → Is Trigger**를 켜고, 스크립트 숫자를 입력하면 기록 세 개가 된다. **Cmd+Z** 세 번이면 벽마다 원래 값과 오버라이드 목록으로 돌아간다.
+
 ### Inspector에서 충돌 마스크 함께 편집하기
 
 1. KeyRoom의 Project 패널에서 `Scenes/WallWorkshop.scene`을 열고 Hierarchy에서 **Wall 01**을 클릭한 뒤 **Wall 10**을 **Shift+클릭**한다.
-2. Inspector 작업 줄에 **10 selected**가 표시되고 공통 컴포넌트가 나온다. 모든 벽에서 같은 값은 그대로 보이고 서로 다른 값은 **Mixed**로 보인다. 예제에서 너비는 76, 높이는 28이며 충돌 레이어와 마스크는 혼합 상태다.
+2. Inspector 작업 줄에 **10 selected**가 표시되고 공통 컴포넌트가 나온다. 모든 벽에서 같은 값은 그대로 보이고 서로 다른 값은 `—`(마스크 버튼은 **Mixed**)로 보인다. 예제에서 너비는 76, 높이는 28이며 충돌 레이어와 마스크는 혼합 상태다.
 3. **Box Collider 2D → Mask**에서 **None**을 고르면 10개 마스크가 모두 0이 된다. **All layers**는 32개 비트를 전부 켠다. 개별 레이어의 **✓**는 모든 벽이 켰다는 뜻이고, **−**는 일부 벽만 켰다는 뜻이다. 혼합된 레이어를 클릭하면 그 비트를 전부 켜고, 모두 켜진 레이어를 클릭하면 그 비트를 전부 끈다. 각 벽의 다른 비트는 유지된다.
 4. **Edit → Undo** 또는 **Cmd+Z**(Windows·Linux는 **Ctrl+Z**)를 한 번 누른다. 벽 10개가 선택된 채 원래 마스크로 돌아간다. 벽 하나를 선택하고 **Overrides…**를 열면 그 인스턴스의 개별 설정을 볼 수 있다.
 
@@ -177,6 +184,12 @@ KeyRoom 첫 방에서 다음 순서로 두 나무의 상속을 비교할 수 있
 2. Hierarchy에서 **Courtyard oak**를 선택하고 Inspector 작업 줄의 **Overrides…**를 연다. **width** 행의 **Source**는 102, **Instance**는 76이다. **Apply to Source**를 누르면 두 나무 모두 너비 76이 된다. **Done**으로 닫은 뒤 **Cmd+Z** 한 번으로 원본과 씬을 함께 되돌릴 수 있다.
 3. 너비를 적용한 상태에서 **height → Revert**를 누르면 **Courtyard oak**도 높이 112를 상속한다. 이름과 위치는 유지된다. **Done → Cmd+S**로 씬을 저장하고 다시 열면 이 나무의 오버라이드 목록에는 이름만 남는다.
 
+### Inspector의 오버라이드 표시
+
+프리팹 인스턴스(또는 그 자식)를 고르면 Inspector가 오버라이드를 바로 보여 준다. 오버라이드가 있는 컴포넌트는 머리말 왼쪽 여백에 강조색 점이 찍히고, 이름·Transform 행과 스크립트 필드 행은 레이블이 굵어지며 왼쪽 여백에 2px 막대가 생긴다. 점과 막대는 패널 안쪽 여백에 그려서 레이블·입력 열은 1px도 움직이지 않는다. 표시는 선택할 때와 값을 확정할 때마다 한 번 다시 계산한다(타이핑 중에는 그대로).
+
+표시된 행을 우클릭하면 **Revert**와 **Apply to Source**가 나온다. 그 행의 필드만(예: Size 행은 너비와 높이) 되돌리거나 원본에 적용하며, **Overrides…** 창과 같은 명령이라 각각 Undo 한 번으로 씬과 원본 파일을 함께 되돌린다. 위의 **Courtyard oak**에서는 Name·Size 행이 표시되고 **Oak tree**에는 표시가 없다. Size 행의 **Revert**는 102 × 98로 돌리고 이름 오버라이드는 남긴다.
+
 씬에만 존재하는 오브젝트 참조는 인스턴스에 설정할 수 있다. 프리팹 원본에 적용할 수 있는 참조 대상은 해당 프리팹 안의 오브젝트다.
 
 ### 자식·컴포넌트 추가와 삭제의 개별 적용
@@ -194,16 +207,111 @@ KeyRoom의 `Scenes/PrefabWorkshop.scene`에서 자물쇠만 원본에 적용하�
 
 ## 컴포넌트와 외부 에디터
 
-1. 오브젝트를 선택하고 **Add Component**를 연다. 메뉴의 **Built-in components**에서 엔진 기능을, **Project scripts**에서 프로젝트에 있는 동작을 고른다. **(Added)**는 이미 붙인 항목이다.
+1. 오브젝트를 선택하고 **Add Component**를 연다. 위쪽 검색 상자에 이름 일부를 입력하면(예: `col` → 충돌체 5종과 이름이 맞는 스크립트) 맞는 항목만 남고, Enter는 첫 항목을 붙인다. 내장 컴포넌트는 **Rendering·Physics·UI·Audio·Animation·Navigation**, 프로젝트 동작은 **Scripts** 묶음에 있다. **(Added)**는 이미 붙인 항목이다.
 2. 새 동작은 **Add Component → New C# Component… → Create & Add**로 생성과 부착을 함께 할 수 있다. **Project → + → New C# Script…**로 파일을 먼저 만들었다면, Project에서 `.cs`를 선택된 오브젝트의 Inspector로 드래그한다.
 3. macOS에서는 **MoNoon → Preferences…**, Windows·Linux에서는 **Edit → Preferences…**를 연다. **External script editor**를 지정하거나 **Use System Default**를 선택한다.
 4. Project의 `.cs`를 더블클릭하거나 Inspector의 스크립트 톱니바퀴에서 **Edit Script**를 누른다. 외부 에디터에서 저장하고 MoNoon으로 돌아온 뒤 Play한다. Play 중에 저장하면 필드 값을 유지한 채 새 코드로 바뀐다. [Play 중 스크립트 다시 불러오기](scripting.md#play-중-스크립트-다시-불러오기) 컴파일 오류는 **Project → Console…**에서 찾아 더블클릭하면 파일을 열 수 있다. [C# 작성 규칙과 예제](runtime.md)
 
 5. 프로젝트의 `Editor/` 폴더에 C# 파일을 두면 그 프로젝트에서만 쓰는 메뉴 명령, 스크립트 컴포넌트의 Inspector, 도킹 패널을 추가할 수 있다. KeyRoom은 **Project → Extensions → Place Coin**, CollectCoin의 Inspector 행, **Window → Coins** 패널을 이렇게 추가한다. [프로젝트 에디터 확장](workspace.md#프로젝트-에디터-확장)
 
+### 컴포넌트 메뉴
+
+머리말 오른쪽 톱니바퀴 메뉴의 명령은 각각 Undo 한 번으로 되돌린다.
+
+| 명령 | 하는 일 |
+| --- | --- |
+| Reset | 내장 컴포넌트는 새로 붙인 값으로, 스크립트는 Inspector 값을 지워 코드의 초기값으로 되돌린다(게임 이벤트 연결은 유지). 켜짐 상태와 목록 위치는 그대로다. |
+| Copy Component | 컴포넌트 값을 이 에디터 세션에 복사한다. 씬은 바뀌지 않는다. |
+| Paste Component Values | 같은 종류(스크립트는 같은 스크립트)의 컴포넌트에 복사한 값을 덮어쓴다. 켜짐 상태와 위치는 유지한다. |
+| Paste Component as New | 복사한 컴포넌트를 새로 붙인다. 같은 종류가 이미 있으면 꺼진다. UI 컴포넌트는 Add Component처럼 UI Rect를 함께 붙인다. |
+| Move Up / Move Down | 목록 순서를 바꾼다. 스크립트 콜백은 이 순서로 불린다. |
+| Remove | 컴포넌트를 뗀다. |
+
+KeyRoom에서 **Door**의 **Box Collider 2D → Copy Component**를 고른 뒤 **Chest**의 아무 톱니바퀴에서 **Paste Component as New**를 고르면 상자가 문과 같은 충돌체를 얻는다. **Cmd+Z** 한 번으로 상자의 원래 상태로 돌아간다.
+
+### 오브젝트 활성과 컴포넌트 켜짐
+
+- Inspector 이름 입력 상자 바로 왼쪽 체크를 끄면 오브젝트와 자식이 Play와 빌드에서 꺼진 채 시작한다. 스크립트가 `SetActive(id, true)`로 켤 수 있다. Hierarchy에서는 Play 중 비활성 오브젝트와 같이 흐리게 표시되고, Scene 편집 화면에서는 그리지 않고 클릭으로 고르지도 않는다.
+- 컴포넌트 머리말의 체크를 끄면 그 컴포넌트는 Play와 빌드에서 빠진다(스크립트는 만들지 않고, 렌더러는 그리지 않는다). 충돌체는 `SetColliderEnabled(id, false)` 상태로 시작해 스크립트가 다시 켤 수 있다. UI Rect·UI Canvas·Rigidbody 2D·Tilemap·Camera 2D는 끌 수 없어 체크가 없다. 대신 오브젝트를 비활성으로 둔다.
+- 끈 상태만 파일에 `active: false`·`enabled: false`로 저장한다. 켜진 기존 씬과 프리팹의 파일은 그대로다. 끈 항목이 있는 씬은 콘텐츠 버전 32가 되어 이전 플레이어가 잘못 읽지 않는다.
+- 프리팹 인스턴스에서 바꾸면 **Overrides…** 목록에 **active**·**spriteRenderer.enabled**처럼 표시되어 Apply·Revert할 수 있다.
+- 체크 한 번이 Undo 한 번이다. Play 중에는 체크를 바꿀 수 없다. [검증 기록](../../engine/tests/results/inspector-components/README.md)
+
+### Inspector 잠금과 Debug 보기
+
+Inspector 탭의 자물쇠를 켜면 다른 오브젝트를 선택해도 Inspector가 잠근 오브젝트를 계속 보여 주고, 그 Inspector에서 바꾼 값은 잠근 오브젝트에 들어간다. 잠금은 씬별로 사용자 폴더의 `editor-state.json`에 저장되어 다시 실행해도 남는다. Play 중에는 Inspector가 선택을 따른다. 정보 버튼(Debug 보기)을 켜면 편집 모드에서 오브젝트와 각 컴포넌트가 파일에 저장하는 모든 키와 원시 JSON 값을 읽기 전용으로 보여 준다. 스크립트 섹션 끝에는 Inspector에 나오지 않는 필드(private, static, 실행 중에 정해지는 초기값)가 초기화식과 함께 흐리게 나온다. 두 버튼은 씬 파일과 빌드를 바꾸지 않는다.
+
+### 컴포넌트 경고 줄
+
+섹션 위의 노란 한 줄은 저장이나 Play에서 문제가 될 설정을 미리 알린다. 값을 바꾸거나 Undo하면 바로 다시 계산한다.
+
+- Rigidbody 2D가 있는데 그 오브젝트와 자식에 충돌체가 없음
+- 찾을 수 없는 에셋이나 오브젝트 참조(스프라이트, 클립, 소리, 타일셋 등)
+- 저장할 때 거부될 값(예: 범위를 벗어난 파티클 수나 잘못된 색)
+- 씬에 시작 카메라가 없으면 Inspector 맨 위에 한 줄이 나온다.
+
+### 에셋·오브젝트 필드
+
+Inspector와 Particle 패널의 참조 필드는 Unity 오브젝트 필드처럼 [아이콘 또는 PNG 축소 이미지 · 이름 · ●] 한 줄이다. Sprite Renderer의 Sprite·Mask, Audio Source의 Sound, Particle Emitter 2D의 Particles, 애니메이션 Controller·Clip, Tilemap의 Tileset, Sprite Shader의 Shader, UI Image의 Sprite, Cutscene의 Dialogue, 스켈레톤 Rig, 스크립트의 `SpriteReference`·`SceneReference`·`PrefabReference`·`DataReference`·`TableReference`와 오브젝트 참조, 조인트의 Connect, Tilemap의 Follow, Particle 패널의 Texture와 서브 방출기 Particles가 이 필드를 쓴다.
+
+- **놓기**: Project 파일을 필드에 끌어 놓는다. 오브젝트 필드에는 Hierarchy 항목을 놓는다. 형식이 맞으면 테두리가 강조색, 맞지 않으면(예: Sound에 PNG) 빨간색이 되고 놓아도 바뀌지 않는다. 테두리 색만 바뀌므로 주변 행은 움직이지 않는다.
+- **Finder에서 놓기**: 프로젝트 밖 파일은 먼저 `Assets/`(Project에서 `Assets` 아래 폴더를 보고 있으면 그 폴더)로 가져온 뒤 연결한다. PNG는 스프라이트 가져오기, 다른 형식은 **Import Assets**와 같은 경로를 쓴다.
+- **누르기**: 필드를 한 번 누르면 Project 또는 Hierarchy에서 대상 행을 1초 동안 강조하고 보이게 스크롤한다(Ping). 두 번 누르면 대상을 선택한다. 필드에 포커스를 두고 Delete나 Backspace를 누르면 None으로 비운다.
+- **●(선택 버튼)**: 그 필드가 받는 형식만 나열한 선택 창을 연다. 위쪽 검색 상자에 이름 일부를 입력하면 맞는 항목만 남고, Enter는 첫 항목을 고른다. 목록의 PNG는 Project 축소 이미지로 보인다. 맨 위 **None**은 비우기다. 1만 오브젝트 씬(CollisionLab Field10000)에서도 검색 한 번의 UI 멈춤은 수 ms다.
+- **배열**: 스크립트 배열의 머리줄에 놓으면 끝에, 항목 행에 놓으면 그 자리에 들어간다. Project에서 Cmd·Shift로 여러 파일을 고른 뒤 끌면 Project 순서대로 모두 들어간다.
+- **여러 오브젝트**: 같은 컴포넌트가 있는 오브젝트를 여러 개 고르면 Sprite Renderer의 Sprite, Audio Source의 Sound, Particle Emitter 2D의 Particles, Sprite Shader의 Shader, UI Image의 Sprite가 공통 필드로 나온다. 값이 다르면 `—`로 표시되고, 놓거나 고르면 모두 같은 에셋이 된다.
+- 놓기·고르기·비우기는 각각 Undo 한 번이다. 여러 오브젝트에 적용한 경우도 한 번이다. 글꼴은 Inspector 필드가 없고 **UI Defaults** 창에서 고른다.
+
+### Sprite Renderer의 Draw와 Slice
+
+Sprite 행 아래 **Draw**에서 Simple(늘리기)·Tiled(반복)·Sliced(9-slice)를 고른다. Sliced는 **Slice L·R**·**Slice T·B**에 PNG 픽셀 단위 테두리가 나오고, Tiled는 **Slice borders**를 켜면 같은 행이 나와 변과 가운데를 반복한다. Simple로 돌리면 두 값을 지워 파일이 이전과 같아진다. 모드 변경·체크는 Undo 한 번, 테두리 숫자는 Enter나 포커스 이동 때 한 번 기록한다. [그리는 방식](sprites.md)
+
+### 숫자 레이블 끌기와 Range 슬라이더
+
+숫자 행의 레이블(Transform의 X·Y·W·H와 Rotation, 내장 컴포넌트와 스크립트의 숫자 필드)에 포인터를 올리면 좌우 화살표 커서가 된다. 레이블을 좌우로 끌면 1px에 한 단계(스크립트 숫자는 1, 내장 숫자는 그 필드의 증가량)씩 값이 바뀌고 Scene에 바로 반영된다. 필드의 최솟값·최댓값과 `[Range]`·`[Min]`에서 멈춘다. 끄는 동안의 변화는 한 묶음이라 놓을 때 Undo 한 번으로 기록된다. 여러 오브젝트를 고른 Inspector에서도 같다. 예: KeyRoom **Player → PlayerMovement → MoveSpeed** 레이블을 오른쪽으로 60px 끌면 240 → 300이 되고 Cmd+Z 한 번으로 240으로 돌아간다.
+
+`[Range]` 필드는 슬라이더와 숫자 상자가 한 줄에 있다. 슬라이더를 끄는 동안은 기록하지 않고 놓을 때 한 번 기록하며, 숫자 상자에 입력하거나 레이블을 끌면 슬라이더도 따라간다. 파일을 쓰는 값(에셋 Inspector의 피벗)은 레이블 끌기를 받지 않으므로 입력이나 화살표로 바꾼다.
+
+### 색 필드
+
+Line 2D의 Start·End color, Trail 2D의 Head·Tail color, Point Light 2D의 Color, UI Image의 Fill, UI Text의 Color, Sprite Renderer의 Color는 왼쪽 견본과 `#RRGGBB` 입력이다. 견본을 누르면 HSV 색 선택 창이 열린다. 창에서 끌거나 입력하는 동안 Scene에 바로 반영되고, 창을 닫거나 Enter를 누르거나 입력 상자를 벗어날 때 Undo 한 단계로 기록된다. 잘못된 hex는 직전 색으로 돌아간다. 파티클 색과 같은 컨트롤이다. 스크립트의 `Color` 필드와 `[ColorUsage]` 문자열 필드도 같은 행이다.
+
+### 스크립트 배열·목록·사전·구조체 필드
+
+스크립트의 기본 타입 배열과 `List<T>`는 참조 목록과 같은 모양이다. 머리 행의 레이블 열에 필드 이름, 값 열에 개수, 오른쪽 끝에 **+**가 있고, 원소마다 레이블 열에 번호, 값 열에 입력, 오른쪽 끝에 **×**가 있다. 사전은 값 열을 키와 값 두 칸으로 나누고, 키는 Enter나 포커스 이동 때 검사한다(같은 키, int 사전의 숫자가 아닌 키는 거부하고 되돌린다). `[Serializable]` 구조체는 머리 행에 멤버 요약과 펼치기 단추(▸)가 있고, 펼치면 멤버 행이 들여쓴 레이블로 나온다. 펼침 상태는 그 세션 동안 필드별로 기억한다. 플래그 enum은 이름 버튼이고, 누르면 멤버마다 체크가 있다. 원소 입력은 확정 때, **+**·**×**·체크·선택은 누를 때 Undo 한 단계다. 모든 행은 다른 필드와 같은 값 열·오른쪽 끝에 맞춘다(1280·1600·1920px와 긴 사전 키에서 확인). 프로젝트 `Editor/`의 [field drawer](workspace.md#프로젝트-에디터-확장)가 맞는 필드는 그 확장 컨트롤로 그려진다. [검증 기록](../../engine/tests/results/inspector-fields/README.md)
+
+### 파티클 곡선과 그라데이션
+
+Particle Emitter 2D 섹션 아래에 연결된 `.particles`의 **Over lifetime · 파일 이름** 머리글과 그 에셋에 켜져 있는 Size·Spin·Vel X·Vel Y 곡선과 색 그라데이션이 나온다. 컨트롤은 Particle 패널과 같다(키 끌기·추가·삭제, 시간·값·기울기, 프리셋, 색·알파 키). 그래프의 선은 런타임이 읽는 64칸 표 그대로다. 키를 놓거나 값을 확정할 때마다 에셋 파일을 다시 읽어 그 항목만 바꿔 한 번 쓰고 Undo 한 단계로 기록하므로, Particle 패널에서 같은 에셋을 고치고 있어도 덮어쓰지 않는다. 모듈을 켜고 끄는 것은 Particle 패널에서 한다. [검증 기록](../../engine/tests/results/inspector-assets/README.md)
+
+### 에셋 Inspector
+
+Project에서 파일을 클릭하면(끌지 않고 놓으면) Inspector가 그 에셋을 보여 준다. 오브젝트를 고르면 다시 오브젝트 Inspector가 된다. 잠근 Inspector는 바뀌지 않는다. Project에서 Inspector 필드로 끄는 동안에는 오브젝트 Inspector가 그대로 남는다.
+
+| 에셋 | 요약 | 버튼 |
+| --- | --- | --- |
+| PNG | 경로·ID·파일 크기, 픽셀 크기, 시트 셀 수, 이 씬에서 쓰는 오브젝트 수, 아래 가져오기 설정 | 아틀라스에 들어 있으면 **Edit Atlas…** |
+| `.clip` | 프레임 수, 길이(루프), 트랙 수 | **Open Clip Editor** |
+| `.data` | 필드 수와 키 | **Edit Data…** |
+| `.prefab` | 루트 이름, 오브젝트 수, 루트 컴포넌트, 이 씬의 인스턴스 수 | **Open Prefab** |
+| `.particles` | 최대 입자 수·방출률, 길이(루프), 텍스처 | **Open Particle Panel** |
+| 그 밖의 파일 | 경로·ID·파일 크기 | 더블클릭과 같은 **Open** |
+
+PNG의 **Import Settings**:
+
+- **Pivot**: PNG의 `.meta`에 저장하는 기본 피벗(0–1)이다. 이 PNG를 Scene에 끌어 만든 오브젝트의 Transform Pivot이 되고, 바꾸면 이 씬에서 그 PNG를 그리면서 이전 기본 피벗을 그대로 쓰는 오브젝트도 따라간다(직접 바꾼 오브젝트는 그대로). 회전·배율이 있는 오브젝트는 그리는 위치가 달라지고, 씬을 저장하면 빌드에도 반영된다. `.meta` 기록과 씬 변경이 Undo 한 번이다. 다른 씬 파일은 바꾸지 않는다.
+- **Filter**: 게임이 PNG를 샘플링하는 방식을 읽기 전용으로 보여 준다. 런타임에는 PNG별 필터가 없고, **Game Settings → Integer scale**을 켜면 모두 Point, 끄면 전체 이미지는 SDL의 Linear·시트 셀은 Point다.
+- **Atlas**: 이 PNG를 넣을 [스프라이트 아틀라스](sprites.md)다. 다른 아틀라스·None·**New atlas**(같은 폴더에 `<이름> Atlas.atlas`)를 고르면 떠나는 아틀라스와 들어가는 아틀라스를 다시 패킹한다. 두 파일이 Undo 한 번이다. 아틀라스의 마지막 PNG는 뺄 수 없다(아틀라스를 지운다).
+
+설정을 바꾸면 외부 수정과 같은 [자동 재임포트](project-assets.md#외부-png-자동-재임포트) 경로로 Project 미리보기·Clip 패널·Scene이 갱신된다. [검증 기록](../../engine/tests/results/inspector-edit/README.md)
+
 ## 저장과 단축키
 
 **File → Save Scene**은 현재 씬을 저장한다. **Project → + → New Scene**으로 씬을 추가하고 Project의 `.scene`을 더블클릭해 전환한다. 씬 Undo와 애니메이션 클립 편집기의 Undo는 따로 기록된다. Clip 패널에 포커스가 있으면 ⌘Z / Ctrl+Z가 클립 편집을 되돌린다. 클립과 타일셋 변경은 각각 **Save Clip**, **Save Tileset**으로 에셋에 저장한다.
+
+Inspector의 텍스트·숫자 필드는 입력하는 즉시 씬과 Scene 화면에 반영되고, Undo 기록은 Enter를 누르거나 다른 곳으로 포커스를 옮길 때 한 번 남는다. 필드에 포커스를 둔 채 저장·Undo·Play·씬 전환을 해도 먼저 기록한다. 따라서 `12`를 입력하고 이어서 `3`을 입력한 뒤 Enter를 누르면 Undo 한 번으로 입력 전 값으로, Redo 한 번으로 `123`으로 돌아간다. 체크박스·선택 목록처럼 한 번에 값이 정해지는 컨트롤은 바꿀 때마다 기록한다. [측정 기록](../../engine/tests/results/inspector-i1/README.md)
+
+Undo 기록은 편집마다 바뀐 오브젝트만 보관한다. 바뀌지 않은 오브젝트는 이전 기록과 같은 데이터를 함께 쓰므로, 1만 오브젝트 씬에서 100단계를 기록해도 약 13 MB다(이전에는 단계마다 씬 전체를 복사해 약 1 GB였다). Undo·Redo도 바뀐 오브젝트만 다시 읽는다. [측정 기록](../../engine/tests/results/inspector-undo-diff/README.md)
 
 | 동작 | macOS | Windows·Linux |
 | --- | --- | --- |

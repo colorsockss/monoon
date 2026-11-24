@@ -3,6 +3,7 @@ using Engine.Core;
 
 internal static class UiPinChecks
 {
+    [Check(9000)] static void Registered(CheckRun c) => Run(c.Project);
     internal static void Run(string project)
     {
         var scene = new SceneDocument();

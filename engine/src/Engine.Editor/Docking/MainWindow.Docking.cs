@@ -13,7 +13,7 @@ public partial class MainWindow
     // Asset editors: one panel per kind. Opening the same asset focuses it; another asset replaces it after the unsaved-changes prompt.
     private static readonly string[] EditorKinds = ["Animator", "Clip", "Tileset", "Input Actions", "Dialogue", "Data"];
     // Tool panels, opened on demand. They share one area below the Scene unless the user moves them.
-    private static readonly string[] ToolPanels = ["Console", "Profiler", .. EditorKinds];
+    private static readonly string[] ToolPanels = ["Console", "Profiler", "Particle", .. EditorKinds];
     private static readonly string[] DockPanels = ["Hierarchy", "Project", "Scene", "Game", "Inspector", .. ToolPanels];
     internal static readonly string[] LayoutPresets = ["Default", "Editing", "Animation"];
     private readonly Dictionary<string, NativeMenuItem> panelItems = [];
@@ -55,6 +55,7 @@ public partial class MainWindow
     private void InitializeDocking()
     {
         InitializeConsole();
+        InitializeParticles();
         foreach (var kind in EditorKinds)
         {
             var host = new ScrollViewer { HorizontalScrollBarVisibility = Avalonia.Controls.Primitives.ScrollBarVisibility.Auto, Content = Placeholder(kind) };

@@ -29,7 +29,7 @@ def check(ok, message):
 def run_editor(step):
     env = dict(base_env, DOTNET_STARTUP_HOOKS=str(hook), MONOON_QA_PROJECT=str(project), MONOON_BUILD_EDITOR=str(out), MONOON_BUILD_STEP=step)
     with (out / f"editor-{step}.log").open("wb") as log:
-        subprocess.run([str(editor), str(project)], env=env, stdout=log, stderr=log, timeout=3600)
+        subprocess.run([str(editor), str(project)], env=env, stdout=log, stderr=log, timeout=900 * float(os.environ.get('MONOON_QA_SLOW') or 1))
     if (out / "error.txt").exists():
         raise SystemExit(f"FAIL editor {step}: " + (out / "error.txt").read_text(encoding="utf-8"))
     return json.loads((out / f"result-{step}.json").read_text(encoding="utf-8"))
@@ -215,6 +215,15 @@ check(release["chosen"]["package"] and release["chosen"]["icon"] == release["gam
 saved_release = (project / "BuildSettings").read_text()
 check(saved_release == "target: osx-arm64\ntype: release\nprofile: distribution\ncontent: incremental\npackage: true\n", "BuildSettings after Release:\n" + saved_release)
 check(release["status"].startswith("Built "), "editor status " + release["status"])
+
+
+def asset_summary(step):
+    console = step["console"]
+    check(any(line.startswith("Info: Shipped ") for line in console) and any(line.startswith("Info: Unreferenced under Assets/: 2 files") for line in console)
+          and console[-1].startswith("Info: Asset report: ") and console[-1].endswith("/assets.yaml"), "Console shows the asset report summary and path")
+
+
+asset_summary(release)
 product = "KeyRoom.app"
 check(all((builds / f).exists() for f in (product, "KeyRoom-osx-arm64.zip", "KeyRoom-osx-arm64.dmg")), "editor Release made the app, zip and dmg")
 builds.rename(out / "editor-release")
@@ -229,6 +238,7 @@ check({k: aot["reopened"][k] for k in default} == {k: release["chosen"][k] for k
 check(aot["foreign_aot"]["platform"] == "win-x64" and aot["foreign_aot"]["build_types"] == ["Release"] and aot["foreign_aot"]["build_type"] == "Release",
       f"saved win-x64 Native AOT falls back to Release in the dialog {aot['foreign_aot']}")
 check(aot["linux_build_types"] == ["Release"], "Native AOT offered only for the host platform")
+asset_summary(aot)
 saved_aot = (project / "BuildSettings").read_text()
 check(saved_aot == saved_release.replace("type: release", "type: native-aot"), "BuildSettings after Native AOT:\n" + saved_aot)
 check(all((builds / "NativeAOT" / f).exists() for f in (product, "KeyRoom-osx-arm64.zip", "KeyRoom-osx-arm64.dmg")), "editor Native AOT made the app, zip and dmg")

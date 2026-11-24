@@ -31,7 +31,7 @@ def check(ok, message):
 env = dict(os.environ, DOTNET_STARTUP_HOOKS=str(hook), MONOON_RELOAD_OUTPUT=str(out), MONOON_RELOAD_HARNESS=str(HERE),
            MONOON_USER_DATA=str(out / "profile"))
 with (out / "editor.log").open("wb") as log:
-    code = subprocess.run([str(editor), str(project)], env=env, stdout=log, stderr=log, timeout=900).returncode
+    code = subprocess.run([str(editor), str(project)], env=env, stdout=log, stderr=log, timeout=240 * float(os.environ.get('MONOON_QA_SLOW') or 1)).returncode
 if (out / "error.txt").exists():
     raise SystemExit("FAIL editor: " + (out / "error.txt").read_text(encoding="utf-8"))
 r = json.loads((out / "reload.json").read_text(encoding="utf-8"))

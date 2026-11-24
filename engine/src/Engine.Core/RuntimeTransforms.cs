@@ -7,6 +7,16 @@ public readonly record struct LocalTransform2D(Vector2 Position, float Rotation,
 
 public sealed partial class SceneGame
 {
+    // Transform arithmetic of the local transform API (tweens and clip poses call it every tick) without a copy per call.
+    private readonly SceneObject transformScratch = new();
+    private SceneObject ScratchTransform(SceneObject source)
+    {
+        var s = transformScratch;
+        (s.X, s.Y, s.Width, s.Height, s.Rotation) = (source.X, source.Y, source.Width, source.Height, source.Rotation);
+        (s.ScaleX, s.ScaleY, s.PivotX, s.PivotY, s.Shear) = (source.ScaleX, source.ScaleY, source.PivotX, source.PivotY, source.Shear);
+        return s;
+    }
+
     private Matrix3x2 ParentMatrix(Body body) => body.Source.ParentId is Guid id
         ? byId[id].MatrixAt(byId[id].Position) : Matrix3x2.Identity;
 
@@ -16,7 +26,7 @@ public sealed partial class SceneGame
     {
         transform = default;
         if (!byId.TryGetValue(id, out var body) || removed.Contains(id)) return false;
-        var local = body.Source.CopyTransform(id);
+        var local = ScratchTransform(body.Source);
         local.SetLocalMatrix(CurrentLocal(body));
         transform = new(new(local.X, local.Y), local.Rotation, new(local.ScaleX, local.ScaleY), local.Shear);
         return true;
@@ -53,7 +63,7 @@ public sealed partial class SceneGame
     public bool SetLocalTransform(Guid id, LocalTransform2D transform)
     {
         if (closing || removed.Contains(id) || !byId.TryGetValue(id, out var body) || body.Interface) return false;
-        var local = body.Source.CopyTransform(id);
+        var local = ScratchTransform(body.Source);
         local.X = transform.Position.X;
         local.Y = transform.Position.Y;
         local.Rotation = transform.Rotation;

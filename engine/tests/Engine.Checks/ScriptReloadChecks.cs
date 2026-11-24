@@ -3,6 +3,7 @@ using Engine.Core;
 // 11.2: Scene Play script reload keeps live field values; 11.10: Editor/ stays out of the game scripts.
 internal static class ScriptReloadChecks
 {
+    [Check(6500)] static void Registered(CheckRun c) => Run(c.Scratch);
     internal static void Run(string scratch)
     {
         string root = Directory.CreateDirectory(Path.Combine(scratch, "Reload Project")).FullName;

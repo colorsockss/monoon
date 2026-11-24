@@ -35,7 +35,7 @@ internal static class BuildProfileChecks
             throw new InvalidDataException($"Executable checksum mismatch for {file}.");
         if (!native)
         {
-            string scripts = Path.Combine("Game", ".monoon-compiled", "MoNoon.GameScripts.dll");
+            string scripts = BuildSymbols.ScriptAssembly(bin);
             foreach (var dll in new[] { "Engine.Core.dll", "Engine.Desktop.dll", "MoNoonPlayer.dll", scripts })
             {
                 var pdb = Path.ChangeExtension(Path.Combine(symbols, dll), ".pdb");

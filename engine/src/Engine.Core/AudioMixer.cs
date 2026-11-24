@@ -7,14 +7,36 @@ using VYaml.Annotations;
 
 namespace Engine.Core;
 
-public enum AudioBus { Effects, Music }
+public enum AudioBus { Effects, Music, Voice, Ui, Ambience }
+// Voice, Ui and Ambience are null at full level, so settings files written before those buses stay byte-identical.
 [YamlObject]
-public sealed partial record MixerLevels(float Master=1,float Music=1,float Effects=1)
+public sealed partial record MixerLevels(float Master=1,float Music=1,float Effects=1,float? Voice=null,float? Ui=null,float? Ambience=null)
 {
-    internal bool Valid=>Unit(Master)&&Unit(Music)&&Unit(Effects);
+    internal bool Valid=>Unit(Master)&&Unit(Music)&&Unit(Effects)&&Unit(Voice??1)&&Unit(Ui??1)&&Unit(Ambience??1);
     internal static bool Unit(float v)=>v is >=0 and <=1;
+    public float Level(AudioBus bus)=>bus switch
+    {
+        AudioBus.Music=>Music, AudioBus.Voice=>Voice??1, AudioBus.Ui=>Ui??1, AudioBus.Ambience=>Ambience??1, _=>Effects
+    };
+    // A bus left at null and one set to 1 are the same mix.
+    public bool Equals(MixerLevels? other)=>other is not null && Master==other.Master && Music==other.Music && Effects==other.Effects &&
+        Level(AudioBus.Voice)==other.Level(AudioBus.Voice) && Level(AudioBus.Ui)==other.Level(AudioBus.Ui) && Level(AudioBus.Ambience)==other.Level(AudioBus.Ambience);
+    public override int GetHashCode()=>Master.GetHashCode()^Music.GetHashCode()*31^Effects.GetHashCode()*961; // Small AOT code; Equals decides.
 }
 
+// A named set of bus multipliers (on top of Levels) that TransitionTo blends to over time.
+[YamlObject]
+public sealed partial record AudioSnapshot(string Name="",MixerLevels? Levels=null);
+
+// While any voice plays on Trigger, Target is lowered by Decibels (sidechain on bus activity, not on signal level).
+[YamlObject]
+public sealed partial record AudioDucking(AudioBus Trigger=AudioBus.Voice,AudioBus Target=AudioBus.Music,float Decibels=-8,float Attack=.05f,float Release=.4f)
+{
+    internal bool Valid=>Trigger!=Target && Bus(Trigger) && Bus(Target) && Decibels is >=-80 and <=0 && Attack is >=0 and <=10 && Release is >=0 and <=10;
+    internal static bool Bus(AudioBus bus)=>(uint)bus<=(uint)AudioBus.Ambience;
+}
+
+[EngineFeature(EngineFeature.Audio)]
 public interface IGameAudio
 {
     MixerLevels Levels { get; set; }
@@ -23,12 +45,16 @@ public interface IGameAudio
     bool IsPlaying(Guid source);
     // Monotonic Stopwatch timestamp, expressed in output frames since the latest Play.
     bool TryGetPlaybackFrame(Guid source, long timestamp, out long frame);
+    // Blends the bus multipliers to a GameSettings snapshot (null: back to 100%) over output time. False for an unknown name.
+    bool TransitionTo(string? snapshot,float seconds=0);
 }
 
 // SDL_mixer (through BRUTAL) decodes, resamples, loops, pans and sums the voices. MoNoon keeps what
 // SDL_mixer does differently: sample-exact fades and the mono fold of spatial sources (track cooked
 // callback, at the 48 kHz output rate), ramped bus gains (group post-mix callbacks), the voice limit
-// and the output clock. The SDL output and offline checks share this render path.
+// and the output clock. The SDL output and offline checks share this render path. Each bus is one SDL group whose post-mix
+// callback applies master x level x snapshot x ducking per output frame; at 1 those factors leave the samples unchanged.
+[EngineFeature(EngineFeature.Audio)]
 public sealed unsafe class AudioMixer : IDisposable
 {
     public const int SampleRate=48000;
@@ -36,17 +62,24 @@ public sealed unsafe class AudioMixer : IDisposable
     private readonly object gate=new();
     private readonly Dictionary<string,AudioFile> files=new(StringComparer.Ordinal);
     private readonly List<Voice> voices=[];
+    private const int Buses=5;
     private MixerLevels levels=new();
-    private float master=1,music=1,effects=1;
+    private float master=1;
+    private readonly float[] level=[1,1,1,1,1];
     private int busRamp;
+    private AudioSnapshot[] snapshots=[];
+    private Duck[] ducking=[];
+    private float snapMaster=1,snapMasterTarget=1;
+    private readonly float[] snap=[1,1,1,1,1],snapTarget=[1,1,1,1,1],duck=[1,1,1,1,1],duckGoal=[1,1,1,1,1];
+    private readonly int[] duckRamp=new int[Buses],duckRelease=new int[Buses];
+    private int snapRamp;
+    private readonly record struct Duck(int Trigger,int Target,float Gain,int Attack,int Release);
+    private sealed class BusMix { public MixGroup Group; public GCHandle Handle; public readonly float[] Gains=new float[Block]; public int Offset; }
+    private readonly BusMix[] buses=[new(),new(),new(),new(),new()];
     private bool disposed;
     private readonly AudioOutputClock clock = new();
     private long renderedFrames;
     private MixMixer mix;
-    private MixGroup musicGroup,effectsGroup;
-    private GCHandle self;
-    private readonly float[] musicGains=new float[Block],effectsGains=new float[Block];
-    private int musicOffset,effectsOffset;
     // MIX_PlayTrack resets the loop count from its options, so looping must be requested here.
     private static readonly Lazy<uint> LoopForever=new(()=>
     {
@@ -84,7 +117,7 @@ public sealed unsafe class AudioMixer : IDisposable
             {
                 if(levels==value)return;
                 levels=value;busRamp=voices.Count==0?0:GainRamp;
-                if(busRamp==0)(master,music,effects)=(value.Master,value.Music,value.Effects);
+                if(busRamp==0){master=value.Master;for(int b=0;b<Buses;b++)level[b]=value.Level((AudioBus)b);}
             }
         }
     }
@@ -136,10 +169,19 @@ public sealed unsafe class AudioMixer : IDisposable
         // SDL_AUDIO_F32LE stereo at the clock rate; the SDL device stream converts it if the hardware differs.
         var spec=new SdlAudioSpec { format=(SdlAudioFormat)0x8120, channels=2, freq=SampleRate };
         mix=SdlMixer.CreateMixer(&spec);
-        self=GCHandle.Alloc(this,GCHandleType.Weak);
-        musicGroup=SdlMixer.CreateGroup(mix);effectsGroup=SdlMixer.CreateGroup(mix);
-        SdlMixer.PInvoke.SetGroupPostMixCallback(musicGroup,&MusicBus,(void*)GCHandle.ToIntPtr(self));
-        SdlMixer.PInvoke.SetGroupPostMixCallback(effectsGroup,&EffectsBus,(void*)GCHandle.ToIntPtr(self));
+        // Music and Effects first, in the order the two-bus mixer created them. The other buses get their group on first use:
+        // an SDL group costs mixing time every block even when empty.
+        Group(AudioBus.Music);Group(AudioBus.Effects);
+    }
+    private MixGroup Group(AudioBus bus)
+    {
+        var b=buses[(int)bus];
+        if(b.Group.IsNull())
+        {
+            b.Group=SdlMixer.CreateGroup(mix);b.Handle=GCHandle.Alloc(b);
+            SdlMixer.PInvoke.SetGroupPostMixCallback(b.Group,&Mixed,(void*)GCHandle.ToIntPtr(b.Handle));
+        }
+        return b.Group;
     }
     internal AudioPlayback Start(object owner,string path,AudioSourceComponent c,Vector2 position,float seconds)
     {
@@ -151,13 +193,13 @@ public sealed unsafe class AudioMixer : IDisposable
             Open();
             var voice=new Voice(owner,c,seconds,position) { Playback = new(renderedFrames), Fresh=info.Rate!=SampleRate };
             voice.Gain=Gains(voice,listener);
-            if(c.Bus==AudioBus.Music || c.Loop)Stop(owner,0);
+            if(c.Bus is AudioBus.Music or AudioBus.Voice || c.Loop)Stop(owner,0);
             if(voices.Count>=MaxVoices)Remove(Math.Max(0,voices.FindIndex(v=>v.Bus==AudioBus.Effects && !v.Loop)));
             voice.Track=SdlMixer.CreateTrack(mix);
             voice.Handle=GCHandle.Alloc(voice);
             try
             {
-                SdlMixer.SetTrackGroup(voice.Track,c.Bus==AudioBus.Music?musicGroup:effectsGroup);
+                SdlMixer.SetTrackGroup(voice.Track,Group(c.Bus));
                 SdlMixer.PInvoke.SetTrackCookedCallback(voice.Track,&Shape,(void*)GCHandle.ToIntPtr(voice.Handle));
                 // Each voice streams its own decoder from the file, so long music is never held decoded in memory.
                 nint io=Sdl.PInvoke.IOFromFile(path,"rb");
@@ -201,15 +243,31 @@ public sealed unsafe class AudioMixer : IDisposable
             for(int off=0;off<stereo.Length;off+=2*Block)
             {
                 int n=Math.Min(Block,(stereo.Length-off)/2);
-                for(int j=0;j<n;j++)
+                UpdateDucking();
+                // Steady gains (the usual block): one product per bus, the same value the ramp loop below would write.
+                if(busRamp==0 && snapRamp==0 && !Ducking())
+                    for(int b=0;b<Buses;b++)buses[b].Gains.AsSpan(0,n).Fill(master*level[b]*snapMaster*snap[b]*duck[b]);
+                else for(int j=0;j<n;j++)
                 {
                     if(busRamp>0)
                     {
-                        master+=(levels.Master-master)/busRamp;music+=(levels.Music-music)/busRamp;effects+=(levels.Effects-effects)/busRamp;busRamp--;
+                        master+=(levels.Master-master)/busRamp;
+                        for(int b=0;b<Buses;b++)level[b]+=(levels.Level((AudioBus)b)-level[b])/busRamp;
+                        busRamp--;
                     }
-                    musicGains[j]=master*music;effectsGains[j]=master*effects;
+                    if(snapRamp>0 && --snapRamp==0){snapMaster=snapMasterTarget;snapTarget.CopyTo(snap,0);}
+                    else if(snapRamp>0)
+                    {
+                        snapMaster+=(snapMasterTarget-snapMaster)/(snapRamp+1);
+                        for(int b=0;b<Buses;b++)snap[b]+=(snapTarget[b]-snap[b])/(snapRamp+1);
+                    }
+                    for(int b=0;b<Buses;b++)
+                    {
+                        if(duckRamp[b]>0)duck[b]=--duckRamp[b]==0?duckGoal[b]:duck[b]+(duckGoal[b]-duck[b])/(duckRamp[b]+1);
+                        buses[b].Gains[j]=master*level[b]*snapMaster*snap[b]*duck[b];
+                    }
                 }
-                musicOffset=effectsOffset=0;
+                foreach(var b in buses)b.Offset=0;
                 foreach(var v in voices)
                 {
                     var target=Gains(v,listener);
@@ -274,11 +332,67 @@ public sealed unsafe class AudioMixer : IDisposable
         return v.Stopping && v.Remaining==0;
     }
     [UnmanagedCallersOnly(CallConvs=[typeof(CallConvCdecl)])]
-    private static void MusicBus(void* user,MixGroup group,SdlAudioSpec* spec,float* pcm,int samples)
-    { var m=(AudioMixer)GCHandle.FromIntPtr((nint)user).Target!; Apply(m.musicGains,ref m.musicOffset,spec->channels,pcm,samples); }
-    [UnmanagedCallersOnly(CallConvs=[typeof(CallConvCdecl)])]
-    private static void EffectsBus(void* user,MixGroup group,SdlAudioSpec* spec,float* pcm,int samples)
-    { var m=(AudioMixer)GCHandle.FromIntPtr((nint)user).Target!; Apply(m.effectsGains,ref m.effectsOffset,spec->channels,pcm,samples); }
+    private static void Mixed(void* user,MixGroup group,SdlAudioSpec* spec,float* pcm,int samples)
+    { var b=(BusMix)GCHandle.FromIntPtr((nint)user).Target!; Apply(b.Gains,ref b.Offset,spec->channels,pcm,samples); }
+    // Per block, on the voices present at its start: the lowest active rule's gain per target bus, ramped over its attack;
+    // back to 1 over the release of the rule that lowered it.
+    private bool Ducking()
+    {
+        foreach(int r in duckRamp)if(r!=0)return true;
+        return false;
+    }
+    private void UpdateDucking()
+    {
+        if(ducking.Length==0)return;
+        int active=0;
+        foreach(var v in voices)active|=1<<(int)v.Bus;
+        for(int b=0;b<Buses;b++)
+        {
+            float goal=1;int attack=0,release=0;
+            foreach(var d in ducking)
+                if(d.Target==b && (active>>d.Trigger&1)!=0 && d.Gain<goal)(goal,attack,release)=(d.Gain,d.Attack,d.Release);
+            if(goal==duckGoal[b])continue;
+            bool lower=goal<duckGoal[b];
+            duckRamp[b]=lower?attack:duckRelease[b];
+            if(lower)duckRelease[b]=release;
+            duckGoal[b]=goal;
+            if(duckRamp[b]==0)duck[b]=goal;
+        }
+    }
+    // Project buses: default levels, snapshots and ducking rules from GameSettings (validated there).
+    internal void Configure(GameSettings settings)
+    {
+        Levels=settings.Mixer;
+        lock(gate)
+        {
+            snapshots=settings.AudioSnapshots??[];
+            var rules=settings.AudioDucking??[];
+            ducking=new Duck[rules.Length];
+            for(int i=0;i<rules.Length;i++)
+            {
+                var d=rules[i];
+                ducking[i]=new((int)d.Trigger,(int)d.Target,MathF.Pow(10,d.Decibels/20),Duration(d.Attack),Duration(d.Release));
+            }
+        }
+    }
+    // Blends over output frames like the fades; without playing voices nothing is heard, so it applies at once.
+    public bool TransitionTo(string? snapshot,float seconds=0)
+    {
+        int frames=Duration(seconds);
+        lock(gate)
+        {
+            MixerLevels? target=snapshot==null?new():null;
+            foreach(var s in snapshots)if(s.Name==snapshot)target=s.Levels??new();
+            if(target==null)return false;
+            snapMasterTarget=target.Master;
+            for(int b=0;b<Buses;b++)snapTarget[b]=target.Level((AudioBus)b);
+            snapRamp=voices.Count==0?0:frames;
+            if(snapRamp==0){snapMaster=snapMasterTarget;snapTarget.CopyTo(snap,0);}
+            return true;
+        }
+    }
+    // SceneGame starts the auto-play sources of one tick inside this lock so they begin on the same output frame.
+    internal object SyncRoot=>gate;
     private static void Apply(float[] gains,ref int offset,int channels,float* pcm,int samples)
     {
         for(int i=0;i<samples;i++)pcm[i]*=gains[Math.Min(offset+i/channels,Block-1)];
@@ -291,7 +405,7 @@ public sealed unsafe class AudioMixer : IDisposable
             if(disposed)return;
             foreach(var v in voices){SdlMixer.DestroyTrack(v.Track);v.Handle.Free();}
             voices.Clear();files.Clear();disposed=true;
-            if(!mix.IsNull()){SdlMixer.DestroyMixer(mix);mix=default;self.Free();}
+            if(!mix.IsNull()){SdlMixer.DestroyMixer(mix);mix=default;foreach(var b in buses)if(b.Handle.IsAllocated)b.Handle.Free();}
         }
     }
 }

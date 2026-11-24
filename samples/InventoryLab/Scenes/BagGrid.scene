@@ -1,0 +1,405 @@
+schemaVersion: 41
+objects:
+- id: 02a7d722-c44b-5922-bea6-35ae5e619c2b
+  name: "Camera"
+  x: 400
+  y: 225
+  width: 1
+  height: 1
+  components:
+  - type: camera2D
+- id: 8c7c7965-346e-587b-a43d-b5ab6806b76d
+  name: "Bag screen"
+  x: 0
+  y: 0
+  width: 800
+  height: 450
+  components:
+  - type: uiCanvas
+- id: 7282c7e5-3054-5006-93fe-ac7bdb567d66
+  name: "Surface"
+  parentId: 8c7c7965-346e-587b-a43d-b5ab6806b76d
+  x: 0
+  y: 0
+  width: 800
+  height: 450
+  components:
+  - type: uiRect
+  - type: uiImage
+    color: "#162325"
+- id: cfc256d6-0135-54d2-8534-4d27431777b4
+  name: "Title"
+  parentId: 8c7c7965-346e-587b-a43d-b5ab6806b76d
+  x: 40
+  y: 22
+  width: 360
+  height: 44
+  components:
+  - type: uiRect
+  - type: uiText
+    text: "가방 4 × 5"
+    size: 28
+    color: "#F1EEDA"
+- id: c5b14c67-0874-5ead-acbc-13cc7b1fc23c
+  name: "Bag"
+  parentId: 8c7c7965-346e-587b-a43d-b5ab6806b76d
+  x: 40
+  y: 76
+  width: 360
+  height: 330
+  components:
+  - type: uiRect
+  - type: uiLayout
+    axis: Grid
+    columns: 4
+  - type: script
+    script: "Bag/BagGrid"
+    values: {"Status": "4a7cba48-2c3c-5f0c-9187-a1c2310aad13"}
+- id: 84e5c3cb-ba65-564b-9030-aef243563cf5
+  name: "Slot 1"
+  parentId: c5b14c67-0874-5ead-acbc-13cc7b1fc23c
+  x: 0
+  y: 0
+  width: 80
+  height: 58
+  components:
+  - type: uiRect
+  - type: uiButton
+    draggable: true
+  - type: uiText
+    text: "약초"
+    color: "#F1EEDA"
+    insetX: 8
+    insetY: 18
+- id: ac186d62-e963-5bdf-a85f-818a706f1872
+  name: "Slot 2"
+  parentId: c5b14c67-0874-5ead-acbc-13cc7b1fc23c
+  x: 0
+  y: 0
+  width: 80
+  height: 58
+  components:
+  - type: uiRect
+  - type: uiButton
+    draggable: true
+  - type: uiText
+    text: "보석"
+    color: "#F1EEDA"
+    insetX: 8
+    insetY: 18
+- id: aed03126-eba8-5f3b-bac7-3b2e807f7001
+  name: "Slot 3"
+  parentId: c5b14c67-0874-5ead-acbc-13cc7b1fc23c
+  x: 0
+  y: 0
+  width: 80
+  height: 58
+  components:
+  - type: uiRect
+  - type: uiButton
+    draggable: true
+  - type: uiText
+    text: "황동 열쇠"
+    color: "#F1EEDA"
+    insetX: 8
+    insetY: 18
+- id: a510f749-6eae-56a6-bfef-eee638e32ac3
+  name: "Slot 4"
+  parentId: c5b14c67-0874-5ead-acbc-13cc7b1fc23c
+  x: 0
+  y: 0
+  width: 80
+  height: 58
+  components:
+  - type: uiRect
+  - type: uiButton
+    draggable: true
+  - type: uiText
+    text: ""
+    color: "#F1EEDA"
+    insetX: 8
+    insetY: 18
+- id: 8356c951-6dd0-5800-8ff6-cd55bae9fb68
+  name: "Slot 5"
+  parentId: c5b14c67-0874-5ead-acbc-13cc7b1fc23c
+  x: 0
+  y: 0
+  width: 80
+  height: 58
+  components:
+  - type: uiRect
+  - type: uiButton
+    draggable: true
+  - type: uiText
+    text: "나침반"
+    color: "#F1EEDA"
+    insetX: 8
+    insetY: 18
+- id: 34112067-5790-595b-bb55-86c5b5258799
+  name: "Slot 6"
+  parentId: c5b14c67-0874-5ead-acbc-13cc7b1fc23c
+  x: 0
+  y: 0
+  width: 80
+  height: 58
+  components:
+  - type: uiRect
+  - type: uiButton
+    draggable: true
+  - type: uiText
+    text: ""
+    color: "#F1EEDA"
+    insetX: 8
+    insetY: 18
+- id: 64ee53cc-77f9-58d4-bd4e-c306f46c82c2
+  name: "Slot 7"
+  parentId: c5b14c67-0874-5ead-acbc-13cc7b1fc23c
+  x: 0
+  y: 0
+  width: 80
+  height: 58
+  components:
+  - type: uiRect
+  - type: uiButton
+    draggable: true
+  - type: uiText
+    text: "빵"
+    color: "#F1EEDA"
+    insetX: 8
+    insetY: 18
+- id: b627f4ce-98fd-5638-8537-811405e32168
+  name: "Slot 8"
+  parentId: c5b14c67-0874-5ead-acbc-13cc7b1fc23c
+  x: 0
+  y: 0
+  width: 80
+  height: 58
+  components:
+  - type: uiRect
+  - type: uiButton
+    draggable: true
+  - type: uiText
+    text: ""
+    color: "#F1EEDA"
+    insetX: 8
+    insetY: 18
+- id: 76f8b2b4-b631-5707-b157-8bdb915bdac9
+  name: "Slot 9"
+  parentId: c5b14c67-0874-5ead-acbc-13cc7b1fc23c
+  x: 0
+  y: 0
+  width: 80
+  height: 58
+  components:
+  - type: uiRect
+  - type: uiButton
+    draggable: true
+  - type: uiText
+    text: ""
+    color: "#F1EEDA"
+    insetX: 8
+    insetY: 18
+- id: 29bff071-fd12-5b01-8d3c-017665e37591
+  name: "Slot 10"
+  parentId: c5b14c67-0874-5ead-acbc-13cc7b1fc23c
+  x: 0
+  y: 0
+  width: 80
+  height: 58
+  components:
+  - type: uiRect
+  - type: uiButton
+    draggable: true
+  - type: uiText
+    text: "밧줄"
+    color: "#F1EEDA"
+    insetX: 8
+    insetY: 18
+- id: 001ec5b7-cad5-5593-b57d-387d7855e316
+  name: "Slot 11"
+  parentId: c5b14c67-0874-5ead-acbc-13cc7b1fc23c
+  x: 0
+  y: 0
+  width: 80
+  height: 58
+  components:
+  - type: uiRect
+  - type: uiButton
+    draggable: true
+  - type: uiText
+    text: ""
+    color: "#F1EEDA"
+    insetX: 8
+    insetY: 18
+- id: 0b6197e1-b555-5110-984f-30007034ba0a
+  name: "Slot 12"
+  parentId: c5b14c67-0874-5ead-acbc-13cc7b1fc23c
+  x: 0
+  y: 0
+  width: 80
+  height: 58
+  components:
+  - type: uiRect
+  - type: uiButton
+    draggable: true
+  - type: uiText
+    text: "등불"
+    color: "#F1EEDA"
+    insetX: 8
+    insetY: 18
+- id: 4451663d-c9b8-532e-804d-5116da130216
+  name: "Slot 13"
+  parentId: c5b14c67-0874-5ead-acbc-13cc7b1fc23c
+  x: 0
+  y: 0
+  width: 80
+  height: 58
+  components:
+  - type: uiRect
+  - type: uiButton
+    draggable: true
+  - type: uiText
+    text: ""
+    color: "#F1EEDA"
+    insetX: 8
+    insetY: 18
+- id: b5cfd3df-deab-50f2-9ff1-80ba8f18d1e0
+  name: "Slot 14"
+  parentId: c5b14c67-0874-5ead-acbc-13cc7b1fc23c
+  x: 0
+  y: 0
+  width: 80
+  height: 58
+  components:
+  - type: uiRect
+  - type: uiButton
+    draggable: true
+  - type: uiText
+    text: ""
+    color: "#F1EEDA"
+    insetX: 8
+    insetY: 18
+- id: aec6b0cc-5b73-5e91-87f2-f39859eefc0f
+  name: "Slot 15"
+  parentId: c5b14c67-0874-5ead-acbc-13cc7b1fc23c
+  x: 0
+  y: 0
+  width: 80
+  height: 58
+  components:
+  - type: uiRect
+  - type: uiButton
+    draggable: true
+  - type: uiText
+    text: ""
+    color: "#F1EEDA"
+    insetX: 8
+    insetY: 18
+- id: 10c06123-30ae-57f6-91fa-295767a3bf64
+  name: "Slot 16"
+  parentId: c5b14c67-0874-5ead-acbc-13cc7b1fc23c
+  x: 0
+  y: 0
+  width: 80
+  height: 58
+  components:
+  - type: uiRect
+  - type: uiButton
+    draggable: true
+  - type: uiText
+    text: "지도"
+    color: "#F1EEDA"
+    insetX: 8
+    insetY: 18
+- id: 207491a0-b00e-558d-82f3-74edda8b7cba
+  name: "Slot 17"
+  parentId: c5b14c67-0874-5ead-acbc-13cc7b1fc23c
+  x: 0
+  y: 0
+  width: 80
+  height: 58
+  components:
+  - type: uiRect
+  - type: uiButton
+    draggable: true
+  - type: uiText
+    text: ""
+    color: "#F1EEDA"
+    insetX: 8
+    insetY: 18
+- id: bb67e322-80fb-5ef4-994b-7bc9c40155cc
+  name: "Slot 18"
+  parentId: c5b14c67-0874-5ead-acbc-13cc7b1fc23c
+  x: 0
+  y: 0
+  width: 80
+  height: 58
+  components:
+  - type: uiRect
+  - type: uiButton
+    draggable: true
+  - type: uiText
+    text: ""
+    color: "#F1EEDA"
+    insetX: 8
+    insetY: 18
+- id: 8a9b819d-ea97-5ae8-aac7-9f29332afec6
+  name: "Slot 19"
+  parentId: c5b14c67-0874-5ead-acbc-13cc7b1fc23c
+  x: 0
+  y: 0
+  width: 80
+  height: 58
+  components:
+  - type: uiRect
+  - type: uiButton
+    draggable: true
+  - type: uiText
+    text: "물병"
+    color: "#F1EEDA"
+    insetX: 8
+    insetY: 18
+- id: 94351552-74f9-57cf-ae77-d1ea38a1e26e
+  name: "Slot 20"
+  parentId: c5b14c67-0874-5ead-acbc-13cc7b1fc23c
+  x: 0
+  y: 0
+  width: 80
+  height: 58
+  components:
+  - type: uiRect
+  - type: uiButton
+    draggable: true
+  - type: uiText
+    text: ""
+    color: "#F1EEDA"
+    insetX: 8
+    insetY: 18
+- id: 4a7cba48-2c3c-5f0c-9187-a1c2310aad13
+  name: "Status"
+  parentId: 8c7c7965-346e-587b-a43d-b5ab6806b76d
+  x: 430
+  y: 90
+  width: 340
+  height: 60
+  components:
+  - type: uiRect
+  - type: uiText
+    text: "칸을 끌어 놓거나 Enter로 집고 놓으세요."
+    size: 16
+    color: "#C9D6CF"
+    wrap: true
+- id: 23994167-520b-544b-a3d2-e0365ad7e859
+  name: "Hint"
+  parentId: 8c7c7965-346e-587b-a43d-b5ab6806b76d
+  x: 430
+  y: 170
+  width: 340
+  height: 120
+  components:
+  - type: uiRect
+  - type: uiText
+    text: "방향키·D-pad로 칸 이동\nEnter·Space·A로 집기와 놓기\nEsc·B로 취소"
+    size: 14
+    color: "#8FA39A"
+    wrap: true

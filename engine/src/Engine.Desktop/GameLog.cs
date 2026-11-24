@@ -19,8 +19,10 @@ public static class GameLog
     public static void Attach(SessionState state)
     {
         state.Logged += Write;
-        // Start the log system off the game thread: with JIT its first use takes about 20 ms (Native AOT: under 1 ms).
-        ThreadPool.UnsafeQueueUserWorkItem(static _ => _ = Started.Category, null);
+        // Start the log system before anything else can log. It used to start on the thread pool (about 20 ms of JIT in
+        // the untrimmed template), but a player that failed at once then logged through BRUTAL before Initialize, and
+        // Initialize threw on the half-registered category. ReadyToRun and Native AOT players start it in a few ms.
+        _ = Started.Category;
     }
 
     public static void Write(GameLogEntry entry)

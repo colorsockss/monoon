@@ -2,6 +2,7 @@ using Engine.Core;
 
 internal static class UiControlChecks
 {
+    [Check(9200)] static void Registered(CheckRun c) => Run();
     internal static void Run()
     {
         void Check(bool ok, string label)

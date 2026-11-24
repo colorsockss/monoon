@@ -2,6 +2,8 @@ using Engine.Core;
 
 internal static class AnimatorChecks
 {
+    [Check(5500)]
+    static void Registered(CheckRun c) { var root = Path.Combine(c.Scratch, "AnimatorTest"); Run(root, Path.Combine(c.Repository, "samples", "AnimatorLab")); Directory.Delete(root, true); }
     public static void Run(string folder, string sample)
     {
         Directory.CreateDirectory(folder);

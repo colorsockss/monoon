@@ -1,0 +1,10 @@
+p148-base null	alive=1024	us/frame=17.9	ns/particle=17.5	B/frame=0.0 null	alive=10240	us/frame=148.1	ns/particle=14.5	B/frame=0.0 
+p148-cur null	alive=1024	us/frame=14.7	ns/particle=14.4	B/frame=0.0 null	alive=10240	us/frame=148.0	ns/particle=14.5	B/frame=0.0 
+p148-base null	alive=1024	us/frame=14.6	ns/particle=14.2	B/frame=0.0 null	alive=10240	us/frame=155.6	ns/particle=15.2	B/frame=0.0 
+p148-cur null	alive=1024	us/frame=14.4	ns/particle=14.0	B/frame=0.0 null	alive=10240	us/frame=148.0	ns/particle=14.5	B/frame=0.0 
+p148-base null	alive=1024	us/frame=14.8	ns/particle=14.5	B/frame=0.0 null	alive=10240	us/frame=149.9	ns/particle=14.6	B/frame=0.0 
+p148-cur null	alive=1024	us/frame=14.5	ns/particle=14.2	B/frame=0.0 null	alive=10240	us/frame=150.3	ns/particle=14.7	B/frame=0.0 
+p148-base null	alive=1024	us/frame=14.7	ns/particle=14.3	B/frame=0.0 null	alive=10240	us/frame=149.3	ns/particle=14.6	B/frame=0.0 
+p148-cur null	alive=1024	us/frame=14.9	ns/particle=14.6	B/frame=0.0 null	alive=10240	us/frame=149.2	ns/particle=14.6	B/frame=0.0 
+p148-base null	alive=1024	us/frame=14.7	ns/particle=14.4	B/frame=0.0 null	alive=10240	us/frame=150.7	ns/particle=14.7	B/frame=0.0 
+p148-cur null	alive=1024	us/frame=18.5	ns/particle=18.0	B/frame=0.0 null	alive=10240	us/frame=154.2	ns/particle=15.1	B/frame=0.0 

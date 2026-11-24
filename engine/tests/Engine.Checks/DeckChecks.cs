@@ -5,6 +5,7 @@ using MoNoon.Decks;
 
 internal static class DeckChecks
 {
+    [Check(1700, StopAfter = "deck")] static void Registered(CheckRun c) => Run(c.Repository, c.Scratch);
     internal static void Run(string repo, string scratch)
     {
         var sample = Path.Combine(repo, "samples", "CardLab");

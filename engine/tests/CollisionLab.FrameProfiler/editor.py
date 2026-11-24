@@ -15,7 +15,7 @@ project = out / "CollisionLab"
 shutil.copytree(sample, project)
 env = dict(os.environ, DOTNET_STARTUP_HOOKS=str(hook), MONOON_PROFILER_EDITOR=str(out), MONOON_USER_DATA=str(out / "profile"))
 with (out / "editor.log").open("wb") as log:
-    subprocess.run([str(editor), str(project)], env=env, stdout=log, stderr=log, timeout=900, check=True)
+    subprocess.run([str(editor), str(project)], env=env, stdout=log, stderr=log, timeout=300 * float(os.environ.get('MONOON_QA_SLOW') or 1), check=True)
 if (out / "error.txt").exists():
     raise SystemExit((out / "error.txt").read_text(encoding="utf-8"))
 result = json.loads((out / "result.json").read_text(encoding="utf-8"))

@@ -13,6 +13,12 @@ public readonly partial record struct PathPoint(float X, float Y, float InX = 0,
 [DisplayName("Line 2D"), YamlObject]
 public sealed partial record Line2DComponent : SceneComponent
 {
+    public Line2DComponent() { }
+    [YamlConstructor] public Line2DComponent(PathPoint[]? points = null, float width = 4, string startColor = "#FFFFFF", string endColor = "#FFFFFF")
+    {
+        if (points != null) Points = points;
+        (Width, StartColor, EndColor) = (width, startColor, endColor);
+    }
     private PathPoint[] points = [new(0, 0), new(100, 0)];
     // Local coordinates of the owner. Width is in world units and the colour blends from start to end along the length.
     public PathPoint[] Points { get => (PathPoint[])points.Clone(); set => points = value is null ? [] : (PathPoint[])value.Clone(); }
@@ -33,6 +39,10 @@ public sealed partial record Line2DComponent : SceneComponent
 [DisplayName("Trail 2D"), YamlObject]
 public sealed partial record Trail2DComponent : SceneComponent
 {
+    public Trail2DComponent() { }
+    [YamlConstructor] public Trail2DComponent(float time = .4f, float width = 6, string startColor = "#FFFFFF", string endColor = "#FFFFFF",
+        int maxPoints = 32, float minStep = 2) =>
+        (Time, Width, StartColor, EndColor, MaxPoints, MinStep) = (time, width, startColor, endColor, maxPoints, minStep);
     // A point is recorded at the owner's centre on each game tick it has moved Min step; it fades out over Time.
     public float Time { get; set; } = .4f;
     public float Width { get; set; } = 6;
@@ -53,9 +63,16 @@ public sealed partial record Trail2DComponent : SceneComponent
 
 public enum PathRepeat { Once, PingPong, Loop }
 
-[DisplayName("Path Follower 2D"), YamlObject]
+[DisplayName("Path Follower 2D"), YamlObject, EngineFeature(EngineFeature.Tweens)]
 public sealed partial record PathFollower2DComponent : SceneComponent
 {
+    public PathFollower2DComponent() { }
+    [YamlConstructor] public PathFollower2DComponent(PathPoint[]? points = null, float speed = 60, PathRepeat repeat = PathRepeat.PingPong,
+        bool playOnStart = true)
+    {
+        if (points != null) Points = points;
+        (Speed, Repeat, PlayOnStart) = (speed, repeat, playOnStart);
+    }
     private PathPoint[] points = [new(0, 0), new(100, 0)];
     // Offsets from the owner's start position in its parent's space. The first point is where the owner starts;
     // Loop closes the path back to it.

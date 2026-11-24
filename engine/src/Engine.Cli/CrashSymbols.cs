@@ -42,7 +42,8 @@ internal static class CrashSymbols
     private static Dictionary<CrashFrame, string> Managed(GameData receipt, string directory, CrashFrame[] frames)
     {
         var locations = new Dictionary<CrashFrame, string>();
-        foreach (var assembly in new[] { "Game/.monoon-compiled/MoNoon.GameScripts.dll", "Engine.Core.dll", "Engine.Desktop.dll", "MoNoonPlayer.dll" })
+        // The receipt names each archived assembly: the scripts sit next to the player (per-game publish) or in Game/.monoon-compiled.
+        foreach (var assembly in receipt.Values.Keys.Where(k => k.StartsWith("pdbId/", StringComparison.Ordinal)).Select(k => k["pdbId/".Length..]))
         {
             string name = Path.GetFileNameWithoutExtension(assembly);
             var matches = frames.Where(f => f.Assembly == name).ToArray();
@@ -69,7 +70,9 @@ internal static class CrashSymbols
                 }
                 if (found is not { IsHidden: false } line || line.Document.IsNil) continue;
                 string source = reader.GetString(reader.GetDocument(line.Document).Name).Replace('\\', '/');
-                if (name == "MoNoon.GameScripts") source = source.StartsWith("./", StringComparison.Ordinal) ? source[2..] : "Scripts/" + source;
+                // Roslyn in the builder names "Id.cs" or "./path"; the per-game publish maps its snapshot to "/_/path".
+                if (name == "MoNoon.GameScripts") source = source.StartsWith("/_/", StringComparison.Ordinal) ? source[3..]
+                    : source.StartsWith("./", StringComparison.Ordinal) ? source[2..] : "Scripts/" + source;
                 locations[frame] = $"{frame.Method}  {source}:{line.StartLine}  (IL 0x{frame.IlOffset:x})";
             }
         }

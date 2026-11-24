@@ -1,0 +1,21 @@
+label	sample	mode	app_bytes	executable_bytes	managedcode_bytes
+before(f48fc00)	KeyRoom	release	32999706	124712	
+before(f48fc00)	KeyRoom	native-aot	15792055	8653728	4816732
+before(f48fc00)	PlatformerLab	release	30257498	124712	
+before(f48fc00)	PlatformerLab	native-aot	13043997	8354864	4640708
+after-16.6	KeyRoom	release	33020698	124712	
+after-16.6	KeyRoom	native-aot	15841751	8703424	4836084
+after-16.6	PlatformerLab	release	30279002	124712	
+after-16.6	PlatformerLab	native-aot	13077181	8388048	4660028
+after-16.6	InventoryLab	release	83732057	124712	
+after-16.6	InventoryLab	native-aot	66501628	8404496	4670372
+merge(874213f)	KeyRoom	release	33048858	124712	
+merge(874213f)	KeyRoom	native-aot	15858343	8720016	4848468
+merge(874213f)	PlatformerLab	release	30307162	124712	
+merge(874213f)	PlatformerLab	native-aot	13093773	8404640	4672476
+after-16.13	KeyRoom	release	33072922	124712	
+after-16.13	KeyRoom	native-aot	15874935	8736608	4857192
+after-16.13	PlatformerLab	release	30331226	124712	
+after-16.13	PlatformerLab	native-aot	13110365	8421232	4681264
+after-16.13	InventoryLab	release	83800893	124712	
+after-16.13	InventoryLab	native-aot	66549376	8437680	4692280

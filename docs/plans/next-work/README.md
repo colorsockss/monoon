@@ -9,6 +9,7 @@ BRUTAL 교체·최적화·에디터 정리(`wip/phase1`)의 최종 회귀와 함
 | 3. 코드·에셋 trim | [3-trim.md](3-trim.md) | 에셋은 이미 씬 도달성으로 걸러진다. 대체 글꼴 2.05 MB 통째 포함, 쓰지 않는 SDL_ttf·mixer·Box2D 항상 포함(−3.2 MB 가능), 같은 네이티브 파일 중복(Linux −9.2 MB), 빌드 보고서 없음. |
 | 4. 파티클 에디터 | [4-particles.md](4-particles.md) | 런타임 필드 7개·편집 UI 없음. 입자당 32 B 할당으로 1만 개에 1.1 ms·320 KB/프레임. SoA 고정 풀이면 0 B·0.1 ms. P.0–P.10 단계 제안. |
 | 5. AI 에이전트 개발 | [5-ai-workflow.md](5-ai-workflow.md) | 시간은 회귀보다 새 워크트리 준비·기준선 재빌드·GUI 잠금 대기에 쓰인다. CLAUDE.md(`@AGENTS.md`), 워크트리 부트스트랩, 모달 가드가 있는 프로브 라이브러리, 하네스 목록·검사 단계 분리 제안. |
+| 6. 게임 개발자용 AI 도구 | [6-ai-game-dev.md](6-ai-game-dev.md) | (2026-11-24 추가) 게임 개발자의 에이전트는 빌드·테스트·리플레이를 텍스트로만 받고, 에디터 패키지에는 CLI가 없다. CLI 통합(G1)·`--json`(G2)·`monoon check`(G3)부터, stdio MCP(G7)와 에디터 라이브 브리지(G8, W6 뒤)는 그다음. |
 
 측정 도구는 [tools/](tools/)에 복사했다(`build/` 크기·시작 시간, `trim/` AOT map·기능·글꼴 부분 집합, `particles/` 입자 벤치, `agent/` 이번 작업에서 쓴 공용 규칙·GUI 잠금·하네스 실행 스크립트). `tools/agent/`의 파일에는 이번 세션의 scratchpad 경로가 들어 있으므로 다시 쓸 때 경로를 바꾼다(W1에서 저장소 스크립트로 옮길 대상이다).
 
@@ -57,26 +58,29 @@ BRUTAL 교체·최적화·에디터 정리(`wip/phase1`)의 최종 회귀와 함
 - Inspector I-5–I-11·I-13·I-15·I-16, 엔진 E-2–E-15(조명 E-7은 결정 14), 파티클 P.6–P.10.
 - 에디터 자동화 API로 리플렉션 프로브 대체(W6), x64 결정성 조기 검사(W10, 결정 15), 창 없는 Scene Play(W13, 보류).
 
-## 결정이 필요한 것
+## 결정 (2026-11-24 사용자 확정)
 
-권장안을 먼저 적었다. 주제 사이에 권장이 엇갈린 것은 하나로 정리하고 이유를 남겼다.
+| # | 주제 | 결정 |
+| --- | --- | --- |
+| 1 | 로드맵 배치 | 13장 Inspector, 14장 파티클, 15장 배포 용량·시작 시간(B·T), 16장 엔진 기능(E). 에이전트 개발 개선(W)은 [개발 문서](../../development.md)에서 관리 |
+| 2 | crossgen2 내려받기 | 승인. Release 게임별 trim + ReadyToRun(B5)을 진행하고 크기·시작 시간을 실측한다 |
+| 3 | 글꼴 부분 집합(T5) | **구현하지 않는다.** 게임 텍스트는 항상 번역 테이블을 쓰므로 빌드 때 쓰이는 글자를 모으기 어렵다 |
+| 4 | 기능 라이브러리 제외(T4) | 자동 판정 + 빌드 보고서에 이유 표시 + `GameSettings`로 강제 포함 |
+| 5 | Invariant 전역화(B1) | **켜지 않는다.** 플레이어는 지금처럼 PC 로케일을 따른다. 스택 추적 끄기는 크래시 해석 검사 뒤로 보류, `UseSystemResourceKeys`는 쓰지 않는다 |
+| 6 | 배포 기타 | 큰 WAV는 Ogg 권장 경고만, System.Text.Json 제거는 T8 뒤 결정, T9는 남은 이득이 1 MB 이상일 때만 |
+| 7 | Inspector 기록 | 입력 확정 시 기록(I-1, 진행 중). 1만 오브젝트에서 50 ms를 넘으면 오브젝트 단위 차분 기록 |
+| 8 | 스크립트 필드 | Unity와 같은 속성 이름(`Tooltip`·`Range`·`Header`·`SerializeField`·`HideInInspector` 등). 필드 타입은 **구조체·기본 타입 배열에 더해 `List<T>`와 딕셔너리 편집까지** 넣는다. 활성 상태 기본값 true는 파일에 쓰지 않는다 |
+| 9 | 색 선택 컨트롤 | **`Avalonia.Controls.ColorPicker` 패키지**(에디터 전용 NuGet 내려받기 승인). 추가 후 에디터 패키지 증가량을 측정해 기록하고, 행 정렬·에디터 토큰에 맞춘다. I-9와 P.6이 같은 컨트롤을 쓴다 |
+| 10 | 파티클 저장·샘플 | **처음부터 `.particles` 에셋**으로 저장하고, 컴포넌트는 에셋 참조와 인스턴스 값만 갖는다. **새 ParticleLab 샘플**을 만든다. Scene 편집 미리보기는 선택한 방출기만(모두 재생 토글) |
+| 11 | 파티클 형태 샘플링 | `Brutal.Maths`의 난수 소비 수·결정성을 확인한 뒤 문제가 없으면 채택(BRUTAL 우선), 아니면 직접 구현하고 이유를 brutal.md에 남긴다. 입자 trace는 같은 OS·아키텍처의 세 경로 동일을 필수로 한다 |
+| 12 | 에이전트 운영 규칙 | `docs/manual/agent-workflow.md`(가칭) 공용 문서 + AGENTS.md에서 링크 + CLAUDE.md는 `@AGENTS.md`를 가져온다 |
+| 13 | `.claude/settings.json` | deny 규칙과 hook(BRUTAL 외 다운로드·`.test-env` 수정·GUI 잠금 없는 창 실행 차단)을 커밋. 사람마다 다른 allow는 local. Bash sandbox는 보류 |
+| 14 | 2D 조명 | 셰이더 없는 방식(라이트맵 Mod 합성 + 지오메트리 그림자) 먼저. SDL GPU 셰이더·노멀맵은 후보로 남긴다 |
+| 15 | x64 조기 검사 | 정적 API 스캔만 한다. osx-x64 런타임 팩 내려받기와 Rosetta 비교는 **보류** |
+| 16 | 개발 도구 기타 | `--X-only`는 한 단계 별칭 뒤 `--only`로 통일, 공유 캐시는 메인 체크아웃 `.monoon-cache/`(gitignore), C# LSP 플러그인과 야간 전체 회귀는 보류 |
+| 17 | 에이전트 작업 폴더 시작점 | `.claude/settings.json`의 `worktree.baseRef: head` 유지(2026-11-24). 서브에이전트 작업 폴더가 main 대신 세션의 현재 HEAD에서 시작한다 |
 
-1. **로드맵 배치**: 13장 Inspector, 14장 파티클, 15장 배포 용량·시작 시간(B·T), 16장 엔진 기능(E)으로 새로 만든다. 에이전트 개발 개선(W)은 로드맵이 아니라 [개발 문서](../../development.md)로 관리한다.
-2. **crossgen2 패키지 내려받기**(`Microsoft.NETCore.App.Crossgen2.osx-arm64` 10.0.x, BRUTAL 외 패키지): 승인 권장. 없으면 trim한 Release의 시작이 22% 느려진다. Release는 Mac 한 대로 세 OS용을 내보내는 정식 형식으로 유지한다(조사 2 결정 1).
-3. **글꼴 부분 집합 기본값**: 조사 2는 기본 끄기, 조사 3은 번역 테이블이 있으면 기본 켜기를 권했다. **번역 테이블이 있는 프로젝트는 기본 켜고**, 글꼴별 "전체 유지"와 `extraCharacters`를 둔다. 이름 입력·IME·콘텐츠 업데이트처럼 새 글자가 들어오는 게임은 "전체 유지"를 고른다. 2 MB가 배포본의 10% 안팎이라 기본값의 효과가 크다.
-4. **기능 라이브러리 제외(T4)**: 자동 판정 + 빌드 보고서에 판정 이유 + `GameSettings`로 강제 포함.
-5. **Invariant 전역화**: 옵션 없이 항상 켠다. 엔진은 이미 InvariantCulture만 쓰고 리플레이 결정성에도 유리하다. `StackTraceSupport=false`는 크래시 해석 검사 뒤로 보류, `UseSystemResourceKeys`는 쓰지 않는다.
-6. **기타 배포**: 큰 WAV는 경고만(인코더 없음), System.Text.Json 제거는 T8 결과를 본 뒤, T9는 남은 이득이 1 MB 이상일 때만.
-7. **Inspector 기록 방식**: 입력 확정 시 기록부터. 1만 오브젝트에서 여전히 50 ms를 넘으면 오브젝트 단위 차분 기록.
-8. **스크립트 필드**: Unity와 같은 속성 이름(`Tooltip`·`Range`·`Header`·`SerializeField`·`HideInInspector`). 활성 상태는 기본값 true를 파일에 쓰지 않는다. 필드 타입 확장은 구조체 1단계와 기본 타입 배열까지.
-9. **색 선택 컨트롤**: 조사 1은 `Avalonia.Controls.ColorPicker` 패키지, 조사 4는 직접 구현을 권했다. **직접 구현(hex + 견본 + HSV)**으로 정한다. 새 다운로드가 없고, 기존 색 행 9곳과 열 정렬·에디터 토큰을 그대로 맞출 수 있다. I-9와 P.6이 같은 컨트롤을 쓴다.
-10. **파티클 저장**: MVP는 컴포넌트 인라인, P.7에서 `.particles` 에셋으로 옮긴다. 샘플은 새로 만들지 않고 PlatformerLab(먼지·불씨)·BarrageLab(1만 개 부하)에 씬을 더한다. Scene 편집 미리보기는 선택한 방출기만.
-11. **파티클 형태 샘플링**: `Brutal.Maths`의 호출당 난수 소비 수와 결정성을 먼저 확인하고, 문제가 없으면 채택(BRUTAL 우선). 아니면 직접 구현하고 이유를 brutal.md에 남긴다. 입자 trace는 같은 OS·아키텍처의 세 경로 동일을 필수로 하고, arm64와 x64 사이는 기록만 한다. 고정 계산 전환 뒤에도 Joints는 Mac과 Linux가 60틱부터 미세하게 다르다(Box2D 네이티브 빌드 또는 OS 수학 라이브러리로 추정).
-12. **운영 규칙 위치**: `docs/manual/agent-workflow.md`(가칭) 공용 문서 + AGENTS.md에서 링크 + CLAUDE.md는 `@AGENTS.md`를 가져온다. CLAUDE.md를 만들면서 AGENTS.md를 가져오지 않으면 Claude가 AGENTS.md를 읽지 않게 되므로 반드시 함께 한다.
-13. **`.claude/settings.json`**: deny 규칙과 hook(다운로드·`.test-env`·GUI 잠금 없는 창 실행 차단)은 저장소에 커밋, 사람마다 다른 allow는 local. Bash sandbox는 GUI 잠금·화면 캡처와의 호환을 확인할 때까지 보류.
-14. **2D 조명**: 셰이더 없이 라이트맵 Mod 합성 + 지오메트리 그림자(BRUTAL SDL 렌더러만 사용). 노멀맵 셰이더는 후보로 남긴다.
-15. **x64 조기 검사**: 정적 API 스캔(`MultiplyAddEstimate` 경로 호출 감지)은 바로 한다. osx-x64 런타임 팩을 받아 Rosetta에서 AOT를 비교하는 것은 다운로드 승인이 필요하다. 한 번 시험해 QEMU 결과와 같으면 x64 회귀 앞에 넣는다.
-16. **검사 플래그·캐시**: Engine.Checks `--X-only`는 한 단계 동안 별칭으로 두고 `--only`로 통일. 템플릿·기준선 공유 캐시는 메인 체크아웃의 `.monoon-cache/`(gitignore). C# LSP 플러그인 설치와 야간 전체 회귀는 보류.
+1차 묶음의 "같은 네이티브 파일 한 벌만 배포" 등은 결정과 무관하게 진행 중이다. 2차 묶음에서 B1(Invariant)과 T5(글꼴 부분 집합)는 위 결정으로 빠졌다.
 
 ## 확인하지 못한 것
 

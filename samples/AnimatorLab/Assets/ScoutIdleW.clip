@@ -1,0 +1,9 @@
+frames:
+- sprite: aae6e949-fab4-5103-9471-2acb7e5cae73
+  seconds: 1
+  source:
+    x: 192
+    y: 64
+    width: 32
+    height: 32
+loop: true

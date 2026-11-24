@@ -1,0 +1,8 @@
+PASS release: judgement ticks match scene-play byte for byte
+PASS aot: judgement ticks match scene-play byte for byte
+PASS Hold 30: fires once on tick 40 of the 40-tick press, not for the 10-tick one ([40])
+PASS Tap 12: fires on the short release only ([85])
+PASS DoubleTap 15: second presses 10 ticks apart fire, 20 apart does not ([131, 181])
+PASS Buffer 8: the press 5 ticks before a landing is consumed there ([200]), the one 15 ticks before expires
+PASS Triggered stays true for the buffer window and stops once consumed
+PASS Walk and Aim vectors; Move is the first vector

@@ -1,0 +1,34 @@
+PASS tile animation: 20,000 clock updates and lookups allocate 0 bytes
+PASS animator directions: Scout.animator: Walk has 8 direction clips, Idle 4
+PASS animator directions: a zero vector at start faces S
+PASS animator directions: Walk picks E for 0 degrees
+PASS animator directions: hysteresis: E is kept at 25 and 29 degrees, past the 22.5 degree midpoint
+PASS animator directions: at 31 degrees (more than 30 from E) Walk turns to SE
+PASS animator directions: turning back: SE is kept at 20 degrees, E returns at 14
+PASS animator directions: a jump to any compass point picks it at once
+PASS animator directions: a zero vector keeps the facing
+PASS animator directions: Walk NW, then Idle with a zero vector shows W
+PASS animator directions: Idle keeps W at 40 and 55 degrees away, then picks N at 65
+PASS animator directions: the S walk clip shows its own sheet column
+PASS animator directions: turning keeps the walk cycle position
+PASS animator directions: 20,000 steps turning through 72 angles allocate 0 bytes
+PASS animator directions: Beacon.animator round-trips without direction keys
+PASS animator directions: Guard.animator round-trips without direction keys
+PASS animator directions: rejects 3 direction clips
+PASS animator directions: rejects a Float direction parameter
+PASS animator directions: rejects clips without a parameter
+PASS animator directions: rejects a state clip other than the first direction
+PASS animator directions: rejects a nonzero Vector2 default
+PASS animator directions: rejects a condition on a Vector2
+PASS animator directions: rejects SetVector2 on a Float parameter
+PASS animator directions: rejects a NaN vector
+PASS Native AOT kit path resolves symlinks
+PASS Native AOT kit has no VYaml generated Serialize code (356 Deserialize methods remain)
+KeyRoom release: app 33,056,538 B, executable 124,712 B, (baseline 33,044,250 / 124,712)
+KeyRoom native-aot: app 15,858,263 B, executable 8,719,936 B, (baseline 15,858,263 / 8,719,936)
+PlatformerLab release: app 30,315,354 B, executable 124,712 B, (baseline 30,303,066 / 124,712)
+PlatformerLab native-aot: app 13,060,541 B, executable 8,371,408 B, (baseline 13,060,557 / 8,371,424)
+InventoryLab release: app 83,737,052 B, executable 124,712 B, (baseline 83,724,764 / 124,712)
+InventoryLab native-aot: app 66,480,831 B, executable 8,387,920 B, (baseline 66,480,847 / 8,387,936)
+PASS build size baseline: 6 osx-arm64 distribution builds within +1%
+All checks passed.

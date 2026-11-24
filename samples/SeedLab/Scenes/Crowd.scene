@@ -1,0 +1,188 @@
+schemaVersion: 18
+objects:
+- id: d46fd07e-c961-51a4-8eac-6f57da23c578
+  name: Camera
+  x: 400
+  y: 225
+  width: 1
+  height: 1
+  components:
+  - type: camera2D
+  - type: script
+    script: RouteSceneSwitch
+    values: {Destination: {Id: "fecb609a-9302-5710-a253-9ccc6e859b64"}}
+- id: 6fb4d136-4863-5801-b752-3c8b75d4029f
+  name: Ground
+  x: 24
+  y: 72
+  width: 752
+  height: 344
+  components:
+  - {type: spriteRenderer, squareColor: "#1E2A30", order: -2}
+- id: 0e8fa6b4-f86d-58e1-9ef2-21941739096a
+  name: Start zone
+  x: 36
+  y: 146
+  width: 108
+  height: 208
+  components:
+  - {type: spriteRenderer, squareColor: "#2B3A44", order: -1}
+- id: f67f4c10-fa12-566f-901d-4ce1f0e83c4d
+  name: Goal zone
+  x: 656
+  y: 146
+  width: 108
+  height: 208
+  components:
+  - {type: spriteRenderer, squareColor: "#2F4D45", order: -1}
+- id: 462f0da6-a84f-5b98-8ee1-92bff9ba941c
+  name: Yard
+  x: 24
+  y: 72
+  width: 752
+  height: 344
+  components:
+  - {type: navigationRegion2D, spacing: 8, agentWidth: 8}
+  - type: script
+    script: CrowdRun
+    values: {Units: "00f2d456-fe10-560e-8676-40bcd0069a84", Gate: "7f8f0e4e-e3cc-53bf-892d-663cf65dedef", Status: "30025e06-9a72-57db-84fa-58ad43f3903b"}
+- id: adb63c9e-384a-5524-800a-34d34cf54b2a
+  name: Wall A north
+  x: 232
+  y: 120
+  width: 24
+  height: 130
+  components:
+  - {type: spriteRenderer, squareColor: "#3C4A52", order: 1}
+  - {type: boxCollider2D}
+- id: b5c03049-4526-522a-8e61-4e600ddbabaa
+  name: Wall A south
+  x: 232
+  y: 300
+  width: 24
+  height: 116
+  components:
+  - {type: spriteRenderer, squareColor: "#3C4A52", order: 1}
+  - {type: boxCollider2D}
+- id: c433dfb1-a2fe-5bce-822b-e1e8c82d7572
+  name: Wall B
+  x: 432
+  y: 72
+  width: 24
+  height: 258
+  components:
+  - {type: spriteRenderer, squareColor: "#3C4A52", order: 1}
+  - {type: boxCollider2D}
+- id: fc97bcac-6149-5cf4-84f6-40b28429d191
+  name: Pillar north
+  x: 540
+  y: 110
+  width: 40
+  height: 40
+  components:
+  - {type: spriteRenderer, squareColor: "#3C4A52", order: 1}
+  - {type: boxCollider2D}
+- id: 4a1aab53-ec26-507c-8deb-31f1608b9375
+  name: Pillar south
+  x: 540
+  y: 230
+  width: 40
+  height: 40
+  components:
+  - {type: spriteRenderer, squareColor: "#3C4A52", order: 1}
+  - {type: boxCollider2D}
+- id: 7f8f0e4e-e3cc-53bf-892d-663cf65dedef
+  name: Gate
+  x: 232
+  y: 250
+  width: 24
+  height: 50
+  components:
+  - {type: spriteRenderer, squareColor: "#C9A227", order: 1}
+- id: 00f2d456-fe10-560e-8676-40bcd0069a84
+  name: Couriers
+  x: 0
+  y: 0
+  width: 8
+  height: 8
+  components:
+  - {type: spriteRenderer, squareColor: "#FFFFFF", order: 3}
+- id: 0b8412c6-b806-5f3e-9c3d-c751397f0ec4
+  name: Canvas
+  x: 0
+  y: 0
+  width: 800
+  height: 450
+  components:
+  - type: uiCanvas
+- id: 485f458f-5673-5ea7-8986-da64ad75d23b
+  name: Title
+  parentId: 0b8412c6-b806-5f3e-9c3d-c751397f0ec4
+  x: 24
+  y: 12
+  width: 450
+  height: 36
+  components:
+  - {type: uiRect}
+  - {type: uiText, text: "Crowd yard", size: 28, color: "#EEF6F4", insetX: 0, insetY: 0}
+- id: 30025e06-9a72-57db-84fa-58ad43f3903b
+  name: Arrivals
+  parentId: 0b8412c6-b806-5f3e-9c3d-c751397f0ec4
+  x: 24
+  y: 44
+  width: 540
+  height: 24
+  components:
+  - {type: uiRect}
+  - {type: uiText, text: "Arrived 0 / 200    Gate closed    0.0 s", size: 16, color: "#84DCC6", insetX: 0, insetY: 0}
+- id: a41e5d60-dcc2-5659-b90e-cb4ed897f18b
+  name: Pause
+  parentId: 0b8412c6-b806-5f3e-9c3d-c751397f0ec4
+  x: 572
+  y: 18
+  width: 100
+  height: 24
+  components:
+  - {type: uiRect}
+  - {type: uiText, text: "Space   Pause", size: 14, color: "#EEF6F4", insetX: 0, insetY: 0}
+- id: 78df6849-27b7-50fc-a08c-7fddf48e617b
+  name: Gate key
+  parentId: 0b8412c6-b806-5f3e-9c3d-c751397f0ec4
+  x: 572
+  y: 42
+  width: 100
+  height: 24
+  components:
+  - {type: uiRect}
+  - {type: uiText, text: "O   Gate", size: 14, color: "#EEF6F4", insetX: 0, insetY: 0}
+- id: 3637aa36-dc78-52d7-b9a5-79bcb18c7be1
+  name: Restart
+  parentId: 0b8412c6-b806-5f3e-9c3d-c751397f0ec4
+  x: 680
+  y: 18
+  width: 110
+  height: 24
+  components:
+  - {type: uiRect}
+  - {type: uiText, text: "R   Restart", size: 14, color: "#EEF6F4", insetX: 0, insetY: 0}
+- id: 1ef0e42d-d06b-5cfe-9c4d-847bb72bf945
+  name: Return
+  parentId: 0b8412c6-b806-5f3e-9c3d-c751397f0ec4
+  x: 680
+  y: 42
+  width: 110
+  height: 24
+  components:
+  - {type: uiRect}
+  - {type: uiText, text: "G   Routes", size: 14, color: "#EEF6F4", insetX: 0, insetY: 0}
+- id: 10677bbb-ac39-5fe3-9237-d014f9d46600
+  name: Legend
+  parentId: 0b8412c6-b806-5f3e-9c3d-c751397f0ec4
+  x: 24
+  y: 420
+  width: 700
+  height: 26
+  components:
+  - {type: uiRect}
+  - {type: uiText, text: "One baked area, 200 couriers: string-pulled routes and separation.", size: 14, color: "#A5C0CA", insetX: 0, insetY: 0}
+defaultCameraId: d46fd07e-c961-51a4-8eac-6f57da23c578

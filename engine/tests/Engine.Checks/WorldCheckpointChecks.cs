@@ -3,6 +3,7 @@ using System.Numerics;
 
 internal static class WorldCheckpointChecks
 {
+    [Check(8200)] static void Registered(CheckRun c) => Run(c.Scene);
     internal static void Run(SceneDocument scene)
     {
         var room = scene.AssetId!.Value;

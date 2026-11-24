@@ -10,7 +10,7 @@ objects:
   - type: camera2D
   - type: script
     script: RouteSceneSwitch
-    values: {Destination: {Id: "0cfbf6ac-2359-53aa-abc6-f603bdf4dbee"}}
+    values: {Destination: {Id: "ec43fb3c-96cf-5ba3-9a32-cb3a85c67e40"}}
 - id: 16f5a53d-b05a-5af9-a5eb-0e55d8c749eb
   name: Terrain
   x: 24
@@ -142,6 +142,26 @@ objects:
   components:
   - {type: uiRect}
   - {type: uiText, text: "G   Back to maze", size: 16, color: "#EEF6F4", insetX: 0, insetY: 0}
+- id: 3b486d2e-1c61-5fb8-9ee9-83ff1314ac00
+  name: Crowd switch
+  x: 400
+  y: 225
+  width: 1
+  height: 1
+  components:
+  - type: script
+    script: RouteSceneSwitch
+    values: {Destination: {Id: "620cbdb0-f61b-59bf-beed-2647e824c624"}, Action: "CrowdLab"}
+- id: 7c1d0b52-4f0e-5a8e-9a61-2d7d3c6f1e90
+  name: Crowd
+  parentId: 473d3bd5-798d-5b61-89a5-c5c72d2f0196
+  x: 572
+  y: 330
+  width: 220
+  height: 28
+  components:
+  - {type: uiRect}
+  - {type: uiText, text: "C   Crowd yard", size: 16, color: "#EEF6F4", insetX: 0, insetY: 0}
 - id: 9f7acc91-1e0d-5c02-85d6-3c391bddf539
   name: Controls
   parentId: 473d3bd5-798d-5b61-89a5-c5c72d2f0196

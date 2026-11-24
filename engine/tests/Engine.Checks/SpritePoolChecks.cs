@@ -4,6 +4,7 @@ using Engine.Core;
 
 internal static class SpritePoolChecks
 {
+    [Check(2000)] static void Registered(CheckRun c) => Run(c.Repository);
     // Allocation-per-spawn control. Keep the same motion/color data as a pool slot,
     // publish the live object to an array and reuse the render buffer in both runs.
     private sealed class Bullet(Vector2 center, Vector2 velocity, Color tint)

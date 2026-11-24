@@ -25,6 +25,7 @@ public partial class MainWindow
         Grid.SetColumn(height, 2);
         fields.Children.Add(times);
         fields.Children.Add(height);
+        var integer = new CheckBox { Content = "Pixel art: integer scale", IsChecked = Scene.Settings.IntegerScale == true };
         var cancel = new Button { Content = "Cancel", IsCancel = true };
         var apply = new Button { Content = "Apply", Classes = { "primary" }, IsDefault = true };
         var error = new TextBlock { Text = $"Enter whole numbers from 1 to {GameSettings.MaxDimension}.", IsVisible = false };
@@ -37,12 +38,12 @@ public partial class MainWindow
                 error.IsVisible = true;
                 return;
             }
-            dialog.Close(Scene.Settings with { Width = w, Height = h });
+            dialog.Close(Scene.Settings with { Width = w, Height = h, IntegerScale = integer.IsChecked == true ? true : null });
         };
         dialog.Content = new StackPanel
         {
             Margin = new Thickness(14), Spacing = 8,
-            Children = { new TextBlock { Text = "Game resolution (width × height in pixels)" }, fields, error,
+            Children = { new TextBlock { Text = "Game resolution (width × height in pixels)" }, fields, integer, error,
                 new StackPanel { Orientation = Orientation.Horizontal, HorizontalAlignment = HorizontalAlignment.Right,
                     Spacing = 6, Children = { cancel, apply } } }
         };

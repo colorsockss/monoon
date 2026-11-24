@@ -15,14 +15,18 @@ public sealed unsafe class SdlSounds : IDisposable
     private readonly float[] buffer=new float[512*2];
     private FileStream? trace;
     public void Attach(AudioMixer value)=>mixer=value;
-    public static IDisposable Decode(string path) => AudioMixer.Decode(path);
+    // Sounds come only from the audio feature (roadmap 15.12); without it this is the missing-library error of 15.11.
+    public static IDisposable Decode(string path) => EngineFeatures.Audio ? AudioMixer.Decode(path) : throw Excluded();
+    private static InvalidOperationException Excluded() => EngineFeatures.Excluded(EngineFeature.Audio, new DllNotFoundException("SDL3_mixer"));
     public void PreparePlayback(string path, IDisposable decoded)
     {
+        if (!EngineFeatures.Audio) throw Excluded();
         mixer!.Prepare(path, decoded);
         OpenOnce();
     }
     public void PreparePlayback(string path)
     {
+        if (!EngineFeatures.Audio) throw Excluded();
         mixer!.Prepare(path);
         OpenOnce();
     }

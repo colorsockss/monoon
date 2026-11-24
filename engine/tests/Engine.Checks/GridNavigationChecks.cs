@@ -3,6 +3,7 @@ using Engine.Core;
 
 internal static class GridNavigationChecks
 {
+    [Check(1000)] static void Registered(CheckRun c) => Run();
     internal static void Run()
     {
         static void Require(bool condition, string message)

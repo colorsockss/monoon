@@ -72,6 +72,7 @@ public sealed class ProjectCatalog
                 Id(F("Cutscene Sequence"),o.GetComponent<CutsceneDirectorComponent>()?.Sequence,CutsceneSequence.Extension);
                 Id(F("Skeleton Rig"),o.GetComponent<SkeletonAnimator2DComponent>()?.Rig,SkeletonRig.Extension);
                 Id(F("Sprite Shader"),o.GetComponent<SpriteShader2DComponent>()?.Shader,ShaderClip.Extension);
+                Id(F("Particle Emitter.Particles"),o.GetComponent<ParticleEmitter2DComponent>()?.Particles,ParticleEffect.Extension);
                 Id(F("Tilemap.Tileset"),o.GetComponent<Tilemap2DComponent>()?.Tileset,ProjectAssets.Tileset);
                 Id(F("UI Image.Sprite"),o.GetComponent<UiImageComponent>()?.Sprite,".png");
                 Id(F("HUD.Image"),o.GetComponent<HudComponent>()?.Image,".png");
@@ -145,7 +146,12 @@ public sealed class ProjectCatalog
                         break;
                     case AnimationController.Extension:
                         var controller=AnimationController.Read(file); controller.Validate(path);
-                        foreach(var state in controller.States) Id("State / "+state.Name,state.Clip,ProjectAssets.Clip);
+                        foreach(var state in controller.States)
+                        {
+                            Id("State / "+state.Name,state.Clip,ProjectAssets.Clip);
+                            var clips=state.Clips();
+                            for(int i=1;i<clips.Length;i++) Id($"State / {state.Name} / {AnimationState.Compass[i*8/clips.Length]}",clips[i],ProjectAssets.Clip);
+                        }
                         break;
                     case ProjectAssets.Tileset: Id("Tileset.Image",Tileset.Load(file).Image,".png"); break;
                     case SpriteAtlas.Extension:
@@ -155,6 +161,13 @@ public sealed class ProjectCatalog
                     case CutsceneSequence.Extension: CutsceneSequence.Load(file); break;
                     case SkeletonRig.Extension: SkeletonRig.Load(file); break;
                     case ShaderClip.Extension: ShaderClip.Load(file); break;
+                    case ParticleEffect.Extension:
+                    {
+                        var effect = ParticleEffect.Load(file);
+                        Id("Particles.Texture",effect.Texture,".png");
+                        foreach (var sub in effect.SubEmitters ?? []) Id("Particles.SubEmitters",sub.Particles,ParticleEffect.Extension);
+                        break;
+                    }
                     case ProjectAssets.Data: GameData.Load(file); break;
                     case GameTable.Extension: GameTable.Load(file); break;
                     case "" when path==GameSettings.FileName:

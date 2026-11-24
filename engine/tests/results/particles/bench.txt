@@ -1,0 +1,36 @@
+qemu: not running
+run 1
+base	alive=1024	us/frame=36.4	ns/particle=35.5	B/frame=0.0
+base	alive=10240	us/frame=236.9	ns/particle=23.1	B/frame=0.0
+cand	null	alive=1024	us/frame=16.4	ns/particle=16.0	B/frame=0.0
+cand	null	alive=10240	us/frame=172.2	ns/particle=16.8	B/frame=0.0
+cand	sdl	alive=1024	us/frame=100.0	ns/particle=97.7	B/frame=0.0
+cand	sdl	alive=10240	us/frame=1052.0	ns/particle=102.7	B/frame=0.0
+run 2
+base	alive=1024	us/frame=18.4	ns/particle=18.0	B/frame=0.0
+base	alive=10240	us/frame=184.0	ns/particle=18.0	B/frame=0.0
+cand	null	alive=1024	us/frame=16.5	ns/particle=16.1	B/frame=0.0
+cand	null	alive=10240	us/frame=171.2	ns/particle=16.7	B/frame=0.0
+cand	sdl	alive=1024	us/frame=102.8	ns/particle=100.4	B/frame=0.0
+cand	sdl	alive=10240	us/frame=1015.0	ns/particle=99.1	B/frame=0.0
+run 3
+base	alive=1024	us/frame=19.2	ns/particle=18.7	B/frame=0.0
+base	alive=10240	us/frame=184.6	ns/particle=18.0	B/frame=0.0
+cand	null	alive=1024	us/frame=16.7	ns/particle=16.3	B/frame=0.0
+cand	null	alive=10240	us/frame=168.9	ns/particle=16.5	B/frame=0.0
+cand	sdl	alive=1024	us/frame=162.6	ns/particle=158.8	B/frame=0.0
+cand	sdl	alive=10240	us/frame=1017.5	ns/particle=99.4	B/frame=0.0
+run 4
+base	alive=1024	us/frame=18.3	ns/particle=17.8	B/frame=0.0
+base	alive=10240	us/frame=191.7	ns/particle=18.7	B/frame=0.0
+cand	null	alive=1024	us/frame=16.4	ns/particle=16.0	B/frame=0.0
+cand	null	alive=10240	us/frame=170.5	ns/particle=16.6	B/frame=0.0
+cand	sdl	alive=1024	us/frame=102.9	ns/particle=100.5	B/frame=0.0
+cand	sdl	alive=10240	us/frame=1236.9	ns/particle=120.8	B/frame=0.0
+run 5
+base	alive=1024	us/frame=18.3	ns/particle=17.8	B/frame=0.0
+base	alive=10240	us/frame=188.4	ns/particle=18.4	B/frame=0.0
+cand	null	alive=1024	us/frame=16.7	ns/particle=16.3	B/frame=0.0
+cand	null	alive=10240	us/frame=171.0	ns/particle=16.7	B/frame=0.0
+cand	sdl	alive=1024	us/frame=101.1	ns/particle=98.7	B/frame=0.0
+cand	sdl	alive=10240	us/frame=1030.5	ns/particle=100.6	B/frame=0.0

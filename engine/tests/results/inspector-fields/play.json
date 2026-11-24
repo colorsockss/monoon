@@ -1,0 +1,25 @@
+{
+  "alignment": {
+    "1280": 1130,
+    "1600": 1450,
+    "1920": 1770
+  },
+  "after_selected": {
+    "Frozen": "true",
+    "Facing": "\u0022Up\u0022",
+    "Push": "{\u0022x\u0022:5,\u0022y\u0022:2}",
+    "Banner": "(default)",
+    "Glow": "\u0022#FF0000\u0022",
+    "Tint": "#00FF00",
+    "Collider": false
+  },
+  "after_stop": {
+    "Frozen": "true",
+    "Banner": "\u0022play\u0022"
+  },
+  "undo": {
+    "objects": "equal to before Play",
+    "header": "schemaVersion: 32",
+    "before": "schemaVersion: 28"
+  }
+}

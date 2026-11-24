@@ -13,7 +13,7 @@ shutil.copy(HERE/"Compare.inputreplay",out)
 env = dict(os.environ, DOTNET_STARTUP_HOOKS=str(hook), MONOON_QA_PROJECT=str(project), MONOON_KEYS_EDITOR=str(out),
            MONOON_POSE_REPORT=str(out/"values.tsv"), MONOON_USER_DATA=str(out/"profile"))
 with (out/"editor.log").open("wb") as log:
-    subprocess.run([str(editor),str(project)],env=env,stdout=log,stderr=log,timeout=900,check=True)
+    subprocess.run([str(editor),str(project)],env=env,stdout=log,stderr=log,timeout=240 * float(os.environ.get('MONOON_QA_SLOW') or 1),check=True)
 if (out/"error.txt").exists(): raise RuntimeError((out/"error.txt").read_text(encoding="utf-8"))
 world = check(out/"values.tsv")
 preview = json.loads((out/"preview.json").read_text(encoding="utf-8"))

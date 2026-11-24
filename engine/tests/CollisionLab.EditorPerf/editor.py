@@ -26,7 +26,7 @@ for i in range(1, runs + 1):
         shutil.copytree(project, copy)
         env = dict(os.environ, DOTNET_STARTUP_HOOKS=str(hook), MONOON_EDITOR_PERF=str(run), MONOON_USER_DATA=str(run / "profile"))
         with (run / "editor.log").open("wb") as log:
-            subprocess.run([str(editor), str(copy)], env=env, stdout=log, stderr=log, timeout=900, check=True)
+            subprocess.run([str(editor), str(copy)], env=env, stdout=log, stderr=log, timeout=300 * float(os.environ.get('MONOON_QA_SLOW') or 1), check=True)
         shutil.rmtree(copy)
         shutil.rmtree(run / "profile", ignore_errors=True)
         if (run / "error.txt").exists():

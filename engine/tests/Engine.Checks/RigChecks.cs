@@ -3,6 +3,7 @@ using Engine.Core;
 
 internal static class RigChecks
 {
+    [Check(2600, StopAfter = "rig")] static void Registered(CheckRun c) => Run(c.Repository, c.Scratch);
     internal static void Run(string repo,string scratch)
     {
         const float dt=1f/60;

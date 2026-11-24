@@ -4,6 +4,7 @@ using SkiaSharp;
 // Fixtures come from engine/tests/SpriteLab.Aseprite/aseprite_fixture.py (Aseprite itself is not installed).
 internal static class AsepriteChecks
 {
+    [Check(6100)] static void Registered(CheckRun c) => Run(c.Repository, c.Scratch);
     internal static void Run(string repository, string scratch)
     {
         var fixtures = Path.Combine(repository, "engine", "tests", "fixtures", "Aseprite");

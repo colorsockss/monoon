@@ -56,6 +56,8 @@
   <StreamGeometry x:Key="IconSnap">M3,2 H6.5 V8 A1.5,1.5 0 0 0 9.5,8 V2 H13 V8 A5,5 0 0 1 3,8 Z</StreamGeometry>
   <StreamGeometry x:Key="IconGear">F0 M6.79,2.94 L7.07,1.06 L8.93,1.06 L9.21,2.94 L10.72,3.57 L12.25,2.44 L13.56,3.75 L12.43,5.28 L13.06,6.79 L14.94,7.07 L14.94,8.93 L13.06,9.21 L12.43,10.72 L13.56,12.25 L12.25,13.56 L10.72,12.43 L9.21,13.06 L8.93,14.94 L7.07,14.94 L6.79,13.06 L5.28,12.43 L3.75,13.56 L2.44,12.25 L3.57,10.72 L2.94,9.21 L1.06,8.93 L1.06,7.07 L2.94,6.79 L3.57,5.28 L2.44,3.75 L3.75,2.44 L5.28,3.57 Z M5.8,8 A2.2,2.2 0 1 1 10.2,8 A2.2,2.2 0 1 1 5.8,8 Z</StreamGeometry>
   <StreamGeometry x:Key="IconAdd">M7.25,3 H8.75 V7.25 H13 V8.75 H8.75 V13 H7.25 V8.75 H3 V7.25 H7.25 Z</StreamGeometry>
+  <!-- The object-field picker (●): a ring around a dot. -->
+  <StreamGeometry x:Key="IconTarget">F0 M2.5,8 A5.5,5.5 0 1 1 13.5,8 A5.5,5.5 0 1 1 2.5,8 Z M4,8 A4,4 0 1 1 12,8 A4,4 0 1 1 4,8 Z M6,8 A2,2 0 1 1 10,8 A2,2 0 1 1 6,8 Z</StreamGeometry>
   <StreamGeometry x:Key="IconSearch">F0 M2,7 A5,5 0 1 1 12,7 A5,5 0 1 1 2,7 Z M3.5,7 A3.5,3.5 0 1 1 10.5,7 A3.5,3.5 0 1 1 3.5,7 Z M10.2,11.3 L11.3,10.2 L14.5,13.4 L13.4,14.5 Z</StreamGeometry>
   <StreamGeometry x:Key="IconClose">M4.1,3 L8,6.9 L11.9,3 L13,4.1 L9.1,8 L13,11.9 L11.9,13 L8,9.1 L4.1,13 L3,11.9 L6.9,8 L3,4.1 Z</StreamGeometry>
   <StreamGeometry x:Key="IconArrowUp">M8,2.5 L13,7.5 L11.9,8.6 L8.75,5.45 V13.5 H7.25 V5.45 L4.1,8.6 L3,7.5 Z</StreamGeometry>

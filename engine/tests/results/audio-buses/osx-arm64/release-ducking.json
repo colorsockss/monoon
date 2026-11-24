@@ -1,0 +1,9 @@
+{
+  "default_sha256": "ced6c800e6973e67473b97b0c7e302b84cd3d94078a34e6ae785b1837be5281b",
+  "ducking_sha256": "f6c485bb776456a8acfcc1ef2dd8c45c6a490d08a62b4e0abd1f4a49df8b30ed",
+  "pause_samples": 16639,
+  "pause_db_min": -8.000000877860582,
+  "pause_db_max": -7.999999104767305,
+  "pause_max_error": 4.6563254849085745e-09,
+  "baseline_from_frame": 62719
+}

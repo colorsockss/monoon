@@ -30,31 +30,13 @@ public static class AtlasPacker
             parts.Add(new(id,full,new(l,t,r-l+1,b-t+1),new(bitmap.Width,bitmap.Height,l,t),hash));
         }
         if (parts.Count == 0) throw new InvalidDataException("Select at least one PNG.");
-        parts = parts.OrderByDescending(p => p.Crop.Height).ThenByDescending(p => p.Crop.Width).ThenBy(p => p.Id).ToList();
-        var width = Math.Min(Limit,Math.Max(parts.Max(p => p.Crop.Width+2),(int)Math.Ceiling(Math.Sqrt(parts.Sum(p => (double)(p.Crop.Width+2)*(p.Crop.Height+2))))));
-        List<AtlasEntry> cells;
-        int right, bottom;
-        while (true)
-        {
-            cells = []; int x=0,y=0,row=0; right=0;
-            foreach (var p in parts)
-            {
-                int w=p.Crop.Width+2,h=p.Crop.Height+2;
-                if (w>Limit || h>Limit) throw new InvalidDataException("Trimmed sprite exceeds 4094 pixels.");
-                if (x+w>width) { x=0; y+=row; row=0; }
-                cells.Add(new(p.Id,new(x+1,y+1,p.Crop.Width,p.Crop.Height),p.Canvas));
-                x+=w; right=Math.Max(right,x); row=Math.Max(row,h);
-            }
-            bottom=y+row;
-            if (bottom<=Limit) break;
-            if (width==Limit) throw new InvalidDataException("Sprites do not fit a 4096 × 4096 atlas.");
-            width=Math.Min(Limit,width*2);
-        }
+        var (cells,right,bottom)=Layout(parts.Select(p => (p.Id,p.Crop.Width,p.Crop.Height,p.Canvas)));
+        var byId=parts.ToDictionary(p => p.Id);
         using var sheet = new SKBitmap(right,bottom,SKColorType.Rgba8888,SKAlphaType.Unpremul);
         sheet.Erase(SKColors.Transparent);
-        for (int i=0;i<parts.Count;i++)
+        foreach (var entry in cells)
         {
-            var p=parts[i]; var cell=cells[i].Source;
+            var p=byId[entry.Sprite]; var cell=entry.Source;
             using var bitmap=Read(p.Path,out var hash);
             if (p.Hash!=hash) throw new IOException($"PNG changed while packing: {p.Path}");
             for (int y=-1;y<=cell.Height;y++)
@@ -63,7 +45,7 @@ public static class AtlasPacker
         }
         using var png=sheet.Encode(SKEncodedImageFormat.Png,100);
         var bytes=png.ToArray();
-        var atlas=new SpriteAtlas(Convert.ToHexString(SHA256.HashData(bytes)),cells.ToArray());
+        var atlas=new SpriteAtlas(Convert.ToHexString(SHA256.HashData(bytes)),cells);
         var dest=Path.Combine(root,atlas.ImagePath());
         Directory.CreateDirectory(Path.GetDirectoryName(dest)!);
         if (!File.Exists(dest))
@@ -76,6 +58,56 @@ public static class AtlasPacker
         atlas.Save(file,overwrite);
         return atlas;
     }
+    // Shelf packing with a 1-pixel clamped border around each cell. Pack and the game build's repack share it.
+    private static (AtlasEntry[] Cells,int Width,int Height) Layout(IEnumerable<(Guid Id,int Width,int Height,SpriteCanvas Canvas)> sprites)
+    {
+        var parts = sprites.OrderByDescending(p => p.Height).ThenByDescending(p => p.Width).ThenBy(p => p.Id).ToList();
+        var width = Math.Min(Limit,Math.Max(parts.Max(p => p.Width+2),(int)Math.Ceiling(Math.Sqrt(parts.Sum(p => (double)(p.Width+2)*(p.Height+2))))));
+        while (true)
+        {
+            var cells = new List<AtlasEntry>(); int x=0,y=0,row=0,right=0;
+            foreach (var p in parts)
+            {
+                int w=p.Width+2,h=p.Height+2;
+                if (w>Limit || h>Limit) throw new InvalidDataException("Trimmed sprite exceeds 4094 pixels.");
+                if (x+w>width) { x=0; y+=row; row=0; }
+                cells.Add(new(p.Id,new(x+1,y+1,p.Width,p.Height),p.Canvas));
+                x+=w; right=Math.Max(right,x); row=Math.Max(row,h);
+            }
+            if (y+row<=Limit) return (cells.ToArray(),right,y+row);
+            if (width==Limit) throw new InvalidDataException("Sprites do not fit a 4096 × 4096 atlas.");
+            width=Math.Min(Limit,width*2);
+        }
+    }
+
+    // Roadmap 15.13: a game build ships only the cells it uses. They are laid out again as Pack would and copied from the
+    // source sheet with the same clamped border, so every kept sprite samples the same texels. 'keep' must not be empty.
+    internal static (AtlasEntry[] Cells,int Width,int Height) Layout(SpriteAtlas source,ISet<Guid> keep) =>
+        Layout(source.Entries.Where(e => keep.Contains(e.Sprite)).Select(e => (e.Sprite,e.Source.Width,e.Source.Height,e.Canvas)));
+
+    internal static unsafe void WriteSheet(string sourceSheet,SpriteAtlas source,(AtlasEntry[] Cells,int Width,int Height) layout,string output)
+    {
+        using var codec=SKCodec.Create(sourceSheet) ?? throw new InvalidDataException($"Invalid PNG: {sourceSheet}.");
+        // Unpremultiplied RGBA both ways: the copy is byte-exact, with no premultiply rounding.
+        using var from=new SKBitmap(new SKImageInfo(codec.Info.Width,codec.Info.Height,SKColorType.Rgba8888,SKAlphaType.Unpremul));
+        if (codec.GetPixels(from.Info,from.GetPixels())!=SKCodecResult.Success) throw new InvalidDataException($"Could not decode {sourceSheet}.");
+        using var sheet=new SKBitmap(layout.Width,layout.Height,SKColorType.Rgba8888,SKAlphaType.Unpremul);
+        sheet.Erase(SKColors.Transparent);
+        var old=source.Entries.ToDictionary(e => e.Sprite,e => e.Source);
+        uint* src=(uint*)from.GetPixels(), dst=(uint*)sheet.GetPixels();
+        int srcRow=from.RowBytes/4, dstRow=sheet.RowBytes/4;
+        foreach (var cell in layout.Cells)
+        {
+            var o=old[cell.Sprite]; var n=cell.Source;
+            if (!o.Fits(from.Width,from.Height)) throw new InvalidDataException($"Atlas cell {cell.Sprite} lies outside {sourceSheet}.");
+            for (int y=-1;y<=n.Height;y++)
+            for (int x=-1;x<=n.Width;x++)
+                dst[(n.Y+y)*dstRow+n.X+x]=src[(o.Y+Math.Clamp(y,0,n.Height-1))*srcRow+o.X+Math.Clamp(x,0,n.Width-1)];
+        }
+        using var png=sheet.Encode(SKEncodedImageFormat.Png,100);
+        File.WriteAllBytes(output,png.ToArray());
+    }
+
     private static SKBitmap Read(string path,out string hash)
     {
         using var stream=File.OpenRead(path);

@@ -1,3 +1,4 @@
+using Avalonia.Controls;
 using Engine.Core;
 
 namespace Engine.Editor;
@@ -50,11 +51,42 @@ public partial class MainWindow
 
     private void MarkDirty(object? group = null) => RecordEdit(Selected?.Id, group);
 
+    // A text or number field applies every keystroke at once but snapshots the scene only when the edit is committed
+    // (Enter, focus moving elsewhere, or any command that reads the history): one capture instead of one per keystroke.
+    // A slider drag and a number-label scrub (13.10) stay pending the same way until the pointer is released.
+    private (Guid? Previous, object Group, Guid[]? Multi)? pendingEdit;
+
+    private void CommitEdit()
+    {
+        if (pendingEdit is not { } edit) return;
+        pendingEdit = null;
+        RecordHistory(edit.Previous, edit.Group, null, edit.Multi);
+    }
+
     private void RecordEdit(Guid? previous, object? group = null, IProjectFileEdit? asset=null, Guid[]? multiSelection=null)
     {
-        Viewport.InvalidateUi();
+        if (scrub is { } scrubbing && asset == null) group = scrubbing;
+        bool typed = asset == null && (scrub != null || group is TextBox or NumericUpDown or Slider && multiSelection == null);
+        RefreshComponentWarnings();
+        if (typed) Viewport.InvalidateSelectionUi(); else Viewport.InvalidateUi();
         Scene.NormalizeCamera();
+        if (typed)
+        {
+            if (pendingEdit is { } open && open.Group != group) CommitEdit();
+            pendingEdit ??= (previous, group!, multiSelection);
+            UpdateMenuState();
+            UpdateTitle();
+            Status.Text = "Unsaved changes";
+            return;
+        }
+        CommitEdit();
+        RecordHistory(previous, group, asset, multiSelection);
+    }
+
+    private void RecordHistory(Guid? previous, object? group, IProjectFileEdit? asset, Guid[]? multiSelection)
+    {
         if (!history.Record(Scene, previous, Selected?.Id, group,asset,multiSelection)) return;
+        RefreshOverrides(); // 13.6: once per committed edit, not per keystroke
         QueueCheckpoint();
         UpdateMenuState();
         UpdateTitle();

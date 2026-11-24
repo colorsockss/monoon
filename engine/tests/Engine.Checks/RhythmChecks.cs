@@ -3,6 +3,7 @@ using Engine.Core;
 
 internal static class RhythmChecks
 {
+    [Check(2200, StopAfter = "rhythm")] static void Registered(CheckRun c) => Run(c.Repository);
     private static void Check(bool pass, string message)
     {
         if (!pass) throw new Exception("Rhythm: " + message);

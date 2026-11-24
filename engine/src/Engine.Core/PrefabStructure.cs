@@ -80,7 +80,7 @@ public sealed partial class SceneDocument
                 doc.ReplaceProperty(target, updated);
                 var known = PropertyNode(baseline[change.Object]);
                 known["components"]!.AsArray().Add(ComponentNode(PropertyNode(isolated), change.Component!)!.DeepClone());
-                baseline[change.Object] = JsonSerializer.SerializeToElement(known, GameJson.Default.JsonNode);
+                baseline[change.Object] = JsonElements.Of(known);
                 break;
             }
             case StructureChange.RemovedComponent:
@@ -91,7 +91,7 @@ public sealed partial class SceneDocument
                 doc.ReplaceProperty(target, updated);
                 var known = PropertyNode(baseline[change.Object]);
                 known["components"]!.AsArray().Remove(ComponentNode(known, change.Component!));
-                baseline[change.Object] = JsonSerializer.SerializeToElement(known, GameJson.Default.JsonNode);
+                baseline[change.Object] = JsonElements.Of(known);
                 break;
             }
             case StructureChange.AddedObject:

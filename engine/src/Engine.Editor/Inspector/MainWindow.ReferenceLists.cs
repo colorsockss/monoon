@@ -12,27 +12,38 @@ namespace Engine.Editor;
 
 public partial class MainWindow
 {
-    private sealed record ReferenceDrop(StackPanel List, int Index, string? Extension, Action<Guid> Insert);
     private Border? referenceHighlight;
 
-    private Border? ReferenceTarget(PointerEventArgs e)
+    // The drop place under the pointer: the Inspector, a docked tool panel such as Particle, or a torn-off panel window.
+    private Border? ReferenceTarget(PointerEventArgs e) => ReferenceTarget(this.PointToScreen(e.GetPosition(this)));
+
+    private Border? ReferenceTarget(PixelPoint screen)
     {
-        var hit = InspectorPanel.InputHitTest(e.GetPosition(InspectorPanel)) as Visual;
-        return hit?.GetSelfAndVisualAncestors().OfType<Border>().FirstOrDefault(b => b.Tag is ReferenceDrop);
+        foreach (var window in OwnedWindows.Where(w => w.IsVisible).Append(this))
+        {
+            var point = window.PointToClient(screen);
+            if (!new Rect(window.Bounds.Size).Contains(point)) continue;
+            var hit = window.InputHitTest(point) as Visual;
+            return hit?.GetSelfAndVisualAncestors().OfType<Border>().FirstOrDefault(b => b.Tag is ReferenceDrop);
+        }
+        return null;
     }
 
-    private void HighlightReference(Border? target)
+    // accept false marks a field that refuses what is dragged (13.17): only the border colour changes.
+    private void HighlightReference(Border? target, bool accept = true)
     {
-        if (referenceHighlight == target) return;
+        if (referenceHighlight == target && target?.Classes.Contains("referenceReject") == !accept) return;
         referenceHighlight?.Classes.Remove("referenceDrop");
+        referenceHighlight?.Classes.Remove("referenceReject");
         referenceHighlight = target;
-        target?.Classes.Add("referenceDrop");
+        target?.Classes.Add(accept ? "referenceDrop" : "referenceReject");
     }
 
     private Control ReferenceList(ScriptField field, ScriptComponent component)
     {
         var list = new StackPanel { Spacing = 2 };
         var extension = field.AssetExtension;
+        Func<string, bool>? accepts = extension == null ? null : EndsWith(extension);
         var ids = component.ReadReferences(field.Name, field.IsObjectList).ToList();
         void Commit()
         {
@@ -44,7 +55,8 @@ public partial class MainWindow
         Border Target(Control content, int index)
         {
             var border = new Border { Child = content, Classes = { "referenceRow" } };
-            border.Tag = new ReferenceDrop(list, index, extension, id => { ids.Insert(index, id); Commit(); });
+            // Several assets dropped at once go in at this place in their order: one Undo step (13.17).
+            border.Tag = new ReferenceDrop(list, index, accepts, added => { ids.InsertRange(index, added); Commit(); }, Many: true);
             return border;
         }
 

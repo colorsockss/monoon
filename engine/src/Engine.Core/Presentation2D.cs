@@ -15,6 +15,7 @@ public sealed partial record SpriteAnimatorComponent : SceneComponent
 
 [DisplayName("Audio Source")]
 [YamlObject]
+[EngineFeature(EngineFeature.Audio)]
 public sealed partial record AudioSourceComponent : SceneComponent
 {
     public AudioSourceComponent() { }
@@ -31,19 +32,21 @@ public sealed partial record AudioSourceComponent : SceneComponent
     internal bool Extended => Bus!=AudioBus.Effects || Volume!=1 || Loop || PlayOnStart || FadeIn!=0 || FadeOut!=0 || Spatial || Range!=400;
     internal void Validate(string name)
     {
-        if (Bus is not (AudioBus.Music or AudioBus.Effects) || !MixerLevels.Unit(Volume) ||
+        if (!AudioDucking.Bus(Bus) || !MixerLevels.Unit(Volume) ||
             FadeIn is not (>=0 and <=3600) || FadeOut is not (>=0 and <=3600) || !float.IsFinite(Range) || Range<=0)
             throw new InvalidDataException($"{name}: invalid audio bus, gain, fade or spatial range.");
     }
 }
 
-[DisplayName("Audio Listener 2D"), YamlObject]
+[DisplayName("Audio Listener 2D"), YamlObject, EngineFeature(EngineFeature.Audio)]
 public sealed partial record AudioListener2DComponent : SceneComponent;
 
 [DisplayName("HUD")]
 [YamlObject]
+[EngineFeature(EngineFeature.Text)]
 public sealed partial record HudComponent : SceneComponent
 {
+    internal override bool CanDisable => false;
     public HudComponent() { }
     [YamlConstructor] public HudComponent(string text = "", string requiredFlag = "") => (Text, RequiredFlag) = (text, requiredFlag);
     public string Text { get; set; } = "";

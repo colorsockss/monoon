@@ -30,6 +30,20 @@ internal sealed class SdlSpriteBatch(SdlRenderer renderer)
         }
     }
 
+    public void Quad(SdlTexture nextTexture, in ParticleQuad quad, SpriteRegion cell, Size size, Matrix3x2 view)
+    {
+        int first = Reserve(nextTexture, 4);
+        var tint = quad.Tint;
+        var color = new SdlFColor { r = tint.R / 255f, g = tint.G / 255f, b = tint.B / 255f, a = tint.A / 255f };
+        float u0 = (float)cell.X / size.Width, v0 = (float)cell.Y / size.Height;
+        float u1 = (float)(cell.X + cell.Width) / size.Width, v1 = (float)(cell.Y + cell.Height) / size.Height;
+        Vector2 c = quad.Center, r = quad.Right, d = quad.Down;
+        vertices[first] = Vertex(Affine2D.Transform(c - r - d, view), u0, v0, color);
+        vertices[first + 1] = Vertex(Affine2D.Transform(c + r - d, view), u1, v0, color);
+        vertices[first + 2] = Vertex(Affine2D.Transform(c + r + d, view), u1, v1, color);
+        vertices[first + 3] = Vertex(Affine2D.Transform(c - r + d, view), u0, v1, color);
+    }
+
     public void Line(Vector2 start, Vector2 end, float width, Color tint)
     {
         var delta = end - start;
@@ -54,6 +68,17 @@ internal sealed class SdlSpriteBatch(SdlRenderer renderer)
             vertices[first + 1] = Vertex(Vector2.Transform(edges[i * 2 + 2], matrix), 0, 0, b);
             vertices[first + 2] = Vertex(Vector2.Transform(edges[i * 2 + 3], matrix), 0, 0, b);
             vertices[first + 3] = Vertex(Vector2.Transform(edges[i * 2 + 1], matrix), 0, 0, a);
+        }
+    }
+
+    // Untextured convex quads of one colour, 4 points each (light shadows).
+    public void Quads(ReadOnlySpan<Vector2> points, Color tint, Matrix3x2 matrix)
+    {
+        var color = new SdlFColor { r = tint.R / 255f, g = tint.G / 255f, b = tint.B / 255f, a = tint.A / 255f };
+        for (int i = 0; i + 3 < points.Length; i += 4)
+        {
+            int first = Reserve(default, 4);
+            for (int k = 0; k < 4; k++) vertices[first + k] = Vertex(Affine2D.Transform(points[i + k], matrix), 0, 0, color);
         }
     }
 

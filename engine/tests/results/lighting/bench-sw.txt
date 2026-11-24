@@ -1,0 +1,27 @@
+qemu: 0 processes at start
+run=1	sw	off	median_ms=0.559	p95_ms=0.622	mean_ms=0.555	draws=7.0	B/frame=352.0	rebuilds/frame=0.00
+run=1	sw	8	median_ms=8.699	p95_ms=9.148	mean_ms=8.797	draws=31.0	B/frame=352.0	rebuilds/frame=3.89
+run=1	sw	0	median_ms=1.698	p95_ms=6.903	mean_ms=2.564	draws=6.0	B/frame=352.0	rebuilds/frame=0.00
+run=1	sw	4	median_ms=4.265	p95_ms=4.490	mean_ms=4.312	draws=19.0	B/frame=352.0	rebuilds/frame=1.37
+run=1	sw	8n	median_ms=3.232	p95_ms=12.487	mean_ms=4.493	draws=8.0	B/frame=352.0	rebuilds/frame=0.00
+run=2	sw	off	median_ms=0.216	p95_ms=0.721	mean_ms=0.372	draws=7.0	B/frame=352.0	rebuilds/frame=0.00
+run=2	sw	8	median_ms=8.674	p95_ms=17.290	mean_ms=9.844	draws=31.0	B/frame=352.0	rebuilds/frame=3.89
+run=2	sw	0	median_ms=1.687	p95_ms=1.755	mean_ms=1.693	draws=6.0	B/frame=352.0	rebuilds/frame=0.00
+run=2	sw	4	median_ms=4.313	p95_ms=4.533	mean_ms=4.518	draws=19.0	B/frame=352.0	rebuilds/frame=1.37
+run=2	sw	8n	median_ms=3.225	p95_ms=3.365	mean_ms=3.280	draws=8.0	B/frame=352.0	rebuilds/frame=0.00
+run=3	sw	off	median_ms=0.468	p95_ms=0.510	mean_ms=0.472	draws=7.0	B/frame=352.0	rebuilds/frame=0.00
+run=3	sw	8	median_ms=8.713	p95_ms=20.902	mean_ms=10.152	draws=31.0	B/frame=352.0	rebuilds/frame=3.89
+run=3	sw	0	median_ms=1.706	p95_ms=1.794	mean_ms=1.786	draws=6.0	B/frame=352.0	rebuilds/frame=0.00
+run=3	sw	4	median_ms=4.315	p95_ms=4.471	mean_ms=4.325	draws=19.0	B/frame=352.0	rebuilds/frame=1.37
+run=3	sw	8n	median_ms=3.214	p95_ms=7.773	mean_ms=4.355	draws=8.0	B/frame=352.0	rebuilds/frame=0.00
+run=4	sw	off	median_ms=0.212	p95_ms=0.498	mean_ms=0.567	draws=7.0	B/frame=352.0	rebuilds/frame=0.00
+run=4	sw	8	median_ms=8.682	p95_ms=14.079	mean_ms=9.600	draws=31.0	B/frame=352.0	rebuilds/frame=3.89
+run=4	sw	0	median_ms=1.678	p95_ms=1.749	mean_ms=1.689	draws=6.0	B/frame=352.0	rebuilds/frame=0.00
+run=4	sw	4	median_ms=4.269	p95_ms=4.479	mean_ms=4.300	draws=19.0	B/frame=352.0	rebuilds/frame=1.37
+run=4	sw	8n	median_ms=3.205	p95_ms=9.367	mean_ms=4.124	draws=8.0	B/frame=352.0	rebuilds/frame=0.00
+run=5	sw	off	median_ms=0.460	p95_ms=0.507	mean_ms=0.466	draws=7.0	B/frame=352.0	rebuilds/frame=0.00
+run=5	sw	8	median_ms=8.671	p95_ms=19.887	mean_ms=10.099	draws=31.0	B/frame=352.0	rebuilds/frame=3.89
+run=5	sw	0	median_ms=1.695	p95_ms=1.786	mean_ms=1.757	draws=6.0	B/frame=352.0	rebuilds/frame=0.00
+run=5	sw	4	median_ms=4.304	p95_ms=4.444	mean_ms=4.335	draws=19.0	B/frame=352.0	rebuilds/frame=1.37
+run=5	sw	8n	median_ms=3.219	p95_ms=3.451	mean_ms=3.314	draws=8.0	B/frame=352.0	rebuilds/frame=0.00
+qemu: 2 processes at end

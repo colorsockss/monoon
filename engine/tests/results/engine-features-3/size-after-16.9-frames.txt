@@ -1,0 +1,22 @@
+PASS tile animation: Meadow.tileset resolves water (3 frames, 4 FPS) and torch (4 frames, 8 FPS) from the following sheet cells
+PASS tile animation: 600 ticks pick the independent frame for both tiles; unanimated tiles keep their art
+PASS tile animation: at 0.30 s all 24 water cells draw #58 and both torches share one frame, from one sheet
+PASS tile animation: 20,000 clock updates and lookups allocate 0 bytes
+PASS tile animation: SetTile clears and repaints a water cell
+PASS tile animation: after 20 ticks every water cell, including the repainted one, reports frame #58
+PASS tile animation: streamed pages animate the same way
+PASS tile animation: rejects "needs 2 to 64 frames"
+PASS tile animation: rejects "needs 2 to 64 frames"
+PASS tile animation: rejects "needs 2 to 64 frames"
+PASS tile animation: rejects "no terrain or random brush"
+PASS tile animation: rejects "2 frame sheet cells"
+PASS tile animation: 7 sample tilesets gain no frames or fps keys when saved
+PASS Native AOT kit path resolves symlinks
+PASS Native AOT kit has no VYaml generated Serialize code (350 Deserialize methods remain)
+KeyRoom release: app 33,034,010 B, executable 124,712 B, (baseline 32,920,339 / 124,712)
+KeyRoom native-aot: app 15,841,671 B, executable 8,703,344 B, (baseline 15,758,391 / 8,620,544)
+PlatformerLab release: app 30,291,802 B, executable 124,712 B, (baseline 30,165,883 / 124,712)
+PlatformerLab native-aot: app 13,077,101 B, executable 8,387,968 B, (baseline 12,985,669 / 8,305,168)
+InventoryLab release: app 83,714,524 B, executable 124,712 B, (baseline 83,600,661 / 124,712)
+InventoryLab native-aot: app 66,480,783 B, executable 8,387,872 B, (baseline 66,397,807 / 8,305,056)
+PASS build size baseline: 6 osx-arm64 distribution builds within +1%

@@ -6,23 +6,28 @@ using KeyRoom.Rules;
 
 public sealed class PlayerMovement : GameBehaviour
 {
+    /// <summary>Walking speed in pixels per second.</summary>
+    [Header("Movement"), Range(60, 480)]
     [FormerlySerializedAs("Speed")]
     public float MoveSpeed = 240f;
 
+    [Tooltip("How far a coin can be picked up or dropped, in pixels.")]
+    [SerializeField, Min(16)] private float coinReach = 128f;
+
     public override void FixedUpdate(ScriptTick tick)
     {
-        if (tick.Input.Pressed("CarryCoin")) ToggleCoin(tick);
+        if (tick.Input.Pressed("CarryCoin")) ToggleCoin(tick, coinReach);
         tick.Move(tick.Direction * (MoveSpeed * tick.DeltaTime));
     }
 
-    private static void ToggleCoin(ScriptTick tick)
+    private static void ToggleCoin(ScriptTick tick, float reach)
     {
         var objects = tick.Objects;
-        var reach = Shape2D.Circle(tick.Position, 128);
+        var area = Shape2D.Circle(tick.Position, reach);
         Guid? nearest = null;
         float distance = float.PositiveInfinity;
         var collectibles = objects.FindByGroup(LootRules.Collectibles);
-        foreach (var hit in objects.Physics.Overlap(reach, new PhysicsFilter(IncludeTriggers: true)))
+        foreach (var hit in objects.Physics.Overlap(area, new PhysicsFilter(IncludeTriggers: true)))
         {
             var coin = hit.ObjectId;
             if (!collectibles.Contains(coin) || !objects.TryGetParent(coin, out var parent)) continue;

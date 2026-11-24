@@ -1,0 +1,2 @@
+plain gold=0 cyan=0 text=Ready    |    Player  200, 200    |    Camera  200, 200
+gizmos gold=2 cyan=2 text=200, 200;200, 200;Ready    |    Player  200, 200    |    Camera  200, 200

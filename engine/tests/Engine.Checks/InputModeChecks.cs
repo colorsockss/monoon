@@ -3,6 +3,7 @@ using Engine.Core;
 
 internal static class InputModeChecks
 {
+    [Check(6900)] static void Registered(CheckRun c) => Run(c.Project);
     internal static void Run(string project)
     {
         var scene = SceneDocument.Load(Path.Combine(project, "Scenes", "KeyRoom.scene"));

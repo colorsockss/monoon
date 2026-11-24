@@ -5,6 +5,7 @@ using Engine.Core;
 // Roadmap 10.6: tileset terrain data and runtime cell edits shared by drawing, collision and grid navigation.
 internal static class TileTerrainChecks
 {
+    [Check(3400, "terrain")] static void Registered(CheckRun c) => Run(c.Repository, c.Scratch);
     private static void Check(bool ok, string detail)
     {
         if (!ok) throw new Exception("Tile terrain: " + detail);

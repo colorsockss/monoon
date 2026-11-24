@@ -108,7 +108,7 @@ public sealed partial class SceneGame
             foreach (var routine in routines) routine.Stop();
             routines.Clear();
             if (ownsScripts) scripts?.Dispose();
-            if (ownsAudio) Mixer.Dispose();
+            if (EngineFeatures.Audio) if (ownsAudio) Mixer.Dispose();
         }
     }
 }

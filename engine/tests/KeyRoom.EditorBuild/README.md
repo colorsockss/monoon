@@ -40,4 +40,4 @@ python3 "$qa/editor.py" editor/MoNoon.app/Contents/MacOS/MoNoon samples/KeyRoom 
   engine/.artifacts/bin/EditorBuildProbe/release/EditorBuildProbe.dll "$(mktemp -d)/editor-build"
 ```
 
-결과 폴더에는 `dialog-1280.png`, `dialog-1920.png`, `dialog-reopened.png`, 단계별 `result-*.json`, 비교 결과 `compare-release.json`·`compare-native-aot.json`, 에디터·CLI 로그, 네 빌드(`editor-release`, `cli-release`, `editor-aot`, `cli-aot`)가 남는다. [Mac 결과](../results/editor-build/README.md)
+결과 폴더에는 `dialog-1280.png`, `dialog-1920.png`, `dialog-reopened.png`, 빌드 직후 Console 캡처 `console-release.png`·`console-aot.png`, 단계별 `result-*.json`(Console 줄 포함, 에셋 보고서 요약과 경로를 확인한다), 비교 결과 `compare-release.json`·`compare-native-aot.json`, 에디터·CLI 로그, 네 빌드(`editor-release`, `cli-release`, `editor-aot`, `cli-aot`)가 남는다. [Mac 결과](../results/editor-build/README.md)

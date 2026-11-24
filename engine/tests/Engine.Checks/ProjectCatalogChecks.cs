@@ -2,6 +2,8 @@ using Engine.Core;
 
 internal static class ProjectCatalogChecks
 {
+    [Check(7800)]
+    static void Registered(CheckRun c) { c.CopyKeyRoom(); Run(c.Scratch); }
     internal static void Run(string project)
     {
         var test=Directory.CreateTempSubdirectory("monoon-catalog-");
