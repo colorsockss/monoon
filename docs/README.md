@@ -8,6 +8,7 @@
 | [구현 기록](history/README.md) | 구현을 마친 기능이 어떻게 만들어져 있고 왜 그렇게 정했는지(런타임, 렌더링, UI·오디오, 에디터, 빌드·배포) |
 | [MoNoon Engine 사용자 매뉴얼](manual/README.md) | 프로젝트 열기부터 컴포넌트, UI, 애니메이션, 네 가지 타일 Layout과 게임 배포까지 실제 조작 순서 |
 | [BRUTAL 프레임워크 기능 정리](brutal.md) | 엔진이 기반으로 쓰는 BRUTAL 패키지별 기능과 MoNoon에서 사용할 때의 경계·라이선스 |
+| [타일맵 샘플 게임 3종 계획](plans/samples/README.md) | 직교 플랫포머, 아이소메트릭 용병단 RPG, 헥사고날 문명식 전략 샘플의 설계·엔진 보강·단계 |
 | [다음 작업 계획 (2026-11-23 조사)](plans/next-work/README.md) | Inspector·엔진 기능, 배포 용량·시작 시간, 코드·에셋 trim, 파티클 에디터, AI 에이전트 개발 방식, 게임 개발자용 AI 도구 조사와 결정 사항 |
 | [개발 문서](development.md) · [에이전트 작업 흐름](manual/agent-workflow.md) | 엔진 저장소 구조와 개발 규칙, 에이전트 워크트리·GUI 잠금·하네스·결과 기록 |
 | [InventoryLab 게임 스크립트 API](manual/api.md) | 컴포넌트 참조, 입력·UI, 가방·의뢰·대화, 저장 슬롯 호출 예제 |
