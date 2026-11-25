@@ -1,0 +1,477 @@
+schemaVersion: 42
+objects:
+- id: 51e0a8eb-83e1-5a96-b956-1b386990ee26
+  name: Sky backing
+  x: -400
+  y: -300
+  width: 4600
+  height: 1200
+  components:
+  - type: spriteRenderer
+    sortingLayer: -31
+    squareColor: "#3E2C7C"
+- id: 11faa32c-a80f-5b10-82a4-be99ba8ee699
+  name: Sky
+  x: -120
+  y: 160
+  width: 456
+  height: 228
+  components:
+  - type: spriteRenderer
+    assetId: dd698e3c-24ed-5c0a-b76a-06ff5a4c4ad2
+    asset: Assets/Showcase/Sky.png
+    sortingLayer: -30
+  - type: parallax2D
+    scrollX: 0.15
+    scrollY: 0
+    repeatX: true
+- id: e8112652-c6ec-535c-9be3-22d0a67ec4f9
+  name: Moon
+  x: 200
+  y: 210
+  width: 18
+  height: 18
+  components:
+  - type: spriteRenderer
+    assetId: 07237847-ccea-5b53-947f-11e89f3ac360
+    asset: Assets/Showcase/Moon.png
+    sortingLayer: -29
+  - type: parallax2D
+    scrollX: 0.05
+    scrollY: 0
+- id: 368cc1f7-2153-5ca2-8987-bcea1300b7ba
+  name: Ground
+  x: 0
+  y: 0
+  width: 16
+  height: 16
+  components:
+  - type: tilemap2D
+    tileset: 2807f98a-c01b-512b-a69a-bf98cab338bf
+    cellSize: {width: 16, height: 16}
+    collisionLayer: 3
+    streamRadius: 1
+    streamTarget: b3e29524-e8d6-571d-ad90-a972c17ec67d
+    order: -1
+    chunks:
+    - x: 0
+      y: 0
+      cells: [{index: 704, tile: 1}, {index: 736, tile: 1}, {index: 768, tile: 1}, {index: 800, tile: 1}, {index: 832, tile: 1}, {index: 864, tile: 1}, {index: 896, tile: 1}, {index: 928, tile: 1}, {index: 960, tile: 1}, {index: 992, tile: 1}, {index: 705, tile: 1}, {index: 737, tile: 1}, {index: 769, tile: 1}, {index: 801, tile: 1}, {index: 833, tile: 1}, {index: 865, tile: 1}, {index: 897, tile: 1}, {index: 929, tile: 1}, {index: 961, tile: 1}, {index: 993, tile: 1}, {index: 706, tile: 1}, {index: 738, tile: 1}, {index: 770, tile: 1}, {index: 802, tile: 1}, {index: 834, tile: 1}, {index: 866, tile: 1}, {index: 898, tile: 1}, {index: 930, tile: 1}, {index: 962, tile: 1}, {index: 994, tile: 1}, {index: 707, tile: 1}, {index: 739, tile: 1}, {index: 771, tile: 1}, {index: 803, tile: 1}, {index: 835, tile: 1}, {index: 867, tile: 1}, {index: 899, tile: 1}, {index: 931, tile: 1}, {index: 963, tile: 1}, {index: 995, tile: 1}, {index: 708, tile: 1}, {index: 740, tile: 1}, {index: 772, tile: 1}, {index: 804, tile: 1}, {index: 836, tile: 1}, {index: 868, tile: 1}, {index: 900, tile: 1}, {index: 932, tile: 1}, {index: 964, tile: 1}, {index: 996, tile: 1}, {index: 709, tile: 1}, {index: 741, tile: 1}, {index: 773, tile: 1}, {index: 805, tile: 1}, {index: 837, tile: 1}, {index: 869, tile: 1}, {index: 901, tile: 1}, {index: 933, tile: 1}, {index: 965, tile: 1}, {index: 997, tile: 1}, {index: 710, tile: 1}, {index: 742, tile: 1}, {index: 774, tile: 1}, {index: 806, tile: 1}, {index: 838, tile: 1}, {index: 870, tile: 1}, {index: 902, tile: 1}, {index: 934, tile: 1}, {index: 966, tile: 1}, {index: 998, tile: 1}, {index: 711, tile: 1}, {index: 743, tile: 1}, {index: 775, tile: 1}, {index: 807, tile: 1}, {index: 839, tile: 1}, {index: 871, tile: 1}, {index: 903, tile: 1}, {index: 935, tile: 1}, {index: 967, tile: 1}, {index: 999, tile: 1}, {index: 712, tile: 1}, {index: 744, tile: 1}, {index: 776, tile: 1}, {index: 808, tile: 1}, {index: 840, tile: 1}, {index: 872, tile: 1}, {index: 904, tile: 1}, {index: 936, tile: 1}, {index: 968, tile: 1}, {index: 1000, tile: 1}, {index: 713, tile: 1}, {index: 745, tile: 1}, {index: 777, tile: 1}, {index: 809, tile: 1}, {index: 841, tile: 1}, {index: 873, tile: 1}, {index: 905, tile: 1}, {index: 937, tile: 1}, {index: 969, tile: 1}, {index: 1001, tile: 1}, {index: 714, tile: 1}, {index: 746, tile: 1}, {index: 778, tile: 1}, {index: 810, tile: 1}, {index: 842, tile: 1}, {index: 874, tile: 1}, {index: 906, tile: 1}, {index: 938, tile: 1}, {index: 970, tile: 1}, {index: 1002, tile: 1}, {index: 715, tile: 1}, {index: 747, tile: 1}, {index: 779, tile: 1}, {index: 811, tile: 1}, {index: 843, tile: 1}, {index: 875, tile: 1}, {index: 907, tile: 1}, {index: 939, tile: 1}, {index: 971, tile: 1}, {index: 1003, tile: 1}, {index: 716, tile: 1}, {index: 748, tile: 1}, {index: 780, tile: 1}, {index: 812, tile: 1}, {index: 844, tile: 1}, {index: 876, tile: 1}, {index: 908, tile: 1}, {index: 940, tile: 1}, {index: 972, tile: 1}, {index: 1004, tile: 1}, {index: 717, tile: 1}, {index: 749, tile: 1}, {index: 781, tile: 1}, {index: 813, tile: 1}, {index: 845, tile: 1}, {index: 877, tile: 1}, {index: 909, tile: 1}, {index: 941, tile: 1}, {index: 973, tile: 1}, {index: 1005, tile: 1}, {index: 718, tile: 1}, {index: 750, tile: 1}, {index: 782, tile: 1}, {index: 814, tile: 1}, {index: 846, tile: 1}, {index: 878, tile: 1}, {index: 910, tile: 1}, {index: 942, tile: 1}, {index: 974, tile: 1}, {index: 1006, tile: 1}, {index: 719, tile: 1}, {index: 751, tile: 1}, {index: 783, tile: 1}, {index: 815, tile: 1}, {index: 847, tile: 1}, {index: 879, tile: 1}, {index: 911, tile: 1}, {index: 943, tile: 1}, {index: 975, tile: 1}, {index: 1007, tile: 1}, {index: 720, tile: 1}, {index: 752, tile: 1}, {index: 784, tile: 1}, {index: 816, tile: 1}, {index: 848, tile: 1}, {index: 880, tile: 1}, {index: 912, tile: 1}, {index: 944, tile: 1}, {index: 976, tile: 1}, {index: 1008, tile: 1}, {index: 721, tile: 1}, {index: 753, tile: 1}, {index: 785, tile: 1}, {index: 817, tile: 1}, {index: 849, tile: 1}, {index: 881, tile: 1}, {index: 913, tile: 1}, {index: 945, tile: 1}, {index: 977, tile: 1}, {index: 1009, tile: 1}, {index: 722, tile: 1}, {index: 754, tile: 1}, {index: 786, tile: 1}, {index: 818, tile: 1}, {index: 850, tile: 1}, {index: 882, tile: 1}, {index: 914, tile: 1}, {index: 946, tile: 1}, {index: 978, tile: 1}, {index: 1010, tile: 1}, {index: 723, tile: 1}, {index: 755, tile: 1}, {index: 787, tile: 1}, {index: 819, tile: 1}, {index: 851, tile: 1}, {index: 883, tile: 1}, {index: 915, tile: 1}, {index: 947, tile: 1}, {index: 979, tile: 1}, {index: 1011, tile: 1}, {index: 724, tile: 1}, {index: 756, tile: 1}, {index: 788, tile: 1}, {index: 820, tile: 1}, {index: 852, tile: 1}, {index: 884, tile: 1}, {index: 916, tile: 1}, {index: 948, tile: 1}, {index: 980, tile: 1}, {index: 1012, tile: 1}, {index: 725, tile: 1}, {index: 757, tile: 1}, {index: 789, tile: 1}, {index: 821, tile: 1}, {index: 853, tile: 1}, {index: 885, tile: 1}, {index: 917, tile: 1}, {index: 949, tile: 1}, {index: 981, tile: 1}, {index: 1013, tile: 1}, {index: 726, tile: 1}, {index: 758, tile: 1}, {index: 790, tile: 1}, {index: 822, tile: 1}, {index: 854, tile: 1}, {index: 886, tile: 1}, {index: 918, tile: 1}, {index: 950, tile: 1}, {index: 982, tile: 1}, {index: 1014, tile: 1}, {index: 727, tile: 1}, {index: 759, tile: 1}, {index: 791, tile: 1}, {index: 823, tile: 1}, {index: 855, tile: 1}, {index: 887, tile: 1}, {index: 919, tile: 1}, {index: 951, tile: 1}, {index: 983, tile: 1}, {index: 1015, tile: 1}, {index: 728, tile: 1}, {index: 760, tile: 1}, {index: 792, tile: 1}, {index: 824, tile: 1}, {index: 856, tile: 1}, {index: 888, tile: 1}, {index: 920, tile: 1}, {index: 952, tile: 1}, {index: 984, tile: 1}, {index: 1016, tile: 1}, {index: 729, tile: 1}, {index: 761, tile: 1}, {index: 793, tile: 1}, {index: 825, tile: 1}, {index: 857, tile: 1}, {index: 889, tile: 1}, {index: 921, tile: 1}, {index: 953, tile: 1}, {index: 985, tile: 1}, {index: 1017, tile: 1}, {index: 730, tile: 1}, {index: 762, tile: 1}, {index: 794, tile: 1}, {index: 826, tile: 1}, {index: 858, tile: 1}, {index: 890, tile: 1}, {index: 922, tile: 1}, {index: 954, tile: 1}, {index: 986, tile: 1}, {index: 1018, tile: 1}, {index: 731, tile: 1}, {index: 763, tile: 1}, {index: 795, tile: 1}, {index: 827, tile: 1}, {index: 859, tile: 1}, {index: 891, tile: 1}, {index: 923, tile: 1}, {index: 955, tile: 1}, {index: 987, tile: 1}, {index: 1019, tile: 1}, {index: 732, tile: 1}, {index: 764, tile: 1}, {index: 796, tile: 1}, {index: 828, tile: 1}, {index: 860, tile: 1}, {index: 892, tile: 1}, {index: 924, tile: 1}, {index: 956, tile: 1}, {index: 988, tile: 1}, {index: 1020, tile: 1}, {index: 733, tile: 1}, {index: 765, tile: 1}, {index: 797, tile: 1}, {index: 829, tile: 1}, {index: 861, tile: 1}, {index: 893, tile: 1}, {index: 925, tile: 1}, {index: 957, tile: 1}, {index: 989, tile: 1}, {index: 1021, tile: 1}, {index: 734, tile: 1}, {index: 766, tile: 1}, {index: 798, tile: 1}, {index: 830, tile: 1}, {index: 862, tile: 1}, {index: 894, tile: 1}, {index: 926, tile: 1}, {index: 958, tile: 1}, {index: 990, tile: 1}, {index: 1022, tile: 1}, {index: 735, tile: 1}, {index: 767, tile: 1}, {index: 799, tile: 1}, {index: 831, tile: 1}, {index: 863, tile: 1}, {index: 895, tile: 1}, {index: 927, tile: 1}, {index: 959, tile: 1}, {index: 991, tile: 1}, {index: 1023, tile: 1}]
+    - x: 1
+      y: 0
+      cells: [{index: 704, tile: 1}, {index: 736, tile: 1}, {index: 768, tile: 1}, {index: 800, tile: 1}, {index: 832, tile: 1}, {index: 864, tile: 1}, {index: 896, tile: 1}, {index: 928, tile: 1}, {index: 960, tile: 1}, {index: 992, tile: 1}, {index: 705, tile: 1}, {index: 737, tile: 1}, {index: 769, tile: 1}, {index: 801, tile: 1}, {index: 833, tile: 1}, {index: 865, tile: 1}, {index: 897, tile: 1}, {index: 929, tile: 1}, {index: 961, tile: 1}, {index: 993, tile: 1}, {index: 706, tile: 1}, {index: 738, tile: 1}, {index: 770, tile: 1}, {index: 802, tile: 1}, {index: 834, tile: 1}, {index: 866, tile: 1}, {index: 898, tile: 1}, {index: 930, tile: 1}, {index: 962, tile: 1}, {index: 994, tile: 1}, {index: 707, tile: 1}, {index: 739, tile: 1}, {index: 771, tile: 1}, {index: 803, tile: 1}, {index: 835, tile: 1}, {index: 867, tile: 1}, {index: 899, tile: 1}, {index: 931, tile: 1}, {index: 963, tile: 1}, {index: 995, tile: 1}, {index: 708, tile: 1}, {index: 740, tile: 1}, {index: 772, tile: 1}, {index: 804, tile: 1}, {index: 836, tile: 1}, {index: 868, tile: 1}, {index: 900, tile: 1}, {index: 932, tile: 1}, {index: 964, tile: 1}, {index: 996, tile: 1}, {index: 709, tile: 1}, {index: 741, tile: 1}, {index: 773, tile: 1}, {index: 805, tile: 1}, {index: 837, tile: 1}, {index: 869, tile: 1}, {index: 901, tile: 1}, {index: 933, tile: 1}, {index: 965, tile: 1}, {index: 997, tile: 1}, {index: 710, tile: 1}, {index: 742, tile: 1}, {index: 774, tile: 1}, {index: 806, tile: 1}, {index: 838, tile: 1}, {index: 870, tile: 1}, {index: 902, tile: 1}, {index: 934, tile: 1}, {index: 966, tile: 1}, {index: 998, tile: 1}, {index: 711, tile: 1}, {index: 743, tile: 1}, {index: 775, tile: 1}, {index: 807, tile: 1}, {index: 839, tile: 1}, {index: 871, tile: 1}, {index: 903, tile: 1}, {index: 935, tile: 1}, {index: 967, tile: 1}, {index: 999, tile: 1}, {index: 680, tile: 1}, {index: 712, tile: 1}, {index: 744, tile: 1}, {index: 776, tile: 1}, {index: 808, tile: 1}, {index: 840, tile: 1}, {index: 872, tile: 1}, {index: 904, tile: 1}, {index: 936, tile: 1}, {index: 968, tile: 1}, {index: 1000, tile: 1}, {index: 681, tile: 1}, {index: 713, tile: 1}, {index: 745, tile: 1}, {index: 777, tile: 1}, {index: 809, tile: 1}, {index: 841, tile: 1}, {index: 873, tile: 1}, {index: 905, tile: 1}, {index: 937, tile: 1}, {index: 969, tile: 1}, {index: 1001, tile: 1}, {index: 682, tile: 1}, {index: 714, tile: 1}, {index: 746, tile: 1}, {index: 778, tile: 1}, {index: 810, tile: 1}, {index: 842, tile: 1}, {index: 874, tile: 1}, {index: 906, tile: 1}, {index: 938, tile: 1}, {index: 970, tile: 1}, {index: 1002, tile: 1}, {index: 683, tile: 1}, {index: 715, tile: 1}, {index: 747, tile: 1}, {index: 779, tile: 1}, {index: 811, tile: 1}, {index: 843, tile: 1}, {index: 875, tile: 1}, {index: 907, tile: 1}, {index: 939, tile: 1}, {index: 971, tile: 1}, {index: 1003, tile: 1}, {index: 684, tile: 1}, {index: 716, tile: 1}, {index: 748, tile: 1}, {index: 780, tile: 1}, {index: 812, tile: 1}, {index: 844, tile: 1}, {index: 876, tile: 1}, {index: 908, tile: 1}, {index: 940, tile: 1}, {index: 972, tile: 1}, {index: 1004, tile: 1}, {index: 685, tile: 1}, {index: 717, tile: 1}, {index: 749, tile: 1}, {index: 781, tile: 1}, {index: 813, tile: 1}, {index: 845, tile: 1}, {index: 877, tile: 1}, {index: 909, tile: 1}, {index: 941, tile: 1}, {index: 973, tile: 1}, {index: 1005, tile: 1}, {index: 654, tile: 1}, {index: 686, tile: 1}, {index: 718, tile: 1}, {index: 750, tile: 1}, {index: 782, tile: 1}, {index: 814, tile: 1}, {index: 846, tile: 1}, {index: 878, tile: 1}, {index: 910, tile: 1}, {index: 942, tile: 1}, {index: 974, tile: 1}, {index: 1006, tile: 1}, {index: 655, tile: 1}, {index: 687, tile: 1}, {index: 719, tile: 1}, {index: 751, tile: 1}, {index: 783, tile: 1}, {index: 815, tile: 1}, {index: 847, tile: 1}, {index: 879, tile: 1}, {index: 911, tile: 1}, {index: 943, tile: 1}, {index: 975, tile: 1}, {index: 1007, tile: 1}, {index: 656, tile: 1}, {index: 688, tile: 1}, {index: 720, tile: 1}, {index: 752, tile: 1}, {index: 784, tile: 1}, {index: 816, tile: 1}, {index: 848, tile: 1}, {index: 880, tile: 1}, {index: 912, tile: 1}, {index: 944, tile: 1}, {index: 976, tile: 1}, {index: 1008, tile: 1}, {index: 657, tile: 1}, {index: 689, tile: 1}, {index: 721, tile: 1}, {index: 753, tile: 1}, {index: 785, tile: 1}, {index: 817, tile: 1}, {index: 849, tile: 1}, {index: 881, tile: 1}, {index: 913, tile: 1}, {index: 945, tile: 1}, {index: 977, tile: 1}, {index: 1009, tile: 1}, {index: 658, tile: 1}, {index: 690, tile: 1}, {index: 722, tile: 1}, {index: 754, tile: 1}, {index: 786, tile: 1}, {index: 818, tile: 1}, {index: 850, tile: 1}, {index: 882, tile: 1}, {index: 914, tile: 1}, {index: 946, tile: 1}, {index: 978, tile: 1}, {index: 1010, tile: 1}, {index: 659, tile: 1}, {index: 691, tile: 1}, {index: 723, tile: 1}, {index: 755, tile: 1}, {index: 787, tile: 1}, {index: 819, tile: 1}, {index: 851, tile: 1}, {index: 883, tile: 1}, {index: 915, tile: 1}, {index: 947, tile: 1}, {index: 979, tile: 1}, {index: 1011, tile: 1}, {index: 660, tile: 1}, {index: 692, tile: 1}, {index: 724, tile: 1}, {index: 756, tile: 1}, {index: 788, tile: 1}, {index: 820, tile: 1}, {index: 852, tile: 1}, {index: 884, tile: 1}, {index: 916, tile: 1}, {index: 948, tile: 1}, {index: 980, tile: 1}, {index: 1012, tile: 1}, {index: 661, tile: 1}, {index: 693, tile: 1}, {index: 725, tile: 1}, {index: 757, tile: 1}, {index: 789, tile: 1}, {index: 821, tile: 1}, {index: 853, tile: 1}, {index: 885, tile: 1}, {index: 917, tile: 1}, {index: 949, tile: 1}, {index: 981, tile: 1}, {index: 1013, tile: 1}, {index: 662, tile: 1}, {index: 694, tile: 1}, {index: 726, tile: 1}, {index: 758, tile: 1}, {index: 790, tile: 1}, {index: 822, tile: 1}, {index: 854, tile: 1}, {index: 886, tile: 1}, {index: 918, tile: 1}, {index: 950, tile: 1}, {index: 982, tile: 1}, {index: 1014, tile: 1}, {index: 663, tile: 1}, {index: 695, tile: 1}, {index: 727, tile: 1}, {index: 759, tile: 1}, {index: 791, tile: 1}, {index: 823, tile: 1}, {index: 855, tile: 1}, {index: 887, tile: 1}, {index: 919, tile: 1}, {index: 951, tile: 1}, {index: 983, tile: 1}, {index: 1015, tile: 1}, {index: 664, tile: 1}, {index: 696, tile: 1}, {index: 728, tile: 1}, {index: 760, tile: 1}, {index: 792, tile: 1}, {index: 824, tile: 1}, {index: 856, tile: 1}, {index: 888, tile: 1}, {index: 920, tile: 1}, {index: 952, tile: 1}, {index: 984, tile: 1}, {index: 1016, tile: 1}, {index: 665, tile: 1}, {index: 697, tile: 1}, {index: 729, tile: 1}, {index: 761, tile: 1}, {index: 793, tile: 1}, {index: 825, tile: 1}, {index: 857, tile: 1}, {index: 889, tile: 1}, {index: 921, tile: 1}, {index: 953, tile: 1}, {index: 985, tile: 1}, {index: 1017, tile: 1}, {index: 666, tile: 1}, {index: 698, tile: 1}, {index: 730, tile: 1}, {index: 762, tile: 1}, {index: 794, tile: 1}, {index: 826, tile: 1}, {index: 858, tile: 1}, {index: 890, tile: 1}, {index: 922, tile: 1}, {index: 954, tile: 1}, {index: 986, tile: 1}, {index: 1018, tile: 1}, {index: 667, tile: 1}, {index: 699, tile: 1}, {index: 731, tile: 1}, {index: 763, tile: 1}, {index: 795, tile: 1}, {index: 827, tile: 1}, {index: 859, tile: 1}, {index: 891, tile: 1}, {index: 923, tile: 1}, {index: 955, tile: 1}, {index: 987, tile: 1}, {index: 1019, tile: 1}, {index: 668, tile: 1}, {index: 700, tile: 1}, {index: 732, tile: 1}, {index: 764, tile: 1}, {index: 796, tile: 1}, {index: 828, tile: 1}, {index: 860, tile: 1}, {index: 892, tile: 1}, {index: 924, tile: 1}, {index: 956, tile: 1}, {index: 988, tile: 1}, {index: 1020, tile: 1}, {index: 669, tile: 1}, {index: 701, tile: 1}, {index: 733, tile: 1}, {index: 765, tile: 1}, {index: 797, tile: 1}, {index: 829, tile: 1}, {index: 861, tile: 1}, {index: 893, tile: 1}, {index: 925, tile: 1}, {index: 957, tile: 1}, {index: 989, tile: 1}, {index: 1021, tile: 1}, {index: 702, tile: 1}, {index: 734, tile: 1}, {index: 766, tile: 1}, {index: 798, tile: 1}, {index: 830, tile: 1}, {index: 862, tile: 1}, {index: 894, tile: 1}, {index: 926, tile: 1}, {index: 958, tile: 1}, {index: 990, tile: 1}, {index: 1022, tile: 1}, {index: 703, tile: 1}, {index: 735, tile: 1}, {index: 767, tile: 1}, {index: 799, tile: 1}, {index: 831, tile: 1}, {index: 863, tile: 1}, {index: 895, tile: 1}, {index: 927, tile: 1}, {index: 959, tile: 1}, {index: 991, tile: 1}, {index: 1023, tile: 1}]
+    - x: 2
+      y: 0
+      cells: [{index: 672, tile: 1}, {index: 704, tile: 1}, {index: 736, tile: 1}, {index: 768, tile: 1}, {index: 800, tile: 1}, {index: 832, tile: 1}, {index: 864, tile: 1}, {index: 896, tile: 1}, {index: 928, tile: 1}, {index: 960, tile: 1}, {index: 992, tile: 1}, {index: 673, tile: 1}, {index: 705, tile: 1}, {index: 737, tile: 1}, {index: 769, tile: 1}, {index: 801, tile: 1}, {index: 833, tile: 1}, {index: 865, tile: 1}, {index: 897, tile: 1}, {index: 929, tile: 1}, {index: 961, tile: 1}, {index: 993, tile: 1}, {index: 674, tile: 1}, {index: 706, tile: 1}, {index: 738, tile: 1}, {index: 770, tile: 1}, {index: 802, tile: 1}, {index: 834, tile: 1}, {index: 866, tile: 1}, {index: 898, tile: 1}, {index: 930, tile: 1}, {index: 962, tile: 1}, {index: 994, tile: 1}, {index: 675, tile: 1}, {index: 707, tile: 1}, {index: 739, tile: 1}, {index: 771, tile: 1}, {index: 803, tile: 1}, {index: 835, tile: 1}, {index: 867, tile: 1}, {index: 899, tile: 1}, {index: 931, tile: 1}, {index: 963, tile: 1}, {index: 995, tile: 1}, {index: 708, tile: 1}, {index: 740, tile: 1}, {index: 772, tile: 1}, {index: 804, tile: 1}, {index: 836, tile: 1}, {index: 868, tile: 1}, {index: 900, tile: 1}, {index: 932, tile: 1}, {index: 964, tile: 1}, {index: 996, tile: 1}, {index: 709, tile: 1}, {index: 741, tile: 1}, {index: 773, tile: 1}, {index: 805, tile: 1}, {index: 837, tile: 1}, {index: 869, tile: 1}, {index: 901, tile: 1}, {index: 933, tile: 1}, {index: 965, tile: 1}, {index: 997, tile: 1}, {index: 710, tile: 1}, {index: 742, tile: 1}, {index: 774, tile: 1}, {index: 806, tile: 1}, {index: 838, tile: 1}, {index: 870, tile: 1}, {index: 902, tile: 1}, {index: 934, tile: 1}, {index: 966, tile: 1}, {index: 998, tile: 1}, {index: 711, tile: 1}, {index: 743, tile: 1}, {index: 775, tile: 1}, {index: 807, tile: 1}, {index: 839, tile: 1}, {index: 871, tile: 1}, {index: 903, tile: 1}, {index: 935, tile: 1}, {index: 967, tile: 1}, {index: 999, tile: 1}, {index: 712, tile: 1}, {index: 744, tile: 1}, {index: 776, tile: 1}, {index: 808, tile: 1}, {index: 840, tile: 1}, {index: 872, tile: 1}, {index: 904, tile: 1}, {index: 936, tile: 1}, {index: 968, tile: 1}, {index: 1000, tile: 1}, {index: 713, tile: 1}, {index: 745, tile: 1}, {index: 777, tile: 1}, {index: 809, tile: 1}, {index: 841, tile: 1}, {index: 873, tile: 1}, {index: 905, tile: 1}, {index: 937, tile: 1}, {index: 969, tile: 1}, {index: 1001, tile: 1}, {index: 714, tile: 1}, {index: 746, tile: 1}, {index: 778, tile: 1}, {index: 810, tile: 1}, {index: 842, tile: 1}, {index: 874, tile: 1}, {index: 906, tile: 1}, {index: 938, tile: 1}, {index: 970, tile: 1}, {index: 1002, tile: 1}, {index: 715, tile: 1}, {index: 747, tile: 1}, {index: 779, tile: 1}, {index: 811, tile: 1}, {index: 843, tile: 1}, {index: 875, tile: 1}, {index: 907, tile: 1}, {index: 939, tile: 1}, {index: 971, tile: 1}, {index: 1003, tile: 1}, {index: 716, tile: 1}, {index: 748, tile: 1}, {index: 780, tile: 1}, {index: 812, tile: 1}, {index: 844, tile: 1}, {index: 876, tile: 1}, {index: 908, tile: 1}, {index: 940, tile: 1}, {index: 972, tile: 1}, {index: 1004, tile: 1}, {index: 717, tile: 1}, {index: 749, tile: 1}, {index: 781, tile: 1}, {index: 813, tile: 1}, {index: 845, tile: 1}, {index: 877, tile: 1}, {index: 909, tile: 1}, {index: 941, tile: 1}, {index: 973, tile: 1}, {index: 1005, tile: 1}, {index: 718, tile: 1}, {index: 750, tile: 1}, {index: 782, tile: 1}, {index: 814, tile: 1}, {index: 846, tile: 1}, {index: 878, tile: 1}, {index: 910, tile: 1}, {index: 942, tile: 1}, {index: 974, tile: 1}, {index: 1006, tile: 1}, {index: 719, tile: 1}, {index: 751, tile: 1}, {index: 783, tile: 1}, {index: 815, tile: 1}, {index: 847, tile: 1}, {index: 879, tile: 1}, {index: 911, tile: 1}, {index: 943, tile: 1}, {index: 975, tile: 1}, {index: 1007, tile: 1}, {index: 691, tile: 1}, {index: 723, tile: 1}, {index: 755, tile: 1}, {index: 787, tile: 1}, {index: 819, tile: 1}, {index: 851, tile: 1}, {index: 883, tile: 1}, {index: 915, tile: 1}, {index: 947, tile: 1}, {index: 979, tile: 1}, {index: 1011, tile: 1}, {index: 692, tile: 1}, {index: 724, tile: 1}, {index: 756, tile: 1}, {index: 788, tile: 1}, {index: 820, tile: 1}, {index: 852, tile: 1}, {index: 884, tile: 1}, {index: 916, tile: 1}, {index: 948, tile: 1}, {index: 980, tile: 1}, {index: 1012, tile: 1}, {index: 693, tile: 1}, {index: 725, tile: 1}, {index: 757, tile: 1}, {index: 789, tile: 1}, {index: 821, tile: 1}, {index: 853, tile: 1}, {index: 885, tile: 1}, {index: 917, tile: 1}, {index: 949, tile: 1}, {index: 981, tile: 1}, {index: 1013, tile: 1}, {index: 694, tile: 1}, {index: 726, tile: 1}, {index: 758, tile: 1}, {index: 790, tile: 1}, {index: 822, tile: 1}, {index: 854, tile: 1}, {index: 886, tile: 1}, {index: 918, tile: 1}, {index: 950, tile: 1}, {index: 982, tile: 1}, {index: 1014, tile: 1}, {index: 695, tile: 1}, {index: 727, tile: 1}, {index: 759, tile: 1}, {index: 791, tile: 1}, {index: 823, tile: 1}, {index: 855, tile: 1}, {index: 887, tile: 1}, {index: 919, tile: 1}, {index: 951, tile: 1}, {index: 983, tile: 1}, {index: 1015, tile: 1}, {index: 696, tile: 1}, {index: 728, tile: 1}, {index: 760, tile: 1}, {index: 792, tile: 1}, {index: 824, tile: 1}, {index: 856, tile: 1}, {index: 888, tile: 1}, {index: 920, tile: 1}, {index: 952, tile: 1}, {index: 984, tile: 1}, {index: 1016, tile: 1}, {index: 697, tile: 1}, {index: 729, tile: 1}, {index: 761, tile: 1}, {index: 793, tile: 1}, {index: 825, tile: 1}, {index: 857, tile: 1}, {index: 889, tile: 1}, {index: 921, tile: 1}, {index: 953, tile: 1}, {index: 985, tile: 1}, {index: 1017, tile: 1}, {index: 698, tile: 1}, {index: 730, tile: 1}, {index: 762, tile: 1}, {index: 794, tile: 1}, {index: 826, tile: 1}, {index: 858, tile: 1}, {index: 890, tile: 1}, {index: 922, tile: 1}, {index: 954, tile: 1}, {index: 986, tile: 1}, {index: 1018, tile: 1}, {index: 699, tile: 1}, {index: 731, tile: 1}, {index: 763, tile: 1}, {index: 795, tile: 1}, {index: 827, tile: 1}, {index: 859, tile: 1}, {index: 891, tile: 1}, {index: 923, tile: 1}, {index: 955, tile: 1}, {index: 987, tile: 1}, {index: 1019, tile: 1}, {index: 700, tile: 1}, {index: 732, tile: 1}, {index: 764, tile: 1}, {index: 796, tile: 1}, {index: 828, tile: 1}, {index: 860, tile: 1}, {index: 892, tile: 1}, {index: 924, tile: 1}, {index: 956, tile: 1}, {index: 988, tile: 1}, {index: 1020, tile: 1}]
+    - x: 3
+      y: 0
+      cells: [{index: 704, tile: 1}, {index: 736, tile: 1}, {index: 768, tile: 1}, {index: 800, tile: 1}, {index: 832, tile: 1}, {index: 864, tile: 1}, {index: 896, tile: 1}, {index: 928, tile: 1}, {index: 960, tile: 1}, {index: 992, tile: 1}, {index: 705, tile: 1}, {index: 737, tile: 1}, {index: 769, tile: 1}, {index: 801, tile: 1}, {index: 833, tile: 1}, {index: 865, tile: 1}, {index: 897, tile: 1}, {index: 929, tile: 1}, {index: 961, tile: 1}, {index: 993, tile: 1}, {index: 706, tile: 1}, {index: 738, tile: 1}, {index: 770, tile: 1}, {index: 802, tile: 1}, {index: 834, tile: 1}, {index: 866, tile: 1}, {index: 898, tile: 1}, {index: 930, tile: 1}, {index: 962, tile: 1}, {index: 994, tile: 1}, {index: 707, tile: 1}, {index: 739, tile: 1}, {index: 771, tile: 1}, {index: 803, tile: 1}, {index: 835, tile: 1}, {index: 867, tile: 1}, {index: 899, tile: 1}, {index: 931, tile: 1}, {index: 963, tile: 1}, {index: 995, tile: 1}, {index: 708, tile: 1}, {index: 740, tile: 1}, {index: 772, tile: 1}, {index: 804, tile: 1}, {index: 836, tile: 1}, {index: 868, tile: 1}, {index: 900, tile: 1}, {index: 932, tile: 1}, {index: 964, tile: 1}, {index: 996, tile: 1}, {index: 709, tile: 1}, {index: 741, tile: 1}, {index: 773, tile: 1}, {index: 805, tile: 1}, {index: 837, tile: 1}, {index: 869, tile: 1}, {index: 901, tile: 1}, {index: 933, tile: 1}, {index: 965, tile: 1}, {index: 997, tile: 1}, {index: 710, tile: 1}, {index: 742, tile: 1}, {index: 774, tile: 1}, {index: 806, tile: 1}, {index: 838, tile: 1}, {index: 870, tile: 1}, {index: 902, tile: 1}, {index: 934, tile: 1}, {index: 966, tile: 1}, {index: 998, tile: 1}, {index: 711, tile: 1}, {index: 743, tile: 1}, {index: 775, tile: 1}, {index: 807, tile: 1}, {index: 839, tile: 1}, {index: 871, tile: 1}, {index: 903, tile: 1}, {index: 935, tile: 1}, {index: 967, tile: 1}, {index: 999, tile: 1}, {index: 680, tile: 1}, {index: 712, tile: 1}, {index: 744, tile: 1}, {index: 776, tile: 1}, {index: 808, tile: 1}, {index: 840, tile: 1}, {index: 872, tile: 1}, {index: 904, tile: 1}, {index: 936, tile: 1}, {index: 968, tile: 1}, {index: 1000, tile: 1}, {index: 681, tile: 1}, {index: 713, tile: 1}, {index: 745, tile: 1}, {index: 777, tile: 1}, {index: 809, tile: 1}, {index: 841, tile: 1}, {index: 873, tile: 1}, {index: 905, tile: 1}, {index: 937, tile: 1}, {index: 969, tile: 1}, {index: 1001, tile: 1}, {index: 682, tile: 1}, {index: 714, tile: 1}, {index: 746, tile: 1}, {index: 778, tile: 1}, {index: 810, tile: 1}, {index: 842, tile: 1}, {index: 874, tile: 1}, {index: 906, tile: 1}, {index: 938, tile: 1}, {index: 970, tile: 1}, {index: 1002, tile: 1}, {index: 683, tile: 1}, {index: 715, tile: 1}, {index: 747, tile: 1}, {index: 779, tile: 1}, {index: 811, tile: 1}, {index: 843, tile: 1}, {index: 875, tile: 1}, {index: 907, tile: 1}, {index: 939, tile: 1}, {index: 971, tile: 1}, {index: 1003, tile: 1}, {index: 684, tile: 1}, {index: 716, tile: 1}, {index: 748, tile: 1}, {index: 780, tile: 1}, {index: 812, tile: 1}, {index: 844, tile: 1}, {index: 876, tile: 1}, {index: 908, tile: 1}, {index: 940, tile: 1}, {index: 972, tile: 1}, {index: 1004, tile: 1}, {index: 685, tile: 1}, {index: 717, tile: 1}, {index: 749, tile: 1}, {index: 781, tile: 1}, {index: 813, tile: 1}, {index: 845, tile: 1}, {index: 877, tile: 1}, {index: 909, tile: 1}, {index: 941, tile: 1}, {index: 973, tile: 1}, {index: 1005, tile: 1}, {index: 622, tile: 1}, {index: 654, tile: 1}, {index: 686, tile: 1}, {index: 718, tile: 1}, {index: 750, tile: 1}, {index: 782, tile: 1}, {index: 814, tile: 1}, {index: 846, tile: 1}, {index: 878, tile: 1}, {index: 910, tile: 1}, {index: 942, tile: 1}, {index: 974, tile: 1}, {index: 1006, tile: 1}, {index: 623, tile: 1}, {index: 655, tile: 1}, {index: 687, tile: 1}, {index: 719, tile: 1}, {index: 751, tile: 1}, {index: 783, tile: 1}, {index: 815, tile: 1}, {index: 847, tile: 1}, {index: 879, tile: 1}, {index: 911, tile: 1}, {index: 943, tile: 1}, {index: 975, tile: 1}, {index: 1007, tile: 1}, {index: 624, tile: 1}, {index: 656, tile: 1}, {index: 688, tile: 1}, {index: 720, tile: 1}, {index: 752, tile: 1}, {index: 784, tile: 1}, {index: 816, tile: 1}, {index: 848, tile: 1}, {index: 880, tile: 1}, {index: 912, tile: 1}, {index: 944, tile: 1}, {index: 976, tile: 1}, {index: 1008, tile: 1}, {index: 625, tile: 1}, {index: 657, tile: 1}, {index: 689, tile: 1}, {index: 721, tile: 1}, {index: 753, tile: 1}, {index: 785, tile: 1}, {index: 817, tile: 1}, {index: 849, tile: 1}, {index: 881, tile: 1}, {index: 913, tile: 1}, {index: 945, tile: 1}, {index: 977, tile: 1}, {index: 1009, tile: 1}, {index: 626, tile: 1}, {index: 658, tile: 1}, {index: 690, tile: 1}, {index: 722, tile: 1}, {index: 754, tile: 1}, {index: 786, tile: 1}, {index: 818, tile: 1}, {index: 850, tile: 1}, {index: 882, tile: 1}, {index: 914, tile: 1}, {index: 946, tile: 1}, {index: 978, tile: 1}, {index: 1010, tile: 1}, {index: 627, tile: 1}, {index: 659, tile: 1}, {index: 691, tile: 1}, {index: 723, tile: 1}, {index: 755, tile: 1}, {index: 787, tile: 1}, {index: 819, tile: 1}, {index: 851, tile: 1}, {index: 883, tile: 1}, {index: 915, tile: 1}, {index: 947, tile: 1}, {index: 979, tile: 1}, {index: 1011, tile: 1}, {index: 628, tile: 1}, {index: 660, tile: 1}, {index: 692, tile: 1}, {index: 724, tile: 1}, {index: 756, tile: 1}, {index: 788, tile: 1}, {index: 820, tile: 1}, {index: 852, tile: 1}, {index: 884, tile: 1}, {index: 916, tile: 1}, {index: 948, tile: 1}, {index: 980, tile: 1}, {index: 1012, tile: 1}, {index: 629, tile: 1}, {index: 661, tile: 1}, {index: 693, tile: 1}, {index: 725, tile: 1}, {index: 757, tile: 1}, {index: 789, tile: 1}, {index: 821, tile: 1}, {index: 853, tile: 1}, {index: 885, tile: 1}, {index: 917, tile: 1}, {index: 949, tile: 1}, {index: 981, tile: 1}, {index: 1013, tile: 1}, {index: 630, tile: 1}, {index: 662, tile: 1}, {index: 694, tile: 1}, {index: 726, tile: 1}, {index: 758, tile: 1}, {index: 790, tile: 1}, {index: 822, tile: 1}, {index: 854, tile: 1}, {index: 886, tile: 1}, {index: 918, tile: 1}, {index: 950, tile: 1}, {index: 982, tile: 1}, {index: 1014, tile: 1}, {index: 631, tile: 1}, {index: 663, tile: 1}, {index: 695, tile: 1}, {index: 727, tile: 1}, {index: 759, tile: 1}, {index: 791, tile: 1}, {index: 823, tile: 1}, {index: 855, tile: 1}, {index: 887, tile: 1}, {index: 919, tile: 1}, {index: 951, tile: 1}, {index: 983, tile: 1}, {index: 1015, tile: 1}, {index: 632, tile: 1}, {index: 664, tile: 1}, {index: 696, tile: 1}, {index: 728, tile: 1}, {index: 760, tile: 1}, {index: 792, tile: 1}, {index: 824, tile: 1}, {index: 856, tile: 1}, {index: 888, tile: 1}, {index: 920, tile: 1}, {index: 952, tile: 1}, {index: 984, tile: 1}, {index: 1016, tile: 1}, {index: 633, tile: 1}, {index: 665, tile: 1}, {index: 697, tile: 1}, {index: 729, tile: 1}, {index: 761, tile: 1}, {index: 793, tile: 1}, {index: 825, tile: 1}, {index: 857, tile: 1}, {index: 889, tile: 1}, {index: 921, tile: 1}, {index: 953, tile: 1}, {index: 985, tile: 1}, {index: 1017, tile: 1}, {index: 634, tile: 1}, {index: 666, tile: 1}, {index: 698, tile: 1}, {index: 730, tile: 1}, {index: 762, tile: 1}, {index: 794, tile: 1}, {index: 826, tile: 1}, {index: 858, tile: 1}, {index: 890, tile: 1}, {index: 922, tile: 1}, {index: 954, tile: 1}, {index: 986, tile: 1}, {index: 1018, tile: 1}, {index: 635, tile: 1}, {index: 667, tile: 1}, {index: 699, tile: 1}, {index: 731, tile: 1}, {index: 763, tile: 1}, {index: 795, tile: 1}, {index: 827, tile: 1}, {index: 859, tile: 1}, {index: 891, tile: 1}, {index: 923, tile: 1}, {index: 955, tile: 1}, {index: 987, tile: 1}, {index: 1019, tile: 1}, {index: 636, tile: 1}, {index: 668, tile: 1}, {index: 700, tile: 1}, {index: 732, tile: 1}, {index: 764, tile: 1}, {index: 796, tile: 1}, {index: 828, tile: 1}, {index: 860, tile: 1}, {index: 892, tile: 1}, {index: 924, tile: 1}, {index: 956, tile: 1}, {index: 988, tile: 1}, {index: 1020, tile: 1}, {index: 637, tile: 1}, {index: 669, tile: 1}, {index: 701, tile: 1}, {index: 733, tile: 1}, {index: 765, tile: 1}, {index: 797, tile: 1}, {index: 829, tile: 1}, {index: 861, tile: 1}, {index: 893, tile: 1}, {index: 925, tile: 1}, {index: 957, tile: 1}, {index: 989, tile: 1}, {index: 1021, tile: 1}, {index: 702, tile: 1}, {index: 734, tile: 1}, {index: 766, tile: 1}, {index: 798, tile: 1}, {index: 830, tile: 1}, {index: 862, tile: 1}, {index: 894, tile: 1}, {index: 926, tile: 1}, {index: 958, tile: 1}, {index: 990, tile: 1}, {index: 1022, tile: 1}, {index: 703, tile: 1}, {index: 735, tile: 1}, {index: 767, tile: 1}, {index: 799, tile: 1}, {index: 831, tile: 1}, {index: 863, tile: 1}, {index: 895, tile: 1}, {index: 927, tile: 1}, {index: 959, tile: 1}, {index: 991, tile: 1}, {index: 1023, tile: 1}]
+    - x: 4
+      y: 0
+      cells: [{index: 672, tile: 1}, {index: 704, tile: 1}, {index: 736, tile: 1}, {index: 768, tile: 1}, {index: 800, tile: 1}, {index: 832, tile: 1}, {index: 864, tile: 1}, {index: 896, tile: 1}, {index: 928, tile: 1}, {index: 960, tile: 1}, {index: 992, tile: 1}, {index: 673, tile: 1}, {index: 705, tile: 1}, {index: 737, tile: 1}, {index: 769, tile: 1}, {index: 801, tile: 1}, {index: 833, tile: 1}, {index: 865, tile: 1}, {index: 897, tile: 1}, {index: 929, tile: 1}, {index: 961, tile: 1}, {index: 993, tile: 1}, {index: 674, tile: 1}, {index: 706, tile: 1}, {index: 738, tile: 1}, {index: 770, tile: 1}, {index: 802, tile: 1}, {index: 834, tile: 1}, {index: 866, tile: 1}, {index: 898, tile: 1}, {index: 930, tile: 1}, {index: 962, tile: 1}, {index: 994, tile: 1}, {index: 675, tile: 1}, {index: 707, tile: 1}, {index: 739, tile: 1}, {index: 771, tile: 1}, {index: 803, tile: 1}, {index: 835, tile: 1}, {index: 867, tile: 1}, {index: 899, tile: 1}, {index: 931, tile: 1}, {index: 963, tile: 1}, {index: 995, tile: 1}, {index: 708, tile: 1}, {index: 740, tile: 1}, {index: 772, tile: 1}, {index: 804, tile: 1}, {index: 836, tile: 1}, {index: 868, tile: 1}, {index: 900, tile: 1}, {index: 932, tile: 1}, {index: 964, tile: 1}, {index: 996, tile: 1}, {index: 709, tile: 1}, {index: 741, tile: 1}, {index: 773, tile: 1}, {index: 805, tile: 1}, {index: 837, tile: 1}, {index: 869, tile: 1}, {index: 901, tile: 1}, {index: 933, tile: 1}, {index: 965, tile: 1}, {index: 997, tile: 1}, {index: 710, tile: 1}, {index: 742, tile: 1}, {index: 774, tile: 1}, {index: 806, tile: 1}, {index: 838, tile: 1}, {index: 870, tile: 1}, {index: 902, tile: 1}, {index: 934, tile: 1}, {index: 966, tile: 1}, {index: 998, tile: 1}, {index: 711, tile: 1}, {index: 743, tile: 1}, {index: 775, tile: 1}, {index: 807, tile: 1}, {index: 839, tile: 1}, {index: 871, tile: 1}, {index: 903, tile: 1}, {index: 935, tile: 1}, {index: 967, tile: 1}, {index: 999, tile: 1}, {index: 712, tile: 1}, {index: 744, tile: 1}, {index: 776, tile: 1}, {index: 808, tile: 1}, {index: 840, tile: 1}, {index: 872, tile: 1}, {index: 904, tile: 1}, {index: 936, tile: 1}, {index: 968, tile: 1}, {index: 1000, tile: 1}, {index: 713, tile: 1}, {index: 745, tile: 1}, {index: 777, tile: 1}, {index: 809, tile: 1}, {index: 841, tile: 1}, {index: 873, tile: 1}, {index: 905, tile: 1}, {index: 937, tile: 1}, {index: 969, tile: 1}, {index: 1001, tile: 1}, {index: 714, tile: 1}, {index: 746, tile: 1}, {index: 778, tile: 1}, {index: 810, tile: 1}, {index: 842, tile: 1}, {index: 874, tile: 1}, {index: 906, tile: 1}, {index: 938, tile: 1}, {index: 970, tile: 1}, {index: 1002, tile: 1}, {index: 715, tile: 1}, {index: 747, tile: 1}, {index: 779, tile: 1}, {index: 811, tile: 1}, {index: 843, tile: 1}, {index: 875, tile: 1}, {index: 907, tile: 1}, {index: 939, tile: 1}, {index: 971, tile: 1}, {index: 1003, tile: 1}, {index: 716, tile: 1}, {index: 748, tile: 1}, {index: 780, tile: 1}, {index: 812, tile: 1}, {index: 844, tile: 1}, {index: 876, tile: 1}, {index: 908, tile: 1}, {index: 940, tile: 1}, {index: 972, tile: 1}, {index: 1004, tile: 1}, {index: 717, tile: 1}, {index: 749, tile: 1}, {index: 781, tile: 1}, {index: 813, tile: 1}, {index: 845, tile: 1}, {index: 877, tile: 1}, {index: 909, tile: 1}, {index: 941, tile: 1}, {index: 973, tile: 1}, {index: 1005, tile: 1}, {index: 718, tile: 1}, {index: 750, tile: 1}, {index: 782, tile: 1}, {index: 814, tile: 1}, {index: 846, tile: 1}, {index: 878, tile: 1}, {index: 910, tile: 1}, {index: 942, tile: 1}, {index: 974, tile: 1}, {index: 1006, tile: 1}, {index: 719, tile: 1}, {index: 751, tile: 1}, {index: 783, tile: 1}, {index: 815, tile: 1}, {index: 847, tile: 1}, {index: 879, tile: 1}, {index: 911, tile: 1}, {index: 943, tile: 1}, {index: 975, tile: 1}, {index: 1007, tile: 1}, {index: 720, tile: 1}, {index: 752, tile: 1}, {index: 784, tile: 1}, {index: 816, tile: 1}, {index: 848, tile: 1}, {index: 880, tile: 1}, {index: 912, tile: 1}, {index: 944, tile: 1}, {index: 976, tile: 1}, {index: 1008, tile: 1}, {index: 721, tile: 1}, {index: 753, tile: 1}, {index: 785, tile: 1}, {index: 817, tile: 1}, {index: 849, tile: 1}, {index: 881, tile: 1}, {index: 913, tile: 1}, {index: 945, tile: 1}, {index: 977, tile: 1}, {index: 1009, tile: 1}, {index: 724, tile: 1}, {index: 756, tile: 1}, {index: 788, tile: 1}, {index: 820, tile: 1}, {index: 852, tile: 1}, {index: 884, tile: 1}, {index: 916, tile: 1}, {index: 948, tile: 1}, {index: 980, tile: 1}, {index: 1012, tile: 1}, {index: 725, tile: 1}, {index: 757, tile: 1}, {index: 789, tile: 1}, {index: 821, tile: 1}, {index: 853, tile: 1}, {index: 885, tile: 1}, {index: 917, tile: 1}, {index: 949, tile: 1}, {index: 981, tile: 1}, {index: 1013, tile: 1}, {index: 726, tile: 1}, {index: 758, tile: 1}, {index: 790, tile: 1}, {index: 822, tile: 1}, {index: 854, tile: 1}, {index: 886, tile: 1}, {index: 918, tile: 1}, {index: 950, tile: 1}, {index: 982, tile: 1}, {index: 1014, tile: 1}, {index: 727, tile: 1}, {index: 759, tile: 1}, {index: 791, tile: 1}, {index: 823, tile: 1}, {index: 855, tile: 1}, {index: 887, tile: 1}, {index: 919, tile: 1}, {index: 951, tile: 1}, {index: 983, tile: 1}, {index: 1015, tile: 1}, {index: 728, tile: 1}, {index: 760, tile: 1}, {index: 792, tile: 1}, {index: 824, tile: 1}, {index: 856, tile: 1}, {index: 888, tile: 1}, {index: 920, tile: 1}, {index: 952, tile: 1}, {index: 984, tile: 1}, {index: 1016, tile: 1}, {index: 729, tile: 1}, {index: 761, tile: 1}, {index: 793, tile: 1}, {index: 825, tile: 1}, {index: 857, tile: 1}, {index: 889, tile: 1}, {index: 921, tile: 1}, {index: 953, tile: 1}, {index: 985, tile: 1}, {index: 1017, tile: 1}, {index: 732, tile: 1}, {index: 764, tile: 1}, {index: 796, tile: 1}, {index: 828, tile: 1}, {index: 860, tile: 1}, {index: 892, tile: 1}, {index: 924, tile: 1}, {index: 956, tile: 1}, {index: 988, tile: 1}, {index: 1020, tile: 1}, {index: 733, tile: 1}, {index: 765, tile: 1}, {index: 797, tile: 1}, {index: 829, tile: 1}, {index: 861, tile: 1}, {index: 893, tile: 1}, {index: 925, tile: 1}, {index: 957, tile: 1}, {index: 989, tile: 1}, {index: 1021, tile: 1}, {index: 734, tile: 1}, {index: 766, tile: 1}, {index: 798, tile: 1}, {index: 830, tile: 1}, {index: 862, tile: 1}, {index: 894, tile: 1}, {index: 926, tile: 1}, {index: 958, tile: 1}, {index: 990, tile: 1}, {index: 1022, tile: 1}, {index: 735, tile: 1}, {index: 767, tile: 1}, {index: 799, tile: 1}, {index: 831, tile: 1}, {index: 863, tile: 1}, {index: 895, tile: 1}, {index: 927, tile: 1}, {index: 959, tile: 1}, {index: 991, tile: 1}, {index: 1023, tile: 1}]
+    - x: 5
+      y: 0
+      cells: [{index: 704, tile: 1}, {index: 736, tile: 1}, {index: 768, tile: 1}, {index: 800, tile: 1}, {index: 832, tile: 1}, {index: 864, tile: 1}, {index: 896, tile: 1}, {index: 928, tile: 1}, {index: 960, tile: 1}, {index: 992, tile: 1}, {index: 705, tile: 1}, {index: 737, tile: 1}, {index: 769, tile: 1}, {index: 801, tile: 1}, {index: 833, tile: 1}, {index: 865, tile: 1}, {index: 897, tile: 1}, {index: 929, tile: 1}, {index: 961, tile: 1}, {index: 993, tile: 1}, {index: 708, tile: 1}, {index: 740, tile: 1}, {index: 772, tile: 1}, {index: 804, tile: 1}, {index: 836, tile: 1}, {index: 868, tile: 1}, {index: 900, tile: 1}, {index: 932, tile: 1}, {index: 964, tile: 1}, {index: 996, tile: 1}, {index: 709, tile: 1}, {index: 741, tile: 1}, {index: 773, tile: 1}, {index: 805, tile: 1}, {index: 837, tile: 1}, {index: 869, tile: 1}, {index: 901, tile: 1}, {index: 933, tile: 1}, {index: 965, tile: 1}, {index: 997, tile: 1}, {index: 710, tile: 1}, {index: 742, tile: 1}, {index: 774, tile: 1}, {index: 806, tile: 1}, {index: 838, tile: 1}, {index: 870, tile: 1}, {index: 902, tile: 1}, {index: 934, tile: 1}, {index: 966, tile: 1}, {index: 998, tile: 1}, {index: 711, tile: 1}, {index: 743, tile: 1}, {index: 775, tile: 1}, {index: 807, tile: 1}, {index: 839, tile: 1}, {index: 871, tile: 1}, {index: 903, tile: 1}, {index: 935, tile: 1}, {index: 967, tile: 1}, {index: 999, tile: 1}, {index: 712, tile: 1}, {index: 744, tile: 1}, {index: 776, tile: 1}, {index: 808, tile: 1}, {index: 840, tile: 1}, {index: 872, tile: 1}, {index: 904, tile: 1}, {index: 936, tile: 1}, {index: 968, tile: 1}, {index: 1000, tile: 1}, {index: 713, tile: 1}, {index: 745, tile: 1}, {index: 777, tile: 1}, {index: 809, tile: 1}, {index: 841, tile: 1}, {index: 873, tile: 1}, {index: 905, tile: 1}, {index: 937, tile: 1}, {index: 969, tile: 1}, {index: 1001, tile: 1}, {index: 716, tile: 1}, {index: 748, tile: 1}, {index: 780, tile: 1}, {index: 812, tile: 1}, {index: 844, tile: 1}, {index: 876, tile: 1}, {index: 908, tile: 1}, {index: 940, tile: 1}, {index: 972, tile: 1}, {index: 1004, tile: 1}, {index: 717, tile: 1}, {index: 749, tile: 1}, {index: 781, tile: 1}, {index: 813, tile: 1}, {index: 845, tile: 1}, {index: 877, tile: 1}, {index: 909, tile: 1}, {index: 941, tile: 1}, {index: 973, tile: 1}, {index: 1005, tile: 1}, {index: 718, tile: 1}, {index: 750, tile: 1}, {index: 782, tile: 1}, {index: 814, tile: 1}, {index: 846, tile: 1}, {index: 878, tile: 1}, {index: 910, tile: 1}, {index: 942, tile: 1}, {index: 974, tile: 1}, {index: 1006, tile: 1}, {index: 719, tile: 1}, {index: 751, tile: 1}, {index: 783, tile: 1}, {index: 815, tile: 1}, {index: 847, tile: 1}, {index: 879, tile: 1}, {index: 911, tile: 1}, {index: 943, tile: 1}, {index: 975, tile: 1}, {index: 1007, tile: 1}, {index: 720, tile: 1}, {index: 752, tile: 1}, {index: 784, tile: 1}, {index: 816, tile: 1}, {index: 848, tile: 1}, {index: 880, tile: 1}, {index: 912, tile: 1}, {index: 944, tile: 1}, {index: 976, tile: 1}, {index: 1008, tile: 1}, {index: 721, tile: 1}, {index: 753, tile: 1}, {index: 785, tile: 1}, {index: 817, tile: 1}, {index: 849, tile: 1}, {index: 881, tile: 1}, {index: 913, tile: 1}, {index: 945, tile: 1}, {index: 977, tile: 1}, {index: 1009, tile: 1}, {index: 690, tile: 1}, {index: 722, tile: 1}, {index: 754, tile: 1}, {index: 786, tile: 1}, {index: 818, tile: 1}, {index: 850, tile: 1}, {index: 882, tile: 1}, {index: 914, tile: 1}, {index: 946, tile: 1}, {index: 978, tile: 1}, {index: 1010, tile: 1}, {index: 691, tile: 1}, {index: 723, tile: 1}, {index: 755, tile: 1}, {index: 787, tile: 1}, {index: 819, tile: 1}, {index: 851, tile: 1}, {index: 883, tile: 1}, {index: 915, tile: 1}, {index: 947, tile: 1}, {index: 979, tile: 1}, {index: 1011, tile: 1}, {index: 692, tile: 1}, {index: 724, tile: 1}, {index: 756, tile: 1}, {index: 788, tile: 1}, {index: 820, tile: 1}, {index: 852, tile: 1}, {index: 884, tile: 1}, {index: 916, tile: 1}, {index: 948, tile: 1}, {index: 980, tile: 1}, {index: 1012, tile: 1}, {index: 693, tile: 1}, {index: 725, tile: 1}, {index: 757, tile: 1}, {index: 789, tile: 1}, {index: 821, tile: 1}, {index: 853, tile: 1}, {index: 885, tile: 1}, {index: 917, tile: 1}, {index: 949, tile: 1}, {index: 981, tile: 1}, {index: 1013, tile: 1}, {index: 694, tile: 1}, {index: 726, tile: 1}, {index: 758, tile: 1}, {index: 790, tile: 1}, {index: 822, tile: 1}, {index: 854, tile: 1}, {index: 886, tile: 1}, {index: 918, tile: 1}, {index: 950, tile: 1}, {index: 982, tile: 1}, {index: 1014, tile: 1}, {index: 663, tile: 1}, {index: 695, tile: 1}, {index: 727, tile: 1}, {index: 759, tile: 1}, {index: 791, tile: 1}, {index: 823, tile: 1}, {index: 855, tile: 1}, {index: 887, tile: 1}, {index: 919, tile: 1}, {index: 951, tile: 1}, {index: 983, tile: 1}, {index: 1015, tile: 1}, {index: 664, tile: 1}, {index: 696, tile: 1}, {index: 728, tile: 1}, {index: 760, tile: 1}, {index: 792, tile: 1}, {index: 824, tile: 1}, {index: 856, tile: 1}, {index: 888, tile: 1}, {index: 920, tile: 1}, {index: 952, tile: 1}, {index: 984, tile: 1}, {index: 1016, tile: 1}, {index: 665, tile: 1}, {index: 697, tile: 1}, {index: 729, tile: 1}, {index: 761, tile: 1}, {index: 793, tile: 1}, {index: 825, tile: 1}, {index: 857, tile: 1}, {index: 889, tile: 1}, {index: 921, tile: 1}, {index: 953, tile: 1}, {index: 985, tile: 1}, {index: 1017, tile: 1}, {index: 666, tile: 1}, {index: 698, tile: 1}, {index: 730, tile: 1}, {index: 762, tile: 1}, {index: 794, tile: 1}, {index: 826, tile: 1}, {index: 858, tile: 1}, {index: 890, tile: 1}, {index: 922, tile: 1}, {index: 954, tile: 1}, {index: 986, tile: 1}, {index: 1018, tile: 1}, {index: 667, tile: 1}, {index: 699, tile: 1}, {index: 731, tile: 1}, {index: 763, tile: 1}, {index: 795, tile: 1}, {index: 827, tile: 1}, {index: 859, tile: 1}, {index: 891, tile: 1}, {index: 923, tile: 1}, {index: 955, tile: 1}, {index: 987, tile: 1}, {index: 1019, tile: 1}, {index: 636, tile: 1}, {index: 668, tile: 1}, {index: 700, tile: 1}, {index: 732, tile: 1}, {index: 764, tile: 1}, {index: 796, tile: 1}, {index: 828, tile: 1}, {index: 860, tile: 1}, {index: 892, tile: 1}, {index: 924, tile: 1}, {index: 956, tile: 1}, {index: 988, tile: 1}, {index: 1020, tile: 1}, {index: 637, tile: 1}, {index: 669, tile: 1}, {index: 701, tile: 1}, {index: 733, tile: 1}, {index: 765, tile: 1}, {index: 797, tile: 1}, {index: 829, tile: 1}, {index: 861, tile: 1}, {index: 893, tile: 1}, {index: 925, tile: 1}, {index: 957, tile: 1}, {index: 989, tile: 1}, {index: 1021, tile: 1}, {index: 638, tile: 1}, {index: 670, tile: 1}, {index: 702, tile: 1}, {index: 734, tile: 1}, {index: 766, tile: 1}, {index: 798, tile: 1}, {index: 830, tile: 1}, {index: 862, tile: 1}, {index: 894, tile: 1}, {index: 926, tile: 1}, {index: 958, tile: 1}, {index: 990, tile: 1}, {index: 1022, tile: 1}, {index: 639, tile: 1}, {index: 671, tile: 1}, {index: 703, tile: 1}, {index: 735, tile: 1}, {index: 767, tile: 1}, {index: 799, tile: 1}, {index: 831, tile: 1}, {index: 863, tile: 1}, {index: 895, tile: 1}, {index: 927, tile: 1}, {index: 959, tile: 1}, {index: 991, tile: 1}, {index: 1023, tile: 1}]
+    - x: 6
+      y: 0
+      cells: [{index: 608, tile: 1}, {index: 640, tile: 1}, {index: 672, tile: 1}, {index: 704, tile: 1}, {index: 736, tile: 1}, {index: 768, tile: 1}, {index: 800, tile: 1}, {index: 832, tile: 1}, {index: 864, tile: 1}, {index: 896, tile: 1}, {index: 928, tile: 1}, {index: 960, tile: 1}, {index: 992, tile: 1}, {index: 609, tile: 1}, {index: 641, tile: 1}, {index: 673, tile: 1}, {index: 705, tile: 1}, {index: 737, tile: 1}, {index: 769, tile: 1}, {index: 801, tile: 1}, {index: 833, tile: 1}, {index: 865, tile: 1}, {index: 897, tile: 1}, {index: 929, tile: 1}, {index: 961, tile: 1}, {index: 993, tile: 1}, {index: 610, tile: 1}, {index: 642, tile: 1}, {index: 674, tile: 1}, {index: 706, tile: 1}, {index: 738, tile: 1}, {index: 770, tile: 1}, {index: 802, tile: 1}, {index: 834, tile: 1}, {index: 866, tile: 1}, {index: 898, tile: 1}, {index: 930, tile: 1}, {index: 962, tile: 1}, {index: 994, tile: 1}, {index: 611, tile: 1}, {index: 643, tile: 1}, {index: 675, tile: 1}, {index: 707, tile: 1}, {index: 739, tile: 1}, {index: 771, tile: 1}, {index: 803, tile: 1}, {index: 835, tile: 1}, {index: 867, tile: 1}, {index: 899, tile: 1}, {index: 931, tile: 1}, {index: 963, tile: 1}, {index: 995, tile: 1}, {index: 612, tile: 1}, {index: 644, tile: 1}, {index: 676, tile: 1}, {index: 708, tile: 1}, {index: 740, tile: 1}, {index: 772, tile: 1}, {index: 804, tile: 1}, {index: 836, tile: 1}, {index: 868, tile: 1}, {index: 900, tile: 1}, {index: 932, tile: 1}, {index: 964, tile: 1}, {index: 996, tile: 1}, {index: 613, tile: 1}, {index: 645, tile: 1}, {index: 677, tile: 1}, {index: 709, tile: 1}, {index: 741, tile: 1}, {index: 773, tile: 1}, {index: 805, tile: 1}, {index: 837, tile: 1}, {index: 869, tile: 1}, {index: 901, tile: 1}, {index: 933, tile: 1}, {index: 965, tile: 1}, {index: 997, tile: 1}, {index: 614, tile: 1}, {index: 646, tile: 1}, {index: 678, tile: 1}, {index: 710, tile: 1}, {index: 742, tile: 1}, {index: 774, tile: 1}, {index: 806, tile: 1}, {index: 838, tile: 1}, {index: 870, tile: 1}, {index: 902, tile: 1}, {index: 934, tile: 1}, {index: 966, tile: 1}, {index: 998, tile: 1}, {index: 615, tile: 1}, {index: 647, tile: 1}, {index: 679, tile: 1}, {index: 711, tile: 1}, {index: 743, tile: 1}, {index: 775, tile: 1}, {index: 807, tile: 1}, {index: 839, tile: 1}, {index: 871, tile: 1}, {index: 903, tile: 1}, {index: 935, tile: 1}, {index: 967, tile: 1}, {index: 999, tile: 1}, {index: 616, tile: 1}, {index: 648, tile: 1}, {index: 680, tile: 1}, {index: 712, tile: 1}, {index: 744, tile: 1}, {index: 776, tile: 1}, {index: 808, tile: 1}, {index: 840, tile: 1}, {index: 872, tile: 1}, {index: 904, tile: 1}, {index: 936, tile: 1}, {index: 968, tile: 1}, {index: 1000, tile: 1}, {index: 617, tile: 1}, {index: 649, tile: 1}, {index: 681, tile: 1}, {index: 713, tile: 1}, {index: 745, tile: 1}, {index: 777, tile: 1}, {index: 809, tile: 1}, {index: 841, tile: 1}, {index: 873, tile: 1}, {index: 905, tile: 1}, {index: 937, tile: 1}, {index: 969, tile: 1}, {index: 1001, tile: 1}, {index: 618, tile: 1}, {index: 650, tile: 1}, {index: 682, tile: 1}, {index: 714, tile: 1}, {index: 746, tile: 1}, {index: 778, tile: 1}, {index: 810, tile: 1}, {index: 842, tile: 1}, {index: 874, tile: 1}, {index: 906, tile: 1}, {index: 938, tile: 1}, {index: 970, tile: 1}, {index: 1002, tile: 1}, {index: 619, tile: 1}, {index: 651, tile: 1}, {index: 683, tile: 1}, {index: 715, tile: 1}, {index: 747, tile: 1}, {index: 779, tile: 1}, {index: 811, tile: 1}, {index: 843, tile: 1}, {index: 875, tile: 1}, {index: 907, tile: 1}, {index: 939, tile: 1}, {index: 971, tile: 1}, {index: 1003, tile: 1}, {index: 620, tile: 1}, {index: 652, tile: 1}, {index: 684, tile: 1}, {index: 716, tile: 1}, {index: 748, tile: 1}, {index: 780, tile: 1}, {index: 812, tile: 1}, {index: 844, tile: 1}, {index: 876, tile: 1}, {index: 908, tile: 1}, {index: 940, tile: 1}, {index: 972, tile: 1}, {index: 1004, tile: 1}, {index: 621, tile: 1}, {index: 653, tile: 1}, {index: 685, tile: 1}, {index: 717, tile: 1}, {index: 749, tile: 1}, {index: 781, tile: 1}, {index: 813, tile: 1}, {index: 845, tile: 1}, {index: 877, tile: 1}, {index: 909, tile: 1}, {index: 941, tile: 1}, {index: 973, tile: 1}, {index: 1005, tile: 1}, {index: 622, tile: 1}, {index: 654, tile: 1}, {index: 686, tile: 1}, {index: 718, tile: 1}, {index: 750, tile: 1}, {index: 782, tile: 1}, {index: 814, tile: 1}, {index: 846, tile: 1}, {index: 878, tile: 1}, {index: 910, tile: 1}, {index: 942, tile: 1}, {index: 974, tile: 1}, {index: 1006, tile: 1}, {index: 623, tile: 1}, {index: 655, tile: 1}, {index: 687, tile: 1}, {index: 719, tile: 1}, {index: 751, tile: 1}, {index: 783, tile: 1}, {index: 815, tile: 1}, {index: 847, tile: 1}, {index: 879, tile: 1}, {index: 911, tile: 1}, {index: 943, tile: 1}, {index: 975, tile: 1}, {index: 1007, tile: 1}, {index: 624, tile: 1}, {index: 656, tile: 1}, {index: 688, tile: 1}, {index: 720, tile: 1}, {index: 752, tile: 1}, {index: 784, tile: 1}, {index: 816, tile: 1}, {index: 848, tile: 1}, {index: 880, tile: 1}, {index: 912, tile: 1}, {index: 944, tile: 1}, {index: 976, tile: 1}, {index: 1008, tile: 1}, {index: 625, tile: 1}, {index: 657, tile: 1}, {index: 689, tile: 1}, {index: 721, tile: 1}, {index: 753, tile: 1}, {index: 785, tile: 1}, {index: 817, tile: 1}, {index: 849, tile: 1}, {index: 881, tile: 1}, {index: 913, tile: 1}, {index: 945, tile: 1}, {index: 977, tile: 1}, {index: 1009, tile: 1}, {index: 626, tile: 1}, {index: 658, tile: 1}, {index: 690, tile: 1}, {index: 722, tile: 1}, {index: 754, tile: 1}, {index: 786, tile: 1}, {index: 818, tile: 1}, {index: 850, tile: 1}, {index: 882, tile: 1}, {index: 914, tile: 1}, {index: 946, tile: 1}, {index: 978, tile: 1}, {index: 1010, tile: 1}, {index: 627, tile: 1}, {index: 659, tile: 1}, {index: 691, tile: 1}, {index: 723, tile: 1}, {index: 755, tile: 1}, {index: 787, tile: 1}, {index: 819, tile: 1}, {index: 851, tile: 1}, {index: 883, tile: 1}, {index: 915, tile: 1}, {index: 947, tile: 1}, {index: 979, tile: 1}, {index: 1011, tile: 1}, {index: 628, tile: 1}, {index: 660, tile: 1}, {index: 692, tile: 1}, {index: 724, tile: 1}, {index: 756, tile: 1}, {index: 788, tile: 1}, {index: 820, tile: 1}, {index: 852, tile: 1}, {index: 884, tile: 1}, {index: 916, tile: 1}, {index: 948, tile: 1}, {index: 980, tile: 1}, {index: 1012, tile: 1}, {index: 629, tile: 1}, {index: 661, tile: 1}, {index: 693, tile: 1}, {index: 725, tile: 1}, {index: 757, tile: 1}, {index: 789, tile: 1}, {index: 821, tile: 1}, {index: 853, tile: 1}, {index: 885, tile: 1}, {index: 917, tile: 1}, {index: 949, tile: 1}, {index: 981, tile: 1}, {index: 1013, tile: 1}, {index: 630, tile: 1}, {index: 662, tile: 1}, {index: 694, tile: 1}, {index: 726, tile: 1}, {index: 758, tile: 1}, {index: 790, tile: 1}, {index: 822, tile: 1}, {index: 854, tile: 1}, {index: 886, tile: 1}, {index: 918, tile: 1}, {index: 950, tile: 1}, {index: 982, tile: 1}, {index: 1014, tile: 1}, {index: 631, tile: 1}, {index: 663, tile: 1}, {index: 695, tile: 1}, {index: 727, tile: 1}, {index: 759, tile: 1}, {index: 791, tile: 1}, {index: 823, tile: 1}, {index: 855, tile: 1}, {index: 887, tile: 1}, {index: 919, tile: 1}, {index: 951, tile: 1}, {index: 983, tile: 1}, {index: 1015, tile: 1}, {index: 632, tile: 1}, {index: 664, tile: 1}, {index: 696, tile: 1}, {index: 728, tile: 1}, {index: 760, tile: 1}, {index: 792, tile: 1}, {index: 824, tile: 1}, {index: 856, tile: 1}, {index: 888, tile: 1}, {index: 920, tile: 1}, {index: 952, tile: 1}, {index: 984, tile: 1}, {index: 1016, tile: 1}, {index: 633, tile: 1}, {index: 665, tile: 1}, {index: 697, tile: 1}, {index: 729, tile: 1}, {index: 761, tile: 1}, {index: 793, tile: 1}, {index: 825, tile: 1}, {index: 857, tile: 1}, {index: 889, tile: 1}, {index: 921, tile: 1}, {index: 953, tile: 1}, {index: 985, tile: 1}, {index: 1017, tile: 1}, {index: 634, tile: 1}, {index: 666, tile: 1}, {index: 698, tile: 1}, {index: 730, tile: 1}, {index: 762, tile: 1}, {index: 794, tile: 1}, {index: 826, tile: 1}, {index: 858, tile: 1}, {index: 890, tile: 1}, {index: 922, tile: 1}, {index: 954, tile: 1}, {index: 986, tile: 1}, {index: 1018, tile: 1}, {index: 635, tile: 1}, {index: 667, tile: 1}, {index: 699, tile: 1}, {index: 731, tile: 1}, {index: 763, tile: 1}, {index: 795, tile: 1}, {index: 827, tile: 1}, {index: 859, tile: 1}, {index: 891, tile: 1}, {index: 923, tile: 1}, {index: 955, tile: 1}, {index: 987, tile: 1}, {index: 1019, tile: 1}, {index: 636, tile: 1}, {index: 668, tile: 1}, {index: 700, tile: 1}, {index: 732, tile: 1}, {index: 764, tile: 1}, {index: 796, tile: 1}, {index: 828, tile: 1}, {index: 860, tile: 1}, {index: 892, tile: 1}, {index: 924, tile: 1}, {index: 956, tile: 1}, {index: 988, tile: 1}, {index: 1020, tile: 1}, {index: 637, tile: 1}, {index: 669, tile: 1}, {index: 701, tile: 1}, {index: 733, tile: 1}, {index: 765, tile: 1}, {index: 797, tile: 1}, {index: 829, tile: 1}, {index: 861, tile: 1}, {index: 893, tile: 1}, {index: 925, tile: 1}, {index: 957, tile: 1}, {index: 989, tile: 1}, {index: 1021, tile: 1}, {index: 638, tile: 1}, {index: 670, tile: 1}, {index: 702, tile: 1}, {index: 734, tile: 1}, {index: 766, tile: 1}, {index: 798, tile: 1}, {index: 830, tile: 1}, {index: 862, tile: 1}, {index: 894, tile: 1}, {index: 926, tile: 1}, {index: 958, tile: 1}, {index: 990, tile: 1}, {index: 1022, tile: 1}, {index: 639, tile: 1}, {index: 671, tile: 1}, {index: 703, tile: 1}, {index: 735, tile: 1}, {index: 767, tile: 1}, {index: 799, tile: 1}, {index: 831, tile: 1}, {index: 863, tile: 1}, {index: 895, tile: 1}, {index: 927, tile: 1}, {index: 959, tile: 1}, {index: 991, tile: 1}, {index: 1023, tile: 1}]
+- id: de99e56b-7eaf-5e2c-9e86-48f82a0b3733
+  name: Goal pennant
+  x: 3456
+  y: 275
+  width: 20
+  height: 29
+  components:
+  - type: spriteRenderer
+    assetId: 34e622de-b909-54c3-aeee-270fb33c457d
+    asset: Assets/Showcase/Pennant.png
+    order: 1
+- id: caadc4be-0c3b-5ee7-81ee-38db25707808
+  name: Confetti
+  x: 3466
+  y: 284
+  width: 1
+  height: 1
+  components:
+  - type: particleEmitter2D
+    particles: 05824b0a-47c3-51ce-af56-80cad5b84ac7
+    trigger: Manual
+    sortingLayer: 5
+- id: b3e29524-e8d6-571d-ad90-a972c17ec67d
+  name: Runner
+  x: 48
+  y: 322
+  width: 22
+  height: 30
+  components:
+  - type: boxCollider2D
+    layer: 1
+  - type: rigidbody2D
+    freezeRotation: true
+  - type: particleEmitter2D
+    particles: 414d124e-1584-5d99-bcd2-00f409d6d342
+    trigger: Landing
+    offsetY: 14
+  - type: characterMotor2D
+  - type: script
+    script: Showcase/StreamRunner
+    values: {"Ground": "368cc1f7-2153-5ca2-8987-bcea1300b7ba", "Count": "a5c15809-da3d-511d-a71f-d10064d2e024", "Confetti": "caadc4be-0c3b-5ee7-81ee-38db25707808", "Lit": ["739fbc12-79d0-5984-a472-78427471e347", "65973220-6de8-5790-8151-58f470d0396f", "f7bd1093-3fc3-58ac-8ebe-271b112dbdb4", "2bb05b65-fa5b-596b-ac4e-2f7d309c325c", "b1294081-5280-5055-b518-637ce048090d", "58744afc-78b8-5300-80fa-58dcb3ec32ce", "8e83edce-878f-5ce5-9411-64e6a25656c1"], "EndX": 3392}
+- id: 2eff1043-9c85-5ccc-bd16-82bc932a8fe9
+  parentId: b3e29524-e8d6-571d-ad90-a972c17ec67d
+  name: Hero
+  x: 0
+  y: 0
+  width: 21
+  height: 30
+  components:
+  - type: spriteRenderer
+    assetId: ec945f79-bbec-501d-ac7b-a846e8a0e9fe
+    asset: Assets/Showcase/HeroIdleE.png
+    order: 4
+  - type: spriteAnimator
+    controller: 8c7eb4b0-8e81-5967-a2b9-62ebffed7ef6
+    playOnStart: true
+  - type: script
+    script: MotionFacing
+    values: {}
+- id: 7f1bf266-5ec7-5f44-b23c-ba768d55a24e
+  name: Camera
+  x: 48
+  y: 312
+  width: 1
+  height: 1
+  components:
+  - type: camera2D
+    zoom: 3
+    follow: b3e29524-e8d6-571d-ad90-a972c17ec67d
+    halfLife: 0.25
+    bounds: {x: 0, y: 120, width: 3584, height: 392}
+- id: 57b33b7f-9a53-586d-ab18-000c276ae6e9
+  name: Map Camera
+  x: 48
+  y: 312
+  width: 1
+  height: 1
+  components:
+  - type: camera2D
+    output: Minimap
+    zoom: 0.333
+    follow: b3e29524-e8d6-571d-ad90-a972c17ec67d
+    halfLife: 0.25
+    bounds: {x: 0, y: 120, width: 3584, height: 392}
+    viewport: {x: 0.02, y: 0.03, width: 0.96, height: 0.22}
+- id: 0b725818-0b55-5279-bb3a-72dc662f7ff2
+  name: Canvas
+  x: 0
+  y: 0
+  width: 1
+  height: 1
+  components:
+  - type: uiCanvas
+- id: 3acf4956-0131-5915-ac8c-960f96c019e4
+  parentId: 0b725818-0b55-5279-bb3a-72dc662f7ff2
+  name: Map frame 1
+  x: 14
+  y: 11.5
+  width: 772
+  height: 2
+  components:
+  - type: uiRect
+  - type: uiImage
+    color: "#D8B848"
+- id: b6c9817c-b378-5024-aadb-f4518c879fdf
+  parentId: 0b725818-0b55-5279-bb3a-72dc662f7ff2
+  name: Map frame 2
+  x: 14
+  y: 112.5
+  width: 772
+  height: 2
+  components:
+  - type: uiRect
+  - type: uiImage
+    color: "#D8B848"
+- id: 6c4af186-eca5-5de1-8fbf-ff463b57e42d
+  parentId: 0b725818-0b55-5279-bb3a-72dc662f7ff2
+  name: Map frame 3
+  x: 14
+  y: 13.5
+  width: 2
+  height: 99
+  components:
+  - type: uiRect
+  - type: uiImage
+    color: "#D8B848"
+- id: 6ccb82d0-cf59-5b16-950c-a34b8d653598
+  parentId: 0b725818-0b55-5279-bb3a-72dc662f7ff2
+  name: Map frame 4
+  x: 784
+  y: 13.5
+  width: 2
+  height: 99
+  components:
+  - type: uiRect
+  - type: uiImage
+    color: "#D8B848"
+- id: 27bcce35-69eb-5959-924d-de3f506d87aa
+  parentId: 0b725818-0b55-5279-bb3a-72dc662f7ff2
+  name: Tag 1
+  x: 12
+  y: 122.5
+  width: 402.2
+  height: 24
+  components:
+  - type: uiRect
+    anchor: TopLeft
+    showIf: stream
+  - type: uiImage
+    sprite: bf477ce7-700b-4462-ba37-ecad01ce5ee2
+    borders: {left: 4, top: 4, right: 4, bottom: 4}
+  - type: uiText
+    richText: true
+    text: "<b>Stream chunks</b>   <color=#BFD0DC>only the hero's chunk and its neighbours load</color>"
+    size: 12
+    insetX: 10
+    insetY: 4
+- id: 82c6a110-cd15-57cb-bcb0-9130f0b915e2
+  parentId: 0b725818-0b55-5279-bb3a-72dc662f7ff2
+  name: Tag 2
+  x: 12
+  y: 150.5
+  width: 402.2
+  height: 24
+  components:
+  - type: uiRect
+    anchor: TopLeft
+    showIf: minimap
+  - type: uiImage
+    sprite: bf477ce7-700b-4462-ba37-ecad01ce5ee2
+    borders: {left: 4, top: 4, right: 4, bottom: 4}
+  - type: uiText
+    richText: true
+    text: "<b>Minimap camera</b>   <color=#BFD0DC>ground appears ahead, drops behind</color>"
+    size: 12
+    insetX: 10
+    insetY: 4
+- id: d8da4bcd-ff95-58e5-974c-619e9ea5080e
+  parentId: 0b725818-0b55-5279-bb3a-72dc662f7ff2
+  name: Chunk panel
+  x: -12
+  y: -12
+  width: 214
+  height: 84
+  components:
+  - type: uiRect
+    anchor: BottomRight
+  - type: uiImage
+    sprite: bf477ce7-700b-4462-ba37-ecad01ce5ee2
+    borders: {left: 4, top: 4, right: 4, bottom: 4}
+- id: fda084c9-2516-56e7-91ac-1a261e134e27
+  parentId: d8da4bcd-ff95-58e5-974c-619e9ea5080e
+  name: Chunk label
+  x: 12
+  y: 8
+  width: 190
+  height: 14
+  components:
+  - type: uiRect
+  - type: uiText
+    richText: true
+    text: "CHUNKS IN MEMORY"
+    size: 11
+    color: "#BFD0DC"
+- id: a5c15809-da3d-511d-a71f-d10064d2e024
+  parentId: d8da4bcd-ff95-58e5-974c-619e9ea5080e
+  name: Chunk count
+  x: 12
+  y: 22
+  width: 190
+  height: 30
+  components:
+  - type: uiRect
+  - type: uiText
+    richText: true
+    text: "0 / 7"
+    size: 24
+    color: "#FFD84A"
+- id: 8788e872-dadc-5acf-b03e-d6e1b0ee6758
+  parentId: d8da4bcd-ff95-58e5-974c-619e9ea5080e
+  name: Chunk slot 1
+  x: 12
+  y: 58
+  width: 23
+  height: 12
+  components:
+  - type: uiRect
+  - type: uiImage
+    color: "#3A3560"
+- id: 739fbc12-79d0-5984-a472-78427471e347
+  parentId: d8da4bcd-ff95-58e5-974c-619e9ea5080e
+  name: Chunk lit 1
+  x: 12
+  y: 58
+  width: 23
+  height: 12
+  components:
+  - type: uiRect
+  - type: uiImage
+    color: "#FFD84A"
+- id: 67083d59-0f69-5ad6-addc-bb1acaf0f0c9
+  parentId: d8da4bcd-ff95-58e5-974c-619e9ea5080e
+  name: Chunk slot 2
+  x: 39
+  y: 58
+  width: 23
+  height: 12
+  components:
+  - type: uiRect
+  - type: uiImage
+    color: "#3A3560"
+- id: 65973220-6de8-5790-8151-58f470d0396f
+  parentId: d8da4bcd-ff95-58e5-974c-619e9ea5080e
+  name: Chunk lit 2
+  x: 39
+  y: 58
+  width: 23
+  height: 12
+  components:
+  - type: uiRect
+  - type: uiImage
+    color: "#FFD84A"
+- id: 72b78219-bc7d-504c-a803-8b430935b70f
+  parentId: d8da4bcd-ff95-58e5-974c-619e9ea5080e
+  name: Chunk slot 3
+  x: 66
+  y: 58
+  width: 23
+  height: 12
+  components:
+  - type: uiRect
+  - type: uiImage
+    color: "#3A3560"
+- id: f7bd1093-3fc3-58ac-8ebe-271b112dbdb4
+  parentId: d8da4bcd-ff95-58e5-974c-619e9ea5080e
+  name: Chunk lit 3
+  x: 66
+  y: 58
+  width: 23
+  height: 12
+  components:
+  - type: uiRect
+  - type: uiImage
+    color: "#FFD84A"
+- id: 377955c5-125d-536d-9e84-e580a779a4fc
+  parentId: d8da4bcd-ff95-58e5-974c-619e9ea5080e
+  name: Chunk slot 4
+  x: 93
+  y: 58
+  width: 23
+  height: 12
+  components:
+  - type: uiRect
+  - type: uiImage
+    color: "#3A3560"
+- id: 2bb05b65-fa5b-596b-ac4e-2f7d309c325c
+  parentId: d8da4bcd-ff95-58e5-974c-619e9ea5080e
+  name: Chunk lit 4
+  x: 93
+  y: 58
+  width: 23
+  height: 12
+  components:
+  - type: uiRect
+  - type: uiImage
+    color: "#FFD84A"
+- id: 378e48e5-e040-5632-a444-7fb8f25c8c37
+  parentId: d8da4bcd-ff95-58e5-974c-619e9ea5080e
+  name: Chunk slot 5
+  x: 120
+  y: 58
+  width: 23
+  height: 12
+  components:
+  - type: uiRect
+  - type: uiImage
+    color: "#3A3560"
+- id: b1294081-5280-5055-b518-637ce048090d
+  parentId: d8da4bcd-ff95-58e5-974c-619e9ea5080e
+  name: Chunk lit 5
+  x: 120
+  y: 58
+  width: 23
+  height: 12
+  components:
+  - type: uiRect
+  - type: uiImage
+    color: "#FFD84A"
+- id: 31b818f6-75f5-5c8a-8fb6-291da6209f5e
+  parentId: d8da4bcd-ff95-58e5-974c-619e9ea5080e
+  name: Chunk slot 6
+  x: 147
+  y: 58
+  width: 23
+  height: 12
+  components:
+  - type: uiRect
+  - type: uiImage
+    color: "#3A3560"
+- id: 58744afc-78b8-5300-80fa-58dcb3ec32ce
+  parentId: d8da4bcd-ff95-58e5-974c-619e9ea5080e
+  name: Chunk lit 6
+  x: 147
+  y: 58
+  width: 23
+  height: 12
+  components:
+  - type: uiRect
+  - type: uiImage
+    color: "#FFD84A"
+- id: 66b97fba-1ef0-5f08-bf2c-fbf325360950
+  parentId: d8da4bcd-ff95-58e5-974c-619e9ea5080e
+  name: Chunk slot 7
+  x: 174
+  y: 58
+  width: 23
+  height: 12
+  components:
+  - type: uiRect
+  - type: uiImage
+    color: "#3A3560"
+- id: 8e83edce-878f-5ce5-9411-64e6a25656c1
+  parentId: d8da4bcd-ff95-58e5-974c-619e9ea5080e
+  name: Chunk lit 7
+  x: 174
+  y: 58
+  width: 23
+  height: 12
+  components:
+  - type: uiRect
+  - type: uiImage
+    color: "#FFD84A"
+- id: 7012cd2f-741b-5ee1-833a-0ab15358565b
+  parentId: 0b725818-0b55-5279-bb3a-72dc662f7ff2
+  name: Caption
+  x: 12
+  y: -12
+  width: 400
+  height: 30
+  components:
+  - type: uiRect
+    anchor: BottomLeft
+  - type: uiImage
+    sprite: bf477ce7-700b-4462-ba37-ecad01ce5ee2
+    borders: {left: 4, top: 4, right: 4, bottom: 4}
+- id: e18530aa-8d3a-57b2-aa70-703825af2309
+  parentId: 7012cd2f-741b-5ee1-833a-0ab15358565b
+  name: Caption text
+  x: 12
+  y: 5
+  width: 380
+  height: 20
+  components:
+  - type: uiRect
+  - type: uiText
+    richText: true
+    text: "<b>PlatformerLab</b>   A long ridge, streamed in chunks"
+    size: 15
+    color: "#F4F6F4"
+defaultCameraId: 7f1bf266-5ec7-5f44-b23c-ba768d55a24e
