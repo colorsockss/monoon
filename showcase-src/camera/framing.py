@@ -84,8 +84,8 @@ spark = obj("Pick spark", 0, 0, 1, 1, f"  - type: particleEmitter2D\n    particl
 obj("Herb panel", -12, 12, 150, 56, "  - type: uiRect\n    anchor: TopRight\n" + panel, parent="Canvas")
 obj("Herb label", 12, 8, 126, 14, '  - type: uiRect\n  - type: uiText\n    text: "HERBS"\n    size: 11\n    color: "#BFD0DC"\n', parent="Herb panel")
 counter = obj("Herb count", 12, 22, 126, 30, '  - type: uiRect\n  - type: uiText\n    richText: true\n    text: "0 / 7"\n    size: 24\n    color: "#FFD84A"\n', parent="Herb panel")
-tags = [("deadzone", "Deadzone", "the camera waits inside the box"), ("lead", "Look-ahead", "it runs ahead of the hero"),
-        ("frame", "Frame group", "zoom out to keep the party in view")]
+tags = [("deadzone", "Deadzone", "the camera waits inside the box"), ("gizmo", "Debug draw", "G: tick.Debug lines, circles, text"),
+        ("lead", "Look-ahead", "it runs ahead of the hero"), ("frame", "Frame group", "zoom out to keep the party in view")]   # in the order they light up
 tw = 24 + 6.2 * max(len(f) + len(d) + 3 for _, f, d in tags)
 for i, (flag, feature, detail) in enumerate(tags):
     obj(f"Tag {i + 1}", 12, 12 + i * 28, tw, 24, f"  - type: uiRect\n    showIf: {flag}\n" + panel

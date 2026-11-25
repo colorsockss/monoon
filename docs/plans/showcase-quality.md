@@ -240,7 +240,7 @@ Parallax는 PlatformerLab의 한 씬이라 PlatformerLab 영상 안에서 다룬
 | 홀드·탭·더블탭, 조작키 재설정 (KeyRoom.InputInteractions·Rebinding) | 없음 | KeyRoom 조작 영상 |
 | 입력 기록·재생 (InventoryLab.Replay) | 없음 | InventoryLab 또는 조작 영상 |
 | 지형 비용 길찾기, 실행 중 셀 바꾸기, 청크 스트리밍 (SeedLab.TileTerrain·GridNavigation) | 없음 | SeedLab 세 번째 장면 |
-| 오디오 (AudioLab.*), RhythmLab | 찍지 않음 | 소리 녹음 도구 결정 뒤 |
+| 오디오 (AudioLab.*), RhythmLab | 찍지 않음 | 보류(사용자 결정 2026-11-25). 소리 녹음 도구 결정 뒤 |
 
 ### 2026-11-25 추가 결과
 
@@ -258,6 +258,7 @@ PlatformerLab 두 씬 다시 만듦(2026-11-25, 사용자 지적: 화풍이 다�
 - 이전 영상은 `showcase-video/raw/PlatformerLab-Lights-v1.mp4`·`PlatformerLab-Course-v1.mp4`로 옮겨 두었다.
 - 두 번째 품질 지적 뒤(같은 날): 조명 장면은 모든 빛이 한꺼번에 켜져 반응이 없었다. 이제 주인공이 횃불에 하나씩 불을 붙이고, 들보에 깃발을 달았다. 두 번째 판은 `raw/PlatformerLab-Lights-v2.mp4`. 코스 장면은 장식이 없고 반응이 착지 먼지뿐이었다. 출발 표지판, 양 끝 횃불, 덤불·꽃(SeedLab 그림)을 더했고, 길 위 동전 21개(KeyRoom 그림, 주울 때 `CoinSpark.particles`)와 "COINS" 숫자, 깃발에서 뛰어오르며 터지는 `Confetti.particles`를 넣었다. 두 번째 판은 `raw/PlatformerLab-Course-v2.mp4`. 더 쓰지 않는 PlatformerLab `Assets/Showcase`의 `Barrel.png`·`Crystal.png`·`WallFace.png`·`WallCap.png`는 지우지 않았다.
 | CameraLab `ShowcaseFraming` (`camera/framing.py`, `FramingTour.cs`) | 약초 줍기: 모닥불 옆 세 개는 데드존 안이라 카메라가 가만히 있고, 동쪽 약초 길을 달리면 앞보기로 카메라가 앞서고, 마지막 약초에서 Frame 카메라로 바뀌어 멀리 있던 동료와 만나 약초상에게 간다 | `CameraLab-Framing.mp4` 15.3초 | 에디터 Play 녹화, `Tests/FramingTests.cs`(일곱 개를 모두 줍고 둘이 약초상 앞에 섬) 통과 |
+| CameraLab `ShowcaseFraming` + G (`FramingTour.cs`의 `#if MONOON_DEBUG_DRAW`) | 스크립트 디버그 그리기 `tick.Debug`: 줍기 반경 원, 다음 목적지 선, 남은 약초 번호, 데드존 사각형, 무리 프레이밍 상자, 좌표 글자. Scene Play·개발용 빌드에서만 그린다 | `CameraLab-DebugDraw.mp4` 16.6초 | 에디터 Play에서 G를 눌러 녹화(사용자 결정: 약초 장면에 G 토글). 배포·개발용 빌드 모두 통과 |
 
 CameraLab-Framing 다시 만듦(2026-11-25, 품질 지적). 첫 판은 데드존 옆에 "Deadzone 120 × 80" 디버그 글자가 있었고, 이동에 목적이 없었고, 끝에서 둘이 맵 양 끝으로 흩어져 화면이 크게 줌아웃되며 인물이 점처럼 작아졌다. 이제 목적은 약초 일곱 개(`Herb1~3.png`, 주울 때 `HerbPick.particles`)와 "HERBS 0 / 7" 숫자 하나다. 동료는 처음부터 약초상 밭에 있어 만날 때만 조금 줌아웃되고, 둘이 함께 걸어 끝난다. 데드존 테두리는 옅은 금색 선만 남겼다. 이전 영상은 `raw/CameraLab-Framing-v1.mp4`로 옮겼다.
 | SeedLab `ShowcaseRoute` (`seed/route.py`, `RouteCourier.cs`) | 타일셋 지형 비용(길 1, 풀 3, 진흙 8, 다리 1)으로 `TileNavigation.FindPath`, 실행 중 `SetTile`(비 → 진흙, 새 다리)로 다시 계산. 비용 22 → 35 → 11 | `SeedLab-Route.mp4` 14.5초 | 에디터 Play 녹화, `Tests/RouteTests.cs`(진흙 앞에서 돌아서 남쪽 다리로 건너 상자 옆에 섬) 통과 |

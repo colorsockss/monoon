@@ -1,4 +1,5 @@
 using System;
+using System.Drawing;
 using System.Numerics;
 using Engine.Core;
 
@@ -6,7 +7,9 @@ using Engine.Core;
 // 0.25 s) he picks three herbs by the campfire without leaving the deadzone, so the camera stays put, then runs east along a
 // trail of four and the camera leads him. On the last herb the Frame camera takes over (group "Party"): the partner walks in
 // from far off, the view widens to hold both and closes in as they meet, and they walk to the herbalist together. Each
-// walker feeds its picture's animator (Move vector, Speed). Raises "deadzone", "lead", "frame".
+// walker feeds its picture's animator (Move vector, Speed). G toggles debug gizmos drawn with tick.Debug (Scene Play and
+// development builds only): pick reach and the line to the next stop, the herbs left, the deadzone and the framed group's box.
+// Raises "deadzone", "lead", "frame", "gizmo".
 public sealed class FramingTour : GameBehaviour
 {
     public Guid Player, Partner, PlayerPicture, PartnerPicture, Follow, Frame, Deadzone, Spark, Counter;
@@ -26,7 +29,7 @@ public sealed class FramingTour : GameBehaviour
     private const int SwitchAfterPick = 6;
     private int heroNext, partnerNext = -1, picked;
     private float heroWait, partnerWait;
-    private bool switched, delivered;
+    private bool switched, delivered, gizmos;
 
     public override void FixedUpdate(ScriptTick tick)
     {
@@ -36,6 +39,10 @@ public sealed class FramingTour : GameBehaviour
         if (!switched && heroNext >= 5) tick.Session.Set("lead");
         Walk(tick, dt, Player, PlayerPicture, HeroStops, ref heroNext, ref heroWait);
         if (partnerNext >= 0) Walk(tick, dt, Partner, PartnerPicture, PartnerStops, ref partnerNext, ref partnerWait);
+#if MONOON_DEBUG_DRAW
+        if (tick.Input.Pressed("DebugDraw")) { gizmos = !gizmos; if (gizmos) tick.Session.Set("gizmo"); }
+        if (gizmos) Gizmos(tick);
+#endif
         if (!delivered && heroNext >= HeroStops.Length && partnerNext >= PartnerStops.Length)
         {
             delivered = true;
@@ -45,6 +52,45 @@ public sealed class FramingTour : GameBehaviour
             tick.Ui.SetText(Counter, "<color=#9FE6A0>Delivered</color>");
         }
     }
+
+#if MONOON_DEBUG_DRAW
+    private void Gizmos(ScriptTick tick)
+    {
+        var objects = tick.Objects;
+        var debug = tick.Debug;
+        objects.TryGetPosition(Player, out var hero);
+        objects.TryGetPosition(Partner, out var partner);
+        hero += new Vector2(11, 6);      // the feet: middle of the 22 x 12 body
+        partner += new Vector2(11, 6);
+        debug.Circle(hero, 18, Color.Gold, 2);
+        if (heroNext < HeroStops.Length) debug.Line(hero, new Vector2(HeroStops[heroNext].X + 11, HeroStops[heroNext].Y + 6), Color.Cyan, 2);
+        debug.Text(hero + new Vector2(-30, 14), $"{hero.X:0}, {hero.Y:0}", Color.White, 13);
+        for (int i = 0; i < Picks.Length; i++)
+            if (objects.IsActive(Picks[i]) && objects.TryGetPosition(Picks[i], out var herb))
+            {
+                debug.Circle(herb + new Vector2(17, 20), 10, Color.LimeGreen, 1);
+                debug.Text(herb + new Vector2(12, -6), (i + 1).ToString(), Color.LimeGreen, 13);
+            }
+        if (!switched && tick.Cameras.TryGetView(Follow, out var view))
+            Box(debug, view.Center - new Vector2(60, 40), view.Center + new Vector2(60, 40), Color.White, "deadzone");
+        if (switched)
+        {
+            if (partnerNext < PartnerStops.Length) debug.Line(partner, new Vector2(PartnerStops[partnerNext].X + 11, PartnerStops[partnerNext].Y + 6), Color.HotPink, 2);
+            var min = Vector2.Min(hero, partner) - new Vector2(48, 78);   // Padding 48 around both, pictures reach 30 above the feet
+            var max = Vector2.Max(hero, partner) + new Vector2(48, 48);
+            Box(debug, min, max, Color.Magenta, "Party");
+        }
+    }
+
+    private static void Box(ScriptDebug debug, Vector2 min, Vector2 max, Color color, string label)
+    {
+        debug.Line(min, new Vector2(max.X, min.Y), color, 1);
+        debug.Line(new Vector2(max.X, min.Y), max, color, 1);
+        debug.Line(max, new Vector2(min.X, max.Y), color, 1);
+        debug.Line(new Vector2(min.X, max.Y), min, color, 1);
+        debug.Text(min + new Vector2(4, 2), label, color, 13);
+    }
+#endif
 
     private void Walk(ScriptTick tick, float dt, Guid who, Guid picture, Stop[] stops, ref int next, ref float wait)
     {

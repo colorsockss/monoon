@@ -2406,6 +2406,25 @@ objects:
   height: 24
   components:
   - type: uiRect
+    showIf: gizmo
+  - type: uiImage
+    sprite: 2739c0db-ab1d-58b2-a7bd-b6c3a6e7adbe
+    borders: {left: 4, top: 4, right: 4, bottom: 4}
+  - type: uiText
+    richText: true
+    text: "<b>Debug draw</b>   <color=#BFD0DC>G: tick.Debug lines, circles, text</color>"
+    size: 12
+    insetX: 10
+    insetY: 4
+- id: 5ad80e37-618c-5ebf-99ea-9247bbac639a
+  parentId: d56aad34-125f-5fec-bbd5-fecdf3c0bee2
+  name: Tag 3
+  x: 12
+  y: 68
+  width: 321.6
+  height: 24
+  components:
+  - type: uiRect
     showIf: lead
   - type: uiImage
     sprite: 2739c0db-ab1d-58b2-a7bd-b6c3a6e7adbe
@@ -2416,11 +2435,11 @@ objects:
     size: 12
     insetX: 10
     insetY: 4
-- id: 5ad80e37-618c-5ebf-99ea-9247bbac639a
+- id: 478d1deb-b59b-57e0-8176-088f4c814bad
   parentId: d56aad34-125f-5fec-bbd5-fecdf3c0bee2
-  name: Tag 3
+  name: Tag 4
   x: 12
-  y: 68
+  y: 96
   width: 321.6
   height: 24
   components:
