@@ -18,7 +18,7 @@ using Engine.Editor;
 // Loaded into the packaged editor with DOTNET_STARTUP_HOOKS (roadmap 13.7, 13.9, 13.15, 13.17). MONOON_AF_PHASE selects one launch:
 // edit (KeyRoom: colour picks, object-field drags, refusals, Finder import, Particle panel texture, arrays, multi-selection, Ping,
 // alignment; saves), trace (Scene Play replay captures of the saved choice), field (CollisionLab Field10000 picker search) and
-// curves (ParticleLab Flame: Inspector curve and gradient rows against the runtime table; saves the asset).
+// curves (ParticleLab workshop Flame: Inspector curve and gradient rows against the runtime table; saves the asset).
 public static partial class StartupHook
 {
     private static readonly string Output = Environment.GetEnvironmentVariable("MONOON_AF_OUTPUT")!;
@@ -449,8 +449,8 @@ public static partial class StartupHook
     // ---- curves (ParticleLab Flame): Inspector rows draw the runtime table; edits write the asset once per commit
     private static async Task Curves()
     {
-        await (Task)Call(main, "SwitchScene", "Curves")!;
-        await Until(() => Scene.Objects.Any(o => o.Name == "Flame"), "Curves scene", 60);
+        await (Task)Call(main, "SwitchScene", "ShowcaseWorkshop")!;
+        await Until(() => Scene.Objects.Any(o => o.Name == "Flame"), "workshop scene", 60);
         await Delay(800);
         var flame = Object("Flame");
         await Select(flame);

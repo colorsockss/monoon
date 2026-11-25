@@ -8,7 +8,7 @@ using Avalonia.Interactivity;
 using Engine.Core;
 using Engine.Editor;
 
-// Roadmap 14.8 in the packaged editor: Scene Play of the ParticleLab Presets scene, the Particle panel edits
+// Roadmap 14.8 in the packaged editor: Scene Play of the ParticleLab workshop showcase, the Particle panel edits
 // Assets/Presets/Embers.particles while the game runs, and the editor's file watch reloads it into both prefab instances
 // (Torch, Brazier). A colour change keeps their live particles; a new Max particles restarts them. Each committed change is
 // one Undo step; after Stop, Undo restores the file bytes.
@@ -48,7 +48,7 @@ public static class StartupHook
         string root = Environment.GetEnvironmentVariable("MONOON_QA_PROJECT")!, file = Path.Combine(root, Embers);
         var view = main.FindControl<SceneViewport>("Viewport")!;
         SceneDocument Scene() => (SceneDocument)Get(main, "Scene")!;
-        await Until(() => main.IsVisible && Scene().Objects.Any(o => o.Name == "Brazier smoke"), "Presets scene");
+        await Until(() => main.IsVisible && Scene().Objects.Any(o => o.Name == "Brazier smoke"), "workshop scene");
         main.Width = 1280; main.Height = 800;
         await Delay(800);
         var original = File.ReadAllBytes(file);

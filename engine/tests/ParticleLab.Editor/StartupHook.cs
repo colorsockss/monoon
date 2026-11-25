@@ -12,7 +12,7 @@ using Engine.Desktop;
 using RectangleF = System.Drawing.RectangleF;
 using Matrix3x2 = System.Numerics.Matrix3x2;
 
-// Particle panel probe (roadmap 14.6/14.7) on a ParticleLab copy that starts in Curves: selects Flame, opens the Particle
+// Particle panel probe (roadmap 14.6/14.7) on a ParticleLab copy that starts in the workshop showcase: selects Flame, opens the Particle
 // panel, compares the editor preview with the committed Scene Play/Release/AOT trace, scrubs, plays (no file changes), then
 // edits a curve key, a gradient key and a colour through the controls, checks the asset file and that Undo/Redo restore its
 // bytes, and measures row alignment at several window sizes and with a long object name.
@@ -118,10 +118,10 @@ public static class StartupHook
     private static async Task Run(Window main)
     {
         string root = Environment.GetEnvironmentVariable("MONOON_QA_PROJECT")!;
-        string asset = Path.Combine(root, "Assets", "Flame.particles"), scenePath = Path.Combine(root, "Scenes", "Curves.scene");
+        string asset = Path.Combine(root, "Assets", "Flame.particles"), scenePath = Path.Combine(root, "Scenes", "ShowcaseWorkshop.scene");
         var view = main.FindControl<Control>("Viewport")!;
         SceneDocument Scene() => (SceneDocument)Get(main, "Scene")!;
-        await Until(() => Scene().Objects.Any(o => o.Name == "Flame"), "Curves scene");
+        await Until(() => Scene().Objects.Any(o => o.Name == "Flame"), "workshop scene");
         main.Activate();
         main.Width = 1600; main.Height = 1000;
         await Delay(700);
@@ -142,7 +142,7 @@ public static class StartupHook
         result["selected_owners"] = Owners(inScene);
         result["viewport_preview"] = ReferenceEquals(Get(view, "Particles"), inScene);
 
-        // Play all: the three Curves emitters, compared tick by tick with the trace Scene Play, Release and AOT recorded.
+        // Play all: the three Curves emitters left in the copy, compared tick by tick with the trace Scene Play, Release and AOT recorded.
         ((CheckBox)Get(panel, "PlayAll")!).IsChecked = true;
         await Delay(300);
         Call(panel, "SetPlaying", false);

@@ -7,15 +7,15 @@ import shutil
 import subprocess
 import sys
 
-MODULES, PRESETS = 'b702dcb2-01f9-5904-ad61-e62f4a348991', '5b0f3c1e-8a2d-4f6b-9c3e-7d1a2b4c6e80'
+CAMP, WORKSHOP = 'b8f2ab84-5869-5a85-a9cc-f8245e12d7c1', '20bac3a9-6b46-52fc-8c71-ee549360abb8'
 editor, sample, hook, out = [Path(p).resolve() for p in sys.argv[1:5]]
 out.mkdir(parents=True)
 project = out / 'ParticleLab'
 shutil.copytree(sample, project, ignore=shutil.ignore_patterns('.monoon', '.monoon-compiled', '.DS_Store', 'bin', 'obj'))
 settings = project / 'GameSettings'
 text = settings.read_text(encoding='utf-8')
-assert f'startScene: {MODULES}' in text
-settings.write_text(text.replace(f'startScene: {MODULES}', f'startScene: {PRESETS}', 1), encoding='utf-8')
+assert f'startScene: {CAMP}' in text
+settings.write_text(text.replace(f'startScene: {CAMP}', f'startScene: {WORKSHOP}', 1), encoding='utf-8')
 env = dict(os.environ, DOTNET_STARTUP_HOOKS=str(hook), MONOON_QA_PROJECT=str(project), MONOON_PARTICLE_RELOAD=str(out),
            MONOON_USER_DATA=str(out / 'profile'))
 with (out / 'editor.log').open('wb') as log:

@@ -24,18 +24,23 @@ BASELINE = REPO / 'engine/tests/results/particles/osx-arm64'
 # Editor and tool files a game build must not contain (AGENTS.md runtime boundary).
 FORBIDDEN = ('Avalonia', 'SkiaSharp', 'Engine.Editor', 'Engine.Authoring', 'MoNoon.dll', 'libSkiaSharp')
 PROJECT = '78fa20ac-f557-51e2-b1d4-4fa8d6384536'
-# id, an object to wait for in the editor, frames, key events, captured frames
+# id, an object to wait for in the editor, frames, key events, captured frames. The camp and the workshop are the sample's two
+# showcase scenes; Stress is a test-only scene (not in the sample's builds), so prepare adds it to the copy's included scenes.
 SCENES = {
-    'Modules': ('b702dcb2-01f9-5904-ad61-e62f4a348991', 'Point sparks', 600,
-                [(120, 'Space', 'true'), (124, 'Space', 'false'), (400, 'Space', 'true'), (404, 'Space', 'false')], [90, 300, 590]),
-    'Sorting': ('6db609a5-d21e-5bc7-836b-5f8da0e88055', 'Back panel', 300, [], [240]),
+    'Showcase': ('b8f2ab84-5869-5a85-a9cc-f8245e12d7c1', 'Rockets', 600,
+                 [(60, 'Space', 'true'), (64, 'Space', 'false'), (240, 'Space', 'true'), (244, 'Space', 'false'),
+                  (420, 'Space', 'true'), (424, 'Space', 'false')], [100, 500]),
+    'Workshop': ('20bac3a9-6b46-52fc-8c71-ee549360abb8', 'Point sparks', 600,
+                 # No input in the first 300 ticks: ParticleChecks compares them with the editor preview.
+                 [(320, 'Space', 'true'), (324, 'Space', 'false'), (480, '1', 'true'), (484, '1', 'false')], [90, 300, 590]),
     'Stress': ('f94d7d8d-773d-5014-b991-2f1ef4d32f9d', 'Storm', 300, [], [200, 290]),
-    'Curves': ('43a905f1-9900-4bef-8133-3b4f3b6df589', 'Pinwheels', 300, [], [150, 290]),
-    'Rain': ('7e2161fc-ae90-4d97-bc8f-46e35a980108', 'Cinders', 360, [], [180, 350]),
-    'Fireworks': ('84d527d9-a291-423c-befc-8f1e98fccf08', 'Burst', 420, [], [100, 400]),
-    'Presets': ('5b0f3c1e-8a2d-4f6b-9c3e-7d1a2b4c6e80', 'Brazier smoke', 360,
-                [(60, 'Space', 'true'), (64, 'Space', 'false'), (200, '1', 'true'), (204, '1', 'false')], [70, 300]),
+    # The workshop again, tracing only its still Curves emitters (Bubbles, Flame, Pinwheels): the editor preview of the same three
+    # must match this trace tick by tick (ParticleChecks and ParticleLab.Editor).
+    'Curves': ('20bac3a9-6b46-52fc-8c71-ee549360abb8', 'Pinwheels', 300, [], [150, 290]),
 }
+GROUP = {'Curves': 'Curves'}
+# Emitters (objects tagged Particles) in scene order: the camp's rain cloud, its splash, the rockets and their burst.
+CAMP_RAIN, CAMP_SPLASH, CAMP_ROCKETS, CAMP_BURST = 3, 4, 8, 9
 
 
 def recording(path, scene):
@@ -50,9 +55,11 @@ def prepare(sample, dest, scene):
     shutil.copyfile(HERE / 'ParticleTrace.source', dest / 'Scripts/ParticleTrace.cs')
     settings = dest / 'GameSettings'
     text = settings.read_text(encoding='utf-8')
-    first = SCENES['Modules'][0]
-    assert f'startScene: {first}' in text
-    settings.write_text(text.replace(f'startScene: {first}', f'startScene: {SCENES[scene][0]}', 1), encoding='utf-8')
+    first, sid = SCENES['Showcase'][0], SCENES[scene][0]
+    assert f'startScene: {first}' in text and 'includedScenes: [' in text
+    text = text.replace(f'startScene: {first}', f'startScene: {sid}', 1)
+    if sid not in text.split('includedScenes: [', 1)[1].split(']', 1)[0]: text = text.replace('includedScenes: [', f'includedScenes: [{sid}, ', 1)
+    settings.write_text(text, encoding='utf-8')
     for file in (dest / 'Scenes').glob('*.scene'):
         text = file.read_text(encoding='utf-8')
         assert text.count('  - type: camera2D\n') == 1, file
@@ -67,7 +74,7 @@ def play(exe, out, scene):
     out = out.resolve()
     out.mkdir(parents=True)
     recording(out / f'{scene}.inputreplay', scene)
-    env = dict(os.environ, MONOON_PARTICLE_TRACE=str(out / 'trace.tsv'), MONOON_USER_DATA=str(out / 'profile'),
+    env = dict(os.environ, MONOON_PARTICLE_TRACE_GROUP=GROUP.get(scene, ''), MONOON_PARTICLE_TRACE=str(out / 'trace.tsv'), MONOON_USER_DATA=str(out / 'profile'),
                MONOON_REPLAY_SNAPSHOTS=f'{out / "captures"};{",".join(map(str, captures(scene)))}',
                SDL_VIDEO_DRIVER='monoon-no-video', SDL_AUDIO_DRIVER='monoon-no-audio')
     with (out / 'player.log').open('wb') as log:
@@ -83,7 +90,7 @@ def editor(app, project, hook, out, scene):
     (out / 'captures.txt').write_text(','.join(map(str, captures(scene))), encoding='utf-8')
     env = dict(os.environ, DOTNET_STARTUP_HOOKS=str(hook.resolve()), MONOON_QA_PROJECT=str(project.resolve()),
                MONOON_PARTICLES_EDITOR=str(out), MONOON_PARTICLES_WAIT=SCENES[scene][1],
-               MONOON_PARTICLE_TRACE=str(out / 'trace.tsv'), MONOON_USER_DATA=str(out / 'profile'))
+               MONOON_PARTICLE_TRACE_GROUP=GROUP.get(scene, ''), MONOON_PARTICLE_TRACE=str(out / 'trace.tsv'), MONOON_USER_DATA=str(out / 'profile'))
     with (out / 'editor.log').open('wb') as log:
         subprocess.run([str(app.resolve()), str(project.resolve())], env=env, stdout=log, stderr=log, timeout=900, check=True)
     if (out / 'error.txt').exists(): raise RuntimeError((out / 'error.txt').read_text(encoding='utf-8'))
@@ -100,21 +107,19 @@ def check(out, scene):
               'distinctHashes': len({r[3] for r in rows})}
     assert len(emitters) == 1 and result['distinctHashes'] > len(rows) * .9, result
     if scene == 'Stress': assert max(counts) == 10240 and counts[-1] >= 10200, result
-    if scene == 'Modules':  # the manual burst (Space at 120 and 400) adds 60 particles on the next tick
-        assert counts[122] - counts[119] > 40 and counts[402] - counts[399] > 40, result
-    if scene == 'Presets':  # six presets and two prefabs (Torch, Brazier + its smoke) on the Embers asset; Space and 1 burst Dust + Hit (32)
-        assert emitters == {8} and counts[62] - counts[59] >= 25 and counts[202] - counts[199] >= 25, result
     # Per-emitter born/died/collided/dropped per tick, in tag (scene) order.
     events = [[list(map(int, e.split('/'))) for e in r[4].split(',')] for r in rows]
     def total(emitter, field): return sum(row[emitter][field] for row in events)
-    if scene == 'Rain':  # Downpour, Splash, Mist, Cinders: every drop hit throws 2 splashes (or drops them when Splash is full)
-        hits, splashes, dropped = total(0, 2), total(1, 0), events[-1][1][3]
-        result.update(rainHits=hits, splashes=splashes, splashDropped=dropped, cinderHits=total(3, 2))
-        assert hits > 1000 and splashes + dropped == 2 * hits and result['cinderHits'] > 0, result
-    if scene == 'Fireworks':  # Rockets, Burst: each rocket death bursts into exactly 48 sparks
-        deaths, sparks = total(0, 1), total(1, 0)
-        result.update(rockets=total(0, 0), rocketDeaths=deaths, sparks=sparks, dropped=events[-1][1][3])
-        assert deaths > 10 and sparks == 48 * deaths and result['dropped'] == 0, result
+    if scene == 'Workshop':  # Space pops the manual emitter (60) and bursts Dust and Hit (32); 1 bursts them again
+        assert counts[322] - counts[319] > 40 and counts[482] - counts[479] >= 25, result
+    if scene == 'Showcase':
+        # Rain on the ground tiles: every drop that hits throws 2 splashes (or drops them when Splash is full).
+        hits, splashes, dropped = total(CAMP_RAIN, 2), total(CAMP_SPLASH, 0), events[-1][CAMP_SPLASH][3]
+        # Three presses of Space fire three rockets each; each rocket death bursts into exactly 48 sparks.
+        deaths, sparks = total(CAMP_ROCKETS, 1), total(CAMP_BURST, 0)
+        result.update(rainHits=hits, splashes=splashes, splashDropped=dropped, rockets=total(CAMP_ROCKETS, 0), rocketDeaths=deaths, sparks=sparks)
+        assert hits > 100 and splashes + dropped == 2 * hits, result
+        assert deaths == 9 and sparks == 48 * deaths and events[-1][CAMP_BURST][3] == 0, result
     for frame in captures(scene):
         assert (out / 'captures' / f'{frame:04}.png').stat().st_size > 1000, frame
     (out / 'result.json').write_text(json.dumps(result, indent=2) + '\n', encoding='utf-8')

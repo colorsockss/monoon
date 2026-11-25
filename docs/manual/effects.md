@@ -2,7 +2,7 @@
 
 PlatformerLab을 열고 Play에서 Space를 누르면 Runner가 제자리에서 점프한다. 착지 직후 발 양옆으로 먼지가 퍼진다. 경사 위 발판에 있는 횃불은 가만히 서 있어도 불꽃 모양과 주변 밝기가 바뀐다. [샘플 씬](../../samples/PlatformerLab/Scenes/Platform.scene) · [Mac 실행 검증](../../engine/tests/results/effects/README.md)
 
-[ParticleLab](../../samples/ParticleLab/)의 **Modules** 씬은 방출 형태·버스트·수명·시작값·중력·로컬 공간·Prewarm을 방출기 하나씩으로 보여 준다. Space를 누르면 가운데 방출기가 버스트를 한 번 낸다. N으로 **Sorting**(정렬·블렌드·텍스처 시트), **Stress**(입자 10,240개), **Curves**(수명 곡선·그라데이션), **Rain**(힘·노이즈·타일·콜라이더 충돌), **Fireworks**(서브 방출기)로 넘어간다. [검증과 측정](../../engine/tests/results/particles/README.md)
+[ParticleLab](../../samples/ParticleLab/)에는 쇼케이스 씬이 둘 있다. 첫 장면(`Scenes/Showcase.scene`)은 밤 야영지를 걸으며 모닥불(곡선·가산), 타일에 튀는 비, 분수, Space로 쏘는 불꽃놀이(서브 방출기), 입자 10,240개의 포털을 지난다. 두 번째 **입자 공방**(`Scenes/ShowcaseWorkshop.scene`)은 다섯 거점을 지난다: 방출 형태·Prewarm·로컬/월드 공간(Space를 누르면 수동 방출기가 버스트를 한 번 낸다), 정렬·블렌드·텍스처 시트, 프리셋과 같은 에셋을 쓰는 프리팹, 수명 곡선·그라데이션, 노이즈·콜라이더 충돌. 효과마다 아래에 이름이 붙어 있다. [검증과 측정](../../engine/tests/results/particles/README.md)
 
 ## Particle Emitter 2D
 
@@ -64,7 +64,7 @@ blend: Additive        # Alpha·Additive·Multiply
 
 ### 수명 곡선과 그라데이션
 
-크기·색·알파·회전 속도를 입자 수명(0–1)에 따라 바꾼다. ParticleLab의 **Curves** 씬에서 커졌다가 터지는 거품(크기 곡선과 Max 곡선), 노랑→주황→암적색으로 식는 불꽃(그라데이션), 빠르게 돌다 멈추는 눈송이(회전 속도)를 볼 수 있다. [Flame.particles](../../samples/ParticleLab/Assets/Flame.particles)
+크기·색·알파·회전 속도를 입자 수명(0–1)에 따라 바꾼다. ParticleLab 공방의 곡선 거점에서 커졌다가 터지는 거품(크기 곡선과 Max 곡선), 노랑→주황→암적색으로 식는 불꽃(그라데이션), 빠르게 돌다 멈추는 눈송이(회전 속도)를 볼 수 있다. [Flame.particles](../../samples/ParticleLab/Assets/Flame.particles)
 
 ```yaml
 sizeOverLifetime:            # 시작 크기에 곱하는 배율. 쓰면 endSize는 무시한다
@@ -83,7 +83,7 @@ rotationSpeed: {keys: [{time: 0, value: 540}, {time: 1, value: 0}]}   # 도/초,
 
 ### 힘·노이즈·충돌
 
-**Rain** 씬에서는 비가 바닥·언덕 경사·발판 윗면에서 튀고, 안개가 노이즈 바람에 흩날리고, 불씨가 상자 콜라이더에 맞아 튄다. [Downpour.particles](../../samples/ParticleLab/Assets/Downpour.particles) · [Mist.particles](../../samples/ParticleLab/Assets/Mist.particles)
+ParticleLab 야영지에서는 비가 바닥 타일에서 튀고, 공방의 마지막 거점에서는 안개가 노이즈 바람에 흩날리고 불씨가 벤치 콜라이더에 맞아 튄다. [CloudRain.particles](../../samples/ParticleLab/Assets/Showcase/CloudRain.particles) · [Mist.particles](../../samples/ParticleLab/Assets/Mist.particles)
 
 ```yaml
 forceX: 0              # 중력에 더하는 일정한 가속도(픽셀/초²)
@@ -110,7 +110,7 @@ collision: {mode: Tiles, bounce: 0.35, dampen: 0.3, lifetimeLoss: 0.6, mask: 429
 
 ### 서브 방출기
 
-입자가 태어나거나(Birth) 죽거나(Death) 부딪힐 때(Collision) 다른 방출기가 그 자리에서 입자를 낸다. **Fireworks** 씬의 로켓은 죽는 자리에서 자기 색의 불꽃 48개로 터지고, **Rain** 씬의 빗방울은 타일에 부딪힐 때마다 물방울 2개를 튀긴다. [Rocket.particles](../../samples/ParticleLab/Assets/Rocket.particles)
+입자가 태어나거나(Birth) 죽거나(Death) 부딪힐 때(Collision) 다른 방출기가 그 자리에서 입자를 낸다. ParticleLab 야영지에서 Space로 쏜 로켓은 죽는 자리에서 자기 색의 불꽃 48개로 터지고, 빗방울은 타일에 부딪힐 때마다 물방울 2개를 튀긴다. [Rockets.particles](../../samples/ParticleLab/Assets/Showcase/Rockets.particles)
 
 ```yaml
 subEmitters:   # 8개까지

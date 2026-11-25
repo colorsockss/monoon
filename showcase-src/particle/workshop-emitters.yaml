@@ -1,0 +1,518 @@
+# Emitter objects of the retired ParticleLab lab scenes, kept with their own ids for the workshop showcase (workshop.py).
+# Each "station" section lists the scene's root objects (and their children) in their original 800 x 450 layout.
+station: Modules
+- id: ea8e8dde-d4f4-50b5-a5ee-142dce7aba4f
+  name: Point sparks
+  tag: Particles
+  x: 100
+  y: 150
+  width: 1
+  height: 1
+  components:
+  - type: particleEmitter2D
+    particles: aa30c4bd-8ea6-52de-b4b3-3710323eac4c
+    trigger: Start
+- id: 3939b6a6-04ac-5e4a-9ad3-15aab3185990
+  name: Circle ring
+  tag: Particles
+  x: 290
+  y: 150
+  width: 1
+  height: 1
+  components:
+  - type: particleEmitter2D
+    particles: 4e2d43ec-cc22-532d-9116-f4d298612c91
+    trigger: Start
+- id: 8ffe738f-32cc-592e-b316-912b80a2a1e5
+  name: Edge rain
+  tag: Particles
+  x: 500
+  y: 80
+  width: 1
+  height: 1
+  components:
+  - type: particleEmitter2D
+    particles: 912fd814-6249-5103-9f80-7ebdc0aea026
+    trigger: Start
+- id: 2fd920b5-f2f0-56c4-ac33-d110b5dbb652
+  name: Box snow
+  tag: Particles
+  x: 690
+  y: 80
+  width: 1
+  height: 1
+  components:
+  - type: particleEmitter2D
+    particles: d7fb0583-7a26-57e0-9451-51860b546df6
+    trigger: Start
+- id: a23d35e3-7eb1-5a8b-b626-096614982f34
+  name: Cone fountain
+  tag: Particles
+  x: 110
+  y: 400
+  width: 1
+  height: 1
+  components:
+  - type: particleEmitter2D
+    particles: 02558de6-8364-5941-8df3-69e52fa727a1
+    trigger: Start
+- id: 88982f82-d394-540c-a8c5-1a197a6d8259
+  name: Prewarmed smoke
+  tag: Particles
+  x: 280
+  y: 400
+  width: 1
+  height: 1
+  components:
+  - type: particleEmitter2D
+    particles: 98c15a53-9b25-5831-b8ad-711e09b9e681
+    trigger: Start
+- id: 178b0a25-c969-516c-adad-00177eea4755
+  name: Manual pop
+  tag: Particles
+  x: 400
+  y: 260
+  width: 1
+  height: 1
+  components:
+  - type: particleEmitter2D
+    particles: 7a6dacf7-d224-5fd8-acd7-a50a56b52cd1
+    trigger: Manual
+- id: 932f0145-4429-5c62-8bb3-9a32c6801f68
+  name: Local tail
+  tag: Particles
+  x: 560
+  y: 270
+  width: 1
+  height: 1
+  components:
+  - type: particleEmitter2D
+    particles: 79de66be-ce09-5146-a85e-6746acba2a10
+    trigger: Start
+  - type: pathFollower2D
+    points:
+    - {x: 0, y: 0, outX: 24.75, outY: 0}
+    - {x: 45, y: 45, inX: 0, inY: -24.75, outX: 0, outY: 24.75}
+    - {x: 0, y: 90, inX: 24.75, inY: 0, outX: -24.75, outY: 0}
+    - {x: -45, y: 45, inX: 0, inY: 24.75, outX: 0, outY: -24.75}
+    speed: 120
+    repeat: Loop
+    playOnStart: true
+- id: a81435c4-c284-54ed-9390-e2155567d60a
+  name: World wake
+  tag: Particles
+  x: 700
+  y: 270
+  width: 1
+  height: 1
+  components:
+  - type: particleEmitter2D
+    particles: bc12c1bb-a7bc-5573-a1e6-9d4eaca406f9
+    trigger: Start
+  - type: pathFollower2D
+    points:
+    - {x: 0, y: 0, outX: 24.75, outY: 0}
+    - {x: 45, y: 45, inX: 0, inY: -24.75, outX: 0, outY: 24.75}
+    - {x: 0, y: 90, inX: 24.75, inY: 0, outX: -24.75, outY: 0}
+    - {x: -45, y: 45, inX: 0, inY: 24.75, outX: 0, outY: -24.75}
+    speed: 120
+    repeat: Loop
+    playOnStart: true
+station: Sorting
+- id: 61a4e224-7a2b-5db6-a7a2-4f66a066e03c
+  name: Back panel
+  x: 150
+  y: 120
+  width: 220
+  height: 160
+  components:
+  - type: spriteRenderer
+    squareColor: "#31475E"
+- id: 216df930-efe4-5bee-a9ca-f9c491bcaf88
+  name: Embers between
+  tag: Particles
+  x: 260
+  y: 260
+  width: 1
+  height: 1
+  components:
+  - type: particleEmitter2D
+    particles: 959a85fd-df67-5ebd-a941-af86aed3e3ae
+    trigger: Start
+    order: 1
+- id: ed631e94-7b36-5780-85eb-d940a8254a38
+  name: Front panel
+  x: 250
+  y: 190
+  width: 220
+  height: 160
+  components:
+  - type: spriteRenderer
+    squareColor: "#1C2836"
+    order: 2
+- id: d756b31b-6e36-5fa7-9c63-572c09e938d0
+  name: Lit wall
+  x: 520
+  y: 110
+  width: 220
+  height: 180
+  components:
+  - type: spriteRenderer
+    squareColor: "#FFD36B"
+- id: 23670de9-3bb5-53c7-bdd7-7132d9f22023
+  name: Multiply shade
+  tag: Particles
+  x: 630
+  y: 200
+  width: 1
+  height: 1
+  components:
+  - type: particleEmitter2D
+    particles: 5445aefe-6bd7-5e16-9a69-7cb55bd8fcda
+    trigger: Start
+    order: 1
+- id: cd8df60f-67d9-52e6-a4cc-16c75d25bf92
+  name: Flake sheet
+  tag: Particles
+  x: 630
+  y: 330
+  width: 1
+  height: 1
+  components:
+  - type: particleEmitter2D
+    particles: 2fd0e0ac-3ecb-5b31-a8bc-94aa476df90b
+    trigger: Start
+    order: 3
+station: Presets
+- id: f0a1b2c3-0002-4d00-8a00-000000000002
+  name: Dust
+  tag: Particles
+  groups:
+  - Burst
+  x: 100
+  y: 205
+  width: 1
+  height: 1
+  components:
+  - type: particleEmitter2D
+    particles: 0d6a2f41-6b3e-4c8a-9e21-5a7c3b9d1e01
+    trigger: manual
+    seed: 0
+    offsetX: 0
+    offsetY: 0
+    sortingLayer: 0
+    order: 0
+  rotation: 0
+  scaleX: 1
+  scaleY: 1
+  pivotX: 0
+  pivotY: 0
+  shear: 0
+- id: f0a1b2c3-0003-4d00-8a00-000000000003
+  name: Smoke
+  tag: Particles
+  x: 300
+  y: 205
+  width: 1
+  height: 1
+  components:
+  - type: particleEmitter2D
+    particles: 2f8c4b63-8d5a-4eac-9a43-7c9e5dbf3a23
+    trigger: start
+    seed: 0
+    offsetX: 0
+    offsetY: 0
+    sortingLayer: 0
+    order: 0
+  rotation: 0
+  scaleX: 1
+  scaleY: 1
+  pivotX: 0
+  pivotY: 0
+  shear: 0
+- id: f0a1b2c3-0004-4d00-8a00-000000000004
+  name: Sparks
+  tag: Particles
+  x: 500
+  y: 215
+  width: 1
+  height: 1
+  components:
+  - type: particleEmitter2D
+    particles: 3a9d5c74-9e6b-4fbd-8b54-8daf6ec04b34
+    trigger: start
+    seed: 0
+    offsetX: 0
+    offsetY: 0
+    sortingLayer: 0
+    order: 0
+  rotation: 0
+  scaleX: 1
+  scaleY: 1
+  pivotX: 0
+  pivotY: 0
+  shear: 0
+- id: f0a1b2c3-0005-4d00-8a00-000000000005
+  name: Hit
+  tag: Particles
+  groups:
+  - Burst
+  x: 700
+  y: 160
+  width: 1
+  height: 1
+  components:
+  - type: particleEmitter2D
+    particles: 4bae6d85-af7c-4ace-9c65-9eba7fd15c45
+    trigger: manual
+    seed: 0
+    offsetX: 0
+    offsetY: 0
+    sortingLayer: 0
+    order: 0
+  rotation: 0
+  scaleX: 1
+  scaleY: 1
+  pivotX: 0
+  pivotY: 0
+  shear: 0
+- id: f0a1b2c3-0006-4d00-8a00-000000000006
+  name: Rain
+  tag: Particles
+  x: 133
+  y: 250
+  width: 1
+  height: 1
+  components:
+  - type: particleEmitter2D
+    particles: 5cbf7e96-ba8d-4bdf-8d76-afcb80e26d56
+    trigger: start
+    seed: 0
+    offsetX: 0
+    offsetY: 0
+    sortingLayer: 0
+    order: 0
+  rotation: 0
+  scaleX: 1
+  scaleY: 1
+  pivotX: 0
+  pivotY: 0
+  shear: 0
+- id: f0a1b2c3-0007-4d00-8a00-000000000007
+  prefab:
+    assetId: c4e1a7b2-3d5f-4a6c-8e9b-1f2a3c4d5e61
+    instances:
+      a1b2c3d4-0e1f-4a2b-9c3d-4e5f6a7b8c91: f0a1b2c3-0007-4d00-8a00-000000000007
+    revision: D2613EA1BEB0DECE284A81B045E9368A37BA14AB922361DD2509F69E19996AFB
+    baseline:
+      a1b2c3d4-0e1f-4a2b-9c3d-4e5f6a7b8c91:
+        id: "f0a1b2c3-0007-4d00-8a00-000000000007"
+        name: "Torch"
+        tag: "Particles"
+        x: 0
+        y: 0
+        width: 1
+        height: 1
+        components:
+        - type: "particleEmitter2D"
+          particles: "1e7b3a52-7c4f-4d9b-8f32-6b8d4cae2f12"
+          trigger: "start"
+          seed: 11
+          offsetX: 0
+          offsetY: 0
+          sortingLayer: 0
+          order: 0
+        rotation: 0
+        scaleX: 1
+        scaleY: 1
+        pivotX: 0
+        pivotY: 0
+        shear: 0
+  name: Torch
+  tag: Particles
+  x: 400
+  y: 410
+  width: 1
+  height: 1
+  components:
+  - type: particleEmitter2D
+    particles: 1e7b3a52-7c4f-4d9b-8f32-6b8d4cae2f12
+    trigger: start
+    seed: 11
+    offsetX: 0
+    offsetY: 0
+    sortingLayer: 0
+    order: 0
+  rotation: 0
+  scaleX: 1
+  scaleY: 1
+  pivotX: 0
+  pivotY: 0
+  shear: 0
+- id: f0a1b2c3-0008-4d00-8a00-000000000008
+  prefab:
+    assetId: d5f2b8c3-4e6a-4b7d-9fa0-2a3b4c5d6e72
+    instances:
+      b2c3d4e5-1f2a-4b3c-8d4e-5f6a7b8c9da2: f0a1b2c3-0008-4d00-8a00-000000000008
+      e3d4c5b6-2a3b-4c4d-9e5f-6a7b8c9dae13: b259ddbf-b5b0-fa7a-82d0-f7ea09abb763
+    revision: 98E0B4D807EF39B2EF7D5163B0A660D0F2BE331CD5AF4DC9C12AFCA405726375
+    baseline:
+      b2c3d4e5-1f2a-4b3c-8d4e-5f6a7b8c9da2:
+        id: "f0a1b2c3-0008-4d00-8a00-000000000008"
+        name: "Brazier"
+        tag: "Particles"
+        x: 0
+        y: 0
+        width: 1
+        height: 1
+        components:
+        - type: "particleEmitter2D"
+          particles: "1e7b3a52-7c4f-4d9b-8f32-6b8d4cae2f12"
+          trigger: "start"
+          seed: 23
+          offsetX: 0
+          offsetY: 0
+          sortingLayer: 0
+          order: 0
+        rotation: 0
+        scaleX: 1
+        scaleY: 1
+        pivotX: 0
+        pivotY: 0
+        shear: 0
+      e3d4c5b6-2a3b-4c4d-9e5f-6a7b8c9dae13:
+        id: "b259ddbf-b5b0-fa7a-82d0-f7ea09abb763"
+        parentId: "f0a1b2c3-0008-4d00-8a00-000000000008"
+        name: "Brazier smoke"
+        tag: "Particles"
+        x: 0
+        y: -24
+        width: 1
+        height: 1
+        components:
+        - type: "particleEmitter2D"
+          particles: "2f8c4b63-8d5a-4eac-9a43-7c9e5dbf3a23"
+          trigger: "start"
+          seed: 29
+          offsetX: 0
+          offsetY: 0
+          sortingLayer: 0
+          order: 0
+        rotation: 0
+        scaleX: 1
+        scaleY: 1
+        pivotX: 0
+        pivotY: 0
+        shear: 0
+  name: Brazier
+  tag: Particles
+  x: 667
+  y: 410
+  width: 1
+  height: 1
+  components:
+  - type: particleEmitter2D
+    particles: 1e7b3a52-7c4f-4d9b-8f32-6b8d4cae2f12
+    trigger: start
+    seed: 23
+    offsetX: 0
+    offsetY: 0
+    sortingLayer: 0
+    order: 0
+  rotation: 0
+  scaleX: 1
+  scaleY: 1
+  pivotX: 0
+  pivotY: 0
+  shear: 0
+- id: b259ddbf-b5b0-fa7a-82d0-f7ea09abb763
+  parentId: f0a1b2c3-0008-4d00-8a00-000000000008
+  name: Brazier smoke
+  tag: Particles
+  x: 0
+  y: -24
+  width: 1
+  height: 1
+  components:
+  - type: particleEmitter2D
+    particles: 2f8c4b63-8d5a-4eac-9a43-7c9e5dbf3a23
+    trigger: start
+    seed: 29
+    offsetX: 0
+    offsetY: 0
+    sortingLayer: 0
+    order: 0
+  rotation: 0
+  scaleX: 1
+  scaleY: 1
+  pivotX: 0
+  pivotY: 0
+  shear: 0
+station: Curves
+- id: 1a01f057-5ef2-48f0-9590-360cac38d9e7
+  name: Bubbles
+  tag: Particles
+  x: 150
+  y: 300
+  width: 1
+  height: 1
+  components:
+  - type: particleEmitter2D
+    particles: d0276b21-8d4d-4940-a0b5-d012870e64b5
+    trigger: Start
+- id: a92ad0b4-e052-4198-b4db-0091906d073d
+  name: Flame
+  tag: Particles
+  x: 400
+  y: 360
+  width: 1
+  height: 1
+  components:
+  - type: particleEmitter2D
+    particles: 9166b88b-32ab-4954-93e8-8b76e7148858
+    trigger: Start
+- id: e81e895f-f6a2-422c-b8f5-22029ac1cbc4
+  name: Pinwheels
+  tag: Particles
+  x: 650
+  y: 80
+  width: 1
+  height: 1
+  components:
+  - type: particleEmitter2D
+    particles: b1706141-b1eb-4c45-8360-a5ae71c929d1
+    trigger: Start
+station: Rain
+- id: 548450bb-43a2-4480-8025-9a2b303fd558
+  name: Crate
+  x: 600
+  y: 336
+  width: 80
+  height: 80
+  components:
+  - type: spriteRenderer
+    squareColor: "#6B4A2E"
+  - type: boxCollider2D
+- id: a9eadf27-7d4f-4a3d-a820-71299278380a
+  name: Mist
+  tag: Particles
+  x: 470
+  y: 395
+  width: 1
+  height: 1
+  components:
+  - type: particleEmitter2D
+    particles: c463b8a8-2ee8-4df6-b2d8-7e740cc12c65
+    trigger: Start
+- id: 6e714c6a-c84a-4213-8089-4b0d57f7ae0c
+  name: Cinders
+  tag: Particles
+  x: 640
+  y: 300
+  width: 1
+  height: 1
+  components:
+  - type: particleEmitter2D
+    particles: 5c00e221-a944-4e05-a194-70dec17f1faf
+    trigger: Start
+    order: 1

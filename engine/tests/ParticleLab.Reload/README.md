@@ -1,6 +1,6 @@
 # ParticleLab Play 중 파티클 다시 불러오기
 
-패키지 에디터로 [ParticleLab](../../../samples/ParticleLab/) 복사본을 **Presets** 씬으로 열고 Scene Play 중에 Particle 패널로 `Assets/Presets/Embers.particles`를 고쳐 로드맵 14.8을 검사한다. 이 에셋은 프리팹 두 개(`Torch.prefab`, `Brazier.prefab`)가 함께 쓴다. [editor.py](editor.py)는 샘플을 결과 폴더에 복사하고 시작 씬을 Presets로 바꾼 뒤 `DOTNET_STARTUP_HOOKS`로 [프로브](StartupHook.cs)를 넣는다. 원본 샘플은 바꾸지 않는다.
+패키지 에디터로 [ParticleLab](../../../samples/ParticleLab/) 복사본을 공방 쇼케이스(`ShowcaseWorkshop.scene`, 프리셋 거점에 Torch·Brazier가 있다)로 열고 Scene Play 중에 Particle 패널로 `Assets/Presets/Embers.particles`를 고쳐 로드맵 14.8을 검사한다. 이 에셋은 프리팹 두 개(`Torch.prefab`, `Brazier.prefab`)가 함께 쓴다. [editor.py](editor.py)는 샘플을 결과 폴더에 복사하고 시작 씬을 Presets로 바꾼 뒤 `DOTNET_STARTUP_HOOKS`로 [프로브](StartupHook.cs)를 넣는다. 원본 샘플은 바꾸지 않는다.
 
 | 단계 | 합격 기준 |
 | --- | --- |

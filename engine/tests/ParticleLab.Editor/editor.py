@@ -1,6 +1,7 @@
-"""Particle panel probe: open a ParticleLab copy in Curves, edit Flame.particles through the panel controls, check the file,
+"""Particle panel probe: open a ParticleLab copy in the workshop showcase, edit Flame.particles through the panel controls, check the file,
 Undo/Redo bytes, the preview against the committed Scene Play/Release/AOT trace, and row alignment."""
 import json
+import re
 import os
 from pathlib import Path
 import shutil
@@ -9,7 +10,7 @@ import sys
 
 HERE = Path(__file__).resolve().parent
 REPO = HERE.parents[2]
-MODULES, CURVES = 'b702dcb2-01f9-5904-ad61-e62f4a348991', '43a905f1-9900-4bef-8133-3b4f3b6df589'
+CAMP, WORKSHOP = 'b8f2ab84-5869-5a85-a9cc-f8245e12d7c1', '20bac3a9-6b46-52fc-8c71-ee549360abb8'
 
 editor, sample, hook, out = [Path(p).resolve() for p in sys.argv[1:]]
 out.mkdir(parents=True)
@@ -17,8 +18,17 @@ project = out / 'ParticleLab'
 shutil.copytree(sample, project, ignore=shutil.ignore_patterns('.monoon', '.monoon-compiled', '.DS_Store', 'bin', 'obj'))
 settings = project / 'GameSettings'
 text = settings.read_text(encoding='utf-8')
-assert f'startScene: {MODULES}' in text
-settings.write_text(text.replace(f'startScene: {MODULES}', f'startScene: {CURVES}', 1), encoding='utf-8')
+assert f'startScene: {CAMP}' in text
+settings.write_text(text.replace(f'startScene: {CAMP}', f'startScene: {WORKSHOP}', 1), encoding='utf-8')
+# Keep only the workshop's still Curves emitters (Bubbles, Flame, Pinwheels): the panel's Play all previews every emitter, and
+# the preview steps them in place, so path followers and the other stations would not match the committed Curves trace.
+scene = project / 'Scenes/ShowcaseWorkshop.scene'
+head, body = scene.read_text(encoding='utf-8').split('objects:\n', 1)
+blocks = re.split(r'(?m)^(?=- id: )', body)
+tail = blocks[-1].split('\ndefaultCameraId', 1)
+blocks[-1] = tail[0] + '\n'
+kept = [b for b in blocks if b.startswith('- id: ') and ('particleEmitter2D' not in b or '  - Curves\n' in b)]
+scene.write_text(head + 'objects:\n' + ''.join(kept) + 'defaultCameraId' + tail[1], encoding='utf-8')
 env = dict(os.environ, DOTNET_STARTUP_HOOKS=str(hook), MONOON_QA_PROJECT=str(project), MONOON_PARTICLE_EDITOR=str(out),
            MONOON_USER_DATA=str(out / 'profile'),
            MONOON_PARTICLE_TRACE_REF=str(REPO / 'engine/tests/results/particles/osx-arm64/curves-trace.tsv'))

@@ -1,6 +1,6 @@
 # ParticleLab Particle 패널 검사
 
-패키지 에디터로 [ParticleLab](../../../samples/ParticleLab/) 복사본을 Curves 씬으로 열고 **Flame**을 선택해 Particle 패널(로드맵 14.6)과 곡선·그라데이션·색 편집 컨트롤(14.7)을 검사한다. [editor.py](editor.py)는 샘플을 결과 폴더에 복사하고 시작 씬을 Curves로 바꾼 뒤 `DOTNET_STARTUP_HOOKS`로 [프로브](StartupHook.cs)를 넣는다. 원본 샘플은 바꾸지 않는다.
+패키지 에디터로 [ParticleLab](../../../samples/ParticleLab/) 복사본을 공방 쇼케이스(`ShowcaseWorkshop.scene`)로 열고, Curves 그룹(Bubbles·Flame·Pinwheels) 밖의 방출기를 지운 뒤 **Flame**을 선택해 Particle 패널(로드맵 14.6)과 곡선·그라데이션·색 편집 컨트롤(14.7)을 검사한다. [editor.py](editor.py)는 샘플을 결과 폴더에 복사하고 시작 씬을 Curves로 바꾼 뒤 `DOTNET_STARTUP_HOOKS`로 [프로브](StartupHook.cs)를 넣는다. 원본 샘플은 바꾸지 않는다.
 
 | 단계 | 합격 기준 |
 | --- | --- |

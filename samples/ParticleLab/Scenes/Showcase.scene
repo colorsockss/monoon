@@ -400,7 +400,7 @@ objects:
     bounds: {x: -40, y: 135, width: 1040, height: 225}
   - type: script
     script: LabControls
-    values: {"Next": {"Id": "b702dcb2-01f9-5904-ad61-e62f4a348991"}}
+    values: {}
 - id: 61ea77cf-88ab-588f-a19b-715a8d9239e1
   name: Canvas
   x: 0

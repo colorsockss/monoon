@@ -1,0 +1,1198 @@
+schemaVersion: 42
+objects:
+- id: ea8e8dde-d4f4-50b5-a5ee-142dce7aba4f
+  name: Point sparks
+  tag: Particles
+  x: 100
+  y: 120
+  width: 1
+  height: 1
+  components:
+  - type: particleEmitter2D
+    particles: aa30c4bd-8ea6-52de-b4b3-3710323eac4c
+    trigger: Start
+- id: 3939b6a6-04ac-5e4a-9ad3-15aab3185990
+  name: Circle ring
+  tag: Particles
+  x: 290
+  y: 120
+  width: 1
+  height: 1
+  components:
+  - type: particleEmitter2D
+    particles: 4e2d43ec-cc22-532d-9116-f4d298612c91
+    trigger: Start
+- id: 8ffe738f-32cc-592e-b316-912b80a2a1e5
+  name: Edge rain
+  tag: Particles
+  x: 500
+  y: 50
+  width: 1
+  height: 1
+  components:
+  - type: particleEmitter2D
+    particles: 912fd814-6249-5103-9f80-7ebdc0aea026
+    trigger: Start
+- id: 2fd920b5-f2f0-56c4-ac33-d110b5dbb652
+  name: Box snow
+  tag: Particles
+  x: 690
+  y: 50
+  width: 1
+  height: 1
+  components:
+  - type: particleEmitter2D
+    particles: d7fb0583-7a26-57e0-9451-51860b546df6
+    trigger: Start
+- id: a23d35e3-7eb1-5a8b-b626-096614982f34
+  name: Cone fountain
+  tag: Particles
+  x: 110
+  y: 370
+  width: 1
+  height: 1
+  components:
+  - type: particleEmitter2D
+    particles: 02558de6-8364-5941-8df3-69e52fa727a1
+    trigger: Start
+- id: 88982f82-d394-540c-a8c5-1a197a6d8259
+  name: Prewarmed smoke
+  tag: Particles
+  x: 280
+  y: 370
+  width: 1
+  height: 1
+  components:
+  - type: particleEmitter2D
+    particles: 98c15a53-9b25-5831-b8ad-711e09b9e681
+    trigger: Start
+- id: 178b0a25-c969-516c-adad-00177eea4755
+  name: Manual pop
+  tag: Particles
+  x: 400
+  y: 230
+  width: 1
+  height: 1
+  components:
+  - type: particleEmitter2D
+    particles: 7a6dacf7-d224-5fd8-acd7-a50a56b52cd1
+    trigger: Manual
+- id: 932f0145-4429-5c62-8bb3-9a32c6801f68
+  name: Local tail
+  tag: Particles
+  x: 560
+  y: 240
+  width: 1
+  height: 1
+  components:
+  - type: particleEmitter2D
+    particles: 79de66be-ce09-5146-a85e-6746acba2a10
+    trigger: Start
+  - type: pathFollower2D
+    points:
+    - {x: 0, y: 0, outX: 24.75, outY: 0}
+    - {x: 45, y: 45, inX: 0, inY: -24.75, outX: 0, outY: 24.75}
+    - {x: 0, y: 90, inX: 24.75, inY: 0, outX: -24.75, outY: 0}
+    - {x: -45, y: 45, inX: 0, inY: 24.75, outX: 0, outY: -24.75}
+    speed: 120
+    repeat: Loop
+    playOnStart: true
+- id: a81435c4-c284-54ed-9390-e2155567d60a
+  name: World wake
+  tag: Particles
+  x: 700
+  y: 240
+  width: 1
+  height: 1
+  components:
+  - type: particleEmitter2D
+    particles: bc12c1bb-a7bc-5573-a1e6-9d4eaca406f9
+    trigger: Start
+  - type: pathFollower2D
+    points:
+    - {x: 0, y: 0, outX: 24.75, outY: 0}
+    - {x: 45, y: 45, inX: 0, inY: -24.75, outX: 0, outY: 24.75}
+    - {x: 0, y: 90, inX: 24.75, inY: 0, outX: -24.75, outY: 0}
+    - {x: -45, y: 45, inX: 0, inY: 24.75, outX: 0, outY: -24.75}
+    speed: 120
+    repeat: Loop
+    playOnStart: true
+- id: 216df930-efe4-5bee-a9ca-f9c491bcaf88
+  name: Embers between
+  tag: Particles
+  x: 1060
+  y: 230
+  width: 1
+  height: 1
+  components:
+  - type: particleEmitter2D
+    particles: 959a85fd-df67-5ebd-a941-af86aed3e3ae
+    trigger: Start
+    order: 1
+- id: 23670de9-3bb5-53c7-bdd7-7132d9f22023
+  name: Multiply shade
+  tag: Particles
+  x: 1430
+  y: 170
+  width: 1
+  height: 1
+  components:
+  - type: particleEmitter2D
+    particles: 5445aefe-6bd7-5e16-9a69-7cb55bd8fcda
+    trigger: Start
+    order: 1
+- id: cd8df60f-67d9-52e6-a4cc-16c75d25bf92
+  name: Flake sheet
+  tag: Particles
+  x: 1430
+  y: 300
+  width: 1
+  height: 1
+  components:
+  - type: particleEmitter2D
+    particles: 2fd0e0ac-3ecb-5b31-a8bc-94aa476df90b
+    trigger: Start
+    order: 3
+- id: f0a1b2c3-0002-4d00-8a00-000000000002
+  name: Dust
+  tag: Particles
+  groups:
+  - Burst
+  x: 1700
+  y: 175
+  width: 1
+  height: 1
+  components:
+  - type: particleEmitter2D
+    particles: 0d6a2f41-6b3e-4c8a-9e21-5a7c3b9d1e01
+    trigger: manual
+    seed: 0
+    offsetX: 0
+    offsetY: 0
+    sortingLayer: 0
+    order: 0
+  rotation: 0
+  scaleX: 1
+  scaleY: 1
+  pivotX: 0
+  pivotY: 0
+  shear: 0
+- id: f0a1b2c3-0003-4d00-8a00-000000000003
+  name: Smoke
+  tag: Particles
+  x: 1900
+  y: 175
+  width: 1
+  height: 1
+  components:
+  - type: particleEmitter2D
+    particles: 2f8c4b63-8d5a-4eac-9a43-7c9e5dbf3a23
+    trigger: start
+    seed: 0
+    offsetX: 0
+    offsetY: 0
+    sortingLayer: 0
+    order: 0
+  rotation: 0
+  scaleX: 1
+  scaleY: 1
+  pivotX: 0
+  pivotY: 0
+  shear: 0
+- id: f0a1b2c3-0004-4d00-8a00-000000000004
+  name: Sparks
+  tag: Particles
+  x: 2100
+  y: 185
+  width: 1
+  height: 1
+  components:
+  - type: particleEmitter2D
+    particles: 3a9d5c74-9e6b-4fbd-8b54-8daf6ec04b34
+    trigger: start
+    seed: 0
+    offsetX: 0
+    offsetY: 0
+    sortingLayer: 0
+    order: 0
+  rotation: 0
+  scaleX: 1
+  scaleY: 1
+  pivotX: 0
+  pivotY: 0
+  shear: 0
+- id: f0a1b2c3-0005-4d00-8a00-000000000005
+  name: Hit
+  tag: Particles
+  groups:
+  - Burst
+  x: 2300
+  y: 130
+  width: 1
+  height: 1
+  components:
+  - type: particleEmitter2D
+    particles: 4bae6d85-af7c-4ace-9c65-9eba7fd15c45
+    trigger: manual
+    seed: 0
+    offsetX: 0
+    offsetY: 0
+    sortingLayer: 0
+    order: 0
+  rotation: 0
+  scaleX: 1
+  scaleY: 1
+  pivotX: 0
+  pivotY: 0
+  shear: 0
+- id: f0a1b2c3-0006-4d00-8a00-000000000006
+  name: Rain
+  tag: Particles
+  x: 1733
+  y: 220
+  width: 1
+  height: 1
+  components:
+  - type: particleEmitter2D
+    particles: 5cbf7e96-ba8d-4bdf-8d76-afcb80e26d56
+    trigger: start
+    seed: 0
+    offsetX: 0
+    offsetY: 0
+    sortingLayer: 0
+    order: 0
+  rotation: 0
+  scaleX: 1
+  scaleY: 1
+  pivotX: 0
+  pivotY: 0
+  shear: 0
+- id: f0a1b2c3-0007-4d00-8a00-000000000007
+  prefab:
+    assetId: c4e1a7b2-3d5f-4a6c-8e9b-1f2a3c4d5e61
+    instances:
+      a1b2c3d4-0e1f-4a2b-9c3d-4e5f6a7b8c91: f0a1b2c3-0007-4d00-8a00-000000000007
+    revision: D2613EA1BEB0DECE284A81B045E9368A37BA14AB922361DD2509F69E19996AFB
+    baseline:
+      a1b2c3d4-0e1f-4a2b-9c3d-4e5f6a7b8c91:
+        id: "f0a1b2c3-0007-4d00-8a00-000000000007"
+        name: "Torch"
+        tag: "Particles"
+        x: 0
+        y: 0
+        width: 1
+        height: 1
+        components:
+        - type: "particleEmitter2D"
+          particles: "1e7b3a52-7c4f-4d9b-8f32-6b8d4cae2f12"
+          trigger: "start"
+          seed: 11
+          offsetX: 0
+          offsetY: 0
+          sortingLayer: 0
+          order: 0
+        rotation: 0
+        scaleX: 1
+        scaleY: 1
+        pivotX: 0
+        pivotY: 0
+        shear: 0
+  name: Torch
+  tag: Particles
+  x: 2000
+  y: 380
+  width: 1
+  height: 1
+  components:
+  - type: particleEmitter2D
+    particles: 1e7b3a52-7c4f-4d9b-8f32-6b8d4cae2f12
+    trigger: start
+    seed: 11
+    offsetX: 0
+    offsetY: 0
+    sortingLayer: 0
+    order: 0
+  rotation: 0
+  scaleX: 1
+  scaleY: 1
+  pivotX: 0
+  pivotY: 0
+  shear: 0
+- id: f0a1b2c3-0008-4d00-8a00-000000000008
+  prefab:
+    assetId: d5f2b8c3-4e6a-4b7d-9fa0-2a3b4c5d6e72
+    instances:
+      b2c3d4e5-1f2a-4b3c-8d4e-5f6a7b8c9da2: f0a1b2c3-0008-4d00-8a00-000000000008
+      e3d4c5b6-2a3b-4c4d-9e5f-6a7b8c9dae13: b259ddbf-b5b0-fa7a-82d0-f7ea09abb763
+    revision: 98E0B4D807EF39B2EF7D5163B0A660D0F2BE331CD5AF4DC9C12AFCA405726375
+    baseline:
+      b2c3d4e5-1f2a-4b3c-8d4e-5f6a7b8c9da2:
+        id: "f0a1b2c3-0008-4d00-8a00-000000000008"
+        name: "Brazier"
+        tag: "Particles"
+        x: 0
+        y: 0
+        width: 1
+        height: 1
+        components:
+        - type: "particleEmitter2D"
+          particles: "1e7b3a52-7c4f-4d9b-8f32-6b8d4cae2f12"
+          trigger: "start"
+          seed: 23
+          offsetX: 0
+          offsetY: 0
+          sortingLayer: 0
+          order: 0
+        rotation: 0
+        scaleX: 1
+        scaleY: 1
+        pivotX: 0
+        pivotY: 0
+        shear: 0
+      e3d4c5b6-2a3b-4c4d-9e5f-6a7b8c9dae13:
+        id: "b259ddbf-b5b0-fa7a-82d0-f7ea09abb763"
+        parentId: "f0a1b2c3-0008-4d00-8a00-000000000008"
+        name: "Brazier smoke"
+        tag: "Particles"
+        x: 0
+        y: -24
+        width: 1
+        height: 1
+        components:
+        - type: "particleEmitter2D"
+          particles: "2f8c4b63-8d5a-4eac-9a43-7c9e5dbf3a23"
+          trigger: "start"
+          seed: 29
+          offsetX: 0
+          offsetY: 0
+          sortingLayer: 0
+          order: 0
+        rotation: 0
+        scaleX: 1
+        scaleY: 1
+        pivotX: 0
+        pivotY: 0
+        shear: 0
+  name: Brazier
+  tag: Particles
+  x: 2267
+  y: 380
+  width: 1
+  height: 1
+  components:
+  - type: particleEmitter2D
+    particles: 1e7b3a52-7c4f-4d9b-8f32-6b8d4cae2f12
+    trigger: start
+    seed: 23
+    offsetX: 0
+    offsetY: 0
+    sortingLayer: 0
+    order: 0
+  rotation: 0
+  scaleX: 1
+  scaleY: 1
+  pivotX: 0
+  pivotY: 0
+  shear: 0
+- id: b259ddbf-b5b0-fa7a-82d0-f7ea09abb763
+  parentId: f0a1b2c3-0008-4d00-8a00-000000000008
+  name: Brazier smoke
+  tag: Particles
+  x: 0
+  y: -24
+  width: 1
+  height: 1
+  components:
+  - type: particleEmitter2D
+    particles: 2f8c4b63-8d5a-4eac-9a43-7c9e5dbf3a23
+    trigger: start
+    seed: 29
+    offsetX: 0
+    offsetY: 0
+    sortingLayer: 0
+    order: 0
+  rotation: 0
+  scaleX: 1
+  scaleY: 1
+  pivotX: 0
+  pivotY: 0
+  shear: 0
+- id: 1a01f057-5ef2-48f0-9590-360cac38d9e7
+  name: Bubbles
+  tag: Particles
+  groups:
+  - Curves
+  x: 2550
+  y: 270
+  width: 1
+  height: 1
+  components:
+  - type: particleEmitter2D
+    particles: d0276b21-8d4d-4940-a0b5-d012870e64b5
+    trigger: Start
+- id: a92ad0b4-e052-4198-b4db-0091906d073d
+  name: Flame
+  tag: Particles
+  groups:
+  - Curves
+  x: 2800
+  y: 330
+  width: 1
+  height: 1
+  components:
+  - type: particleEmitter2D
+    particles: 9166b88b-32ab-4954-93e8-8b76e7148858
+    trigger: Start
+- id: e81e895f-f6a2-422c-b8f5-22029ac1cbc4
+  name: Pinwheels
+  tag: Particles
+  groups:
+  - Curves
+  x: 3050
+  y: 50
+  width: 1
+  height: 1
+  components:
+  - type: particleEmitter2D
+    particles: b1706141-b1eb-4c45-8360-a5ae71c929d1
+    trigger: Start
+- id: a9eadf27-7d4f-4a3d-a820-71299278380a
+  name: Mist
+  tag: Particles
+  x: 3670
+  y: 365
+  width: 1
+  height: 1
+  components:
+  - type: particleEmitter2D
+    particles: c463b8a8-2ee8-4df6-b2d8-7e740cc12c65
+    trigger: Start
+- id: 6e714c6a-c84a-4213-8089-4b0d57f7ae0c
+  name: Cinders
+  tag: Particles
+  x: 3840
+  y: 270
+  width: 1
+  height: 1
+  components:
+  - type: particleEmitter2D
+    particles: 5c00e221-a944-4e05-a194-70dec17f1faf
+    trigger: Start
+    order: 1
+- id: c861c725-7593-512e-803c-3311593f0ec7
+  name: Sky backing
+  x: -400
+  y: -200
+  width: 2000
+  height: 900
+  components:
+  - type: spriteRenderer
+    sortingLayer: -31
+    squareColor: "#3E2C7C"
+  - type: parallax2D
+    scrollX: 0
+    scrollY: 0
+- id: 000f622e-e443-594f-b858-1e07704726bb
+  name: Sky
+  x: -40
+  y: -30
+  width: 912
+  height: 456
+  components:
+  - type: spriteRenderer
+    assetId: bcacaba6-7723-5c3a-8a6c-be956e621f05
+    asset: Assets/Showcase/Sky.png
+    sortingLayer: -30
+  - type: parallax2D
+    scrollX: 0.15
+    scrollY: 0
+    repeatX: true
+- id: ef7fec9d-6057-5d56-9e4a-b475022d8012
+  name: Ground
+  x: 0
+  y: 386
+  width: 32
+  height: 32
+  components:
+  - type: tilemap2D
+    tileset: fe93c110-1d57-5e24-82a4-4e8067ee00d5
+    cellSize: {width: 32, height: 32}
+    order: -1
+    chunks:
+    - x: -1
+      y: 0
+      cells: [{index: 30, tile: 1}, {index: 62, tile: 1}, {index: 31, tile: 1}, {index: 63, tile: 1}]
+    - x: 0
+      y: 0
+      cells: [{index: 0, tile: 1}, {index: 32, tile: 1}, {index: 1, tile: 1}, {index: 33, tile: 1}, {index: 2, tile: 1}, {index: 34, tile: 1}, {index: 3, tile: 1}, {index: 35, tile: 1}, {index: 4, tile: 1}, {index: 36, tile: 1}, {index: 5, tile: 1}, {index: 37, tile: 1}, {index: 6, tile: 1}, {index: 38, tile: 1}, {index: 7, tile: 1}, {index: 39, tile: 1}, {index: 8, tile: 1}, {index: 40, tile: 1}, {index: 9, tile: 1}, {index: 41, tile: 1}, {index: 10, tile: 1}, {index: 42, tile: 1}, {index: 11, tile: 1}, {index: 43, tile: 1}, {index: 12, tile: 1}, {index: 44, tile: 1}, {index: 13, tile: 1}, {index: 45, tile: 1}, {index: 14, tile: 1}, {index: 46, tile: 1}, {index: 15, tile: 1}, {index: 47, tile: 1}, {index: 16, tile: 1}, {index: 48, tile: 1}, {index: 17, tile: 1}, {index: 49, tile: 1}, {index: 18, tile: 1}, {index: 50, tile: 1}, {index: 19, tile: 1}, {index: 51, tile: 1}, {index: 20, tile: 1}, {index: 52, tile: 1}, {index: 21, tile: 1}, {index: 53, tile: 1}, {index: 22, tile: 1}, {index: 54, tile: 1}, {index: 23, tile: 1}, {index: 55, tile: 1}, {index: 24, tile: 1}, {index: 56, tile: 1}, {index: 25, tile: 1}, {index: 57, tile: 1}, {index: 26, tile: 1}, {index: 58, tile: 1}, {index: 27, tile: 1}, {index: 59, tile: 1}, {index: 28, tile: 1}, {index: 60, tile: 1}, {index: 29, tile: 1}, {index: 61, tile: 1}, {index: 30, tile: 1}, {index: 62, tile: 1}, {index: 31, tile: 1}, {index: 63, tile: 1}]
+    - x: 1
+      y: 0
+      cells: [{index: 0, tile: 1}, {index: 32, tile: 1}, {index: 1, tile: 1}, {index: 33, tile: 1}, {index: 2, tile: 1}, {index: 34, tile: 1}, {index: 3, tile: 1}, {index: 35, tile: 1}, {index: 4, tile: 1}, {index: 36, tile: 1}, {index: 5, tile: 1}, {index: 37, tile: 1}, {index: 6, tile: 1}, {index: 38, tile: 1}, {index: 7, tile: 1}, {index: 39, tile: 1}, {index: 8, tile: 1}, {index: 40, tile: 1}, {index: 9, tile: 1}, {index: 41, tile: 1}, {index: 10, tile: 1}, {index: 42, tile: 1}, {index: 11, tile: 1}, {index: 43, tile: 1}, {index: 12, tile: 1}, {index: 44, tile: 1}, {index: 13, tile: 1}, {index: 45, tile: 1}, {index: 14, tile: 1}, {index: 46, tile: 1}, {index: 15, tile: 1}, {index: 47, tile: 1}, {index: 16, tile: 1}, {index: 48, tile: 1}, {index: 17, tile: 1}, {index: 49, tile: 1}, {index: 18, tile: 1}, {index: 50, tile: 1}, {index: 19, tile: 1}, {index: 51, tile: 1}, {index: 20, tile: 1}, {index: 52, tile: 1}, {index: 21, tile: 1}, {index: 53, tile: 1}, {index: 22, tile: 1}, {index: 54, tile: 1}, {index: 23, tile: 1}, {index: 55, tile: 1}, {index: 24, tile: 1}, {index: 56, tile: 1}, {index: 25, tile: 1}, {index: 57, tile: 1}, {index: 26, tile: 1}, {index: 58, tile: 1}, {index: 27, tile: 1}, {index: 59, tile: 1}, {index: 28, tile: 1}, {index: 60, tile: 1}, {index: 29, tile: 1}, {index: 61, tile: 1}, {index: 30, tile: 1}, {index: 62, tile: 1}, {index: 31, tile: 1}, {index: 63, tile: 1}]
+    - x: 2
+      y: 0
+      cells: [{index: 0, tile: 1}, {index: 32, tile: 1}, {index: 1, tile: 1}, {index: 33, tile: 1}, {index: 2, tile: 1}, {index: 34, tile: 1}, {index: 3, tile: 1}, {index: 35, tile: 1}, {index: 4, tile: 1}, {index: 36, tile: 1}, {index: 5, tile: 1}, {index: 37, tile: 1}, {index: 6, tile: 1}, {index: 38, tile: 1}, {index: 7, tile: 1}, {index: 39, tile: 1}, {index: 8, tile: 1}, {index: 40, tile: 1}, {index: 9, tile: 1}, {index: 41, tile: 1}, {index: 10, tile: 1}, {index: 42, tile: 1}, {index: 11, tile: 1}, {index: 43, tile: 1}, {index: 12, tile: 1}, {index: 44, tile: 1}, {index: 13, tile: 1}, {index: 45, tile: 1}, {index: 14, tile: 1}, {index: 46, tile: 1}, {index: 15, tile: 1}, {index: 47, tile: 1}, {index: 16, tile: 1}, {index: 48, tile: 1}, {index: 17, tile: 1}, {index: 49, tile: 1}, {index: 18, tile: 1}, {index: 50, tile: 1}, {index: 19, tile: 1}, {index: 51, tile: 1}, {index: 20, tile: 1}, {index: 52, tile: 1}, {index: 21, tile: 1}, {index: 53, tile: 1}, {index: 22, tile: 1}, {index: 54, tile: 1}, {index: 23, tile: 1}, {index: 55, tile: 1}, {index: 24, tile: 1}, {index: 56, tile: 1}, {index: 25, tile: 1}, {index: 57, tile: 1}, {index: 26, tile: 1}, {index: 58, tile: 1}, {index: 27, tile: 1}, {index: 59, tile: 1}, {index: 28, tile: 1}, {index: 60, tile: 1}, {index: 29, tile: 1}, {index: 61, tile: 1}, {index: 30, tile: 1}, {index: 62, tile: 1}, {index: 31, tile: 1}, {index: 63, tile: 1}]
+    - x: 3
+      y: 0
+      cells: [{index: 0, tile: 1}, {index: 32, tile: 1}, {index: 1, tile: 1}, {index: 33, tile: 1}, {index: 2, tile: 1}, {index: 34, tile: 1}, {index: 3, tile: 1}, {index: 35, tile: 1}, {index: 4, tile: 1}, {index: 36, tile: 1}, {index: 5, tile: 1}, {index: 37, tile: 1}, {index: 6, tile: 1}, {index: 38, tile: 1}, {index: 7, tile: 1}, {index: 39, tile: 1}, {index: 8, tile: 1}, {index: 40, tile: 1}, {index: 9, tile: 1}, {index: 41, tile: 1}, {index: 10, tile: 1}, {index: 42, tile: 1}, {index: 11, tile: 1}, {index: 43, tile: 1}, {index: 12, tile: 1}, {index: 44, tile: 1}, {index: 13, tile: 1}, {index: 45, tile: 1}, {index: 14, tile: 1}, {index: 46, tile: 1}, {index: 15, tile: 1}, {index: 47, tile: 1}, {index: 16, tile: 1}, {index: 48, tile: 1}, {index: 17, tile: 1}, {index: 49, tile: 1}, {index: 18, tile: 1}, {index: 50, tile: 1}, {index: 19, tile: 1}, {index: 51, tile: 1}, {index: 20, tile: 1}, {index: 52, tile: 1}, {index: 21, tile: 1}, {index: 53, tile: 1}, {index: 22, tile: 1}, {index: 54, tile: 1}, {index: 23, tile: 1}, {index: 55, tile: 1}, {index: 24, tile: 1}, {index: 56, tile: 1}, {index: 25, tile: 1}, {index: 57, tile: 1}, {index: 26, tile: 1}, {index: 58, tile: 1}, {index: 27, tile: 1}, {index: 59, tile: 1}, {index: 28, tile: 1}, {index: 60, tile: 1}, {index: 29, tile: 1}, {index: 61, tile: 1}, {index: 30, tile: 1}, {index: 62, tile: 1}]
+- id: 14e58d2d-24a9-53a2-8973-69ab760b3a80
+  name: Lantern 1
+  x: -2
+  y: 336
+  width: 36
+  height: 50
+  components:
+  - type: spriteRenderer
+    assetId: 802060de-1f7c-55c4-bbab-4997d0526b08
+    asset: Assets/Showcase/Lantern.png
+    order: -2
+  - type: pointLight2D
+    radius: 110
+    intensity: 0.6
+    flicker: 0.1
+    frequency: 1.2
+    color: "#FFC46B"
+- id: 6c13c7af-5be9-5254-a7f9-d4b9e7388271
+  name: Lantern 2
+  x: 798
+  y: 336
+  width: 36
+  height: 50
+  components:
+  - type: spriteRenderer
+    assetId: 802060de-1f7c-55c4-bbab-4997d0526b08
+    asset: Assets/Showcase/Lantern.png
+    order: -2
+  - type: pointLight2D
+    radius: 110
+    intensity: 0.6
+    flicker: 0.1
+    frequency: 1.2
+    color: "#FFC46B"
+- id: a46cd328-411b-5430-8544-8dc5ef2f3153
+  name: Lantern 3
+  x: 1598
+  y: 336
+  width: 36
+  height: 50
+  components:
+  - type: spriteRenderer
+    assetId: 802060de-1f7c-55c4-bbab-4997d0526b08
+    asset: Assets/Showcase/Lantern.png
+    order: -2
+  - type: pointLight2D
+    radius: 110
+    intensity: 0.6
+    flicker: 0.1
+    frequency: 1.2
+    color: "#FFC46B"
+- id: 23906e7b-369a-5a5d-a77f-e9232605e094
+  name: Lantern 4
+  x: 2398
+  y: 336
+  width: 36
+  height: 50
+  components:
+  - type: spriteRenderer
+    assetId: 802060de-1f7c-55c4-bbab-4997d0526b08
+    asset: Assets/Showcase/Lantern.png
+    order: -2
+  - type: pointLight2D
+    radius: 110
+    intensity: 0.6
+    flicker: 0.1
+    frequency: 1.2
+    color: "#FFC46B"
+- id: 0ecdcd92-9461-56ce-a5fa-299ebc04ff66
+  name: Lantern 5
+  x: 3198
+  y: 336
+  width: 36
+  height: 50
+  components:
+  - type: spriteRenderer
+    assetId: 802060de-1f7c-55c4-bbab-4997d0526b08
+    asset: Assets/Showcase/Lantern.png
+    order: -2
+  - type: pointLight2D
+    radius: 110
+    intensity: 0.6
+    flicker: 0.1
+    frequency: 1.2
+    color: "#FFC46B"
+- id: 3d814504-bf2e-5b48-8c87-366c4f760b4d
+  name: Lantern 6
+  x: 3998
+  y: 336
+  width: 36
+  height: 50
+  components:
+  - type: spriteRenderer
+    assetId: 802060de-1f7c-55c4-bbab-4997d0526b08
+    asset: Assets/Showcase/Lantern.png
+    order: -2
+  - type: pointLight2D
+    radius: 110
+    intensity: 0.6
+    flicker: 0.1
+    frequency: 1.2
+    color: "#FFC46B"
+- id: 1c91d862-12fa-58f6-a6fa-f1f0dae16caf
+  name: Tent
+  x: 996
+  y: 298
+  width: 128
+  height: 88
+  components:
+  - type: spriteRenderer
+    assetId: d6a5712f-8b2c-5abf-b724-6f62cb64cfa0
+    asset: Assets/Showcase/Tent.png
+    order: 0
+- id: 554fc8d4-e490-5004-b93f-aeba862a86a4
+  name: Pine
+  x: 1079
+  y: 334
+  width: 42
+  height: 52
+  components:
+  - type: spriteRenderer
+    assetId: 3d89c9db-b5ee-5d33-9015-72f1f37515a7
+    asset: Assets/Showcase/Pine.png
+    order: 2
+- id: d164053f-741c-5834-ae5f-bdeaab12c320
+  name: Portal
+  x: 1365
+  y: 150
+  width: 130
+  height: 120
+  components:
+  - type: spriteRenderer
+    assetId: 173ba917-1443-5dfd-ade8-a9c6ea159706
+    asset: Assets/Showcase/Portal.png
+    order: 0
+  - type: pointLight2D
+    radius: 140
+    intensity: 0.7
+    flicker: 0.1
+    frequency: 1.2
+    color: "#B98CFF"
+- id: 793ddf8b-7fea-5f3c-b784-30fe401706a6
+  name: Bench
+  x: 3769
+  y: 348
+  width: 62
+  height: 38
+  components:
+  - type: spriteRenderer
+    assetId: 97d45d14-a1e0-5b2d-9e9d-a1fbf5bf46f7
+    asset: Assets/Showcase/Bench.png
+    order: 0
+  - type: boxCollider2D
+- id: 09327b22-c46b-5107-8cc4-628088682039
+  name: Point sparks label
+  x: 40
+  y: 154
+  width: 120
+  height: 16
+  components:
+  - type: text2D
+    text: "Point"
+    size: 12
+    color: "#E4DCFF"
+    align: Center
+    order: 8
+- id: ca22ad90-11af-5f14-893a-d4e57d3fdb46
+  name: Circle ring label
+  x: 230
+  y: 154
+  width: 120
+  height: 16
+  components:
+  - type: text2D
+    text: "Circle"
+    size: 12
+    color: "#E4DCFF"
+    align: Center
+    order: 8
+- id: 8090e7ab-35e5-508e-87a2-cce1598e73ab
+  name: Edge rain label
+  x: 440
+  y: 84
+  width: 120
+  height: 16
+  components:
+  - type: text2D
+    text: "Edge"
+    size: 12
+    color: "#E4DCFF"
+    align: Center
+    order: 8
+- id: a948fce0-aa5d-5584-89a2-1c33379a114f
+  name: Box snow label
+  x: 630
+  y: 84
+  width: 120
+  height: 16
+  components:
+  - type: text2D
+    text: "Box"
+    size: 12
+    color: "#E4DCFF"
+    align: Center
+    order: 8
+- id: 0a8f463d-873d-5329-a0c9-181b6583723f
+  name: Cone fountain label
+  x: 50
+  y: 368
+  width: 120
+  height: 16
+  components:
+  - type: text2D
+    text: "Cone"
+    size: 12
+    color: "#E4DCFF"
+    align: Center
+    order: 8
+- id: 8651dc5b-05a8-5ee0-b452-0f13527289d4
+  name: Prewarmed smoke label
+  x: 220
+  y: 368
+  width: 120
+  height: 16
+  components:
+  - type: text2D
+    text: "Prewarm"
+    size: 12
+    color: "#E4DCFF"
+    align: Center
+    order: 8
+- id: 8c1497f5-76ab-5336-a02e-5749a9c6c8eb
+  name: Manual pop label
+  x: 340
+  y: 264
+  width: 120
+  height: 16
+  components:
+  - type: text2D
+    text: "Manual (Space)"
+    size: 12
+    color: "#E4DCFF"
+    align: Center
+    order: 8
+- id: b1c6dbeb-4865-5774-9d80-0daa99787b93
+  name: Local tail label
+  x: 500
+  y: 274
+  width: 120
+  height: 16
+  components:
+  - type: text2D
+    text: "Local space"
+    size: 12
+    color: "#E4DCFF"
+    align: Center
+    order: 8
+- id: 9870e0be-92f4-595c-b5bb-463218f67d61
+  name: World wake label
+  x: 640
+  y: 274
+  width: 120
+  height: 16
+  components:
+  - type: text2D
+    text: "World space"
+    size: 12
+    color: "#E4DCFF"
+    align: Center
+    order: 8
+- id: 1a72fcec-8ea0-5085-a646-7ae345c87165
+  name: Embers between label
+  x: 1000
+  y: 264
+  width: 120
+  height: 16
+  components:
+  - type: text2D
+    text: "Between sprites"
+    size: 12
+    color: "#E4DCFF"
+    align: Center
+    order: 8
+- id: cc7812f2-98fe-56c7-bac0-eee3d82f3d4b
+  name: Multiply shade label
+  x: 1370
+  y: 204
+  width: 120
+  height: 16
+  components:
+  - type: text2D
+    text: "Multiply"
+    size: 12
+    color: "#E4DCFF"
+    align: Center
+    order: 8
+- id: 42c552b5-bc07-5639-ba32-602f74a90631
+  name: Flake sheet label
+  x: 1370
+  y: 334
+  width: 120
+  height: 16
+  components:
+  - type: text2D
+    text: "Sheet frames"
+    size: 12
+    color: "#E4DCFF"
+    align: Center
+    order: 8
+- id: 170212c8-0818-5826-8bdb-db3cd1c54ad9
+  name: Dust label
+  x: 1640
+  y: 209
+  width: 120
+  height: 16
+  components:
+  - type: text2D
+    text: "Dust"
+    size: 12
+    color: "#E4DCFF"
+    align: Center
+    order: 8
+- id: 9f45f980-7543-5ca0-bed2-adfdaff72cd0
+  name: Smoke label
+  x: 1840
+  y: 209
+  width: 120
+  height: 16
+  components:
+  - type: text2D
+    text: "Smoke"
+    size: 12
+    color: "#E4DCFF"
+    align: Center
+    order: 8
+- id: 7969aa47-0015-5131-b1ea-f63a21d9b5cf
+  name: Sparks label
+  x: 2040
+  y: 219
+  width: 120
+  height: 16
+  components:
+  - type: text2D
+    text: "Sparks"
+    size: 12
+    color: "#E4DCFF"
+    align: Center
+    order: 8
+- id: d2a673c9-55e0-530e-8b46-a88b151d7b27
+  name: Hit label
+  x: 2240
+  y: 164
+  width: 120
+  height: 16
+  components:
+  - type: text2D
+    text: "Hit"
+    size: 12
+    color: "#E4DCFF"
+    align: Center
+    order: 8
+- id: 74cbe230-79ce-569b-9b5b-3c07b932a5d6
+  name: Rain label
+  x: 1673
+  y: 254
+  width: 120
+  height: 16
+  components:
+  - type: text2D
+    text: "Rain"
+    size: 12
+    color: "#E4DCFF"
+    align: Center
+    order: 8
+- id: 869e1fbf-596e-5867-9cb9-9d06e1355ee5
+  name: Torch label
+  x: 1940
+  y: 368
+  width: 120
+  height: 16
+  components:
+  - type: text2D
+    text: "Torch prefab"
+    size: 12
+    color: "#E4DCFF"
+    align: Center
+    order: 8
+- id: f55a3f63-b890-5c9f-906c-f78de8d725e7
+  name: Brazier label
+  x: 2207
+  y: 368
+  width: 120
+  height: 16
+  components:
+  - type: text2D
+    text: "Brazier prefab"
+    size: 12
+    color: "#E4DCFF"
+    align: Center
+    order: 8
+- id: 8b6191aa-6d94-5f2c-a760-39d21b523908
+  name: Bubbles label
+  x: 2490
+  y: 304
+  width: 120
+  height: 16
+  components:
+  - type: text2D
+    text: "Bubbles"
+    size: 12
+    color: "#E4DCFF"
+    align: Center
+    order: 8
+- id: 3dcb4fdf-7479-5f57-b275-1f21e91cba1d
+  name: Flame label
+  x: 2740
+  y: 364
+  width: 120
+  height: 16
+  components:
+  - type: text2D
+    text: "Flame"
+    size: 12
+    color: "#E4DCFF"
+    align: Center
+    order: 8
+- id: 3ec385a4-4633-5e63-8c5b-c0c75b19b546
+  name: Pinwheels label
+  x: 2990
+  y: 84
+  width: 120
+  height: 16
+  components:
+  - type: text2D
+    text: "Pinwheels"
+    size: 12
+    color: "#E4DCFF"
+    align: Center
+    order: 8
+- id: a2570448-44ec-51dc-a7e0-e8c2902a72f8
+  name: Mist label
+  x: 3610
+  y: 368
+  width: 120
+  height: 16
+  components:
+  - type: text2D
+    text: "Mist (noise)"
+    size: 12
+    color: "#E4DCFF"
+    align: Center
+    order: 8
+- id: 3ce74cf8-5cc8-5033-8b35-34cbc1af4046
+  name: Cinders label
+  x: 3780
+  y: 304
+  width: 120
+  height: 16
+  components:
+  - type: text2D
+    text: "Cinders (bounce)"
+    size: 12
+    color: "#E4DCFF"
+    align: Center
+    order: 8
+- id: ce4dea5a-50cc-5d44-88e3-858137c5e2c9
+  name: Hero
+  x: 60
+  y: 326
+  width: 44
+  height: 60
+  components:
+  - type: boxCollider2D
+  - type: rigidbody2D
+    freezeRotation: true
+  - type: characterMotor2D
+  - type: script
+    script: Walker
+    values: {"Speed": 180}
+  - type: script
+    script: WorkshopTags
+    values: {}
+- id: 75bcf253-2152-53b5-94e7-c4a44e6e6dba
+  parentId: ce4dea5a-50cc-5d44-88e3-858137c5e2c9
+  name: Hero sprite
+  x: 1
+  y: 0
+  width: 42
+  height: 60
+  components:
+  - type: spriteRenderer
+    assetId: 9e3e5993-f9d0-5ee3-a6ef-5b2f679925cc
+    asset: Assets/Showcase/HeroIdleE.png
+    order: 4
+  - type: spriteAnimator
+    controller: d72504a3-c37f-5a32-9cf6-063e733104c4
+    playOnStart: true
+  - type: script
+    script: MotionFacing
+    values: {}
+- id: 958a3a99-d5f3-55d5-b003-73dce4f10d3c
+  name: Camera
+  x: 400
+  y: 225
+  width: 1
+  height: 1
+  components:
+  - type: camera2D
+    follow: ce4dea5a-50cc-5d44-88e3-858137c5e2c9
+    halfLife: 0.3
+    bounds: {x: 0, y: 0, width: 4000, height: 450}
+  - type: script
+    script: LabControls
+    values: {"Manual": "178b0a25-c969-516c-adad-00177eea4755"}
+- id: 06062842-85c9-5a22-babf-8f096da46c89
+  name: Canvas
+  x: 0
+  y: 0
+  width: 1
+  height: 1
+  components:
+  - type: uiCanvas
+- id: be8af854-06c0-5669-9fa1-428b3b654f22
+  parentId: 06062842-85c9-5a22-babf-8f096da46c89
+  name: Caption
+  x: 12
+  y: -12
+  width: 435.6
+  height: 44
+  components:
+  - type: uiRect
+    anchor: BottomLeft
+  - type: uiImage
+    sprite: a23c4c54-e694-5386-acdb-48de69a1c5a5
+    borders: {left: 4, top: 4, right: 4, bottom: 4}
+- id: a18385b8-84e4-5a75-90ef-cdb92e23bb9d
+  parentId: be8af854-06c0-5669-9fa1-428b3b654f22
+  name: Caption title
+  x: 12
+  y: 5
+  width: 411.6
+  height: 20
+  components:
+  - type: uiRect
+  - type: uiText
+    richText: true
+    text: "<b>ParticleLab</b>   Emitter modules, sorting, presets and curves"
+    size: 15
+- id: 0df8180d-98ba-58c3-8d8c-9534cf946c87
+  parentId: be8af854-06c0-5669-9fa1-428b3b654f22
+  name: Caption controls
+  x: 12
+  y: 25
+  width: 411.6
+  height: 16
+  components:
+  - type: uiRect
+  - type: uiText
+    text: "Walk  ← →      Pop and burst  Space"
+    size: 12
+    color: "#BFD0DC"
+- id: 5c77ef06-5656-5ab0-aae5-e28b27132615
+  parentId: 06062842-85c9-5a22-babf-8f096da46c89
+  name: Tag 1
+  x: 12
+  y: 12
+  width: 545.4
+  height: 24
+  components:
+  - type: uiRect
+    anchor: TopLeft
+    showIf: shapes
+  - type: uiImage
+    sprite: a23c4c54-e694-5386-acdb-48de69a1c5a5
+    borders: {left: 4, top: 4, right: 4, bottom: 4}
+  - type: uiText
+    richText: true
+    text: "<b>Emitter shapes</b>   <color=#BFD0DC>point, circle, edge, box, cone; prewarm; local and world space</color>"
+    size: 12
+    insetX: 10
+    insetY: 4
+- id: d8cb44ae-f1b9-5761-a630-d4d78ff796a7
+  parentId: 06062842-85c9-5a22-babf-8f096da46c89
+  name: Tag 2
+  x: 12
+  y: 40
+  width: 545.4
+  height: 24
+  components:
+  - type: uiRect
+    anchor: TopLeft
+    showIf: sorting
+  - type: uiImage
+    sprite: a23c4c54-e694-5386-acdb-48de69a1c5a5
+    borders: {left: 4, top: 4, right: 4, bottom: 4}
+  - type: uiText
+    richText: true
+    text: "<b>Sorting and blending</b>   <color=#BFD0DC>between sprites, multiply, sheet frames</color>"
+    size: 12
+    insetX: 10
+    insetY: 4
+- id: 4700d83b-ab30-54a1-8a95-cdd03231d951
+  parentId: 06062842-85c9-5a22-babf-8f096da46c89
+  name: Tag 3
+  x: 12
+  y: 68
+  width: 545.4
+  height: 24
+  components:
+  - type: uiRect
+    anchor: TopLeft
+    showIf: presets
+  - type: uiImage
+    sprite: a23c4c54-e694-5386-acdb-48de69a1c5a5
+    borders: {left: 4, top: 4, right: 4, bottom: 4}
+  - type: uiText
+    richText: true
+    text: "<b>Presets</b>   <color=#BFD0DC>six built-ins; two prefabs share one asset</color>"
+    size: 12
+    insetX: 10
+    insetY: 4
+- id: fcae5ef1-e746-5301-887d-6729adcc94d0
+  parentId: 06062842-85c9-5a22-babf-8f096da46c89
+  name: Tag 4
+  x: 12
+  y: 96
+  width: 545.4
+  height: 24
+  components:
+  - type: uiRect
+    anchor: TopLeft
+    showIf: curves
+  - type: uiImage
+    sprite: a23c4c54-e694-5386-acdb-48de69a1c5a5
+    borders: {left: 4, top: 4, right: 4, bottom: 4}
+  - type: uiText
+    richText: true
+    text: "<b>Curves and gradients</b>   <color=#BFD0DC>size, colour and spin over each life</color>"
+    size: 12
+    insetX: 10
+    insetY: 4
+- id: baa5ff4c-f0be-5db2-a2c3-dd96c591a3d3
+  parentId: 06062842-85c9-5a22-babf-8f096da46c89
+  name: Tag 5
+  x: 12
+  y: 124
+  width: 545.4
+  height: 24
+  components:
+  - type: uiRect
+    anchor: TopLeft
+    showIf: weather
+  - type: uiImage
+    sprite: a23c4c54-e694-5386-acdb-48de69a1c5a5
+    borders: {left: 4, top: 4, right: 4, bottom: 4}
+  - type: uiText
+    richText: true
+    text: "<b>Noise and collision</b>   <color=#BFD0DC>mist drifts on noise, cinders bounce</color>"
+    size: 12
+    insetX: 10
+    insetY: 4
+defaultCameraId: 958a3a99-d5f3-55d5-b003-73dce4f10d3c

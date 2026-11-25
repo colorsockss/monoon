@@ -169,7 +169,7 @@ internal static class ParticleChecks
             }
             const string embers = "Assets/Presets/Embers.particles";
             var asset = ProjectAssets.Scan(root).IdFor(embers)!.Value;
-            using var session = new GameSession(SceneDocument.Load(Path.Combine(root, "Scenes", "Presets.scene")));
+            using var session = new GameSession(SceneDocument.Load(Path.Combine(root, "Scenes", "ShowcaseWorkshop.scene")));
             var world = session.Current;
             var users = new[] { "Torch", "Brazier" }.Select(n => world.Objects.Single(o => o.Name == n).Id).ToArray();
             var buffer = new Particle2D[256];
@@ -213,13 +213,14 @@ internal static class ParticleChecks
     }
 
     // P.5: the editor preview steps the player's ParticleSystem2D; scrubbing to tick t equals playing t ticks, and on the Mac
-    // where the ParticleLab trace was recorded every Curves tick matches Scene Play, Release and Native AOT.
+    // where the ParticleLab trace was recorded every tick of the workshop's three still Curves emitters matches Scene Play, Release
+    // and Native AOT (the Curves trace of ParticleLab.Trace).
     private static void CheckEditorPreview(string repository)
     {
         var root = Path.Combine(repository, "samples", "ParticleLab");
-        var scene = SceneDocument.Load(Path.Combine(root, "Scenes", "Curves.scene"));
+        var scene = SceneDocument.Load(Path.Combine(root, "Scenes", "ShowcaseWorkshop.scene"));
         var assets = ProjectAssets.Scan(root);
-        var tagged = scene.Objects.Where(o => o.Tag == "Particles").ToList();
+        var tagged = scene.Objects.Where(o => o.Tag == "Particles" && o.Groups?.Contains("Curves") == true).ToList();
         var preview = new Engine.Editor.ParticlePreview();
         preview.Build(tagged, e => e.Particles is Guid id ? assets.LoadParticles(root, id) : new());
         var played = new List<(int Count, ulong Hash)>();
@@ -234,7 +235,7 @@ internal static class ParticleChecks
             var f = trace[t].Split(' ');
             if (int.Parse(f[2]) == played[t].Count && f[3] == played[t].Hash.ToString("x16")) same++;
         }
-        Check(trace.Length == 300 && same == 300, $"editor preview matches the Curves Scene Play/Release/AOT trace on {same} of {trace.Length} ticks");
+        Check(tagged.Count == 3 && trace.Length == 300 && same == 300, $"editor preview matches the Curves Scene Play/Release/AOT trace on {same} of {trace.Length} ticks");
     }
 
     // P.4: lifetime curves and gradients bake to 64-sample tables; old End size/alpha assets keep their exact output.

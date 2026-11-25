@@ -12,7 +12,6 @@ NS = uuid.UUID("5c0b0a0e-3f1d-5a55-9d8e-1f2f7c3e9a21")
 uid = lambda name: str(uuid.uuid5(NS, "showcase/" + name))
 BURST = "b6aaa729-aaf8-4712-99e8-e8c64f54bb89"    # Assets/Burst.particles (firework sparks)
 SPLASH = "a2b4b682-4533-4f09-bb1b-9f5ac04d7002"   # Assets/Splash.particles (rain droplets)
-FIRST_SCENE = "b702dcb2-01f9-5904-ad61-e62f4a348991"
 GROUND = 328                                      # top of the ground tiles
 
 
@@ -247,7 +246,7 @@ obj("Hero sprite", 0, 30 - hh, hw, hh, sprite("HeroIdleE.png", order=4) + f"  - 
 
 # Camera follows the hero at 2×; it starts where following puts it (parallax layers keep their first-frame screen place).
 obj("Camera", 160, 247.5, 1, 1, f"  - type: camera2D\n    zoom: 2\n    follow: {hero}\n    halfLife: 0.3\n    bounds: {{x: -40, y: 135, width: 1040, height: 225}}\n"
-    f"  - type: script\n    script: LabControls\n    values: {{\"Next\": {{\"Id\": \"{FIRST_SCENE}\"}}}}\n")
+    "  - type: script\n    script: LabControls\n    values: {}\n")
 
 # ---- HUD: caption and feature tags ----------------------------------------------------------------------------------
 canvas = obj("Canvas", 0, 0, 1, 1, "  - type: uiCanvas\n")

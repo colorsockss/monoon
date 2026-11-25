@@ -3524,7 +3524,7 @@
    "steps": [
     {
      "kind": "prepare",
-     "run": "scenes=\"Modules Sorting Stress Curves Rain Fireworks Presets\""
+     "run": "scenes=\"Showcase Workshop Curves Stress\""
     },
     {
      "kind": "prepare",
