@@ -1,0 +1,20 @@
+using System;
+using System.IO;
+using Engine.Core;
+
+// Test-only observer copied into a disposable InventoryLab: writes the "+1" number pool's counters whenever they change.
+public sealed class TracePool : GameBehaviour
+{
+    public PrefabReference Number;
+    private int frame;
+    private PrefabPoolStats last;
+
+    public override void FixedUpdate(ScriptTick tick)
+    {
+        if (Environment.GetEnvironmentVariable("MONOON_POOL_TRACE") is not { Length: > 0 } path) return;
+        var stats = tick.Objects.PoolStats(Number);
+        if (frame == 0 || stats != last) File.AppendAllText(path, $"{frame}\t{stats.Active}\t{stats.Available}\t{stats.Created}\t{stats.Reused}\t{stats.Returned}\n");
+        last = stats;
+        frame++;
+    }
+}

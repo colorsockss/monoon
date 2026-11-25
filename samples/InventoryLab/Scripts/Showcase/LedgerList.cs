@@ -2,9 +2,10 @@ using System;
 using System.Collections.Generic;
 using Engine.Core;
 
-// Showcase copy of Catalog/CatalogScreen without the internal IDs: the herbalist's stock ledger, 1,000 generated items in a
-// data-bound list. Range shows which rows are on screen and how few row objects exist; R (Sort) cycles the order and
-// lights its tab. Attach to the Scroll View; its first child is the row template.
+// Showcase: the herbalist's stock ledger, 1,000 generated items in a data-bound list. Range shows which rows are on screen
+// and how few row objects exist; R / pad Y (Sort) cycles the order and lights its tab. The list takes the keyboard and pad
+// focus on entry; Return / pad A on a row uses one of that item and records the used item numbers, the order and the row
+// object count in save slot 2. B / pad Back returns to the yard. Attach to the Scroll View; its first child is the row template.
 public sealed class LedgerList : GameBehaviour, IUiListSource
 {
     private sealed record Item(int Number, string Name, int Count);
@@ -15,7 +16,11 @@ public sealed class LedgerList : GameBehaviour, IUiListSource
     public Guid[] Tabs = [];          // No. / Name / Count, in sort order
     public float RowStep = 34;        // row height + layout gap
     public int ItemCount = 1000;
+    public SceneReference Yard;
+    private static readonly string[] Orders = ["No.", "Name", "Count"];
     private readonly List<Item> items = [];
+    private readonly List<string> used = [];
+    private Guid list;
     private int order;
     private string shown = "";
 
@@ -35,13 +40,16 @@ public sealed class LedgerList : GameBehaviour, IUiListSource
         items.Clear();
         for (int i = 1; i <= ItemCount; i++)
             items.Add(new(i, $"{Adjectives[i * 5 % Adjectives.Length]} {Nouns[i * 3 % Nouns.Length]}", i * 37 % 99 + 1));
-        life.Ui.BindList(life.ObjectId, this);
+        list = life.ObjectId;
+        life.Ui.BindList(list, this);
+        life.Ui.FocusWidget(list);
         ShowTabs(life.Ui);
     }
 
     public override void FixedUpdate(ScriptTick tick)
     {
         var ui = tick.Ui;
+        if (tick.Input.Pressed("Back") && Yard.Id != Guid.Empty) { tick.Session.LoadScene(Yard.Id); return; }
         if (tick.Input.Pressed("Sort"))
         {
             order = (order + 1) % 3;
@@ -63,10 +71,27 @@ public sealed class LedgerList : GameBehaviour, IUiListSource
         if (text != shown) ui.SetText(Range, shown = text);
     }
 
+    // Row activation reports the list object; the selected item is the one used.
+    public override void OnUiClick(UiClick click)
+    {
+        if (click.ObjectId != list || click.Ui.SelectedItem(list) is not { } id) return;
+        int index = items.FindIndex(item => item.Number.ToString() == id);
+        if (index < 0 || items[index].Count == 0) return;
+        items[index] = items[index] with { Count = items[index].Count - 1 };
+        used.Add(id);
+        var data = new GameData();
+        data.Set("used", string.Join(",", used));
+        data.Set("order", Orders[order]);
+        data.Set("rows", click.Ui.ListRowCount(list));
+        data.Set("items", items.Count);
+        click.Session.Storage.SaveSlot(2, data);
+        click.Ui.RefreshList(list);
+        click.Session.Set("used");
+    }
+
     private void ShowTabs(IGameUi ui)
     {
-        string[] names = ["No.", "Name", "Count"];
-        for (int i = 0; i < Tabs.Length && i < names.Length; i++)
-            ui.SetText(Tabs[i], i == order ? $"<b><color=#FFD84A>{names[i]}</color></b>" : names[i]);
+        for (int i = 0; i < Tabs.Length && i < Orders.Length; i++)
+            ui.SetText(Tabs[i], i == order ? $"<b><color=#FFD84A>{Orders[i]}</color></b>" : Orders[i]);
     }
 }

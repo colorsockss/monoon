@@ -11,7 +11,7 @@ out.mkdir(parents=True)
 recording(out / 'labels.inputreplay')
 (out / 'captures.txt').write_text(','.join(map(str, CAPTURES)), encoding='utf-8')
 env = dict(os.environ, DOTNET_STARTUP_HOOKS=str(hook), MONOON_QA_PROJECT=str(project), MONOON_WORLD_TEXT_OUT=str(out),
-           MONOON_USER_DATA=str(out / 'profile'))
+           MONOON_USER_DATA=str(out / 'profile'), MONOON_POOL_TRACE=str(out / 'pool.tsv'))
 with (out / 'editor.log').open('wb') as log:
     subprocess.run([str(editor), str(project)], env=env, stdout=log, stderr=log, timeout=240 * float(os.environ.get('MONOON_QA_SLOW') or 1), check=True)
 if (out / 'error.txt').exists(): raise RuntimeError((out / 'error.txt').read_text(encoding='utf-8'))

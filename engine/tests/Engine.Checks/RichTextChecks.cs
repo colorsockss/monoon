@@ -91,16 +91,17 @@ internal static class RichTextChecks
         catch (InvalidDataException) { Require(true, "scene validation rejects a negative reveal rate"); }
         text.RevealRate = 10;
 
-        // InventoryLab's herbalist: translated rich line, icon sprite and Korean default locale.
+        // InventoryLab's herb yard (Showcase.scene): the herbalist's translated rich line, icon sprite and the project's English locale.
         var sample = Path.Combine(repo, "samples", "InventoryLab");
-        var scene = SceneDocument.Load(Path.Combine(sample, "Scenes", "Inventory.scene"));
+        var scene = SceneDocument.Load(Path.Combine(sample, "Scenes", "Showcase.scene"));
         var lab = new ScreenUi(scene, ProjectAssets.ReadManifest(sample));
+        Require(lab.Preferences.Locale == "en-US" && lab.Translate("herbalist.meadow").StartsWith("Herbs grow best in the <color=#8FD3FF>") &&
+            lab.Images.Any(p => p.EndsWith("Herb.png")), "InventoryLab resolves the herbalist's translated line in English and its herb icon");
+        lab.Preferences.Locale = "ko-KR";
         string meadow = lab.Translate("herbalist.meadow");
-        Require(lab.Preferences.Locale == "ko-KR" && meadow.StartsWith("약초는 <color=#8FD3FF>") && lab.Images.Any(p => p.EndsWith("Herb.png")),
-            "InventoryLab resolves the herbalist's translated line in Korean and its herb icon");
-        lab.Preferences.Locale = "en";
-        Require(lab.Translate("herbalist.meadow").StartsWith("Herbs grow best in the <color=#8FD3FF>"), "the same key resolves the English line");
-        var layout = RichTextLayout.Build(meadow, true, 19, 736, (s, size) => Measure(s, size));
+        Require(meadow.StartsWith("약초는 <color=#8FD3FF>"), "the same key resolves the Korean line");
+        // The yard's dialogue line: 14 px text in a 494 px box.
+        var layout = RichTextLayout.Build(meadow, true, 14, 494, (s, size) => Measure(s, size));
         Require(layout.Lines is >= 2 and <= 3, $"the long Korean line wraps to two or three lines in the dialogue box ({layout.Lines})");
     }
 

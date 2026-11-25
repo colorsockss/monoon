@@ -2,14 +2,15 @@
 # Run after art.sh and scene.py:  python3 showcase-src/inventory/stock.py
 #
 # Over the herb yard (dimmed): a 4×5 bag of draggable slots (BagSlots flies each item to its new slot) and a ledger of
-# 1,000 items in a data-bound list (LedgerList shows which rows are on screen and how few row objects exist; R sorts).
+# 1,000 items in a data-bound list (LedgerList shows which rows are on screen and how few row objects exist; R sorts; the list
+# has the keyboard / pad focus on entry and Return / pad A uses a row; B goes back to the yard, where C comes here).
 # UI units are game pixels (800 × 450). Both panels share one top edge and height; the grid has no layout padding so
 # its cells are exactly CELL wide and centred by the panel's 16 px margins.
 import pathlib, struct, uuid
 
 ROOT = pathlib.Path(__file__).resolve().parents[2] / "samples/InventoryLab"
 ART = ROOT / "Assets/Showcase"
-NS = uuid.UUID("6a7b735e-336d-5674-b2e7-a136db5a7771")
+NS = uuid.UUID("6a7b735e-336d-5674-b2e7-a136db5a7771")   # id of the retired Inventory.scene, kept as the uuid5 namespace
 uid = lambda name: str(uuid.uuid5(NS, "showcase-stock/" + name))
 oid = lambda name: uid("obj/" + name)
 SLOT = "ff9ed6f0-ab54-46ec-ac7f-113d05db0e78"     # Assets/Ui/UiSlot.png
@@ -93,7 +94,8 @@ tabs = [obj("Tab number", M + 4 + NUM_X, 60, 80, 16, text("No.", 12, "#BFD0DC"),
         obj("Tab count", M + 4 + COUNT_X, 60, 60, 16, text("Count", 12, "#BFD0DC"), parent="Ledger panel")]
 list_h = PANEL_H - 82 - M
 lst = obj("Ledger list", M, 82, list_w, list_h, "  - type: uiRect\n  - type: uiLayout\n    gap: 4\n    padding: 4\n  - type: uiScroll\n"
-          + script("Showcase/LedgerList", f'{{"Range": "{rng}", "Tabs": ["{tabs[0]}", "{tabs[1]}", "{tabs[2]}"], "RowStep": 34}}'), parent="Ledger panel")
+          + script("Showcase/LedgerList", f'{{"Range": "{rng}", "Tabs": ["{tabs[0]}", "{tabs[1]}", "{tabs[2]}"], "RowStep": 34, '
+                   '"Yard": {"Id": "0b0b8126-2ff1-5bbb-a7f0-5ef0af802bf8"}}'), parent="Ledger panel")
 obj("Ledger row", 0, 0, list_w - 8, 30, f"  - type: uiRect\n  - type: uiImage\n    sprite: {BUTTON}\n    borders: {{left: 4, top: 4, right: 4, bottom: 4}}\n  - type: uiButton\n"
     + text("<icon={icon}>", 14, "#F2F7F5", "    insetX: 10\n    insetY: 5\n")[len("  - type: uiRect\n"):], parent="Ledger list")
 obj("Row name", NAME_X, 0, 200, 30, text("{name}", 14, "#F2F7F5", "    insetY: 6\n"), parent="Ledger row")
@@ -102,10 +104,10 @@ obj("Row count", COUNT_X, 0, 60, 30, text("× {count}", 13, "#95D8BE", "    inse
 
 # Caption, then the two floating copies BagSlots moves (last, so they draw over both panels).
 caption = "A bag and a 1,000-item ledger"
-cw = 110 + 7.4 * len(caption) + 60
+cw = 480   # as wide as the yard's caption, for the controls line
 cap = obj("Caption", 12, -12, cw, 44, "  - type: uiRect\n    anchor: BottomLeft\n" + panel, parent="Canvas")
 obj("Caption title", 12, 5, cw - 24, 20, text(f"<b>InventoryLab</b>   {caption}", 15), parent="Caption")
-obj("Caption controls", 12, 25, cw - 24, 16, text("Drag  mouse      Scroll  wheel      Sort  R", 12, "#BFD0DC"), parent="Caption")
+obj("Caption controls", 12, 25, cw - 24, 16, text("Drag  mouse      Scroll  wheel      Sort  R      Use  Return      Back  B", 12, "#BFD0DC"), parent="Caption")
 for g, name in zip(ghosts, ("Ghost", "Ghost back")):
     obj(name, 0, 0, CELL, CELL, "  - type: uiRect\n" + slot_text(""), parent="Canvas")   # the icon alone, lifted off its slot
 

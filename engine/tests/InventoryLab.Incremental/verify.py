@@ -10,8 +10,8 @@ import subprocess
 import tempfile
 import zipfile
 
-BEFORE = "어서 오세요. 무슨 일로 오셨나요?"
-AFTER = "무슨 일로 오셨나요? 어서 오세요."
+BEFORE = "Welcome. What brings you here?"
+AFTER = "What brings you here? Welcome."
 
 
 def digest(path):
@@ -75,7 +75,8 @@ def verify(cli, demo, fixtures, dest, dependencies=False):
             saves[label] = digest(slot)
 
         product, cold = build("cold")
-        if len(cold) != 7 or any(not s.startswith("build ") for s in cold):
+        # Three paving chunks, the torch sheet, the leaves' particle puff sheet and three bundles.
+        if len(cold) != 8 or any(not s.startswith("build ") for s in cold):
             raise AssertionError(("cold", cold))
         shutil.copyfile(product/"Game/Assets/MarketArt/Torch.shader.frames.png", dest/"torch.png")
         baseline = files(product)
@@ -84,7 +85,7 @@ def verify(cli, demo, fixtures, dest, dependencies=False):
         rebuilt = [s for s in decisions if s.startswith("build ")]
         reused = [s for s in decisions if s.startswith("reuse ")]
         if (len(rebuilt) != 1 or "bundle Assets/Dialogue" not in rebuilt[0] or
-                "changed: Assets/Dialogue/Herbalist.data" not in rebuilt[0] or len(reused) != 6):
+                "changed: Assets/Dialogue/Herbalist.data" not in rebuilt[0] or len(reused) != 7):
             raise AssertionError(decisions)
         bundle = product / "ContentBundles/Assets/Dialogue.bundle"
         with zipfile.ZipFile(bundle) as z:
@@ -95,7 +96,7 @@ def verify(cli, demo, fixtures, dest, dependencies=False):
             raise AssertionError("Content digest did not change")
         replay(product, "incremental")
         product, full = build("full", "full", fresh=True)
-        if len(full) != 7 or any("full content build" not in s for s in full):
+        if len(full) != 8 or any("full content build" not in s for s in full):
             raise AssertionError(("full",full))
         complete = files(product)
         if incremental != complete:
@@ -107,9 +108,9 @@ def verify(cli, demo, fixtures, dest, dependencies=False):
                        reused=len(reused), files=len(complete), contentSha256=digest(dest/"full.sha256"),
                        inputSha256=digest(fixtures/"Herbalist.inputreplay"), saves=saves)
         if dependencies:
-            replace(story, AFTER, AFTER + " 봄볕")
+            replace(story, AFTER, AFTER + " Spring sun.")
             replace(project/"Assets/MarketArt/Torch.shader", "fps: 24", "fps: 12")
-            replace(project/"Scenes/Inventory.scene", "{index: 31, tile: 1}", "{index: 30, tile: 1}")
+            replace(project/"Scenes/Showcase.scene", "{index: 31, tile: 1}", "{index: 30, tile: 1}")
             product, changes = build("dependencies")
             rebuilt = [row for row in changes if row.startswith("build ")]
             for fragments in [("shader ", "changed: Assets/MarketArt/Torch.shader"),

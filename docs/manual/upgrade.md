@@ -80,11 +80,15 @@ InventoryLab의 `projectId`는 `ade09cc3-a769-56d7-9832-a2bea14c7e71`이고, `st
 ## 5. 직접 실행해 업그레이드 판정하기
 
 ```sh
-./monoon test inventorylab "$out" --profile distribution
-./monoon test replay "$out"
+for app in "$out/InventoryLab.app" "$out/NativeAOT/InventoryLab.app"; do
+  slot=$(mktemp -d)
+  cp engine/tests/results/inventorylab-upgrade-x64/v2-input.save "$slot/slot-001.save"
+  "$app/Contents/MacOS/MoNoonPlayer" --smoke-test "$slot" L 1 T 2 1 S
+  cmp "$slot/slot-001.save" engine/tests/fixtures/InventoryLab/Herbalist.save
+done
 ```
 
-첫 명령은 실제 플레이어를 여러 번 시작해 의뢰 제안 → 보상 수령 → 재실행 후 재수령 시도의 슬롯을 비교하고, 앱과 보관 심볼의 대응도 검사한다. 둘째 명령은 같은 475프레임 입력을 두 앱에서 창 없이 재생한다. 합격 기준은 약초 3개, 수정 1개, 보상 수령 완료, 대화 노드 `paid`이고 두 저장 파일 전체가 Mac 기준 171바이트와 같아야 한다. 다른 게임을 올릴 때는 그 게임의 프로젝트·시작 씬으로 기록한 입력과 기존 기준 저장으로 검사한다. [InventoryLab 기준 입력·저장](../../engine/tests/fixtures/InventoryLab/) · [입력 리플레이](build.md#헤드리스-입력-리플레이)
+각 앱을 창 없이 시작해 약초 두 포기와 진행 중인 의뢰가 든 v2 슬롯을 **L**로 읽고, 약초 하나를 더 담아 **T → 2 → 1**로 보상을 받은 뒤 **S**로 저장한다. 합격 기준은 약초 3개, 수정 1개, 보상 수령 완료, 대화 노드 `paid`이고 두 저장 파일 전체가 Mac 기준 171바이트와 같아야 한다. `./monoon test inventorylab`과 `./monoon test replay`는 현재 샘플(약초 마당 쇼케이스)의 입력으로 검사하므로 버전 31 사본에는 쓰지 않는다. 같은 판정을 Windows·Linux x64 게스트에서 하는 실행기는 `build_guest.py --upgrade-from-v31`이다. [InventoryLab 기준 저장](../../engine/tests/fixtures/InventoryLab/) · [게스트 실행기](../../engine/tests/InventoryLab.Replay/README.md#버전-31--35-업그레이드)
 
 기존 이용자의 세이브도 시험하려면 구버전 슬롯을 별도 폴더에 복사해 그 폴더를 플레이어의 `--smoke-test` 인자로 지정한다. InventoryLab은 **L**로 메모리에서 v1·v2를 읽고 **S**로 저장할 때 v3 슬롯을 쓴다. 의뢰가 진행 중인 슬롯이라면 가방·수집량·수령 여부를 함께 비교한다. 읽기에 실패했을 때는 저장하기 전에 복사본에서 원인을 확인한다. [저장 API와 버전 이전](api.md#저장-슬롯과-버전-이전)
 

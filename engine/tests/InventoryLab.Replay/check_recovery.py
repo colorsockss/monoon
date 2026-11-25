@@ -52,7 +52,8 @@ def verify(executable, fixtures, destination):
             shutil.copyfile(slot, destination / (case + "-recovered.save"))
             # Force recovery inside the same process as the second claim attempt.
             slot.write_bytes(damage)
-            run("--smoke-test", profile, "L", "1", "T", "2", "1", "S")
+            # Up×10 walks the hero from the yard start into talking range of the herbalist.
+            run("--smoke-test", profile, "L", "1", *["Up"] * 10, "T", "2", "1", "S")
             check(slot, denied)
             check(backup, first)
             shutil.copyfile(slot, destination / (case + "-after-claim.save"))

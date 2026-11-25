@@ -7,8 +7,9 @@ using MoNoon.Inventory;
 using MoNoon.Quests;
 
 // Showcase: the herb yard's HUD on the sample's own packages (InventoryBag, QuestJournal, DialogueSession, WorkbenchSave).
-// Return talks to the herbalist when the player stands near; 1–4 answer; F5 saves, F7 simulates a crash that cuts the save
-// file in half, F9 loads (the damaged file falls back to the previous copy). Raises the HUD tag flags.
+// Return talks to the herbalist when the player stands near; 1–4 answer; Q / E pick a bag slot and U uses one item from it;
+// F5 saves, F7 simulates a crash that cuts the save file in half, F9 loads (the damaged file falls back to the previous
+// copy); C opens the stock scene. Raises the HUD tag flags.
 public sealed class HerbYard : GameBehaviour
 {
     public ComponentReference<InventoryContainer> Container;
@@ -19,6 +20,9 @@ public sealed class HerbYard : GameBehaviour
     public string QuestId = "herbalist";
     public Guid Dialogue, Line, Prompt, Tracker, TrackerTitle, TrackerProgress, Status;
     public Guid[] Choices = [], Slots = [];
+    public Guid SlotMark;                // the bar under the selected bag slot
+    public float SlotStep = 56;
+    public SceneReference Stock;
     // Where editor Play keeps this game's saves (F7 only). A string, not a Guid: a Guid field is checked as an object reference.
     public string ProjectId = "";
     private InventoryBag bag = null!;
@@ -28,6 +32,7 @@ public sealed class HerbYard : GameBehaviour
     private SessionState session = null!;
     private QuestStage shownStage;
     private int shownCollected;
+    private int selected;
 
     public override void OnEnable(ScriptLife life)
     {
@@ -45,6 +50,13 @@ public sealed class HerbYard : GameBehaviour
         if (input.Pressed("Save")) { Store(tick, true); return; }
         if (input.Pressed("Load")) { Store(tick, false); return; }
         if (input.Pressed("Crash")) { Crash(ui, objects); return; }
+        if (talk.Current == null)
+        {
+            if (input.Pressed("Catalog") && Stock.Id != Guid.Empty) { tick.Session.LoadScene(Stock.Id); return; }
+            if (input.Pressed("Previous")) Select(selected + bag.Capacity - 1, objects);
+            if (input.Pressed("Next")) Select(selected + 1, objects);
+            if (input.Pressed("Use")) Use(ui, objects);
+        }
         bool near = objects.TryGetPosition(Player, out var p) && objects.TryGetPosition(Herbalist, out var h) && Vector2.Distance(p, h) < TalkRange;
         if (talk.Current == null)
         {
@@ -72,6 +84,20 @@ public sealed class HerbYard : GameBehaviour
             if (bag[i].Item == item) Pop(objects, Slots[i]);
         Show(ui, objects, "+1 " + bag.Definition(item).Label);
         return true;
+    }
+
+    private void Select(int slot, IGameObjects objects)
+    {
+        selected = slot % bag.Capacity;
+        objects.Tween(SlotMark, TweenClock.Ui).UiRect(new(selected * SlotStep, 0, 0, 0), .08f, TweenEase.EaseOut);
+    }
+
+    private void Use(IGameUi ui, IGameObjects objects)
+    {
+        var item = bag[selected].Item;
+        if (!bag.TryTake(selected)) { Show(ui, objects, "Nothing to use in this slot."); return; }
+        Pop(objects, Slots[selected]);
+        Show(ui, objects, "Used 1 " + bag.Definition(item).Label + ".");
     }
 
     private void Choose(int index, IGameUi ui, IGameObjects objects)

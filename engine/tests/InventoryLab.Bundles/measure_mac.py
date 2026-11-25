@@ -74,7 +74,8 @@ def profile_run(player, profile, condition, keys):
                 proc = subprocess.Popen([str(player)], env=env, stdout=output, stderr=subprocess.STDOUT)
                 try:
                     wait_for(lambda: milestone("first_present"))
-                    with subprocess.Popen([str(keys), str(proc.pid), "18"]) as key:  # 1 -> AddHerb
+                    # 1 -> AddHerb, the first mapped press. The herb yard gathers herbs by walking, so the bag stays empty.
+                    with subprocess.Popen([str(keys), str(proc.pid), "18"]) as key:
                         action = wait_for(lambda: milestone("first_action"))
                         action_ms = (time.monotonic_ns() - start) / 1e6
                         if key.wait(timeout=5):
@@ -83,10 +84,10 @@ def profile_run(player, profile, condition, keys):
                     slot = cache.parent / "slot-001.save"
                     # The preceding run's slot must never satisfy this check.
                     assert not slot.exists()
-                    subprocess.run([str(keys), str(proc.pid), "1"], check=True)  # S -> save the new bag.
+                    subprocess.run([str(keys), str(proc.pid), "1"], check=True)  # S -> save the bag.
                     wait_for(slot.exists)
                     saved = slot.read_bytes()
-                    assert b'item0: "herb"' in saved and b'count0: 1\n' in saved and b'item1:' not in saved, saved
+                    assert b'capacity: 3' in saved and b'item0:' not in saved, saved
                     wait_for(lambda: milestone("max_frame_ms"))
                     sample()
                     subprocess.run([str(keys), str(proc.pid), "53"], check=True)  # Escape -> normal shutdown.

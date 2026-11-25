@@ -34,7 +34,7 @@
 | InventoryLab/BagGrid | ShowcaseStock(BagSlots) | 키보드·게임패드 포커스 |
 | InventoryLab/Catalog | ShowcaseStock(LedgerList) | 게임패드 포커스와 사용, 다른 씬에서 C로 들어오는 흐름 |
 | InventoryLab/Inventory | Showcase(HerbYard) | 버튼 인벤토리 UI, Herbalist 녹화·저장 다시 만들기, RichText 캡처 대상 변경 |
-| InventoryLab/Labels | 정할 것 | 번역 키·리치 텍스트 Text2D, 데미지 숫자 풀 |
+| InventoryLab/Labels | Showcase(약초 마당) | 번역 키 이름표·리치 텍스트 간판 Text2D, 숫자 풀을 약초 주울 때의 `+1`로(사용자 결정 2026-11-26) |
 | KeyRoom/KeyBindings | ShowcaseMoves | 행동별 키 변경 메뉴, 기본값 복원, 안내 문구 |
 | KeyRoom/KeyRoom | Showcase | 가방 UI와 나침반 확인창, 한·영 전환, 일시정지와 스크립트 대기, 가방 트윈과 Controls 패널, UI 고정·레이아웃·스크롤, LidMotion 컴포넌트 키, Oak·Coin 프리팹 인스턴스, 열쇠 퀘스트. 녹화 모두 다시 |
 | KeyRoom/PointerWorkshop | Showcase | 마우스 드래그와 두 번째 카메라 뷰포트 |
@@ -98,13 +98,13 @@
 | 2026-11-26 | CollisionLab | 랩 씬을 두 번째 쇼케이스 `ShowcaseCasts.scene`(같은 씬 id·개체 id·충돌체, 밤 풀밭 그림)으로 바꾸고 레이 선과 스윕 정지 자리를 그림. Field1000·Field10000은 테스트 전용으로 빌드 씬 목록에서 뺌. 하네스는 [collision_lab.py](../../engine/tests/Shared/collision_lab.py) 복사본(시작 씬 ShowcaseCasts, 카메라에 FieldSelector, 필드 씬 포함)을 씀. Spatial·SplitLoading·FrameProfiler(Release·AOT·Scene Play), EditorPerf, InspectorEdits(후보 에디터 1회), AssetFields field 단계, physics·history 검사 통과. 캐스트 영상을 새로 찍어야 함 |
 | 2026-11-26 | CameraLab | 기존 CameraLab 씬과 FieldPlayer·MirrorPlayer 삭제. ScreenFxDemo(충격·섬광·페이드·색 보정, 진동, 사용자 커서, 편의 설정 저장, 정지·한 틱 진행)를 쇼케이스에 효과 패널과 함께 넣음(영상 다시 찍어야 함). 디버그 그리기는 프레이밍 쇼케이스의 FramingTour가 이미 보여 줌. 하네스는 시험용 드라이버 없이 쇼케이스를 그대로 기록: SplitScreen(쇼케이스, 방향키로 동료에게 다가갔다 돌아옴), Framing·DebugDraw(ShowcaseFraming 연출). CameraChecks·ScreenEffectsChecks를 쇼케이스로 다시 씀. CameraChecks의 201 vs 200.9752 실패는 카메라 중심이 화면 픽셀 단위로 맞춰지는 동작이어서 기대값에 반영. SplitScreen·Framing·DebugDraw 세 경로, ScreenEffects 헤드리스 재생(Release), camera·screen-effects 검사 통과. ScreenEffects GUI 단계(가상 패드)는 시험 창이 앞으로 오지 못해(window 도구 종료 7) 확인 못 함 |
 | 2026-11-26 | PlatformerLab | Foot IK 2D를 엔진·에디터·문서에서 제거(`BonePose2D`는 Start·End만). 쇼케이스 시작 표지판 옆에 `Runner.rig` 리그 인물(Time 시계, 제자리 달리기)과 "Skeletal rig" 태그를 넣음(영상 다시 찍어야 함). 옛 씬 여섯(Platform, Cave, Joints, Paths, Slopes, Parallax)과 그 씬만 쓰던 스크립트·에셋 삭제, Ridge.tileset·Terrain.png는 검사 자료 `engine/tests/fixtures/PlatformerRidge`로 옮김. `scene.py`는 옛 Platform 데이터를 `platform-objects.yaml`에서 읽음. 하네스 7개를 쇼케이스로(Effects·Joints·Paths·Colliders는 코스, Lighting은 동굴, Parallax·TileCollision은 쇼케이스) 옮겨 세 경로 통과. 엔진 검사 12개를 다시 써 통과(ComponentStateChecks는 쇼케이스의 `active: false`를 허용하게, FeatureSwitchChecks는 스크립트를 뗀 모든 샘플 씬 40개로). 쇼케이스에 없어 빠진 것: 8px 타일 이음새 위 캡슐, 체인 위 Dynamic 캡슐 바위, Slopes의 트리거 마커, 장면 안의 Tiled·9-slice 스프라이트. 발견: 코스의 흔들다리 판자 8개가 잠들지 않아 플레이 중 틱당 5,184 B를 할당한다(PhysicsAllocationChecks에서 제외, 엔진 쪽 후속 과제) |
+| 2026-11-26 | InventoryLab | 기존 씬 넷(Inventory, BagGrid, Catalog, Labels)과 그 씬만 쓰던 스크립트(InventoryWorkbench, InventoryAction, Bag/BagGrid, Catalog/CatalogScreen·CatalogButton, Labels/DamageBurst), 일회용 패치 `showcase-src/icons.py` 삭제. 약초 마당 쇼케이스에 Labels의 번역 키 이름표(`label.herbalist`)·리치 텍스트 간판(Text2D, 판 스프라이트), 약초를 주울 때 풀에서 빌리는 `+1`(DamageNumber·RisingNumber), Q/E 칸 선택과 U 사용, C로 재고 씬, 시장 배경음, 두 줄 조작 안내를 넣음(사용자 결정, 영상 다시 찍어야 함). 재고 쇼케이스는 장부가 시작 포커스를 받고 Enter·패드 A로 사용(슬롯 2 기록), B로 마당, 키·패드로 집은 아이템이 포커스 칸 위에 뜸(영상 다시 찍어야 함). Herbalist 입력은 쇼케이스 경로로 다시 만들었고([herbalist_input.py](../../engine/tests/InventoryLab.Replay/herbalist_input.py)) 저장은 예전 171바이트와 같아 x64 기준 저장도 그대로다. `test inventorylab`(smoke 걷기 경로), check_recovery, BuildProfileChecks(HerbYard.cs), RichTextChecks를 쇼케이스로. 샘플 `Tests/YardTests` 추가. BagGrid·RichText·WorldText·ScriptFields 세 경로, Crashes·DataList·Replay Release·AOT, Incremental 통과. Windows·Linux x64 게스트 재생은 실행하지 않음. 버튼으로 누르는 마당 인벤토리 UI는 넣지 않음: HUD 버튼에 포커스가 가면 방향키를 UI가 가져가 걷기가 멈춘다. 클릭하는 칸·행은 재고 쇼케이스에 있다 |
 | 2026-11-26 | 공통 | FeatureChecks(쇼케이스에서 글자를 뺀 SpriteLab), FeatureSwitchChecks(카메라 없는 추가 로딩 씬 제외), AssetReportChecks(KeyRoom 쇼케이스 기준 이유·기능), Dialogue·Inventory·Quests 패키지를 바뀐 InventoryLab 데이터로 다시 만듦, EngineFeatures1의 정수 배율 예시를 AudioLab 설정으로 |
 
 ### `./monoon test`에 남은 실패 (2026-11-26, 단계별로 계속 실행해 모음)
 
 | 검사 | 첫 실패 | 처리할 묶음 |
 | --- | --- | --- |
-| RichTextChecks | InventoryLab `Inventory.scene`의 ko-KR 약초상 대사 | InventoryLab |
 | InputInteractionChecks | KeyRoom 설정을 그대로 읽는지 | KeyRoom |
 | ProjectCatalogChecks | 폴더를 넘는 형식 검색 | KeyRoom(확인 필요) |
 | BuildSizeChecks | 빌드 용량 기준값 | 마지막 전체 회귀 때 다시 측정 |

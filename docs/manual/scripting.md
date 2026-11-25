@@ -87,7 +87,7 @@ UI 요소의 현재 위치는 `tick.Ui.Bounds(id)`로 읽는다. [세 실행 경
 
 컴포넌트에 `public Guid[] Choices = [];`를 선언한다. Hierarchy에서 오브젝트를 필드의 **Drop object here**에 놓으면 끝에 추가되고, 특정 행에 놓으면 그 행 앞에 추가된다. Inspector 안에서는 오브젝트 이름을 잡아 다른 행에 놓아 그 번호로 옮긴다. **−**는 해당 참조 한 개를 제거한다. 각 편집은 **Cmd+Z**(Windows는 **Ctrl+Z**) 한 번으로 되돌릴 수 있다.
 
-InventoryLab의 **Bag → InventoryWorkbench → Choices**에서 **Answer 4**를 **Answer 2**에 놓으면 순서가 **1, 4, 2, 3**이 된다. 저장하고 다시 열어 Play한 뒤 **T**로 약초상과 대화한다. 원래 네 번째 버튼에는 **[2] 보상을 문의한다**가 표시되고 이를 클릭하면 약초상이 보상을 설명한다. 숫자 키는 현재 목록 순서를 따른다. [Mac 검증 화면과 저장 결과](../../engine/tests/results/script-reference-lists/README.md)
+InventoryLab의 **Yard → HerbYard → Choices**에서 **Answer 4**를 **Answer 2**에 놓으면 순서가 **1, 4, 2, 3**이 된다. 저장하고 다시 열어 Play한 뒤 약초상 앞에서 **Return**으로 대화한다. 원래 네 번째 줄에 **2 Ask about the reward**가 표시되고 **2**를 누르면 약초상이 보상을 설명한다. 숫자 키는 현재 목록 순서를 따른다. [Mac 검증 화면과 저장 결과](../../engine/tests/results/script-reference-lists/README.md)
 
 ## 에셋 참조 목록과 enum, Vector2
 

@@ -10,7 +10,8 @@ objects:
   - type: text2D
     text: "0"
     size: 14
-    color: "#FFE070"
+    richText: true
+    color: "#FFFFFF"
     sortingLayer: 3
   - type: script
     script: "Labels/RisingNumber"

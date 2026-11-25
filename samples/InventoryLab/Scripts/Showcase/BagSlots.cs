@@ -2,14 +2,16 @@ using System;
 using System.Numerics;
 using Engine.Core;
 
-// Showcase: a 4×5 bag of draggable UI Button slots (as the sample's Bag/BagGrid). While a slot is picked up (ScreenUi.Carried:
-// pointer drag, or click / Enter on it) its item leaves the slot and follows the pointer on a floating copy, Ghost. Dropped
+// Showcase: a 4×5 bag of draggable UI Button slots. While a slot is picked up (ScreenUi.Carried: pointer drag, or click / Enter /
+// pad A on it) its item leaves the slot and rides on a floating copy, Ghost: under the pointer, or with keys and a pad over
+// the focused slot (arrows / D-pad move the focus, Enter / A drops, Escape / B cancels). Dropped
 // on another slot it settles in there, and that slot's item flies back on GhostBack; the slots swap when both land and the
 // one it landed in pops. Raises the "drag" HUD tag flag.
 public sealed class BagSlots : GameBehaviour
 {
     public Guid Ghost, GhostBack;
     public float Settle = .15f, Return = .45f;
+    public float Lift = 10;              // how far a key-carried item hovers above the focused slot
     private Guid source, target;
     private Guid? carrying;              // the slot whose item rides on Ghost
     private string from = "", to = "";
@@ -53,7 +55,10 @@ public sealed class BagSlots : GameBehaviour
         }
         if (home is { } box && ui.Bounds(Ghost) is { } size)
         {
-            var at = tick.Input.PointerPosition - new Vector2(size.Width, size.Height) / 2;
+            Vector2 at;
+            if (tick.Input.ActiveDevice == InputDevice.Pointer) at = tick.Input.PointerPosition - new Vector2(size.Width, size.Height) / 2;
+            else if (ui.Focused is Guid focus && ui.Bounds(focus) is { } over) at = new(over.X, over.Y - Lift);
+            else return;
             objects.Tween(Ghost, TweenClock.Ui).UiRect(new(at.X - box.X, at.Y - box.Y, 0, 0), .001f, TweenEase.Linear);
         }
     }

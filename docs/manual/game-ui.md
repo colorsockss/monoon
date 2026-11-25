@@ -48,15 +48,16 @@ Scene에서 위젯을 드래그하면 고정된 변의 여백도 갱신된다. *
 
 ## 가방 칸 끌어 놓기
 
-[InventoryLab](../../samples/InventoryLab/)의 **Scenes/BagGrid.scene**을 열고 Play를 누른다. Bag은 Grid 4열 레이아웃이고 칸 20개는 **UI Button → Drag and drop slot**을 켠 버튼이다.
+[InventoryLab](../../samples/InventoryLab/)의 **Scenes/ShowcaseStock.scene**을 열고 Play를 누른다(약초 마당에서 **C**로도 들어온다). 왼쪽 **Bag grid**는 Grid 4열 레이아웃이고 칸 20개는 **UI Button → Drag and drop slot**을 켠 버튼이다.
 
 | 조작 | 결과 |
 | --- | --- |
 | 칸을 누른 채 4 px보다 많이 끌어 다른 칸 위에서 놓기 | 놓은 칸에 `OnUiDrop`. 끄는 동안 칸 사본이 포인터를 따라온다. 칸이 아닌 곳에서 놓으면 아무 일도 없다 |
 | 칸 클릭, Enter·Space, 패드 아래쪽 버튼 | 처음은 칸을 집고(금색 테두리), 다른 칸에서 다시 하면 그 칸에 놓는다. 집은 칸에서 다시 하면 내려놓는다 |
+| 방향키, D-pad | 칸 사이로 포커스를 옮긴다. 칸을 집은 채 옮기면 샘플의 아이템이 포커스 칸 위에 떠서 따라온다 |
 | Esc, 패드 오른쪽 버튼 | 집은 칸을 취소한다. 포커스는 그대로 둔다 |
 
-끌어 놓기 칸은 `OnUiClick`을 보내지 않는다. `OnUiDrop(UiDrop drop)`은 놓은 칸(`drop.Target`)의 컴포넌트가 받고, 그 칸에 스크립트가 없으면 스크립트가 있는 가장 가까운 부모가 받는다. 샘플은 Bag 오브젝트의 [BagGrid](../../samples/InventoryLab/Scripts/Bag/BagGrid.cs) 하나가 모든 칸의 놓기를 받아 두 칸의 글자를 바꾼다.
+끌어 놓기 칸은 `OnUiClick`을 보내지 않는다. `OnUiDrop(UiDrop drop)`은 놓은 칸(`drop.Target`)의 컴포넌트가 받고, 그 칸에 스크립트가 없으면 스크립트가 있는 가장 가까운 부모가 받는다. 샘플은 Bag grid 오브젝트의 [BagSlots](../../samples/InventoryLab/Scripts/Showcase/BagSlots.cs) 하나가 모든 칸의 놓기를 받아 두 칸의 글자를 바꾼다. 샘플은 바꾸기 전에 두 아이템을 떠 있는 사본으로 새 칸까지 날려 보내는 연출을 더했고, 핵심은 아래와 같다.
 
 ```csharp
 public override void OnUiDrop(UiDrop drop)
@@ -144,19 +145,19 @@ var progress = tick.Ui.RevealProgress(Line);               // Shown / Total / Co
 
 화면에 고정되는 UI Text와 달리 **Text 2D**는 월드 오브젝트에 붙어 카메라를 따라 움직이고 확대된다. 일반 오브젝트(Canvas 밖)를 선택하고 **Add Component → Rendering → Text 2D**를 붙인다.
 
-1. [InventoryLab](../../samples/InventoryLab/)에서 **Scenes/Labels.scene**을 열고 Play를 누른다. 약초상 머리 위 이름표는 **Text key**에 `label.herbalist`를 넣어 번역 테이블에서 ‘약초상’을 읽는다. 키를 찾지 못하면 **Text**를 쓴다.
-2. 간판을 선택한다. **Rich text tags**를 켜면 UI Text와 같은 `<color>`, `<b>`, `<size>` 태그를 읽는다. `<icon>` 태그는 Text 2D에서 글자 그대로 표시된다.
+1. [InventoryLab](../../samples/InventoryLab/)을 열고 Play를 누른다(시작 씬 **Scenes/Showcase.scene**). 약초상 머리 위 이름표(**Herbalist name**)는 **Text key**에 `label.herbalist`를 넣어 번역 테이블에서 기본 언어의 ‘Herbalist’를 읽는다(`ko`는 ‘약초상’). 키를 찾지 못하면 **Text**를 쓴다. 이름표와 간판 뒤의 판은 HUD 패널 그림을 **Draw mode → Sliced**로 늘린 스프라이트다.
+2. 진열대 앞의 간판(**Stall sign**)을 선택한다. **Rich text tags**를 켜면 UI Text와 같은 `<color>`, `<b>`, `<size>` 태그를 읽는다. `<icon>` 태그는 Text 2D에서 글자 그대로 표시된다.
 3. **Size**는 Transform 배율 1에서의 월드 단위 글자 크기다. 오브젝트의 Scale과 카메라 Zoom을 함께 따른다. 회전은 적용하지 않는다. **Align**은 오브젝트 사각형 안의 가로 위치(Left·Center·Right)이고, 세로는 사각형 가운데에 둔다.
 4. **Layer / Order**와 **Use foot Y**는 Sprite Renderer와 같은 [앞뒤 정렬](sprites.md#발-위치로-앞뒤-정렬하기)에 참여한다. 같은 오브젝트에 Sprite Renderer가 있으면 스프라이트의 정렬 값을 함께 쓴다.
 
-스크립트는 `tick.Objects.SetWorldText(id, text)`로 문구를 바꾼다. 바꾼 문구는 번역 키보다 우선하며 씬이 끝날 때까지 유지된다. 샘플의 `DamageBurst`는 시작할 때 숫자 문자열 100개를 만들어 두고, 90틱마다 풀에서 `Damage number` 프리팹 100개를 빌려 문자열을 연결한다. 각 숫자는 60틱 동안 올라간 뒤 풀로 돌아간다. [DamageBurst.cs](../../samples/InventoryLab/Scripts/Labels/DamageBurst.cs)
+스크립트는 `tick.Objects.SetWorldText(id, text)`로 문구를 바꾼다. 바꾼 문구는 번역 키보다 우선하며 씬이 끝날 때까지 유지된다. 샘플의 `HerbPickup`은 약초를 주울 때 풀에서 `Damage number` 프리팹을 빌려 `+1`을 넣는다. 숫자는 [RisingNumber](../../samples/InventoryLab/Scripts/Labels/RisingNumber.cs)가 60틱 동안 30 단위 올린 뒤 풀로 돌려주고, 다음 약초는 돌아온 같은 오브젝트를 다시 빌린다. [HerbPickup.cs](../../samples/InventoryLab/Scripts/Showcase/HerbPickup.cs)
 
 ```csharp
-var id = tick.Objects.Rent(Number, at);
-tick.Objects.SetWorldText(id, values[i]);   // 미리 만든 문자열: 프레임마다 새 문자열을 만들지 않는다
+var id = objects.Rent(Pop, at + new Vector2(PopX, -8));
+objects.SetWorldText(id, "<b>+1</b>");   // 문자열 상수: 주울 때마다 새 문자열을 만들지 않는다
 ```
 
-글자는 화면 텍스트와 같은 SDL_ttf 문구 캐시를 쓴다. 같은 문자열은 텍스처 하나를 공유하고, 문구가 그대로인 동안에는 그리기에서 메모리를 할당하지 않는다. 데미지 숫자 100개를 이 Mac의 소프트웨어 렌더러로 그릴 때 한 프레임(단계 + 그리기 + 표시) 중앙값은 약 0.25 ms였다. 캐시는 서로 다른 문자열 128개까지 보관하므로, 한 화면에 그보다 많은 다른 문구를 동시에 띄우면 매 프레임 다시 만든다. Text 2D가 하나라도 있는 씬은 schemaVersion 40 이상으로 저장되고, 빌드는 SDL_ttf를 포함한다. [검증 기록](../../engine/tests/results/engine-features-4/README.md)
+글자는 화면 텍스트와 같은 SDL_ttf 문구 캐시를 쓴다. 같은 문자열은 텍스처 하나를 공유하고, 문구가 그대로인 동안에는 그리기에서 메모리를 할당하지 않는다. `world-text` 엔진 검사에서 데미지 숫자 100개를 이 Mac의 소프트웨어 렌더러로 그릴 때 한 프레임(단계 + 그리기 + 표시) 중앙값은 약 0.25 ms였다. 캐시는 서로 다른 문자열 128개까지 보관하므로, 한 화면에 그보다 많은 다른 문구를 동시에 띄우면 매 프레임 다시 만든다. Text 2D가 하나라도 있는 씬은 schemaVersion 40 이상으로 저장되고, 빌드는 SDL_ttf를 포함한다. [검증 기록](../../engine/tests/results/engine-features-4/README.md)
 
 ## 플레이어 표시 설정과 탐색
 
@@ -189,9 +190,9 @@ tick.Objects.SetWorldText(id, values[i]);   // 미리 만든 문자열: 프레�
 
 ## 데이터로 채우는 목록
 
-[InventoryLab](../../samples/InventoryLab/)을 열고 **Save & Run**으로 실행한 뒤 가방 화면에서 **C**를 누른다. 보관함 목록에 아이템 1,000개가 표시된다. 방향키·D-pad·왼쪽 스틱으로 아이템을 고르고 **R** 또는 패드 위쪽 버튼(Y)으로 번호순·이름순·수량순을 전환한다. Enter·Space·패드 아래쪽 버튼 또는 클릭으로 선택한 아이템을 하나 사용한다. 정렬 후에도 선택한 아이템이 그대로 선택되고, 사용 대상도 그 아이템의 ID다. **B** 또는 패드 Back 버튼으로 가방 화면으로 돌아간다. [보관함 씬](../../samples/InventoryLab/Scenes/Catalog.scene)
+[InventoryLab](../../samples/InventoryLab/)을 열고 **Save & Run**으로 실행한 뒤 약초 마당에서 **C**를 누른다. 재고 씬 오른쪽 장부 목록에 아이템 1,000개가 표시되고 목록이 키보드·패드 포커스를 받는다. 방향키·D-pad·왼쪽 스틱으로 아이템을 고르고 **R** 또는 패드 위쪽 버튼(Y)으로 번호순·이름순·수량순을 전환한다. 고른 순서의 열 제목이 노랗게 바뀐다. Enter·Space·패드 아래쪽 버튼 또는 클릭으로 선택한 아이템을 하나 사용하면 그 행의 수량이 줄고, 사용한 번호·정렬·행 수가 저장 슬롯 2에 기록된다. 정렬 후에도 선택한 아이템이 그대로 선택되고, 사용 대상도 그 아이템의 ID(번호)다. **B** 또는 패드 Back 버튼으로 약초 마당으로 돌아간다. [재고 씬](../../samples/InventoryLab/Scenes/ShowcaseStock.scene)
 
-**UI → Scroll View** 아래 첫 번째 자식이 행 템플릿이다. 버튼과 텍스트로 한 행의 모양을 만들고 텍스트에 `{name}`, `{count}`처럼 필드 이름을 중괄호로 넣는다. 게임을 실행하기 전에는 템플릿 한 줄만 보인다. 실행 중에 데이터를 연결하면 템플릿이 숨겨지고 화면을 채울 만큼의 복사본만 만들어진다. 스크롤해도 화면 밖으로 나간 행에 다음 아이템을 다시 채우므로 행 수가 늘지 않는다. 보관함의 346 높이 목록은 아이템 수와 관계없이 행 11개를 사용한다. 테마 스타일, 9-slice, 번역 키도 템플릿 설정을 그대로 따른다.
+**UI → Scroll View** 아래 첫 번째 자식이 행 템플릿이다. 버튼과 텍스트로 한 행의 모양을 만들고 텍스트에 `{name}`, `{count}`처럼 필드 이름을 중괄호로 넣는다. 게임을 실행하기 전에는 템플릿 한 줄만 보인다. 실행 중에 데이터를 연결하면 템플릿이 숨겨지고 화면을 채울 만큼의 복사본만 만들어진다. 스크롤해도 화면 밖으로 나간 행에 다음 아이템을 다시 채우므로 행 수가 늘지 않는다. 장부의 270 높이 목록은 아이템 수와 관계없이 행 9개를 사용한다. 테마 스타일, 9-slice, 번역 키도 템플릿 설정을 그대로 따른다.
 
 게임 스크립트는 `IUiListSource`를 구현한다. `Count`는 현재 순서의 항목 수, `ItemId(index)`는 정렬해도 바뀌지 않는 ID, `Field(index, name)`은 중괄호 안의 필드 값을 반환한다. Scroll View 오브젝트에서 다음을 호출한다.
 
@@ -203,7 +204,7 @@ tick.Objects.SetWorldText(id, values[i]);   // 미리 만든 문자열: 프레�
 | `FocusWidget(list)` | 선택한 아이템, 없으면 첫 아이템의 행에 포커스를 준다. |
 | `ListRowCount(list)` | 만들어진 행 수를 반환한다. |
 
-위아래 이동은 화면의 행이 아니라 데이터 순서를 따르고, 포커스가 뷰 밖으로 나가면 목록이 따라 스크롤한다. 첫 항목에서 위, 마지막 항목에서 아래로 가면 주변 위젯으로 포커스가 나간다. 다른 위젯에서 목록으로 돌아오거나 휠로 멀리 스크롤한 뒤 방향 입력을 하면 마지막에 선택한 아이템으로 돌아온다. 행을 클릭하거나 패드로 누르면 Scroll View에 붙인 스크립트의 `OnUiClick`이 호출되고 `click.ObjectId`는 목록 오브젝트다. 사용 대상은 `click.Ui.SelectedItem(click.ObjectId)`로 읽는다. [보관함 스크립트](../../samples/InventoryLab/Scripts/Catalog/CatalogScreen.cs)
+위아래 이동은 화면의 행이 아니라 데이터 순서를 따르고, 포커스가 뷰 밖으로 나가면 목록이 따라 스크롤한다. 첫 항목에서 위, 마지막 항목에서 아래로 가면 주변 위젯으로 포커스가 나간다. 다른 위젯에서 목록으로 돌아오거나 휠로 멀리 스크롤한 뒤 방향 입력을 하면 마지막에 선택한 아이템으로 돌아온다. 행을 클릭하거나 패드로 누르면 Scroll View에 붙인 스크립트의 `OnUiClick`이 호출되고 `click.ObjectId`는 목록 오브젝트다. 사용 대상은 `click.Ui.SelectedItem(click.ObjectId)`로 읽는다. [장부 스크립트](../../samples/InventoryLab/Scripts/Showcase/LedgerList.cs)
 
 지금은 세로 목록만 지원하며 모든 행의 높이가 같다고 가정한다. 행 간격은 템플릿 높이와 **UI Layout → Gap**으로 정한다.
 

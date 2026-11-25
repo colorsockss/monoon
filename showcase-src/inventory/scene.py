@@ -2,19 +2,24 @@
 # Run after art.sh:  python3 showcase-src/inventory/scene.py
 #
 # The sample's own packages run it (InventoryContainer, QuestLog, DialoguePlayer with Herbalist.data, WorkbenchSave);
-# new showcase scripts: HerbYard (HUD, talk, save / crash / load), HerbPickup, YardWalker, HeroAnimation (KeyRoom copy).
+# new showcase scripts: HerbYard (HUD, talk, slot pick and use, save / crash / load, C to the stock scene), HerbPickup (with a
+# pooled "+1" Text 2D from Assets/Labels/DamageNumber.prefab), YardWalker, HeroAnimation (KeyRoom copy).
+# World Text 2D: the herbalist's name tag (translation key label.herbalist) and the stall sign (rich text), each on a plate.
 # Units as in KeyRoom: one art pixel = 2 world units, camera zoom 1.5, so the fixed camera shows 533 × 300.
 import pathlib, struct, uuid
 
 ROOT = pathlib.Path(__file__).resolve().parents[2] / "samples/InventoryLab"
 ART = ROOT / "Assets/Showcase"
-NS = uuid.UUID("6a7b735e-336d-5674-b2e7-a136db5a7771")
+NS = uuid.UUID("6a7b735e-336d-5674-b2e7-a136db5a7771")   # id of the retired Inventory.scene, kept as the uuid5 namespace
 uid = lambda name: str(uuid.uuid5(NS, "showcase/" + name))
 oid = lambda name: uid("obj/" + name)
 PROJECT = "ade09cc3-a769-56d7-9832-a2bea14c7e71"
 ITEMS, QUESTS, STORY = "27e8e87b-8eac-5142-a8ca-7cf02581b103", "7daa83ca-0ee2-4e06-959b-681c1b7180d5", "be65fc7d-c374-5aa1-8a6b-4f548c4bcd03"
 ICONS = "{herb: 5c1a7e2e-3b0d-4f53-9a51-6e0b7c11a503, gem: 589328e1-9fc6-4acb-ac05-ac55da897e12, key: 8b767fbb-02ce-44a7-b503-e1c2cdcaafb1}"
 SLOT = "ff9ed6f0-ab54-46ec-ac7f-113d05db0e78"   # Assets/Ui/UiSlot.png
+NUMBER = "bc54ecea-34dc-460f-b0a4-3a94f644ac48"  # Assets/Labels/DamageNumber.prefab (40 wide, RisingNumber)
+MARKET = "b3de503f-bcdf-46fb-a3f8-f00c841a9807"  # Assets/Market/MarketMorning.wav
+STOCK = "09ca087e-0f44-5886-9546-1553180b2fba"   # Scenes/ShowcaseStock.scene
 W, H = 533, 300
 
 
@@ -103,9 +108,19 @@ yard = oid("Yard")
 for i, (image, cx, bottom) in enumerate((("Herb1.png", 424, 196), ("Herb2.png", 470, 250), ("Herb1.png", 108, 232), ("Herb3.png", 175, 180))):
     w, h = png_size(image)
     obj(f"Herb {i + 1}", cx - w / 2, bottom - h, w, h, GROUP + sprite(image) + "  - type: boxCollider2D\n    isTrigger: true\n"
-        + script("Showcase/HerbPickup", f'{{"Yard": "{yard}", "Player": "{player}", "Leaves": "{oid(f"Herb {i + 1} leaves")}"}}'))
+        + script("Showcase/HerbPickup", f'{{"Yard": "{yard}", "Player": "{player}", "Leaves": "{oid(f"Herb {i + 1} leaves")}", '
+                 f'"Pop": {{"Id": "{NUMBER}"}}, "PopX": {w / 2 - 20:g}}}'))
     obj(f"Herb {i + 1} leaves", w / 2, h / 2, 1, 1, f"  - type: particleEmitter2D\n    particles: {leaves}\n    trigger: Manual\n    order: 5\n", parent=f"Herb {i + 1}")
 
+# World labels over a dark plate (the HUD panel frame, sliced), drawn above the Y-sorted yard.
+def label(name, cx, y, w, text, size, extra=""):
+    obj(name + " plate", cx - w / 2, y, w, size + 6, sprite("Panel.png", sortingLayer=2, drawMode="Sliced", slice="{left: 4, top: 4, right: 4, bottom: 4}"))
+    obj(name, cx - w / 2, y, w, size + 6, f'  - type: text2D\n    text: "{text}"\n{extra}    size: {size}\n    color: "#F4F6F4"\n    sortingLayer: 2\n    order: 1\n')
+label("Herbalist name", 244 + hw / 2, 160 - hh - 16, 52, "Herbalist", 8, '    textKey: "label.herbalist"\n')
+# The sign hangs on the counter front: the HUD tags (top left) and tracker (top right) cover the awning.
+label("Stall sign", 322, 102, 52, "<b>Herbs</b> <color=#9BE27A>×3</color>", 8, "    richText: true\n")
+
+obj("Market ambience", 0, 0, 1, 1, f"  - type: audioSource\n    sound: {MARKET}\n    bus: Music\n    volume: 0.35\n    loop: true\n    playOnStart: true\n")
 obj("Camera", W / 2, H / 2, 1, 1, "  - type: camera2D\n    zoom: 1.5\n")
 
 # ---- HUD -----------------------------------------------------------------------------------------------------------
@@ -115,14 +130,16 @@ text = lambda t, size=13, color="#F4F6F4", extra="": f'  - type: uiRect\n  - typ
 
 caption = "A quest, a stacking bag and crash-safe saves"
 cw = max(110 + 7.4 * len(caption), 480)   # wide enough for the controls line
-cap = obj("Caption", 12, -12, cw, 44, "  - type: uiRect\n    anchor: BottomLeft\n" + panel, parent="Canvas")
+cap = obj("Caption", 12, -12, cw, 60, "  - type: uiRect\n    anchor: BottomLeft\n" + panel, parent="Canvas")
 obj("Caption title", 12, 5, cw - 24, 20, text(f"<b>InventoryLab</b>   {caption}", 15), parent="Caption")
-obj("Caption controls", 12, 25, cw - 24, 16, text("Move  ← → ↑ ↓      Talk  Return      Answer  1–4      Save  F5      Load  F9", 12, "#BFD0DC"), parent="Caption")
+obj("Caption controls", 12, 25, cw - 24, 16, text("Move  ← → ↑ ↓      Talk  Return      Answer  1–4      Stock  C", 12, "#BFD0DC"), parent="Caption")
+obj("Caption controls 2", 12, 41, cw - 24, 16, text("Slot  Q  E      Use  U      Save  F5      Load  F9", 12, "#BFD0DC"), parent="Caption")
 
 # Bag: three slots, icon and count (HerbYard writes them and pops a slot when it changes).
 bag = obj("Bag", -12, -12, 3 * 50 + 2 * 6 + 16, 66, "  - type: uiRect\n    anchor: BottomRight\n" + panel, parent="Canvas")
 slots = [obj(f"Slot {i + 1}", 8 + i * 56, 8, 50, 50, f"  - type: uiRect\n  - type: uiImage\n    sprite: {SLOT}\n    borders: {{left: 4, top: 4, right: 4, bottom: 4}}\n"
              + text("", 13, "#FFFFFF", "    insetX: 5\n    insetY: 10\n")[len("  - type: uiRect\n"):], parent="Bag") for i in range(3)]
+mark = obj("Slot mark", 14, 59, 38, 3, '  - type: uiRect\n  - type: uiImage\n    color: "#FFD84A"\n', parent="Bag")   # HerbYard slides it under the selected slot
 
 # Quest tracker (top right) and the status line under it.
 tracker = obj("Tracker", -12, 12, 260, 50, "  - type: uiRect\n    anchor: TopRight\n" + panel, parent="Canvas")
@@ -135,7 +152,7 @@ prompt = obj("Talk prompt", 354, 92, 104, 22, "  - type: uiRect\n" + panel + tex
              .replace('    richText: true\n', '    richText: true\n    insetX: 10\n    insetY: 3\n', 1), parent="Canvas", extra="  active: true\n")
 
 # Dialogue box: portrait, name, the typed line and up to four numbered answers.
-dlg = obj("Dialogue", 0, -64, 640, 156, "  - type: uiRect\n    anchor: BottomCenter\n" + panel, parent="Canvas")
+dlg = obj("Dialogue", 0, -80, 640, 156, "  - type: uiRect\n    anchor: BottomCenter\n" + panel, parent="Canvas")
 obj("Portrait", 10, 21, 114, 114, f"  - type: uiRect\n  - type: uiImage\n    sprite: {asset('Portrait.png')}\n", parent="Dialogue")
 obj("Speaker", 136, 8, 300, 20, text("<b>Herbalist</b>", 15, "#9BE27A"), parent="Dialogue")
 line = obj("Line", 136, 30, 494, 54, text("", 14, "#F4F6F4", "    wrap: true\n    revealRate: 45\n"), parent="Dialogue")
@@ -149,7 +166,7 @@ for i, (flag, feature, detail) in enumerate(tags):
     obj(f"Tag {i + 1}", 12, 12 + i * 28, tag_w, 24, f"  - type: uiRect\n    anchor: TopLeft\n    showIf: {flag}\n" + panel
         + f'  - type: uiText\n    richText: true\n    text: "<b>{feature}</b>   <color=#BFD0DC>{detail}</color>"\n    size: 12\n    insetX: 10\n    insetY: 4\n', parent="Canvas")
 
-# The sample's packages and the showcase controller live on one object, as in Inventory.scene.
+# The sample's packages and the showcase controller live on one object (the layout of the retired Inventory.scene).
 ids = lambda xs: "[" + ", ".join(f'"{x}"' for x in xs) + "]"
 obj("Yard", 0, 0, 16, 16,
     script("Inventory/InventoryContainer", f'{{"Catalog": {{"Id": "{ITEMS}"}}, "Slots": 3}}')
@@ -157,7 +174,8 @@ obj("Yard", 0, 0, 16, 16,
     + script("Dialogue/DialoguePlayer", f'{{"Story": {{"Id": "{STORY}"}}}}')
     + script("Showcase/HerbYard", "{" + f'"Container": "{yard}", "Quests": "{yard}", "Merchant": "{yard}", "Player": "{player}", "Herbalist": "{herbalist}", "TalkRange": 130, '
              f'"Dialogue": "{dlg}", "Line": "{line}", "Prompt": "{prompt}", "Tracker": "{tracker}", "TrackerTitle": "{oid("Tracker title")}", '
-             f'"TrackerProgress": "{oid("Tracker progress")}", "Status": "{status}", "Choices": {ids(choices)}, "Slots": {ids(slots)}, "ProjectId": "{PROJECT}"' + "}"))
+             f'"TrackerProgress": "{oid("Tracker progress")}", "Status": "{status}", "Choices": {ids(choices)}, "Slots": {ids(slots)}, "SlotMark": "{mark}", '
+             f'"Stock": {{"Id": "{STOCK}"}}, "ProjectId": "{PROJECT}"' + "}"))
 
 scene = "schemaVersion: 42\nobjects:\n" + "".join(out) + f"defaultCameraId: {oid('Camera')}\n"
 (ROOT / "Scenes/Showcase.scene").write_text(scene)

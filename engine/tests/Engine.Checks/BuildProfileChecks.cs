@@ -49,8 +49,8 @@ internal static class BuildProfileChecks
             bool mapped = reader.MethodDebugInformation.Select(reader.GetMethodDebugInformation)
                 .SelectMany(info => info.GetSequencePoints())
                 .Any(point => !point.IsHidden && !point.Document.IsNil &&
-                    reader.GetString(reader.GetDocument(point.Document).Name).EndsWith("InventoryWorkbench.cs", StringComparison.Ordinal));
-            if (!mapped) throw new InvalidDataException("Game script PDB contains no InventoryWorkbench source lines.");
+                    reader.GetString(reader.GetDocument(point.Document).Name).EndsWith("HerbYard.cs", StringComparison.Ordinal));
+            if (!mapped) throw new InvalidDataException("Game script PDB contains no HerbYard source lines.");
         }
         else if (rid == "osx-arm64")
         {

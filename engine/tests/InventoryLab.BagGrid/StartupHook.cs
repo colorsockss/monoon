@@ -25,7 +25,7 @@ public static class StartupHook
         await Delay(500);
         var doc = (SceneDocument)scene.GetValue(viewport)!;
         main.GetType().GetMethod("Select", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic, [typeof(SceneObject)])!
-            .Invoke(main, [doc.Objects.Single(o => o.Name == "Bag")]);
+            .Invoke(main, [doc.Objects.Single(o => o.Name == "Bag grid")]);
         var report = new List<string>();
         foreach (var width in new[] { 1280, 1600, 1920 })
         {

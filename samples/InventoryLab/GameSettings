@@ -5,7 +5,7 @@ width: 800
 height: 450
 integerScale: true
 startScene: 0b0b8126-2ff1-5bbb-a7f0-5ef0af802bf8
-includedScenes: [0b0b8126-2ff1-5bbb-a7f0-5ef0af802bf8, 09ca087e-0f44-5886-9546-1553180b2fba, 6a7b735e-336d-5674-b2e7-a136db5a7771, 0be06500-1fa4-410c-b0a6-91bb9a9759c7, b7e9e2ee-5ef5-46f1-a97b-9852d3514980, ad4b5c3f-4da9-4a09-8465-831ae9a4377b]
+includedScenes: [0b0b8126-2ff1-5bbb-a7f0-5ef0af802bf8, 09ca087e-0f44-5886-9546-1553180b2fba]
 input:
   actions:
   - name: MoveLeft

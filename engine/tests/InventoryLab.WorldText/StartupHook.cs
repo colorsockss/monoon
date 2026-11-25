@@ -9,7 +9,7 @@ using Engine.Core;
 using Engine.Desktop;
 
 // Loaded into the packaged editor with DOTNET_STARTUP_HOOKS. Records the Text 2D Inspector rows at three window widths,
-// then replays the market street recording in Scene Play and draws the chosen frames with the Scene panel's SDL canvas
+// then replays the herb yard recording in Scene Play and draws the chosen frames with the Scene panel's SDL canvas
 // and SDL_ttf text on an offscreen surface (the player's path).
 public static class StartupHook
 {
@@ -21,7 +21,7 @@ public static class StartupHook
         var main = life.MainWindow!;
         var viewport = main.FindControl<Control>("Viewport")!;
         var scene = viewport.GetType().GetProperty("Scene")!;
-        await Until(() => ((SceneDocument)scene.GetValue(viewport)!).Objects.Any(o => o.Name == "Damage burst"), "Damage burst");
+        await Until(() => ((SceneDocument)scene.GetValue(viewport)!).Objects.Any(o => o.Name == "Pool trace"), "Pool trace");
         await Delay(500);
         var doc = (SceneDocument)scene.GetValue(viewport)!;
         main.GetType().GetMethod("Select", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic, [typeof(SceneObject)])!
@@ -67,7 +67,8 @@ public static class StartupHook
         var size = game.LogicalSize;
         var surface = Sdl.PInvoke.CreateSurface(size.Width, size.Height, SdlPixelFormat.Rgba32);
         var renderer = Sdl.Render.CreateSoftwareRenderer(surface);
-        using (var canvas = new SdlCanvas(renderer))
+        // The editor project is not baked: the leaves' particle sheet comes from SkSL, as in the Mac Scene panel.
+        using (var canvas = new SdlCanvas(renderer, previewShader: ShaderPixels.Preview))
         {
             InputReplay.Load(Path.Combine(output, "labels.inputreplay")).Play(game, project, frame =>
             {

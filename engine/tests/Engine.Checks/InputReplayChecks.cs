@@ -14,7 +14,7 @@ internal static class InputReplayChecks
         var native = await Replay("Native AOT", true);
         if (!release.SequenceEqual(native) || !release.SequenceEqual(expected))
             throw new InvalidDataException($"Recorded save {Hash(expected)}, Release {Hash(release)}, Native AOT {Hash(native)}.");
-        Console.WriteLine($"PASS InventoryLab input replay: live recording, headless Release and headless Native AOT produced identical saves ({expected.Length} bytes, SHA-256 {Hash(expected)}).");
+        Console.WriteLine($"PASS InventoryLab input replay: the recorded herb yard quest, headless Release and headless Native AOT produced identical saves ({expected.Length} bytes, SHA-256 {Hash(expected)}).");
 
         async Task<byte[]> Replay(string mode, bool aot)
         {

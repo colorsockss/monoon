@@ -1,4 +1,4 @@
-"""Replay pad input in InventoryLab's 1,000-item catalog and check which item IDs were used."""
+"""Replay pad input in the 1,000-item stock ledger of InventoryLab's showcase and check which item numbers were used."""
 import json
 import math
 import os
@@ -7,14 +7,14 @@ import subprocess
 import sys
 
 PROJECT = 'ade09cc3-a769-56d7-9832-a2bea14c7e71'
-START = '6a7b735e-336d-5674-b2e7-a136db5a7771'  # Inventory.scene; C opens Catalog.scene
+START = '0b0b8126-2ff1-5bbb-a7f0-5ef0af802bf8'  # Showcase.scene (the herb yard); C opens ShowcaseStock.scene
 DOWN_BEFORE_SORT, DOWN_AFTER_SORT = 41, 3
-# Independent copy of the generated catalog in Scripts/Catalog/CatalogScreen.cs.
-ADJECTIVES = ['낡은', '빛나는', '작은', '단단한', '향긋한', '차가운', '무거운', '가벼운']
-NOUNS = ['약초', '수정', '열쇠', '밧줄', '등불', '지도', '물병', '붕대', '화살', '방패']
-ITEMS = [(f'item-{i:04}', f'{ADJECTIVES[i * 5 % 8]} {NOUNS[i * 3 % 10]}') for i in range(1, 1001)]
-# Viewport 346, row 34 + gap 4: rows covering the viewport plus one partly visible row.
-MAX_ROWS = math.ceil(346 / 38) + 1
+# Independent copy of the generated ledger in Scripts/Showcase/LedgerList.cs; the item ID is its number.
+ADJECTIVES = ['Worn', 'Shiny', 'Small', 'Sturdy', 'Fragrant', 'Cold', 'Heavy', 'Light']
+NOUNS = ['Herb', 'Crystal', 'Key', 'Rope', 'Lantern', 'Map', 'Flask', 'Bandage', 'Arrow', 'Shield']
+ITEMS = [(str(i), f'{ADJECTIVES[i * 5 % 8]} {NOUNS[i * 3 % 10]}') for i in range(1, 1001)]
+# Viewport 270 (panel 368 - list top 82 - margin 16), row 30 + gap 4: rows covering the viewport plus one partly visible row.
+MAX_ROWS = math.ceil(270 / 34) + 1
 
 
 def recording(path):
@@ -27,7 +27,7 @@ def recording(path):
         add(frame, kind, control, 'true' if kind == 'key' else 1)
         add(frame + 1, kind, control, 'false' if kind == 'key' else 0)
         frame += gap
-    press('key', 'C', 20)  # load the catalog scene
+    press('key', 'C', 20)  # the yard loads the stock scene; its ledger takes the focus
     for _ in range(DOWN_BEFORE_SORT): press('pad', 'Pad.DpadDown')
     press('pad', 'Pad.North', 8)  # Sort: ID order -> name order
     press('pad', 'Pad.South', 8)  # use the selected row
@@ -45,13 +45,13 @@ def check(out):
             values[key] = value.strip().strip('"')
     used = values['used'].split(',')
     selected = ITEMS[DOWN_BEFORE_SORT][0]
-    by_name = sorted(ITEMS, key=lambda item: (item[1].encode('utf-16-be'), item[0]))
+    by_name = sorted(ITEMS, key=lambda item: (item[1].encode('utf-16-be'), int(item[0])))  # equal names by number
     moved = [item[0] for item in by_name].index(selected)
     expected = [selected, by_name[moved + DOWN_AFTER_SORT][0]]
     rows = int(float(values['rows']))
     assert moved != DOWN_BEFORE_SORT, 'sorting must move the selected item'
     assert used == expected, (used, expected)
-    assert values['order'] == '이름순' and int(float(values['items'])) == 1000, values
+    assert values['order'] == 'Name' and int(float(values['items'])) == 1000, values
     assert rows <= MAX_ROWS, (rows, MAX_ROWS)
     result = {'selectedBeforeSort': selected, 'indexAfterSort': moved, 'used': used, 'rowObjects': rows, 'items': 1000}
     (out / 'result.json').write_text(json.dumps(result, ensure_ascii=False) + '\n', encoding='utf-8')
@@ -61,10 +61,10 @@ def check(out):
 def play(player, out):
     out = out.resolve()
     out.mkdir(parents=True)
-    recording(out / 'Catalog.inputreplay')
+    recording(out / 'Ledger.inputreplay')
     env = dict(os.environ, MONOON_USER_DATA=str(out / 'profile'),
                SDL_VIDEO_DRIVER='monoon-no-video', SDL_AUDIO_DRIVER='monoon-no-audio')
-    subprocess.run([str(player.resolve()), '--replay-input', str(out / 'Catalog.inputreplay'), str(out / 'profile')],
+    subprocess.run([str(player.resolve()), '--replay-input', str(out / 'Ledger.inputreplay'), str(out / 'profile')],
                    env=env, check=True)
     check(out)
 

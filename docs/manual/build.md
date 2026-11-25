@@ -223,11 +223,11 @@ cmp "$run/record/slot-001.save" "$run/release/slot-001.save"
 cmp "$run/record/slot-001.save" "$run/aot/slot-001.save"
 ```
 
-InventoryLab에서는 **T → 1 → 1 → S**로 의뢰를 받고 저장한다. **1**로 대화를 닫고 **1**을 세 번 더 눌러 약초를 모은 뒤 **S**로 저장한다. **T → 2 → 1 → S**로 수정 보상을 받아 마지막으로 저장한다. 위 예제는 기록과 두 번의 재생에 각기 다른 저장 폴더를 쓴다.
+InventoryLab에서는 약초상 앞으로 걸어가 **T → 1 → 1 → S**로 의뢰를 받고 저장한다. **1**로 대화를 닫고 마당의 약초 세 포기 위를 걸은 뒤 **S**로 저장한다. 약초상에게 돌아가 **T → 2 → 1 → S**로 수정 보상을 받아 마지막으로 저장한다. 위 예제는 기록과 두 번의 재생에 각기 다른 저장 폴더를 쓴다.
 
 `--replay-input`은 지정한 프로젝트와 시작 씬을 확인하고 화면이나 오디오 장치를 열지 않고 실행한다. 키 누름·해제, 논리 좌표의 포인터·클릭·휠, 게임패드 값, 텍스트 조합·확정, 포커스 초기화를 기록한 순서대로 처리한다. 입력이 없는 프레임도 보관해 원래 프레임 간격으로 UI와 60Hz 고정 업데이트를 진행한다. 기록에는 저장 데이터가 들어 있지 않으므로, 기존 슬롯을 불러오는 시나리오는 재생 폴더에 같은 초기 슬롯을 준비한다. 실제 오디오 출력 시계나 비동기 작업 완료 시점처럼 입력 이외의 외부 상태가 필요한 시나리오는 별도로 검증한다.
 
-이미 빌드된 InventoryLab에서는 `./monoon test replay game-builds/InventoryLab` 한 줄로 저장소의 기록을 재생한다. Release·Native AOT가 각각 만든 저장 파일 전체를 실제 기록 시점의 저장 파일과 대조하고, 다르면 종료 코드 1을 반환한다. `./monoon ci`에도 이 검사가 포함된다. [기준 입력](../../engine/tests/fixtures/InventoryLab/Herbalist.inputreplay) · [기준 저장](../../engine/tests/fixtures/InventoryLab/Herbalist.save) · [이 Mac의 검증 기록](../../engine/tests/results/input-replay/README.md) · [Windows·Linux x64 게스트의 네 배포본 검증](../../engine/tests/results/input-replay-x64/README.md)
+이미 빌드된 InventoryLab에서는 `./monoon test replay game-builds/InventoryLab` 한 줄로 저장소의 기록을 재생한다. Release·Native AOT가 각각 만든 저장 파일 전체를 기준 저장 파일과 대조하고, 다르면 종료 코드 1을 반환한다. 기준 입력은 약초 마당 쇼케이스에서 같은 의뢰를 하는 440프레임 기록이고 [herbalist_input.py](../../engine/tests/InventoryLab.Replay/herbalist_input.py)가 만든다. `./monoon ci`에도 이 검사가 포함된다. [기준 입력](../../engine/tests/fixtures/InventoryLab/Herbalist.inputreplay) · [기준 저장](../../engine/tests/fixtures/InventoryLab/Herbalist.save) · [이 Mac의 검증 기록](../../engine/tests/results/input-replay/README.md) · [Windows·Linux x64 게스트의 네 배포본 검증](../../engine/tests/results/input-replay-x64/README.md)
 
 ## 콘텐츠 증분 빌드와 재빌드 사유
 
@@ -330,7 +330,7 @@ contentBundles:
 
 `Assets` 또는 `Scenes` 아래에서 빌드할 씬이 참조하는 에셋이 있는 폴더를 고른다. 부모·자식 폴더를 겹쳐 지정하거나 내보낼 에셋이 없는 폴더를 지정하면 빌드가 실패한다. 각 파일의 소속은 내보내는 경로로 결정되며, 번들 사이의 참조는 기존 에셋 GUID를 그대로 사용한다.
 
-`./monoon build samples/InventoryLab release`를 실행하면 플레이어 옆 `ContentBundles/Assets/`에 대화·의뢰·시장 배경음 번들이 생긴다. InventoryLab의 시작 씬은 `MarketMorning.wav`를 음악 버스에서 반복 재생한다. 카탈로그와 모든 번들을 앱에 함께 배포한다.
+`./monoon build samples/InventoryLab release`를 실행하면 플레이어 옆 `ContentBundles/Assets/`에 대화·의뢰·시장 배경음 번들이 생긴다. InventoryLab의 시작 씬(약초 마당)은 `MarketMorning.wav`를 음악 버스에서 반복 재생한다. 카탈로그와 모든 번들을 앱에 함께 배포한다.
 
 ### 대형 번들 로딩과 시작 진단
 
@@ -338,7 +338,7 @@ contentBundles:
 
 캐시는 게임당 한 벌을 보관한다. 같은 게임의 두 번째 실행, 활성 모드나 콘텐츠 업데이트가 있는 실행은 독립된 임시 폴더를 쓰고 정상 종료 시 지운다. 게임 종료 후 프로필의 `BundleCache` 폴더를 지우면 다음 실행에서 자동으로 다시 만든다. `MONOON_BUNDLE_CACHE=off`를 지정하면 기존 임시 폴더 경로로 성능을 비교할 수 있다.
 
-macOS에서 새 CSV 경로를 지정해 앱을 실행하고 첫 화면에서 `1`을 눌러 약초를 담는다. 120프레임 이상 지난 뒤 Esc로 종료한다. 창이 일찍 닫히면 그때까지의 프레임 수와 최댓값이 기록된다.
+macOS에서 새 CSV 경로를 지정해 앱을 실행하고 첫 화면에서 `1`을 누른다(첫 매핑 입력 `AddHerb`). 120프레임 이상 지난 뒤 Esc로 종료한다. 창이 일찍 닫히면 그때까지의 프레임 수와 최댓값이 기록된다.
 
 ```sh
 MONOON_STARTUP_TRACE="$PWD/inventory-startup.csv" \
@@ -353,7 +353,7 @@ MONOON_STARTUP_TRACE="$PWD/inventory-startup.csv" \
 | `first_present`, `first_action` | 플레이어 진입 후 첫 SDL 화면을 표시한 시점과 매핑된 누름을 소비한 첫 시뮬레이션 틱이 끝난 시점. 액션 이름도 기록한다. |
 | `frames`, `max_frame_ms` | SDL 루프 시작부터 첫 화면 표시까지와 이후 연속 화면 표시 사이의 간격 중 최댓값. 기본 관찰 구간은 첫 120프레임이다. |
 
-Mac 측정기는 프로세스 시작 직전부터 약초 획득까지 별도로 시간을 재고 실제 저장 슬롯을 확인한다. 두 배포본의 빌드 명령과 실행별 CSV는 검증 기록에 있다. [InventoryLab 실행 기록](../../engine/tests/results/bundle-loading/README.md)
+Mac 측정기는 프로세스 시작 직전부터 첫 입력 처리까지 별도로 시간을 재고 실제 저장 슬롯을 확인한다. 두 배포본의 빌드 명령과 실행별 CSV는 검증 기록에 있다. [InventoryLab 실행 기록](../../engine/tests/results/bundle-loading/README.md)
 
 ## 콘텐츠 업데이트
 

@@ -796,7 +796,7 @@ objects:
   - type: uiScroll
   - type: script
     script: Showcase/LedgerList
-    values: {"Range": "caf727d2-c594-58c9-8420-a1b023517aa6", "Tabs": ["e0cbee9d-6f80-533e-860e-9612e2aeb241", "607dfd65-5e05-53f6-9bb5-5aef05942223", "392ac2b7-88a4-52e2-ac39-ad7f282a8e89"], "RowStep": 34}
+    values: {"Range": "caf727d2-c594-58c9-8420-a1b023517aa6", "Tabs": ["e0cbee9d-6f80-533e-860e-9612e2aeb241", "607dfd65-5e05-53f6-9bb5-5aef05942223", "392ac2b7-88a4-52e2-ac39-ad7f282a8e89"], "RowStep": 34, "Yard": {"Id": "0b0b8126-2ff1-5bbb-a7f0-5ef0af802bf8"}}
 - id: fbbb045f-bbc9-556d-94da-cbfa76549657
   parentId: 85284ec5-af92-5956-a1ac-2889bb2e58e4
   name: Ledger row
@@ -871,7 +871,7 @@ objects:
   name: Caption
   x: 12
   y: -12
-  width: 384.6
+  width: 480
   height: 44
   components:
   - type: uiRect
@@ -884,7 +884,7 @@ objects:
   name: Caption title
   x: 12
   y: 5
-  width: 360.6
+  width: 456
   height: 20
   components:
   - type: uiRect
@@ -899,12 +899,12 @@ objects:
   name: Caption controls
   x: 12
   y: 25
-  width: 360.6
+  width: 456
   height: 16
   components:
   - type: uiRect
   - type: uiText
-    text: "Drag  mouse      Scroll  wheel      Sort  R"
+    text: "Drag  mouse      Scroll  wheel      Sort  R      Use  Return      Back  B"
     size: 12
     color: "#BFD0DC"
     richText: true

@@ -84,7 +84,7 @@ if (recovered)
     ui.SetText(statusLabel, "직전 저장을 복구했습니다.");
 ```
 
-InventoryLab에서는 **J → 1 → 1 → 1 → J → S**로 약초 세 개를 모아 보상 수정 한 개를 받고 첫 저장을 만든다. **U → S**로 약초를 하나 사용해 두 번째 저장을 만든다. 별도의 테스트 프로필에서 최신 슬롯만 손상시킨 뒤 **L**을 누르면 상태 줄에 **직전 저장을 복구했습니다**가 뜨고 약초 3개·수정 1개·보상 수령 완료가 돌아온다. **J**를 다시 눌러도 수정은 1개다. [InventoryLab 검증 기록](../../engine/tests/results/slot-recovery/README.md)
+InventoryLab의 약초 마당에서 의뢰를 받고 약초 세 포기를 주운 뒤 보상 수정 한 개를 받고 **F5**로 첫 저장을 만든다. **U → F5**로 약초를 하나 사용해 두 번째 저장을 만든다. **F7**로 최신 슬롯을 반으로 자른 뒤 **F9**를 누르면 상태 줄에 **Damaged save: loaded the last good copy.**가 뜨고 약초 3개·수정 1개·보상 수령 완료가 돌아온다. 보상을 다시 청구해도 수정은 1개다. 같은 과정을 배포본에서 창 없이 재생하는 검사는 [check_recovery.py](../../engine/tests/InventoryLab.Replay/check_recovery.py)다. [InventoryLab 검증 기록](../../engine/tests/results/slot-recovery/README.md)
 
 ## 파일 위치
 

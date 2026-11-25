@@ -24,7 +24,7 @@ public static class StartupHook
         var frames = File.ReadAllText(Path.Combine(output, "captures.txt")).Split(',').Select(int.Parse).ToHashSet();
         var captures = Directory.CreateDirectory(Path.Combine(output, "captures")).FullName;
         // Inspector rows for the herbalist line at the three checked window widths.
-        var line = ((SceneDocument)scene.GetValue(viewport)!).Objects.Single(o => o.Name == "Merchant line");
+        var line = ((SceneDocument)scene.GetValue(viewport)!).Objects.Single(o => o.Name == "Line");
         main.GetType().GetMethod("Select", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic, [typeof(SceneObject)])!
             .Invoke(main, [line]);
         foreach (var width in new[] { 1280, 1600, 1920 })

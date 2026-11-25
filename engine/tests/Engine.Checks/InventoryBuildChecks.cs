@@ -25,10 +25,12 @@ internal static class InventoryBuildChecks
             BuildProfileChecks.CheckInventory(output, bin, rid, mode != "Release", expectedProfile);
             var profile = Directory.CreateDirectory(Path.Combine(scratch, mode)).FullName;
             var checkpoints = new List<byte[]>();
-            // Each input sequence runs a fresh copy of the exported executable.
-            await Checkpoint("offer", "T 1 S", 0, false);
-            await Checkpoint("paid", "L 1 1 1 1 1 T 2 1 S", 3, true);
-            await Checkpoint("reward", "L 1 T 2 1 S", 3, true);
+            // Each input sequence runs a fresh copy of the exported executable in the herb yard (Showcase.scene). Up×10 brings
+            // the hero within talking range; the "paid" walk is the herb route of fixtures/InventoryLab/Herbalist.inputreplay.
+            string near = Walk(("Up", 10));
+            await Checkpoint("offer", $"{near} T 1 S", 0, false);
+            await Checkpoint("paid", $"L 1 1 {near} {Walk(("Right", 80), ("Up", 10), ("Left", 10), ("Up", 10), ("Left", 100), ("Right", 30))} T 2 1 S", 3, true);
+            await Checkpoint("reward", $"L 1 {near} T 2 1 S", 3, true);
             return checkpoints;
 
             async Task Checkpoint(string node, string input, int herbs, bool claimed)
@@ -59,6 +61,10 @@ internal static class InventoryBuildChecks
             }
         }
     }
+
+    // --smoke-test holds each control for one tick, so a walk is the move key repeated (2.5 px a press at 150 px/s).
+    private static string Walk(params (string Key, int Presses)[] legs) =>
+        string.Join(' ', legs.SelectMany(leg => Enumerable.Repeat(leg.Key, leg.Presses)));
 
     internal static string PlayerPath(string output, bool native)
     {

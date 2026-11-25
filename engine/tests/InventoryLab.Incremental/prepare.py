@@ -4,9 +4,10 @@ from pathlib import Path
 import shutil
 
 SAMPLES = Path(__file__).resolve().parents[3] / "samples"
+# Over the herb yard (533 × 300 world units): a torch-shader lantern on the right fence, a paving strip along the bottom.
 SCENERY = """- id: 1068d86a-438d-437d-b730-d311ba833a15
   name: Market lantern
-  x: 744
+  x: 500
   y: 20
   width: 24
   height: 32
@@ -14,7 +15,7 @@ SCENERY = """- id: 1068d86a-438d-437d-b730-d311ba833a15
 - id: 60497785-94b7-49ec-a649-e72a2dc0149b
   name: Market paving
   x: 0
-  y: 438
+  y: 292
   components:
   - type: tilemap2D
     tileset: 04a6e926-3487-575d-a5e8-83908efd75c5
@@ -35,9 +36,10 @@ def prepare(dest):
     for folder, name in ((SAMPLES / "PlatformerLab/Assets", "Torch.shader"), (ridge, "Ridge.tileset"), (ridge, "Terrain.png")):
         for suffix in ("", ".meta"):
             shutil.copy2(folder / (name + suffix), assets)
-    scene = dest / "Scenes/Inventory.scene"
-    text = scene.read_text(encoding="utf-8").replace("schemaVersion: 14", "schemaVersion: 19")
-    scene.write_text(text.replace("defaultCameraId:", SCENERY + "defaultCameraId:"), encoding="utf-8")
+    scene = dest / "Scenes/Showcase.scene"
+    text = scene.read_text(encoding="utf-8")
+    assert text.count("\ndefaultCameraId:") == 1
+    scene.write_text(text.replace("\ndefaultCameraId:", "\n" + SCENERY + "defaultCameraId:"), encoding="utf-8")
 
 
 if __name__ == "__main__":

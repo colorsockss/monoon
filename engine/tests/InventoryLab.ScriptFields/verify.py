@@ -17,7 +17,7 @@ import sys
 
 HERE = Path(__file__).resolve().parent
 PROJECT = 'ade09cc3-a769-56d7-9832-a2bea14c7e71'
-SCENE = '6a7b735e-336d-5674-b2e7-a136db5a7771'  # Inventory.scene, the start scene
+SCENE = '0b0b8126-2ff1-5bbb-a7f0-5ef0af802bf8'  # Showcase.scene (the herb yard), the start scene
 FRAMES = 30
 LONG_KEY = 'an intentionally long supply crate dictionary key for trimming'
 QA_OBJECT = '''- id: 0b000000-0000-4000-8000-000000000001
@@ -49,7 +49,7 @@ def recording(path):
 def prepare(sample, dest):
     shutil.copytree(sample, dest, ignore=shutil.ignore_patterns('.monoon', '.monoon-compiled', '.DS_Store', 'bin', 'obj'))
     shutil.copyfile(HERE / 'FieldTrace.source', dest / 'Scripts/FieldTrace.cs')
-    scene = dest / 'Scenes/Inventory.scene'
+    scene = dest / 'Scenes/Showcase.scene'
     text = scene.read_text(encoding='utf-8')
     assert text.count('\ndefaultCameraId:') == 1
     scene.write_text(text.replace('\ndefaultCameraId:', '\n' + QA_OBJECT.rstrip('\n') + '\ndefaultCameraId:', 1), encoding='utf-8')

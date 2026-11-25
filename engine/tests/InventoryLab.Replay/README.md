@@ -10,6 +10,8 @@ Windows에서는 같은 인자를 `python.exe`에 전달한다. 첫 인자는 �
 
 결과 폴더에는 각 실행 파일이 만든 `release.save`, `native-aot.save`와 해당 빌드의 `.receipt`가 남는다. 두 저장 파일을 원래 Mac에서 기록한 기준 저장과 각각 바이트 단위로 비교한다. Windows 체크아웃에서도 기준 저장 파일의 바이트를 보존하도록 기준 파일이 있는 폴더에 Git 줄 바꿈 규칙을 지정했다. 입력 SHA-256, 저장 크기와 SHA-256, SDK·OS 정보는 표준 출력에 기록된다. [공통 입력](../fixtures/InventoryLab/Herbalist.inputreplay) · [Mac 기준 저장](../fixtures/InventoryLab/Herbalist.save)
 
+공통 입력은 약초 마당 쇼케이스(`Scenes/Showcase.scene`, 시작 씬)에서 약초상과 대화해 의뢰를 받고, 약초 세 포기 위를 걸어 담은 뒤 보상을 받고 저장하는 440프레임이다. [herbalist_input.py](herbalist_input.py)가 키를 누르는 프레임과 길이로 다시 만든다. 저장 결과는 예전 작업대 씬의 기록과 바이트까지 같다(171바이트, SHA-256 `eed41def…`). 쇼케이스로 바꾼 뒤 x64 게스트에서는 아직 다시 실행하지 않았다.
+
 ## 버전 31 → 35 업그레이드
 
 버전 31 커밋 `6232209b5ce4a2c7516db0c8fd989ba63a8e77c5`가 있는 체크아웃에서 실행한다. 각 실행에는 새 결과 폴더를 지정한다.
@@ -30,4 +32,4 @@ python3 engine/tests/InventoryLab.Replay/check_recovery.py \
   engine/tests/fixtures/InventoryLab game-builds/slot-recovery-mac-release
 ```
 
-실행기는 임시 프로필에서 약초상 입력을 재생하고 서로 다른 두 저장본을 만든다. 최신 슬롯을 잘라내거나 수량만 편집한 뒤 새 게임 프로세스에서 L로 읽는다. 수령 상태와 수량, 복원한 파일 전체, 보상 재청구 직후의 대화 분기와 재저장한 백업을 검사한다. [세 OS의 검증 결과](../results/slot-recovery/README.md)
+실행기는 임시 프로필에서 약초상 입력을 재생하고 서로 다른 두 저장본을 만든다. 약초 마당에서 **L 1 U S**로 약초 하나를 사용한 두 번째 저장을 만들고, 최신 슬롯을 잘라내거나 수량만 편집한 뒤 새 게임 프로세스에서 L로 읽는다. 보상 재청구는 **Up**을 열 번 눌러 약초상 앞으로 간 뒤 한다. 수령 상태와 수량, 복원한 파일 전체, 보상 재청구 직후의 대화 분기와 재저장한 백업을 검사한다. [세 OS의 검증 결과](../results/slot-recovery/README.md)

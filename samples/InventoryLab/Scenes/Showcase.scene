@@ -496,7 +496,7 @@ objects:
     isTrigger: true
   - type: script
     script: Showcase/HerbPickup
-    values: {"Yard": "143d4955-3296-5f01-af4f-9bf8d372ce27", "Player": "9f58fc23-5146-579f-9cdf-e05acca3954c", "Leaves": "607d172a-9f46-52a8-90ec-70e14f63bb16"}
+    values: {"Yard": "143d4955-3296-5f01-af4f-9bf8d372ce27", "Player": "9f58fc23-5146-579f-9cdf-e05acca3954c", "Leaves": "607d172a-9f46-52a8-90ec-70e14f63bb16", "Pop": {"Id": "bc54ecea-34dc-460f-b0a4-3a94f644ac48"}, "PopX": -2}
 - id: 607d172a-9f46-52a8-90ec-70e14f63bb16
   parentId: a83383e7-147d-5843-985d-132623c8bbb9
   name: Herb 1 leaves
@@ -525,7 +525,7 @@ objects:
     isTrigger: true
   - type: script
     script: Showcase/HerbPickup
-    values: {"Yard": "143d4955-3296-5f01-af4f-9bf8d372ce27", "Player": "9f58fc23-5146-579f-9cdf-e05acca3954c", "Leaves": "43efd1a3-83ce-5360-a849-c7105201a1ee"}
+    values: {"Yard": "143d4955-3296-5f01-af4f-9bf8d372ce27", "Player": "9f58fc23-5146-579f-9cdf-e05acca3954c", "Leaves": "43efd1a3-83ce-5360-a849-c7105201a1ee", "Pop": {"Id": "bc54ecea-34dc-460f-b0a4-3a94f644ac48"}, "PopX": -3}
 - id: 43efd1a3-83ce-5360-a849-c7105201a1ee
   parentId: 5112159f-12e9-5d5d-9853-94fb36b1844b
   name: Herb 2 leaves
@@ -554,7 +554,7 @@ objects:
     isTrigger: true
   - type: script
     script: Showcase/HerbPickup
-    values: {"Yard": "143d4955-3296-5f01-af4f-9bf8d372ce27", "Player": "9f58fc23-5146-579f-9cdf-e05acca3954c", "Leaves": "40d3061e-4954-5f7e-89db-a4e4c988e8b3"}
+    values: {"Yard": "143d4955-3296-5f01-af4f-9bf8d372ce27", "Player": "9f58fc23-5146-579f-9cdf-e05acca3954c", "Leaves": "40d3061e-4954-5f7e-89db-a4e4c988e8b3", "Pop": {"Id": "bc54ecea-34dc-460f-b0a4-3a94f644ac48"}, "PopX": -2}
 - id: 40d3061e-4954-5f7e-89db-a4e4c988e8b3
   parentId: 370fe08f-71cf-5f47-9f93-fb950a6329e2
   name: Herb 3 leaves
@@ -583,7 +583,7 @@ objects:
     isTrigger: true
   - type: script
     script: Showcase/HerbPickup
-    values: {"Yard": "143d4955-3296-5f01-af4f-9bf8d372ce27", "Player": "9f58fc23-5146-579f-9cdf-e05acca3954c", "Leaves": "ef7e4fe2-efa4-56b7-ad28-f4669c50ad64"}
+    values: {"Yard": "143d4955-3296-5f01-af4f-9bf8d372ce27", "Player": "9f58fc23-5146-579f-9cdf-e05acca3954c", "Leaves": "ef7e4fe2-efa4-56b7-ad28-f4669c50ad64", "Pop": {"Id": "bc54ecea-34dc-460f-b0a4-3a94f644ac48"}, "PopX": -6}
 - id: ef7e4fe2-efa4-56b7-ad28-f4669c50ad64
   parentId: 60ab9528-243c-542a-9054-0a54e1151296
   name: Herb 4 leaves
@@ -596,6 +596,73 @@ objects:
     particles: 7724c05a-2412-5b5e-a6ff-a8f7b1719e26
     trigger: Manual
     order: 5
+- id: 20d87b60-328b-53f8-b9d6-6db23eb8cdb8
+  name: Herbalist name plate
+  x: 238
+  y: 76
+  width: 52
+  height: 14
+  components:
+  - type: spriteRenderer
+    assetId: 10aa8fe1-f416-5971-839d-3944dee38e3c
+    asset: Assets/Showcase/Panel.png
+    sortingLayer: 2
+    drawMode: Sliced
+    slice: {left: 4, top: 4, right: 4, bottom: 4}
+- id: 29f5a41e-fc83-5b05-bad5-c83466d22611
+  name: Herbalist name
+  x: 238
+  y: 76
+  width: 52
+  height: 14
+  components:
+  - type: text2D
+    text: "Herbalist"
+    textKey: "label.herbalist"
+    size: 8
+    color: "#F4F6F4"
+    sortingLayer: 2
+    order: 1
+- id: 33cf6c88-3860-53b8-afbf-db69690c2653
+  name: Stall sign plate
+  x: 296
+  y: 102
+  width: 52
+  height: 14
+  components:
+  - type: spriteRenderer
+    assetId: 10aa8fe1-f416-5971-839d-3944dee38e3c
+    asset: Assets/Showcase/Panel.png
+    sortingLayer: 2
+    drawMode: Sliced
+    slice: {left: 4, top: 4, right: 4, bottom: 4}
+- id: f4626833-4dd5-52ac-8d63-ef0f7d511291
+  name: Stall sign
+  x: 296
+  y: 102
+  width: 52
+  height: 14
+  components:
+  - type: text2D
+    text: "<b>Herbs</b> <color=#9BE27A>×3</color>"
+    richText: true
+    size: 8
+    color: "#F4F6F4"
+    sortingLayer: 2
+    order: 1
+- id: ffcf74a2-c242-54b6-b812-891b00cc2878
+  name: Market ambience
+  x: 0
+  y: 0
+  width: 1
+  height: 1
+  components:
+  - type: audioSource
+    sound: b3de503f-bcdf-46fb-a3f8-f00c841a9807
+    bus: Music
+    volume: 0.35
+    loop: true
+    playOnStart: true
 - id: 2c7cc7b2-7c5b-57ec-b4dd-88e450e0cb83
   name: Camera
   x: 266.5
@@ -619,7 +686,7 @@ objects:
   x: 12
   y: -12
   width: 480
-  height: 44
+  height: 60
   components:
   - type: uiRect
     anchor: BottomLeft
@@ -651,7 +718,22 @@ objects:
   components:
   - type: uiRect
   - type: uiText
-    text: "Move  ← → ↑ ↓      Talk  Return      Answer  1–4      Save  F5      Load  F9"
+    text: "Move  ← → ↑ ↓      Talk  Return      Answer  1–4      Stock  C"
+    size: 12
+    color: "#BFD0DC"
+    richText: true
+    icons: {herb: 5c1a7e2e-3b0d-4f53-9a51-6e0b7c11a503, gem: 589328e1-9fc6-4acb-ac05-ac55da897e12, key: 8b767fbb-02ce-44a7-b503-e1c2cdcaafb1}
+- id: d2b69d3a-84cc-5a08-95d5-b0a9c7ed7bf3
+  parentId: 0a50c662-b1d0-5ffd-9039-9983683607e8
+  name: Caption controls 2
+  x: 12
+  y: 41
+  width: 456
+  height: 16
+  components:
+  - type: uiRect
+  - type: uiText
+    text: "Slot  Q  E      Use  U      Save  F5      Load  F9"
     size: 12
     color: "#BFD0DC"
     richText: true
@@ -729,6 +811,17 @@ objects:
     icons: {herb: 5c1a7e2e-3b0d-4f53-9a51-6e0b7c11a503, gem: 589328e1-9fc6-4acb-ac05-ac55da897e12, key: 8b767fbb-02ce-44a7-b503-e1c2cdcaafb1}
     insetX: 5
     insetY: 10
+- id: b211915f-1d15-5ee0-8cef-6a253c5141d6
+  parentId: c03ff271-6284-54f6-a1df-acf8d3a0e16e
+  name: Slot mark
+  x: 14
+  y: 59
+  width: 38
+  height: 3
+  components:
+  - type: uiRect
+  - type: uiImage
+    color: "#FFD84A"
 - id: 94618fe4-e769-5a95-bf22-36a1fb7160ca
   parentId: c7241d45-1969-5b15-a5ac-addf2c732536
   name: Tracker
@@ -818,7 +911,7 @@ objects:
   parentId: c7241d45-1969-5b15-a5ac-addf2c732536
   name: Dialogue
   x: 0
-  y: -64
+  y: -80
   width: 640
   height: 156
   components:
@@ -1028,5 +1121,5 @@ objects:
     values: {"Story": {"Id": "be65fc7d-c374-5aa1-8a6b-4f548c4bcd03"}}
   - type: script
     script: Showcase/HerbYard
-    values: {"Container": "143d4955-3296-5f01-af4f-9bf8d372ce27", "Quests": "143d4955-3296-5f01-af4f-9bf8d372ce27", "Merchant": "143d4955-3296-5f01-af4f-9bf8d372ce27", "Player": "9f58fc23-5146-579f-9cdf-e05acca3954c", "Herbalist": "acb23dfd-086b-57ca-9dab-491986e13eb9", "TalkRange": 130, "Dialogue": "2f73d459-3038-5cdc-8bc8-fed65168a00f", "Line": "383f4bbc-fb27-5b52-8ea8-a7c78adb5923", "Prompt": "f24d56a1-e4d2-5796-9b0b-338d2a6ed4a4", "Tracker": "94618fe4-e769-5a95-bf22-36a1fb7160ca", "TrackerTitle": "cd0fd583-12ef-5799-986a-4fad1c754c4b", "TrackerProgress": "3be81d31-4338-5cac-9b7a-23d2f0923259", "Status": "21707128-404a-5c13-87d0-3c331e6d8e4e", "Choices": ["39d23850-4e6d-54a0-a115-3af29e5dd42d", "9ba65efe-f97b-5034-9a06-5f761b1efbf1", "f1e3766e-7622-59c9-84ef-8ee6f4c8047a", "ded9440e-246f-5556-96cd-5e1e4827980e"], "Slots": ["322e27b7-0b6b-5137-827e-138ea7d740a1", "a479f232-6e96-5258-bb1e-30aadb76b1cd", "b371235f-fb49-586d-a4d8-645a4fa241ca"], "ProjectId": "ade09cc3-a769-56d7-9832-a2bea14c7e71"}
+    values: {"Container": "143d4955-3296-5f01-af4f-9bf8d372ce27", "Quests": "143d4955-3296-5f01-af4f-9bf8d372ce27", "Merchant": "143d4955-3296-5f01-af4f-9bf8d372ce27", "Player": "9f58fc23-5146-579f-9cdf-e05acca3954c", "Herbalist": "acb23dfd-086b-57ca-9dab-491986e13eb9", "TalkRange": 130, "Dialogue": "2f73d459-3038-5cdc-8bc8-fed65168a00f", "Line": "383f4bbc-fb27-5b52-8ea8-a7c78adb5923", "Prompt": "f24d56a1-e4d2-5796-9b0b-338d2a6ed4a4", "Tracker": "94618fe4-e769-5a95-bf22-36a1fb7160ca", "TrackerTitle": "cd0fd583-12ef-5799-986a-4fad1c754c4b", "TrackerProgress": "3be81d31-4338-5cac-9b7a-23d2f0923259", "Status": "21707128-404a-5c13-87d0-3c331e6d8e4e", "Choices": ["39d23850-4e6d-54a0-a115-3af29e5dd42d", "9ba65efe-f97b-5034-9a06-5f761b1efbf1", "f1e3766e-7622-59c9-84ef-8ee6f4c8047a", "ded9440e-246f-5556-96cd-5e1e4827980e"], "Slots": ["322e27b7-0b6b-5137-827e-138ea7d740a1", "a479f232-6e96-5258-bb1e-30aadb76b1cd", "b371235f-fb49-586d-a4d8-645a4fa241ca"], "SlotMark": "b211915f-1d15-5ee0-8cef-6a253c5141d6", "Stock": {"Id": "09ca087e-0f44-5886-9546-1553180b2fba"}, "ProjectId": "ade09cc3-a769-56d7-9832-a2bea14c7e71"}
 defaultCameraId: 2c7cc7b2-7c5b-57ec-b4dd-88e450e0cb83

@@ -2,7 +2,7 @@
 
 InventoryLab의 [SupplyTuning](../../../samples/InventoryLab/Scripts/SupplyTuning.cs)은 13.8에서 더한 필드 종류를 하나씩 가진다: `long`, `uint`, `Color`, `[ColorUsage(false)] string`, 플래그 enum, `int[]`·`float[]`·`string[]`·`bool[]`, `List<int>`, `Dictionary<string, int>`, `[Serializable]` 구조체.
 
-[verify.py](verify.py) `prepare`는 InventoryLab을 복사해 시작 씬에 QA Supply 오브젝트(SupplyTuning + [FieldTrace](FieldTrace.source))를 넣는다. FieldTrace는 첫 틱에 SupplyTuning 값을 한 줄씩 `MONOON_FIELD_TRACE`에 쓴다.
+[verify.py](verify.py) `prepare`는 InventoryLab을 복사해 시작 씬(약초 마당 `Scenes/Showcase.scene`)에 QA Supply 오브젝트(SupplyTuning + [FieldTrace](FieldTrace.source))를 넣는다. FieldTrace는 첫 틱에 SupplyTuning 값을 한 줄씩 `MONOON_FIELD_TRACE`에 쓴다.
 
 ## 에디터 (editor 단계)
 

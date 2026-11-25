@@ -1,6 +1,6 @@
 # 게임 스크립트 API — InventoryLab의 약초 의뢰
 
-**T**로 약초상에게 말을 걸고 약초 세 포기를 건네면 가방에 수정 한 개가 들어간다. 이 흐름은 `Engine.Core`의 컴포넌트·입력·UI·저장 API와 프로젝트의 `MoNoon.Inventory`, `MoNoon.Quests`, `MoNoon.Dialogue` 패키지를 연결한 예다. 아래 예제의 `bag`, `journal`, `quest`, `talk`는 `InventoryWorkbench`가 연결해 둔 런타임 인스턴스다. [샘플 씬](../../samples/InventoryLab/Scenes/Inventory.scene) · [전체 게임 스크립트](../../samples/InventoryLab/Scripts/InventoryWorkbench.cs)
+약초 마당에서 **Return**(또는 **T**)으로 약초상에게 말을 걸어 의뢰를 받고, 약초 세 포기를 주워 오면 가방에 수정 한 개가 들어간다. 이 흐름은 `Engine.Core`의 컴포넌트·입력·UI·충돌·저장 API와 프로젝트의 `MoNoon.Inventory`, `MoNoon.Quests`, `MoNoon.Dialogue` 패키지를 연결한 예다. 아래 예제의 `bag`, `journal`, `quest`, `talk`는 `HerbYard`가 연결해 둔 런타임 인스턴스다. [샘플 씬](../../samples/InventoryLab/Scenes/Showcase.scene) · [전체 게임 스크립트](../../samples/InventoryLab/Scripts/Showcase/HerbYard.cs)
 
 ## 컴포넌트 생성과 참조
 
@@ -27,11 +27,12 @@ public sealed class InventoryContainer : GameBehaviour
 | 콜백과 진입점 | InventoryLab에서 사용하는 시점 |
 | --- | --- |
 | `OnCreate(ScriptLife life)` | 각 컴포넌트가 자기 데이터를 준비한다. `InventoryContainer`는 가방, `QuestLog`는 의뢰 목록, `DialoguePlayer`는 대화 세션을 만든다. |
-| `OnEnable(ScriptLife life)` | `InventoryWorkbench`가 `Container.Resolve(life.Objects).Bag`처럼 준비된 인스턴스를 연결하고 화면을 갱신한다. 오브젝트를 껐다 켜면 이 콜백이 다시 호출된다. |
+| `OnEnable(ScriptLife life)` | `HerbYard`가 `Container.Resolve(life.Objects).Bag`처럼 준비된 인스턴스를 연결하고 화면을 갱신한다. 오브젝트를 껐다 켜면 이 콜백이 다시 호출된다. |
 | `FixedUpdate(ScriptTick tick)` | `tick.Input`으로 액션을 읽고 게임 상태를 바꾼다. `tick.DeltaTime`은 이번 시뮬레이션 틱의 초 단위 간격이다. |
-| `OnUiClick(UiClick click)` | 버튼에 붙인 `InventoryAction`이 `click.Objects`로 작업대 컴포넌트를 찾아 선택·사용·저장 메서드를 호출한다. |
+| `OnTriggerEnter(ScriptContact contact)` | 약초에 붙인 `HerbPickup`이 `contact.Objects`로 `HerbYard`를 찾아 약초를 가방에 담는다. |
+| `OnUiClick(UiClick click)` | 재고 씬(`ShowcaseStock.scene`)의 장부 목록 `LedgerList`가 선택한 행의 아이템을 사용한다. |
 
-씬의 **Bag** 오브젝트에는 위 네 컴포넌트가 함께 붙어 있다. `ComponentReference<QuestLog>`의 대상은 씬 오브젝트의 ID다. `Resolve`는 그 오브젝트의 실제 스크립트 인스턴스를 돌려주고, 연결을 비워 두었거나 대상을 제거하면 `null`을 반환한다. 선택적 연결은 조회 결과를 확인한다. 샘플처럼 필수인 연결은 Inspector에서 지정한다. [생명주기와 타입 참조 정의](../../engine/src/Engine.Core/GameBehaviour.cs) · [Bag의 필드 연결](../../samples/InventoryLab/Scenes/Inventory.scene)
+씬의 **Yard** 오브젝트에는 `InventoryContainer`, `QuestLog`, `DialoguePlayer`, `HerbYard`가 함께 붙어 있다. `ComponentReference<QuestLog>`의 대상은 씬 오브젝트의 ID다. `Resolve`는 그 오브젝트의 실제 스크립트 인스턴스를 돌려주고, 연결을 비워 두었거나 대상을 제거하면 `null`을 반환한다. 선택적 연결은 조회 결과를 확인한다. 샘플처럼 필수인 연결은 Inspector에서 지정한다. [생명주기와 타입 참조 정의](../../engine/src/Engine.Core/GameBehaviour.cs) · [Yard의 필드 연결](../../samples/InventoryLab/Scenes/Showcase.scene)
 
 ## 테이블 한 행과 대화 에셋 읽기
 
@@ -46,29 +47,25 @@ public sealed class InventoryContainer : GameBehaviour
 
 ## 입력과 UI를 같은 게임 동작에 연결하기
 
-`GameSettings.input.actions`에서 **T**는 `Talk`, **1**은 `AddHerb`, **S**는 `Save`에 연결된다. `tick.Input.Pressed("Talk")`는 해당 액션을 누른 틱에 참이고, `Held`는 누르는 동안, `Released`는 놓은 틱에 참이다. 대화가 열려 있으면 작업대는 `AddHerb`를 첫 번째 선택지로 해석하고, 닫혀 있으면 약초를 가방에 담는다. [입력 설정](../../samples/InventoryLab/GameSettings) · [입력 API](../../engine/src/Engine.Core/InputActions.cs)
+`GameSettings.input.actions`에서 **T**·**Return**은 `Talk`, **1**은 `AddHerb`, **U**는 `Use`, **S**·**F5**는 `Save`에 연결된다. `tick.Input.Pressed("Talk")`는 해당 액션을 누른 틱에 참이고, `Held`는 누르는 동안, `Released`는 놓은 틱에 참이다. 대화가 열려 있으면 `HerbYard`는 `AddHerb`를 첫 번째 선택지로 해석한다. 걷기는 `YardWalker`가 `tick.Direction`(방향키 네 액션)으로 처리하고, 대화 중에는 세션 플래그 `talking`을 보고 멈춘다. [입력 설정](../../samples/InventoryLab/GameSettings) · [입력 API](../../engine/src/Engine.Core/InputActions.cs)
 
-버튼 클릭도 같은 작업대 메서드를 호출한다. 아래는 `InventoryAction.OnUiClick`의 대화 분기와, `InventoryWorkbench.Show`의 화면 갱신에서 사용하는 호출이다.
+약초는 트리거 충돌체다. 주인공이 지나가면 `HerbPickup`이 같은 `HerbYard`의 메서드를 호출한다. 아래는 그 분기와 `HerbYard.Show`의 화면 갱신에서 사용하는 호출이다.
 
 ```csharp
-// InventoryAction.OnUiClick 안에서
-var bench = Workbench.Resolve(click.Objects);
-switch (Command)
-{
-    case "talk": bench.ToggleTalk(click.Ui); break;
-    // add·select·use·quest·choose·save·load도 같은 방식
-}
+// HerbPickup.OnTriggerEnter 안에서
+if (contact.OtherId != Player || contact.Objects.GetComponent<HerbYard>(Yard) is not { } yard) return;
+if (!yard.Collect(Item, contact.Ui, contact.Objects)) return;   // 가방이 차면 약초는 그 자리에 남는다
 ```
 
 ```csharp
-// InventoryWorkbench.Show 안에서
-ui.SetVisible(DialoguePanel, talk.Current != null);
-ui.SetText(QuestTitle, quest.Title);
-ui.SetInteractable(QuestButton, quest.Stage is QuestStage.Available or QuestStage.Ready);
+// HerbYard.Show 안에서
+ui.SetVisible(Dialogue, talk.Current != null);
+ui.SetText(TrackerTitle, quest.Title);
 ui.SetText(Status, message);
+ui.SetVisible(Status, message.Length > 0);
 ```
 
-`IGameUi`에 넘기는 값은 대상 위젯의 오브젝트 ID다. `SetVisible`은 표시 여부, `SetInteractable`은 버튼·입력 필드의 조작 가능 여부, `SetText`는 라벨·입력 필드의 텍스트를 바꾼다. 메서드가 `false`를 반환하면 연결한 오브젝트와 대상 위젯 종류를 확인한다. [버튼 스크립트](../../samples/InventoryLab/Scripts/InventoryAction.cs) · [UI API](../../engine/src/Engine.Core/ScreenUi.cs)
+`IGameUi`에 넘기는 값은 대상 위젯의 오브젝트 ID다. `SetVisible`은 표시 여부, `SetInteractable`은 버튼·입력 필드의 조작 가능 여부, `SetText`는 라벨·입력 필드의 텍스트를 바꾼다. 메서드가 `false`를 반환하면 연결한 오브젝트와 대상 위젯 종류를 확인한다. [약초 스크립트](../../samples/InventoryLab/Scripts/Showcase/HerbPickup.cs) · [UI API](../../engine/src/Engine.Core/ScreenUi.cs)
 
 ## 수집·대화·보상을 연결하기
 
