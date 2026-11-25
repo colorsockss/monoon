@@ -4,104 +4,165 @@ using System.Numerics;
 using Engine.Core;
 
 // KeyRoom input showcase. Charge, Flick and Dash are ordinary actions whose GameSettings entries carry an interaction
-// (Hold 30 ticks, Tap within 12, DoubleTap within 15); Triggered reports them on the deciding tick. The trainer fills a hold
-// meter, logs what each press did, and plays the move. K rebinds Dash: the next key pressed replaces O and the row shows it.
-// Raises "interact" on the first triggered move and "rebind" after a rebind.
+// (Hold 30 ticks, Tap within 12, DoubleTap within 15); Triggered reports them on the deciding tick, and each one does something
+// in the room: Charge fills a meter over the hero and smashes the crate in front of him, Flick throws a coin at the dummy,
+// Dash dashes at the dummy and knocks it back. A press that misses its rule says why in a word over the hero's head.
+// K rebinds Dash: the next key pressed replaces O. Raises "interact" on the first triggered move, "rebind" after a rebind and
+// "rebinding" while the prompt is up.
 public sealed class MoveTrainer : GameBehaviour
 {
-    public Guid Hero, Dummy, Burst, Meter, Log;
-    public Guid[] Keys = [], Names = [];
-    private static readonly string[] Actions = ["Charge", "Flick", "Dash"];
-    private const float MeterWidth = 304, HeroX = 400, DummyX = 600;
-    private readonly float[] lit = new float[3];
+    public Guid Player, Hero, Crate, CrateShadow, CrateDust, CrateSpark, Dummy, DummySpark, Coin, MeterBack, Meter, Label, Prompt, Controls;
+    // The hero's sprites: he has no animator here (it only turns him while walking), so the trainer picks the frame.
+    public SpriteReference IdleE, WalkE1, WalkE2, WalkE3, WalkE4, WalkW1, WalkW2, WalkW3, WalkW4;
+    private static readonly Vector2 Home = new(170, 200), DashTo = new(380, 200);
+    private Vector2 dummyHome;
     private int held, pressTicks, lastDashPress = -100, tick;
-    private bool rebinding, interacted;
+    private float labelLeft, coinLeft = -1, crateLeft = -1, dashLeft = -1, returnLeft = -1, promptLeft = -1, walkClock;
+    private bool rebinding, crateUp = true;
 
     public override void OnCreate(ScriptLife life)
     {
-        for (int i = 0; i < Actions.Length; i++) ShowKey(life.Session, life.Ui, i);
+        life.Objects.TryGetPosition(Dummy, out dummyHome);
+        life.Objects.SetSprite(Hero, IdleE);
     }
 
     public override void FixedUpdate(ScriptTick t)
     {
         tick++;
+        float dt = t.DeltaTime;
         var session = t.Session;
-        var ui = t.Ui;
+        var objects = t.Objects;
         var input = t.Input;
+        Timers(t, dt);
         if (rebinding)
         {
             if (session.RebindingAction != null) return;
             rebinding = false;
             var result = session.LastRebind;
-            ShowKey(session, ui, 2);
-            if (result is { Cancelled: false }) { session.Set("rebind"); Say(ui, $"Dash is now {result.Control} (was {result.Previous}). Double-tap it."); }
-            else Say(ui, "Rebinding cancelled.");
+            string key = session.BindingFor("Dash", InputDevice.Keyboard) ?? "-";
+            t.Ui.SetText(Prompt, result is { Cancelled: false } ? $"Dash is now <b><color=#FFD84A>{key}</color></b>" : "Rebinding cancelled");
+            t.Ui.SetText(Controls, $"Charge  hold J      Flick  tap U      Dash  {key} {key}      Rebind  K");
+            if (result is { Cancelled: false }) session.Set("rebind");
+            promptLeft = 1.6f;
             return;
         }
         if (input.Pressed("KeyBindings"))
         {
             session.BeginRebind("Dash", InputDevice.Keyboard);
             rebinding = true;
-            ui.SetText(Keys[2], "...");
-            Say(ui, "Rebinding Dash: press a new key.");
+            session.Set("rebinding");
+            t.Ui.SetText(Prompt, "Dash: press a new key");
             return;
         }
 
-        // Charge: the meter shows how long J has been held; Triggered fires once at the 30th tick.
-        if (input.Released("Charge") && held is > 0 and < 30) Say(ui, $"Released J after {held} ticks: no charge yet.");
+        // Charge: the meter over the hero fills while J is held; Triggered fires once on the 30th tick.
+        if (input.Released("Charge") && held is > 0 and < 30) Say(objects, "Hold longer", false);
         held = input.Held("Charge") ? held + 1 : 0;
-        t.Objects.Tween(Meter, TweenClock.Ui).UiRect(new RectangleF(0, 0, MathF.Min(held, 30) / 30f * MeterWidth, 0), .02f, TweenEase.Linear);
-        if (input.Triggered("Charge"))
-        {
-            Light(ui, 0);
-            t.Objects.EmitParticles(Burst);
-            t.Objects.Tween(Dummy, TweenClock.Game).Move(new Vector2(DummyX + 18, Pos(t, Dummy).Y), .08f, TweenEase.EaseOut).Move(new Vector2(DummyX, Pos(t, Dummy).Y), .3f);
-            Say(ui, "Charge: J held for 30 ticks.");
-        }
+        objects.SetActive(MeterBack, held > 0 && held <= 30);
+        objects.SetLocalTransform(Meter, new LocalTransform2D(new Vector2(1, 1), 0, new Vector2(Math.Min(held, 30) / 30f, 1)));
+        if (input.Triggered("Charge")) Charge(t);
 
         // Flick: a tap counts only if the key comes up within 12 ticks.
         if (input.Pressed("Flick")) pressTicks = 0;
         if (input.Held("Flick")) pressTicks++;
-        if (input.Triggered("Flick"))
-        {
-            Light(ui, 1);
-            float y = Pos(t, Hero).Y;
-            t.Objects.Tween(Hero, TweenClock.Game).Move(new Vector2(HeroX + 14, y), .06f, TweenEase.EaseOut).Move(new Vector2(HeroX, y), .18f);
-            Say(ui, "Flick: U released within 12 ticks.");   // a fast key can go down and up in one tick, so no count here
-        }
-        else if (input.Released("Flick") && pressTicks > 12) Say(ui, $"Held U for {pressTicks} ticks: too long for a tap.");
+        if (input.Triggered("Flick")) Flick(t);
+        else if (input.Released("Flick") && pressTicks > 12) Say(objects, "Too long for a tap", false);
 
         // Dash: two presses within 15 ticks.
         bool pressed = input.Pressed("Dash");
-        if (input.Triggered("Dash"))
-        {
-            Light(ui, 2);
-            float y = Pos(t, Hero).Y;
-            t.Objects.Tween(Hero, TweenClock.Game).Move(new Vector2(HeroX + 130, y), .14f, TweenEase.EaseOut).Delay(.25f).Move(new Vector2(HeroX, y), .6f);
-            Say(ui, $"Dash: second tap {tick - lastDashPress} ticks after the first.");
-            lastDashPress = -100;
-        }
+        if (input.Triggered("Dash")) { DashMove(t); lastDashPress = -100; }
         else if (pressed)
         {
-            if (tick - lastDashPress <= 40 && tick - lastDashPress > 15) Say(ui, $"Second tap {tick - lastDashPress} ticks later: too slow, no dash.");
+            if (tick - lastDashPress is > 15 and <= 50) Say(objects, "Too slow", false);
             lastDashPress = tick;
         }
-        if (interacted) session.Set("interact");
-        for (int i = 0; i < lit.Length; i++)
-            if (lit[i] > 0 && (lit[i] -= t.DeltaTime) <= 0) ui.SetText(Names[i], $"<b>{Actions[i]}</b>");
     }
 
-    private static Vector2 Pos(ScriptTick t, Guid id) => t.Objects.TryGetPosition(id, out var p) ? p : Vector2.Zero;
-
-    private void Light(IGameUi ui, int i)
+    private void Charge(ScriptTick t)
     {
-        interacted = true;
-        lit[i] = .6f;
-        ui.SetText(Names[i], $"<b><color=#FFD84A>{Actions[i]}</color></b>");
+        var objects = t.Objects;
+        Moved(t.Session);
+        objects.Tween(Player).Move(Home + new Vector2(16, 0), .06f, TweenEase.EaseOut).Move(Home, .2f);
+        if (crateUp)
+        {
+            crateUp = false;   // it shudders, then bursts into chips (Timers)
+            objects.Tween(Crate).Rotate(12, .05f, TweenEase.EaseOut).Rotate(-9, .05f).Rotate(5, .04f);
+            crateLeft = .14f;
+        }
+        else t.Session.Screen.Shake(3, .2f);
+        Say(objects, "Charge!", true);
     }
 
-    private void Say(IGameUi ui, string text) => ui.SetText(Log, text);
+    private void Flick(ScriptTick t)
+    {
+        var objects = t.Objects;
+        Moved(t.Session);
+        objects.TryGetPosition(Player, out var at);
+        objects.SetLocalTransform(Coin, new LocalTransform2D(at + new Vector2(18, -34), 0, Vector2.One));
+        objects.SetActive(Coin, true);
+        var to = dummyHome + new Vector2(20, 22);
+        var from = at + new Vector2(18, -34);
+        objects.Tween(Coin).Move((from + to) / 2 - new Vector2(0, 46), .24f, TweenEase.EaseOut).Move(to, .22f, TweenEase.EaseIn);   // an arc
+        coinLeft = .46f;
+        Say(objects, "Flick!", true);
+    }
 
-    private void ShowKey(SessionState session, IGameUi ui, int i) =>
-        ui.SetText(Keys[i], session.BindingFor(Actions[i], InputDevice.Keyboard) ?? "-");
+    private void DashMove(ScriptTick t)
+    {
+        var objects = t.Objects;
+        Moved(t.Session);
+        objects.Tween(Player).Move(DashTo, .16f, TweenEase.EaseOut);
+        objects.SetSprite(Hero, WalkE2);
+        dashLeft = .16f;
+        returnLeft = -1;
+        Say(objects, "Dash!", true);
+    }
+
+    private void Timers(ScriptTick t, float dt)
+    {
+        var objects = t.Objects;
+        if (labelLeft > 0 && (labelLeft -= dt) <= 0) objects.SetWorldText(Label, "");
+        if (promptLeft > 0 && (promptLeft -= dt) <= 0) t.Session.Clear("rebinding");
+        if (crateLeft >= 0 && (crateLeft -= dt) < 0)
+        {
+            objects.SetActive(Crate, false);
+            objects.SetActive(CrateShadow, false);
+            objects.EmitParticles(CrateDust);
+            objects.EmitParticles(CrateSpark);
+            t.Session.Screen.Shake(6, .3f);
+        }
+        if (coinLeft >= 0 && (coinLeft -= dt) < 0)
+        {
+            objects.SetActive(Coin, false);
+            objects.EmitParticles(DummySpark);
+            objects.Tween(Dummy).Rotate(9, .06f, TweenEase.EaseOut).Rotate(-6, .1f).Rotate(0, .12f);
+        }
+        if (dashLeft >= 0 && (dashLeft -= dt) < 0)
+        {
+            objects.EmitParticles(DummySpark);
+            objects.Tween(Dummy).Move(dummyHome + new Vector2(24, 0), .08f, TweenEase.EaseOut).Move(dummyHome, .35f);
+            t.Session.Screen.Shake(4, .2f);
+            returnLeft = .9f;
+        }
+        if (returnLeft >= 0)
+        {
+            returnLeft -= dt;
+            if (returnLeft is < .55f and >= 0 && returnLeft + dt >= .55f) objects.Tween(Player).Move(Home, .55f, TweenEase.Linear);
+            if (returnLeft is < .55f and >= 0)   // walking back west
+            {
+                int step = (int)((walkClock += dt) / .1f) % 4;
+                objects.SetSprite(Hero, step switch { 0 => WalkW1, 1 => WalkW2, 2 => WalkW3, _ => WalkW4 });
+            }
+            if (returnLeft < 0) objects.SetSprite(Hero, IdleE);
+        }
+        else if (dashLeft < 0) objects.SetSprite(Hero, IdleE);
+    }
+
+    private void Say(IGameObjects objects, string word, bool good)
+    {
+        objects.SetWorldText(Label, good ? $"<color=#FFD84A><b>{word}</b></color>" : $"<color=#FFB4A8>{word}</color>");
+        labelLeft = .9f;
+    }
+
+    private static void Moved(SessionState session) => session.Set("interact");
 }

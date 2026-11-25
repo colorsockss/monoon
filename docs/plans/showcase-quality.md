@@ -258,7 +258,9 @@ PlatformerLab 두 씬 다시 만듦(2026-11-25, 사용자 지적: 화풍이 다�
 - 이전 영상은 `showcase-video/raw/PlatformerLab-Lights-v1.mp4`·`PlatformerLab-Course-v1.mp4`로 옮겨 두었다. 더 쓰지 않는 PlatformerLab `Assets/Showcase`의 `Barrel.png`·`Crystal.png`·`WallFace.png`·`WallCap.png`는 지우지 않았다.
 | CameraLab `ShowcaseFraming` (`camera/framing.py`, `FramingTour.cs`) | 데드존(상자 표시), 앞보기, 12초에 Frame 카메라로 바꿔 무리(Party) 프레이밍 줌아웃 | `CameraLab-Framing.mp4` 29.0초 | 에디터 Play 녹화. 생성기가 지운 Canvas의 손자 오브젝트를 남겨 빌드가 "Missing parent"로 실패했던 것을 고쳤다 |
 | SeedLab `ShowcaseRoute` (`seed/route.py`, `RouteCourier.cs`) | 타일셋 지형 비용(길 1, 풀 3, 진흙 8, 다리 1)으로 `TileNavigation.FindPath`, 실행 중 `SetTile`(비 → 진흙, 새 다리)로 다시 계산. 비용 29 → 42 → 19 | `SeedLab-Route.mp4` 15.6초 | 에디터 Play 녹화, `Tests/RouteTests.cs`(우회·남쪽 다리 경유) 통과 |
-| KeyRoom `ShowcaseMoves` (`keyroom/moves.py`, `MoveTrainer.cs`) | GameSettings 상호작용 Hold 30·Tap 12·DoubleTap 15, K로 Dash 키 실행 중 재설정 | `KeyRoom-Moves.mp4` 25.0초 | 에디터 Play에서 직접 입력해 녹화(짧은 J, 긴 J, U 탭, 긴 U, O 더블탭, 느린 O 두 번, K → P 재설정, P 더블탭). `Tests/MoveTests.cs` 4개 통과. 합성 키는 누름·뗌이 한 틱에 들어올 수 있어 Flick 로그에서 틱 수를 뺐다 |
+| KeyRoom `ShowcaseMoves` (`keyroom/moves.py`, `MoveTrainer.cs`) | GameSettings 상호작용 Hold 30·Tap 12·DoubleTap 15, K로 Dash 키 실행 중 재설정 | `KeyRoom-Moves.mp4` 27.2초 | 에디터 Play에서 직접 입력해 녹화(짧은 J, 긴 J, U 탭, 긴 U, O 더블탭, 느린 O 두 번, K → P 재설정, P 더블탭). `Tests/MoveTests.cs` 4개 통과(홀드로 상자가 부서지는지 포함) |
+
+KeyRoom-Moves 다시 만듦(2026-11-25, 사용자: 이번 영상들이 예전보다 품질이 떨어진다). 첫 판은 빈 바닥에 규칙표가 화면 1/3을 차지했고, 결과가 주인공이 조금 움찔하는 정도라 3장의 빈 면적·글자·움직임 기준을 못 넘었다. 이제 Showcase 방(벽, 횃불, 통, 단지, 깔개, 문)에서 문·열쇠·상자 스크립트와 HUD를 뺀 장면이다. Charge는 머리 위 미터를 채우고 앞 상자를 흔든 뒤 나무 조각(`CrateBits.particles`)과 화면 흔들림으로 부순다. Flick은 동전을 포물선으로 허수아비에 던진다. Dash는 잔상과 함께 달려가 허수아비를 밀치고 걸어서 돌아온다. 규칙을 못 맞춘 입력은 머리 위에 한 단어(Hold longer, Too long for a tap, Too slow)로 보인다. 재설정 안내는 위쪽 작은 창으로 띄우고, 바뀐 키는 조작 안내 줄에 반영한다. Hero.animator는 걷는 동안에만 방향을 바꿔 정면을 보고 서 있었으므로, 이 장면에서는 애니메이터를 빼고 스크립트가 스프라이트를 고른다. 이전 영상은 `raw/KeyRoom-Moves-v1.mp4`로 옮겼다.
 
 - 다섯 씬 모두 포함 씬에 넣었고 `.monoon-assets`를 다시 만들었다. 네 샘플(CameraLab, KeyRoom, PlatformerLab, SeedLab) Release 빌드와 에셋 보고서를 확인했다. KeyRoom 기존 테스트 9개도 통과했다.
 - 아직 없음: 입력 기록·재생 영상, 카메라 디버그 그리기, 타일 청크 스트리밍, 오디오.

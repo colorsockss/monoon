@@ -14,6 +14,8 @@ public sealed class MoveTests
         run.Assert(!run.Session.Has("interact"), "20 ticks is not a charge");
         yield return ScriptWait.Frames(15);
         run.Assert(run.Session.Has("interact"), "30 held ticks charge");
+        yield return ScriptWait.Frames(12);   // the crate shudders for 0.14 s before it bursts
+        run.Assert(!run.Objects.IsActive(run.Find("Target crate")), "the charge smashes the crate");
     }
 
     [GameTest(Moves)]
