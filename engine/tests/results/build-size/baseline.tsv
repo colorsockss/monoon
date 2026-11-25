@@ -1,7 +1,7 @@
 sample	mode	app_bytes	executable_bytes	first_frame_ms	session_ready_ms
-KeyRoom	release	32231556	124712	113	41.8
-KeyRoom	native-aot	14000103	6861776	34	6.1
-PlatformerLab	release	29665307	124712	142	58.8
-PlatformerLab	native-aot	12159758	7442272	42	10.2
-InventoryLab	release	83150653	124712	445	361.1
-InventoryLab	native-aot	64757808	6646112	358	323.5
+KeyRoom	release	32394853	124712	147	60.4
+KeyRoom	native-aot	14704712	7458896	46	11.9
+PlatformerLab	release	29946279	124712	163	59.3
+PlatformerLab	native-aot	12422458	7458816	58	10.9
+InventoryLab	release	83642319	124712	487	394.4
+InventoryLab	native-aot	65716578	7160320	388	348.3
