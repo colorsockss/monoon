@@ -263,7 +263,7 @@ Parallax는 PlatformerLab의 한 씬이라 PlatformerLab 영상 안에서 다룬
 - **main 그대로 둔 것**: 1차 커밋이 영어로 바꾼 나머지 원래 씬·스크립트·프리팹(BarrageLab `Barrage`·`Laser`·`PooledBullets` 씬, `BulletTurret`·`LaserSweep`, `Bullet`·`Comet` 프리팹의 그룹 이름, ParticleLab 원래 씬 7개, KeyRoom·PlatformerLab·InventoryLab 원래 씬 등). 쇼케이스는 이들을 장면 전환 참조로만 가리킨다.
 - **`showcase-src`**: 이전 브랜치에서도 git에 없었다. 스크립트·프롬프트·팔레트 같은 글 파일만 커밋하고, 생성 원본 그림(PNG·JPG, 약 47MB)은 디스크에 두고 커밋하지 않았다.
 - **지우지 않음**(사용자: 모두 확인하기 전까지 지우지 않는다): 1차·새 영상, `showcase-video/raw/`, 1차 검토 캡처, 기존 브랜치.
-- **확인**: 14개 샘플 모두 `./monoon build <샘플> release`로 스크립트 컴파일과 에셋 참조를 확인했다. 에디터 Play는 돌려 보지 않았다.
+- **확인**: 14개 샘플 모두 `./monoon build <샘플> release`로 스크립트 컴파일과 에셋 참조를 확인했다. 처음에 InventoryLab만 실패했다. `GameSettings`가 쓰는 1차 버튼 테마 `Assets/Ui/Theme.table`을 더했고, `HerbYard.ProjectId`(편집기 저장 폴더용 프로젝트 ID)를 `Guid`에서 문자열로 바꿨다(빌드가 `Guid` 필드를 오브젝트 참조로 검사한다). 에디터 Play는 돌려 보지 않았다.
 - **남은 것**: RhythmLab·AudioLab(소리 녹음 필요)은 찍지 않았다.
 
 ## 촬영이 끝난 뒤 할 일: 발 IK 기능 제거
