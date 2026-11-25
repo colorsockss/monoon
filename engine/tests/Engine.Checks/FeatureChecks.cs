@@ -23,6 +23,11 @@ internal static class FeatureChecks
         {
             var root = Path.Combine(scratch, "Features-" + name);
             Copy(Path.Combine(repository, "samples", "SpriteLab"), root);
+            // The SpriteLab showcase labels its signs (Text 2D) and HUD (UI Text); without text it uses no optional engine feature.
+            var yard = Path.Combine(root, "Scenes", "ShowcaseYard.scene");
+            var scene = SceneDocument.Load(yard);
+            foreach (var obj in scene.Objects) while (obj.RemoveComponent<Text2DComponent>() || obj.RemoveComponent<UiTextComponent>()) { }
+            scene.Save(yard);
             edit?.Invoke(root);
             var result = GameBuild.Export(root, template, rid, Path.Combine(scratch, "FeaturesOutput-" + name),
                 (settings ?? (s => s))(GameSettings.Load(root)), BuildProfile.Distribution);
@@ -47,7 +52,7 @@ internal static class FeatureChecks
         }
 
         var plain = Export("plain");
-        Expect("plain SpriteLab", plain);
+        Expect("plain SpriteLab (showcase without text)", plain);
         var smoke = Player(plain.Bin, "--smoke-test", Path.Combine(scratch, "features-smoke"));
         Require(smoke.Code == 0, "SpriteLab without SDL_ttf, SDL_mixer and Box2D starts: " + smoke.Output);
 
@@ -78,7 +83,7 @@ internal static class FeatureChecks
                     public override void OnCreate(ScriptLife life) => Shape2D.Box(new RectangleF(0, 0, 4, 4));
                 }
                 """);
-            var path = Path.Combine(root, "Scenes", "Sprites.scene");
+            var path = Path.Combine(root, "Scenes", "ShowcaseYard.scene");
             var scene = SceneDocument.Load(path);
             scene.Objects[0].AddComponent(new ScriptComponent { Script = "Prober" });
             scene.Save(path);
