@@ -6,9 +6,6 @@ gameTitle: AnimatorLab
 startScene: cd30ffcd-4783-51d6-bf67-bbfcf9b8558d
 includedScenes:
 - cd30ffcd-4783-51d6-bf67-bbfcf9b8558d
-- 793807d6-c20d-4c32-982f-08aa2e216b01
-- ae7096c6-d966-5bf9-a9a5-65fd1b1df08e
-- 39d40602-7c95-5bec-9fd3-3620b1044ecb
 input:
   actions:
   - name: MoveLeft

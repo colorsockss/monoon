@@ -25,7 +25,7 @@ public static class StartupHook
         var view = main.FindControl<Control>("Viewport")!;
         var scene = view.GetType().GetProperty("Scene")!;
         await Until(() => ((SceneDocument)scene.GetValue(view)!).Objects.Any(o => o.Name == "Guard"), "Guard");
-        var opening = (Task)main.GetType().GetMethod("EditAnimator", Private)!.Invoke(main, ["Assets/Guard.animator"])!;
+        var opening = (Task)main.GetType().GetMethod("EditAnimator", Private)!.Invoke(main, ["Assets/Showcase/Guard.animator"])!;
         Visual? found = null;
         for (int i = 0; i < 200 && (found = main.GetVisualDescendants().SingleOrDefault(c => c.GetType().Name == "AnimatorWindow")) == null; i++) await Delay(50);
         var panel = (ContentControl)(found ?? throw new InvalidDataException("Animator panel did not open"));

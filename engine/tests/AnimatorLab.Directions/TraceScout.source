@@ -2,7 +2,7 @@ using System;
 using System.IO;
 using Engine.Core;
 
-// Test-only observer added to the Scout in a disposable AnimatorLab. Runs after ScoutDemo on the same object, so each line
+// Test-only observer added to the showcase Scout picture in a disposable AnimatorLab. Runs after DriveScout on the same object, so each line
 // is the animator state, frame and facing before this tick's animator step.
 public sealed class TraceScout : GameBehaviour
 {

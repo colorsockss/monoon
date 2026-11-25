@@ -27,7 +27,7 @@ public static class StartupHook
         var view = main.FindControl<Control>("Viewport")!;
         var scene = view.GetType().GetProperty("Scene")!;
         await Until(() => ((SceneDocument)scene.GetValue(view)!).Objects.Any(o => o.Name == "Scout"), "Scout");
-        var opening = (Task)main.GetType().GetMethod("EditAnimator", Private)!.Invoke(main, ["Assets/Scout.animator"])!;
+        var opening = (Task)main.GetType().GetMethod("EditAnimator", Private)!.Invoke(main, ["Assets/Showcase/Scout.animator"])!;
         Visual? found = null;
         for (int i = 0; i < 200 && (found = main.GetVisualDescendants().SingleOrDefault(c => c.GetType().Name == "AnimatorWindow")) == null; i++) await Delay(50);
         var panel = (ContentControl)(found ?? throw new InvalidDataException("Animator panel did not open"));
@@ -70,7 +70,7 @@ public static class StartupHook
         dialog.Close(false);
         await Delay(200);
 
-        // Preview: the panel's own AnimationPlayer, stepped at the fixed rate with the values ScoutDemo sets.
+        // Preview: the panel's own AnimationPlayer, stepped at the fixed rate with the values DriveScout sets.
         var tabs = (TabControl)type.GetField("tabs", Private)!.GetValue(panel)!;
         tabs.SelectedItem = type.GetField("previewTab", Private)!.GetValue(panel);
         await Until(() => type.GetField("player", Private)!.GetValue(panel) != null, "preview player");

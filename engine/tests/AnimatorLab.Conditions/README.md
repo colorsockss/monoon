@@ -1,8 +1,8 @@
 # AnimatorLab 애니메이터 조건 회귀 (16.5)
 
-[guard.py](guard.py)가 AnimatorLab의 Guard 클립 4개, [Guard.animator](../../../samples/AnimatorLab/Assets/Guard.animator), `Guard.scene`을 만든다. 컨트롤러는 Bool·Int·Float·Trigger 파라미터, 두 조건 AND 전환, 조건 없는 Exit time 전환, 조건과 Exit time을 함께 쓰는 전환, Any State 전환을 모두 쓴다.
+대상은 AnimatorLab 쇼케이스의 경비병과 [Guard.animator](../../../samples/AnimatorLab/Assets/Showcase/Guard.animator)다(2026-11-26부터, 이전에는 `guard.py`가 만든 `Guard.scene`). 컨트롤러는 Bool·Int·Float·Trigger 파라미터, 두 조건 AND 전환, 조건 없는 Exit time 전환, 조건과 Exit time을 함께 쓰는 전환, Any State 전환을 모두 쓴다. 클립 길이는 Idle 1.0, Walk 0.4, Attack 0.52, Recover 0.3, Hurt 0.7초다.
 
-`verify.py prepare`는 샘플 복사본의 시작 씬을 Guard로 바꾸고 관찰 스크립트 [TraceGuard](TraceGuard.source)를 GuardDemo 뒤에 붙인다. 이 스크립트는 매 틱 애니메이터의 상태와 프레임을 기록한다(그 틱의 애니메이터 단계 전 값). 입력 기록은 320프레임이고 → 5, Space 30·170·185·200, ↑ 90, ↓ 100·140, ← 160·260이다.
+`verify.py prepare`는 샘플 복사본의 쇼케이스에서 경비병의 GuardTrainer(세 번째 타격 뒤 허수아비가 되받아치는 연출)를 시험용 키 드라이버 [DriveGuard](DriveGuard.source)로 바꾸고, 그 뒤에 관찰 스크립트 [TraceGuard](TraceGuard.source)를 붙인다. 드라이버는 Animator 패널 미리보기와 같은 규칙으로 파라미터를 바꾼다(→ Speed 1, ← Speed 0·콤보 0, Space Combo+1·Attack, ↑ Hit, ↓ Grounded 전환). 관찰 스크립트는 매 틱 애니메이터의 상태와 프레임을 기록한다(그 틱의 애니메이터 단계 전 값). 입력 기록은 320프레임이고 → 5, Space 30·170·185·200, ↑ 90, ↓ 100·140, ← 160·260이다.
 
 - `play`/`editor.py`: 기록의 모든 틱 상태가 `verify.py`의 독립 모델(컨트롤러 규칙을 손으로 옮긴 Python)과 같은지, 다섯 상태를 모두 지나는지 확인한다.
 - `compare`: 에디터 미리보기·Scene Play·Release·Native AOT 기록이 바이트 단위로 같은지 비교한다.

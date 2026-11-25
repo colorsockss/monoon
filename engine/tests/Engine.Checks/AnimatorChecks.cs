@@ -3,7 +3,13 @@ using Engine.Core;
 internal static class AnimatorChecks
 {
     [Check(5500)]
-    static void Registered(CheckRun c) { var root = Path.Combine(c.Scratch, "AnimatorTest"); Run(root, Path.Combine(c.Repository, "samples", "AnimatorLab")); Directory.Delete(root, true); }
+    static void Registered(CheckRun c)
+    {
+        var root = Path.Combine(c.Scratch, "AnimatorTest");
+        Run(root, Path.Combine(c.Repository, "engine", "tests", "fixtures", "AnimatorBeacon"));
+        Directory.Delete(root, true);
+        Showcase(Path.Combine(c.Repository, "samples", "AnimatorLab"));
+    }
     public static void Run(string folder, string sample)
     {
         Directory.CreateDirectory(folder);
@@ -48,25 +54,22 @@ internal static class AnimatorChecks
         player.Step(2,marker => { if (marker.Name=="Lit") player.Play(); });
         Require(player.State=="Idle" && player.Frame==0,"restart inside a crossed frame event preserves the new cursor");
 
-        var scene=SceneDocument.Load(Path.Combine(root,"Scenes","Animator.scene"));
-        var body=scene.Objects.Single(o=>o.Name=="Beacon");
-        using var game=new SceneGame(scene);
-        var canvas=new LabelCanvas();
-        game.FixedUpdate(System.Numerics.Vector2.Zero,1f/60); game.Draw(canvas,1);
-        Require(canvas.Last=="Idle  /  frame 1  /  1  Rested","project script receives first-frame event");
-        game.Animator(body.Id)!.SetBool("Running",true);
-        game.FixedUpdate(System.Numerics.Vector2.Zero,.65f); game.Draw(canvas,1);
-        Require(canvas.Last=="Pulse  /  frame 2  /  3  Lit","project script receives each event on its owner");
-        Console.WriteLine("PASS controller YAML, per-instance parameters, ordered bool/float/trigger transitions, exact and skipped frame events, script callbacks");
+        Console.WriteLine("PASS controller YAML, per-instance parameters, ordered bool/float/trigger transitions, exact and skipped frame events");
     }
 
-    private sealed class LabelCanvas : ICanvas2D
+    // The AnimatorLab showcase: GuardTrainer, a project script on the guard, receives the Attack clip's Swing event on its owner.
+    private static void Showcase(string sample)
     {
-        public string? Last;
-        public void DrawText(string text,float x,float y,float size,System.Drawing.Color color) { if (text.Contains("frame")) Last=text; }
-        public void Clear(System.Drawing.Color color) => Last=null;
-        public void FillRectangle(System.Drawing.RectangleF rectangle,System.Drawing.Color color) {}
-        public bool DrawSprite(string path,System.Drawing.RectangleF destination) => true;
+        var scene=SceneDocument.Load(Path.Combine(sample,"Scenes","Showcase.scene"));
+        var guard=scene.Objects.Single(o=>o.Name=="Guard").Id;
+        using var game=new SceneGame(scene);
+        game.FixedUpdate(System.Numerics.Vector2.Zero,1f/60);
+        Require(game.Animator(guard)!.State=="Idle" && !game.State.Has("event"),"the showcase guard starts idle");
+        game.Animator(guard)!.SetTrigger("Attack");
+        int ticks=0;
+        while (!game.State.Has("event") && ticks++<60) game.FixedUpdate(System.Numerics.Vector2.Zero,1f/60);
+        Require(game.Animator(guard)!.State=="Attack" && ticks is >= 9 and <= 11,$"GuardTrainer receives the Swing event 0.16 s into Attack (tick {ticks})");
+        Console.WriteLine("PASS project script receives its owner's frame event (AnimatorLab showcase guard)");
     }
     private static void Require(bool ok,string message) { if (!ok) throw new Exception("Animator: "+message); }
 }

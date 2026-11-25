@@ -1,22 +1,22 @@
-"""Roadmap 16.5: AnimatorLab Guard state machine traced in the editor preview, Scene Play, Release and Native AOT, and checked
-against an independent model of Guard.animator."""
+"""Roadmap 16.5: the AnimatorLab showcase Guard state machine traced in the editor preview, Scene Play, Release and Native AOT,
+and checked against an independent model of Assets/Showcase/Guard.animator."""
 import os
 from pathlib import Path
+import re
 import shutil
 import struct
 import subprocess
 import sys
-sys.path.insert(0, str(Path(__file__).resolve().parent))
-import guard
 
-PROJECT = guard.PROJECT
-SCENE = guard.IDS['Scenes/Guard.scene']
+HERE = Path(__file__).resolve().parent
+PROJECT = '793807d6-c20d-4c32-982f-08aa2e216b01'
+SCENE = 'cd30ffcd-4783-51d6-bf67-bbfcf9b8558d'  # Scenes/Showcase.scene
 FRAMES = 320
 SNAPSHOTS = [40, 95, 215]
 # frame: key. Speed, attack, Any State hit, airborne Hurt, combo limit, release by reset.
 PRESSES = {5: 'Right', 30: 'Space', 90: 'Up', 100: 'Down', 140: 'Down', 160: 'Left', 170: 'Space', 185: 'Space', 200: 'Space', 260: 'Left'}
 STEP = struct.unpack('f', struct.pack('f', 1 / 60))[0]
-LENGTH = {'Idle': 1.0, 'Walk': 0.3, 'Attack': 0.4, 'Recover': 0.3, 'Hurt': 0.3}
+LENGTH = {'Idle': 1.0, 'Walk': 0.4, 'Attack': 0.52, 'Recover': 0.3, 'Hurt': 0.7}  # the showcase Guard clips
 
 
 def expect(ok, message):
@@ -27,16 +27,15 @@ def expect(ok, message):
 
 def prepare(sample, destination):
     shutil.copytree(sample, destination, ignore=shutil.ignore_patterns('.monoon', '.DS_Store', 'bin', 'obj'))
-    shutil.copyfile(Path(__file__).resolve().parent / 'TraceGuard.source', destination / 'Scripts/TraceGuard.cs')
-    settings = destination / 'GameSettings'
-    text = settings.read_text(encoding='utf-8')
-    assert text.count(f'startScene: {PROJECT}') == 1
-    settings.write_text(text.replace(f'startScene: {PROJECT}', f'startScene: {SCENE}'), encoding='utf-8')
-    scene = destination / 'Scenes/Guard.scene'
+    for name in ('TraceGuard', 'DriveGuard'):
+        shutil.copyfile(HERE / f'{name}.source', destination / f'Scripts/{name}.cs')
+    assert f'startScene: {SCENE}' in (destination / 'GameSettings').read_text(encoding='utf-8')
+    # The showcase GuardTrainer hits back after every third swing; the copy drives the guard with keys instead.
+    scene = destination / 'Scenes/Showcase.scene'
     text = scene.read_text(encoding='utf-8')
-    anchor = f'- id: {guard.IDS["Camera"]}\n'  # the Guard's components end right before the camera
-    assert text.count(anchor) == 1
-    scene.write_text(text.replace(anchor, '  - type: script\n    script: TraceGuard\n' + anchor), encoding='utf-8')
+    trainer = re.findall(r'  - type: script\n    script: Showcase/GuardTrainer\n    values: .*\n', text)
+    assert len(trainer) == 1
+    scene.write_text(text.replace(trainer[0], '  - type: script\n    script: DriveGuard\n  - type: script\n    script: TraceGuard\n'), encoding='utf-8')
 
 
 def recording(path):

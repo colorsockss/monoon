@@ -1,7 +1,8 @@
 using Engine.Core;
 
 // Roadmap 16.5: AND conditions over Bool/Int/Float/Trigger, exit time, Any State, list priority, zero allocation per step.
-// AnimatorLab.Conditions replays Guard.scene in the editor preview, Scene Play, Release and Native AOT.
+// Runs on the AnimatorLab showcase Guard.animator. AnimatorLab.Conditions replays it in the editor preview, Scene Play, Release
+// and Native AOT.
 internal static class AnimatorConditionChecks
 {
     [Check(5600, "animator-conditions")] static void Registered(CheckRun c) => Run(c.Repository, c.Scratch);
@@ -17,7 +18,7 @@ internal static class AnimatorConditionChecks
             File.Copy(file, path);
         }
         var assets = ProjectAssets.Scan(root);
-        var guard = AnimationController.Read(Path.Combine(root, "Assets", "Guard.animator"));
+        var guard = AnimationController.Read(Path.Combine(root, "Assets", "Showcase", "Guard.animator"));
         AnimationPlayer Start()
         {
             var p = new AnimationPlayer(guard, root, assets);
@@ -39,7 +40,7 @@ internal static class AnimatorConditionChecks
         player.SetInt("Combo", 1); player.SetTrigger("Attack"); player.Step(Step, null);
         Check(player.State == "Attack", "trigger and Int Combo < 3 start Attack");
         int ticks = Until(player, "Recover");
-        Check(ticks is 24 or 25, $"exit time 1 leaves the 0.4 s Attack clip after one full play ({ticks + 1} steps in the state)");
+        Check(ticks is 31 or 32, $"exit time 1 leaves the 0.52 s Attack clip after one full play ({ticks + 1} steps in the state)");
         Check(Until(player, "Idle") is 18 or 19 && Until(player, "Walk", 1) == 1, "Recover -> Idle at its end, then Speed walks again");
 
         player.SetTrigger("Hit"); player.SetTrigger("Attack"); player.Step(Step, null);
@@ -74,8 +75,9 @@ internal static class AnimatorConditionChecks
         Check(allocated == 0, $"20,000 steps with transitions allocate {allocated} bytes");
 
         // Older controllers keep their file layout; invalid new data is rejected with a message.
-        var beacon = File.ReadAllText(Path.Combine(root, "Assets", "Beacon.animator"));
-        var written = System.Text.Encoding.UTF8.GetString(ProjectYaml.Encode(AnimationController.Read(Path.Combine(root, "Assets", "Beacon.animator"))));
+        var beaconPath = Path.Combine(repository, "engine", "tests", "fixtures", "AnimatorBeacon", "Assets", "Beacon.animator");
+        var beacon = File.ReadAllText(beaconPath);
+        var written = System.Text.Encoding.UTF8.GetString(ProjectYaml.Encode(AnimationController.Read(beaconPath)));
         Check(!beacon.Contains("exitTime") && !written.Contains("exitTime") && !written.Contains("and:"), "Beacon.animator round-trips without the new keys");
         Reject(guard with { Parameters = [.. guard.Parameters, new("Half", "Int", 1.5f)] }, "Int default 1.5");
         Reject(guard with { Transitions = [new("Idle", "Walk", "Combo", "Equal", 0.5f)] }, "Int condition value 0.5");

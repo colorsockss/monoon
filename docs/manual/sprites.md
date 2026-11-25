@@ -112,7 +112,7 @@ public override void OnAnimationEvent(ScriptAnimationEvent frame)
 
 `SetInt`, `SetFloat`, `SetTrigger`, `SetVector2`도 같은 핸들에서 호출한다. `Play()`는 진입 상태부터 재생을 시작한다. 같은 컨트롤러를 연결한 여러 오브젝트는 각자 자신의 파라미터와 현재 프레임을 가진다. [AnimatorLab 샘플](../../samples/AnimatorLab) · [Mac 검증 화면](../../engine/tests/results/animator/README.md)
 
-**AnimatorLab Guard 씬에서 조건 시험하기.** Project에서 **Scenes → Guard.scene**을 열고 Play한다. **→**는 걷기(Speed 1), **←**는 정지와 콤보 초기화, **Space**는 공격(Combo +1, Attack Trigger), **↑**는 피격(Hit), **↓**는 공중·착지 전환이다. 걷기는 Speed > 0.1 **그리고** Grounded일 때만 시작한다. 공격은 Combo < 3일 때만 나가고, 클립이 끝나면 Exit time 1로 Recover를 거쳐 Idle로 돌아온다. 피격은 Any State 규칙이라 어느 상태에서든 Hurt로 가며, 공중에 있으면 Hurt 클립이 끝나도 착지할 때까지 머문다. Combo가 3에 이르면 남은 공격 입력(켜진 Attack Trigger)은 대기하다가 **←**로 콤보를 0으로 돌리면 바로 나간다. [Guard.animator](../../samples/AnimatorLab/Assets/Guard.animator) · [미리보기·Scene Play·Release·Native AOT 기록](../../engine/tests/results/engine-features-3/README.md#165-애니메이터-조건-확장)
+**AnimatorLab에서 조건 시험하기.** [AnimatorLab](../../samples/AnimatorLab)을 열고 Play한다(`Scenes/Showcase.scene`). **Space**를 누를 때마다 경비병이 허수아비를 친다(Combo에 지금까지의 공격 수, Attack Trigger). 공격은 Combo < 3일 때만 나가고, 클립이 끝나면 Exit time 1로 Recover를 거쳐 Idle로 돌아온다. 공격 클립의 **Swing** 이벤트마다 허수아비가 뒤로 젖혀지고, 세 번째 타격 뒤에는 되받아쳐 Hit Trigger를 켠다. 피격은 Any State 규칙이라 어느 상태에서든 Hurt로 간다. 잠시 서 있으면 Combo가 0으로 돌아간다. 같은 컨트롤러는 걷기(Speed > 0.1 **그리고** Grounded)와 공중에서 Hurt에 머무는 규칙(조건과 Exit time을 함께 쓰는 전환)도 갖고 있고, [회귀 하네스](../../engine/tests/AnimatorLab.Conditions/README.md)가 키로 그 파라미터를 바꿔 시험한다. [Guard.animator](../../samples/AnimatorLab/Assets/Showcase/Guard.animator) · [미리보기·Scene Play·Release·Native AOT 기록](../../engine/tests/results/engine-features-3/README.md#165-애니메이터-조건-확장)
 
 ### 4·8방향 클립 세트
 
@@ -129,7 +129,7 @@ public override void OnAnimationEvent(ScriptAnimationEvent frame)
 - 방향 선택은 곱셈·덧셈과 비교만 쓴다. 삼각함수를 쓰지 않아 모든 CPU와 Native AOT에서 같은 클립을 고르고, 틱마다 메모리를 할당하지 않는다.
 - **Preview**에서는 Vector2를 X·Y 두 칸으로 입력하고, 상태 옆에 현재 방향이 표시된다.
 
-**AnimatorLab Scout 씬에서 시험하기.** **Scenes → Scout.scene**을 열고 Play한다. 방향키를 누르는 동안 8방향으로 걷고(Walk), 놓으면 4방향 Idle이 마지막 방향을 바라본다. **Space**는 정사각형 둘레를 따라 천천히 한 바퀴 도는 벡터를 넣는다. 각 방향이 가장 가까운 경계를 지나서도 잠시 유지되는 것을 볼 수 있다. [Scout.animator](../../samples/AnimatorLab/Assets/Scout.animator) · [미리보기·Scene Play·Release·Native AOT 기록](../../engine/tests/results/engine-features-3/README.md#165-48방향-클립-세트)
+**AnimatorLab에서 방향 시험하기.** 같은 쇼케이스의 정찰병을 방향키로 움직인다. 누르는 동안 8방향으로 걷고(Walk), 놓으면 4방향 Idle이 마지막 방향을 바라본다. 대각선으로 걸으면 태그가 켜진다. 각 방향이 가장 가까운 경계를 지나서도 잠시 유지되는 것은 [회귀 하네스](../../engine/tests/AnimatorLab.Directions/README.md)가 정사각형 둘레를 도는 벡터로 확인한다. [Scout.animator](../../samples/AnimatorLab/Assets/Showcase/Scout.animator) · [미리보기·Scene Play·Release·Native AOT 기록](../../engine/tests/results/engine-features-3/README.md#165-48방향-클립-세트)
 
 
 ## 선과 궤적

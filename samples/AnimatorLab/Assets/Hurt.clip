@@ -1,9 +1,0 @@
-frames:
-- sprite: e6d4a1e7-b8ab-4a4e-98a7-3276ad74a946
-  seconds: 0.1
-  event: Ouch
-- sprite: 8ec064c4-dcc5-4e46-b68e-146bc34af0eb
-  seconds: 0.1
-- sprite: e6d4a1e7-b8ab-4a4e-98a7-3276ad74a946
-  seconds: 0.1
-loop: false

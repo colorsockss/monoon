@@ -1,0 +1,20 @@
+using Engine.Core;
+
+// Test-only driver that replaces the showcase GuardTrainer in a disposable AnimatorLab copy. The keys set Guard.animator's
+// parameters the way the Animator panel preview does, so verify.py can model the run without the trainer's dummy payback.
+public sealed class DriveGuard : GameBehaviour
+{
+    private int combo;
+    private bool grounded = true;
+
+    public override void FixedUpdate(ScriptTick tick)
+    {
+        var animator = tick.Objects.Animator(tick.ObjectId)!;
+        var input = tick.Input;
+        if (input.Pressed("MoveRight")) animator.SetFloat("Speed", 1);
+        if (input.Pressed("MoveLeft")) { animator.SetFloat("Speed", 0); animator.SetInt("Combo", combo = 0); }
+        if (input.Pressed("Interact")) { animator.SetInt("Combo", ++combo); animator.SetTrigger("Attack"); }
+        if (input.Pressed("MoveUp")) animator.SetTrigger("Hit");
+        if (input.Pressed("MoveDown")) animator.SetBool("Grounded", grounded = !grounded);
+    }
+}

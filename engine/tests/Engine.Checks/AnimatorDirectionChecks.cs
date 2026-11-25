@@ -2,7 +2,7 @@ using System.Numerics;
 using Engine.Core;
 
 // Roadmap 16.5: 4/8-direction clip sets picked by a Vector2 parameter, with hysteresis, no allocation per step, and older files
-// unchanged. AnimatorLab.Directions replays Scout.scene in the editor preview, Scene Play, Release and Native AOT.
+// unchanged. AnimatorLab.Directions replays the showcase Scout.animator in the editor preview, Scene Play, Release and Native AOT.
 internal static class AnimatorDirectionChecks
 {
     [Check(5700, "animator-directions")] static void Registered(CheckRun c) => Run(c.Repository, c.Scratch);
@@ -18,7 +18,7 @@ internal static class AnimatorDirectionChecks
             File.Copy(file, path, true);
         }
         var assets = ProjectAssets.Scan(root);
-        var scout = AnimationController.Read(Path.Combine(root, "Assets", "Scout.animator"));
+        var scout = AnimationController.Read(Path.Combine(root, "Assets", "Showcase", "Scout.animator"));
         var walk = scout.States.Single(s => s.Name == "Walk").Directions!;
         var idle = scout.States.Single(s => s.Name == "Idle").Directions!;
         Check(walk.Length == 8 && idle.Length == 4, "Scout.animator: Walk has 8 direction clips, Idle 4");
@@ -54,7 +54,7 @@ internal static class AnimatorDirectionChecks
         player.SetFloat("Speed", 1); Turn(0, 2);
         var east = player.Appearance;
         Turn(90);
-        Check(player.Appearance != east && player.Appearance?.Source?.X == 4 * 32, "the S walk clip shows its own sheet column");
+        Check(player.Appearance != east && Path.GetFileName(player.Appearance?.Image ?? "").StartsWith("HeroWalkS", StringComparison.Ordinal), "the S walk clip shows its own frames");
         int frame = player.Frame;
         Turn(180);
         Check(player.Frame == frame || player.Frame == (frame + 1) % 2, "turning keeps the walk cycle position");
@@ -78,10 +78,11 @@ internal static class AnimatorDirectionChecks
         }
 
         // Older controllers keep their layout; invalid sets are rejected.
-        foreach (var name in new[] { "Beacon.animator", "Guard.animator" })
+        foreach (var file in new[] { Path.Combine(repository, "engine", "tests", "fixtures", "AnimatorBeacon", "Assets", "Beacon.animator"), Path.Combine(root, "Assets", "Showcase", "Guard.animator") })
         {
-            var text = File.ReadAllText(Path.Combine(root, "Assets", name));
-            var written = System.Text.Encoding.UTF8.GetString(ProjectYaml.Encode(AnimationController.Read(Path.Combine(root, "Assets", name))));
+            string name = Path.GetFileName(file);
+            var text = File.ReadAllText(file);
+            var written = System.Text.Encoding.UTF8.GetString(ProjectYaml.Encode(AnimationController.Read(file)));
             Check(!text.Contains("direction") && !written.Contains("direction"), $"{name} round-trips without direction keys");
         }
         var walkState = scout.States[1];

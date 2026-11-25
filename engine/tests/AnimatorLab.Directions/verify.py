@@ -1,7 +1,8 @@
 """Roadmap 16.5: AnimatorLab Scout direction sets traced in the editor preview, Scene Play, Release and Native AOT, and checked
-against the independent model in scout.py."""
+against the independent model in scout.py. Runs on the AnimatorLab showcase Scout (Assets/Showcase/Scout.animator)."""
 import os
 from pathlib import Path
+import re
 import shutil
 import subprocess
 import sys
@@ -9,7 +10,8 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 import scout
 
 PROJECT = scout.PROJECT
-SCENE = scout.IDS['Scenes/Scout.scene']
+SCENE = 'cd30ffcd-4783-51d6-bf67-bbfcf9b8558d'  # Scenes/Showcase.scene
+PICTURE_ANIMATOR = '    controller: c1ea8b98-47e9-5742-bdf9-b5f0de53c17f\n    playOnStart: true\n'  # on the Scout picture
 FRAMES = 420
 SNAPSHOTS = [30, 95, 240, 330]
 # (frame, key, down): walk N, NE, E, SE, S, SW, W, NW, N, stop (Idle faces N), a 2-tick SW step (Idle shows S), a slow lap.
@@ -26,7 +28,7 @@ def sweep(i):
 
 
 def inputs():
-    """The Move vector and Speed ScoutDemo sets on each tick (keys held from their down frame until their up frame)."""
+    """The Move vector and Speed DriveScout sets on each tick (keys held from their down frame until their up frame)."""
     held, lap, out = set(), -1, []
     for tick in range(FRAMES):
         pressed = set()
@@ -65,16 +67,16 @@ def expect(ok, message):
 
 def prepare(sample, destination):
     shutil.copytree(sample, destination, ignore=shutil.ignore_patterns('.monoon', '.DS_Store', 'bin', 'obj'))
-    shutil.copyfile(Path(__file__).resolve().parent / 'TraceScout.source', destination / 'Scripts/TraceScout.cs')
-    settings = destination / 'GameSettings'
-    text = settings.read_text(encoding='utf-8')
-    assert text.count(f'startScene: {PROJECT}') == 1
-    settings.write_text(text.replace(f'startScene: {PROJECT}', f'startScene: {SCENE}'), encoding='utf-8')
-    scene = destination / 'Scenes/Scout.scene'
+    for name in ('TraceScout', 'DriveScout'):
+        shutil.copyfile(Path(__file__).resolve().parent / f'{name}.source', destination / f'Scripts/{name}.cs')
+    assert f'startScene: {SCENE}' in (destination / 'GameSettings').read_text(encoding='utf-8')
+    # The showcase ScoutWalker walks its own route; the copy drives the Scout picture's animator with keys instead.
+    scene = destination / 'Scenes/Showcase.scene'
     text = scene.read_text(encoding='utf-8')
-    anchor = f'- id: {scout.IDS["Scout camera"]}\n'  # the Scout's components end right before the camera
-    assert text.count(anchor) == 1
-    scene.write_text(text.replace(anchor, '  - type: script\n    script: TraceScout\n' + anchor), encoding='utf-8')
+    walker = re.findall(r'  - type: script\n    script: Showcase/ScoutWalker\n    values: .*\n', text)
+    assert len(walker) == 1 and text.count(PICTURE_ANIMATOR) == 1
+    text = text.replace(walker[0], '').replace(PICTURE_ANIMATOR, PICTURE_ANIMATOR + '  - type: script\n    script: DriveScout\n  - type: script\n    script: TraceScout\n')
+    scene.write_text(text, encoding='utf-8')
 
 
 def recording(path):
