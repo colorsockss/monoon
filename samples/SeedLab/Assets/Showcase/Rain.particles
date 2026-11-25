@@ -1,0 +1,14 @@
+duration: 1
+looping: true
+rate: 140
+shape: Box
+width: 300
+height: 4
+direction: 100
+spread: 4
+speed: {min: 230, max: 270}
+lifetime: {min: 0.28, max: 0.42}
+size: {min: 1, max: 2}
+aspect: 5
+color: {min: "#9FC4FF", max: "#E2EEFF"}
+endAlpha: 0.2

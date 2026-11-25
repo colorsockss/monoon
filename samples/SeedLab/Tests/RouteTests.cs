@@ -2,26 +2,31 @@ using System.Collections.Generic;
 using System.Numerics;
 using Engine.Core;
 
-// The terrain showcase: the courier re-plans when rain turns the north road to mud and again when the south bridge opens.
+// The terrain showcase: the hero starts up the west lane for the north road, turns back when rain turns it to mud (the south
+// road and the grass beside the river are now cheaper), and crosses on the bridge laid over the south ford.
 public sealed class RouteTests
 {
-    // Cell centres in world units: the Field tilemap sits at (16, 56) with 32-unit cells; the courier stands 10 left, 22 up.
-    private static Vector2 Courier(int x, int y) => new(16 + x * 32 + 16 - 10, 56 + y * 32 + 16 - 22);
+    // The cell the hero stands on when his position sits on one (he walks between cells with a tween): RouteCourier places
+    // his 42 x 60 picture 21 left and 48 above the centre of a 32-unit cell of the Field at (0, 0).
+    private static (int X, int Y)? Cell(Vector2 at)
+    {
+        var c = (at + new Vector2(21, 48) - new Vector2(16, 16)) / 32;
+        var r = new Vector2(System.MathF.Round(c.X), System.MathF.Round(c.Y));
+        return Vector2.Distance(c, r) < .1f ? ((int)r.X, (int)r.Y) : null;
+    }
 
     [GameTest("Scenes/ShowcaseRoute.scene")]
-    public IEnumerable<ScriptWait> CourierTakesTheNewBridge(GameTestRun run)
+    public IEnumerable<ScriptWait> HeroTakesTheNewBridge(GameTestRun run)
     {
-        bool grassDetour = false, southBridge = false, northBridge = false;
-        while (run.PositionOf("Courier") != Courier(18, 5))
+        var seen = new HashSet<(int, int)>();
+        while (!run.Session.Has("arrived"))
         {
-            var at = run.PositionOf("Courier");
-            grassDetour |= at == Courier(4, 2);
-            southBridge |= at == Courier(8, 5);
-            northBridge |= at == Courier(9, 1);
+            if (Cell(run.PositionOf("Courier")) is { } c) seen.Add(c);
             yield return ScriptWait.Frames(1);
         }
         run.Assert(run.Session.Has("rain") && run.Session.Has("bridge"), "rain and bridge both happened");
-        run.Assert(grassDetour, "after the rain the courier leaves the muddy road for the grass");
-        run.Assert(southBridge && !northBridge, "the courier crosses on the new south bridge, not the north one");
+        run.Assert(seen.Contains((2, 3)) && !seen.Contains((3, 1)), $"he heads for the north road, then turns back before the mud (walked {string.Join(" ", seen)})");
+        run.Assert(seen.Contains((8, 5)) && !seen.Contains((9, 1)), "he crosses on the new south bridge, not the north one");
+        run.Assert(seen.Contains((15, 5)), "he stops beside the chest");
     }
 }

@@ -2,18 +2,18 @@ schemaVersion: 42
 objects:
 - id: 95700ffb-cc80-5551-9a48-3afacc35f8d9
   name: Backdrop
-  x: 0
-  y: 0
-  width: 800
-  height: 450
+  x: -200
+  y: -200
+  width: 1000
+  height: 700
   components:
   - type: spriteRenderer
     squareColor: "#1B1626"
     order: -30
 - id: b4376565-8c73-549f-9207-f90c26c252ce
   name: Field
-  x: 16
-  y: 56
+  x: 0
+  y: 0
   width: 32
   height: 32
   components:
@@ -21,10 +21,607 @@ objects:
     tileset: 9633100d-cb37-56b4-96c1-680f920ff2d3
     cellSize: {width: 32, height: 32}
     order: -10
-    chunks: []
+    chunks:
+    - x: 0
+      y: 0
+      cells: [{index: 0, tile: 6}, {index: 1, tile: 6}, {index: 2, tile: 6}, {index: 3, tile: 6}, {index: 4, tile: 6}, {index: 5, tile: 6}, {index: 6, tile: 6}, {index: 7, tile: 6}, {index: 8, tile: 4}, {index: 9, tile: 4}, {index: 10, tile: 6}, {index: 11, tile: 6}, {index: 12, tile: 6}, {index: 13, tile: 6}, {index: 14, tile: 6}, {index: 15, tile: 6}, {index: 16, tile: 6}, {index: 17, tile: 6}, {index: 32, tile: 6}, {index: 33, tile: 1}, {index: 34, tile: 10}, {index: 35, tile: 10}, {index: 36, tile: 2}, {index: 37, tile: 2}, {index: 38, tile: 10}, {index: 39, tile: 10}, {index: 40, tile: 5}, {index: 41, tile: 5}, {index: 42, tile: 10}, {index: 43, tile: 10}, {index: 44, tile: 2}, {index: 45, tile: 2}, {index: 46, tile: 10}, {index: 47, tile: 10}, {index: 48, tile: 7}, {index: 49, tile: 6}, {index: 64, tile: 6}, {index: 65, tile: 7}, {index: 66, tile: 2}, {index: 67, tile: 9}, {index: 68, tile: 8}, {index: 69, tile: 7}, {index: 70, tile: 1}, {index: 71, tile: 9}, {index: 72, tile: 4}, {index: 73, tile: 4}, {index: 74, tile: 1}, {index: 75, tile: 9}, {index: 76, tile: 8}, {index: 77, tile: 7}, {index: 78, tile: 1}, {index: 79, tile: 10}, {index: 80, tile: 8}, {index: 81, tile: 6}, {index: 96, tile: 6}, {index: 97, tile: 8}, {index: 98, tile: 2}, {index: 99, tile: 1}, {index: 100, tile: 9}, {index: 101, tile: 6}, {index: 102, tile: 7}, {index: 103, tile: 1}, {index: 104, tile: 4}, {index: 105, tile: 4}, {index: 106, tile: 7}, {index: 107, tile: 1}, {index: 108, tile: 6}, {index: 109, tile: 8}, {index: 110, tile: 7}, {index: 111, tile: 2}, {index: 112, tile: 9}, {index: 113, tile: 6}, {index: 128, tile: 6}, {index: 129, tile: 9}, {index: 130, tile: 10}, {index: 131, tile: 7}, {index: 132, tile: 1}, {index: 133, tile: 9}, {index: 134, tile: 8}, {index: 135, tile: 7}, {index: 136, tile: 4}, {index: 137, tile: 4}, {index: 138, tile: 8}, {index: 139, tile: 7}, {index: 140, tile: 1}, {index: 141, tile: 9}, {index: 142, tile: 8}, {index: 143, tile: 2}, {index: 144, tile: 1}, {index: 145, tile: 6}, {index: 160, tile: 6}, {index: 161, tile: 2}, {index: 162, tile: 10}, {index: 163, tile: 10}, {index: 164, tile: 2}, {index: 165, tile: 2}, {index: 166, tile: 10}, {index: 167, tile: 10}, {index: 168, tile: 4}, {index: 169, tile: 4}, {index: 170, tile: 10}, {index: 171, tile: 10}, {index: 172, tile: 2}, {index: 173, tile: 2}, {index: 174, tile: 10}, {index: 175, tile: 10}, {index: 176, tile: 2}, {index: 177, tile: 6}, {index: 192, tile: 6}, {index: 193, tile: 7}, {index: 194, tile: 1}, {index: 195, tile: 9}, {index: 196, tile: 8}, {index: 197, tile: 7}, {index: 198, tile: 1}, {index: 199, tile: 9}, {index: 200, tile: 4}, {index: 201, tile: 4}, {index: 202, tile: 1}, {index: 203, tile: 9}, {index: 204, tile: 8}, {index: 205, tile: 7}, {index: 206, tile: 1}, {index: 207, tile: 9}, {index: 208, tile: 8}, {index: 209, tile: 6}, {index: 224, tile: 6}, {index: 225, tile: 8}, {index: 226, tile: 7}, {index: 227, tile: 6}, {index: 228, tile: 9}, {index: 229, tile: 8}, {index: 230, tile: 7}, {index: 231, tile: 1}, {index: 232, tile: 4}, {index: 233, tile: 4}, {index: 234, tile: 7}, {index: 235, tile: 1}, {index: 236, tile: 9}, {index: 237, tile: 8}, {index: 238, tile: 6}, {index: 239, tile: 1}, {index: 240, tile: 9}, {index: 241, tile: 6}, {index: 256, tile: 6}, {index: 257, tile: 6}, {index: 258, tile: 6}, {index: 259, tile: 6}, {index: 260, tile: 6}, {index: 261, tile: 6}, {index: 262, tile: 6}, {index: 263, tile: 6}, {index: 264, tile: 4}, {index: 265, tile: 4}, {index: 266, tile: 6}, {index: 267, tile: 6}, {index: 268, tile: 6}, {index: 269, tile: 6}, {index: 270, tile: 6}, {index: 271, tile: 6}, {index: 272, tile: 6}, {index: 273, tile: 6}]
   - type: script
     script: Showcase/RouteCourier
-    values: {"Courier": "239c8f4d-3c78-59ca-8d55-fa583a3babd9", "Chest": "15abfd51-0b24-5dd9-8eec-a0fd45c555ae", "Plan": "f5fefe1f-54c6-5589-be77-6fde5b5940d5", "Status": "7ed0c4e0-65c4-5825-aec5-be63c6a9cf0b"}
+    values: {"Courier": "239c8f4d-3c78-59ca-8d55-fa583a3babd9", "Chest": "15abfd51-0b24-5dd9-8eec-a0fd45c555ae", "Spark": "9004b28b-5faf-5495-8bca-f8c29bb36907", "Plan": "f5fefe1f-54c6-5589-be77-6fde5b5940d5", "Number": "9495711b-f984-5f70-b5b1-234234361053", "Note": "303cfb46-1f37-5a0b-846a-9ab813564a71", "Rain": "98db41e5-4ac3-5cb1-a40a-d57a046aa58a", "Build": "ce38d58a-6c5f-5110-8bde-632ef5dcc93a", "IdleE": {"Id": "d19985ab-e0f5-5cc9-affd-6666613af7c8"}, "IdleN": {"Id": "d7a8d7af-d379-5fe0-a509-e4610b0cfe3f"}, "IdleS": {"Id": "f565263f-45a2-53e7-a5ed-3fdca6e15a2c"}, "IdleW": {"Id": "f1af22c3-aa43-54b8-802a-3656cd55cc41"}, "WalkE1": {"Id": "675cc624-fb48-5b06-9134-96bc332d10f4"}, "WalkE2": {"Id": "9a0ea7e5-e9ee-53b1-be18-c98e56c5c7ea"}, "WalkE3": {"Id": "23e73da1-142d-58ce-a077-7dc23c47eb84"}, "WalkE4": {"Id": "200c2c58-7c87-5046-bd9d-f35598ab227c"}, "WalkN1": {"Id": "75cf5cb3-ccb8-5c30-bec5-eee90aaa9b08"}, "WalkN2": {"Id": "3ce2b10e-8bdb-59da-b7bf-8dac66162761"}, "WalkN3": {"Id": "ed257927-5f4a-5649-a61d-d95fde1c6f1a"}, "WalkN4": {"Id": "293087de-f26e-5fbb-852f-0b9d8ad3c1eb"}, "WalkS1": {"Id": "1793a8b5-bdc5-544a-8912-ec6c799295fb"}, "WalkS2": {"Id": "40d5ed84-f9bd-5d61-9347-fa5e2524c3b2"}, "WalkS3": {"Id": "16554591-594b-5a13-879f-41c149d06649"}, "WalkS4": {"Id": "eafcb0d1-9419-5dc7-aef1-acc4d55a9436"}, "WalkW1": {"Id": "2b840d87-a689-5c7c-9afb-4935bab20ff3"}, "WalkW2": {"Id": "0a1c0552-9183-503e-afe3-ce89d78521d9"}, "WalkW3": {"Id": "9cbf0445-08ec-53d1-8447-eae14f335233"}, "WalkW4": {"Id": "7a570a15-b5e8-5f33-ad6b-8603e15ea405"}}
+- id: bc53280c-a57c-5e42-ab81-9b887ab8c0c4
+  name: Bush 0,0
+  x: -9
+  y: -6
+  width: 50
+  height: 42
+  components:
+  - type: spriteRenderer
+    assetId: a7f11da1-032c-42e8-967e-a001cceb2bc4
+    asset: Assets/Showcase/Bush.png
+    sortByY: true
+- id: 90298548-6f92-5078-91b3-c4a5f7f6a0ac
+  name: Bush 1,0
+  x: 23
+  y: -6
+  width: 50
+  height: 42
+  components:
+  - type: spriteRenderer
+    assetId: a7f11da1-032c-42e8-967e-a001cceb2bc4
+    asset: Assets/Showcase/Bush.png
+    sortByY: true
+- id: c339444a-d43d-5638-85b3-281320428ce6
+  name: Bush 2,0
+  x: 55
+  y: -6
+  width: 50
+  height: 42
+  components:
+  - type: spriteRenderer
+    assetId: a7f11da1-032c-42e8-967e-a001cceb2bc4
+    asset: Assets/Showcase/Bush.png
+    sortByY: true
+- id: 8efe36cb-c32d-50cf-8655-46ab99967a38
+  name: Bush 3,0
+  x: 87
+  y: -6
+  width: 50
+  height: 42
+  components:
+  - type: spriteRenderer
+    assetId: a7f11da1-032c-42e8-967e-a001cceb2bc4
+    asset: Assets/Showcase/Bush.png
+    sortByY: true
+- id: 3c2c327c-6195-58ac-bfed-58959911bad1
+  name: Bush 4,0
+  x: 119
+  y: -6
+  width: 50
+  height: 42
+  components:
+  - type: spriteRenderer
+    assetId: a7f11da1-032c-42e8-967e-a001cceb2bc4
+    asset: Assets/Showcase/Bush.png
+    sortByY: true
+- id: 36b2154f-eec8-5947-8a7a-5744cbe618fe
+  name: Bush 5,0
+  x: 151
+  y: -6
+  width: 50
+  height: 42
+  components:
+  - type: spriteRenderer
+    assetId: a7f11da1-032c-42e8-967e-a001cceb2bc4
+    asset: Assets/Showcase/Bush.png
+    sortByY: true
+- id: 8a64864b-4755-5ab0-86c9-c703d5f88b44
+  name: Bush 6,0
+  x: 183
+  y: -6
+  width: 50
+  height: 42
+  components:
+  - type: spriteRenderer
+    assetId: a7f11da1-032c-42e8-967e-a001cceb2bc4
+    asset: Assets/Showcase/Bush.png
+    sortByY: true
+- id: 0856e5a2-e8e1-5fad-9e0d-aa2be43e60a8
+  name: Bush 7,0
+  x: 215
+  y: -6
+  width: 50
+  height: 42
+  components:
+  - type: spriteRenderer
+    assetId: a7f11da1-032c-42e8-967e-a001cceb2bc4
+    asset: Assets/Showcase/Bush.png
+    sortByY: true
+- id: 6f3e8bcf-7c8b-525f-b1a6-1cd5874d3e57
+  name: Bush 10,0
+  x: 311
+  y: -6
+  width: 50
+  height: 42
+  components:
+  - type: spriteRenderer
+    assetId: a7f11da1-032c-42e8-967e-a001cceb2bc4
+    asset: Assets/Showcase/Bush.png
+    sortByY: true
+- id: 8444c592-12d5-5a42-9802-1c9b236a85ca
+  name: Bush 11,0
+  x: 343
+  y: -6
+  width: 50
+  height: 42
+  components:
+  - type: spriteRenderer
+    assetId: a7f11da1-032c-42e8-967e-a001cceb2bc4
+    asset: Assets/Showcase/Bush.png
+    sortByY: true
+- id: ec21945e-5bf4-583b-8abc-614ed6f36514
+  name: Bush 12,0
+  x: 375
+  y: -6
+  width: 50
+  height: 42
+  components:
+  - type: spriteRenderer
+    assetId: a7f11da1-032c-42e8-967e-a001cceb2bc4
+    asset: Assets/Showcase/Bush.png
+    sortByY: true
+- id: d5b68ff3-1891-5843-a719-ee757f2761b3
+  name: Bush 13,0
+  x: 407
+  y: -6
+  width: 50
+  height: 42
+  components:
+  - type: spriteRenderer
+    assetId: a7f11da1-032c-42e8-967e-a001cceb2bc4
+    asset: Assets/Showcase/Bush.png
+    sortByY: true
+- id: 013b75f9-bf81-5afa-8f21-db7dd1e2372f
+  name: Bush 14,0
+  x: 439
+  y: -6
+  width: 50
+  height: 42
+  components:
+  - type: spriteRenderer
+    assetId: a7f11da1-032c-42e8-967e-a001cceb2bc4
+    asset: Assets/Showcase/Bush.png
+    sortByY: true
+- id: 17f2a946-794d-5695-a5b6-970e94872c65
+  name: Bush 15,0
+  x: 471
+  y: -6
+  width: 50
+  height: 42
+  components:
+  - type: spriteRenderer
+    assetId: a7f11da1-032c-42e8-967e-a001cceb2bc4
+    asset: Assets/Showcase/Bush.png
+    sortByY: true
+- id: ab493275-6ba8-57b5-949a-209253c7f9ff
+  name: Bush 16,0
+  x: 503
+  y: -6
+  width: 50
+  height: 42
+  components:
+  - type: spriteRenderer
+    assetId: a7f11da1-032c-42e8-967e-a001cceb2bc4
+    asset: Assets/Showcase/Bush.png
+    sortByY: true
+- id: f64b474a-61b8-5be9-a328-c8296a96a634
+  name: Bush 17,0
+  x: 535
+  y: -6
+  width: 50
+  height: 42
+  components:
+  - type: spriteRenderer
+    assetId: a7f11da1-032c-42e8-967e-a001cceb2bc4
+    asset: Assets/Showcase/Bush.png
+    sortByY: true
+- id: 1f4db612-c7f6-53ce-bf13-e4fbe63cdad4
+  name: Bush 0,1
+  x: -9
+  y: 26
+  width: 50
+  height: 42
+  components:
+  - type: spriteRenderer
+    assetId: a7f11da1-032c-42e8-967e-a001cceb2bc4
+    asset: Assets/Showcase/Bush.png
+    sortByY: true
+- id: 1f227ab3-54b3-59d6-bc43-3717d24697c3
+  name: Bush 17,1
+  x: 535
+  y: 26
+  width: 50
+  height: 42
+  components:
+  - type: spriteRenderer
+    assetId: a7f11da1-032c-42e8-967e-a001cceb2bc4
+    asset: Assets/Showcase/Bush.png
+    sortByY: true
+- id: 761cdee5-f5ce-5721-8526-e23f5d1d5bd4
+  name: Bush 0,2
+  x: -9
+  y: 58
+  width: 50
+  height: 42
+  components:
+  - type: spriteRenderer
+    assetId: a7f11da1-032c-42e8-967e-a001cceb2bc4
+    asset: Assets/Showcase/Bush.png
+    sortByY: true
+- id: bab3d191-8afa-58c1-a536-b9dd7bc630ac
+  name: Bush 17,2
+  x: 535
+  y: 58
+  width: 50
+  height: 42
+  components:
+  - type: spriteRenderer
+    assetId: a7f11da1-032c-42e8-967e-a001cceb2bc4
+    asset: Assets/Showcase/Bush.png
+    sortByY: true
+- id: 20222715-45ec-5054-8f46-fe877742cbef
+  name: Bush 0,3
+  x: -9
+  y: 90
+  width: 50
+  height: 42
+  components:
+  - type: spriteRenderer
+    assetId: a7f11da1-032c-42e8-967e-a001cceb2bc4
+    asset: Assets/Showcase/Bush.png
+    sortByY: true
+- id: 1525d3cb-fb5f-5682-b693-0b8815fdfde7
+  name: Bush 5,3
+  x: 151
+  y: 90
+  width: 50
+  height: 42
+  components:
+  - type: spriteRenderer
+    assetId: a7f11da1-032c-42e8-967e-a001cceb2bc4
+    asset: Assets/Showcase/Bush.png
+    sortByY: true
+- id: 751af316-7d79-5e03-9ed3-fba2d285b75f
+  name: Bush 12,3
+  x: 375
+  y: 90
+  width: 50
+  height: 42
+  components:
+  - type: spriteRenderer
+    assetId: a7f11da1-032c-42e8-967e-a001cceb2bc4
+    asset: Assets/Showcase/Bush.png
+    sortByY: true
+- id: 64df178f-b8ff-5aa7-8e66-0e525f71cda9
+  name: Bush 17,3
+  x: 535
+  y: 90
+  width: 50
+  height: 42
+  components:
+  - type: spriteRenderer
+    assetId: a7f11da1-032c-42e8-967e-a001cceb2bc4
+    asset: Assets/Showcase/Bush.png
+    sortByY: true
+- id: 7c3ed818-b344-5024-babf-c908e1ff56a1
+  name: Bush 0,4
+  x: -9
+  y: 122
+  width: 50
+  height: 42
+  components:
+  - type: spriteRenderer
+    assetId: a7f11da1-032c-42e8-967e-a001cceb2bc4
+    asset: Assets/Showcase/Bush.png
+    sortByY: true
+- id: 7041af43-a203-5d26-98b6-82c8df5acaea
+  name: Bush 17,4
+  x: 535
+  y: 122
+  width: 50
+  height: 42
+  components:
+  - type: spriteRenderer
+    assetId: a7f11da1-032c-42e8-967e-a001cceb2bc4
+    asset: Assets/Showcase/Bush.png
+    sortByY: true
+- id: b3c6ba98-151c-542d-99cc-77aaa960b369
+  name: Bush 0,5
+  x: -9
+  y: 154
+  width: 50
+  height: 42
+  components:
+  - type: spriteRenderer
+    assetId: a7f11da1-032c-42e8-967e-a001cceb2bc4
+    asset: Assets/Showcase/Bush.png
+    sortByY: true
+- id: ac192032-2e44-5bdf-aee3-3d35d75d8c91
+  name: Bush 17,5
+  x: 535
+  y: 154
+  width: 50
+  height: 42
+  components:
+  - type: spriteRenderer
+    assetId: a7f11da1-032c-42e8-967e-a001cceb2bc4
+    asset: Assets/Showcase/Bush.png
+    sortByY: true
+- id: 0af4b2fd-95ab-571f-91e4-7ea697d77bd7
+  name: Bush 0,6
+  x: -9
+  y: 186
+  width: 50
+  height: 42
+  components:
+  - type: spriteRenderer
+    assetId: a7f11da1-032c-42e8-967e-a001cceb2bc4
+    asset: Assets/Showcase/Bush.png
+    sortByY: true
+- id: 1b7d5021-a82a-5583-977f-dd15449ae28b
+  name: Bush 17,6
+  x: 535
+  y: 186
+  width: 50
+  height: 42
+  components:
+  - type: spriteRenderer
+    assetId: a7f11da1-032c-42e8-967e-a001cceb2bc4
+    asset: Assets/Showcase/Bush.png
+    sortByY: true
+- id: c3e6fe02-1bb6-5340-84b8-03f12fa51440
+  name: Bush 0,7
+  x: -9
+  y: 218
+  width: 50
+  height: 42
+  components:
+  - type: spriteRenderer
+    assetId: a7f11da1-032c-42e8-967e-a001cceb2bc4
+    asset: Assets/Showcase/Bush.png
+    sortByY: true
+- id: 3e101ec1-fb46-54bf-a832-18c2a6ee3f99
+  name: Bush 3,7
+  x: 87
+  y: 218
+  width: 50
+  height: 42
+  components:
+  - type: spriteRenderer
+    assetId: a7f11da1-032c-42e8-967e-a001cceb2bc4
+    asset: Assets/Showcase/Bush.png
+    sortByY: true
+- id: 3d797568-54d5-583e-b3c5-8fca19a8f584
+  name: Bush 14,7
+  x: 439
+  y: 218
+  width: 50
+  height: 42
+  components:
+  - type: spriteRenderer
+    assetId: a7f11da1-032c-42e8-967e-a001cceb2bc4
+    asset: Assets/Showcase/Bush.png
+    sortByY: true
+- id: 3387209b-6b39-544f-bd15-4de89484e8c7
+  name: Bush 17,7
+  x: 535
+  y: 218
+  width: 50
+  height: 42
+  components:
+  - type: spriteRenderer
+    assetId: a7f11da1-032c-42e8-967e-a001cceb2bc4
+    asset: Assets/Showcase/Bush.png
+    sortByY: true
+- id: 5a0ceeab-d415-59bd-bbd7-3ce48d634d74
+  name: Bush 0,8
+  x: -9
+  y: 250
+  width: 50
+  height: 42
+  components:
+  - type: spriteRenderer
+    assetId: a7f11da1-032c-42e8-967e-a001cceb2bc4
+    asset: Assets/Showcase/Bush.png
+    sortByY: true
+- id: c783527b-3558-5e2f-94a5-7db91b970907
+  name: Bush 1,8
+  x: 23
+  y: 250
+  width: 50
+  height: 42
+  components:
+  - type: spriteRenderer
+    assetId: a7f11da1-032c-42e8-967e-a001cceb2bc4
+    asset: Assets/Showcase/Bush.png
+    sortByY: true
+- id: f9888a53-fe93-51a3-8033-f2de80d911ea
+  name: Bush 2,8
+  x: 55
+  y: 250
+  width: 50
+  height: 42
+  components:
+  - type: spriteRenderer
+    assetId: a7f11da1-032c-42e8-967e-a001cceb2bc4
+    asset: Assets/Showcase/Bush.png
+    sortByY: true
+- id: 0998cfac-5838-5e57-a95d-2878556df955
+  name: Bush 3,8
+  x: 87
+  y: 250
+  width: 50
+  height: 42
+  components:
+  - type: spriteRenderer
+    assetId: a7f11da1-032c-42e8-967e-a001cceb2bc4
+    asset: Assets/Showcase/Bush.png
+    sortByY: true
+- id: 43f4e6a8-6064-5dbe-b54e-848ae93f45c2
+  name: Bush 4,8
+  x: 119
+  y: 250
+  width: 50
+  height: 42
+  components:
+  - type: spriteRenderer
+    assetId: a7f11da1-032c-42e8-967e-a001cceb2bc4
+    asset: Assets/Showcase/Bush.png
+    sortByY: true
+- id: 51b089b0-d4d7-568a-9c09-b73092890cf8
+  name: Bush 5,8
+  x: 151
+  y: 250
+  width: 50
+  height: 42
+  components:
+  - type: spriteRenderer
+    assetId: a7f11da1-032c-42e8-967e-a001cceb2bc4
+    asset: Assets/Showcase/Bush.png
+    sortByY: true
+- id: 6e17caac-2f6a-525f-be06-70829e062dab
+  name: Bush 6,8
+  x: 183
+  y: 250
+  width: 50
+  height: 42
+  components:
+  - type: spriteRenderer
+    assetId: a7f11da1-032c-42e8-967e-a001cceb2bc4
+    asset: Assets/Showcase/Bush.png
+    sortByY: true
+- id: 25f79c13-c96f-5ad8-943e-3700523db85d
+  name: Bush 7,8
+  x: 215
+  y: 250
+  width: 50
+  height: 42
+  components:
+  - type: spriteRenderer
+    assetId: a7f11da1-032c-42e8-967e-a001cceb2bc4
+    asset: Assets/Showcase/Bush.png
+    sortByY: true
+- id: 41b0a112-a353-550f-8e41-c876f8895502
+  name: Bush 10,8
+  x: 311
+  y: 250
+  width: 50
+  height: 42
+  components:
+  - type: spriteRenderer
+    assetId: a7f11da1-032c-42e8-967e-a001cceb2bc4
+    asset: Assets/Showcase/Bush.png
+    sortByY: true
+- id: 55cb3ee5-c06c-547e-8f9f-2ecfdf2258b3
+  name: Bush 11,8
+  x: 343
+  y: 250
+  width: 50
+  height: 42
+  components:
+  - type: spriteRenderer
+    assetId: a7f11da1-032c-42e8-967e-a001cceb2bc4
+    asset: Assets/Showcase/Bush.png
+    sortByY: true
+- id: aa4fa0e3-19bd-5d69-a8df-36319adae65f
+  name: Bush 12,8
+  x: 375
+  y: 250
+  width: 50
+  height: 42
+  components:
+  - type: spriteRenderer
+    assetId: a7f11da1-032c-42e8-967e-a001cceb2bc4
+    asset: Assets/Showcase/Bush.png
+    sortByY: true
+- id: 517de2d0-062c-5757-90f2-a8fcca40efa7
+  name: Bush 13,8
+  x: 407
+  y: 250
+  width: 50
+  height: 42
+  components:
+  - type: spriteRenderer
+    assetId: a7f11da1-032c-42e8-967e-a001cceb2bc4
+    asset: Assets/Showcase/Bush.png
+    sortByY: true
+- id: 78e6e2fc-5bf3-52e3-906e-9f6ef08efe44
+  name: Bush 14,8
+  x: 439
+  y: 250
+  width: 50
+  height: 42
+  components:
+  - type: spriteRenderer
+    assetId: a7f11da1-032c-42e8-967e-a001cceb2bc4
+    asset: Assets/Showcase/Bush.png
+    sortByY: true
+- id: 33c04b24-e7ab-51b2-b303-4ce1c0660a9e
+  name: Bush 15,8
+  x: 471
+  y: 250
+  width: 50
+  height: 42
+  components:
+  - type: spriteRenderer
+    assetId: a7f11da1-032c-42e8-967e-a001cceb2bc4
+    asset: Assets/Showcase/Bush.png
+    sortByY: true
+- id: 9123c768-1b87-524b-8b67-8b41a2154920
+  name: Bush 16,8
+  x: 503
+  y: 250
+  width: 50
+  height: 42
+  components:
+  - type: spriteRenderer
+    assetId: a7f11da1-032c-42e8-967e-a001cceb2bc4
+    asset: Assets/Showcase/Bush.png
+    sortByY: true
+- id: 7671e051-1c9a-55f5-b154-b349fe1976a8
+  name: Bush 17,8
+  x: 535
+  y: 250
+  width: 50
+  height: 42
+  components:
+  - type: spriteRenderer
+    assetId: a7f11da1-032c-42e8-967e-a001cceb2bc4
+    asset: Assets/Showcase/Bush.png
+    sortByY: true
+- id: aceda18e-f724-5266-a471-264b7db54664
+  name: Flowers 1
+  x: 117
+  y: 64
+  width: 54
+  height: 32
+  components:
+  - type: spriteRenderer
+    assetId: 7b24e73b-ef21-5daa-a6b9-b19be14905d0
+    asset: Assets/Showcase/Flowers.png
+    order: -5
+- id: 72308155-b98a-5e52-91fe-eaf03c91dad6
+  name: Flowers 2
+  x: 373
+  y: 192
+  width: 54
+  height: 32
+  components:
+  - type: spriteRenderer
+    assetId: 7b24e73b-ef21-5daa-a6b9-b19be14905d0
+    asset: Assets/Showcase/Flowers.png
+    order: -5
+- id: eec3b1fe-a31e-5b04-a032-ac590425968f
+  name: Flowers 3
+  x: 149
+  y: 224
+  width: 54
+  height: 32
+  components:
+  - type: spriteRenderer
+    assetId: 7b24e73b-ef21-5daa-a6b9-b19be14905d0
+    asset: Assets/Showcase/Flowers.png
+    order: -5
+- id: 55fbff55-8de4-5ce1-990b-c700ed52fa03
+  name: Flowers 4
+  x: 405
+  y: 64
+  width: 54
+  height: 32
+  components:
+  - type: spriteRenderer
+    assetId: 7b24e73b-ef21-5daa-a6b9-b19be14905d0
+    asset: Assets/Showcase/Flowers.png
+    order: -5
 - id: f5fefe1f-54c6-5589-be77-6fde5b5940d5
   name: Plan
   x: 0
@@ -36,41 +633,87 @@ objects:
     points:
     - {x: 0, y: 0}
     - {x: 1, y: 0}
-    width: 4
+    width: 5
     startColor: "#FFE08C"
     endColor: "#FF9F6B"
-    order: 2
+    order: -4
 - id: 15abfd51-0b24-5dd9-8eec-a0fd45c555ae
   name: Goal chest
-  x: 0
-  y: 0
-  width: 40
-  height: 34
+  x: 512
+  y: 156
+  width: 32
+  height: 32
   components:
   - type: spriteRenderer
     assetId: 9dbfcfaa-1f74-52c3-95e0-d21d83a0b952
     asset: Assets/Showcase/Chest.png
-    order: 3
+    sortByY: true
+- id: 9004b28b-5faf-5495-8bca-f8c29bb36907
+  name: Goal spark
+  x: 528
+  y: 170
+  width: 1
+  height: 1
+  components:
+  - type: particleEmitter2D
+    particles: b73c89c3-297d-5a02-84c7-eef9ce375bd5
+    trigger: Manual
+    sortingLayer: 5
 - id: 239c8f4d-3c78-59ca-8d55-fa583a3babd9
   name: Courier
-  x: 0
-  y: 0
-  width: 20
-  height: 28
+  x: 27
+  y: 128
+  width: 42
+  height: 60
   components:
   - type: spriteRenderer
-    assetId: 6a547cd9-7892-531b-9949-dce73f61e600
-    asset: Assets/Showcase/Villager.png
-    order: 5
-    tint: "#FFD58A"
+    assetId: d19985ab-e0f5-5cc9-affd-6666613af7c8
+    asset: Assets/Showcase/HeroIdleE.png
+    sortByY: true
+- id: 9a18dc9b-9bf4-5817-af21-015e63d0d379
+  parentId: 239c8f4d-3c78-59ca-8d55-fa583a3babd9
+  name: Shadow
+  x: 5
+  y: 52
+  width: 32
+  height: 10
+  components:
+  - type: spriteRenderer
+    assetId: b70af06e-1f73-5951-9f5b-fed56d408ab5
+    asset: Assets/Showcase/ShadowM.png
+    order: -1
+- id: 98db41e5-4ac3-5cb1-a40a-d57a046aa58a
+  name: Rain
+  active: false
+  x: 160
+  y: -12
+  width: 1
+  height: 1
+  components:
+  - type: particleEmitter2D
+    particles: 5d19e5ff-10e5-5e95-9fc0-2a0abd11df00
+    trigger: Start
+    sortingLayer: 5
+- id: ce38d58a-6c5f-5110-8bde-632ef5dcc93a
+  name: Build dust
+  x: 0
+  y: 0
+  width: 1
+  height: 1
+  components:
+  - type: particleEmitter2D
+    particles: c19198ce-0040-594b-b9f2-410ce47f5c87
+    trigger: Manual
+    sortingLayer: 5
 - id: 66de0b00-e0a5-58cb-aa29-29bbb26c794c
   name: Camera
-  x: 400
-  y: 225
+  x: 288
+  y: 156
   width: 1
   height: 1
   components:
   - type: camera2D
+    zoom: 1.25
 - id: d9912a76-0b44-5a47-bfe1-cfb7f1bc239e
   name: Canvas
   x: 0
@@ -79,138 +722,71 @@ objects:
   height: 1
   components:
   - type: uiCanvas
-- id: 7f5fb09d-58e6-5a41-a814-b2b21f2a675a
+- id: 5e368c87-c66d-5f1f-ba4e-bbae8cc4b30e
   parentId: d9912a76-0b44-5a47-bfe1-cfb7f1bc239e
-  name: Legend
-  x: 672
-  y: 56
-  width: 116
-  height: 132
+  name: Cost panel
+  x: -12
+  y: 12
+  width: 170
+  height: 80
   components:
   - type: uiRect
+    anchor: TopRight
   - type: uiImage
     sprite: c4676a68-dc53-5954-889c-f56daa8276e4
     borders: {left: 4, top: 4, right: 4, bottom: 4}
-- id: 0bbf0fdb-0384-5def-b645-d63154c2fa12
-  parentId: 7f5fb09d-58e6-5a41-a814-b2b21f2a675a
-  name: Legend title
-  x: 10
+- id: 7df6c4ef-610c-54c3-829b-18b07c425603
+  parentId: 5e368c87-c66d-5f1f-ba4e-bbae8cc4b30e
+  name: Cost label
+  x: 12
   y: 8
-  width: 100
+  width: 150
   height: 14
   components:
   - type: uiRect
   - type: uiText
     richText: true
-    text: "ENTRY COST"
+    text: "ROUTE COST"
     size: 11
     color: "#BFD0DC"
-- id: bd065684-89fc-56b0-ae16-3bd58bebf5e5
-  parentId: 7f5fb09d-58e6-5a41-a814-b2b21f2a675a
-  name: Legend Road
-  x: 10
-  y: 26
-  width: 96
+- id: 9495711b-f984-5f70-b5b1-234234361053
+  parentId: 5e368c87-c66d-5f1f-ba4e-bbae8cc4b30e
+  name: Cost number
+  x: 12
+  y: 22
+  width: 150
+  height: 32
+  components:
+  - type: uiRect
+  - type: uiText
+    richText: true
+    text: "22"
+    size: 28
+    color: "#FFD84A"
+- id: 303cfb46-1f37-5a0b-846a-9ab813564a71
+  parentId: 5e368c87-c66d-5f1f-ba4e-bbae8cc4b30e
+  name: Cost note
+  x: 12
+  y: 56
+  width: 150
   height: 16
   components:
   - type: uiRect
   - type: uiText
     richText: true
-    text: "Road   <color=#FFD84A>1</color>"
-    size: 12
-    color: "#F4F6F4"
-- id: a5fdd2a0-32ca-565c-b5d8-e74a415c5555
-  parentId: 7f5fb09d-58e6-5a41-a814-b2b21f2a675a
-  name: Legend Grass
-  x: 10
-  y: 46
-  width: 96
-  height: 16
-  components:
-  - type: uiRect
-  - type: uiText
-    richText: true
-    text: "Grass   <color=#FFD84A>3</color>"
-    size: 12
-    color: "#F4F6F4"
-- id: 9b9639ce-4639-5cae-8df1-79f4283dbfb0
-  parentId: 7f5fb09d-58e6-5a41-a814-b2b21f2a675a
-  name: Legend Mud
-  x: 10
-  y: 66
-  width: 96
-  height: 16
-  components:
-  - type: uiRect
-  - type: uiText
-    richText: true
-    text: "Mud   <color=#FFD84A>8</color>"
-    size: 12
-    color: "#F4F6F4"
-- id: 7b6e54b6-9bec-5bc3-b915-b196790ecb2c
-  parentId: 7f5fb09d-58e6-5a41-a814-b2b21f2a675a
-  name: Legend Bridge
-  x: 10
-  y: 86
-  width: 96
-  height: 16
-  components:
-  - type: uiRect
-  - type: uiText
-    richText: true
-    text: "Bridge   <color=#FFD84A>1</color>"
-    size: 12
-    color: "#F4F6F4"
-- id: 55fde54e-7c26-5160-9416-eec109c3ce54
-  parentId: 7f5fb09d-58e6-5a41-a814-b2b21f2a675a
-  name: Legend Water, trees
-  x: 10
-  y: 106
-  width: 96
-  height: 16
-  components:
-  - type: uiRect
-  - type: uiText
-    richText: true
-    text: "Water, trees   <color=#FFD84A>-</color>"
-    size: 12
-    color: "#F4F6F4"
-- id: 2d2d48ab-c88d-5b13-a156-447e23092ab9
-  parentId: d9912a76-0b44-5a47-bfe1-cfb7f1bc239e
-  name: Status
-  x: 672
-  y: 196
-  width: 116
-  height: 96
-  components:
-  - type: uiRect
-  - type: uiImage
-    sprite: c4676a68-dc53-5954-889c-f56daa8276e4
-    borders: {left: 4, top: 4, right: 4, bottom: 4}
-- id: 7ed0c4e0-65c4-5825-aec5-be63c6a9cf0b
-  parentId: 2d2d48ab-c88d-5b13-a156-447e23092ab9
-  name: Status text
-  x: 10
-  y: 8
-  width: 96
-  height: 80
-  components:
-  - type: uiRect
-  - type: uiText
-    richText: true
-    text: ""
-    size: 12
-    color: "#F4F6F4"
-    wrap: true
+    text: "Road all the way"
+    size: 11
+    color: "#BFD0DC"
 - id: 22dbb783-6953-5af0-8a47-1ce6db2ab056
   parentId: d9912a76-0b44-5a47-bfe1-cfb7f1bc239e
   name: Tag 1
   x: 12
-  y: 6
-  width: 315.2
-  height: 22
+  y: 12
+  width: 300
+  height: 24
   components:
   - type: uiRect
+    anchor: TopLeft
     showIf: cost
   - type: uiImage
     sprite: c4676a68-dc53-5954-889c-f56daa8276e4
@@ -218,37 +794,39 @@ objects:
   - type: uiText
     richText: true
     text: "<b>Terrain costs</b>   <color=#BFD0DC>the cheapest route, not the shortest</color>"
-    size: 11
+    size: 12
     insetX: 10
-    insetY: 3
+    insetY: 4
 - id: f838e186-1f37-5c02-b76e-68000e5277bc
   parentId: d9912a76-0b44-5a47-bfe1-cfb7f1bc239e
   name: Tag 2
-  x: 333.2
-  y: 6
-  width: 315.2
-  height: 22
+  x: 12
+  y: 40
+  width: 300
+  height: 24
   components:
   - type: uiRect
+    anchor: TopLeft
     showIf: rain
   - type: uiImage
     sprite: c4676a68-dc53-5954-889c-f56daa8276e4
     borders: {left: 4, top: 4, right: 4, bottom: 4}
   - type: uiText
     richText: true
-    text: "<b>Runtime SetTile</b>   <color=#BFD0DC>rain turns road to mud: re-plan</color>"
-    size: 11
+    text: "<b>Runtime SetTile</b>   <color=#BFD0DC>rain turns the road to mud</color>"
+    size: 12
     insetX: 10
-    insetY: 3
+    insetY: 4
 - id: 89c9fe60-f025-52e5-ad3f-f87aa37c01ce
   parentId: d9912a76-0b44-5a47-bfe1-cfb7f1bc239e
   name: Tag 3
   x: 12
-  y: 30
-  width: 315.2
-  height: 22
+  y: 68
+  width: 300
+  height: 24
   components:
   - type: uiRect
+    anchor: TopLeft
     showIf: bridge
   - type: uiImage
     sprite: c4676a68-dc53-5954-889c-f56daa8276e4
@@ -256,34 +834,48 @@ objects:
   - type: uiText
     richText: true
     text: "<b>New bridge</b>   <color=#BFD0DC>a cheaper way opens mid-walk</color>"
-    size: 11
+    size: 12
     insetX: 10
-    insetY: 3
+    insetY: 4
 - id: be2bc42a-1c9d-5159-b807-f39e6b34f1bc
   parentId: d9912a76-0b44-5a47-bfe1-cfb7f1bc239e
   name: Caption
   x: 12
-  y: -8
-  width: 360
-  height: 24
+  y: -12
+  width: 470
+  height: 44
   components:
   - type: uiRect
     anchor: BottomLeft
   - type: uiImage
     sprite: c4676a68-dc53-5954-889c-f56daa8276e4
     borders: {left: 4, top: 4, right: 4, bottom: 4}
-- id: adba1009-f9ea-52a5-9690-201c2257068b
+- id: aba9d344-54db-58a0-9b19-b7f42ac0a563
   parentId: be2bc42a-1c9d-5159-b807-f39e6b34f1bc
-  name: Caption text
+  name: Caption title
   x: 12
-  y: 3
-  width: 340
-  height: 18
+  y: 5
+  width: 450
+  height: 20
   components:
   - type: uiRect
   - type: uiText
     richText: true
     text: "<b>SeedLab</b>   Grid paths that weigh the ground"
-    size: 13
+    size: 15
     color: "#F4F6F4"
+- id: 1989c472-a197-5171-825b-fde8866c725e
+  parentId: be2bc42a-1c9d-5159-b807-f39e6b34f1bc
+  name: Caption costs
+  x: 12
+  y: 25
+  width: 450
+  height: 16
+  components:
+  - type: uiRect
+  - type: uiText
+    richText: true
+    text: "Road 1    Grass 3    Mud 8    Bridge 1    Water and hedges block"
+    size: 12
+    color: "#BFD0DC"
 defaultCameraId: 66de0b00-e0a5-58cb-aa29-29bbb26c794c

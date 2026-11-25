@@ -4,91 +4,98 @@ using System.Numerics;
 using Engine.Core;
 
 // SeedLab terrain showcase. The field's tiles carry terrain names and entry costs in Field.tileset (road 1, grass 3, mud 8,
-// bridge 1; water and trees block). TileNavigation over the board finds the cheapest route; the courier steps along it. At
-// RainAt the northern road turns to mud, at BridgeAt the southern road is joined by a bridge across the river. Both are SetTile
-// calls; the grid's Revision changes and the courier re-plans from its cell. A Line 2D draws the plan.
-// Raises "cost", "rain", "bridge".
+// bridge 1; water and hedges block); the map itself is in the scene (showcase-src/seed/route.py). TileNavigation over the board
+// finds the cheapest route and the hero walks it a cell at a time. Rain turns the north road to mud cell by cell, then a bridge
+// is laid over the south ford plank by plank: each SetTile changes the grid's Revision and the hero re-plans from where he
+// stands. A Line 2D draws the plan and the panel shows its cost. Raises "cost", "rain", "bridge", "arrived".
 public sealed class RouteCourier : GameBehaviour
 {
-    public Guid Courier, Chest, Plan, Status;
-    private const int Cell = 32, Grass = 1, Road = 2, Mud = 3, Water = 4, Bridge = 5, Tree = 6;
-    // Timed so rain lands while the courier climbs the west road (cell 2,2) and the bridge while it crosses the grass (6,2).
-    private const float Step = .5f, RainAt = 2.2f, BridgeAt = 4.2f;
-    private static readonly string[] Map =
-    {
-        "TTTTTTTTT~~TTTTTTTTT",
-        "T.======.BB.======.T",
-        "T.=.....~~~......=.T",
-        "T.=....~~~.......=.T",
-        "T.=....~~~.......=.T",
-        "T======~~~========.T",
-        "T......~~~.........T",
-        "T..TT..~~~...TT....T",
-        "T......~~~.........T",
-        "TTTTTTT~~~TTTTTTTTTT",
-    };
-    private static readonly Point Start = new(1, 5), Goal = new(18, 5);
+    public Guid Courier, Chest, Spark, Plan, Number, Note, Rain, Build;
+    public SpriteReference IdleE, IdleN, IdleS, IdleW, WalkE1, WalkE2, WalkE3, WalkE4, WalkN1, WalkN2, WalkN3, WalkN4,
+        WalkS1, WalkS2, WalkS3, WalkS4, WalkW1, WalkW2, WalkW3, WalkW4;
+    private const int Cell = 32, Mud = 3, Bridge = 5, Width = 18, Height = 9;
+    private const float Step = .5f, RainAt = 1.6f, BridgeAt = 3.6f;
+    // Cells from route.py's map: the north road between the west lane and the north bridge, and the south ford.
+    private static readonly Point[] MudCells = [new(3, 1), new(4, 1), new(5, 1), new(6, 1), new(7, 1)];
+    private static readonly Point[] BridgeCells = [new(8, 5), new(9, 5)];
+    private static readonly Point Start = new(1, 5), Goal = new(15, 5);   // the cell beside the chest at (16, 5)
     private GridNavigation grid = null!;
     private GridPath route = null!;
-    private Point at = Start;
-    private int next = 1;
+    private Point at = Start, heading = new(1, 0);
+    private int next = 1, mudDone, bridgeDone;
     private float time, stepClock;
     private long planned = -1;
-    private bool rained, bridged;
-    private string note = "Cheapest route around the river.";
+    private bool arrived;
+    private string note = "Road all the way";
     private Vector2 origin;
     private Vector2[] line = new Vector2[64];
 
-    private int Width => Map[0].Length;
-
     public override void OnCreate(ScriptLife life)
     {
-        var tiles = new int[Width * Map.Length];
-        for (int y = 0; y < Map.Length; y++)
-        for (int x = 0; x < Width; x++)
-            tiles[y * Width + x] = Map[y][x] switch { 'T' => Tree, '~' => Water, '=' => Road, 'B' => Bridge, _ => Grass };
-        tiles[Start.Y * Width + Start.X] = Road;
-        tiles[Goal.Y * Width + Goal.X] = Road;
-        life.Objects.ReplaceTiles(life.ObjectId, Width, Map.Length, tiles);
         life.Objects.TryGetPosition(life.ObjectId, out origin);
-        grid = life.Objects.TileNavigation(life.ObjectId, new Rectangle(0, 0, Width, Map.Length))
+        grid = life.Objects.TileNavigation(life.ObjectId, new Rectangle(0, 0, Width, Height))
                ?? throw new InvalidOperationException("RouteCourier needs a non-streamed tilemap.");
-        life.Objects.SetLocalTransform(Chest, new LocalTransform2D(Centre(Goal) - new Vector2(20, 24), 0, Vector2.One));
-        Place(life.Objects, Start);
+        life.Objects.SetLocalTransform(Courier, new LocalTransform2D(Feet(Start), 0, Vector2.One));
     }
 
     private Vector2 Centre(Point c) => origin + new Vector2(c.X * Cell + Cell / 2f, c.Y * Cell + Cell / 2f);
-
-    private void Place(IGameObjects objects, Point c)
-    {
-        at = c;
-        objects.SetLocalTransform(Courier, new LocalTransform2D(Centre(c) - new Vector2(10, 22), 0, Vector2.One));
-    }
+    private Vector2 Feet(Point c) => Centre(c) - new Vector2(21, 48);   // the 42 x 60 hero stands with his feet low in the cell
 
     public override void FixedUpdate(ScriptTick tick)
     {
         time += tick.DeltaTime;
         var objects = tick.Objects;
         tick.Session.Set("cost");
-        if (!rained && time >= RainAt)
+        // Rain sweeps over the north road; the road turns to mud one cell after another.
+        if (time >= RainAt - .4f && time < RainAt + 2.4f) objects.SetActive(Rain, true);
+        else if (time >= RainAt + 2.4f) objects.SetActive(Rain, false);
+        if (mudDone < MudCells.Length && time >= RainAt + mudDone * .12f)
         {
-            rained = true;
-            for (int x = 3; x <= 7; x++) objects.SetTile(tick.ObjectId, new Point(x, 1), Mud);
-            note = "Rain: the north road is mud now (8 a cell).";
+            objects.SetTile(tick.ObjectId, MudCells[mudDone++], Mud);
+            note = "Rain turned the road to mud";
             tick.Session.Set("rain");
         }
-        if (!bridged && time >= BridgeAt)
+        // Then the bridge goes down over the south ford, a plank at a time.
+        if (bridgeDone < BridgeCells.Length && time >= BridgeAt + bridgeDone * .25f)
         {
-            bridged = true;
-            for (int x = 7; x <= 9; x++) objects.SetTile(tick.ObjectId, new Point(x, 5), Bridge);
-            note = "A bridge joins the south road.";
+            var cell = BridgeCells[bridgeDone++];
+            objects.SetTile(tick.ObjectId, cell, Bridge);
+            objects.SetLocalTransform(Build, new LocalTransform2D(Centre(cell), 0, Vector2.One));
+            objects.EmitParticles(Build);
+            note = "A bridge over the ford";
             tick.Session.Set("bridge");
         }
         if (grid.Revision != planned) Replan(objects, tick.Ui);
-        if (at == Goal || (stepClock += tick.DeltaTime) < Step) return;
+        if (arrived) return;
+        Animate(objects);
+        if ((stepClock += tick.DeltaTime) < Step) return;
         stepClock = 0;
-        if (next < route.Cells.Count) { Place(objects, route.Cells[next++]); DrawPlan(objects); }
-        if (at == Goal) tick.Ui.SetText(Status, $"Arrived.\n{note}");
+        if (next < route.Cells.Count)
+        {
+            var to = route.Cells[next++];
+            heading = new Point(to.X - at.X, to.Y - at.Y);
+            at = to;
+            objects.Tween(Courier).Move(Feet(to), Step, TweenEase.Linear);
+            DrawPlan(objects);
+        }
+        else if (at == Goal)
+        {
+            arrived = true;
+            tick.Session.Set("arrived");
+            objects.SetSprite(Courier, IdleE);
+            objects.EmitParticles(Spark);
+            objects.TryGetPosition(Chest, out var chest);
+            objects.Tween(Chest).Move(chest - new Vector2(0, 8), .12f, TweenEase.EaseOut).Move(chest, .2f, TweenEase.EaseIn);
+            tick.Ui.SetText(Note, "Arrived at the chest");
+        }
+    }
+
+    private void Animate(IGameObjects objects)
+    {
+        int f = (int)(time / .12f) % 4;
+        SpriteReference pick(SpriteReference a, SpriteReference b, SpriteReference c, SpriteReference d) => f switch { 0 => a, 1 => b, 2 => c, _ => d };
+        objects.SetSprite(Courier, heading.X > 0 ? pick(WalkE1, WalkE2, WalkE3, WalkE4) : heading.X < 0 ? pick(WalkW1, WalkW2, WalkW3, WalkW4)
+                                  : heading.Y < 0 ? pick(WalkN1, WalkN2, WalkN3, WalkN4) : pick(WalkS1, WalkS2, WalkS3, WalkS4));
     }
 
     private void Replan(IGameObjects objects, IGameUi ui)
@@ -97,8 +104,9 @@ public sealed class RouteCourier : GameBehaviour
         route = grid.FindPath(at, Goal, GridDirections.Four);
         next = 1;
         DrawPlan(objects);
-        // FindPath charges 10 x the entry cost per straight step; four-way routes divide back to the legend's units.
-        ui.SetText(Status, $"Route cost <color=#FFD84A>{route.Cost / 10}</color>\n{route.Cells.Count - 1} steps\n<color=#BFD0DC>{note}</color>");
+        // FindPath charges 10 x the entry cost per straight step; four-way routes divide back to the caption's units.
+        ui.SetText(Number, (route.Cost / 10).ToString());
+        ui.SetText(Note, note);
     }
 
     private void DrawPlan(IGameObjects objects)

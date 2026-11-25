@@ -1,0 +1,14 @@
+duration: 0.5
+looping: false
+rate: 0
+bursts: [{time: 0, count: 18}]
+shape: Box
+width: 28
+height: 8
+spread: 140
+speed: {min: 20, max: 70}
+lifetime: {min: 0.4, max: 0.8}
+size: {min: 2, max: 4}
+color: {min: "#8A5A3A", max: "#E0B080"}
+endSize: 0.4
+gravity: 60
