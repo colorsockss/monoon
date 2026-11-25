@@ -66,8 +66,8 @@ s.obj("Ground", 0, 0, C, C, f"  - type: tilemap2D\n    tileset: {asset('Ground.t
       f"    streamRadius: 1\n    streamTarget: {s.oid('Runner')}\n    order: -1\n    chunks:\n"
       + "".join(f"    - x: {cx}\n      y: 0\n      cells: [{', '.join(cells)}]\n" for cx, cells in sorted(chunks.items())))
 end_top = surface[END_COL] * C
-s.obj("Goal pennant", (END_COL + 4) * C, end_top - 29, 20, 29, sprite("Pennant.png", order=1))
-confetti = s.obj("Confetti", (END_COL + 4) * C + 10, end_top - 20, 1, 1, f"  - type: particleEmitter2D\n    particles: {asset('Confetti.particles')}\n    trigger: Manual\n    sortingLayer: 5\n")
+s.obj("Goal pennant", END_COL * C + 18, end_top - 29, 20, 29, sprite("Pennant.png", order=1))   # its pole meets the stopped runner's front (the pictures have a few transparent columns)
+confetti = s.obj("Confetti", END_COL * C + 28, end_top - 20, 1, 1, f"  - type: particleEmitter2D\n    particles: {asset('Confetti.particles')}\n    trigger: Manual\n    sortingLayer: 5\n")
 runner = s.obj("Runner", 3 * C, 22 * C - 30, 22, 30, "  - type: boxCollider2D\n    layer: 1\n  - type: rigidbody2D\n    freezeRotation: true\n"
                f"  - type: particleEmitter2D\n    particles: {asset('LandingDust.particles')}\n    trigger: Landing\n    offsetY: 14\n  - type: characterMotor2D\n")
 s.obj("Hero", 0, 0, 21, 30, sprite("HeroIdleE.png", order=4) + f"  - type: spriteAnimator\n    controller: {asset('Hero.animator')}\n    playOnStart: true\n"
