@@ -1,0 +1,373 @@
+schemaVersion: 42
+objects:
+- id: 72418d15-fb9e-58fc-94a1-a7a550c38a45
+  name: Floor
+  x: 0
+  y: 64
+  width: 800
+  height: 386
+  components:
+  - type: spriteRenderer
+    assetId: 283f1f4c-e86a-57b7-9c9b-8c13f845fc9a
+    asset: Assets/Showcase/Floor.png
+    drawMode: Tiled
+    order: -30
+- id: 34ecc54d-4e9b-53c5-850e-16810c43a945
+  name: Wall face
+  x: 0
+  y: 0
+  width: 800
+  height: 64
+  components:
+  - type: spriteRenderer
+    assetId: ae0206ca-d323-5c31-86dd-aae6afba049f
+    asset: Assets/Showcase/WallFace.png
+    drawMode: Tiled
+    order: -29
+- id: 2560af91-2652-5ac9-aff8-6dbc2084587b
+  name: Dummy shadow
+  x: 610
+  y: 300
+  width: 32
+  height: 10
+  components:
+  - type: spriteRenderer
+    assetId: 5d73fe99-b84a-5664-b667-b9f554cdb749
+    asset: Assets/Showcase/ShadowM.png
+    order: -5
+- id: 1f47c167-61ab-5718-beb6-740bff667de1
+  name: Dummy
+  x: 600
+  y: 238
+  width: 54
+  height: 68
+  components:
+  - type: spriteRenderer
+    assetId: d39e8e07-1dcc-5348-9ad7-8d400bc8218b
+    asset: Assets/Showcase/Dummy.png
+    sortByY: true
+- id: 87e44194-36f4-5ed4-a38f-c0447957b834
+  name: Hero shadow
+  x: 405
+  y: 300
+  width: 32
+  height: 10
+  components:
+  - type: spriteRenderer
+    assetId: 5d73fe99-b84a-5664-b667-b9f554cdb749
+    asset: Assets/Showcase/ShadowM.png
+    order: -5
+- id: 24913deb-ed68-5b36-ab51-6cdd88e61771
+  name: Hero
+  x: 400
+  y: 246
+  width: 42
+  height: 60
+  components:
+  - type: spriteRenderer
+    assetId: cbe7c7c6-9b00-5540-bffc-ee40ea0eab63
+    asset: Assets/Showcase/HeroIdleE.png
+    sortByY: true
+  - type: trail2D
+    time: 0.35
+    width: 10
+    startColor: "#9FE6FF"
+    endColor: "#3B5BFF"
+    maxPoints: 30
+    minStep: 2
+    order: -1
+- id: 2dc2ce0c-c620-5e30-9239-3db851ba16af
+  parentId: 24913deb-ed68-5b36-ab51-6cdd88e61771
+  name: Burst
+  x: 0
+  y: 0
+  width: 1
+  height: 1
+  components:
+  - type: particleEmitter2D
+    particles: a54d0bcb-0ec9-539f-b2b8-0c5f3fed2bcf
+    trigger: Manual
+    order: 5
+- id: 2f86ae31-f660-5e3c-8b92-52d53658db29
+  name: Camera
+  x: 400
+  y: 225
+  width: 1
+  height: 1
+  components:
+  - type: camera2D
+- id: ca5be54c-0cbe-5159-9e94-06c0b9613144
+  name: Canvas
+  x: 0
+  y: 0
+  width: 1
+  height: 1
+  components:
+  - type: uiCanvas
+- id: 12a13aa5-7eb8-587b-a349-ad628b89855f
+  parentId: ca5be54c-0cbe-5159-9e94-06c0b9613144
+  name: Rules
+  x: 12
+  y: 76
+  width: 330
+  height: 186
+  components:
+  - type: uiRect
+  - type: uiImage
+    sprite: e10f8332-2da7-5e7b-807e-cdf2f79ef8d1
+    borders: {left: 4, top: 4, right: 4, bottom: 4}
+- id: 12e9b9e3-3034-5f7d-9488-c3037090a2db
+  parentId: 12a13aa5-7eb8-587b-a349-ad628b89855f
+  name: Rules title
+  x: 12
+  y: 8
+  width: 300
+  height: 16
+  components:
+  - type: uiRect
+  - type: uiText
+    richText: true
+    text: "INPUT INTERACTIONS"
+    size: 11
+    color: "#BFD0DC"
+- id: 27d55fdd-b11b-522a-9edb-722b8ad74c39
+  parentId: 12a13aa5-7eb8-587b-a349-ad628b89855f
+  name: Charge name
+  x: 12
+  y: 30
+  width: 80
+  height: 18
+  components:
+  - type: uiRect
+  - type: uiText
+    richText: true
+    text: "<b>Charge</b>"
+    size: 14
+    color: "#F4F6F4"
+- id: 03bb7b53-9378-598b-b219-4bb1ee913ae9
+  parentId: 12a13aa5-7eb8-587b-a349-ad628b89855f
+  name: Charge key
+  x: 92
+  y: 30
+  width: 60
+  height: 18
+  components:
+  - type: uiRect
+  - type: uiText
+    richText: true
+    text: "J"
+    size: 14
+    color: "#FFD84A"
+- id: 06eec78f-ff9a-50d1-a1e5-db6b71c57917
+  parentId: 12a13aa5-7eb8-587b-a349-ad628b89855f
+  name: Charge rule
+  x: 150
+  y: 32
+  width: 170
+  height: 16
+  components:
+  - type: uiRect
+  - type: uiText
+    richText: true
+    text: "hold for 30 ticks"
+    size: 11
+    color: "#BFD0DC"
+- id: 55c5f235-e3f5-53d6-b887-aee305fec19e
+  parentId: 12a13aa5-7eb8-587b-a349-ad628b89855f
+  name: Flick name
+  x: 12
+  y: 64
+  width: 80
+  height: 18
+  components:
+  - type: uiRect
+  - type: uiText
+    richText: true
+    text: "<b>Flick</b>"
+    size: 14
+    color: "#F4F6F4"
+- id: 767dc1f7-5ef5-5d8b-9392-2bb6eb3f3e05
+  parentId: 12a13aa5-7eb8-587b-a349-ad628b89855f
+  name: Flick key
+  x: 92
+  y: 64
+  width: 60
+  height: 18
+  components:
+  - type: uiRect
+  - type: uiText
+    richText: true
+    text: "J"
+    size: 14
+    color: "#FFD84A"
+- id: 9b1b9e83-ac8d-5502-8dc3-f39a04093dda
+  parentId: 12a13aa5-7eb8-587b-a349-ad628b89855f
+  name: Flick rule
+  x: 150
+  y: 66
+  width: 170
+  height: 16
+  components:
+  - type: uiRect
+  - type: uiText
+    richText: true
+    text: "tap, release within 12 ticks"
+    size: 11
+    color: "#BFD0DC"
+- id: 52db7b97-60d9-57b0-b60c-c233bc3457b4
+  parentId: 12a13aa5-7eb8-587b-a349-ad628b89855f
+  name: Dash name
+  x: 12
+  y: 98
+  width: 80
+  height: 18
+  components:
+  - type: uiRect
+  - type: uiText
+    richText: true
+    text: "<b>Dash</b>"
+    size: 14
+    color: "#F4F6F4"
+- id: aa938e65-9f88-5bf3-87bc-4db1472a53b5
+  parentId: 12a13aa5-7eb8-587b-a349-ad628b89855f
+  name: Dash key
+  x: 92
+  y: 98
+  width: 60
+  height: 18
+  components:
+  - type: uiRect
+  - type: uiText
+    richText: true
+    text: "J"
+    size: 14
+    color: "#FFD84A"
+- id: c5a88e08-a076-50ed-a9ed-53637db995cc
+  parentId: 12a13aa5-7eb8-587b-a349-ad628b89855f
+  name: Dash rule
+  x: 150
+  y: 100
+  width: 170
+  height: 16
+  components:
+  - type: uiRect
+  - type: uiText
+    richText: true
+    text: "double-tap within 15 ticks"
+    size: 11
+    color: "#BFD0DC"
+- id: a44baf3f-16d5-5b3f-b791-7e32f2272ef0
+  parentId: 12a13aa5-7eb8-587b-a349-ad628b89855f
+  name: Meter back
+  x: 12
+  y: 136
+  width: 306
+  height: 10
+  components:
+  - type: uiRect
+  - type: uiImage
+    sprite: e10f8332-2da7-5e7b-807e-cdf2f79ef8d1
+    borders: {left: 4, top: 4, right: 4, bottom: 4}
+- id: ec484903-e37d-5c51-9e45-617325e9591c
+  parentId: a44baf3f-16d5-5b3f-b791-7e32f2272ef0
+  name: Meter fill
+  x: 2
+  y: 2
+  width: 1
+  height: 6
+  components:
+  - type: uiRect
+  - type: uiImage
+    sprite: e10f8332-2da7-5e7b-807e-cdf2f79ef8d1
+    color: "#FFD84A"
+- id: d2d4997d-9e75-5b7c-a358-44880e41e193
+  parentId: 12a13aa5-7eb8-587b-a349-ad628b89855f
+  name: Log
+  x: 12
+  y: 154
+  width: 306
+  height: 28
+  components:
+  - type: uiRect
+  - type: uiText
+    richText: true
+    text: "Press J, U or O."
+    size: 12
+    color: "#9FE6A0"
+    wrap: true
+- id: c6795055-cb01-5cba-a5b9-b4f63f31fcf8
+  parentId: ca5be54c-0cbe-5159-9e94-06c0b9613144
+  name: Tag 1
+  x: 12
+  y: 270
+  width: 383.6
+  height: 24
+  components:
+  - type: uiRect
+    showIf: interact
+  - type: uiImage
+    sprite: e10f8332-2da7-5e7b-807e-cdf2f79ef8d1
+    borders: {left: 4, top: 4, right: 4, bottom: 4}
+  - type: uiText
+    richText: true
+    text: "<b>Hold, tap, double-tap</b>   <color=#BFD0DC>input interactions in GameSettings</color>"
+    size: 12
+    insetX: 10
+    insetY: 4
+- id: c568a863-02cd-5cef-b93c-409403be2ce1
+  parentId: ca5be54c-0cbe-5159-9e94-06c0b9613144
+  name: Tag 2
+  x: 12
+  y: 298
+  width: 383.6
+  height: 24
+  components:
+  - type: uiRect
+    showIf: rebind
+  - type: uiImage
+    sprite: e10f8332-2da7-5e7b-807e-cdf2f79ef8d1
+    borders: {left: 4, top: 4, right: 4, bottom: 4}
+  - type: uiText
+    richText: true
+    text: "<b>Rebinding</b>   <color=#BFD0DC>change a key while the game runs</color>"
+    size: 12
+    insetX: 10
+    insetY: 4
+- id: df73290e-8688-5e96-a153-04e45fafa808
+  parentId: ca5be54c-0cbe-5159-9e94-06c0b9613144
+  name: Caption
+  x: 12
+  y: -10
+  width: 380
+  height: 26
+  components:
+  - type: uiRect
+    anchor: BottomLeft
+  - type: uiImage
+    sprite: e10f8332-2da7-5e7b-807e-cdf2f79ef8d1
+    borders: {left: 4, top: 4, right: 4, bottom: 4}
+- id: f0aed890-2ff6-5a23-8895-9594276937ca
+  parentId: df73290e-8688-5e96-a153-04e45fafa808
+  name: Caption text
+  x: 12
+  y: 4
+  width: 360
+  height: 18
+  components:
+  - type: uiRect
+  - type: uiText
+    richText: true
+    text: "<b>KeyRoom</b>   Charge J    Flick U    Dash O O    Rebind dash K"
+    size: 13
+    color: "#F4F6F4"
+- id: fc9e44e6-42fb-50a6-a058-4ba04a5684ad
+  name: Trainer
+  x: 0
+  y: 0
+  width: 1
+  height: 1
+  components:
+  - type: script
+    script: Showcase/MoveTrainer
+    values: {"Hero": "24913deb-ed68-5b36-ab51-6cdd88e61771", "Dummy": "1f47c167-61ab-5718-beb6-740bff667de1", "Burst": "2dc2ce0c-c620-5e30-9239-3db851ba16af", "Meter": "ec484903-e37d-5c51-9e45-617325e9591c", "Log": "d2d4997d-9e75-5b7c-a358-44880e41e193", "Keys": ["03bb7b53-9378-598b-b219-4bb1ee913ae9", "767dc1f7-5ef5-5d8b-9392-2bb6eb3f3e05", "aa938e65-9f88-5bf3-87bc-4db1472a53b5"], "Names": ["27d55fdd-b11b-522a-9edb-722b8ad74c39", "55c5f235-e3f5-53d6-b887-aee305fec19e", "52db7b97-60d9-57b0-b60c-c233bc3457b4"]}
+defaultCameraId: 2f86ae31-f660-5e3c-8b92-52d53658db29

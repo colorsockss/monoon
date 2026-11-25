@@ -1,0 +1,64 @@
+using System.Collections.Generic;
+using Engine.Core;
+
+// The input showcase: hold, tap and double-tap interactions from GameSettings, and rebinding Dash at run time.
+public sealed class MoveTests
+{
+    private const string Moves = "Scenes/ShowcaseMoves.scene";
+
+    [GameTest(Moves)]
+    public IEnumerable<ScriptWait> ChargeNeedsThirtyHeldTicks(GameTestRun run)
+    {
+        run.Press("J");
+        yield return ScriptWait.Frames(20);
+        run.Assert(!run.Session.Has("interact"), "20 ticks is not a charge");
+        yield return ScriptWait.Frames(15);
+        run.Assert(run.Session.Has("interact"), "30 held ticks charge");
+    }
+
+    [GameTest(Moves)]
+    public IEnumerable<ScriptWait> FlickIsAShortTap(GameTestRun run)
+    {
+        run.Press("U");
+        yield return ScriptWait.Frames(20);
+        run.Release("U");
+        yield return ScriptWait.Frames(3);
+        run.Assert(!run.Session.Has("interact"), "a 20-tick press is no tap");
+        run.Tap("U");
+        yield return ScriptWait.Frames(3);
+        run.Assert(run.Session.Has("interact"), "a quick tap flicks");
+    }
+
+    [GameTest(Moves)]
+    public IEnumerable<ScriptWait> DashNeedsTwoQuickTaps(GameTestRun run)
+    {
+        float x = run.PositionOf("Hero").X;
+        run.Tap("O");
+        yield return ScriptWait.Frames(25);
+        run.Tap("O");
+        yield return ScriptWait.Frames(3);
+        run.Assert(!run.Session.Has("interact"), "taps 25 ticks apart do not dash");
+        yield return ScriptWait.Frames(30);
+        run.Tap("O");
+        yield return ScriptWait.Frames(5);
+        run.Tap("O");
+        yield return ScriptWait.Frames(6);
+        run.Assert(run.Session.Has("interact") && run.PositionOf("Hero").X > x + 40, "a quick double tap dashes the hero right");
+    }
+
+    [GameTest(Moves)]
+    public IEnumerable<ScriptWait> KRebindsDash(GameTestRun run)
+    {
+        run.Tap("K");
+        yield return ScriptWait.Frames(3);
+        run.Tap("P");
+        yield return ScriptWait.Frames(3);
+        run.AreEqual("P", run.Session.BindingFor("Dash", InputDevice.Keyboard), "dash key after rebinding");
+        run.Assert(run.Session.Has("rebind"), "the rebind is announced");
+        run.Tap("P");
+        yield return ScriptWait.Frames(5);
+        run.Tap("P");
+        yield return ScriptWait.Frames(3);
+        run.Assert(run.Session.Has("interact"), "the new key dashes");
+    }
+}

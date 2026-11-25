@@ -4,6 +4,7 @@ height: 450
 integerScale: true
 startScene: dd96f9dd-668b-5df5-8786-252e6eb77e9e
 includedScenes:
+- 061c6369-02fc-513b-8292-fd6ac88c4ea2
 - dd96f9dd-668b-5df5-8786-252e6eb77e9e
 - eeac16ae-6a5c-58ce-995a-0e1c0f636572
 - 64fb4cd6-2469-5cec-ba6d-9a49e61f42e7
@@ -58,6 +59,9 @@ input:
     controls: [Backspace, I, Pad.East]
   - name: ChangeLanguage
     controls: [L]
+  - {name: Charge, controls: [J], interaction: Hold, ticks: 30}
+  - {name: Flick, controls: [U], interaction: Tap, ticks: 12}
+  - {name: Dash, controls: [O], interaction: DoubleTap, ticks: 15}
   - name: KeyBindings
     controls: [K, Pad.RightShoulder]
 uiTheme: c08eff10-71b4-4da8-b33f-5482bcc4c531

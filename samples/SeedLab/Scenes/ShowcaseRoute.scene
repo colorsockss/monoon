@@ -1,0 +1,289 @@
+schemaVersion: 42
+objects:
+- id: 95700ffb-cc80-5551-9a48-3afacc35f8d9
+  name: Backdrop
+  x: 0
+  y: 0
+  width: 800
+  height: 450
+  components:
+  - type: spriteRenderer
+    squareColor: "#1B1626"
+    order: -30
+- id: b4376565-8c73-549f-9207-f90c26c252ce
+  name: Field
+  x: 16
+  y: 56
+  width: 32
+  height: 32
+  components:
+  - type: tilemap2D
+    tileset: 9633100d-cb37-56b4-96c1-680f920ff2d3
+    cellSize: {width: 32, height: 32}
+    order: -10
+    chunks: []
+  - type: script
+    script: Showcase/RouteCourier
+    values: {"Courier": "239c8f4d-3c78-59ca-8d55-fa583a3babd9", "Chest": "15abfd51-0b24-5dd9-8eec-a0fd45c555ae", "Plan": "f5fefe1f-54c6-5589-be77-6fde5b5940d5", "Status": "7ed0c4e0-65c4-5825-aec5-be63c6a9cf0b"}
+- id: f5fefe1f-54c6-5589-be77-6fde5b5940d5
+  name: Plan
+  x: 0
+  y: 0
+  width: 1
+  height: 1
+  components:
+  - type: line2D
+    points:
+    - {x: 0, y: 0}
+    - {x: 1, y: 0}
+    width: 4
+    startColor: "#FFE08C"
+    endColor: "#FF9F6B"
+    order: 2
+- id: 15abfd51-0b24-5dd9-8eec-a0fd45c555ae
+  name: Goal chest
+  x: 0
+  y: 0
+  width: 40
+  height: 34
+  components:
+  - type: spriteRenderer
+    assetId: 9dbfcfaa-1f74-52c3-95e0-d21d83a0b952
+    asset: Assets/Showcase/Chest.png
+    order: 3
+- id: 239c8f4d-3c78-59ca-8d55-fa583a3babd9
+  name: Courier
+  x: 0
+  y: 0
+  width: 20
+  height: 28
+  components:
+  - type: spriteRenderer
+    assetId: 6a547cd9-7892-531b-9949-dce73f61e600
+    asset: Assets/Showcase/Villager.png
+    order: 5
+    tint: "#FFD58A"
+- id: 66de0b00-e0a5-58cb-aa29-29bbb26c794c
+  name: Camera
+  x: 400
+  y: 225
+  width: 1
+  height: 1
+  components:
+  - type: camera2D
+- id: d9912a76-0b44-5a47-bfe1-cfb7f1bc239e
+  name: Canvas
+  x: 0
+  y: 0
+  width: 1
+  height: 1
+  components:
+  - type: uiCanvas
+- id: 7f5fb09d-58e6-5a41-a814-b2b21f2a675a
+  parentId: d9912a76-0b44-5a47-bfe1-cfb7f1bc239e
+  name: Legend
+  x: 672
+  y: 56
+  width: 116
+  height: 132
+  components:
+  - type: uiRect
+  - type: uiImage
+    sprite: c4676a68-dc53-5954-889c-f56daa8276e4
+    borders: {left: 4, top: 4, right: 4, bottom: 4}
+- id: 0bbf0fdb-0384-5def-b645-d63154c2fa12
+  parentId: 7f5fb09d-58e6-5a41-a814-b2b21f2a675a
+  name: Legend title
+  x: 10
+  y: 8
+  width: 100
+  height: 14
+  components:
+  - type: uiRect
+  - type: uiText
+    richText: true
+    text: "ENTRY COST"
+    size: 11
+    color: "#BFD0DC"
+- id: bd065684-89fc-56b0-ae16-3bd58bebf5e5
+  parentId: 7f5fb09d-58e6-5a41-a814-b2b21f2a675a
+  name: Legend Road
+  x: 10
+  y: 26
+  width: 96
+  height: 16
+  components:
+  - type: uiRect
+  - type: uiText
+    richText: true
+    text: "Road   <color=#FFD84A>1</color>"
+    size: 12
+    color: "#F4F6F4"
+- id: a5fdd2a0-32ca-565c-b5d8-e74a415c5555
+  parentId: 7f5fb09d-58e6-5a41-a814-b2b21f2a675a
+  name: Legend Grass
+  x: 10
+  y: 46
+  width: 96
+  height: 16
+  components:
+  - type: uiRect
+  - type: uiText
+    richText: true
+    text: "Grass   <color=#FFD84A>3</color>"
+    size: 12
+    color: "#F4F6F4"
+- id: 9b9639ce-4639-5cae-8df1-79f4283dbfb0
+  parentId: 7f5fb09d-58e6-5a41-a814-b2b21f2a675a
+  name: Legend Mud
+  x: 10
+  y: 66
+  width: 96
+  height: 16
+  components:
+  - type: uiRect
+  - type: uiText
+    richText: true
+    text: "Mud   <color=#FFD84A>8</color>"
+    size: 12
+    color: "#F4F6F4"
+- id: 7b6e54b6-9bec-5bc3-b915-b196790ecb2c
+  parentId: 7f5fb09d-58e6-5a41-a814-b2b21f2a675a
+  name: Legend Bridge
+  x: 10
+  y: 86
+  width: 96
+  height: 16
+  components:
+  - type: uiRect
+  - type: uiText
+    richText: true
+    text: "Bridge   <color=#FFD84A>1</color>"
+    size: 12
+    color: "#F4F6F4"
+- id: 55fde54e-7c26-5160-9416-eec109c3ce54
+  parentId: 7f5fb09d-58e6-5a41-a814-b2b21f2a675a
+  name: Legend Water, trees
+  x: 10
+  y: 106
+  width: 96
+  height: 16
+  components:
+  - type: uiRect
+  - type: uiText
+    richText: true
+    text: "Water, trees   <color=#FFD84A>-</color>"
+    size: 12
+    color: "#F4F6F4"
+- id: 2d2d48ab-c88d-5b13-a156-447e23092ab9
+  parentId: d9912a76-0b44-5a47-bfe1-cfb7f1bc239e
+  name: Status
+  x: 672
+  y: 196
+  width: 116
+  height: 96
+  components:
+  - type: uiRect
+  - type: uiImage
+    sprite: c4676a68-dc53-5954-889c-f56daa8276e4
+    borders: {left: 4, top: 4, right: 4, bottom: 4}
+- id: 7ed0c4e0-65c4-5825-aec5-be63c6a9cf0b
+  parentId: 2d2d48ab-c88d-5b13-a156-447e23092ab9
+  name: Status text
+  x: 10
+  y: 8
+  width: 96
+  height: 80
+  components:
+  - type: uiRect
+  - type: uiText
+    richText: true
+    text: ""
+    size: 12
+    color: "#F4F6F4"
+    wrap: true
+- id: 22dbb783-6953-5af0-8a47-1ce6db2ab056
+  parentId: d9912a76-0b44-5a47-bfe1-cfb7f1bc239e
+  name: Tag 1
+  x: 12
+  y: 6
+  width: 315.2
+  height: 22
+  components:
+  - type: uiRect
+    showIf: cost
+  - type: uiImage
+    sprite: c4676a68-dc53-5954-889c-f56daa8276e4
+    borders: {left: 4, top: 4, right: 4, bottom: 4}
+  - type: uiText
+    richText: true
+    text: "<b>Terrain costs</b>   <color=#BFD0DC>the cheapest route, not the shortest</color>"
+    size: 11
+    insetX: 10
+    insetY: 3
+- id: f838e186-1f37-5c02-b76e-68000e5277bc
+  parentId: d9912a76-0b44-5a47-bfe1-cfb7f1bc239e
+  name: Tag 2
+  x: 333.2
+  y: 6
+  width: 315.2
+  height: 22
+  components:
+  - type: uiRect
+    showIf: rain
+  - type: uiImage
+    sprite: c4676a68-dc53-5954-889c-f56daa8276e4
+    borders: {left: 4, top: 4, right: 4, bottom: 4}
+  - type: uiText
+    richText: true
+    text: "<b>Runtime SetTile</b>   <color=#BFD0DC>rain turns road to mud: re-plan</color>"
+    size: 11
+    insetX: 10
+    insetY: 3
+- id: 89c9fe60-f025-52e5-ad3f-f87aa37c01ce
+  parentId: d9912a76-0b44-5a47-bfe1-cfb7f1bc239e
+  name: Tag 3
+  x: 12
+  y: 30
+  width: 315.2
+  height: 22
+  components:
+  - type: uiRect
+    showIf: bridge
+  - type: uiImage
+    sprite: c4676a68-dc53-5954-889c-f56daa8276e4
+    borders: {left: 4, top: 4, right: 4, bottom: 4}
+  - type: uiText
+    richText: true
+    text: "<b>New bridge</b>   <color=#BFD0DC>a cheaper way opens mid-walk</color>"
+    size: 11
+    insetX: 10
+    insetY: 3
+- id: be2bc42a-1c9d-5159-b807-f39e6b34f1bc
+  parentId: d9912a76-0b44-5a47-bfe1-cfb7f1bc239e
+  name: Caption
+  x: 12
+  y: -8
+  width: 360
+  height: 24
+  components:
+  - type: uiRect
+    anchor: BottomLeft
+  - type: uiImage
+    sprite: c4676a68-dc53-5954-889c-f56daa8276e4
+    borders: {left: 4, top: 4, right: 4, bottom: 4}
+- id: adba1009-f9ea-52a5-9690-201c2257068b
+  parentId: be2bc42a-1c9d-5159-b807-f39e6b34f1bc
+  name: Caption text
+  x: 12
+  y: 3
+  width: 340
+  height: 18
+  components:
+  - type: uiRect
+  - type: uiText
+    richText: true
+    text: "<b>SeedLab</b>   Grid paths that weigh the ground"
+    size: 13
+    color: "#F4F6F4"
+defaultCameraId: 66de0b00-e0a5-58cb-aa29-29bbb26c794c

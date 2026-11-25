@@ -1,0 +1,34 @@
+image: 5d7d057a-f93d-5516-8cfc-311396b6c557
+tileSize: {width: 32, height: 32}
+margin: 0
+spacing: 0
+nextId: 7
+tiles:
+- id: 1
+  source: {x: 0, y: 0, width: 32, height: 32}
+  solid: false
+  terrain: grass
+  moveCost: 3
+- id: 2
+  source: {x: 32, y: 0, width: 32, height: 32}
+  solid: false
+  terrain: road
+  moveCost: 1
+- id: 3
+  source: {x: 64, y: 0, width: 32, height: 32}
+  solid: false
+  terrain: mud
+  moveCost: 8
+- id: 4
+  source: {x: 96, y: 0, width: 32, height: 32}
+  solid: true
+  terrain: water
+- id: 5
+  source: {x: 128, y: 0, width: 32, height: 32}
+  solid: false
+  terrain: bridge
+  moveCost: 1
+- id: 6
+  source: {x: 160, y: 0, width: 32, height: 32}
+  solid: true
+  terrain: tree

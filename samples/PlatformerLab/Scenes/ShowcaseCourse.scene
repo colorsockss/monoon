@@ -1,0 +1,669 @@
+schemaVersion: 42
+objects:
+- id: 2217116d-d564-5623-ba5a-0ebe866ed872
+  name: Sky
+  x: -200
+  y: -200
+  width: 2800
+  height: 420
+  components:
+  - type: spriteRenderer
+    squareColor: "#8FC9E8"
+    order: -40
+- id: 17e15d31-1563-57ea-b6c7-9a36e3e0710e
+  name: Sky low
+  x: -200
+  y: 220
+  width: 2800
+  height: 500
+  components:
+  - type: spriteRenderer
+    squareColor: "#BFE3EE"
+    order: -40
+- id: 0167db76-e9ae-5f56-883b-5b992032e4d4
+  name: Start ledge
+  x: 0
+  y: 300
+  width: 200
+  height: 150
+  components:
+  - type: spriteRenderer
+    assetId: 0853b46e-ba8c-5509-a1b5-318ebc87c031
+    asset: Assets/Showcase/Ground.png
+    drawMode: Tiled
+    order: -5
+  - type: boxCollider2D
+- id: 76881e4e-2e0f-5cfb-b24c-4a4c07fe5940
+  name: Pit floor
+  x: 200
+  y: 430
+  width: 190
+  height: 20
+  components:
+  - type: spriteRenderer
+    assetId: 0853b46e-ba8c-5509-a1b5-318ebc87c031
+    asset: Assets/Showcase/Ground.png
+    drawMode: Tiled
+    order: -5
+  - type: boxCollider2D
+- id: 301044ca-81ab-5ed2-94b3-6bd220524765
+  name: Plank 1
+  rotation: 12.6519
+  groups:
+  - bridge
+  x: 200
+  y: 300
+  width: 24
+  height: 6
+  components:
+  - type: spriteRenderer
+    assetId: d72c3b8c-1b7f-5087-871f-46c9ae587566
+    asset: Assets/Showcase/Deck.png
+    drawMode: Tiled
+    order: 1
+  - type: boxCollider2D
+  - type: rigidbody2D
+    mass: 2
+  - type: revoluteJoint2D
+    connected: "0167db76-e9ae-5f56-883b-5b992032e4d4"
+    anchorX: -12
+    anchorY: -3
+- id: 2d5ec61b-b3db-5f7d-8509-e46b67431cad
+  name: Plank 2
+  rotation: 9.0371
+  groups:
+  - bridge
+  x: 223.417
+  y: 305.257
+  width: 24
+  height: 6
+  components:
+  - type: spriteRenderer
+    assetId: d72c3b8c-1b7f-5087-871f-46c9ae587566
+    asset: Assets/Showcase/Deck.png
+    drawMode: Tiled
+    order: 1
+  - type: boxCollider2D
+  - type: rigidbody2D
+    mass: 2
+  - type: revoluteJoint2D
+    connected: "301044ca-81ab-5ed2-94b3-6bd220524765"
+    anchorX: -12
+    anchorY: -3
+- id: 24dcb48e-065c-524c-80a3-6b8e08629d90
+  name: Plank 3
+  rotation: 5.4223
+  groups:
+  - bridge
+  x: 247.119
+  y: 309.026
+  width: 24
+  height: 6
+  components:
+  - type: spriteRenderer
+    assetId: d72c3b8c-1b7f-5087-871f-46c9ae587566
+    asset: Assets/Showcase/Deck.png
+    drawMode: Tiled
+    order: 1
+  - type: boxCollider2D
+  - type: rigidbody2D
+    mass: 2
+  - type: revoluteJoint2D
+    connected: "2d5ec61b-b3db-5f7d-8509-e46b67431cad"
+    anchorX: -12
+    anchorY: -3
+- id: b1b25f89-0cf5-56ad-aef3-4724da50e0a0
+  name: Plank 4
+  rotation: 1.8074
+  groups:
+  - bridge
+  x: 271.012
+  y: 311.294
+  width: 24
+  height: 6
+  components:
+  - type: spriteRenderer
+    assetId: d72c3b8c-1b7f-5087-871f-46c9ae587566
+    asset: Assets/Showcase/Deck.png
+    drawMode: Tiled
+    order: 1
+  - type: boxCollider2D
+  - type: rigidbody2D
+    mass: 2
+  - type: revoluteJoint2D
+    connected: "24dcb48e-065c-524c-80a3-6b8e08629d90"
+    anchorX: -12
+    anchorY: -3
+- id: 0ce3d5e7-045a-5501-a7a7-782714e91819
+  name: Plank 5
+  rotation: -1.8074
+  groups:
+  - bridge
+  x: 295
+  y: 312.051
+  width: 24
+  height: 6
+  components:
+  - type: spriteRenderer
+    assetId: d72c3b8c-1b7f-5087-871f-46c9ae587566
+    asset: Assets/Showcase/Deck.png
+    drawMode: Tiled
+    order: 1
+  - type: boxCollider2D
+  - type: rigidbody2D
+    mass: 2
+  - type: revoluteJoint2D
+    connected: "b1b25f89-0cf5-56ad-aef3-4724da50e0a0"
+    anchorX: -12
+    anchorY: -3
+- id: 88068975-e978-5d8f-a3a9-ea76085267d4
+  name: Plank 6
+  rotation: -5.4223
+  groups:
+  - bridge
+  x: 318.988
+  y: 311.294
+  width: 24
+  height: 6
+  components:
+  - type: spriteRenderer
+    assetId: d72c3b8c-1b7f-5087-871f-46c9ae587566
+    asset: Assets/Showcase/Deck.png
+    drawMode: Tiled
+    order: 1
+  - type: boxCollider2D
+  - type: rigidbody2D
+    mass: 2
+  - type: revoluteJoint2D
+    connected: "0ce3d5e7-045a-5501-a7a7-782714e91819"
+    anchorX: -12
+    anchorY: -3
+- id: 1dc8c312-b29d-54e7-b41b-31486c95855d
+  name: Plank 7
+  rotation: -9.0371
+  groups:
+  - bridge
+  x: 342.881
+  y: 309.026
+  width: 24
+  height: 6
+  components:
+  - type: spriteRenderer
+    assetId: d72c3b8c-1b7f-5087-871f-46c9ae587566
+    asset: Assets/Showcase/Deck.png
+    drawMode: Tiled
+    order: 1
+  - type: boxCollider2D
+  - type: rigidbody2D
+    mass: 2
+  - type: revoluteJoint2D
+    connected: "88068975-e978-5d8f-a3a9-ea76085267d4"
+    anchorX: -12
+    anchorY: -3
+- id: c8519896-5eb3-5f13-9d1e-4cd349fb0e41
+  name: Plank 8
+  rotation: -12.6519
+  groups:
+  - bridge
+  x: 366.583
+  y: 305.257
+  width: 24
+  height: 6
+  components:
+  - type: spriteRenderer
+    assetId: d72c3b8c-1b7f-5087-871f-46c9ae587566
+    asset: Assets/Showcase/Deck.png
+    drawMode: Tiled
+    order: 1
+  - type: boxCollider2D
+  - type: rigidbody2D
+    mass: 2
+  - type: revoluteJoint2D
+    connected: "1dc8c312-b29d-54e7-b41b-31486c95855d"
+    anchorX: -12
+    anchorY: -3
+- id: 31efcf7c-f139-529b-a294-c08ff09b432b
+  name: Far ledge
+  x: 390
+  y: 300
+  width: 80
+  height: 150
+  components:
+  - type: spriteRenderer
+    assetId: 0853b46e-ba8c-5509-a1b5-318ebc87c031
+    asset: Assets/Showcase/Ground.png
+    drawMode: Tiled
+    order: -5
+  - type: boxCollider2D
+  - type: revoluteJoint2D
+    connected: "c8519896-5eb3-5f13-9d1e-4cd349fb0e41"
+    anchorX: -40
+    anchorY: -75
+- id: e5fdbd64-7c28-5ec0-8389-fbb479a36afd
+  name: Pulley deck A
+  groups:
+  - pulley
+  x: 474
+  y: 300
+  width: 70
+  height: 12
+  components:
+  - type: spriteRenderer
+    assetId: d72c3b8c-1b7f-5087-871f-46c9ae587566
+    asset: Assets/Showcase/Deck.png
+    drawMode: Tiled
+    order: 1
+  - type: boxCollider2D
+  - type: rigidbody2D
+    gravity: 0
+    freezeRotation: true
+  - type: prismaticJoint2D
+    axisX: 0
+    axisY: 1
+    limit: true
+    lower: -16
+    upper: 16
+  - type: script
+    script: PulleyPair
+    values: {"Partner": "7b5e294a-f984-52e4-8863-92e33b961586"}
+- id: 7b5e294a-f984-52e4-8863-92e33b961586
+  name: Pulley deck B
+  groups:
+  - pulley
+  x: 594
+  y: 300
+  width: 70
+  height: 12
+  components:
+  - type: spriteRenderer
+    assetId: d72c3b8c-1b7f-5087-871f-46c9ae587566
+    asset: Assets/Showcase/Deck.png
+    drawMode: Tiled
+    order: 1
+  - type: boxCollider2D
+  - type: rigidbody2D
+    gravity: 0
+    freezeRotation: true
+  - type: prismaticJoint2D
+    axisX: 0
+    axisY: 1
+    limit: true
+    lower: -16
+    upper: 16
+- id: 61578b61-512d-5540-bcff-0bd65d355a05
+  name: Pulley wheel
+  x: 560
+  y: 134
+  width: 24
+  height: 24
+  components:
+  - type: spriteRenderer
+    assetId: 68aee20b-37c0-5b1d-ab41-e03571fa6e0e
+    asset: Assets/Showcase/Ball.png
+    order: 2
+- id: e27664ac-8bd6-5036-9a14-e7224b82920a
+  name: Rope A
+  x: 0
+  y: 0
+  width: 1
+  height: 1
+  components:
+  - type: line2D
+    points:
+    - {x: 562, y: 146}
+    - {x: 509, y: 300}
+    width: 2
+    startColor: "#4A3A2A"
+    endColor: "#4A3A2A"
+    order: 2
+- id: 76537411-6fa6-5c1b-bf94-147882b6aa2b
+  name: Rope B
+  x: 0
+  y: 0
+  width: 1
+  height: 1
+  components:
+  - type: line2D
+    points:
+    - {x: 582, y: 146}
+    - {x: 629, y: 300}
+    width: 2
+    startColor: "#4A3A2A"
+    endColor: "#4A3A2A"
+    order: 2
+- id: 8694fa8b-1666-5d49-9279-4300f49619c0
+  name: Pulley pit floor
+  x: 470
+  y: 430
+  width: 220
+  height: 20
+  components:
+  - type: spriteRenderer
+    assetId: 0853b46e-ba8c-5509-a1b5-318ebc87c031
+    asset: Assets/Showcase/Ground.png
+    drawMode: Tiled
+    order: -5
+  - type: boxCollider2D
+- id: 71b5edd7-a621-566e-919d-d9df6ec7bdc9
+  name: Middle ledge
+  x: 690
+  y: 300
+  width: 310
+  height: 150
+  components:
+  - type: spriteRenderer
+    assetId: 0853b46e-ba8c-5509-a1b5-318ebc87c031
+    asset: Assets/Showcase/Ground.png
+    drawMode: Tiled
+    order: -5
+  - type: boxCollider2D
+- id: e8b9a62d-0e5f-5137-b0cb-9fa7b756e585
+  name: Lift pit floor
+  x: 1000
+  y: 430
+  width: 400
+  height: 20
+  components:
+  - type: spriteRenderer
+    assetId: 0853b46e-ba8c-5509-a1b5-318ebc87c031
+    asset: Assets/Showcase/Ground.png
+    drawMode: Tiled
+    order: -5
+  - type: boxCollider2D
+- id: af65d16b-903b-5805-85e9-9e1925f29868
+  name: Pillar
+  x: 1180
+  y: 210
+  width: 40
+  height: 220
+  components:
+  - type: spriteRenderer
+    assetId: 1f05ce45-611e-5ebc-a38d-4e035baf9cdd
+    asset: Assets/Showcase/Pillar.png
+    order: -6
+  - type: boxCollider2D
+- id: 61c77573-7037-59db-80d8-c0d2c3e6943e
+  name: Path lift
+  x: 1000
+  y: 300
+  width: 80
+  height: 12
+  components:
+  - type: spriteRenderer
+    assetId: d72c3b8c-1b7f-5087-871f-46c9ae587566
+    asset: Assets/Showcase/Deck.png
+    drawMode: Tiled
+    order: 1
+  - type: boxCollider2D
+  - type: rigidbody2D
+    bodyType: "Kinematic"
+  - type: pathFollower2D
+    points:
+    - {x: 0, y: 0, outX: 0, outY: -60}
+    - {x: 150, y: -150, inX: -80, inY: 0, outX: 80, outY: 0}
+    - {x: 320, y: -40, inX: 0, inY: -60}
+    speed: 90
+    repeat: Once
+    playOnStart: false
+- id: 0fdf2e65-dacc-5111-a450-039349780edd
+  name: Lift path
+  x: 1040
+  y: 306
+  width: 1
+  height: 1
+  components:
+  - type: line2D
+    points:
+    - {x: 0, y: 0, outX: 0, outY: -60}
+    - {x: 150, y: -150, inX: -80, inY: 0, outX: 80, outY: 0}
+    - {x: 320, y: -40, inX: 0, inY: -60}
+    width: 2
+    startColor: "#FFE08C"
+    endColor: "#FF9F6B"
+    order: -1
+- id: 8af3e7e4-5d88-5364-ae0b-638b95ae9148
+  name: Lift goal ledge
+  x: 1400
+  y: 260
+  width: 200
+  height: 190
+  components:
+  - type: spriteRenderer
+    assetId: 0853b46e-ba8c-5509-a1b5-318ebc87c031
+    asset: Assets/Showcase/Ground.png
+    drawMode: Tiled
+    order: -5
+  - type: boxCollider2D
+- id: 4590b7d3-c332-554d-80ed-1e4e0b426f11
+  name: Hill
+  x: 1600
+  y: 160
+  width: 480
+  height: 100
+  components:
+  - type: edgeCollider2D
+    points:
+    - {x: 0.00000, y: 1.00000}
+    - {x: 0.05737, y: 0.89453}
+    - {x: 0.11680, y: 0.80312}
+    - {x: 0.17798, y: 0.72578}
+    - {x: 0.24063, y: 0.66250}
+    - {x: 0.30444, y: 0.61328}
+    - {x: 0.36914, y: 0.57812}
+    - {x: 0.43442, y: 0.55703}
+    - {x: 0.50000, y: 0.55000}
+    - {x: 0.56558, y: 0.55703}
+    - {x: 0.63086, y: 0.57812}
+    - {x: 0.69556, y: 0.61328}
+    - {x: 0.75938, y: 0.66250}
+    - {x: 0.82202, y: 0.72578}
+    - {x: 0.88320, y: 0.80312}
+    - {x: 0.94263, y: 0.89453}
+    - {x: 1.00000, y: 1.00000}
+  - type: line2D
+    points:
+    - {x: 0, y: 100, outX: 144, outY: -60}
+    - {x: 480, y: 100, inX: -144, inY: -60}
+    width: 6
+    startColor: "#7CC36A"
+    endColor: "#4F9A55"
+    order: 2
+- id: 066238ca-9b2c-52b0-999b-a1cdc4215b5b
+  name: Hill floor
+  x: 1600
+  y: 430
+  width: 480
+  height: 20
+  components:
+  - type: spriteRenderer
+    assetId: 0853b46e-ba8c-5509-a1b5-318ebc87c031
+    asset: Assets/Showcase/Ground.png
+    drawMode: Tiled
+    order: -5
+  - type: boxCollider2D
+- id: 1fd0dbb4-81fa-5554-935f-e4f82d70acd4
+  name: End ledge
+  x: 2080
+  y: 260
+  width: 260
+  height: 190
+  components:
+  - type: spriteRenderer
+    assetId: 0853b46e-ba8c-5509-a1b5-318ebc87c031
+    asset: Assets/Showcase/Ground.png
+    drawMode: Tiled
+    order: -5
+  - type: boxCollider2D
+- id: 9ace23a2-d72f-50f7-951c-3bfb12bc3507
+  name: Goal pennant
+  x: 2280
+  y: 196
+  width: 40
+  height: 64
+  components:
+  - type: spriteRenderer
+    assetId: 34e622de-b909-54c3-aeee-270fb33c457d
+    asset: Assets/Showcase/Pennant.png
+    order: 1
+- id: f373d37f-5d2d-53e4-8679-e33133f2c5b6
+  name: Runner
+  x: 60
+  y: 268
+  width: 22
+  height: 30
+  components:
+  - type: skeletonAnimator2D
+    rig: 125e32af-6a4f-40ca-acb2-c88f5fc833ce
+    order: 3
+    clock: Travel
+    stride: 28
+  - type: capsuleCollider2D
+    layer: 1
+  - type: rigidbody2D
+    freezeRotation: true
+  - type: characterMotor2D
+  - type: script
+    script: Showcase/CourseRunner
+    values: {"Lift": "61c77573-7037-59db-80d8-c0d2c3e6943e", "DeckA": "e5fdbd64-7c28-5ec0-8389-fbb479a36afd", "DeckB": "7b5e294a-f984-52e4-8863-92e33b961586", "RopeA": "e27664ac-8bd6-5036-9a14-e7224b82920a", "RopeB": "76537411-6fa6-5c1b-bf94-147882b6aa2b"}
+- id: 40439bd9-e7d5-5918-8cdf-6d69e0a2e648
+  name: Camera
+  x: 400
+  y: 225
+  width: 1
+  height: 1
+  components:
+  - type: camera2D
+    zoom: 1.5
+    follow: f373d37f-5d2d-53e4-8679-e33133f2c5b6
+    halfLife: 0.3
+    bounds: {x: 0, y: 40, width: 2340, height: 410}
+- id: 1ee4d7b1-452b-5bd6-930b-75a02409deaa
+  name: Canvas
+  x: 0
+  y: 0
+  width: 1
+  height: 1
+  components:
+  - type: uiCanvas
+- id: 72e61d7d-01f9-56e4-aefe-827d839c06b7
+  parentId: 1ee4d7b1-452b-5bd6-930b-75a02409deaa
+  name: Tag 1
+  x: 12
+  y: 12
+  width: 358.8
+  height: 22
+  components:
+  - type: uiRect
+    showIf: rig
+  - type: uiImage
+    sprite: bf477ce7-700b-4462-ba37-ecad01ce5ee2
+    borders: {left: 4, top: 4, right: 4, bottom: 4}
+  - type: uiText
+    richText: true
+    text: "<b>Skeleton Animator 2D</b>   <color=#BFD0DC>bones on a capsule body</color>"
+    size: 12
+    insetX: 10
+    insetY: 3
+- id: e114eaca-9441-5362-a266-7346bd84ccb8
+  parentId: 1ee4d7b1-452b-5bd6-930b-75a02409deaa
+  name: Tag 2
+  x: 12
+  y: 38
+  width: 358.8
+  height: 22
+  components:
+  - type: uiRect
+    showIf: bridge
+  - type: uiImage
+    sprite: bf477ce7-700b-4462-ba37-ecad01ce5ee2
+    borders: {left: 4, top: 4, right: 4, bottom: 4}
+  - type: uiText
+    richText: true
+    text: "<b>Revolute Joint 2D</b>   <color=#BFD0DC>a rope bridge of planks</color>"
+    size: 12
+    insetX: 10
+    insetY: 3
+- id: 3372dd8b-6769-541f-bed6-136341a56949
+  parentId: 1ee4d7b1-452b-5bd6-930b-75a02409deaa
+  name: Tag 3
+  x: 12
+  y: 64
+  width: 358.8
+  height: 22
+  components:
+  - type: uiRect
+    showIf: pulley
+  - type: uiImage
+    sprite: bf477ce7-700b-4462-ba37-ecad01ce5ee2
+    borders: {left: 4, top: 4, right: 4, bottom: 4}
+  - type: uiText
+    richText: true
+    text: "<b>Slider joints</b>   <color=#BFD0DC>a pulley: one deck sinks, one rises</color>"
+    size: 12
+    insetX: 10
+    insetY: 3
+- id: 10c8e86a-ad81-5100-9ed1-4eada6242038
+  parentId: 1ee4d7b1-452b-5bd6-930b-75a02409deaa
+  name: Tag 4
+  x: 12
+  y: 90
+  width: 358.8
+  height: 22
+  components:
+  - type: uiRect
+    showIf: path
+  - type: uiImage
+    sprite: bf477ce7-700b-4462-ba37-ecad01ce5ee2
+    borders: {left: 4, top: 4, right: 4, bottom: 4}
+  - type: uiText
+    richText: true
+    text: "<b>Path Follower 2D</b>   <color=#BFD0DC>a lift on a Bezier curve</color>"
+    size: 12
+    insetX: 10
+    insetY: 3
+- id: 8f41b585-3443-5b46-ae90-e80160f0d440
+  parentId: 1ee4d7b1-452b-5bd6-930b-75a02409deaa
+  name: Tag 5
+  x: 12
+  y: 116
+  width: 358.8
+  height: 22
+  components:
+  - type: uiRect
+    showIf: chain
+  - type: uiImage
+    sprite: bf477ce7-700b-4462-ba37-ecad01ce5ee2
+    borders: {left: 4, top: 4, right: 4, bottom: 4}
+  - type: uiText
+    richText: true
+    text: "<b>Edge Collider 2D</b>   <color=#BFD0DC>a chain hill under a smooth Line 2D</color>"
+    size: 12
+    insetX: 10
+    insetY: 3
+- id: 609150c7-9323-52cb-a32e-115613cdac8c
+  parentId: 1ee4d7b1-452b-5bd6-930b-75a02409deaa
+  name: Caption
+  x: 12
+  y: -8
+  width: 330
+  height: 24
+  components:
+  - type: uiRect
+    anchor: BottomLeft
+  - type: uiImage
+    sprite: bf477ce7-700b-4462-ba37-ecad01ce5ee2
+    borders: {left: 4, top: 4, right: 4, bottom: 4}
+- id: af90f3df-6880-516b-9c72-9f32c09e50da
+  parentId: 609150c7-9323-52cb-a32e-115613cdac8c
+  name: Caption text
+  x: 12
+  y: 3
+  width: 310
+  height: 18
+  components:
+  - type: uiRect
+  - type: uiText
+    richText: true
+    text: "<b>PlatformerLab</b>   Joints, curves and a rigged runner"
+    size: 13
+defaultCameraId: 40439bd9-e7d5-5918-8cdf-6d69e0a2e648

@@ -226,6 +226,36 @@ Parallax는 PlatformerLab의 한 씬이라 PlatformerLab 영상 안에서 다룬
 - **무대**: 마당 한 장에 Sprite Renderer 기능을 모았다. 같은 SignBoard PNG를 Sliced로 세 크기(96×56·160×56·232×76)에 그린 간판, 발 위치로 정렬되는 우물과 주인공, 속성 키 클립으로 흔들리는 등불(Rotation)과 깜빡이는 동전(Tint·Opacity), Trail 2D를 남기는 반딧불, 연못 둑에서만 보이는 반사(같은 프레임을 Flip Y·Tint·줄무늬 마스크로 그림). 마스크는 스프라이트를 따라 움직이므로 물 모양으로 자르지 못한다. 그래서 연못 위쪽 둑을 곧게 만들어 주인공이 그 직선 구간만 걷게 하고, 연못 테두리를 반사보다 위(order -14)에 따로 그려 반사가 수면선에서 시작하게 했다. 동전도 발 Y로 정렬해 주인공이 앞을 지나면 가려진다.
 - **2026-11-25 촬영분**: `Scenes/ShowcaseYard.scene`(`showcase-src/sprite/art.py`, `scene.py`), `Assets/Showcase/LanternSwing.clip`·`CoinPulse.clip`, `Scripts/Showcase/SpriteTour.cs`, `showcase-video/SpriteLab.mp4`(19.0초, 한 바퀴). 주인공이 우물 뒤(발 Y 205)로 지나며 가려지고, 연못 둑에서 반사가 생기고, 우물 앞(발 Y 290)으로 지나 다시 우물을 가린다. 태그는 켜지는 순서대로 9-slice → Y 정렬 → 속성 키 → Trail 2D → 반사다. 아틀라스·Aseprite 가져오기는 편집 기능이라 넣지 않았다.
 
+## 6-4. 하네스 기준 누락 기능 (2026-11-25 점검)
+
+샘플 단위로만 확인해 조명·곡선 같은 기능이 빠진 것을 사용자가 지적했다. `engine/tests/harnesses.json`의 70개 하네스를 기능 목록으로 보고 쇼케이스 씬·스크립트와 대조했다. 에디터 전용 하네스(Inspector, 도킹, 프로파일러, 필드 이름 바꾸기 등), 게임패드(실물 패드 필요), Foot IK(제거 예정)는 플레이 영상 대상에서 뺐다.
+
+| 기능 (하네스) | 지금 쇼케이스 | 추가 계획 |
+| --- | --- | --- |
+| Global Light 2D 어둠·그림자, Sprite Shader 2D (PlatformerLab.Lighting·Effects·Shaders) | 횃불 가산광만 | PlatformerLab 동굴 쇼케이스 |
+| 베지어 Line 2D, Path Follower 2D 곡선 경로 (BarrageLab.Lines, PlatformerLab.Paths) | 직선 레이저만 | PlatformerLab 경로·관절 쇼케이스 |
+| 흔들다리·도르래 관절 (PlatformerLab.Joints) | 거리 관절 사슬만 | 같은 쇼케이스 |
+| 캡슐 캐릭터·체인 경사 (PlatformerLab.Colliders), 뼈대 애니메이션 | 없음 | 같은 쇼케이스 |
+| 데드존·앞보기·여러 대상 프레이밍, 디버그 그리기 (CameraLab.Framing·DebugDraw) | 없음 | CameraLab 두 번째 영상 |
+| 홀드·탭·더블탭, 조작키 재설정 (KeyRoom.InputInteractions·Rebinding) | 없음 | KeyRoom 조작 영상 |
+| 입력 기록·재생 (InventoryLab.Replay) | 없음 | InventoryLab 또는 조작 영상 |
+| 지형 비용 길찾기, 실행 중 셀 바꾸기, 청크 스트리밍 (SeedLab.TileTerrain·GridNavigation) | 없음 | SeedLab 세 번째 장면 |
+| 오디오 (AudioLab.*), RhythmLab | 찍지 않음 | 소리 녹음 도구 결정 뒤 |
+
+### 2026-11-25 추가 결과
+
+| 쇼케이스 씬 (생성 스크립트) | 보여 주는 기능 | 영상 | 확인 |
+| --- | --- | --- | --- |
+| PlatformerLab `ShowcaseCave` (`platformer/cave.py`, `CaveNight.cs`) | Global Light 2D로 밤이 되며 횃불·랜턴 Point Light 2D와 그림자, Sprite Shader 2D 불꽃, 조명 안 받는 레이어(수정) | `PlatformerLab-Lights.mp4` 20.5초 | 에디터 Play 녹화 |
+| PlatformerLab `ShowcaseCourse` (`platformer/course.py`, `CourseRunner.cs`) | 뼈대 애니메이션 러너(캡슐 + Character Motor 2D), 회전 관절 흔들다리, 슬라이더 관절 도르래, 베지어 Path Follower 2D 승강대와 곡선 Line 2D, Edge Collider 2D 언덕 | `PlatformerLab-Course.mp4` 20.7초 | 에디터 Play 녹화 |
+| CameraLab `ShowcaseFraming` (`camera/framing.py`, `FramingTour.cs`) | 데드존(상자 표시), 앞보기, 12초에 Frame 카메라로 바꿔 무리(Party) 프레이밍 줌아웃 | `CameraLab-Framing.mp4` 29.0초 | 에디터 Play 녹화. 생성기가 지운 Canvas의 손자 오브젝트를 남겨 빌드가 "Missing parent"로 실패했던 것을 고쳤다 |
+| SeedLab `ShowcaseRoute` (`seed/route.py`, `RouteCourier.cs`) | 타일셋 지형 비용(길 1, 풀 3, 진흙 8, 다리 1)으로 `TileNavigation.FindPath`, 실행 중 `SetTile`(비 → 진흙, 새 다리)로 다시 계산. 비용 29 → 42 → 19 | `SeedLab-Route.mp4` 15.6초 | 에디터 Play 녹화, `Tests/RouteTests.cs`(우회·남쪽 다리 경유) 통과 |
+| KeyRoom `ShowcaseMoves` (`keyroom/moves.py`, `MoveTrainer.cs`) | GameSettings 상호작용 Hold 30·Tap 12·DoubleTap 15, K로 Dash 키 실행 중 재설정 | 아직 없음 | `Tests/MoveTests.cs` 4개 통과(짧은 홀드·긴 탭·느린 더블탭은 안 됨, 재설정한 P로 대시). 글자 키 입력에 전체 화면 제어가 필요해 녹화를 미뤘다 |
+
+- 다섯 씬 모두 포함 씬에 넣었고 `.monoon-assets`를 다시 만들었다. 네 샘플(CameraLab, KeyRoom, PlatformerLab, SeedLab) Release 빌드와 에셋 보고서를 확인했다. KeyRoom 기존 테스트 9개도 통과했다.
+- 아직 없음: 입력 기록·재생 영상, 카메라 디버그 그리기, 타일 청크 스트리밍, 오디오.
+- 에디터 문제: File → Open Project로 다른 프로젝트를 열면 그 프로젝트의 스크립트가 Play에서 실행되지 않는다(콘솔 오류 없음, ShowcaseMaze도 같음). 에디터를 그 프로젝트 경로로 새로 띄우면 정상이다. `showcase-art` 에디터 빌드에서 확인했고 원인은 찾지 않았다.
+
 ## 7. 촬영과 컷 편집
 
 - **파일**: 샘플마다 `showcase-video/<샘플>.mp4` 하나. 원본 녹화는 `showcase-video/raw/`에 둔다. 1차 합본 `MoNoon-showcase.mp4`는 다시 만들지 않는다.
