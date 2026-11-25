@@ -5,7 +5,7 @@ using Avalonia.Interactivity;
 using Avalonia.VisualTree;
 using Engine.Core;
 
-// Scene Play: replays Crowd.inputreplay from the start scene. With MONOON_CROWD_GIZMO set (a copy whose start scene is the
+// Scene Play: replays Crowd.inputreplay from the start scene (the crowd yard in the prepared copy). With MONOON_CROWD_GIZMO set (a copy whose start scene is the
 // Crowd yard), selects the Yard region instead, records the Inspector's Top-down row and captures the window
 // (MONOON_QA_WINDOW is the clip-qa window tool).
 public static class StartupHook
@@ -31,7 +31,7 @@ public static class StartupHook
             Process.Start("screencapture", ["-x", "-o", "-l", window, Path.Combine(Output, "editor-gizmo.png")])!.WaitForExit();
             return;
         }
-        await Until(() => Document().Objects.Any(o => o.Name == "Board"), "Board");
+        await Until(() => Document().Objects.Any(o => o.Name == "Yard"), "Yard");
         var play = main.FindControl<Button>("PlayButton")!;
         play.RaiseEvent(new RoutedEventArgs(Button.ClickEvent, play));
         var game = (GameSession)viewport.GetType().GetField("game", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(viewport)!;

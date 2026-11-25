@@ -75,7 +75,7 @@ internal static class NavigationFreeChecks
     private static void Yard(string repository)
     {
         string project = Path.Combine(repository, "samples", "SeedLab");
-        var scene = SceneDocument.Load(Path.Combine(project, "Scenes", "Crowd.scene"));
+        var scene = SceneDocument.Load(Path.Combine(project, "Scenes", "ShowcaseCrowd.scene"));
         var region = scene.Objects.Single(o => o.Name == "Yard");
         var assets = ProjectAssets.ReadManifest(project);
         var edited = NavArea2D.BakeDocument(region, scene.Objects, id => id is { } t ? TilePalette.Load(project, assets, t) : null)!;

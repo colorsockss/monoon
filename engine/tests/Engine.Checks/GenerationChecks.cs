@@ -64,8 +64,10 @@ internal static class GenerationChecks
         }
         Check(connected, "thin and rectangular mazes keep a closed border, span every room and exit at maximum distance");
 
-        var scene=SceneDocument.Load(Path.Combine(repository,"samples/SeedLab/Scenes/Survey.scene"));
+        var scene=SceneDocument.Load(Path.Combine(repository,"samples/SeedLab/Scenes/ShowcaseMaze.scene"));
+        // The SeedLab showcase dungeon: 8 × 5 rooms (17 × 11 tiles) of 32 units from (16, 16); the explorer is 20 units wide.
         var board=scene.Objects.Single(o=>o.Name=="Board");
+        var dungeon=MazeLayout.Generate(8,5,42);
         var authored=board.GetComponent<Tilemap2DComponent>()!;
         using var session=new GameSession(scene);
         var game=session.Current;
@@ -73,13 +75,13 @@ internal static class GenerationChecks
         void Press(string key) { session.Actions.Press(key);Step();session.Actions.Release(key);Step(); }
         Guid Pawn() => game.Objects.Single(o=>o.Name=="Explorer").Id;
         Vector2 Position() => game.TryGetPosition(Pawn(),out var pos)?pos:throw new Exception("Missing explorer");
-        bool Wall(int x,int y) => game.Physics.Overlap(Shape2D.Circle(new(24+24*x+12,64+24*y+12),1))
+        bool Wall(int x,int y) => game.Physics.Overlap(Shape2D.Circle(new(16+32*x+16,16+32*y+16),1))
             .Any(hit=>hit.ObjectId==board.Id);
         bool Matches(MazeLayout m) => Enumerable.Range(0,m.Height).All(y=>
             Enumerable.Range(0,m.Width).All(x=>Wall(x,y)!=m.IsPassage(x,y)));
-        var initial=MazeLayout.Generate(12,7,104729);
+        var initial=MazeLayout.Generate(8,5,104729);
         Step();Check(Matches(initial),"all physics cells follow the generated board");
-        Press("N");Check(Matches(MazeLayout.Generate(12,7,104730)),"next seed replaces old walls and passages");
+        Press("N");Check(Matches(MazeLayout.Generate(8,5,104730)),"next seed replaces old walls and passages");
         Press("P");Check(Matches(initial),"previous seed restores every collision cell");
         Guid before=Pawn();
         var ui=game.Ui;
@@ -87,37 +89,38 @@ internal static class GenerationChecks
         void Apply(string value)
         {
             ui.SetText(field.Id,value);
-            ui.Pointer(true,700,220);ui.Pointer(false,700,220);Step();Step();
+            ui.Pointer(true,744,94);ui.Pointer(false,744,94);Step();Step();   // the Go button
         }
         Apply("4294967296");
         Check(Pawn()==before && Matches(initial),"out-of-range seed leaves the map and current player alone");
         Apply("42");
-        Check(Pawn()!=before && Matches(fixedMap),"custom seed replaces the player exactly once and installs the new map");
+        Check(Pawn()!=before && Matches(dungeon),"custom seed replaces the player exactly once and installs the new map");
         var pos=Position();session.Actions.Press("A");for(int i=0;i<45;i++)Step();session.Actions.Release("A");Step();
         Check(Position()==pos,"a blocked grid turn leaves the explorer centered beside the generated wall");
-        Press("R");Check(Matches(fixedMap) && Vector2.Distance(pos,Position())<.01f,"rebuild reproduces the collision map and resets the pawn");
+        Press("R");Check(Matches(dungeon) && Vector2.Distance(pos,Position())<.01f,"rebuild reproduces the collision map and resets the pawn");
 
         // Follow an independently computed shortest path with ordinary player input.
-        var distances=Distances(fixedMap);
+        var distances=Distances(dungeon);
         var route=new Stack<Point>();
-        for (var p=fixedMap.Exit; p!=fixedMap.Entrance;)
+        for (var p=dungeon.Exit; p!=dungeon.Entrance;)
         {
             route.Push(p);
             int depth=distances[p];
             p=new Point[]{new(p.X-1,p.Y),new(p.X+1,p.Y),new(p.X,p.Y-1),new(p.X,p.Y+1)}
                 .First(q=>distances.TryGetValue(q,out int prior) && prior==depth-1);
         }
-        var current=fixedMap.Entrance;
+        var current=dungeon.Entrance;
         foreach(var next in route)
         {
             string key=next.X>current.X?"D":next.X<current.X?"A":next.Y>current.Y?"S":"W";
             session.Actions.Press(key);for (int i=0;i<10;i++) Step();session.Actions.Release(key);Step();
             current=next;
         }
-        var hud=new HudCapture(); ui.Draw(hud);
-        Check(Vector2.Distance(Position()+new Vector2(7),
-                new Vector2(24+24*fixedMap.Exit.X+12,64+24*fixedMap.Exit.Y+12))<.2f &&
-            hud.Lines.Any(s=>s.StartsWith("Exit reached!")), "the explorer can walk the generated route and activate the gold exit");
+        var hud=new HudCapture(); ui.Draw(hud);   // the status label wraps, so its lines are joined below
+        bool reached=Vector2.Distance(Position()+new Vector2(10),new Vector2(16+32*dungeon.Exit.X+16,16+32*dungeon.Exit.Y+16))<.2f &&
+            string.Join(" ", hud.Lines).Contains("Found the chest!");
+        Check(reached, "the explorer can walk the generated route and reach the chest" +
+            (reached ? "" : $" (at {Position()+new Vector2(10)}, exit cell {dungeon.Exit}, status {string.Join(" | ", hud.Lines)})"));
 
         game.ReplaceTiles(board.Id,34,1,Enumerable.Repeat(1,34).ToArray());
         try { game.ReplaceTiles(board.Id,2,1,[0,999]);throw new Exception("unknown tile accepted"); }

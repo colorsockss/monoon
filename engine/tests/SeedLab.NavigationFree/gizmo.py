@@ -14,7 +14,8 @@ project = out / 'SeedLab'
 shutil.copytree(sample, project, ignore=shutil.ignore_patterns('.monoon', '.DS_Store', 'bin', 'obj'))
 settings = project / 'GameSettings'
 text = settings.read_text(encoding='utf-8')
-settings.write_text(text.replace('startScene: 0cfbf6ac-2359-53aa-abc6-f603bdf4dbee', 'startScene: 620cbdb0-f61b-59bf-beed-2647e824c624'), encoding='utf-8')
+assert text.count('startScene: cdfa4adc-9fd0-58dc-bdff-271497eca1f0') == 1  # the showcase crowd yard is not the start scene
+settings.write_text(text.replace('startScene: cdfa4adc-9fd0-58dc-bdff-271497eca1f0', 'startScene: 578c4bc5-e685-5420-b1ac-42e255eb5bea'), encoding='utf-8')
 env = dict(os.environ, DOTNET_STARTUP_HOOKS=str(hook), MONOON_CROWD_EDITOR=str(out), MONOON_CROWD_GIZMO='1',
            MONOON_USER_DATA=str(out / 'profile'))
 with (out / 'editor.log').open('wb') as log:

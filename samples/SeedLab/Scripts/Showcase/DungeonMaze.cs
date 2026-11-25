@@ -7,8 +7,10 @@ using System.Numerics;
 using Engine.Core;
 
 // Showcase copy of MazeRun on KeyRoom's 32-unit tiles: the same MazeLayout generator and GridTurnRun record / replay.
-// N / P change the seed (the dungeon is rebuilt from it), the arrow keys take one turn each, Return walks the shortest
-// path to the chest, K saves the run, T replays it turn by turn. The explorer's picture faces its last step.
+// N / P change the seed (the dungeon is rebuilt from it), a typed seed and Go (SeedEntry) jump to any seed, R rebuilds the
+// current one. The arrow keys take one turn each and Space waits a turn; Return walks the shortest path to the chest. K saves
+// the run, T replays it turn by turn, J loads it paused and then advances one turn per press. The explorer's picture faces its
+// last step.
 // Gold dots mark the route ahead: the shortest path when Return solves, the saved turns when T replays; each dot clears
 // as the explorer steps on it. The status names a layout code (a hash of the passages), so a revisited seed visibly
 // rebuilds the same dungeon. Raises the HUD tag flags "seed", "turns", "replay".
@@ -25,7 +27,7 @@ public sealed class DungeonMaze : GameBehaviour
     private GridTurnRun run = null!;
     private GridReplay? loaded;
     private readonly Queue<GridCommand> pending = new();
-    private bool automatic, spawning;
+    private bool automatic, spawning, playing;   // playing: a T replay advances by itself; a J replay waits for J
     private int ticksUntilTurn;
     private int[] tiles = [];
     private bool[] route = [];
@@ -41,11 +43,14 @@ public sealed class DungeonMaze : GameBehaviour
         uint seed = (uint)run.Setup.Seed;
         if (input.Pressed("NextSeed")) { Start(tick.ObjectId, tick.Objects, tick.Ui, unchecked(seed + 1), null); tick.Session.Set("seed"); }
         else if (input.Pressed("PreviousSeed")) { Start(tick.ObjectId, tick.Objects, tick.Ui, unchecked(seed - 1), null); tick.Session.Set("seed"); }
+        else if (input.Pressed("Rebuild")) Start(tick.ObjectId, tick.Objects, tick.Ui, seed, null);
         else if (input.Pressed("SaveReplay")) Save(tick);
-        else if (input.Pressed("Replay")) Load(tick);
+        else if (input.Pressed("Replay")) Load(tick, true);
+        else if (input.Pressed("StepReplay") && run.Mode != GridTurnMode.Playback) Load(tick, false);
         else if (run.Mode == GridTurnMode.Playback)
         {
-            if (--ticksUntilTurn <= 0) { ticksUntilTurn = PlaybackTicks; Advance(tick); }
+            if (input.Pressed("StepReplay")) { playing = false; Advance(tick); }
+            else if (playing && --ticksUntilTurn <= 0) { ticksUntilTurn = PlaybackTicks; Advance(tick); }
         }
         else if (run.Mode == GridTurnMode.Recording)
         {
@@ -71,7 +76,19 @@ public sealed class DungeonMaze : GameBehaviour
 
     private static GridCommand? Direction(GameInput input) =>
         input.Pressed("MoveUp") ? GridCommand.Up : input.Pressed("MoveRight") ? GridCommand.Right :
-        input.Pressed("MoveDown") ? GridCommand.Down : input.Pressed("MoveLeft") ? GridCommand.Left : null;
+        input.Pressed("MoveDown") ? GridCommand.Down : input.Pressed("MoveLeft") ? GridCommand.Left :
+        input.Pressed("WaitTurn") ? GridCommand.Wait : null;
+
+    // SeedEntry's Go button: a whole number from 0 to 4294967295 rebuilds the dungeon from it; anything else is refused.
+    public void ApplySeed(Guid layer, IGameObjects objects, IGameUi ui, string text)
+    {
+        if (uint.TryParse(text.Trim(), NumberStyles.None, CultureInfo.InvariantCulture, out uint value))
+        {
+            Start(layer, objects, ui, value, null);
+            ui.ClearFocus();
+        }
+        else ui.SetText(Status, "Enter a seed from 0 to 4294967295.");
+    }
 
     // Breadth-first search over the maze's passages from the explorer to the exit.
     private List<GridCommand> PathToExit()
@@ -120,10 +137,12 @@ public sealed class DungeonMaze : GameBehaviour
     private void Perform(ScriptTick tick, GridCommand command)
     {
         if (run.Position == maze.Exit) return;
+        var before = run.Position;
         run.PlayTurn(command, target => Enter(tick, target, command));
         Reached(tick.Objects);
         tick.Session.Set("turns");
-        Show(tick.Ui, run.Position == maze.Exit ? "Found the chest!  K saves this run." : "Find the chest.");
+        Show(tick.Ui, run.Position == maze.Exit ? "Found the chest!  K saves this run." : command == GridCommand.Wait ? "Waited a turn." :
+            run.Position == before ? "Blocked by a wall." : "Find the chest.");
     }
 
     private bool Enter(ScriptTick tick, Point target, GridCommand command)
@@ -145,7 +164,7 @@ public sealed class DungeonMaze : GameBehaviour
         run.ReplayTurn(target => Enter(tick, target, expected));
         Reached(tick.Objects);
         Show(tick.Ui, run.Mode == GridTurnMode.Completed ? $"Replay complete. All {run.Turn} turns matched." :
-            run.Mode == GridTurnMode.Diverged ? $"Mismatch at turn {run.Turn}." : "Replaying the saved run.");
+            run.Mode == GridTurnMode.Diverged ? $"Mismatch at turn {run.Turn}." : playing ? "Replaying the saved run." : "Replay paused. J takes the next turn.");
     }
 
     private void Save(ScriptTick tick)
@@ -155,7 +174,7 @@ public sealed class DungeonMaze : GameBehaviour
         catch (Exception ex) when (ex is IOException or UnauthorizedAccessException) { tick.Ui.SetText(Status, "Could not save the replay."); }
     }
 
-    private void Load(ScriptTick tick)
+    private void Load(ScriptTick tick, bool autoPlay)
     {
         try
         {
@@ -167,8 +186,9 @@ public sealed class DungeonMaze : GameBehaviour
             foreach (var turn in replay.Turns) route[turn.Y * maze.Width + turn.X] = true;
             Paint(tick.Objects);
             ticksUntilTurn = PlaybackTicks;
+            playing = autoPlay;
             tick.Session.Set("replay");
-            Show(tick.Ui, "Replaying the saved run.");
+            Show(tick.Ui, playing ? "Replaying the saved run." : "Replay paused. J takes the next turn.");
         }
         catch (Exception ex) when (ex is IOException or InvalidDataException or UnauthorizedAccessException or OverflowException)
         { tick.Ui.SetText(Status, "Could not read the saved run."); }
@@ -196,7 +216,7 @@ public sealed class DungeonMaze : GameBehaviour
             ? GridTurnRun.Record(new GridRunRules(Rules, MazeLayout.Version, seed, Columns, Rows, maze.Entrance.X, maze.Entrance.Y))
             : GridTurnRun.Replay(replay);
         pending.Clear();
-        (spawning, automatic) = (true, false);
+        (spawning, automatic, playing) = (true, false, false);
         ui.SetText(Readout, seed.ToString("N0", CultureInfo.InvariantCulture).Replace(",", " "));
         // FNV-1a over the passage cells: equal codes mean equal dungeons.
         uint hash = 2166136261;

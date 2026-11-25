@@ -58,7 +58,7 @@ objects:
   x: 576
   y: 16
   width: 212
-  height: 96
+  height: 124
   components:
   - type: uiRect
   - type: uiImage
@@ -92,25 +92,61 @@ objects:
     text: "104 729"
     size: 28
     color: "#FFD84A"
+- id: 2c24a2f7-916b-51d7-b3dd-8d79676f28a2
+  parentId: 429e81e8-4b98-5317-ab02-ee69fae57601
+  name: Seed field
+  x: 14
+  y: 66
+  width: 118
+  height: 24
+  components:
+  - type: uiRect
+  - type: uiTextField
+    maxLength: 10
+  - type: uiText
+    text: "Type a seed"
+    size: 12
+    color: "#E4ECF2"
+    insetX: 8
+    insetY: 4
+- id: 1be32e0f-5124-57c4-b9b9-333c6c3f24f5
+  parentId: 429e81e8-4b98-5317-ab02-ee69fae57601
+  name: Seed go
+  x: 138
+  y: 66
+  width: 60
+  height: 24
+  components:
+  - type: uiRect
+  - type: uiButton
+  - type: uiText
+    text: "Go"
+    size: 12
+    color: "#F4F6F4"
+    insetX: 18
+    insetY: 4
+  - type: script
+    script: Showcase/SeedEntry
+    values: {"Board": "a4a747cb-db53-5ac7-8e37-2525e8adbf9e", "Field": "2c24a2f7-916b-51d7-b3dd-8d79676f28a2"}
 - id: 091b46a7-a0d4-562e-9a97-907235a02588
   parentId: 429e81e8-4b98-5317-ab02-ee69fae57601
   name: Seed hint
   x: 14
-  y: 68
+  y: 98
   width: 184
   height: 16
   components:
   - type: uiRect
   - type: uiText
     richText: true
-    text: "N / P   next / previous seed"
+    text: "N / P   next / previous      R   rebuild"
     size: 11
     color: "#BFD0DC"
 - id: 4c0a366b-b046-5634-bad9-4f4d5e4c93af
   parentId: 52419ced-d49f-517b-aa53-e595437bdfbf
   name: Status
   x: 580
-  y: 120
+  y: 148
   width: 204
   height: 36
   components:
@@ -125,7 +161,7 @@ objects:
   parentId: 52419ced-d49f-517b-aa53-e595437bdfbf
   name: Tag 1
   x: 576
-  y: 168
+  y: 196
   width: 212
   height: 44
   components:
@@ -145,7 +181,7 @@ objects:
   parentId: 52419ced-d49f-517b-aa53-e595437bdfbf
   name: Tag 2
   x: 576
-  y: 218
+  y: 246
   width: 212
   height: 44
   components:
@@ -165,7 +201,7 @@ objects:
   parentId: 52419ced-d49f-517b-aa53-e595437bdfbf
   name: Tag 3
   x: 576
-  y: 268
+  y: 296
   width: 212
   height: 44
   components:
@@ -219,7 +255,7 @@ objects:
   - type: uiRect
   - type: uiText
     richText: true
-    text: "Move  ← → ↑ ↓      Walk to chest  Return      Save  K      Replay  T"
+    text: "Move  ← → ↑ ↓   Wait  Space   Walk to chest  Return   Save  K   Replay  T / step  J"
     size: 12
     color: "#BFD0DC"
 defaultCameraId: d64f390e-7c0c-57b8-8ff1-be006c49e34b

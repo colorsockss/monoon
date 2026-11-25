@@ -29,15 +29,15 @@ internal static class TurnReplayChecks
         Check(invalid, "a replay with an impossible checkpoint is rejected");
 
         var storage = new PlayerStorage(Path.Combine(scratch, "turn-player"));
-        var scene = SceneDocument.Load(Path.Combine(repository,"samples/SeedLab/Scenes/Survey.scene"));
+        var scene = SceneDocument.Load(Path.Combine(repository,"samples/SeedLab/Scenes/ShowcaseMaze.scene"));
         var commands = new[] {"Left","Space","Right","Right","Down","Left","Up","Space","Right"};
         var positions = new List<Point>();
-        var maze = MazeLayout.Generate(12,7,104729);
+        var maze = MazeLayout.Generate(8,5,104729);   // the SeedLab showcase dungeon
         static Point Cell(GameSession s)
         {
             var obj = s.Current.Objects.Single(o=>o.Name=="Explorer");
             if (!s.Current.TryGetPosition(obj.Id, out Vector2 p)) throw new Exception("Missing explorer");
-            var x=(p.X+7-24-12)/24; var y=(p.Y+7-64-12)/24;
+            var x=(p.X+10-16-16)/32; var y=(p.Y+10-16-16)/32;   // 20-unit explorer on 32-unit cells from (16, 16)
             if (x!=MathF.Truncate(x) || y!=MathF.Truncate(y)) throw new Exception($"Off-center pawn at {p}");
             return new((int)x,(int)y);
         }

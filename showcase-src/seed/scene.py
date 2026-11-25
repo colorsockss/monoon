@@ -115,17 +115,22 @@ m.obj("Board", MX, MY, T, T, f"  - type: tilemap2D\n    tileset: {maze_ts}\n    
 m.obj("Camera", 400, 225, 1, 1, "  - type: camera2D\n")
 m.obj("Canvas", 0, 0, 1, 1, "  - type: uiCanvas\n")
 RX, RW = 576, 212                       # the right column
-m.obj("Seed panel", RX, 16, RW, 96, "  - type: uiRect\n" + panel(), parent="Canvas")
+m.obj("Seed panel", RX, 16, RW, 124, "  - type: uiRect\n" + panel(), parent="Canvas")
 m.obj("Seed label", 14, 10, RW - 28, 16, label("SEED", 12, "#BFD0DC"), parent="Seed panel")
 m.obj("Seed number", 14, 28, RW - 28, 34, label("104 729", 28, "#FFD84A"), parent="Seed panel")
-m.obj("Seed hint", 14, 68, RW - 28, 16, label("N / P   next / previous seed", 11, "#BFD0DC"), parent="Seed panel")
-m.obj("Status", RX + 4, 120, RW - 8, 36, label("Turn 0     Find the chest.", 12, "#F4F6F4", "    wrap: true\n"), parent="Canvas")
+# A typed seed: SeedEntry hands the field's text to DungeonMaze.ApplySeed.
+m.obj("Seed field", 14, 66, 118, 24, '  - type: uiRect\n  - type: uiTextField\n    maxLength: 10\n'
+      + '  - type: uiText\n    text: "Type a seed"\n    size: 12\n    color: "#E4ECF2"\n    insetX: 8\n    insetY: 4\n', parent="Seed panel")
+m.obj("Seed go", 138, 66, RW - 152, 24, '  - type: uiRect\n  - type: uiButton\n  - type: uiText\n    text: "Go"\n    size: 12\n    color: "#F4F6F4"\n    insetX: 18\n    insetY: 4\n'
+      + script("Showcase/SeedEntry", f'{{"Board": "{m.oid("Board")}", "Field": "{m.oid("Seed field")}"}}'), parent="Seed panel")
+m.obj("Seed hint", 14, 98, RW - 28, 16, label("N / P   next / previous      R   rebuild", 11, "#BFD0DC"), parent="Seed panel")
+m.obj("Status", RX + 4, 148, RW - 8, 36, label("Turn 0     Find the chest.", 12, "#F4F6F4", "    wrap: true\n"), parent="Canvas")
 tags = [("seed", "Seeded generation", "Same seed, same dungeon"), ("turns", "Turn-based grid", "One step per turn, walls block"),
         ("replay", "Replay", "Saved turns play back exactly")]
 for i, (flag, feature, detail) in enumerate(tags):
-    m.obj(f"Tag {i + 1}", RX, 168 + i * 50, RW, 44, f"  - type: uiRect\n    showIf: {flag}\n" + panel()
+    m.obj(f"Tag {i + 1}", RX, 196 + i * 50, RW, 44, f"  - type: uiRect\n    showIf: {flag}\n" + panel()
           + f'  - type: uiText\n    richText: true\n    wrap: true\n    text: "<b>{feature}</b>\\n<color=#BFD0DC>{detail}</color>"\n    size: 12\n    insetX: 10\n    insetY: 5\n', parent="Canvas")
-caption(m, "Seeded dungeons and turn replays", "Move  ← → ↑ ↓      Walk to chest  Return      Save  K      Replay  T", width=560)
+caption(m, "Seeded dungeons and turn replays", "Move  ← → ↑ ↓   Wait  Space   Walk to chest  Return   Save  K   Replay  T / step  J", width=560)
 maze_scene = m.write("ShowcaseMaze.scene", "Camera")
 
 # ---- crowd --------------------------------------------------------------------------------------------------------
