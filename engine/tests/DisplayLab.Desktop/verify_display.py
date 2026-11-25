@@ -32,6 +32,7 @@ class MacWindow:
     def __init__(self, process):
         self.process = process
         self.chrome = 0
+        self.density = 1  # device pixels per window point, read from each capture
 
     def command(self, action, *args):
         return subprocess.check_output([helper, action, str(self.process.pid), *map(str, args)],
@@ -61,6 +62,7 @@ class MacWindow:
         path = output / "mac-capture.png"
         subprocess.run(["screencapture", "-x", "-o", "-l", str(wid), path], check=True)
         with Image.open(path) as image:
+            self.density = image.width / w
             return image.convert("RGB").resize((w, h)).crop((0, self.chrome, w, h))
 
 
@@ -83,23 +85,29 @@ def tap_escape(window):
         window.key("Escape", False)
 
 
+# ShowcaseDisplay (800 x 450, integer scale): the click counter and the two settings toggles in logical game units.
+COUNTER = (546, 270, 774, 304)
+FULLSCREEN, VSYNC = (754, 91), (754, 127)
+
+
 def inspect(frame):
-    # The game's blue-grey background spans the content. Bars have neutral black pixels.
-    r, _, b = frame.split()
-    colored = ImageChops.subtract(b, r).point(lambda v: 255 if v > 9 else 0)
+    # Bars are pure black; the showcase room and its settings panel are not.
+    colored = frame.convert("L").point(lambda v: 255 if v > 6 else 0)
     w, h = frame.size
     row = colored.crop((0, h//2, w, h//2+1)).getbbox()
     column = colored.crop((w//2, 0, w//2+1, h)).getbbox()
     if not row or not column:
         return None
     l, t, r, b = row[0], column[1], row[2], column[3]
-    # Measure the painted button independently of its authored hit rectangle.
-    crop = frame.crop((l+(r-l)//2, t+(b-t)*3//5, r, t+(b-t)*4//5))
+    # Measure the painted button independently of its authored hit rectangle: the counter's blue-grey fill stands out
+    # from the dark panel around it.
+    sx, sy = (r-l)/800, (b-t)/450
+    x, y = round(l+(COUNTER[0]-10)*sx), round(t+(COUNTER[1]-10)*sy)
+    crop = frame.crop((x, y, round(l+(COUNTER[2]+10)*sx), round(t+(COUNTER[3]+10)*sy)))
     red, _, blue = crop.split()
     button = ImageChops.subtract(blue, red).point(lambda d: 255 if d > 34 else 0).getbbox()
     if not button:
         return None
-    x, y = l+(r-l)//2, t+(b-t)*3//5
     return [l, t, r, b], [x+button[0], y+button[1], x+button[2], y+button[3]]
 
 
@@ -145,10 +153,12 @@ for launch in launches:
                 return None
             view, button = measured
             w, h = frame.size
-            scale = min(w/800, h/450)
+            # Integer scale: the largest whole number of device pixels per game pixel that fits, at least one.
+            density = window.density if mac else 1
+            scale = max(1, int(min(w*density/800, h*density/450))) / density
             dx, dy = (w-scale*800)/2, (h-scale*450)/2
             expected = [dx, dy, w-dx, h-dy]
-            expected_button = [dx+456*scale, dy+300*scale, dx+696*scale, dy+344*scale]
+            expected_button = [dx+COUNTER[0]*scale, dy+COUNTER[1]*scale, dx+COUNTER[2]*scale, dy+COUNTER[3]*scale]
             if any(abs(a-b)>2 for a,b in zip(view+button,expected+expected_button)):
                 return None
             return frame, view, button
@@ -179,10 +189,10 @@ for launch in launches:
         else:
             window.click(x, y)
 
-    def click_widget(view, y):
+    def click_widget(view, at):
         l,t,r,b = view
         window.focus()
-        click_at(round(l+(r-l)*.72), round(t+(b-t)*y/450))
+        click_at(round(l+(r-l)*at[0]/800), round(t+(b-t)*at[1]/450))
 
     def probe(name, view, button):
         l,t,r,b = button
@@ -225,9 +235,9 @@ for launch in launches:
             window.resize(*windowed)
             view, button = stage("resized",False)
             probe("resized",view,button)
-            click_widget(view,228)
+            click_widget(view,VSYNC)
             state("VSync",False)
-            click_widget(view,172)
+            click_widget(view,FULLSCREEN)
             if bare_x11:
                 until(lambda: logs().count("Fullscreen = False") == 2, "fullscreen request declined", proc)
                 view, button = stage("rejected-windowed", False)
@@ -239,11 +249,11 @@ for launch in launches:
         elif full:
             view, button = stage(launch,True)
             probe(launch,view,button)
-            click_widget(view,172)
+            click_widget(view,FULLSCREEN)
             state("Fullscreen",False)
             view, button = stage("returned",False)
             probe("returned",view,button)
-            click_widget(view,228)
+            click_widget(view,VSYNC)
             state("VSync",True)
         else:
             view, button = stage(launch,False)
