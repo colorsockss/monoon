@@ -1,7 +1,7 @@
 version: 1
 project: 64fb4cd6-2469-5cec-ba6d-9a49e61f42e7
-startScene: 64fb4cd6-2469-5cec-ba6d-9a49e61f42e7
-frameTicks: [166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667]
+startScene: dd96f9dd-668b-5df5-8786-252e6eb77e9e
+frameTicks: [166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667]
 events:
 - frame: 2
   timeTicks: 333334
@@ -12,12 +12,12 @@ events:
 - frame: 12
   timeTicks: 2000004
   input: {kind: key, control: "Right", down: true}
-- frame: 14
-  timeTicks: 2333338
+- frame: 16
+  timeTicks: 2666672
   input: {kind: key, control: "Right", down: false}
-- frame: 19
-  timeTicks: 3166673
+- frame: 21
+  timeTicks: 3500007
   input: {kind: key, control: "F5", down: true}
-- frame: 20
-  timeTicks: 3333340
+- frame: 22
+  timeTicks: 3666674
   input: {kind: key, control: "F5", down: false}

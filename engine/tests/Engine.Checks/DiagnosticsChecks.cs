@@ -4,7 +4,7 @@ using Engine.Core;
 
 internal static class DiagnosticsChecks
 {
-    [Check(5400)] static void Registered(CheckRun c) => Run(c.Project);
+    [Check(5400, "diagnostics")] static void Registered(CheckRun c) => Run(c.Project);
     private sealed class Canvas : ICanvas2D, IDiagnosticLines
     {
         public readonly List<(Vector2 A,Vector2 B,Color Color)> Lines=[];
@@ -49,7 +49,7 @@ internal static class DiagnosticsChecks
         Check(world.Diagnostics.Latest==null && world.Inspect(wall.Id)?.Active==true && world.SetActive(wall.Id,false) && world.Inspect(wall.Id)?.ActiveSelf==false,
             "turning off queries clears traces and live inspection reads runtime activation");
 
-        using var keyroom=new GameSession(SceneDocument.Load(Path.Combine(project,"Scenes","KeyRoom.scene")));
+        using var keyroom=new GameSession(SceneDocument.Load(Path.Combine(project,"Scenes","Showcase.scene")));
         var live=keyroom.Current;live.Diagnostics=new(){Queries=true};
         var player=live.Objects.Single(o=>o.Name=="Player");
         var initial=live.Inspect(player.Id)!.Value.Position;
@@ -57,8 +57,8 @@ internal static class DiagnosticsChecks
         Check(live.Diagnostics.Latest is {Kind:QueryKind.Movement} && live.Inspect(player.Id)!.Value.Position.X>initial.X &&
             player.WorldPosition==initial,"movement sweep and live world position do not mutate the scene");
         var table=ProjectAssets.ReadManifest(project);
-        var id=live.Instantiate(new(table.IdFor("Assets/Coin.prefab")!.Value),new(50,50));
-        Check(live.Inspect(id)?.SpawnedFrom=="Assets/Coin.prefab" && live.Destroy(id) && live.Inspect(id)==null,"spawned prefab origin and destruction are visible immediately");
+        var id=live.Instantiate(new(table.IdFor("Assets/Showcase/Coin.prefab")!.Value),new(50,50));
+        Check(live.Inspect(id)?.SpawnedFrom=="Assets/Showcase/Coin.prefab" && live.Destroy(id) && live.Inspect(id)==null,"spawned prefab origin and destruction are visible immediately");
         GameLogEntry? logged=null;keyroom.State.Logged+=e=>logged=e;
         keyroom.State.Log("test warning",GameLogLevel.Warning);
         Check(logged is {Level:GameLogLevel.Warning,Message:"test warning",Line:>0},"runtime log keeps severity and caller location");

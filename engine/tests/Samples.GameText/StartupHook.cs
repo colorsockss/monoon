@@ -36,7 +36,8 @@ public static class StartupHook
         var size = game.LogicalSize;
         var surface = Sdl.PInvoke.CreateSurface(size.Width, size.Height, SdlPixelFormat.Rgba32);
         var renderer = Sdl.Render.CreateSoftwareRenderer(surface);
-        using (var canvas = new SdlCanvas(renderer))
+        // Scenes with lights (the KeyRoom showcase torches) draw them from shader pixels, as the editor's Scene view does.
+        using (var canvas = new SdlCanvas(renderer, previewShader: ShaderPixels.Preview))
         {
             InputReplay.Load(Path.Combine(output, "input.inputreplay")).Play(game, project, frame =>
             {

@@ -10,18 +10,18 @@ internal static class WorldCheckpointChecks
         var root = scene.ProjectDirectory!;
         var chest = scene.Objects.Single(o => o.Name == "Chest");
         var player = scene.Objects.Single(o => o.Name == "Player");
-        var tree = scene.Objects.First(o => o.Name.Contains("Oak"));
-        var doc = SceneDocument.Load(Path.Combine(root, "Scenes/KeyRoom.scene"));
+        var tree = scene.Objects.Single(o => o.Name == "Pot" && o.Prefab != null);   // an authored prefab instance
+        var doc = SceneDocument.Load(Path.Combine(root, "Scenes/Showcase.scene"));
         var path = Path.Combine(root, "Assets", "SavedChest.prefab");
         doc.ExportPrefab(doc.Objects.Single(o => o.Id == chest.Id), path);
         var manifest = ProjectAssets.Scan(root);
         var box = new PrefabReference(manifest.IdFor("Assets/SavedChest.prefab")!.Value);
-        var loot = new PrefabReference(manifest.IdFor("Assets/Coin.prefab")!.Value);
+        var loot = new PrefabReference(manifest.IdFor("Assets/Showcase/Coin.prefab")!.Value);
         using var session = new GameSession(scene);
         void Step() => session.FixedUpdate(Vector2.Zero, 1f / 60);
         var game = session.Current;
         var outer = game.Instantiate(box, new(700,320), player.Id);
-        var lid = game.Objects.Single(o => o.ParentId == outer);
+        var lid = game.Objects.Single(o => o.ParentId == outer && o.Name == "Chest Lid");
         var inner = game.Instantiate(loot, new(725,346), outer);
         var other = game.Instantiate(loot, new(850,320));
         game.TrackForSave(inner);
@@ -58,7 +58,7 @@ internal static class WorldCheckpointChecks
         Step();
         Require(!entered && failure != null && session.Current == game && !game.IsColliderEnabled(inner),
             "invalid prefab leaves the playing scene and its state intact");
-        var second = manifest.IdFor("Scenes/SecondRoom.scene")!.Value;
+        var second = manifest.IdFor("Scenes/ShowcaseRoom2.scene")!.Value;
         session.State.LoadScene(second); Step(); Step();
         var anotherRoom = new GameData();
         session.State.SaveWorld(anotherRoom);

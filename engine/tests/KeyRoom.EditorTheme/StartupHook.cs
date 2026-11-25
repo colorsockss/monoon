@@ -165,7 +165,7 @@ public static class StartupHook
         var windows = new List<object>();
         await OpenPanel(main, () => Call(main, "ShowConsole"), "Console", "console", windows); await ClosePanel(main, "Console");
         await OpenPanel(main, () => Call(main, "EditAnimator", (string?)null), "Animator", "animator", windows); await ClosePanel(main, "Animator");
-        await OpenPanel(main, () => Call(main, "EditClip", "Assets/Door.clip"), "Clip", "clip", windows);
+        await OpenPanel(main, () => Call(main, "EditClip", "Assets/Showcase/DoorOpen.clip"), "Clip", "clip", windows);
         var clip = main.GetVisualDescendants().First(c => c.GetType().Name == "ClipEditorWindow");
         // The cell picker stays a dialog, now owned by the window that shows the clip panel.
         await Close(await Open(main, () => Call(clip, "ChooseCells"), "sheet-picker", windows), "sheet-picker");

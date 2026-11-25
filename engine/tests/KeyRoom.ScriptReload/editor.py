@@ -12,13 +12,13 @@ out.mkdir(parents=True)
 project = out / "KeyRoom"
 shutil.copytree(sample, project, ignore=shutil.ignore_patterns("bin", "obj", ".monoon", ".DS_Store"))
 shutil.copyfile(HERE / "ReloadProbe.v1.source", project / "Scripts/ReloadProbe.cs")
-scene = project / "Scenes/KeyRoom.scene"
+scene = project / "Scenes/Showcase.scene"   # the start scene
 text = scene.read_text(encoding="utf-8")
-anchor = "- id: be0b6e23-58d7-4ed7-a8a4-19dad1c60dc6\n  name: Key bindings opener\n"
+anchor = "\nobjects:\n"
 assert text.count(anchor) == 1
 probe = ("- id: 7d1c2e5a-4b3f-4c8e-9a61-2f0e8b7c5d34\n  name: Reload probe\n  width: 1\n  height: 1\n  components:\n"
          "  - type: script\n    script: ReloadProbe\n")
-scene.write_text(text.replace(anchor, probe + anchor), encoding="utf-8")
+scene.write_text(text.replace(anchor, anchor + probe), encoding="utf-8")
 failures = []
 
 

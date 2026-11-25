@@ -9,15 +9,15 @@ import sys
 
 HERE = Path(__file__).resolve().parent
 EXPECTED = {
-    "lid": [(0,1,"FFEBB854"),(-12,1.2,"FFEBB854"),(-24,1.4,"FFEBB854"),(-12,1.2,"FFEBB854"),(0,1,"FFEBB854")],
-    "coin": [(0,1,"FFFFFFFF"),(0,1,"999FE1CF"),(0,1,"333FC39F"),(0,1,"999FE1CF"),(0,1,"FFFFFFFF")],
+    "lid": [(0,1,"FFFFFFFF"),(-2,1.03,"FFFFFFFF"),(-4,1.06,"FFFFFFFF"),(-2,1.03,"FFFFFFFF"),(0,1,"FFFFFFFF")],
+    "coin": [(0,1,"FFFFFFFF"),(0,1,"D9FFF4D0"),(0,1,"B2FFE9A0"),(0,1,"D9FFF4D0"),(0,1,"FFFFFFFF")],
 }
 
 
 def prepare(sample, dest):
     shutil.copytree(sample, dest, ignore=shutil.ignore_patterns(".monoon", ".DS_Store", "bin", "obj"))
     shutil.copyfile(HERE/"PoseObserver.source", dest/"Scripts/PoseObserver.cs")
-    for file, label in [(dest/"Scenes/KeyRoom.scene","lid"),(dest/"Assets/Coin.prefab","coin")]:
+    for file, label in [(dest/"Scenes/Showcase.scene","lid"),(dest/"Assets/Showcase/Coin.prefab","coin")]:
         s = file.read_text(encoding="utf-8")
         start = s.index("  name: Chest Lid\n") if label == "lid" else s.index("  name: Coin\n")
         pos = s.index("  components:\n", start) + len("  components:\n")

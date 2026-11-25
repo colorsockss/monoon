@@ -9,11 +9,12 @@ using Avalonia.VisualTree;
 using Engine.Core;
 using Engine.Editor;
 
-// Phase "inspect" (roadmap 13.5, 13.6, 13.10, 13.16) on the prepared KeyRoom copy. Saves the KeyRoom scene twice:
+// Phase "inspect" (roadmap 13.5, 13.6, 13.10, 13.16) on the prepared KeyRoom copy. Saves the Showcase scene twice:
 // inspect-base.scene (Door rotated, pivot untouched) and the scene itself (Door pivot 0.5/0.5 from the PNG import
 // pivot, Door.png packed into a new atlas), so Release builds of both show what the asset Inspector changed.
 public static partial class StartupHook
 {
+    private const string DoorPng = "Assets/Showcase/Door.png";
     private static StackPanel Multi => Find<StackPanel>("MultiInspector");
     private static StackPanel AssetPanel => Find<StackPanel>("AssetInspector");
     private static T Named<T>(Visual root, string name) where T : Control =>
@@ -139,12 +140,12 @@ public static partial class StartupHook
         Step("multi_edit", new { walls = 10, records = 3, undo = "each one step; scene text and overrides restored", edges });
     }
 
-    // ---- 13.6: the KeyRoom oaks
+    // ---- 13.6: the showcase's two Pot.prefab instances. "Small pot" overrides name, size and sprite; "Pot" has none.
     private static async Task OverrideRows()
     {
         Require(await Save(), "save WallWorkshop");
-        await (Task)Call(main, "SwitchScene", "KeyRoom")!;
-        await Until(() => Scene.Objects.Any(o => o.Name == "Courtyard oak"), "KeyRoom open", 60);
+        await (Task)Call(main, "SwitchScene", "Showcase")!;
+        await Until(() => Scene.Objects.Any(o => o.Name == "Small pot"), "Showcase open", 60);
         Border? Bar(string rowName)
         {
             var row = (Panel)main.FindControl<Control>(rowName)!;
@@ -155,19 +156,19 @@ public static partial class StartupHook
         foreach (var width in new[] { 1280, 1600, 1920 })
         {
             await Resize(width, 900);
-            await Select(Scene.Objects.Single(o => o.Name == "Oak tree" && o.Prefab != null));
+            await Select(Scene.Objects.Single(o => o.Name == "Pot" && o.Prefab != null));
             var plain = Layout(InspectorStack());
-            Require(Bar("SizeRow") == null && LabelWeight("SizeRow") == "Normal", "the plain oak has no Size override mark");
-            if (width == 1280) Capture(InspectorPanel, "i6-oak-plain");
-            await Select(Scene.Objects.Single(o => o.Name == "Courtyard oak"));
+            Require(Bar("SizeRow") == null && LabelWeight("SizeRow") == "Normal", "the plain pot has no Size override mark");
+            if (width == 1280) Capture(InspectorPanel, "i6-pot-plain");
+            await Select(Scene.Objects.Single(o => o.Name == "Small pot"));
             var marked = Layout(InspectorStack());
             var bar = Bar("SizeRow");
-            Require(bar != null && LabelWeight("SizeRow") == "Bold", "the Courtyard oak's Size row is marked");
+            Require(bar != null && LabelWeight("SizeRow") == "Bold", "the Small pot's Size row is marked");
             var barBox = In(bar!);
             var panelLeft = In(InspectorStack()).X;
             Require(barBox.Width == 2 && barBox.Right <= panelLeft, $"the bar sits in the panel padding ({barBox}, content x {panelLeft})");
             Require(plain == marked, $"{width}px: the override marks moved no value column");
-            if (width == 1280) Capture(InspectorPanel, "i6-oak-courtyard");
+            if (width == 1280) Capture(InspectorPanel, "i6-pot-small");
             rows[$"{width}"] = new { bar = $"{barBox.X:0.#},{barBox.Width}", content_left = panelLeft, value_columns_same = true,
                 sprite_dot = (bool)Get(SectionNamed(InspectorStack(), "Sprite Renderer"), "IsOverridden")! };
         }
@@ -180,26 +181,26 @@ public static partial class StartupHook
         var menu = ((Control)main.FindControl<Control>("SizeRow")!).ContextMenu ?? throw new InvalidDataException("no Size row menu");
         var revert = menu.Items.OfType<MenuItem>().First(i => (string?)i.Header == "Revert");
         revert.RaiseEvent(new RoutedEventArgs(MenuItem.ClickEvent));
-        await Until(() => Scene.Objects.Single(o => o.Name == "Courtyard oak").Width == 102, "Size reverted", 20);
+        await Until(() => Scene.Objects.Single(o => o.Name == "Small pot").Width == 34, "Size reverted", 20);
         await Delay(400);
-        var oak = Scene.Objects.Single(o => o.Name == "Courtyard oak");
-        Require(oak.Height == 98 && Position == at + 1 && Bar("SizeRow") == null && OverrideList(oak).Any(s => s.EndsWith("· name")),
+        var pot = Scene.Objects.Single(o => o.Name == "Small pot");
+        Require(pot.Height == 40 && Position == at + 1 && Bar("SizeRow") == null && OverrideList(pot).Any(s => s.EndsWith("· name")),
             "Revert took back width and height only, one record, the bar is gone");
-        Capture(InspectorPanel, "i6-oak-reverted");
+        Capture(InspectorPanel, "i6-pot-reverted");
         await Undo();
-        Require(Text == before && Scene.Objects.Single(o => o.Name == "Courtyard oak").Width == 76, "one Undo restores the Size override");
-        // Apply to Source of the name row writes Oak.prefab; one Undo restores the file and the scene.
-        await Select(Scene.Objects.Single(o => o.Name == "Courtyard oak"));
-        var prefab = Path.Combine(Root, "Assets/Oak.prefab");
+        Require(Text == before && Scene.Objects.Single(o => o.Name == "Small pot").Width == 24, "one Undo restores the Size override");
+        // Apply to Source of the name row writes Pot.prefab; one Undo restores the file and the scene.
+        await Select(Scene.Objects.Single(o => o.Name == "Small pot"));
+        var prefab = Path.Combine(Root, "Assets/Showcase/Pot.prefab");
         var prefabBytes = File.ReadAllBytes(prefab);
         var nameMenu = ((Control)Find<TextBox>("ObjectName").Parent!).ContextMenu ?? throw new InvalidDataException("no name row menu");
         nameMenu.Items.OfType<MenuItem>().First(i => (string?)i.Header == "Apply to Source").RaiseEvent(new RoutedEventArgs(MenuItem.ClickEvent));
-        await Until(() => !File.ReadAllBytes(prefab).SequenceEqual(prefabBytes), "Oak.prefab written", 20);
+        await Until(() => !File.ReadAllBytes(prefab).SequenceEqual(prefabBytes), "Pot.prefab written", 20);
         await Delay(500);
-        Require(File.ReadAllText(prefab).Contains("Courtyard oak") && Position == at + 1, "Apply wrote the name to the prefab, one record");
+        Require(File.ReadAllText(prefab).Contains("Small pot") && Position == at + 1, "Apply wrote the name to the prefab, one record");
         await Undo();
-        Require(File.ReadAllBytes(prefab).SequenceEqual(prefabBytes) && Text == before, "one Undo restores Oak.prefab and the scene");
-        Step("override_rows", new { rows, transform_dot = transformDot, revert = "Size row: width+height, one step", apply = "name → Oak.prefab, one step" });
+        Require(File.ReadAllBytes(prefab).SequenceEqual(prefabBytes) && Text == before, "one Undo restores Pot.prefab and the scene");
+        Step("override_rows", new { rows, transform_dot = transformDot, revert = "Size row: width+height, one step", apply = "name → Pot.prefab, one step" });
     }
 
     // ---- 13.10: MoveSpeed label 240 → 300, Door X axis label
@@ -238,9 +239,9 @@ public static partial class StartupHook
     // ---- 13.16: Project clicks
     private static async Task AssetInspector()
     {
-        await ClickProject("Assets/Door.png");
+        await ClickProject(DoorPng);
         Require(AssetPanel.IsVisible && !InspectorStack().IsVisible, "a Project click shows the asset Inspector");
-        var size = SpriteRegion.ReadPngSize(Path.Combine(Root, "Assets/Door.png"));
+        var size = SpriteRegion.ReadPngSize(Path.Combine(Root, DoorPng));
         Require(AssetRow("Size") == $"{size.Width} × {size.Height} px", "Door.png size " + AssetRow("Size"));
         Require(Named<NumericUpDown>(AssetPanel, "Import pivot X").Value == 0 && Named<NumericUpDown>(AssetPanel, "Import pivot Y").Value == 0, "pivot 0, 0");
         var edges = new Dictionary<int, double[]>();
@@ -258,11 +259,11 @@ public static partial class StartupHook
         door.Rotation = 20;
         Call(main, "MarkDirty", new object?[] { null });
         Require(await Save(), "save the rotated Door");
-        File.Copy(Path.Combine(Root, "Scenes/KeyRoom.scene"), Path.Combine(Output, "inspect-base.scene"), true);
-        await ClickProject("Assets/Door.png");
+        File.Copy(Path.Combine(Root, "Scenes/Showcase.scene"), Path.Combine(Output, "inspect-base.scene"), true);
+        await ClickProject(DoorPng);
         string before = Text;
         int at = Position;
-        var meta = Path.Combine(Root, "Assets/Door.png.meta");
+        var meta = Path.Combine(Root, DoorPng + ".meta");
         Named<NumericUpDown>(AssetPanel, "Import pivot X").Value = 0.5m;
         await Delay(600);
         Require(Object("Door").PivotX == .5f && File.ReadAllText(meta).Contains("pivotX: 0.5") && Position == at + 1, "pivot X 0.5: meta and the Door, one record");
@@ -274,30 +275,30 @@ public static partial class StartupHook
         Require(Object("Door").PivotY == 0 && !File.ReadAllText(meta).Contains("pivotY"), "one Undo restores pivot Y in the scene and the meta");
         await Redo();
         Require(Text == afterPivot && File.ReadAllText(meta).Contains("pivotY: 0.5"), "Redo");
-        await ClickProject("Assets/Door.png"); // Undo/Redo reselect the Door object
+        await ClickProject(DoorPng); // Undo/Redo reselect the Door object
         Require(Named<NumericUpDown>(AssetPanel, "Import pivot Y").Value == 0.5m, "the asset Inspector reads the new pivot");
         Capture(InspectorPanel, "i16-door-pivot");
 
         // Atlas group: a new atlas with Door.png; Undo removes it, Redo packs it again.
-        await ClickProject("Assets/Door.png");
-        var atlas = Path.Combine(Root, "Assets/Door Atlas.atlas");
+        await ClickProject(DoorPng);
+        var atlas = Path.Combine(Root, "Assets/Showcase/Door Atlas.atlas");
         Named<ComboBox>(AssetPanel, "Atlas group").SelectedItem = "New atlas";
         await Until(() => File.Exists(atlas), "Door Atlas.atlas", 30);
         await Delay(600);
-        Require(SpriteAtlas.Load(atlas).Entries.Single().Sprite == Id("Assets/Door.png") && Position == at + 3, "Door.png packed, one record");
-        Require((string?)Named<ComboBox>(AssetPanel, "Atlas group").SelectedItem == "Assets/Door Atlas.atlas", "the field shows the atlas");
+        Require(SpriteAtlas.Load(atlas).Entries.Single().Sprite == Id(DoorPng) && Position == at + 3, "Door.png packed, one record");
+        Require((string?)Named<ComboBox>(AssetPanel, "Atlas group").SelectedItem == "Assets/Showcase/Door Atlas.atlas", "the field shows the atlas");
         await Undo();
         Require(!File.Exists(atlas), "Undo removes the new atlas");
         await Redo();
         Require(File.Exists(atlas), "Redo packs it again");
-        await ClickProject("Assets/Door.png");
+        await ClickProject(DoorPng);
         Capture(InspectorPanel, "i16-door-atlas");
         Require(await Save(), "save the pivot and atlas");
 
         // Other kinds: summary rows and the button for their panel.
         var kinds = new Dictionary<string, object>();
-        foreach (var (path, row, button) in new[] { ("Assets/Door.clip", "Frames", "Open Clip Editor"), ("Assets/KeyRoomRules.data", "Fields", "Edit Data…"),
-                     ("Assets/Oak.prefab", "Instances", "Open Prefab"), ("Assets/QaSparks.particles", "Particles", "Open Particle Panel"),
+        foreach (var (path, row, button) in new[] { ("Assets/Showcase/DoorOpen.clip", "Frames", "Open Clip Editor"), ("Assets/KeyRoomRules.data", "Fields", "Edit Data…"),
+                     ("Assets/Showcase/Pot.prefab", "Instances", "Open Prefab"), ("Assets/QaSparks.particles", "Particles", "Open Particle Panel"),
                      ("Assets/" + "QaLongNameDoorMaskForInspectorTrimmingChecks0123456789.png", "Size", "") })
         {
             await ClickProject(path);
@@ -310,12 +311,12 @@ public static partial class StartupHook
         }
         Capture(InspectorPanel, "i16-long-png");
         Require(AssetRow("Size") == "8 × 8 px", "long-named PNG size");
-        await ClickProject("Assets/Door.clip");
+        await ClickProject("Assets/Showcase/DoorOpen.clip");
         Visible(AssetPanel).OfType<Button>().First(b => (b.Content as string) == "Open Clip Editor").RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
         await Until(() => Get(main, "clipEditor") != null, "the clip editor opened", 20);
         Find<DockHost>("Dock").Activate("Inspector");
         await Select(Object("Door"));
         Require(InspectorStack().IsVisible && !AssetPanel.IsVisible, "selecting an object takes the Inspector back");
-        Step("asset_inspector", new { door_png = $"{size.Width}x{size.Height}", pivot = "0.5, 0.5 (2 records, Undo/Redo)", atlas = "Assets/Door Atlas.atlas", edges, kinds });
+        Step("asset_inspector", new { door_png = $"{size.Width}x{size.Height}", pivot = "0.5, 0.5 (2 records, Undo/Redo)", atlas = "Assets/Showcase/Door Atlas.atlas", edges, kinds });
     }
 }

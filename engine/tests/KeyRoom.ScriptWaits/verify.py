@@ -1,4 +1,4 @@
-"""Replay KeyRoom's door hint wait with a pause and single steps, and check it lands on the same game tick everywhere."""
+"""Replay the KeyRoom showcase's door hint wait with a pause and single steps, and check it lands on the same game tick everywhere."""
 import os
 from pathlib import Path
 import shutil
@@ -6,11 +6,11 @@ import subprocess
 import sys
 
 HERE = Path(__file__).resolve().parent
-PROJECT = START = '64fb4cd6-2469-5cec-ba6d-9a49e61f42e7'
+PROJECT, START = '64fb4cd6-2469-5cec-ba6d-9a49e61f42e7', 'dd96f9dd-668b-5df5-8786-252e6eb77e9e'  # Showcase.scene
 FRAMES = 120
 # Walk left onto the key (door opens, 0.5 s wait starts), pause during the wait, step three ticks, resume.
-EVENTS = [(5, 'Left', True), (22, 'Left', False),
-          (28, 'P', True), (29, 'P', False),
+EVENTS = [(5, 'Left', True), (28, 'Left', False),
+          (33, 'P', True), (34, 'P', False),
           (40, 'Period', True), (41, 'Period', False),
           (46, 'Period', True), (47, 'Period', False),
           (52, 'Period', True), (53, 'Period', False),
@@ -20,13 +20,11 @@ EVENTS = [(5, 'Left', True), (22, 'Left', False),
 def prepare(sample, destination):
     shutil.copytree(sample, destination, ignore=shutil.ignore_patterns('.monoon', '.DS_Store', 'bin', 'obj'))
     shutil.copyfile(HERE / 'TraceWaits.source', destination / 'Scripts/TraceWaits.cs')
-    scene = destination / 'Scenes/KeyRoom.scene'
+    scene = destination / 'Scenes/Showcase.scene'
     text = scene.read_text(encoding='utf-8')
-    anchor = '- id: be0b6e23-58d7-4ed7-a8a4-19dad1c60dc6\n  name: Key bindings opener\n'
-    assert text.count(anchor) == 1
-    probe = ('- id: 2b7c9e14-3f60-4d8a-9c21-7e5f0a3d6b48\n  name: Wait trace\n  width: 1\n  height: 1\n  components:\n'
-             '  - type: script\n    script: TraceWaits\n')
-    scene.write_text(text.replace(anchor, probe + anchor), encoding='utf-8')
+    assert 'defaultCameraId' not in text   # the probe goes last in the object list
+    scene.write_text(text + '- id: 2b7c9e14-3f60-4d8a-9c21-7e5f0a3d6b48\n  name: Wait trace\n  width: 1\n  height: 1\n  components:\n'
+                     '  - type: script\n    script: TraceWaits\n', encoding='utf-8')
 
 
 def recording(path):

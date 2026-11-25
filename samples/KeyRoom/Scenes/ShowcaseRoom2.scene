@@ -933,3 +933,125 @@ objects:
   - type: script
     script: Checkpoint
     values: {}
+  - type: script
+    script: RoomGuide
+    values:
+      Guide:
+        Id: "25fc2224-7695-4e19-a05c-d8524a2ffe50"
+- id: 82979001-dcbc-443e-baa1-60ada0400003
+  parentId: eeb03ab5-911c-5d1a-a0d7-3853596f5388
+  name: Controls button
+  x: -12
+  y: -20
+  width: 88
+  height: 28
+  components:
+  - type: uiRect
+    anchor: BottomRight
+    scaleHorizontalWithText: true
+  - type: uiButton
+  - type: uiText
+    wrap: true
+    text: "Controls"
+    textKey: hud.controls
+    size: 14
+    insetX: 10
+    insetY: 4
+  - type: script
+    script: ToggleControls
+    values:
+      Hint: "82979001-dcbc-443e-baa1-60ada0400004"
+      CheckpointHint: "82979001-dcbc-443e-baa1-60ada0400007"
+- id: 3e528258-504b-5a95-8345-c3a4f2fa8642
+  parentId: eeb03ab5-911c-5d1a-a0d7-3853596f5388
+  name: Language
+  x: -106
+  y: -20
+  width: 102
+  height: 28
+  components:
+  - type: uiRect
+    anchor: BottomRight
+    scaleHorizontalWithText: true
+  - type: uiButton
+  - type: uiText
+    wrap: true
+    text: "한국어 [L]"
+    textKey: ui.language
+    size: 14
+    insetX: 10
+    insetY: 4
+  - type: script
+    script: GameLanguageButton
+    values: {}
+- id: 349ed173-26c3-5125-ad86-0302431f15a9
+  parentId: eeb03ab5-911c-5d1a-a0d7-3853596f5388
+  name: Controls panel
+  x: 12
+  y: -62
+  width: 580
+  height: 40
+  components:
+  - type: uiRect
+    anchor: BottomLeft
+    showIf: controls
+  - type: uiImage
+    sprite: 8417743f-7aed-49af-becf-fce814d4d466
+    borders: {left: 8, top: 8, right: 8, bottom: 8}
+  - type: uiLayout
+    padding: 12
+    gap: 4
+- id: 82979001-dcbc-443e-baa1-60ada0400004
+  parentId: 349ed173-26c3-5125-ad86-0302431f15a9
+  name: Controls hint
+  x: 0
+  y: 0
+  width: 556
+  height: 20
+  components:
+  - type: uiRect
+  - type: uiText
+    wrap: true
+    text: "Push the crate onto the plate. Stand beside it to open the door."
+    size: 13
+    insetX: 0
+    insetY: 0
+- id: 82979001-dcbc-443e-baa1-60ada0400007
+  parentId: 349ed173-26c3-5125-ad86-0302431f15a9
+  name: Checkpoint controls
+  x: 0
+  y: 0
+  width: 556
+  height: 20
+  components:
+  - type: uiRect
+  - type: uiText
+    wrap: true
+    text: "1 / 2: Slot   F5: Save   F9: Load   M: Guide"
+    size: 13
+    color: "#BFD0DC"
+    insetX: 0
+    insetY: 0
+- id: 82979001-dcbc-443e-baa1-60ada0400005
+  parentId: eeb03ab5-911c-5d1a-a0d7-3853596f5388
+  name: Pause indicator
+  x: 0
+  y: 12
+  width: 116
+  height: 26
+  components:
+  - type: uiRect
+    anchor: TopCenter
+    showIf: paused
+  - type: uiImage
+    sprite: 8417743f-7aed-49af-becf-fce814d4d466
+    borders: {left: 8, top: 8, right: 8, bottom: 8}
+  - type: uiText
+    text: "Paused"
+    textKey: hud.paused
+    size: 14
+    insetX: 10
+    insetY: 4
+  - type: script
+    script: PauseGame
+    values: {}

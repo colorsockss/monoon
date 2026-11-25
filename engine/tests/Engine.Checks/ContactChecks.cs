@@ -159,34 +159,46 @@ internal static class ContactChecks
 
     private static void PressureRoom(string project)
     {
-        using var world = new SceneGame(SceneDocument.Load(Path.Combine(project,"Scenes","SecondRoom.scene")));
+        // ShowcaseRoom2: push the crate onto the plate, stand on it too, and the north door opens.
+        using var world = new SceneGame(SceneDocument.Load(Path.Combine(project,"Scenes","ShowcaseRoom2.scene")));
         Guid Id(string name) => world.Objects.Single(o => o.Name == name).Id;
-        var plate = Id("Pressure Plate"); var door = Id("Pressure Door"); var player = Id("Room Two Player");
+        var plate = Id("Pressure Plate"); var door = Id("Pressure Door"); var player = Id("Player");
         var crate = Id("Push Crate");
-        void Move(Vector2 dir,int ticks)
+        Vector2 At(Guid id) => world.TryGetPosition(id, out var p) ? p : throw new Exception("Pressure Room: missing object");
+        int Contacts() => world.Inspect(plate)?.Contacts ?? -1;
+        // Walks one direction until the condition holds (at most 120 ticks), then lets physics settle for one tick.
+        void Walk(Vector2 dir, Func<bool> until, string goal)
         {
-            for (int i=0;i<ticks;i++) world.FixedUpdate(dir,1f/60);
+            for (int i = 0; !until(); i++)
+            {
+                if (i == 120) throw new Exception("Pressure Room: never reached " + goal);
+                world.FixedUpdate(dir,1f/60);
+            }
             world.FixedUpdate(Vector2.Zero,1f/60);
         }
         void State(int count,bool open)
         {
             var image = world.GetComponent<SpriteRendererComponent>(door);
-            if (world.Inspect(plate)?.Contacts != count || world.IsColliderEnabled(door) == open ||
-                image?.Asset != (open ? "Assets/DoorOpen3.png" : "Assets/Door.png") ||
-                (world.Physics.Raycast(new(558,210),Vector2.UnitX,24)?.Target.ObjectId == door) == open)
-                throw new Exception($"Pressure Room: expected {count} contacts, door {(open ? "open" : "closed")}");
+            if (Contacts() != count || world.IsColliderEnabled(door) == open ||
+                image?.Asset != (open ? "Assets/Showcase/DoorOpen.png" : "Assets/Showcase/Door.png") ||
+                (world.Physics.Raycast(new(288,120),-Vector2.UnitY,40)?.Target.ObjectId == door) == open)
+                throw new Exception($"Pressure Room: expected {count} contacts, door {(open ? "open" : "closed")}; got {Contacts()}");
         }
-        Move(Vector2.Zero,1); State(0,false);
-        Move(Vector2.UnitX,34); State(1,false);
-        Move(Vector2.UnitX,15); State(2,true);
-        Move(-Vector2.UnitY,17); State(1,true);
-        // The crate holds the door while the player walks around the plate and through the gate.
-        Move(Vector2.UnitX,51); Move(Vector2.UnitY,17); Move(Vector2.UnitX,27);
-        if (!world.TryGetPosition(player,out var position) || position.X < 594) throw new Exception("Open pressure door blocked player");
+        Walk(Vector2.Zero, () => true, "start"); State(0,false);
+        Walk(Vector2.UnitX, () => Contacts() == 1, "crate on the plate"); State(1,false);
+        Walk(Vector2.UnitX, () => Contacts() == 2, "crate and player on the plate"); State(2,true);
+        Walk(-Vector2.UnitY, () => Contacts() == 1, "player off the plate"); State(1,true);
+        // The crate holds the door while the player walks north through the doorway.
+        Walk(-Vector2.UnitY, () => At(player).Y < 90, "the open doorway");
         State(1,true);
-        Move(-Vector2.UnitX,105); // Push the crate off the left edge, then leave the plate behind it.
+        // Back down, round the crate and push it west off the plate, leaving the plate behind it.
+        Walk(Vector2.UnitY, () => At(player).Y > 140, "south of the door");
+        Walk(Vector2.UnitX, () => At(player).X > At(crate).X + 40, "east of the crate");
+        Walk(Vector2.UnitY, () => At(player).Y >= At(crate).Y, "level with the crate");
+        State(2,true);
+        Walk(-Vector2.UnitX, () => Contacts() == 0, "both off the plate");
         State(0,false);
-        if (!world.TryGetPosition(crate,out var box) || box.X + 34 > 300) throw new Exception("Crate did not leave plate");
+        if (At(crate).X + 36 > 296) throw new Exception("Crate did not leave plate");
         Console.WriteLine("PASS KeyRoom plate 0/closed, 1/closed, 2/open, crate alone/open, walk through, last leaves/closed");
     }
 }

@@ -4,7 +4,7 @@ objects:
   name: Coin
   tag: Coin
   groups:
-  - Collectibles
+  - 수집품
   width: 28
   height: 22
   components:
@@ -12,6 +12,9 @@ objects:
     assetId: db7239e3-f5dd-57f4-ab5b-542b008400f0
     asset: Assets/Showcase/CoinPile.png
     order: 2
+  - type: spriteAnimator
+    clip: 064d0c10-980c-435f-963d-969603f34ff8
+    playOnStart: true
   - type: boxCollider2D
     isTrigger: true
   - type: script

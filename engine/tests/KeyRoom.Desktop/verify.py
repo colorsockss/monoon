@@ -413,7 +413,7 @@ def main():
     patterns = ("*.scene", "*.prefab", "*.clip", "*.tileset", "*.data", "*.meta", "GameSettings", ".monoon-assets")
     docs = sorted(p for pattern in patterns for p in data.rglob(pattern))
     if any(data.rglob("*.json")) or any(data.rglob("*.yaml")) or not all((data / name).is_file() for name in
-            ("GameSettings", ".monoon-assets", "Scenes/KeyRoom.scene", "Scenes/SecondRoom.scene", "Assets/Door.clip")):
+            ("GameSettings", ".monoon-assets", "Scenes/Showcase.scene", "Scenes/ShowcaseRoom2.scene", "Assets/Showcase/DoorOpen.clip")):
         raise RuntimeError("Expected the YAML KeyRoom package with no legacy JSON content")
     content = {f.relative_to(data).as_posix(): hashlib.sha256(f.read_bytes()).hexdigest() for f in docs}
     output = args.output.resolve()

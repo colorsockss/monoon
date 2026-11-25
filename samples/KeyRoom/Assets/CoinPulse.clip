@@ -1,6 +1,6 @@
 frames:
 - seconds: 1
-  sprite: 909cfb8c-893f-41a9-8e82-6d8ef5c2abb6
+  useRenderer: true
 loop: true
 tracks:
 - property: Tint
@@ -8,7 +8,7 @@ tracks:
   - time: 0
     value: "#FFFFFF"
   - time: 0.5
-    value: "#3FC39F"
+    value: "#FFE9A0"
   - time: 1
     value: "#FFFFFF"
 - property: Opacity
@@ -16,6 +16,6 @@ tracks:
   - time: 0
     value: "1"
   - time: 0.5
-    value: "0.2"
+    value: "0.7"
   - time: 1
     value: "1"

@@ -480,7 +480,7 @@ public static class StartupHook
         var openers = new (string Panel, string Method, object?[] Args)[]
         {
             ("Console", "ShowConsole", []), ("Profiler", "SetProfiler", [true]), ("Animator", "EditAnimator", [null]),
-            ("Clip", "EditClip", ["Assets/Door.clip"]), ("Tileset", "EditTileset", [null]), ("Input Actions", "EditInput", []),
+            ("Clip", "EditClip", ["Assets/Showcase/DoorOpen.clip"]), ("Tileset", "EditTileset", [null]), ("Input Actions", "EditInput", []),
             ("Dialogue", "EditValues", [null, false, true]), ("Data", "EditValues", ["Assets/KeyRoomRules.data", false, false]),
         };
         var opened = new List<object>();

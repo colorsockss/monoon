@@ -16,8 +16,8 @@ Windows 에디터 패키지에는 .NET 런타임과 프로젝트의 C# 스크립
 
 1. 쓰기 가능한 폴더에 `KeyRoom-sample.zip`을 푼다. **File → Open Project…**에서 `GameSettings`가 들어 있는 `KeyRoom` 폴더를 고른다. 명령줄에서는 에디터의 첫 인자로 프로젝트 폴더 경로를 넘길 수 있다.
 2. **Play**를 누르고 이동하지 않은 채 **I**를 누른다. 가방에 `Quest / Find Brass key`가 보인다. **Stop**을 누른다.
-3. Hierarchy에서 **Player**를 선택한다. **Inspector → Transform → Position X**를 `274`에서 `190`으로 바꾸고 Enter를 누른다. **File → Save Scene**으로 저장한 뒤 에디터를 닫고 같은 프로젝트를 다시 연다.
-4. X가 `190`인지 확인하고 **Play → I**를 누른다. 플레이어가 열쇠 위에서 시작해 가방에 `Quest complete / Brass key`가 표시된다. 게임 진행을 저장하려면 가방을 닫고 **F5**를 누른다. 시작 배치를 되돌리려면 편집 모드에서 X를 `274`로 저장한다.
+3. Hierarchy에서 **Player**를 선택한다. **Inspector → Transform → Position X**를 `277`에서 `190`으로 바꾸고 Enter를 누른다. **File → Save Scene**으로 저장한 뒤 에디터를 닫고 같은 프로젝트를 다시 연다.
+4. X가 `190`인지 확인하고 **Play → I**를 누른다. 플레이어가 열쇠 위에서 시작해 가방에 `Quest complete / Brass key`가 표시된다. 게임 진행을 저장하려면 가방을 닫고 **F5**를 누른다. 시작 배치를 되돌리려면 편집 모드에서 X를 `277`로 저장한다.
 
 저장소 루트에서 배포본을 생성한다. Mac 앱은 Apple Silicon Mac에서 첫 번째 명령으로 만든다. Windows 에디터에는 Python 3과 .NET 10 SDK가 필요하며 샘플 ZIP은 Python 3만으로 만들 수 있다. 에디터 배포본은 `editor/`, 샘플 ZIP은 `samples/dist/`에 생긴다.
 
@@ -180,17 +180,17 @@ Hierarchy에서 첫 오브젝트를 클릭하고 마지막 오브젝트를 **Shi
 
 Project에서 `.prefab`을 더블클릭하면 별도 창의 Hierarchy와 뷰포트에 그 프리팹만 열린다. 자식을 선택해 기존 Inspector로 편집할 수 있다. 상단 **Save** 또는 **Cmd+S**로 원본을 저장한 뒤 창을 닫는다. 원본의 변경을 상속하는 인스턴스는 즉시 갱신된다. 인스턴스 루트의 씬 배치 좌표는 각 인스턴스가 유지한다.
 
-KeyRoom 첫 방에서 다음 순서로 두 나무의 상속을 비교할 수 있다.
+KeyRoom 첫 방(Showcase) 왼쪽 아래의 두 항아리로 상속을 비교할 수 있다. 둘 다 `Assets/Showcase/Pot.prefab`의 인스턴스이고, **Small pot**은 이름·크기(24×30)·그림(`PotSmall.png`)을 바꿔 두었다.
 
-1. Project에서 `Oak.prefab`을 검색해 더블클릭한다. **Transform → Size → H**를 98에서 112로 바꾸고 저장한다. 씬의 **Oak tree**는 높이 112가 되고, **Courtyard oak**는 자체 높이 70을 유지한다.
-2. Hierarchy에서 **Courtyard oak**를 선택하고 Inspector 작업 줄의 **Overrides…**를 연다. **width** 행의 **Source**는 102, **Instance**는 76이다. **Apply to Source**를 누르면 두 나무 모두 너비 76이 된다. **Done**으로 닫은 뒤 **Cmd+Z** 한 번으로 원본과 씬을 함께 되돌릴 수 있다.
-3. 너비를 적용한 상태에서 **height → Revert**를 누르면 **Courtyard oak**도 높이 112를 상속한다. 이름과 위치는 유지된다. **Done → Cmd+S**로 씬을 저장하고 다시 열면 이 나무의 오버라이드 목록에는 이름만 남는다.
+1. Project에서 `Pot.prefab`을 검색해 더블클릭한다. **Transform → Size → H**를 40에서 44로 바꾸고 저장한다. 씬의 **Pot**은 높이 44가 되고, **Small pot**은 자체 높이 30을 유지한다.
+2. Hierarchy에서 **Small pot**을 선택하고 Inspector 작업 줄의 **Overrides…**를 연다. **width** 행의 **Source**는 34, **Instance**는 24다. **Apply to Source**를 누르면 두 항아리 모두 너비 24가 된다. **Done**으로 닫은 뒤 **Cmd+Z** 한 번으로 원본과 씬을 함께 되돌릴 수 있다.
+3. 너비를 적용한 상태에서 **height → Revert**를 누르면 **Small pot**도 높이 44를 상속한다. 이름과 위치는 유지된다. **Done → Cmd+S**로 씬을 저장하고 다시 열면 이 항아리의 오버라이드 목록에는 이름과 그림만 남는다.
 
 ### Inspector의 오버라이드 표시
 
 프리팹 인스턴스(또는 그 자식)를 고르면 Inspector가 오버라이드를 바로 보여 준다. 오버라이드가 있는 컴포넌트는 머리말 왼쪽 여백에 강조색 점이 찍히고, 이름·Transform 행과 스크립트 필드 행은 레이블이 굵어지며 왼쪽 여백에 2px 막대가 생긴다. 점과 막대는 패널 안쪽 여백에 그려서 레이블·입력 열은 1px도 움직이지 않는다. 표시는 선택할 때와 값을 확정할 때마다 한 번 다시 계산한다(타이핑 중에는 그대로).
 
-표시된 행을 우클릭하면 **Revert**와 **Apply to Source**가 나온다. 그 행의 필드만(예: Size 행은 너비와 높이) 되돌리거나 원본에 적용하며, **Overrides…** 창과 같은 명령이라 각각 Undo 한 번으로 씬과 원본 파일을 함께 되돌린다. 위의 **Courtyard oak**에서는 Name·Size 행이 표시되고 **Oak tree**에는 표시가 없다. Size 행의 **Revert**는 102 × 98로 돌리고 이름 오버라이드는 남긴다.
+표시된 행을 우클릭하면 **Revert**와 **Apply to Source**가 나온다. 그 행의 필드만(예: Size 행은 너비와 높이) 되돌리거나 원본에 적용하며, **Overrides…** 창과 같은 명령이라 각각 Undo 한 번으로 씬과 원본 파일을 함께 되돌린다. 위의 **Small pot**에서는 Name·Size 행과 Sprite Renderer 머리말이 표시되고 **Pot**에는 표시가 없다. Size 행의 **Revert**는 34 × 40으로 돌리고 이름·그림 오버라이드는 남긴다.
 
 씬에만 존재하는 오브젝트 참조는 인스턴스에 설정할 수 있다. 프리팹 원본에 적용할 수 있는 참조 대상은 해당 프리팹 안의 오브젝트다.
 

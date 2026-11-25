@@ -7,7 +7,8 @@ internal static class ClipChecks
     {
         SpriteReimportChecks.Run(root);
         string file = Path.Combine(root,"Assets","Door.clip"), meta = file + ".meta";
-        byte[] original = File.ReadAllBytes(file), id = File.ReadAllBytes(meta);
+        byte[] original = File.ReadAllBytes(file), id = File.ReadAllBytes(meta), originalScene = File.ReadAllBytes(sceneFile);
+        UseSheetDoor(root, sceneFile);
         var clip = SpriteClip.Load(file);
         var time = new SpriteClipTimeline(clip.Frames);
         Require(time.FrameAt(.09) == 1 && time.FrameAt(.10) == 1 && time.FrameAt(.35) == 3 &&
@@ -109,7 +110,24 @@ internal static class ClipChecks
                 Console.WriteLine($"PASS clip preview and actual KeyRoom door draw: 116 fixed ticks, loop={loop}");
             }
         }
-        finally { File.WriteAllBytes(file,original); ProjectAssets.Scan(root); }
+        finally { File.WriteAllBytes(file,original); File.WriteAllBytes(sceneFile,originalScene); ProjectAssets.Scan(root); }
+    }
+
+    // The showcase door plays Showcase/DoorOpen.clip. For these checks it plays the door-sheet fixture's Door.clip (copied into
+    // the KeyRoom copy's Assets): closed Door.png, the key opening it through DoorOpen1-3 and resting on DoorOpen3.
+    private static void UseSheetDoor(string root, string sceneFile)
+    {
+        var assets = ProjectAssets.Scan(root);
+        Guid Id(string name) => assets.IdFor("Assets/" + name)!.Value;
+        var scene = SceneDocument.Load(sceneFile);
+        var door = scene.Objects.Single(o => o.Name == "Door");
+        door.GetComponent<SpriteAnimatorComponent>()!.Clip = Id("Door.clip");
+        var picture = door.GetComponent<SpriteRendererComponent>()!;
+        picture.AssetId = Id("Door.png");
+        picture.Asset = "Assets/Door.png";
+        var key = scene.Objects.Single(o => o.Name == "Key").Components.OfType<ScriptComponent>().Single(s => s.Script == "KeySequence");
+        key.Values["Frames"] = System.Text.Json.JsonSerializer.SerializeToElement(new[] { "DoorOpen1.png", "DoorOpen2.png", "DoorOpen3.png" }.Select(n => Id(n).ToString()));
+        scene.Save(sceneFile);
     }
     private static void Require(bool ok,string message)
     {

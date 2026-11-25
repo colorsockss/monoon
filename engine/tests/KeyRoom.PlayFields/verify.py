@@ -2,7 +2,7 @@
 collider on/off) in the packaged Mac editor; Apply selected keeps the checked ones, Apply all the rest, Stop discards an unapplied
 edit, and two Undo steps give back the scene text from before Play.
 
-prepare <sample> <dest>: copy KeyRoom and attach PlayKnobs to the Player.
+prepare <sample> <dest>: copy KeyRoom and attach PlayKnobs to the showcase's Door (a sprite renderer and a collider).
 editor <app> <project> <probe.dll> <out>: run the probe (GUI lock required) and check play.json.
 """
 from pathlib import Path
@@ -18,9 +18,9 @@ HERE = Path(__file__).resolve().parent
 def prepare(sample, dest):
     shutil.copytree(sample, dest, ignore=shutil.ignore_patterns('.monoon', '.monoon-compiled', '.DS_Store', 'bin', 'obj'))
     shutil.copyfile(HERE / 'PlayKnobs.source', dest / 'Scripts/PlayKnobs.cs')
-    scene = dest / 'Scenes/KeyRoom.scene'
+    scene = dest / 'Scenes/Showcase.scene'
     text = scene.read_text(encoding='utf-8')
-    head = text.index('  name: Player\n')
+    head = text.index('  name: Door\n')
     comps = text.index('  components:\n', head) + len('  components:\n')
     scene.write_text(text[:comps] + '  - type: script\n    script: PlayKnobs\n    values: {}\n' + text[comps:], encoding='utf-8')
 

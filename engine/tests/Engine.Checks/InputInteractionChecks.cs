@@ -88,8 +88,13 @@ internal static class InputInteractionChecks
         legacy.Press("D", 0); legacy.Press("W", 0);
         var old = legacy.Take();
         Check(old.Move == Vector2.Normalize(new Vector2(1, -1)) && old.Vector("Move") == old.Move && old.Triggered("Jump") == false, "legacy Move");
+        // The KeyRoom moves showcase carries the three interactions in its GameSettings; its other actions stay plain.
         var keyroom = GameSettings.Load(Path.Combine(repository, "samples", "KeyRoom"));
-        Check(keyroom.Input.Vectors == null && keyroom.Input.Actions!.All(a => a.Interaction == null && a.Buffer == null), "KeyRoom settings load unchanged");
+        ActionBinding Shipped(string name) => keyroom.Input.Actions!.Single(a => a.Name == name);
+        Check(keyroom.Input.Vectors == null && Shipped("Charge") is { Interaction: ActionBinding.Hold, Ticks: 30 } &&
+              Shipped("Flick") is { Interaction: ActionBinding.Tap, Ticks: 12 } && Shipped("Dash") is { Interaction: ActionBinding.DoubleTap, Ticks: 15 } &&
+              keyroom.Input.Actions!.Where(a => a.Name is not ("Charge" or "Flick" or "Dash")).All(a => a.Interaction == null && a.Buffer == null),
+              "KeyRoom settings load the showcase's Hold/Tap/DoubleTap moves");
 
         foreach (var bad in new[] {
             "actions: [{name: A, controls: [J], interaction: Press}]", "actions: [{name: A, controls: [J], ticks: 0}]",

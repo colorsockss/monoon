@@ -6,20 +6,20 @@ internal static class TransformChecks
     [Check(8600)] static void Registered(CheckRun c) => Run(c.Scratch);
     internal static void Run(string root)
     {
-        var scene = SceneDocument.Load(Path.Combine(root,"Scenes","KeyRoom.scene"));
+        var scene = SceneDocument.Load(Path.Combine(root,"Scenes","Showcase.scene"));
         var chest = scene.Objects.Single(o => o.Name == "Chest");
         var lid = scene.Objects.Single(o => o.Name == "Chest Lid");
         // This fixture tests the authored (and reparented) basis without a clip driving it.
         if (lid.GetComponent<SpriteAnimatorComponent>() is {} animator) animator.PlayOnStart = false;
-        Require(chest.ScaleX == 1 && chest.ScaleY == 1 && lid.WorldPosition == new Vector2(332,126),"legacy defaults");
+        Require(chest.ScaleX == 1 && chest.ScaleY == 1 && lid.WorldPosition == new Vector2(364,180),"legacy defaults");
         chest.Rotation = 90; chest.ScaleX = 2; chest.ScaleY = .5f; chest.PivotX = chest.PivotY = .5f;
-        // Calculated directly: scale and rotate the lid origin around the chest's (17,10.5).
-        Near(lid.WorldPosition,new(356.75f,107.5f),"lid inherits parent transform");
-        Near(lid.LocalToWorld(new(34,0)),new(356.75f,175.5f),"lid width turns and scales");
+        // Calculated directly: scale and rotate the lid origin (0,8) around the 40×42 chest's (20,21).
+        Near(lid.WorldPosition,new(390.5f,153f),"lid inherits parent transform");
+        Near(lid.LocalToWorld(new(40,0)),new(390.5f,233f),"lid width turns and scales");
         Near(lid.WorldToLocal(lid.LocalToWorld(new(17,3))),new(17,3),"round trip point");
         Require(!lid.ContainsWorldPoint(lid.LocalToWorld(new(-1,4))),"pick outside local bounds");
         chest.Rotation = 31;
-        var wall = scene.Objects.Single(o => o.Name == "Wall");
+        var wall = scene.Objects.Single(o => o.Name == "Rug");   // an unrelated root sprite
         wall.Rotation = -23; wall.ScaleX = -1.4f; wall.ScaleY = .7f; wall.PivotX = .5f;
         var pose = lid.WorldMatrix;
         Require(scene.Reparent(lid,wall) && Math.Abs(lid.Shear) > .01f,"reparent requires shear");

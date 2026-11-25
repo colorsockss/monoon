@@ -12,7 +12,7 @@
 
 ## Release로 내보내기
 
-1. **Build → Build Game…**에서 **Start scene**을 선택하고 **Included scenes**에 시작 씬과 이동할 모든 씬을 체크한다. KeyRoom에는 **KeyRoom.scene**, **SecondRoom.scene**, **RoomGuide.scene**을 포함한다.
+1. **Build → Build Game…**에서 **Start scene**을 선택하고 **Included scenes**에 시작 씬과 이동할 모든 씬을 체크한다. KeyRoom은 시작 씬 **Showcase.scene**과 **ShowcaseRoom2.scene**, **ShowcaseMoves.scene**, 겹쳐 여는 UI 씬 **ShowcaseGuide.scene**·**ShowcaseBindings.scene**을 포함한다. 에디터 검사용 PrefabWorkshop·WallWorkshop·MovementWorkshop은 넣지 않는다.
 2. **Platform**에서 `osx-arm64`, `win-x64`, `linux-x64` 중 하나를 고르고 **Build type → Release**를 선택한다. **Save Settings**는 설정만 저장한다. **Build**는 기본 위치에, **Build To…**는 선택한 폴더에 출력한다. 세 버튼 모두 고른 값을 [프로젝트 빌드 설정](#프로젝트-빌드-설정)에 저장하고, 다음에 대화 상자를 열면 그 값으로 시작한다.
 3. 저장소 안 샘플의 기본 출력은 `game-builds/<프로젝트 폴더명>/`이다. 일반 프로젝트에서는 프로젝트와 나란한 `game-builds/` 아래에 생성된다. 실제 게임 이름은 `GameSettings.gameTitle` 또는 프로젝트 폴더명에서 온다.
 4. macOS에서는 게임 `.app` 전체를 옮겨 더블클릭한다. Windows에서는 출력 폴더를 통째로 복사하고 `MoNoonPlayer.exe`를 실행한다. Linux에서는 출력 폴더에서 `./MoNoonPlayer`를 실행한다. 실행 파일 옆 `Game/`에는 포함 씬과 게임 데이터가 있다. Mac에서는 앱 내부 `Contents/MacOS/Game/`에 해당한다.
@@ -190,13 +190,15 @@ $ ./monoon test project samples/KeyRoom
 PASS ChestTests.InteractSpawnsOneCoin
 ...
 PASS DoorTests.OpenDoorLeadsToSecondRoom
-9 passed, 0 failed.
+...
+PASS MoveTests.ControlsMenuRebindsDash
+13 passed, 0 failed.
 ```
 
-모든 테스트가 통과하면 종료 코드 0, 하나라도 실패하거나 컴파일 오류가 있거나 테스트가 없으면 1을 반환한다. 실패한 테스트는 실패한 프레임 번호(1부터 시작)와 게임 틱, 첫 예외, 프로젝트 파일의 줄 위치, 마지막 게임 로그 다섯 줄을 출력한다. 게임 스크립트에서 난 예외도 같은 형식으로 표시된다. 시간 제한은 기본 3600프레임이며 `[GameTest("Scenes/KeyRoom.scene", MaxFrames = 600)]`처럼 바꾼다.
+모든 테스트가 통과하면 종료 코드 0, 하나라도 실패하거나 컴파일 오류가 있거나 테스트가 없으면 1을 반환한다. 실패한 테스트는 실패한 프레임 번호(1부터 시작)와 게임 틱, 첫 예외, 프로젝트 파일의 줄 위치, 마지막 게임 로그 다섯 줄을 출력한다. 게임 스크립트에서 난 예외도 같은 형식으로 표시된다. 시간 제한은 기본 3600프레임이며 `[GameTest("Scenes/Showcase.scene", MaxFrames = 600)]`처럼 바꾼다.
 
 ```text
-FAIL DeliberateFailure.HintAfterFourTenths (Scenes/KeyRoom.scene) at frame 38, tick 38
+FAIL DeliberateFailure.HintAfterFourTenths (Scenes/Showcase.scene) at frame 38, tick 38
   GameTestFailure: the hint is visible 0.4 s after the door opens
     at DeliberateFailure.HintAfterFourTenths(GameTestRun run)+MoveNext() in ./Tests/DeliberateFailure.cs:line 14
   log: Key acquired.
@@ -256,7 +258,7 @@ CLI 기본값은 `--content incremental`이다. 다음 명령을 실행하고 In
 
 | 항목 | 내용 |
 | --- | --- |
-| `shipped` | `Game/`에 들어간 모든 파일. 경로, 번들 전 바이트, 포함 이유, 들어간 콘텐츠 번들. 이유는 처음 발견한 참조 경로다. 예: `Scenes/KeyRoom.scene > Chest > Assets/Coin.prefab > Coin > SpriteRenderer`. 빌드가 만든 파일은 `compiled project scripts`, `streamed tile chunks`, `baked from …`, `build metadata`로 표시한다. |
+| `shipped` | `Game/`에 들어간 모든 파일. 경로, 번들 전 바이트, 포함 이유, 들어간 콘텐츠 번들. 이유는 처음 발견한 참조 경로다. 예: `Scenes/Showcase.scene > Chest > Assets/Showcase/Coin.prefab > Coin > SpriteRenderer`. 빌드가 만든 파일은 `compiled project scripts`, `streamed tile chunks`, `baked from …`, `build metadata`로 표시한다. |
 | `bytesByType` | 확장자별 바이트 합계(큰 순서) |
 | `unreferenced` | `Assets/` 아래 에셋 중 어느 경로에서도 참조하지 않아 배포하지 않은 파일. 빌드에서 뺀 씬에서만 쓰는 프리팹도 여기에 나온다. 아틀라스에 패킹돼 아틀라스로 배포된 원본 PNG는 제외한다. `Scenes/` 등 `Assets/` 밖 폴더는 검사하지 않는다. |
 | `warnings` | `Game/`이나 콘텐츠 번들에 들어간 1 MiB 초과 WAV. 자동 변환하지 않으므로 Ogg Vorbis로 바꿔 다시 임포트한다. 에디터의 **Import Assets…**도 1 MiB를 넘는 WAV를 가져오면 Console에 같은 문구를 경고로 남긴다. |
@@ -285,7 +287,7 @@ CLI와 에디터 **Console**에는 요약만 표시한다. 요약에는 배포 �
 | `physics` | `libbox2d.*`·`box2d.dll`, `BRUTAL-BOX2D-THIRD-PARTY-NOTICES.txt` | 충돌체, Rigidbody 2D, 조인트, Character Motor 2D, 충돌 모양이 있는 타일셋, 스크립트의 `IPhysics2D`·`Shape2D` |
 
 - 컴포넌트는 포함 씬과 그 씬·스크립트 필드가 참조한 프리팹에서 찾는다. 스크립트는 배포 어셈블리에 들어가는 모든 프로젝트 스크립트를 본다. 소스의 이름을 Roslyn 의미 모델로 해석해, Engine.Core에서 `[EngineFeature]`를 단 형식(기반 형식 포함)이나 멤버를 쓰면 그 기능을 포함한다. 호출뿐 아니라 `GetComponent<Rigidbody2DComponent>()`의 형식 인수, `typeof`·`nameof`도 센다. 붙이지 않은 스크립트도 배포되므로 센다.
-- 이유는 처음 찾은 것 하나다. 예: `Scenes/KeyRoom.scene > Door > AudioSource`, `Scripts/Chime.cs:4: IGameAudio.Play(Guid, float?)`, `GameSettings features`. 영수증 `MoNoonBuild`의 `features`에 포함한 기능이 쉼표로 기록된다(SpriteLab은 빈 값).
+- 이유는 처음 찾은 것 하나다. 예: `Scenes/Showcase.scene > Door > AudioSource`, `Scripts/Chime.cs:4: IGameAudio.Play(Guid, float?)`, `GameSettings features`. 영수증 `MoNoonBuild`의 `features`에 포함한 기능이 쉼표로 기록된다(SpriteLab은 빈 값).
 - 모드나 [콘텐츠 업데이트](#콘텐츠-업데이트)가 나중에 기능을 쓰게 될 게임은 `GameSettings`에서 강제로 포함한다. 빌더만 읽는 값이라 배포하는 `Game/GameSettings`에서는 지운다.
 
 ```yaml

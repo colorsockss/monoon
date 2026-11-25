@@ -1,8 +1,8 @@
 # KeyRoom Input Actions 패널: 상호작용·틱·버퍼·벡터 (16.12 에디터)
 
-[editor.py](editor.py)는 `samples/KeyRoom`을 `project`로 복사하고, [KeyRoom.InputInteractions](../KeyRoom.InputInteractions/README.md)의 `prepare`로 YAML만 고친 기준 복사본을 `reference`에 만든다. 시작 훅 [StartupHook.cs](StartupHook.cs)는 패키지 에디터에서 `project`를 열고 **Input Actions 패널만으로** 같은 값을 입력한다.
+[editor.py](editor.py)는 `samples/KeyRoom`을 `project`로 복사하고, 같은 규칙을 YAML에만 써 넣은 기준 복사본을 `reference`에 만든다. 시작 훅 [StartupHook.cs](StartupHook.cs)는 패키지 에디터에서 `project`를 열고 **Input Actions 패널만으로** 같은 값을 입력한다. 샘플에는 동작 쇼케이스(ShowcaseMoves)의 Charge(J, Hold, 30)·Flick(U, Tap, 12)·Dash(O, DoubleTap, 15)가 이미 있어, 잘못된 값 검사는 Charge 행에서 하고 `DoubleTap` 표시는 Dash 행에서 본다.
 
-- 액션: Charge(J, Hold, 30), Flick(U, Tap, 12), Dash(O, DoubleTap, 15), Leap(Y, Buffer 8), AimLeft·AimRight·AimUp·AimDown(V·B·T·G)
+- 추가하는 액션: Spin(Z, Hold, 20), Leap(Y, Buffer 8), AimLeft·AimRight·AimUp·AimDown(V·B·T·G)
 - 벡터: Walk(MoveLeft·MoveRight·MoveUp·MoveDown), Aim(AimLeft·AimRight·AimUp·AimDown)
 
 | 확인 | 기준 |
@@ -22,4 +22,4 @@ sh engine/scripts/gui-lock.sh python3 engine/tests/KeyRoom.InputMapEditor/editor
   engine/.artifacts/bin/InputMapEditorProbe/release/InputMapEditorProbe.dll "$(mktemp -d)/run"
 ```
 
-런타임 기록이 같은지는 출력 폴더의 `GameSettings.ui`를 KeyRoom.InputInteractions 복사본에 넣고 Release로 재생해 확인한다. [결과](../results/editor-input-audio/README.md)
+상호작용 규칙의 런타임 판정은 [KeyRoom.InputInteractions](../KeyRoom.InputInteractions/README.md)가 Release·Native AOT 재생으로 확인한다. [결과](../results/editor-input-audio/README.md)

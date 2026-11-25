@@ -3,10 +3,10 @@ using Engine.Core;
 
 internal static class InputModeChecks
 {
-    [Check(6900)] static void Registered(CheckRun c) => Run(c.Project);
+    [Check(6900, "input-mode")] static void Registered(CheckRun c) => Run(c.Project);
     internal static void Run(string project)
     {
-        var scene = SceneDocument.Load(Path.Combine(project, "Scenes", "KeyRoom.scene"));
+        var scene = SceneDocument.Load(Path.Combine(project, "Scenes", "Showcase.scene"));
         using var game = new GameSession(scene);
         var ui = game.Current.Ui;
         var router = new GameInputRouter(game.Actions, () => ui, game.LogicalSize);
@@ -67,7 +67,7 @@ internal static class InputModeChecks
         game.Current.SetActive(bag, false);
         Check(ui.ActiveInputMode == null, "deactivating the last root restores gameplay");
         CheckWidgetCapture();
-        Console.WriteLine("PASS KeyRoom input mode stack, held keys, keyboard/gamepad/pointer routing, focus and lifetime");
+        Console.WriteLine("PASS KeyRoom showcase input mode stack, held keys, keyboard/gamepad/pointer routing, focus and lifetime");
     }
 
     private static void CheckWidgetCapture()

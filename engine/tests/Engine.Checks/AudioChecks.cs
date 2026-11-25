@@ -3,7 +3,7 @@ using Engine.Core;
 
 internal static class AudioChecks
 {
-    [Check(4200)] static void Registered(CheckRun c) => Run(c.Repository, c.Scratch);
+    [Check(4200, "audio")] static void Registered(CheckRun c) => Run(c.Repository, c.Scratch);
     private static void Check(bool result,string why) { if(!result)throw new Exception("Audio: "+why); }
     private static float[] Render(AudioMixer m,int frames){var buffer=new float[frames*2];m.Render(buffer);return buffer;}
     private static double Power(float[] buf,int channel)=>buf.Where((_,i)=>(i&1)==channel).Average(x=>(double)x*x);
@@ -13,7 +13,7 @@ internal static class AudioChecks
         var music=scene.Objects.Single(o=>o.Name=="Tide").Id;
         var fx=scene.Objects.Single(o=>o.Name=="Beacon").Id;
         var player=scene.Objects.Single(o=>o.Name=="Player").Id;
-        var old=SceneDocument.Load(Path.Combine(repo,"samples","KeyRoom","Scenes","KeyRoom.scene")).Objects
+        var old=SceneDocument.Load(Path.Combine(repo,"samples","KeyRoom","Scenes","Showcase.scene")).Objects
             .SelectMany(o=>o.Components.OfType<AudioSourceComponent>()).First();
         Check(old.Bus==AudioBus.Effects && old.Volume==1 && !old.Loop && !old.PlayOnStart,"old source defaults");
         var save=SceneDocument.Empty(new());save.RestoreObjects(scene.CaptureObjects());

@@ -13,7 +13,7 @@ internal static class ObjectClipboardChecks
     {
         var library = ScriptLibrary.Open(project);
         var source = SceneDocument.Load(Path.Combine(project, "Scenes", "PrefabWorkshop.scene"));
-        var target = SceneDocument.Load(Path.Combine(project, "Scenes", "SecondRoom.scene"));
+        var target = SceneDocument.Load(Path.Combine(project, "Scenes", "ShowcaseRoom2.scene"));
         var chest = source.Objects.Single(o => o.Name == "Chest 1");
         var floor = source.Objects.Single(o => o.Name == "Floor");
         var rig = new SceneObject { Name = "Rig", X = 40, Y = 40 };

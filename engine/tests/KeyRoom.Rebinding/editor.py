@@ -1,4 +1,4 @@
-"""Run the same three KeyRoom recordings as Scene Play sessions in the packaged Mac editor."""
+"""Run the same three moves-showcase recordings as Scene Play sessions in the packaged Mac editor."""
 import os
 from pathlib import Path
 import subprocess

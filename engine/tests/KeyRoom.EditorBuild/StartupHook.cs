@@ -136,7 +136,7 @@ public static class StartupHook
             Select(Field<ComboBox>(dialog, "Profile"), "Distribution");
             Field<CheckBox>(dialog, "Package").IsChecked = true;
             var icon = Field<ComboBox>(dialog, "Icon");
-            Select(icon, icon.Items.Select(Label).Contains("Assets/Key.png") ? "Assets/Key.png" : Label(icon.Items.Cast<object>().ElementAt(1))!);
+            Select(icon, icon.Items.Select(Label).Contains("Assets/Showcase/Key.png") ? "Assets/Showcase/Key.png" : Label(icon.Items.Cast<object>().ElementAt(1))!);
             result["chosen"] = State(dialog);
             Click(FindButton(dialog, "Save Settings"));
             await Finish(main, save, "Save Settings", 60);

@@ -23,6 +23,8 @@ internal static class TimeChecks
             Console.WriteLine("PASS time: " + label);
         }
         void Tap(string control) { actions.Press(control); actions.Release(control); }
+        // Start within the chest's reach, so a replayed Interact would spawn a coin.
+        session.Current.TryMoveStep(player, new Vector2(16, 0));
         var origin = Position();
         var gameTimer = time.StartTimer(4 * dt);
         var uiTimer = time.StartTimer(.2, TimeDomain.Ui, repeat:true);
@@ -73,7 +75,7 @@ internal static class TimeChecks
         time.IsPaused = true;
         loop.Advance(.1);
         var ticks = time.TickCount;
-        session.State.LoadScene(ProjectAssets.ReadManifest(scene.ProjectDirectory!).IdFor("Scenes/SecondRoom.scene")!.Value);
+        session.State.LoadScene(ProjectAssets.ReadManifest(scene.ProjectDirectory!).IdFor("Scenes/ShowcaseRoom2.scene")!.Value);
         loop.Advance(dt);
         Check(session.SceneId != scene.AssetId && time.IsPaused && session.Time == time && time.TickCount == ticks,
             "UI can switch scenes while paused, retaining both clocks");
@@ -88,25 +90,26 @@ internal static class TimeChecks
         restart.Actions.Release("Left");
         var doorCamera = restart.Current.ActiveCameraId;
         var canvas = new CaptureCanvas();
-        SpriteRegion? DoorFrame()
+        string DoorFrame()
         {
             restart.Draw(canvas, doorLoop.Interpolation);
-            return canvas.Images.Single(i => Path.GetFileName(i.Path) == "DoorSheet.png").Source;
+            return Path.GetFileName(canvas.Images.Single(i => Path.GetFileName(i.Path) is "Door.png" or "DoorOpen.png").Path);
         }
         var firstFrame = DoorFrame();
         restart.Time.IsPaused = true;
         doorLoop.Advance(2);
         Check(restart.State.Has("key") && doorCamera != playerCamera && DoorFrame() == firstFrame &&
-            restart.Current.ActiveCameraId == doorCamera, "KeyRoom door animation and one-second camera timer both stop");
-        for (int i = 0; i < 6; i++) restart.Time.StepOnce();
+            restart.Current.ActiveCameraId == doorCamera, "KeyRoom door animation and the door-shot camera timer both stop");
+        // The door holds shut for 0.5 s (30 ticks) before it swings open; the door shot lasts 1.4 s (84 ticks).
+        for (int i = 0; i < 32; i++) restart.Time.StepOnce();
         doorLoop.Advance(dt);
-        Check(DoorFrame() != firstFrame && restart.Current.ActiveCameraId == doorCamera, "six manual ticks advance the door animation");
+        Check(DoorFrame() != firstFrame && restart.Current.ActiveCameraId == doorCamera, "32 manual ticks advance the door animation");
         restart.Time.Scale = 2;
         restart.Time.IsPaused = false;
         doorLoop.Advance(dt);
-        for (int i = 0; i < 26; i++) doorLoop.Advance(dt);
-        Check(restart.Current.ActiveCameraId == doorCamera, "door camera still active after 58 game ticks");
+        for (int i = 0; i < 25; i++) doorLoop.Advance(dt);
+        Check(restart.Current.ActiveCameraId == doorCamera, "door camera still active after 82 game ticks");
         doorLoop.Advance(dt);
-        Check(restart.Current.ActiveCameraId == playerCamera, "camera timer expires on the 60th game tick at 2x");
+        Check(restart.Current.ActiveCameraId == playerCamera, "camera timer expires on the 84th game tick at 2x");
     }
 }

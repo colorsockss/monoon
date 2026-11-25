@@ -106,10 +106,24 @@ def compare_save(path, reference):
     print(f"PASS {path.parent.name}/{path.name}: {len(actual)} bytes SHA-256 {digest}", flush=True)
 
 
+def player_first(scene):
+    """The editor selects the scene's first object on open; the showcase lists the floor first, so the copy lists Player
+    (and its children) first and the Inspector opens on the Player's Transform (same as mac/verify.sh)."""
+    head, body = scene.read_text(encoding="utf-8").split("objects:\n", 1)
+    blocks = ["- id: " + b for b in body.split("- id: ")[1:]]
+    ident = lambda b: re.match(r"- id: (\S+)", b)[1]
+    ids = {ident(b) for b in blocks if "\n  name: Player\n" in b}
+    for b in blocks:
+        parent = re.search(r"\n  parentId: (\S+)", b)
+        if parent and parent[1] in ids: ids.add(ident(b))
+    first = [b for b in blocks if ident(b) in ids]
+    scene.write_text(head + "objects:\n" + "".join(first + [b for b in blocks if b not in first]), encoding="utf-8")
+
+
 def exercise(executable, project, output, edit, reference):
-    scene = project / "Scenes/KeyRoom.scene"
+    scene = project / "Scenes/Showcase.scene"
     position = lambda: re.search(r"^  name: Player\n  x: (\d+)$", scene.read_text(encoding="utf-8"), re.M)[1]
-    assert position() == ("274" if edit else "190")
+    assert position() == ("277" if edit else "190")
     output.mkdir()
     profile = output / "profile"
     log = (output / "editor.log").open("wb")
@@ -163,7 +177,7 @@ def exercise(executable, project, output, edit, reference):
         edit_labels = frame.crop(labels).tobytes()
         if edit:
             play("false", "baseline")
-            # KeyRoom opens with Player selected. Position X is the first
+            # The copy opens with Player selected. Position X is the first
             # numeric field in its Transform section, below the Name row.
             window.click(frame.width - 125, button[1] + 114)
             tap(window, "a", "Control_L")
@@ -214,9 +228,10 @@ def main():
             with zipfile.ZipFile(args.sample_zip) as archive:
                 archive.extractall(temp)
             project = Path(temp) / "KeyRoom"
+            player_first(project / "Scenes/Showcase.scene")
             for phase in ("edit", "reopen"):
                 exercise(args.executable.resolve(), project, out / phase, phase == "edit", reference)
-            (out / "KeyRoom.scene").write_bytes((project / "Scenes/KeyRoom.scene").read_bytes())
+            (out / "Showcase.scene").write_bytes((project / "Scenes/Showcase.scene").read_bytes())
     finally:
         if os.name == "nt":
             ctypes.windll.kernel32.SetThreadExecutionState(0x80000000)

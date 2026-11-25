@@ -5,22 +5,31 @@ using System.Numerics;
 using Engine.Core;
 using KeyRoom.Rules;
 
-// KeyRoom chest rules: one coin per chest, only within reach, collected by walking into it.
+// KeyRoom chest rules (the showcase room): one coin per chest, only within reach, collected by walking into it.
 public sealed class ChestTests
 {
-    private const string Room = "Scenes/KeyRoom.scene";
+    private const string Room = "Scenes/Showcase.scene";
 
     private static Guid[] Coins(GameTestRun run) => run.World.Objects.Where(o => o.Name == "Coin").Select(o => o.Id).ToArray();
+
+    // The hero starts 88 px from the chest; a few steps east bring it within reach.
+    private static IEnumerable<ScriptWait> WalkToChest(GameTestRun run)
+    {
+        run.Press("Right");
+        yield return ScriptWait.Until(() => Vector2.Distance(run.PositionOf("Player"), run.PositionOf("Chest")) <= LootRules.ChestReach - 4);
+        run.Release("Right");
+    }
 
     [GameTest(Room)]
     public IEnumerable<ScriptWait> InteractSpawnsOneCoin(GameTestRun run)
     {
         run.AreEqual(0, Coins(run).Length, "coins before opening");
+        foreach (var wait in WalkToChest(run)) yield return wait;
         run.Tap("E");
         yield return ScriptWait.Frames(1);
         var coin = Coins(run).Single();
         run.Assert(!run.Objects.IsActive(run.Find("Chest Lid")) && run.Session.Has("chest"), "the lid opens and the chest is remembered");
-        run.AreEqual(new Vector2(384, 126), run.PositionOf("Coin"), "coin spawn position");
+        run.AreEqual(new Vector2(416, 167), run.PositionOf("Coin"), "coin spawn position");
         run.AreEqual(true, run.Objects.GetComponent<BoxCollider2DComponent>(coin)?.IsTrigger, "coin is a trigger");
         yield return ScriptWait.Frames(5);
         run.Tap("E");
@@ -31,9 +40,13 @@ public sealed class ChestTests
     [GameTest(Room)]
     public IEnumerable<ScriptWait> WalkingIntoTheCoinCollectsIt(GameTestRun run)
     {
+        foreach (var wait in WalkToChest(run)) yield return wait;
         run.Tap("E");
         yield return ScriptWait.Frames(1);
         var coin = Coins(run).Single();
+        run.Press("Up");                  // level with the coin, above the chest's base
+        yield return ScriptWait.Frames(4);
+        run.Release("Up");
         run.Press("Right");
         yield return ScriptWait.Until(() => run.Session.Has(LootRules.CoinFlag));
         run.Assert(Coins(run).Length == 0 && !run.Objects.TryGetPosition(coin, out _), "the coin is removed once");

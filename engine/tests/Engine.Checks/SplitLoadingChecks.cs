@@ -73,7 +73,7 @@ internal static class SplitLoadingChecks
                 public override void OnCreate(ScriptLife life) => life.Session.Set("created " + life.ObjectId);
             }
             """);
-        var key = Path.Combine(root, "Assets", "Key.png");
+        var key = Path.Combine(root, "Assets", "Showcase", "Key.png");
         var created = new List<string>();
         var images = new List<Guid>();
         for (int i = 0; i < Files; i++)
@@ -93,7 +93,7 @@ internal static class SplitLoadingChecks
         SceneObject? group = null;
         for (int i = 0; i < Scripted; i++)
         {
-            var obj = new SceneObject { Id = Guid.NewGuid(), Name = $"Crate {i}", X = 900 + i % 30 * 20, Y = i / 30 * 20, Width = 16, Height = 16 };
+            var obj = new SceneObject { Id = Guid.NewGuid(), Name = $"Split crate {i}", X = 900 + i % 30 * 20, Y = i / 30 * 20, Width = 16, Height = 16 };
             if (i % 10 == 0) group = obj;
             else obj.SetParent(group);
             obj.AddComponent(new BoxCollider2DComponent());
@@ -188,7 +188,7 @@ internal static class SplitLoadingChecks
             maxUploads = Math.Max(maxUploads, uploads);
         }
         game.Current.TryGetPosition(player, out var after);
-        Check(op.Status == SceneStatus.Completed && game.State.IsSceneLoaded(fieldId) && game.Current.Objects.Count(o => o.Name.StartsWith("Crate ")) == Scripted,
+        Check(op.Status == SceneStatus.Completed && game.State.IsSceneLoaded(fieldId) && game.Current.Objects.Count(o => o.Name.StartsWith("Split crate ")) == Scripted,
             "a split additive load completes");
         // 600 components of 0.5 ms are 300 ms of construction; 4 ms per update allows at most 8 per update.
         Check(maxBodies is > 0 and <= (int)(Budget / ScriptMs) + 1 && updates >= Scripted * ScriptMs / Budget,

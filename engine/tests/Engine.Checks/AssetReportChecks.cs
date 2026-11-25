@@ -35,7 +35,7 @@ internal static class AssetReportChecks
         WriteWav(Path.Combine(root, "Assets", "Unlock.wav"), (int)AssetBuildReport.LargeWav + 4096); // referenced by the Door
         File.Copy(Path.Combine(repository, "samples", "SpriteLab", "Assets", "Showcase", "FireflyBlink.aseprite"), Path.Combine(unused, "Art.aseprite"));
 
-        // Roadmap 15.13: Key.png (a SpriteRenderer in KeyRoom.scene; UiImage keeps its PNG too) shares an atlas with eight
+        // Roadmap 15.13: the showcase Key.png (a SpriteRenderer in Showcase.scene; UiImage keeps its PNG too) shares an atlas with eight
         // unused 128×128 noise sprites. The build must ship a repacked atlas with only Key's cell and leave the project's
         // atlas and sheet as they are.
         var props = new List<string>();
@@ -50,7 +50,7 @@ internal static class AssetReportChecks
             props.Add($"Assets/Unused/Prop{i}.png");
         }
         var catalog = ProjectAssets.Scan(root);
-        var keyId = catalog.IdFor("Assets/Key.png")!.Value;
+        var keyId = catalog.IdFor("Assets/Showcase/Key.png")!.Value;
         var atlasFile = Path.Combine(root, "Assets", "Props.atlas");
         var sourceAtlas = AtlasPacker.Pack(root, atlasFile, [keyId, .. props.Select(p => catalog.IdFor(p)!.Value)], false);
         var sourceSheet = Path.Combine(root, sourceAtlas.ImagePath());
@@ -58,7 +58,7 @@ internal static class AssetReportChecks
 
         // Keep the fixture honest: the excluded scenes really use these prefabs.
         var settings = GameSettings.Load(root);
-        foreach (var (scene, prefab) in new[] { ("PrefabWorkshop", "Chest"), ("WallWorkshop", "WallSegment") })
+        foreach (var (scene, prefab) in new[] { ("PrefabWorkshop", "Chest"), ("WallWorkshop", "WallSegment"), ("MovementWorkshop", "MovementPlayer") })
         {
             var sceneId = ProjectYaml.Read<AssetMeta>(Path.Combine(root, "Scenes", scene + ".scene.meta")).Id;
             var prefabId = ProjectYaml.Read<AssetMeta>(Path.Combine(root, "Assets", prefab + ".prefab.meta")).Id;
@@ -77,7 +77,7 @@ internal static class AssetReportChecks
 
         // (a) Not reachable from an included scene or GameSettings: not in the product.
         string[] excluded = ["Assets/Unused/BigUnused.png", "Assets/Unused/BigUnused.wav", "Assets/Chest.prefab", "Assets/WallSegment.prefab",
-            "Scenes/PrefabWorkshop.scene", "Scenes/WallWorkshop.scene"];
+            "Assets/MovementPlayer.prefab", "Scenes/PrefabWorkshop.scene", "Scenes/WallWorkshop.scene", "Scenes/MovementWorkshop.scene"];
         foreach (var path in excluded) Require(!shipped.Contains(path), "excluded asset is not shipped: " + path);
         Require(!shipped.Any(p => p.EndsWith(".meta", StringComparison.Ordinal) || p.EndsWith(".aseprite", StringComparison.Ordinal) || p.EndsWith(".cs", StringComparison.Ordinal)
             || p.EndsWith(".csproj", StringComparison.Ordinal) || p.EndsWith(".inputreplay", StringComparison.Ordinal) || p.StartsWith("Tests/", StringComparison.Ordinal) || p.StartsWith("Editor/", StringComparison.Ordinal)),
@@ -101,9 +101,10 @@ internal static class AssetReportChecks
 
         // (c) Every walked asset carries the chain that pulled it in; only build outputs fall back to a generated reason.
         string Reason(string path) => report.Shipped.Single(f => f.Path == path).Reason;
-        Require(Reason("Assets/Coin.png") == "Scenes/KeyRoom.scene > Chest > Assets/Coin.prefab > Coin > SpriteRenderer", "prefab chain: " + Reason("Assets/Coin.png"));
+        Require(Reason("Assets/Showcase/CoinPile.png") == "Scenes/Showcase.scene > Chest > Assets/Showcase/Coin.prefab > Coin > SpriteRenderer",
+            "prefab chain: " + Reason("Assets/Showcase/CoinPile.png"));
         Require(Reason("Assets/Unlock.wav") == "Scenes/Showcase.scene > Door > AudioSource", "component reason: " + Reason("Assets/Unlock.wav"));
-        Require(Reason("Assets/Fonts/NanumGothic-Regular.ttf") == "GameSettings localization" && Reason("Scenes/SecondRoom.scene") == "GameSettings includedScenes",
+        Require(Reason("Assets/Fonts/NanumGothic-Regular.ttf") == "GameSettings localization" && Reason("Scenes/ShowcaseRoom2.scene") == "GameSettings includedScenes",
             "GameSettings reasons");
         var unexplained = report.Shipped.Where(f => (f.Path.StartsWith("Assets/", StringComparison.Ordinal) || f.Path.StartsWith("Scenes/", StringComparison.Ordinal))
             && !f.Reason.StartsWith("Scenes/", StringComparison.Ordinal) && !f.Reason.StartsWith("GameSettings ", StringComparison.Ordinal)).Select(f => f.Path).ToArray();
@@ -111,7 +112,7 @@ internal static class AssetReportChecks
         Require(report.Warnings.SequenceEqual([$"Assets/Unlock.wav is {AssetBuildReport.Size(AssetBuildReport.LargeWav + 4096 + 44)} of PCM WAV; import it as Ogg Vorbis to ship less."]),
             "large WAV warning: " + string.Join(" | ", report.Warnings));
         // Roadmap 15.10: Import Assets warns with the same text; only WAV files over 1 MiB.
-        Require(AssetBuildReport.ImportWarnings(root, ["Assets/Unused/BigUnused.wav", "Assets/Unused/BigUnused.png", "Assets/Unlock.wav", "Assets/Key.png"])
+        Require(AssetBuildReport.ImportWarnings(root, ["Assets/Unused/BigUnused.wav", "Assets/Unused/BigUnused.png", "Assets/Unlock.wav", "Assets/Showcase/Key.png"])
             .SequenceEqual([$"Assets/Unused/BigUnused.wav is {AssetBuildReport.Size((2 << 20) + 44)} of PCM WAV; import it as Ogg Vorbis to ship less.", report.Warnings[0]]),
             "import warnings for large WAV files only");
         // Repacked atlas: same path, only the used cell, pixels inside the cell and its border identical, project files untouched.

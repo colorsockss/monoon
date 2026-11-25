@@ -25,13 +25,13 @@ Hierarchy에서 월드 오브젝트를 선택하고 Inspector의 **Transform**�
 | `MathF.SinCos`, `Math.SinCos` | `MathF.Sin`, `MathF.Cos` |
 | Brutal.Numerics `float2/3/4.Lerp`·`FusedMultiplyAdd`, `float4x4`, `floatQuat`, `Rows.Transform` | `System.Numerics` 형식과 `Affine2D` |
 
-**따라 해보기:** KeyRoom에서 Chest를 선택해 Rotation을 30, Scale을 (1.5, 0.75), Pivot을 (0.5, 0.5)로 바꾸고 Play한다. Chest Lid의 로컬 회전은 0인데 화면에서는 상자와 함께 기울어진다. Stop 후 Chest Lid를 Wall로 옮겨 보자. 로컬 회전은 30으로 바뀌지만 뚜껑은 같은 위치에 보인다. 원본 예제를 유지하려면 프로젝트 복사본에서 실습한다.
+**따라 해보기:** KeyRoom에서 Chest를 선택해 Rotation을 30, Scale을 (1.5, 0.75), Pivot을 (0.5, 0.5)로 바꾸고 Play한다. Chest Lid의 로컬 회전은 0인데 화면에서는 상자와 함께 기울어진다. Stop 후 Chest Lid를 Rug로 옮겨 보자. 로컬 회전은 30으로 바뀌지만 뚜껑은 같은 위치에 보인다. 원본 예제를 유지하려면 프로젝트 복사본에서 실습한다.
 
 [Mac 에디터의 저장·재열기 검증](../../engine/tests/results/transform-2d/README.md)
 
 ## Play 중 변환과 부모 변경
 
-KeyRoom 첫 방에서 **E**로 상자를 열고 **C**로 코인을 든다. 방향키로 걸으면 코인이 플레이어를 따라간다. **C**를 다시 누르면 코인이 그 자리에 같은 각도와 크기로 남는다. 들었을 때와 내려놓았을 때 각각 **F5**로 저장한 뒤 상태를 바꾸고 **F9**를 눌러 보자. 내려놓은 코인에 닿으면 획득한다. 에디터에서 Stop을 누르면 원본 씬의 상자와 계층으로 돌아간다.
+KeyRoom 첫 방에서 상자에 다가가 **E**로 열고 **C**로 코인을 든다. 방향키로 걸으면 코인이 플레이어를 따라간다. **C**를 다시 누르면 코인이 그 자리에 같은 각도와 크기로 남는다. 들었을 때와 내려놓았을 때 각각 **F5**로 저장한 뒤 상태를 바꾸고 **F9**를 눌러 보자. 내려놓은 코인에 닿으면 획득한다. 에디터에서 Stop을 누르면 원본 씬의 상자와 계층으로 돌아간다.
 
 스크립트는 `tick.Objects`로 월드 오브젝트의 현재 변환과 부모를 읽고 바꾼다. 아래 예제는 코인을 플레이어의 자식으로 붙이고 손에 들 각도와 크기를 지정한다. 내려놓을 때는 부모를 `null`로 바꾼다.
 

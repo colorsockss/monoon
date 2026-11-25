@@ -24,7 +24,7 @@ public sealed class SatchelPop : GameBehaviour
         had = true;
         const float grow = 1.4f, up = .1f, down = .15f;
         // Scaling is about the local origin (top-left), so the move keeps the centre in place.
-        var size = new Vector2(18, 17);
+        var size = new Vector2(14, 12);
         tick.Objects.Tween(tick.ObjectId).Scale(new(grow, grow), up, TweenEase.EaseOut).Scale(Vector2.One, down, TweenEase.EaseIn);
         tick.Objects.Tween(tick.ObjectId).Move(home - size * (grow - 1) / 2, up, TweenEase.EaseOut).Move(home, down, TweenEase.EaseIn);
         tick.Objects.Tween(tick.ObjectId).Color(Gold, up, TweenEase.EaseOut).Color(color, down, TweenEase.EaseIn);

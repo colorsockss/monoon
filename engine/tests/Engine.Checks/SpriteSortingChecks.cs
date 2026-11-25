@@ -4,25 +4,27 @@ using Engine.Core;
 
 internal static class SpriteSortingChecks
 {
-    [Check(7100)] static void Registered(CheckRun c) => Run(c.Project, c.Scratch);
+    [Check(7100, "sprite-sorting")] static void Registered(CheckRun c) => Run(c.Project, c.Scratch);
     internal static void Run(string project, string scratch)
     {
         CheckGroups(scratch);
-        var scene = SceneDocument.Load(Path.Combine(project, "Scenes", "KeyRoom.scene"));
+        // The KeyRoom showcase: the hero's sorting group (picture, satchel, flap, clasp) walks south past the Y-sorted Pot
+        // prefab instance (feet at y 250); the wall-side Pot 1 (136) stays behind and the Small pot (258) in front.
+        var scene = SceneDocument.Load(Path.Combine(project, "Scenes", "Showcase.scene"));
         using var game = new GameSession(scene);
         var canvas = new Capture();
         void Expect(float interpolation, bool inFront)
         {
             game.Draw(canvas, interpolation);
-            string[] behind = ["Body", "Satchel", "Flap", "Clasp", "Oak", "Courtyard oak"];
-            string[] front = ["Oak", "Body", "Satchel", "Flap", "Clasp", "Courtyard oak"];
+            string[] behind = ["Pot", "Hero", "Satchel", "Flap", "Clasp", "Pot", "Small pot"];
+            string[] front = ["Pot", "Pot", "Hero", "Satchel", "Flap", "Clasp", "Small pot"];
             if (!canvas.Sprites.SequenceEqual(inFront ? front : behind))
                 throw new Exception($"Incorrect draw order at t={interpolation}: {string.Join(", ", canvas.Sprites)}");
         }
-        for (int i = 0; i < 28; i++) game.FixedUpdate(Vector2.UnitY, 1f / 60);
-        game.FixedUpdate(Vector2.UnitY, 1f / 60); // Both the camera and the player are moving.
-        Expect(.25f, false); // Player foot at 267, oak at 268.
-        Expect(.5f, false);  // Tied with the oak, use scene order.
+        for (int i = 0; i < 10; i++) game.FixedUpdate(Vector2.UnitY, 1f / 60);   // feet 208 -> 248
+        game.FixedUpdate(Vector2.UnitY, 1f / 60);                                  // -> 252
+        Expect(.25f, false); // Player foot at 249, pot at 250.
+        Expect(.5f, true);     // Tied with the pot: scene order, and the pot comes first.
         Expect(.75f, true);
         game.FixedUpdate(-Vector2.UnitY, 1f / 60);
         Expect(.25f, true);
@@ -83,14 +85,16 @@ internal static class SpriteSortingChecks
         public void Clear(Color color) => Sprites.Clear();
         public bool DrawAffine(string? path, RectangleF rect, Matrix3x2 matrix, Color tint, SpriteRegion? source = null, string layout = TileGrid.Orthogonal)
         {
-            var name = Path.GetFileName(path) == "Oak.png" ? (rect.Width == 76 ? "Courtyard oak" : "Oak") : (tint.ToArgb() & 0xffffff) switch
+            var file = Path.GetFileName(path) ?? "";
+            var name = file.StartsWith("Hero", StringComparison.Ordinal) ? "Hero" : file switch
             {
-                0x63E6C1 => "Body", 0xBB504A => "Satchel", 0xEA8661 => "Flap", 0xFFE9AD => "Clasp", _ => null
+                "Satchel.png" => "Satchel", "SatchelFlap.png" => "Flap", "SatchelClasp.png" => "Clasp", "Pot.png" => "Pot", "PotSmall.png" => "Small pot", _ => null
             };
             if (name != null) Sprites.Add(name);
             return true;
         }
         public bool DrawSprite(string path, RectangleF rect) => true;
         public void FillRectangle(RectangleF rect, Color color) { }
+        public void DrawShader(ShaderClip shader, int frame, RectangleF local, Matrix3x2 matrix, Color tint, bool additive) { } // torch lights
     }
 }

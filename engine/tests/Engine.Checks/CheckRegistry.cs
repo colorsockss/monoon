@@ -29,20 +29,24 @@ sealed class CheckRun(string repository, string scratch, string[] args, string? 
     // Tile collision runs on the KeyRoom showcase (solid wall tiles, a walking player); projected layouts on the KeyRoomTiles showcase.
     public string TileSample => Path.Combine(repository, "samples", "KeyRoom");
     public string GridSample => Path.Combine(repository, "samples", "KeyRoomTiles");
-    public string SceneFile => Path.Combine(scratch, "Scenes", "KeyRoom.scene");
+    // The key room showcase (the sample's start scene since the old KeyRoom scene was retired, 2026-11-26).
+    public string SceneFile => Path.Combine(scratch, "Scenes", "Showcase.scene");
+    // The old door art and its sprite sheet, kept as a test fixture for the clip and sheet checks.
+    public string DoorSheet => Path.Combine(repository, "engine", "tests", "fixtures", "KeyRoomDoorSheet");
     bool copied;
     SceneDocument? scene;
 
-    /// <summary>Copies KeyRoom's Assets, Scenes, Scripts, settings and manifest into the scratch root once (the steps from
-    /// ProjectCatalogChecks on edit this copy and the one SceneDocument loaded from it, in order).</summary>
+    /// <summary>Copies KeyRoom's Assets, Scenes, Scripts, settings and manifest into the scratch root once, with the door-sheet
+    /// fixture's assets added under Assets (the steps from ProjectCatalogChecks on edit this copy and the one SceneDocument
+    /// loaded from it, in order).</summary>
     public void CopyKeyRoom()
     {
         if (copied) return;
         copied = true;
-        foreach (var folder in new[] { "Assets", "Scenes", "Scripts" })
-            foreach (var file in Directory.EnumerateFiles(Path.Combine(Project, folder), "*", SearchOption.AllDirectories))
+        foreach (var (source, folder) in new[] { (Project, "Assets"), (Project, "Scenes"), (Project, "Scripts"), (DoorSheet, "Assets") })
+            foreach (var file in Directory.EnumerateFiles(Path.Combine(source, folder), "*", SearchOption.AllDirectories))
             {
-                var target = Path.Combine(scratch, Path.GetRelativePath(Project, file));
+                var target = Path.Combine(scratch, Path.GetRelativePath(source, file));
                 Directory.CreateDirectory(Path.GetDirectoryName(target)!);
                 File.Copy(file, target);
             }

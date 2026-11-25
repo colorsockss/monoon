@@ -4,7 +4,7 @@ using Engine.Editor;
 
 internal static class WorkspaceChecks
 {
-    [Check(4100)] static void Registered(CheckRun c) => Run(c.Project, c.Scratch);
+    [Check(4100, "workspace")] static void Registered(CheckRun c) => Run(c.Project, c.Scratch);
     internal static void Run(string keyRoom, string temp)
     {
         string workspace = Directory.CreateDirectory(Path.Combine(temp, "WorkspaceTests")).FullName;
@@ -15,7 +15,7 @@ internal static class WorkspaceChecks
             Directory.CreateDirectory(Path.GetDirectoryName(dest)!);
             File.Copy(path, dest);
         }
-        var scene = SceneDocument.OpenForEditing(Path.Combine(source, "Scenes", "KeyRoom.scene"));
+        var scene = SceneDocument.OpenForEditing(Path.Combine(source, "Scenes", "Showcase.scene"));
         var baseScene = scene.CaptureObjects();
         var player = scene.Objects.First(o => o.Name == "Player").Id;
         scene.Objects.Single(o => o.Id == player).X += 31;
@@ -25,7 +25,7 @@ internal static class WorkspaceChecks
         var disk = scene.CaptureObjects();
         var merged = SceneMerge.Combine(baseScene, mine, disk, ConflictChoice.Local);
         scene.RestoreObjects(merged.Snapshot);
-        Check(merged.Conflicts.Count == 0 && scene.Objects.Single(o => o.Id == player) is { Name: "Disk Player", X: 305 }, "independent edits on the same object merge");
+        Check(merged.Conflicts.Count == 0 && scene.Objects.Single(o => o.Id == player) is { Name: "Disk Player", X: 308 }, "independent edits on the same object merge");
         scene.RestoreObjects(mine);
         scene.Objects.Single(o => o.Id == player).X++;
         var other = scene.CaptureObjects();
@@ -33,7 +33,7 @@ internal static class WorkspaceChecks
         {
             var conflict = SceneMerge.Combine(baseScene, mine, other, choice);
             scene.RestoreObjects(conflict.Snapshot);
-            Check(conflict.Conflicts.Single().EndsWith("/x") && scene.Objects.Single(o => o.Id == player).X == (choice == ConflictChoice.Local ? 305 : 306),
+            Check(conflict.Conflicts.Single().EndsWith("/x") && scene.Objects.Single(o => o.Id == player).X == (choice == ConflictChoice.Local ? 308 : 309),
                 $"same-field conflict resolves to {choice}");
         }
         var history = new SceneHistory();
@@ -50,7 +50,7 @@ internal static class WorkspaceChecks
         try { history.Restore(scene, false); throw new Exception("Undo overwrote external settings"); }
         catch (IOException) { Check(GameSettings.Load(source).GameTitle == "External" && history.CanUndo, "external settings edits survive Undo"); }
         settings.Save(source);
-        using (var recovery = new SceneRecovery(source, "Scenes/KeyRoom.scene", baseScene))
+        using (var recovery = new SceneRecovery(source, "Scenes/Showcase.scene", baseScene))
         {
             recovery.Checkpoint(mine);
             Check(!SceneRecovery.Pending(source).Any(), "open session draft is excluded");
@@ -61,11 +61,12 @@ internal static class WorkspaceChecks
         }
 
         string extension = Path.Combine(source, "Editor", "KeyRoomTools.cs");
-        var dependencies = WorkspaceArchives.Dependencies(source, [extension, Path.Combine(source, "Assets", "Coin.prefab")]);
+        var dependencies = WorkspaceArchives.Dependencies(source, [extension, Path.Combine(source, "Assets", "Showcase", "Coin.prefab")]);
         Check(dependencies.Contains("Editor/KeyRoomTools.cs") && !dependencies.Contains("Editor/KeyRoomTools.cs.meta") &&
-            dependencies.Contains("Assets/Coin.prefab") && dependencies.Contains("Assets/Coin.png.meta") &&
-            dependencies.Contains("Assets/Loot.table") && dependencies.Contains("Scripts/CollectCoin.cs") && !dependencies.Contains("Scenes/KeyRoom.scene"),
-            "package carries the editor extension source with the prefab, sprite, table and scripts");
+            dependencies.Contains("Assets/Showcase/Coin.prefab") && dependencies.Contains("Assets/Showcase/CoinPile.png.meta") &&
+            dependencies.Contains("Assets/CoinPulse.clip") && dependencies.Contains("Assets/Loot.table") && dependencies.Contains("Scripts/CollectCoin.cs") &&
+            !dependencies.Contains("Scenes/Showcase.scene"),
+            "package carries the editor extension source with the prefab, sprite, clip, table and scripts");
         var package = Path.Combine(workspace, "Coin.monopackage");
         WorkspaceArchives.Export(source, package, WorkspaceArchives.Package, dependencies);
         var destRoot = Directory.CreateDirectory(Path.Combine(workspace, "PackageTarget")).FullName;
@@ -73,7 +74,7 @@ internal static class WorkspaceChecks
         Check(added.Length == dependencies.Count && WorkspaceArchives.Install(package, destRoot, WorkspaceArchives.Package).Length == 0 &&
             File.Exists(Path.Combine(destRoot, "Editor", "KeyRoomTools.cs")) && !new ProjectScripts(destRoot).Locations().Values.Any(p => p.StartsWith("Editor/")),
             "install package and repeat with stable IDs; the extension stays out of the game scripts");
-        var collision = Path.Combine(destRoot, "Assets", "Coin.prefab");
+        var collision = Path.Combine(destRoot, "Assets", "Showcase", "Coin.prefab");
         File.AppendAllText(collision, "\n# External change\n");
         try { WorkspaceArchives.Install(package, destRoot, WorkspaceArchives.Package); throw new Exception("Package conflict accepted"); }
         catch (IOException) { Check(File.ReadAllText(collision).Contains("External change"), "conflicting package preserves existing file"); }
@@ -82,7 +83,7 @@ internal static class WorkspaceChecks
         WorkspaceArchives.Export(source, template, WorkspaceArchives.Template);
         var clone = Directory.CreateDirectory(Path.Combine(workspace, "Clone")).FullName;
         WorkspaceArchives.Install(template, clone, WorkspaceArchives.Template);
-        var cloneScene = SceneDocument.OpenForEditing(Path.Combine(clone, "Scenes", "KeyRoom.scene"));
+        var cloneScene = SceneDocument.OpenForEditing(Path.Combine(clone, "Scenes", "Showcase.scene"));
         var original = GameSettings.Load(source);
         var copied = GameSettings.Load(clone);
         using (var session = new GameSession(cloneScene))
@@ -93,14 +94,14 @@ internal static class WorkspaceChecks
                 ProjectCatalog.Inspect(clone).Problems.Count() == 0 && session.Current.Inspect(player)!.Value.Position.X > prior.X,
                 "new template project has its own save identity, intact references and working KeyRoom Play");
         }
-        var old = Path.Combine(clone, "Assets", "Door.clip.yaml");
+        var old = Path.Combine(clone, "Assets", "LidMotion.clip.yaml");
         var current = Path.ChangeExtension(old, null);
         File.Move(current, old);
         File.Move(current + ".meta", old + ".meta");
         string? backup = null;
         LegacyProject.Upgrade(clone, paths => backup = MigrationBackup.Create(clone, paths));
         using var zip = ZipFile.OpenRead(backup!);
-        Check(zip.GetEntry("Assets/Door.clip.yaml") != null && zip.GetEntry("Assets/Door.clip.yaml.meta") != null &&
+        Check(zip.GetEntry("Assets/LidMotion.clip.yaml") != null && zip.GetEntry("Assets/LidMotion.clip.yaml.meta") != null &&
             File.Exists(current) && !File.Exists(old), "migration backs up original file and identity before conversion");
         ProjectMoveChecks.Run(clone, workspace);
         Directory.Delete(workspace, true);

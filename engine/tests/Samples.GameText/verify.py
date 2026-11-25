@@ -9,9 +9,9 @@ import sys
 
 # Each scenario: project, start scene, frame count, key presses (frame, key) or holds (start, end, key), captured frames.
 SCENARIOS = {
-    'KeyRoom': dict(project='64fb4cd6-2469-5cec-ba6d-9a49e61f42e7', start='64fb4cd6-2469-5cec-ba6d-9a49e61f42e7', frames=240,
-                    # I opens the bag, L switches to Korean; close, walk left to the key, reopen; L back to English.
-                    events=[(10, 'I'), (40, 'L'), (90, 'I'), (100, 125, 'Left'), (160, 'I'), (200, 'L')],
+    # The key room showcase (start scene): I opens the bag, L switches to Korean; close, walk left to the key, reopen; L back.
+    'KeyRoom': dict(project='64fb4cd6-2469-5cec-ba6d-9a49e61f42e7', start='dd96f9dd-668b-5df5-8786-252e6eb77e9e', frames=240,
+                    events=[(10, 'I'), (40, 'L'), (90, 'I'), (100, 128, 'Left'), (160, 'I'), (200, 'L')],
                     captures=[5, 70, 190, 230]),
     'PlatformerLab': dict(project='3b309c28-75ce-562e-92ac-f94ee48b18c7', start='4fe9f1eb-5dcd-5f90-a033-78a61e876a0d', frames=420,
                           # Run right onto the moving deck; the ferry cutscene opens its dialogue panel; Return advances.

@@ -3,7 +3,7 @@ using Engine.Core;
 
 internal static class UiPinChecks
 {
-    [Check(9000)] static void Registered(CheckRun c) => Run(c.Project);
+    [Check(9000, "ui-pin")] static void Registered(CheckRun c) => Run(c.Project);
     internal static void Run(string project)
     {
         var scene = new SceneDocument();
@@ -50,11 +50,11 @@ internal static class UiPinChecks
         row.GetComponent<UiRectComponent>()!.Right = 45;
         ui = new ScreenUi(scene,null);
         if (ui.Bounds(row.Id)!.Value.Width != list.Width-12) throw new Exception("Layout must own its direct rows");
-        var keyRoom = SceneDocument.Load(Path.Combine(project, "Scenes", "KeyRoom.scene"));
+        var keyRoom = SceneDocument.Load(Path.Combine(project, "Scenes", "Showcase.scene"));
         var original = keyRoom.Settings;
         var settings = original with { Width = 480, Height = 720, Accessibility = new("ko", 2) };
         using var game = new GameSession(keyRoom, null, null, PlayerStorage.Unavailable, settings);
-        var guide = ProjectAssets.ReadManifest(project).IdFor("Scenes/RoomGuide.scene")!.Value;
+        var guide = ProjectAssets.ReadManifest(project).IdFor("Scenes/ShowcaseGuide.scene")!.Value;
         game.State.LoadScene(guide);
         game.FixedUpdate(System.Numerics.Vector2.Zero, 1f/60);
         if (game.SceneId != guide || game.LogicalSize != settings.Resolution || game.Current.Ui.Preferences.TextScale != 2 ||

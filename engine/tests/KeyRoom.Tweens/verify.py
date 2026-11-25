@@ -1,4 +1,4 @@
-"""Roadmap 16.3: KeyRoom's satchel pop (game-time tweens) and Controls press (UI-time tween) at five points in three paths."""
+"""Roadmap 16.3: the KeyRoom showcase's satchel pop (game-time tweens) and Controls press (UI-time tween) at five points in three paths."""
 import json
 import os
 from pathlib import Path
@@ -7,15 +7,18 @@ import subprocess
 import sys
 
 HERE = Path(__file__).resolve().parent
-PROJECT = START = '64fb4cd6-2469-5cec-ba6d-9a49e61f42e7'
+PROJECT, START = '64fb4cd6-2469-5cec-ba6d-9a49e61f42e7', 'dd96f9dd-668b-5df5-8786-252e6eb77e9e'  # Showcase.scene
 FRAMES = 140
-# Open the chest, walk right into the coin (the satchel pops), then click the Controls button (it presses in and out).
-EVENTS = [(5, "{kind: key, control: \"E\", down: true}"), (6, "{kind: key, control: \"E\", down: false}"),
-          (10, "{kind: key, control: \"Right\", down: true}"), (60, "{kind: key, control: \"Right\", down: false}"),
-          (100, "{kind: pointer, control: Mouse.Left, x: 742, y: 28, down: true}"),
-          (101, "{kind: pointer, control: Mouse.Left, x: 742, y: 28, down: false}")]
+# Step east into the chest's reach and open it, step north level with the coin and walk east into it (the satchel pops),
+# then click the Controls button at the bottom right (it presses in and out).
+key = lambda f, c, d: (f, f"{{kind: key, control: \"{c}\", down: {str(d).lower()}}}")
+EVENTS = [key(5, "Right", True), key(11, "Right", False), key(14, "E", True), key(15, "E", False),
+          key(18, "Up", True), key(22, "Up", False), key(25, "Right", True), key(60, "Right", False),
+          (100, "{kind: pointer, control: Mouse.Left, x: 744, y: 416, down: true}"),
+          (101, "{kind: pointer, control: Mouse.Left, x: 744, y: 416, down: false}")]
 GROW, UP, DOWN = 1.4, .1, .15
-GOLD, SATCHEL = 'FFFFD65C', 'FFBB504A'
+GOLD, SATCHEL = 'FFFFD65C', 'FFFFFFFF'   # the satchel picture is drawn untinted
+HOME, HALF = (16, -12), (7, 6)   # its local position on the hero and half its 14×12 size
 
 
 def expect(ok, message):
@@ -27,13 +30,11 @@ def expect(ok, message):
 def prepare(sample, destination):
     shutil.copytree(sample, destination, ignore=shutil.ignore_patterns('.monoon', '.DS_Store', 'bin', 'obj'))
     shutil.copyfile(HERE / 'TraceTweens.source', destination / 'Scripts/TraceTweens.cs')
-    scene = destination / 'Scenes/KeyRoom.scene'
+    scene = destination / 'Scenes/Showcase.scene'
     text = scene.read_text(encoding='utf-8')
-    anchor = '- id: be0b6e23-58d7-4ed7-a8a4-19dad1c60dc6\n  name: Key bindings opener\n'
-    assert text.count(anchor) == 1
-    probe = ('- id: 3e5f7a9c-1b2d-4c6e-8f0a-2b4d6f8a0c1e\n  name: Tween trace\n  width: 1\n  height: 1\n  components:\n'
-             '  - type: script\n    script: TraceTweens\n')
-    scene.write_text(text.replace(anchor, probe + anchor), encoding='utf-8')
+    assert 'defaultCameraId' not in text   # the probe goes last in the object list
+    scene.write_text(text + '- id: 3e5f7a9c-1b2d-4c6e-8f0a-2b4d6f8a0c1e\n  name: Tween trace\n  width: 1\n  height: 1\n  components:\n'
+                     '  - type: script\n    script: TraceTweens\n', encoding='utf-8')
 
 
 def recording(path):
@@ -69,7 +70,7 @@ def summary(path):
         t = k / 60
         s = 1 + (GROW - 1) * (ease_out(t / UP) if t <= UP else 1 - ease_in(min(1, (t - UP) / DOWN)))
         expect(abs(r['scale'][0] - s) < 1e-4 and r['scale'][0] == r['scale'][1] and
-               abs(r['pos'][0] - (13 - 9 * (s - 1))) < 1e-3 and abs(r['pos'][1] - (13 - 8.5 * (s - 1))) < 1e-3,
+               abs(r['pos'][0] - (HOME[0] - HALF[0] * (s - 1))) < 1e-3 and abs(r['pos'][1] - (HOME[1] - HALF[1] * (s - 1))) < 1e-3,
                f'{path.name}: satchel at +{k} ticks has scale {r["scale"][0]:.5f} (expected {s:.5f}) about its centre')
         points.append(dict(object='satchel', ticks=k, x=r['pos'][0], y=r['pos'][1], scale=r['scale'][0], argb=r['argb']))
     expect(points[0]['argb'] == SATCHEL and points[2]['argb'] == GOLD and points[4]['argb'] == SATCHEL,

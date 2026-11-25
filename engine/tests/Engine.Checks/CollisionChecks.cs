@@ -4,7 +4,7 @@ using Engine.Core;
 
 internal static class CollisionChecks
 {
-    [Check(5100, "physics")] static void Registered(CheckRun c) => Run(c.Repository);
+    [Check(5100, "collision", "physics")] static void Registered(CheckRun c) => Run(c.Repository);
     private static void Check(bool valid,string name) { if (!valid) throw new Exception("Physics: "+name); }
     private static void Near(float actual,float expected,string name) => Check(Math.Abs(actual-expected)<.001f,$"{name}: {actual} vs {expected}");
     private static PhysicsHit Hit(PhysicsHit? h) => h??throw new Exception("Missing physics hit");
@@ -20,7 +20,7 @@ internal static class CollisionChecks
         copy.RestoreObjects(scene.CaptureObjects());
         var reopened=copy.Objects.Single(o=>o.Id==obj.Id).GetComponent<PolygonCollider2DComponent>();
         Check(reopened?.Mask==2 && reopened.Layer==2 && reopened.Points.SequenceEqual(poly.Points),"polygon and filters roundtrip");
-        var old=SceneDocument.Load(Path.Combine(repository,"samples","KeyRoom","Scenes","KeyRoom.scene"));
+        var old=SceneDocument.Load(Path.Combine(repository,"samples","KeyRoom","Scenes","Showcase.scene"));
         Check(old.Objects.SelectMany(o=>o.Components).OfType<BoxCollider2DComponent>().Any(b=>b.Mask==uint.MaxValue && b.Layer==0),"legacy mask");
         using var game=new GameSession(scene);
         var world=game.Current; var query=world.Physics;

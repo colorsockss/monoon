@@ -10,7 +10,7 @@ macOS arm64, Windows x64, Linux x64를 지원합니다. 게임은 Release 또는
 
 | 샘플 | 직접 해볼 수 있는 일 | 구현과 검증 |
 | --- | --- | --- |
-| [KeyRoom](samples/KeyRoom/) | 왼쪽에서 열쇠를 주우면 오른쪽 문이 열립니다. 문을 지나 두 번째 방으로 이동합니다. | [문을 여는 C# 코드](samples/KeyRoom/Scripts/DoorLock.cs) · [이벤트 검증](engine/tests/results/game-events/README.md) |
+| [KeyRoom](samples/KeyRoom/) | 왼쪽에서 열쇠를 주우면 북쪽 문이 열립니다. 문을 지나 두 번째 방으로 이동합니다. 가방·조작 안내·언어 전환·상자 프리팹도 한 방에서 봅니다. | [문을 여는 C# 코드](samples/KeyRoom/Scripts/DoorLock.cs) · [이벤트 검증](engine/tests/results/game-events/README.md) |
 | [PlatformerLab](samples/PlatformerLab/) | 경사 타일을 오르고, 한쪽 통과 발판을 뛰어오르고, 움직이는 발판을 타고, 경비병의 길찾기와 컷신을 봅니다. 흔들다리·도르래·곡선 경로 발판, 조명, 타일 스트리밍은 다른 쇼케이스 씬에 있습니다. | [발판과 스켈레탈 애니메이션](docs/manual/rig-animation.md) · [플랫폼 물리](docs/manual/platformer-physics.md) |
 | [InventoryLab](samples/InventoryLab/) | 약초상과 대화해 의뢰를 받고 보상을 수령합니다. 최신 저장이 손상되면 직전 저장에서 이어갑니다. | [게임 스크립트 API](docs/manual/api.md) · [세 운영체제에서 확인한 저장 복구](engine/tests/results/slot-recovery/README.md) |
 
@@ -31,7 +31,7 @@ dotnet run --project engine/src/Engine.Editor -- samples/KeyRoom
 ```
 
 1. **Play**를 누르고 방향키나 WASD로 왼쪽의 노란 열쇠를 주우세요.
-2. 오른쪽으로 돌아와 열린 문을 지나가세요.
+2. 위쪽 벽의 열린 문으로 걸어 들어가세요.
 3. **Stop**을 누르면 편집 화면으로 돌아옵니다. **Hierarchy → Player**를 선택하면 **Inspector**에서 이동 속도를 바꿀 수 있습니다.
 
 [사용자 매뉴얼](docs/manual/README.md) · [개발자 가이드와 빌드 방법](docs/development.md) · [개발 로드맵](docs/roadmap.md)

@@ -3,7 +3,7 @@ using Engine.Core;
 
 internal static class WorldPointerChecks
 {
-    [Check(5300)] static void Registered(CheckRun c) => Run(c.Project);
+    [Check(5300, "world-pointer")] static void Registered(CheckRun c) => Run(c.Project);
     private sealed class Listener : GameBehaviour, IWorldPointerHandler
     {
         public readonly List<WorldPointerEvent> Events = [];
@@ -13,41 +13,50 @@ internal static class WorldPointerChecks
     public static void Run(string project)
     {
         const string left = "Mouse.Left";
-        var workshop = SceneDocument.Load(Path.Combine(project, "Scenes", "PointerWorkshop.scene"));
-        using (var game = new SceneGame(workshop))
+        // The KeyRoom showcase: both crates follow a mouse drag (DragCrate), the Bag button sits over Crate 2's lower edge,
+        // and F8's Detail Camera draws an inset viewport over the chest (camera at zoom 1.5, inset at 2.5).
+        var room = SceneDocument.Load(Path.Combine(project, "Scenes", "Showcase.scene"));
+        using (var game = new SceneGame(room))
         {
             var input = new GameInputRouter(game.Actions, () => game.Ui, game.LogicalSize, () => game);
-            void Step() => game.FixedUpdate(input.Take(), 1f / 60);
-            Guid Object(string name) => workshop.Objects.Single(o => o.Name == name).Id;
-            var front = Object("Front crate");
-            var back = Object("Back crate");
+            Guid Object(string name) => room.Objects.Single(o => o.Name == name).Id;
+            var dragged = Object("Crate 2");
+            var other = Object("Crate");
+            var camera = Object("Main Camera");
+            void Step(float pan = 0)
+            {
+                if (pan != 0) game.TryMoveStep(camera, new(pan / 60, 0));   // the showcase camera is fixed; pan it here
+                game.FixedUpdate(input.Take(), 1f / 60);
+            }
             Vector2 Position(Guid id) => game.TryGetPosition(id, out var p) ? p : throw new Exception("Missing crate");
-            var f = Position(front);
-            var b = Position(back);
+            var f = Position(dragged);
+            var b = Position(other);
             Step();
-            input.Pointer(new(358, 220), left, true);
-            input.Pointer(new(368, 221));
-            input.Pointer(new(368, 221), left, false);
+            // Press on the Bag button above Crate 2 and leave it before releasing: no click, and the world never sees it.
+            input.Pointer(new(660, 408), left, true);
+            input.Pointer(new(660, 380));
+            input.Pointer(new(660, 380), left, false);
             Step();
-            Require(Position(front) == f && Position(back) == b, "UI gesture reached world");
-            Vector2 start = new(327, 247), end = new(458, 310);
+            Require(Position(dragged) == f && Position(other) == b && game.Ui.ActiveInputMode == null, "UI gesture reached world");
+            Vector2 start = new(670, 380), end = new(430, 335);
             input.Pointer(start, left, true);
             input.Pointer(end);
-            input.Key("D", true);
-            for (int i = 0; i < 60; i++) Step();
-            Require(Vector2.Distance(Position(front), f + end - start + new Vector2(100, 0)) < .01f && Position(back) == b,
-                "front crate must keep the same grab point while camera moves");
-            input.Key("D", false);
+            for (int i = 0; i < 60; i++) Step(100);
+            Require(Vector2.Distance(Position(dragged), f + (end - start) / 1.5f + new Vector2(100, 0)) < .01f && Position(other) == b,
+                "Crate 2 must keep the same grab point while the camera moves: " + Position(dragged));
             input.Pointer(end, left, false);
-            var released = Position(front);
-            Require(game.TryGetView(Object("Detail Camera"), out var inset), "detail camera missing");
-            start = inset.WorldToScreen(new(330, 232));
-            end = new(550, 168);
+            var released = Position(dragged);
+            var detail = Object("Detail Camera");
+            game.SetActive(detail, true);
+            Step();
+            Require(game.TryGetView(detail, out var inset), "detail camera missing");
+            start = inset.WorldToScreen(released + new Vector2(8, 7));
+            end = start + new Vector2(100, -20);   // ends outside the inset, over the main view
             input.Pointer(start, left, true);
             input.Pointer(end);
             input.Pointer(end, left, false);
-            Require(Vector2.Distance(Position(back), b + (end - start) / inset.Zoom) < .01f && Position(front) == released,
-                "drag crossing viewports must keep the original camera");
+            Require(Vector2.Distance(Position(dragged), released + (end - start) / inset.Zoom) < .01f && Position(other) == b,
+                "drag crossing viewports must keep the original camera: " + Position(dragged));
         }
 
         var scene = SceneDocument.Empty(new());

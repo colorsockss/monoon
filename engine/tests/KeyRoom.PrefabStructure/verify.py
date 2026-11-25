@@ -18,7 +18,8 @@ def prepare(sample, dest):
     settings = dest / 'GameSettings'
     text = settings.read_text(encoding='utf-8')
     # The workshop is an editor sample. Only this copy starts in it and exports it.
-    text = text.replace(f'startScene: {PROJECT}', f'startScene: {workshop}').replace('includedScenes:\n', f'includedScenes:\n- {workshop}\n', 1)
+    start = text.split('startScene: ', 1)[1].split('\n', 1)[0]
+    text = text.replace(f'startScene: {start}', f'startScene: {workshop}').replace('includedScenes:\n', f'includedScenes:\n- {workshop}\n', 1)
     settings.write_text(text, encoding='utf-8')
     scene = dest / 'Scenes/PrefabWorkshop.scene'
     anchor = '  - type: camera2D\n'

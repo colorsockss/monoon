@@ -72,7 +72,7 @@ public static class StartupHook
             RoutingStrategies.Tunnel, handledEventsToo: true);
         hierarchy.SelectionChanged += (_, _) => Trace($"selected {Row(hierarchy.SelectedItem)?.Name}");
         var project = Environment.GetEnvironmentVariable("MONOON_QA_PROJECT")!;
-        string path = Path.Combine(project, "Scenes", "KeyRoom.scene");
+        string path = Path.Combine(project, "Scenes", "Showcase.scene");
         string OnDisk() => SceneDocument.Load(path).CaptureObjects();
         SceneDocument Authored() => (SceneDocument)window.GetType().GetProperty("Scene", Members)!.GetValue(window)!;
         var history = window.GetType().GetField("history", Members)!.GetValue(window)!;

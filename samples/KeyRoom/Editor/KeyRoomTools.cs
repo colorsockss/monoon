@@ -7,7 +7,7 @@ using Engine.Editor;
 // Editor-only: compiled by the MoNoon editor from Editor/, never part of the game scripts or a game build.
 public sealed class KeyRoomTools : IEditorExtension
 {
-    private const string Coin = "Assets/Coin.prefab";
+    private const string Coin = "Assets/Showcase/Coin.prefab";
 
     public void Register(EditorExtensionRegistry editor)
     {

@@ -12,13 +12,15 @@ using Engine.Core;
 using Engine.Editor;
 
 // Loaded into the packaged editor with DOTNET_STARTUP_HOOKS (roadmap 13.11). In Scene Play: PlayKnobs' bool, enum, Vector2, string
-// and colour fields and the Player's sprite tint and collider through the Play Inspector rows, each checked on the running game;
+// and colour fields and the Door's sprite tint and collider through the Play Inspector rows, each checked on the running game;
 // Apply selected with Banner unchecked, then Apply all for Banner; an unapplied edit that Stop discards; Undo twice after Stop.
 public static class StartupHook
 {
     private static readonly string Output = Environment.GetEnvironmentVariable("MONOON_PF_OUTPUT")!;
     private const BindingFlags Any = BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic;
     private static readonly Dictionary<string, object?> Result = [];
+    // The showcase hero's root is a feet box without a picture; the door has a sprite renderer and a collider.
+    private const string Target = "Door";
     private static Window main = null!;
     private static SceneViewport view = null!;
 
@@ -26,7 +28,7 @@ public static class StartupHook
     {
         main = life.MainWindow!;
         view = main.FindControl<SceneViewport>("Viewport")!;
-        await Until(() => main.IsVisible && Scene.Objects.Any(o => o.Name == "Player"), "KeyRoom", 120);
+        await Until(() => main.IsVisible && Scene.Objects.Any(o => o.Name == Target), "KeyRoom", 120);
         main.Width = 1280; main.Height = 800;
         await Delay(800);
         await Run();
@@ -53,11 +55,11 @@ public static class StartupHook
     }
     private static object Knob(string field)
     {
-        var player = World.Objects.First(o => o.Name == "Player");
+        var player = World.Objects.First(o => o.Name == Target);
         var knobs = ((IEnumerable<GameBehaviour>)Call(World, "LiveScripts", player.Id)!).First(s => s.GetType().Name == "PlayKnobs");
         return knobs.GetType().GetField(field)!.GetValue(knobs)!;
     }
-    private static SceneObject Authored => Scene.Objects.First(o => o.Name == "Player");
+    private static SceneObject Authored => Scene.Objects.First(o => o.Name == Target);
     private static string Saved(string field) =>
         Authored.Components.OfType<ScriptComponent>().First(s => s.Script == "PlayKnobs").Values.TryGetValue(field, out var v) ? v.GetRawText().Replace(" ", "").Replace("\n", "") : "(default)";
     private static async Task Typed(string name, string text)
@@ -87,7 +89,7 @@ public static class StartupHook
         Click(play);
         await Until(() => view.IsPlaying && Get(view, "PlayWorld") != null, "Play", 60);
         await Delay(800);
-        Call(main, "Select", World.Objects.First(o => o.Name == "Player"));
+        Call(main, "Select", World.Objects.First(o => o.Name == Target));
         await Until(() => Has("PlayKnobs.Frozen") && Has("Sprite Renderer.Tint"), "Play rows", 30);
         await Delay(400);
 
@@ -101,7 +103,7 @@ public static class StartupHook
         Require((string)Knob("Banner") == "play", "Banner live");
         await TypedColor("PlayKnobs.Glow", "#FF0000");
         Require((string)Knob("Glow") == "#FF0000", "Glow live " + Knob("Glow"));
-        var player = World.Objects.First(o => o.Name == "Player").Id;
+        var player = World.Objects.First(o => o.Name == Target).Id;
         await TypedColor("Sprite Renderer.Tint", "#00FF00");
         Require(World.TryGetSpriteColor(player, out var tint) && tint.R == 0 && tint.G == 255 && tint.B == 0, $"tint live {tint}");
         Named<CheckBox>("Collider.Enabled").IsChecked = false; await Delay(300);

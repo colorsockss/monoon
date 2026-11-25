@@ -1,52 +1,52 @@
 version: 2
 values:
-  room: "64fb4cd6-2469-5cec-ba6d-9a49e61f42e7"
+  room: "dd96f9dd-668b-5df5-8786-252e6eb77e9e"
   key: false
   chest: true
   coin: false
   world:
     version: 2
     scenes:
-      64fb4cd6-2469-5cec-ba6d-9a49e61f42e7:
+      dd96f9dd-668b-5df5-8786-252e6eb77e9e:
         objects:
-        - id: "bc2c6d9b-c82c-4d72-981c-09e1a6a70d5d"
+        - id: "dfcc76b6-2cf9-53fa-9a2e-8c9c8c59ac43"
           fields: 3
           removed: false
           pose:
-            x: 332
-            y: 131
+            x: 364
+            y: 172
             angle: 0
           active: true
           collider: null
-        - id: "226c5154-4dbb-4f60-91af-14d7147ab88e"
+        - id: "289e4c51-d2b3-5790-b330-82d434e1548a"
           fields: 2
           removed: false
           pose: null
           active: false
           collider: null
-        - id: "ef662731-852a-4934-9ea5-91620f35c949"
+        - id: "28257eb9-be3d-5c9a-9044-ed519d6d63fa"
           fields: 3
           removed: false
           pose:
-            x: 274
-            y: 146
+            x: 301
+            y: 228
             angle: 0
           active: true
           collider: null
         prefabs:
-        - asset: "f53c1a45-ed64-4c21-a158-1f49c2f2251c"
+        - asset: "f1788efe-8407-5800-bcb7-030b9e45baf3"
           parent: null
-          spawnX: 330
-          spawnY: 116
+          spawnX: 357
+          spawnY: 198
           members:
-            5cbd6eda-c7f3-44df-b74b-3508b84540b1: "b6f4c57b-7318-4964-8561-67c8aec0468a"
+            98dc22c5-e3ed-5632-8546-18fde1c31091: "f6cc29ba-e40b-4fbc-8c8c-e8dbf14662c3"
           objects:
-          - id: "b6f4c57b-7318-4964-8561-67c8aec0468a"
+          - id: "f6cc29ba-e40b-4fbc-8c8c-e8dbf14662c3"
             fields: 7
             removed: false
             pose:
-              x: 330
-              y: 116
+              x: 357
+              y: 198
               angle: 0
               basis:
                 m11: 1.299038

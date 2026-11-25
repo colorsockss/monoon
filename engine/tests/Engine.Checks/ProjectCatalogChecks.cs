@@ -23,13 +23,13 @@ internal static class ProjectCatalogChecks
     private static void Verify(string root)
     {
         void Check(bool ok,string msg){if(!ok)throw new Exception(msg);Console.WriteLine("PASS project: "+msg);}
-        const string table="Assets/Loot.table",coin="Assets/Coin.prefab",scene="Scenes/KeyRoom.scene",rules="Assets/KeyRoomRules.data";
+        const string table="Assets/Loot.table",coin="Assets/Showcase/Coin.prefab",scene="Scenes/Showcase.scene",rules="Assets/KeyRoomRules.data";
         var catalog=ProjectCatalog.Inspect(root);
-        Check(catalog.UsedBy("Assets/DoorOpen2.png").Any(l => l.Source == scene && l.Field.EndsWith("KeySequence.Frames[1]")),
+        Check(catalog.UsedBy("Assets/Showcase/DoorOpen.png").Any(l => l.Source == scene && l.Field.EndsWith("KeySequence.Frames[0]")),
             "a script asset list reports the source field and index");
         Check(!catalog.Problems.Any(),string.Join("; ",catalog.Problems)+"KeyRoom has no unresolved saved references");
         Check(catalog.Uses(scene).Any(l=>l.Target==rules && l.Field.Contains("OpenChest.Rules")) && catalog.UsedBy(table).Any(l=>l.Source==coin && l.Field.Contains("LootTable")),"scene and prefab expose typed dependencies in both directions");
-        Check(ProjectCatalog.Search(ProjectCatalog.Files(root),"t:sprite DOOR").Count()==5 && ProjectCatalog.Search(ProjectCatalog.Files(root),"t:script chest").Single()=="Scripts/OpenChest.cs","typed searches span project folders");
+        Check(ProjectCatalog.Search(ProjectCatalog.Files(root),"t:sprite DOOR").Count()==7 && ProjectCatalog.Search(ProjectCatalog.Files(root),"t:script chest").Single()=="Scripts/OpenChest.cs","typed searches span project folders");
         string path=Path.Combine(root,table);
         var data=GameTable.Load(path);var before=File.ReadAllBytes(path);
         try{(data with{Rows=[data.Rows[0],data.Rows[0]]}).Save(path,true);throw new Exception("duplicate row accepted");}catch(InvalidDataException){}

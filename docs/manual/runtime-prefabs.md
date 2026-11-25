@@ -1,14 +1,14 @@
 # Play 중 프리팹 생성·제거
 
-**KeyRoom에서 해보기.** 첫 방의 시작 위치에서 **Play → E**를 누른다. 상자 뚜껑이 사라지고 오른쪽에 코인이 하나 생긴다. Hierarchy에서 **Coin**을 선택하면 Inspector에 Sprite Renderer, **Box Collider 2D → Is Trigger**, CollectCoin이 표시된다. 게임 화면을 클릭한 뒤 **→** 또는 **D**로 코인에 닿으면 코인이 화면과 Hierarchy에서 사라지고 왼쪽 위에 **COIN: 1**이 나타난다. Play를 멈추면 원래 편집 씬과 선택이 복원된다.
+**KeyRoom에서 해보기.** 첫 방에서 **Play**를 누르고 오른쪽으로 몇 걸음 걸어 상자에 다가간 뒤 **E**를 누른다. 닫힌 상자가 열리고 오른쪽 위에 코인 더미가 하나 생긴다. Hierarchy에서 **Coin**을 선택하면 Inspector에 Sprite Renderer, **Box Collider 2D → Is Trigger**, CollectCoin이 표시된다. 게임 화면을 클릭한 뒤 **↑**로 한 걸음 올라가 **→** 또는 **D**로 코인에 닿으면 코인이 화면과 Hierarchy에서 사라지고 왼쪽 위에 코인 아이콘이 나타난다. Play를 멈추면 원래 편집 씬과 선택이 복원된다.
 
 ## 태그·그룹으로 오브젝트 찾기
 
-**Project → Assets → Coin.prefab**을 더블클릭하고 루트 **Coin**을 선택한다. Inspector의 **Tags & groups**에서 **Tag**에 `Coin`, **Groups**에 `수집품`을 입력하고 **Save Prefab**을 누른다. 오브젝트에 태그 하나와 여러 그룹을 지정할 수 있다. 그룹 사이는 쉼표로 구분한다. 이름 앞뒤의 공백과 중복 그룹은 정리되며 대소문자는 구별한다.
+**Project → Assets → Showcase → Coin.prefab**을 더블클릭하고 루트 **Coin**을 선택한다. Inspector의 **Tags & groups**에서 **Tag**에 `Coin`, **Groups**에 `수집품`을 입력하고 **Save Prefab**을 누른다. 오브젝트에 태그 하나와 여러 그룹을 지정할 수 있다. 그룹 사이는 쉼표로 구분한다. 이름 앞뒤의 공백과 중복 그룹은 정리되며 대소문자는 구별한다.
 
-KeyRoom에서 **Play → Debug**를 열고 **Group** 옆 입력란에 `수집품`을 입력한다. 게임 화면을 클릭하고 **E**로 상자를 열면 결과가 **0 → 1 · Coin**으로 바뀐다. 오른쪽으로 걸어 코인을 먹으면 같은 틱에 **0**이 된다. **Tag**로 바꾼 뒤 `Coin`을 입력해도 같은 오브젝트가 나온다.
+KeyRoom에서 **Play → Debug**를 열고 **Group** 옆 입력란에 `수집품`을 입력한다. 게임 화면을 클릭하고 상자에 다가가 **E**로 열면 결과가 **0 → 1 · Coin**으로 바뀐다. 오른쪽으로 걸어 코인을 먹으면 같은 틱에 **0**이 된다. **Tag**로 바꾼 뒤 `Coin`을 입력해도 같은 오브젝트가 나온다.
 
-코인을 남긴 채 방을 떠나는 경우도 확인할 수 있다. 새 Play에서 **E → C**로 코인을 들고, 왼쪽의 열쇠를 얻은 뒤 오른쪽 문을 통과한다. 첫 방에서는 코인이 계속 조회되고, 두 번째 방이 열리면 결과가 **0**이 된다.
+코인을 남긴 채 방을 떠나는 경우도 확인할 수 있다. 새 Play에서 상자에 다가가 **E → C**로 코인을 들고, 왼쪽의 열쇠를 얻은 뒤 위쪽 문을 통과한다. 첫 방에서는 코인이 계속 조회되고, 두 번째 방이 열리면 결과가 **0**이 된다.
 
 ```csharp
 var coins = tick.Objects.FindByGroup("수집품");
@@ -44,4 +44,4 @@ contact.Objects.Destroy(contact.ObjectId);
 
 빌드할 때 엔진은 Inspector에 연결한 프리팹을 따라가서 그 안의 PNG·클립·오디오·타일셋과 스크립트까지 수집한다. 프리팹에서만 쓰는 스크립트도 Release에서는 컴파일된 어셈블리에, Native AOT에서는 게임 실행 파일에 포함된다. 코드에서 GUID만 만들어 참조하는 방식으로는 빌드 의존성을 선언할 수 없다. 스크립트가 있는 프로젝트를 새로 빌드할 때는 현재 빌더와 같은 버전의 템플릿·AOT 키트를 준비한다. [프로젝트 업그레이드](upgrade.md)
 
-[F5·F9에서 위치와 부모 복원하기](player-data.md#월드와-런타임-프리팹-저장) · [KeyRoom 상자 스크립트](../../samples/KeyRoom/Scripts/OpenChest.cs) · [Coin.prefab](../../samples/KeyRoom/Assets/Coin.prefab) · [획득 스크립트](../../samples/KeyRoom/Scripts/CollectCoin.cs) · [macOS 실행 기록](../../engine/tests/results/runtime-prefabs/README.md)
+[F5·F9에서 위치와 부모 복원하기](player-data.md#월드와-런타임-프리팹-저장) · [KeyRoom 상자 스크립트](../../samples/KeyRoom/Scripts/OpenChest.cs) · [Coin.prefab](../../samples/KeyRoom/Assets/Showcase/Coin.prefab) · [획득 스크립트](../../samples/KeyRoom/Scripts/CollectCoin.cs) · [macOS 실행 기록](../../engine/tests/results/runtime-prefabs/README.md)

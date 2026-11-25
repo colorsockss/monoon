@@ -30,7 +30,7 @@ KeyRoom의 [LootRules.cs](../../samples/KeyRoom/Scripts/Shared/LootRules.cs)는 
 
 `IEnumerable<ScriptWait>`를 반환하는 메서드에 순서대로 할 일을 쓰고 `yield return`으로 기다릴 조건을 돌려준다. `objects.StartRoutine(소유 오브젝트 ID, 메서드())`는 첫 `yield return`까지 바로 실행하고, 나머지는 조건이 충족된 틱이나 프레임에 이어서 실행한다. `objects`는 콜백의 `life.Objects`, `tick.Objects`, `contact.Objects`, `message.Objects`다.
 
-KeyRoom의 [DoorLock](../../samples/KeyRoom/Scripts/DoorLock.cs)은 문이 열린 뒤 게임 시간 0.5초를 기다려 화면 위쪽에 **The door is open. Head east.**(한국어: **문이 열렸다. 동쪽으로 가자.**)를 띄운다.
+KeyRoom의 [DoorLock](../../samples/KeyRoom/Scripts/DoorLock.cs)은 문이 열린 뒤 게임 시간 0.5초를 기다려 화면 위쪽에 **The door is open. Head north.**(한국어: **문이 열렸다. 북쪽으로 가자.**)를 띄운다.
 
 ```csharp
 [GameEventHandler]
@@ -93,7 +93,7 @@ InventoryLab의 **Yard → HerbYard → Choices**에서 **Answer 4**를 **Answer
 
 KeyRoom에서 Hierarchy의 **Key → KeySequence**를 펼친다. **Frames**는 문이 열린 후 표시할 스프라이트 목록이다. Project 검색창에서 PNG를 찾아 **Drop .png here**에 놓으면 끝에 추가되고, 기존 행 위에 놓으면 그 행 앞에 추가된다. 목록 안에서 이름을 잡아 옮기면 순서가 바뀐다. 추가·이동·제거 각각을 **Cmd+Z**(Windows는 **Ctrl+Z**) 한 번으로 되돌릴 수 있다.
 
-**RestFrame**에서 **First** 또는 **Last**를 골라 목록의 어느 쪽을 사용할지 정한다. **Offset**의 X와 Y는 문이 열릴 때의 월드 이동량(픽셀)이다. X가 양수면 오른쪽, Y가 음수면 위로 이동한다. **DoorOpen2.png**를 첫 번째에 두고 **First**, **24**, **-12**를 지정한 뒤 저장한다. Play에서 열쇠를 얻으면 열림 애니메이션이 끝난 문은 해당 PNG를 표시하고 월드 좌표 **(504, 70)**에 놓인다. 충돌체는 꺼져 있어 통과할 수 있다. 샘플 기본값은 **Last**와 **(0, 0)**이다.
+**RestFrame**에서 **First** 또는 **Last**를 골라 목록의 어느 쪽을 사용할지 정한다. **Offset**의 X와 Y는 문이 열릴 때의 월드 이동량(픽셀)이다. X가 양수면 오른쪽, Y가 음수면 위로 이동한다. **Showcase/Door.png**(닫힌 문)를 첫 번째에 두고 **First**, **24**, **-12**를 지정한 뒤 저장한다. Play에서 열쇠를 얻으면 열림 애니메이션이 끝난 문은 해당 PNG를 표시하고 월드 좌표 **(279, 18)**에 놓인다. 충돌체는 꺼져 있어 통과할 수 있다. 샘플 기본값은 **Last**와 **(0, 0)**이다.
 
 게임 스크립트에서는 다음과 같이 필드를 선언한다.
 
@@ -131,7 +131,7 @@ KeyRoom의 **Chest → OpenChest → Player**에는 `PlayerMovement`가 붙은 �
 
 ## 게임 정의 이벤트
 
-KeyRoom에서 **Key → KeySequence → KeyAcquired**를 펼친다. 기본 연결은 **Door · DoorLock.Unlock**이다. **−**로 해제하고 **Connect…**에서 **Object → Wall/Door**, **Method → DoorLock.Unlock**, **Connect**를 선택해 다시 연결할 수 있다. 연결 행을 누르면 대상을 바꿀 수 있다. 각 변경은 **Cmd+Z**(Windows는 **Ctrl+Z**) 한 번으로 되돌릴 수 있다. **Cmd+S**로 씬을 저장한다.
+KeyRoom에서 **Key → KeySequence → KeyAcquired**를 펼친다. 기본 연결은 **Door · DoorLock.Unlock**이다. **−**로 해제하고 **Connect…**에서 **Object → Door**, **Method → DoorLock.Unlock**, **Connect**를 선택해 다시 연결할 수 있다. 연결 행을 누르면 대상을 바꿀 수 있다. 각 변경은 **Cmd+Z**(Windows는 **Ctrl+Z**) 한 번으로 되돌릴 수 있다. **Cmd+S**로 씬을 저장한다.
 
 발신 스크립트는 인자 없는 공개 인스턴스 C# 이벤트를 선언한다. KeyRoom은 처음 열쇠를 얻었을 때만 이벤트를 발생시킨다.
 
@@ -173,7 +173,7 @@ objects.SetColliderEnabled(door, false);
 
 `objects`는 콜백의 `life.Objects`, `tick.Objects` 또는 `contact.Objects`다. 변경은 현재 런타임 인스턴스에 적용된다. `GetComponent<SpriteRendererComponent>(door)`로 현재 스프라이트·색상의 복사본을 읽고, `IsColliderEnabled(door)`로 충돌체 자체의 상태를 확인한다. 오브젝트·대상 컴포넌트가 없거나 PNG·색상 값이 유효하지 않으면 설정 메서드는 `false`를 반환한다. `SetSprite(door, default)`는 기본 사각형을, `SetSpriteTint(door, null)`은 기본 색상을 선택한다. 충돌체를 끄면 이동 판정, 트리거, 물리 질의에서 빠지고 오브젝트의 스크립트·렌더러·오디오는 계속 실행된다.
 
-KeyRoom의 기본 설정에서는 먼저 오른쪽 문에 부딪힌 뒤 왼쪽으로 가서 열쇠를 얻는다. 문은 Frames 목록의 마지막 스프라이트인 `DoorOpen3.png`로 바꾸고 충돌체를 끈다. DoorLock에서 호출한 `PlayThenShowSprite()`는 열림 클립을 한 차례 표시한 후 새 스프라이트를 보여 준다. 기존 열린 문 PNG는 투명해서 통로가 비어 보인다. Scene Play에서 Door를 선택하면 Inspector의 실행 상태에 현재 이미지와 충돌체 상태가 표시된다. 오른쪽으로 통과하면 두 번째 방에 도착한다. Stop하면 원래 닫힌 문과 충돌체가 돌아온다. 저장된 열쇠 진행을 불러오면 열린 상태로 시작한다. [열쇠 스크립트](../../samples/KeyRoom/Scripts/KeySequence.cs)
+KeyRoom의 기본 설정에서는 먼저 위쪽 문에 부딪힌 뒤 왼쪽으로 가서 열쇠를 얻는다. 문은 Frames 목록의 마지막 스프라이트인 `Showcase/DoorOpen.png`로 바꾸고 충돌체를 끈다. DoorLock에서 호출한 `PlayThenShowSprite()`는 열림 클립을 한 차례 표시한 후 새 스프라이트를 보여 준다. Scene Play에서 Door를 선택하면 Inspector의 실행 상태에 현재 이미지와 충돌체 상태가 표시된다. 문으로 걸어 들어가면 두 번째 방에 도착한다. Stop하면 원래 닫힌 문과 충돌체가 돌아온다. 저장된 열쇠 진행을 불러오면 열린 상태로 시작한다. [열쇠 스크립트](../../samples/KeyRoom/Scripts/KeySequence.cs)
 
 ## 디버그 선·원·텍스트 그리기
 
@@ -208,7 +208,7 @@ CameraLab의 프레이밍 쇼케이스(`ShowcaseFraming.scene`)를 Play하고 **
 
 1. MoNoon의 **Preferences → External script editor**에서 C# 확장이 활성화된 VS Code를 선택한다. KeyRoom을 연 뒤 **Project → Open C# Project…**를 누르면 현재 에디터에 연결할 VS Code 작업 공간이 열린다.
 2. VS Code에서 `Scripts/KeySequence.cs`를 열고 `OnTriggerEnter`의 `KeyAcquired?.Invoke();` 줄 왼쪽 여백을 클릭한다. **Run and Debug → Attach to MoNoon Scene Play**를 선택하고 F5를 누른다. MoNoon에서 **Play**를 누른다. 프로젝트 메뉴로 작업 공간을 먼저 열었다면 이미 실행 중인 Play에도 연결할 수 있다.
-3. KeyRoom에서 먼저 오른쪽으로 가면 닫힌 문에 막힌다. 왼쪽으로 가서 열쇠를 주우면 문을 여는 호출 직전에 Scene Play가 멈춘다. VS Code의 **Variables → Locals**에서 `contact`와 `this`를 펼치거나, **Watch**에 `contact.OtherId`, `this.Collector`, `this.Door`를 입력한다. 처음 두 값은 플레이어를 가리킨다.
+3. KeyRoom에서 먼저 위로 가면 닫힌 문에 막힌다. 왼쪽으로 가서 열쇠를 주우면 문을 여는 호출 직전에 Scene Play가 멈춘다. VS Code의 **Variables → Locals**에서 `contact`와 `this`를 펼치거나, **Watch**에 `contact.OtherId`, `this.Collector`, `this.Door`를 입력한다. 처음 두 값은 플레이어를 가리킨다.
 4. VS Code에서 **Continue** 또는 F5를 누른다. MoNoon 창으로 돌아가 오른쪽으로 이동하면 열린 문을 지나 두 번째 방에 도착한다. 중단된 상태에서 디버거 연결을 종료해도 게임은 재개된다.
 
 **Attach to MoNoon Scene Play**는 이 컴퓨터의 MoNoon과 직접 통신한다. 메서드 블록 안에서 문장이 시작되는 줄에 중단점을 둘 수 있다. 중괄호나 빈 줄에 놓으면 연결 대기로 표시되고, Play 중 지원하지 않는 줄에는 안내가 표시된다. 현재 메서드의 인수·초기화된 지역 변수·인스턴스 필드와 자동 속성의 저장값을 읽을 수 있다. 이 연결에서 제공하는 실행 제어는 중단점과 Continue이며, 한 줄씩 실행하거나 Watch에서 메서드를 호출하는 기능은 제공하지 않는다. 스크립트를 수정했으면 Stop 후 다시 Play해 새 소스로 디버깅한다.
@@ -249,7 +249,7 @@ using Engine.Core;
 
 public sealed class DoorTests
 {
-    [GameTest("Scenes/KeyRoom.scene")]
+    [GameTest("Scenes/Showcase.scene")]
     public IEnumerable<ScriptWait> KeyOpensDoorThenHintAfterHalfSecond(GameTestRun run)
     {
         run.Press("Left");
@@ -271,7 +271,7 @@ public sealed class DoorTests
 | `Find(이름)`, `PositionOf(이름)`, `Script<T>(이름)` | 현재 씬에서 이름으로 오브젝트 ID, 월드 위치, 붙은 스크립트 인스턴스를 찾는다. |
 | `Assert(조건, 설명)`, `AreEqual(기대값, 실제값, 설명)` | 실패하면 테스트를 멈추고 설명과 프레임 번호를 출력한다. |
 
-KeyRoom의 상자·문 규칙은 [ChestTests.cs](../../samples/KeyRoom/Tests/ChestTests.cs)와 [DoorTests.cs](../../samples/KeyRoom/Tests/DoorTests.cs)에 있다. 저장소 루트에서 `./monoon test project samples/KeyRoom`으로 실행하고 출력과 종료 코드를 확인한다. [명령과 실패 출력](build.md#게임-스크립트-테스트)
+KeyRoom의 상자·문 규칙은 [ChestTests.cs](../../samples/KeyRoom/Tests/ChestTests.cs)와 [DoorTests.cs](../../samples/KeyRoom/Tests/DoorTests.cs), 입력 쇼케이스 규칙은 [MoveTests.cs](../../samples/KeyRoom/Tests/MoveTests.cs)에 있다. 저장소 루트에서 `./monoon test project samples/KeyRoom`으로 실행하고 출력과 종료 코드를 확인한다. [명령과 실패 출력](build.md#게임-스크립트-테스트)
 
 `Tests/`와 [에디터 확장](workspace.md#프로젝트-에디터-확장)의 `Editor/`는 게임 빌드와 Play에서 컴파일하지 않으므로 테스트 전용 API(`GameTestRun` 등)와 에디터 API는 게임 스크립트에서 사용할 수 없다. 외부 IDE용 `.monoon/ide/` 프로젝트에도 아직 포함되지 않는다.
 
@@ -364,4 +364,4 @@ public sealed class PlayerMovement : GameBehaviour
 
 필드 이름이 여러 번 바뀌었다면 가장 최근에 사용한 이름부터 특성을 하나씩 선언한다. 파일에 현재 이름이 있으면 그 값을 우선하고, 현재 이름이 없으면 선언 순서대로 처음 발견한 값을 쓴다. 동일한 컴포넌트의 두 필드가 현재 이름이나 이전 이름을 공유하면 Inspector와 빌드에서 충돌한 이름을 알려준다. 이 특성은 필드 이름을 이전하는 기능이며, 값의 타입을 바꿀 때는 별도의 데이터 변환이 필요하다.
 
-KeyRoom에서 **F3**을 누르면 **MovementWorkshop**이 열린다. 위쪽 플레이어는 **MovementPlayer.prefab**의 240을 상속하고 아래쪽 플레이어는 320으로 설정돼 있다. 방향키나 WASD로 두 플레이어를 함께 움직인다. 다시 **F3**을 누르면 첫 방으로 돌아온다. [샘플 씬](../../samples/KeyRoom/Scenes/MovementWorkshop.scene) · [저장·재열기와 이동 검증](../../engine/tests/results/script-field-renames/README.md)
+KeyRoom의 Project 패널에서 에디터 검사용 씬 `Scenes/MovementWorkshop.scene`을 열고 Play한다(게임 빌드에는 들어가지 않는다). 위쪽 플레이어는 **MovementPlayer.prefab**의 240을 상속하고 아래쪽 플레이어는 320으로 설정돼 있다. 방향키나 WASD로 두 플레이어를 함께 움직인다. **F3**을 누르면 쇼케이스 첫 방으로 이동한다. [샘플 씬](../../samples/KeyRoom/Scenes/MovementWorkshop.scene) · [저장·재열기와 이동 검증](../../engine/tests/results/script-field-renames/README.md)

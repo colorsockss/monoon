@@ -3,7 +3,7 @@ using Engine.Core;
 
 public enum Facing { Down, Up, Left, Right }
 
-// Attached to the Player only in the disposable test project (roadmap 13.11): one bool, enum, Vector2, string and colour field
+// Attached to the Door only in the disposable test project (roadmap 13.11): one bool, enum, Vector2, string and colour field
 // that the Play Inspector edits while the game runs.
 public sealed class PlayKnobs : GameBehaviour
 {

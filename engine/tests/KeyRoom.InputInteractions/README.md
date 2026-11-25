@@ -1,6 +1,6 @@
 # KeyRoom 입력 상호작용·버퍼·2D 벡터 검증 (16.12)
 
-`verify.py prepare`는 KeyRoom을 별도 폴더에 복사하고 `GameSettings`에 액션과 벡터를 더한다. 원본 샘플은 바꾸지 않는다.
+`verify.py prepare`는 KeyRoom을 별도 폴더에 복사하고 `GameSettings`의 Charge·Flick·Dash(무브 쇼케이스의 설정)를 아래 표의 것으로 바꾸고 액션과 벡터를 더한다. 원본 샘플은 바꾸지 않는다.
 
 | 액션 | 키 | 규칙 |
 | --- | --- | --- |
@@ -10,7 +10,7 @@
 | Leap | Y | `buffer: 8` |
 | AimLeft/Right/Up/Down | V / B / T / G | 벡터 `Aim`. 벡터 `Walk`는 기존 MoveLeft…MoveDown이며 첫 벡터라 `Move`가 된다 |
 
-관찰 스크립트 [TraceInput](TraceInput.source)이 첫 방에 붙어, 판정(`press`·`release`·`trigger`)이 있거나 벡터가 바뀐 게임 틱마다 한 줄을 `MONOON_INPUT_TRACE`에 쓴다. 20틱마다 "착지"로 `Consume("Leap")`를 호출한다.
+관찰 스크립트 [TraceInput](TraceInput.source)이 시작 씬인 열쇠 방 쇼케이스(`Showcase.scene`)에 붙어, 판정(`press`·`release`·`trigger`)이 있거나 벡터가 바뀐 게임 틱마다 한 줄을 `MONOON_INPUT_TRACE`에 쓴다. 20틱마다 "착지"로 `Consume("Leap")`를 호출한다.
 
 입력(프레임): J 40틱·10틱, U 4틱·20틱, O 10틱 간격 두 번, O 20틱 뒤·10틱 뒤, Y 착지 5틱 전·15틱 전, D(오른쪽)를 누른 채 V+T. 300프레임.
 

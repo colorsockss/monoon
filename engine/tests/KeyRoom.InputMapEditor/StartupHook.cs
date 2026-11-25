@@ -10,7 +10,7 @@ using Avalonia.VisualTree;
 using Engine.Core;
 
 // Loaded into the packaged editor with DOTNET_STARTUP_HOOKS (16.12 editor follow-up). Through the Input Actions panel only:
-// the KeyRoom.InputInteractions actions (Hold/Tap/DoubleTap, ticks, buffer) and the Walk/Aim vectors, invalid values and their
+// a Hold action, a buffered action, four aim actions and the Walk/Aim vectors (next to the sample's own Charge/Flick/Dash), invalid values and their
 // messages, Save, the GameSettings bytes against the YAML-only file, one Undo and Redo, column positions at 1280/1600/1920.
 public static class StartupHook
 {
@@ -135,10 +135,8 @@ public static class StartupHook
         var expected = Normalized(Reference);
         Require(!before.AsSpan().SequenceEqual(expected), "reference differs from the plain sample");
         await Open();
-        // KeyRoom.InputInteractions prepare, typed into the panel.
-        await AddAction("Charge", "J", "Hold", "30");
-        await AddAction("Flick", "U", "Tap", "12");
-        await AddAction("Dash", "O", "DoubleTap", "15");
+        // editor.py's reference rules, typed into the panel.
+        await AddAction("Spin", "Z", "Hold", "20");
         await AddAction("Leap", "Y", buffer: "8");
         foreach (var (name, key) in new[] { ("AimLeft", "V"), ("AimRight", "B"), ("AimUp", "T"), ("AimDown", "G") }) await AddAction(name, key);
         await AddVector("Walk", "MoveLeft", "MoveRight", "MoveUp", "MoveDown");
@@ -203,7 +201,7 @@ public static class StartupHook
         await (Task)Call(main, "RestoreEdit", false)!;
         await Delay(300);
         Require(Saved().AsSpan().SequenceEqual(before), "Undo restores the GameSettings bytes");
-        Require(Scene.Settings.Input.Actions!.All(a => a.Name != "Charge") && Scene.Settings.Input.Vectors == null, "Undo restores the input map");
+        Require(Scene.Settings.Input.Actions!.All(a => a.Name != "Leap") && Scene.Settings.Input.Vectors == null, "Undo restores the input map");
         await (Task)Call(main, "RestoreEdit", true)!;
         await Delay(300);
         Require(Saved().AsSpan().SequenceEqual(expected), "Redo restores the edited GameSettings bytes");

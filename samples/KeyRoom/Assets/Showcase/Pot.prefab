@@ -1,23 +1,23 @@
-schemaVersion: 22
+schemaVersion: 42
 objects:
-- id: fb7e5ae6-3740-44e7-80bc-81f162a811d9
-  name: Oak tree
+- id: 6b76f43c-ccf2-5f3b-93d6-500ea7953da0
+  name: Pot
   x: 0
   y: 0
-  width: 102
-  height: 98
+  width: 34
+  height: 40
   components:
   - type: spriteRenderer
     sortingLayer: 0
     order: 0
     sortByY: true
-    footOffset: -2
+    footOffset: 0
     flipX: false
     flipY: false
     pixelSnap: false
     squareColor: "#FFFFFF"
-    assetId: 891136e7-f2d7-57bb-b09a-a10cb3a73b1b
-    asset: Assets/Oak.png
+    assetId: bb9f9bfb-35b7-547a-bf8b-5eea9a4e5c53
+    asset: Assets/Showcase/Pot.png
   rotation: 0
   scaleX: 1
   scaleY: 1

@@ -657,8 +657,8 @@ objects:
   height: 12
   components:
   - type: boxCollider2D
-- id: 67992ac1-5318-5cbb-97e2-57b7b599954b
-  name: Pot 2 shadow
+- id: 75a87d02-3b3d-5f3a-8e9c-490897ace7d3
+  name: Pot shadow
   x: 39
   y: 242.8
   width: 44
@@ -668,8 +668,39 @@ objects:
     assetId: d6044226-b525-5845-8e0d-68450f82712e
     asset: Assets/Showcase/ShadowL.png
     order: -4
-- id: 54b4b04f-28ec-5a7b-9159-cce98f1a06da
-  name: Pot 2
+- id: 58456987-ba60-5c3d-82fd-501ff396ec74
+  name: Pot
+  prefab:
+    assetId: 9368f258-dc67-5daa-b688-5697d4810db4
+    instances:
+      6b76f43c-ccf2-5f3b-93d6-500ea7953da0: 58456987-ba60-5c3d-82fd-501ff396ec74
+    revision: 51EBE8042DA29478E54791894B8F91DDC5201C12C2BE2D5D20E4C9803A8A22A2
+    baseline:
+      6b76f43c-ccf2-5f3b-93d6-500ea7953da0:
+        id: "58456987-ba60-5c3d-82fd-501ff396ec74"
+        name: "Pot"
+        x: 0
+        y: 0
+        width: 34
+        height: 40
+        components:
+        - type: "spriteRenderer"
+          sortingLayer: 0
+          order: 0
+          sortByY: true
+          footOffset: 0
+          flipX: false
+          flipY: false
+          pixelSnap: false
+          squareColor: "#FFFFFF"
+          assetId: "bb9f9bfb-35b7-547a-bf8b-5eea9a4e5c53"
+          asset: "Assets/Showcase/Pot.png"
+        rotation: 0
+        scaleX: 1
+        scaleY: 1
+        pivotX: 0
+        pivotY: 0
+        shear: 0
   x: 44
   y: 210
   width: 34
@@ -679,17 +710,16 @@ objects:
     assetId: bb9f9bfb-35b7-547a-bf8b-5eea9a4e5c53
     asset: Assets/Showcase/Pot.png
     sortByY: true
-- id: ec175d27-0e58-53a4-9db1-7a74ea7a16ec
-  parentId: 54b4b04f-28ec-5a7b-9159-cce98f1a06da
-  name: Pot 2 base
-  x: 2
-  y: 26
+- id: 4ca3eed2-bc60-5316-9edb-083428bd500d
+  name: Pot base
+  x: 46
+  y: 236
   width: 30
   height: 12
   components:
   - type: boxCollider2D
-- id: d8f74d1c-1df3-5e0c-8b3b-c8a39eda9819
-  name: Pot 3 shadow
+- id: 1c8a7821-c36d-5dca-90e4-8a450a7049e5
+  name: Small pot shadow
   x: 80
   y: 252
   width: 32
@@ -699,8 +729,39 @@ objects:
     assetId: 5d73fe99-b84a-5664-b667-b9f554cdb749
     asset: Assets/Showcase/ShadowM.png
     order: -4
-- id: 077de3d3-985e-550c-82df-c0a479d955cd
-  name: Pot 3
+- id: 5d0f8b8a-8d97-4fc9-b807-19318affa919
+  name: Small pot
+  prefab:
+    assetId: 9368f258-dc67-5daa-b688-5697d4810db4
+    instances:
+      6b76f43c-ccf2-5f3b-93d6-500ea7953da0: 5d0f8b8a-8d97-4fc9-b807-19318affa919
+    revision: 51EBE8042DA29478E54791894B8F91DDC5201C12C2BE2D5D20E4C9803A8A22A2
+    baseline:
+      6b76f43c-ccf2-5f3b-93d6-500ea7953da0:
+        id: "5d0f8b8a-8d97-4fc9-b807-19318affa919"
+        name: "Pot"
+        x: 0
+        y: 0
+        width: 34
+        height: 40
+        components:
+        - type: "spriteRenderer"
+          sortingLayer: 0
+          order: 0
+          sortByY: true
+          footOffset: 0
+          flipX: false
+          flipY: false
+          pixelSnap: false
+          squareColor: "#FFFFFF"
+          assetId: "bb9f9bfb-35b7-547a-bf8b-5eea9a4e5c53"
+          asset: "Assets/Showcase/Pot.png"
+        rotation: 0
+        scaleX: 1
+        scaleY: 1
+        pivotX: 0
+        pivotY: 0
+        shear: 0
   x: 84
   y: 228
   width: 24
@@ -710,26 +771,14 @@ objects:
     assetId: ab522357-e08f-5cf3-a7f7-430b2b530a1e
     asset: Assets/Showcase/PotSmall.png
     sortByY: true
-- id: 948c93eb-417d-5570-9661-3b03f0cbb957
-  parentId: 077de3d3-985e-550c-82df-c0a479d955cd
-  name: Pot 3 base
-  x: 2
-  y: 16
+- id: 406a9716-b62a-58e3-9330-133d695e1a58
+  name: Small pot base
+  x: 86
+  y: 244
   width: 20
   height: 12
   components:
   - type: boxCollider2D
-- id: a2ff4be3-53ba-53dd-95ab-eb41dd5c491f
-  name: Crate 2 shadow
-  x: 448
-  y: 278.8
-  width: 44
-  height: 12
-  components:
-  - type: spriteRenderer
-    assetId: d6044226-b525-5845-8e0d-68450f82712e
-    asset: Assets/Showcase/ShadowL.png
-    order: -4
 - id: d74a4912-d492-515b-a799-ded64454e5f3
   name: Crate 2
   x: 452
@@ -741,6 +790,18 @@ objects:
     assetId: d4232051-4a3c-5ebf-8f6b-d49d3b258a82
     asset: Assets/Showcase/Crate.png
     sortByY: true
+- id: a2ff4be3-53ba-53dd-95ab-eb41dd5c491f
+  parentId: d74a4912-d492-515b-a799-ded64454e5f3
+  name: Crate 2 shadow
+  x: -4
+  y: 30.8
+  width: 44
+  height: 12
+  components:
+  - type: spriteRenderer
+    assetId: d6044226-b525-5845-8e0d-68450f82712e
+    asset: Assets/Showcase/ShadowL.png
+    order: -4
 - id: e59b2925-fe79-5f9d-9e0f-646325962cfa
   parentId: d74a4912-d492-515b-a799-ded64454e5f3
   name: Crate 2 base
@@ -823,6 +884,42 @@ objects:
     assetId: cbe7c7c6-9b00-5540-bffc-ee40ea0eab63
     asset: Assets/Showcase/HeroIdleE.png
     order: 0
+- id: 51c1580c-0444-5d49-84bc-ad7df3a3add4
+  parentId: 28257eb9-be3d-5c9a-9044-ed519d6d63fa
+  name: Satchel
+  x: 16
+  y: -12
+  width: 14
+  height: 12
+  components:
+  - type: spriteRenderer
+    assetId: 2309a4b0-5962-5a05-a6c6-6e1a8032dc0e
+    asset: Assets/Showcase/Satchel.png
+    order: 20
+- id: b6d5d8c0-a8ea-5c41-8b0e-af85769fea68
+  parentId: 51c1580c-0444-5d49-84bc-ad7df3a3add4
+  name: Satchel flap
+  x: 0
+  y: 0
+  width: 14
+  height: 4
+  components:
+  - type: spriteRenderer
+    assetId: 80acbe06-659d-5d90-bab6-b7e3ad64926b
+    asset: Assets/Showcase/SatchelFlap.png
+    order: 21
+- id: a766bff7-7292-5f98-8e01-c6ce52d95fbc
+  parentId: 51c1580c-0444-5d49-84bc-ad7df3a3add4
+  name: Satchel clasp
+  x: 6
+  y: 3
+  width: 2
+  height: 2
+  components:
+  - type: spriteRenderer
+    assetId: c75dc243-34b8-5e5b-b4b5-dff75dc0b798
+    asset: Assets/Showcase/SatchelClasp.png
+    order: 22
 - id: ce171431-9744-52c4-b68b-dc4375b02817
   name: Main Camera
   x: 288
@@ -1023,7 +1120,7 @@ objects:
   components:
   - type: uiRect
   - type: uiText
-    text: "Charge  hold J      Flick  tap U      Dash  O O      Rebind  K"
+    text: "Charge  hold J      Flick  tap U      Dash  O O      Controls  K"
     size: 12
     color: "#BFD0DC"
 - id: c6795055-cb01-5cba-a5b9-b4f63f31fcf8
@@ -1066,33 +1163,6 @@ objects:
     size: 12
     insetX: 10
     insetY: 4
-- id: 24d2c2df-1d6f-59b2-83d7-94a380797c87
-  parentId: 805dc9c6-d2b8-5933-9bc6-1b036a3b5eb8
-  name: Rebind prompt
-  x: 0
-  y: 96
-  width: 240
-  height: 34
-  components:
-  - type: uiRect
-    anchor: TopCenter
-    showIf: rebinding
-  - type: uiImage
-    sprite: 8417743f-7aed-49af-becf-fce814d4d466
-    borders: {left: 8, top: 8, right: 8, bottom: 8}
-- id: e374f8da-8cf9-5eea-adec-add31ceb58c5
-  parentId: 24d2c2df-1d6f-59b2-83d7-94a380797c87
-  name: Rebind text
-  x: 14
-  y: 8
-  width: 220
-  height: 20
-  components:
-  - type: uiRect
-  - type: uiText
-    richText: true
-    text: "Dash: press a new key"
-    size: 14
 - id: fc9e44e6-42fb-50a6-a058-4ba04a5684ad
   name: Trainer
   x: 0
@@ -1102,5 +1172,18 @@ objects:
   components:
   - type: script
     script: Showcase/MoveTrainer
-    values: {"Player": "28257eb9-be3d-5c9a-9044-ed519d6d63fa", "Hero": "a4692bba-9e29-5644-84a8-dcf9e30300fa", "Crate": "3ce140d2-c016-5ea4-8c67-7febb81da353", "CrateShadow": "7d9dc81a-2d06-547c-8537-164ba2cab163", "CrateDust": "e398b53a-c305-5949-b9fc-db9ef248b2eb", "CrateSpark": "c78717f5-d47d-534a-b710-e98be063c0a3", "Dummy": "1f47c167-61ab-5718-beb6-740bff667de1", "DummySpark": "1cb76e9c-377e-5c09-bd8f-0304400f0876", "Coin": "2bb73cee-0775-5bf4-8e3d-c2fd4a94fbc2", "MeterBack": "a44baf3f-16d5-5b3f-b791-7e32f2272ef0", "Meter": "ec484903-e37d-5c51-9e45-617325e9591c", "Label": "65c7af96-1732-55c8-b814-43cf617bedfc", "Prompt": "e374f8da-8cf9-5eea-adec-add31ceb58c5", "Controls": "bb32d279-a345-5440-9187-9a39b0567bf5", "DashTrail": "b64e5407-be1b-598a-a512-ec1ed02f59ba", "IdleE": {"Id": "cbe7c7c6-9b00-5540-bffc-ee40ea0eab63"}, "WalkE1": {"Id": "e83bd9f4-a765-502c-a3fa-916cc23e4d4f"}, "WalkE2": {"Id": "016d748e-74eb-5140-af4c-ddfd47a1c785"}, "WalkE3": {"Id": "4ecf1c0c-b67e-5244-bc67-31836a1590f1"}, "WalkE4": {"Id": "dca94204-55bf-5458-8ccb-375b1fa0acdc"}, "WalkW1": {"Id": "19a7e2a7-526f-5cbd-888e-3f760e08a40d"}, "WalkW2": {"Id": "54ee4d6a-9657-5190-a8c1-94ea67746854"}, "WalkW3": {"Id": "073741bb-436e-5f61-acaa-d905f72e1d31"}, "WalkW4": {"Id": "cff9dc79-0b4b-5b2f-ad76-e5404a719a57"}}
+    values: {"Player": "28257eb9-be3d-5c9a-9044-ed519d6d63fa", "Hero": "a4692bba-9e29-5644-84a8-dcf9e30300fa", "Crate": "3ce140d2-c016-5ea4-8c67-7febb81da353", "CrateShadow": "7d9dc81a-2d06-547c-8537-164ba2cab163", "CrateDust": "e398b53a-c305-5949-b9fc-db9ef248b2eb", "CrateSpark": "c78717f5-d47d-534a-b710-e98be063c0a3", "Dummy": "1f47c167-61ab-5718-beb6-740bff667de1", "DummySpark": "1cb76e9c-377e-5c09-bd8f-0304400f0876", "Coin": "2bb73cee-0775-5bf4-8e3d-c2fd4a94fbc2", "MeterBack": "a44baf3f-16d5-5b3f-b791-7e32f2272ef0", "Meter": "ec484903-e37d-5c51-9e45-617325e9591c", "Label": "65c7af96-1732-55c8-b814-43cf617bedfc", "Controls": "bb32d279-a345-5440-9187-9a39b0567bf5", "DashTrail": "b64e5407-be1b-598a-a512-ec1ed02f59ba", "IdleE": {"Id": "cbe7c7c6-9b00-5540-bffc-ee40ea0eab63"}, "WalkE1": {"Id": "e83bd9f4-a765-502c-a3fa-916cc23e4d4f"}, "WalkE2": {"Id": "016d748e-74eb-5140-af4c-ddfd47a1c785"}, "WalkE3": {"Id": "4ecf1c0c-b67e-5244-bc67-31836a1590f1"}, "WalkE4": {"Id": "dca94204-55bf-5458-8ccb-375b1fa0acdc"}, "WalkW1": {"Id": "19a7e2a7-526f-5cbd-888e-3f760e08a40d"}, "WalkW2": {"Id": "54ee4d6a-9657-5190-a8c1-94ea67746854"}, "WalkW3": {"Id": "073741bb-436e-5f61-acaa-d905f72e1d31"}, "WalkW4": {"Id": "cff9dc79-0b4b-5b2f-ad76-e5404a719a57"}}
+- id: be0b6e23-58d7-4ed7-a8a4-19dad1c60dc6
+  name: Key bindings opener
+  x: 0
+  y: 0
+  width: 1
+  height: 1
+  components:
+  - type: script
+    script: RoomGuide
+    values:
+      Guide:
+        Id: "cd60e7de-8966-4519-aabb-7209fb04fe2f"
+      Action: KeyBindings
 defaultCameraId: ce171431-9744-52c4-b68b-dc4375b02817

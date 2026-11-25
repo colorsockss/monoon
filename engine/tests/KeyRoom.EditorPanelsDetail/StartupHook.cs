@@ -106,13 +106,13 @@ public static class StartupHook
         Step("component_enable", new { qualifying = Array.Empty<string>(), reason = "No Engine.Core component has an enabled/active property; no runtime field was added." });
         Step("console", await Console());
         Step("alignment", await Alignment());
-        // Restore the name, leave Door hidden and Wall Top locked for the restart phase, then save the scene.
+        // Restore the name, leave Door hidden and the Rug locked for the restart phase, then save the scene.
         var renamed = Object(LongName);
         renamed.Name = "Door";
         Call(main, "FinishObjectChange", renamed, null);
         await Delay(400);
         SetMark(Object("Door"), hide: true, on: true);
-        SetMark(Object("Wall Top"), hide: false, on: true);
+        SetMark(Object("Rug"), hide: false, on: true);
         Require(await Save(), "save cancelled");
         Step("scene", new { path = ScenePath, sha = Sha(ScenePath), state = File.ReadAllText(Path.Combine(Environment.GetEnvironmentVariable("MONOON_USER_DATA")!, "editor-state.json")) });
     }
@@ -121,7 +121,7 @@ public static class StartupHook
     {
         main.Activate();
         var door = Object("Door");
-        var top = Object("Wall Top");
+        var top = Object("Rug");
         var hidden = (HashSet<Guid>)Get(view, "HiddenIds")!;
         var locked = (HashSet<Guid>)Get(view, "LockedIds")!;
         Require(hidden.SetEquals([door.Id]) && locked.SetEquals([top.Id]), $"marks not restored: hidden {hidden.Count}, locked {locked.Count}");
@@ -242,13 +242,15 @@ public static class StartupHook
         Call(main, "Select", door);
         Require(Selected == door, "locked Door cannot be selected in the Hierarchy");
         // Hiding the parent hides the child too.
-        var wall = Object("Wall");
+        var chest = Object("Chest");
+        var lid = Object("Chest Lid");
         SetMark(door, hide: false, on: false);
-        SetMark(wall, hide: true, on: true);
+        Require(EditItems().Contains(lid), "Chest Lid is not drawn before hiding the Chest");
+        SetMark(chest, hide: true, on: true);
         await Delay(300);
-        bool childHidden = !EditItems().Contains(door);
-        SetMark(wall, hide: true, on: false);
-        Require(childHidden, "hiding Wall did not hide its child Door");
+        bool childHidden = !EditItems().Contains(lid);
+        SetMark(chest, hide: true, on: false);
+        Require(childHidden, "hiding Chest did not hide its child Chest Lid");
 
         var state = UserState();
         Require(state.GetProperty("Hidden"u8).EnumerateObject().All(p => p.Value.GetArrayLength() == 0) || !state.GetProperty("Hidden"u8).EnumerateObject().Any(), "cleared marks remain in the user state");
@@ -289,6 +291,7 @@ public static class StartupHook
         Require(Folder == "", "Parent folder did not go up");
         steps.Add(new { clicked = "Parent folder", folder = Folder, parent_visible = up.IsVisible });
         Open("Assets"); await Delay(300);
+        Open("Assets/Showcase"); await Delay(300); // the showcase art: dozens of PNGs
 
         // List rows, then the thumbnail grid.
         var toggle = Find<ToggleButton>("ProjectViewToggle");
@@ -337,7 +340,7 @@ public static class StartupHook
         search.Text = "door t:sprite";
         await Delay(400);
         var hits = Browser.Items.Cast<object>().Select(e => (string)Get(e!, "RelativePath")!).ToArray();
-        Require(hits.Contains("Assets/Door.png") && Find<TextBlock>("ProjectName").IsVisible && !Find<ScrollViewer>("ProjectPathScroll").IsVisible, "search results");
+        Require(hits.Contains("Assets/Showcase/Door.png") && Find<TextBlock>("ProjectName").IsVisible && !Find<ScrollViewer>("ProjectPathScroll").IsVisible, "search results");
         steps.Add(new { search = search.Text, hits, caption = Find<TextBlock>("ProjectName").Text });
         search.Text = "";
         await Delay(300);
@@ -368,12 +371,12 @@ public static class StartupHook
         await Delay(200);
         Require(UserState().GetProperty("Folds"u8).GetProperty("SpriteRendererComponent"u8).GetBoolean() == false, "fold state not saved per user");
         // Same component type on another object uses the remembered state.
-        Call(main, "Select", Object("Player"));
+        Call(main, "Select", Object("Hero"));
         await Delay(400);
         bool shared = Section("Sprite Renderer").HeaderToggle().IsChecked == false;
-        Require(shared, "Player's Sprite Renderer ignores the remembered fold state");
+        Require(shared, "Hero's Sprite Renderer ignores the remembered fold state");
         // Multi-selection: the count sits in the slim action row.
-        Call(main, "ShowSelection", (IReadOnlyList<SceneObject>)[Object("Wall"), Object("Player")]);
+        Call(main, "ShowSelection", (IReadOnlyList<SceneObject>)[Object("Rug"), Object("Player")]);
         await Delay(300);
         var caption = Find<TextBlock>("InspectorCaption").Text;
         Require(Find<Border>("InspectorActions").IsVisible && caption == "2 selected", $"multi-selection caption {caption}");

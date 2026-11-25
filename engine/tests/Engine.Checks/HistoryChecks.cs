@@ -24,7 +24,7 @@ internal static class HistoryChecks
 
     internal static void Run(string repository, string scratch)
     {
-        Check(repository, scratch, "KeyRoom", "KeyRoom", seed: 7, steps: 90, fullEvery: 1);
+        Check(repository, scratch, "KeyRoom", "Showcase", seed: 7, steps: 90, fullEvery: 1);
         Check(repository, scratch, "CollisionLab", "Field10000", seed: 11, steps: 30, fullEvery: 10);
         InspectorChecks.Run(repository, scratch); // coordinator: may move to Program.cs as its own group
     }

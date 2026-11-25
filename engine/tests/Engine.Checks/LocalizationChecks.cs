@@ -6,10 +6,10 @@ using SkiaSharp;
 
 internal static class LocalizationChecks
 {
-    [Check(7200)] static void Registered(CheckRun c) => Run(c.Project, c.Scratch);
+    [Check(7200, "localization")] static void Registered(CheckRun c) => Run(c.Project, c.Scratch);
     internal static void Run(string project, string scratch)
     {
-        var scene = SceneDocument.Load(Path.Combine(project, "Scenes", "KeyRoom.scene"));
+        var scene = SceneDocument.Load(Path.Combine(project, "Scenes", "Showcase.scene"));
         using var game = new GameSession(scene);
         var ui = game.Current.Ui;
         var canvas = new Labels();

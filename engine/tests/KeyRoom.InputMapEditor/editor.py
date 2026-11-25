@@ -1,16 +1,30 @@
-"""KeyRoom Input Actions panel (16.12 editor fields): the probe types the KeyRoom.InputInteractions rules into the panel.
+"""KeyRoom Input Actions panel (16.12 editor fields): the probe types interaction, buffer and vector rules into the panel.
 
 editor.py <MoNoon> <InputMapEditorProbe.dll> <new folder>
-  copies samples/KeyRoom to <folder>/project and prepares the YAML-only reference with KeyRoom.InputInteractions/verify.py
-  prepare in <folder>/reference; the probe saves through the panel and compares the GameSettings bytes (result.json).
+  copies samples/KeyRoom to <folder>/project and writes the same rules into the YAML of a second copy, <folder>/reference;
+  the probe saves through the panel and compares the GameSettings bytes (result.json).
 """
 import json, os, shutil, subprocess, sys
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 REPO = HERE.parents[2]
-sys.path.insert(0, str(HERE.parent / 'KeyRoom.InputInteractions'))
-from verify import prepare  # noqa: E402
+# The sample already has Charge/Flick/Dash (Hold/Tap/DoubleTap, the moves showcase); the probe adds these after KeyBindings.
+ADDED = ('  - name: Spin\n    controls: [Z]\n    interaction: Hold\n    ticks: 20\n'
+         '  - name: Leap\n    controls: [Y]\n    buffer: 8\n'
+         '  - name: AimLeft\n    controls: [V]\n  - name: AimRight\n    controls: [B]\n'
+         '  - name: AimUp\n    controls: [T]\n  - name: AimDown\n    controls: [G]\n'
+         '  vectors:\n  - {name: Walk, left: MoveLeft, right: MoveRight, up: MoveUp, down: MoveDown}\n'
+         '  - {name: Aim, left: AimLeft, right: AimRight, up: AimUp, down: AimDown}\n')
+
+
+def prepare(sample, destination):
+    shutil.copytree(sample, destination, ignore=shutil.ignore_patterns('.monoon', '.DS_Store', 'bin', 'obj'))
+    settings = destination / 'GameSettings'
+    text = settings.read_text(encoding='utf-8')
+    anchor = '  - name: KeyBindings\n    controls: [K, Pad.RightShoulder]\nuiTheme:'
+    assert text.count(anchor) == 1, 'KeyBindings is no longer the last action'
+    settings.write_text(text.replace(anchor, anchor[:-len('uiTheme:')] + ADDED + 'uiTheme:'), encoding='utf-8')
 
 editor, hook, out = [Path(p).resolve() for p in sys.argv[1:4]]
 out.mkdir(parents=True)

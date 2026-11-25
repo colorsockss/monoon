@@ -17,7 +17,7 @@ objects:
     script: MovementWorkshop
     values:
       Destination:
-        Id: "64fb4cd6-2469-5cec-ba6d-9a49e61f42e7"
+        Id: "dd96f9dd-668b-5df5-8786-252e6eb77e9e"
   rotation: 0
   scaleX: 1
   scaleY: 1

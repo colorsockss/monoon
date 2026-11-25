@@ -1,29 +1,35 @@
 version: 1
 project: 64fb4cd6-2469-5cec-ba6d-9a49e61f42e7
-startScene: 64fb4cd6-2469-5cec-ba6d-9a49e61f42e7
-frameTicks: [166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667]
+startScene: dd96f9dd-668b-5df5-8786-252e6eb77e9e
+frameTicks: [166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667]
 events:
 - frame: 2
   timeTicks: 333334
-  input: {kind: key, control: "E", down: true}
-- frame: 3
-  timeTicks: 500001
-  input: {kind: key, control: "E", down: false}
-- frame: 6
-  timeTicks: 1000002
-  input: {kind: key, control: "C", down: true}
-- frame: 7
-  timeTicks: 1166669
-  input: {kind: key, control: "C", down: false}
+  input: {kind: key, control: "Right", down: true}
+- frame: 8
+  timeTicks: 1333336
+  input: {kind: key, control: "Right", down: false}
 - frame: 10
   timeTicks: 1666670
-  input: {kind: key, control: "Down", down: true}
+  input: {kind: key, control: "E", down: true}
+- frame: 11
+  timeTicks: 1833337
+  input: {kind: key, control: "E", down: false}
+- frame: 14
+  timeTicks: 2333338
+  input: {kind: key, control: "C", down: true}
+- frame: 15
+  timeTicks: 2500005
+  input: {kind: key, control: "C", down: false}
 - frame: 18
   timeTicks: 3000006
+  input: {kind: key, control: "Down", down: true}
+- frame: 26
+  timeTicks: 4333342
   input: {kind: key, control: "Down", down: false}
-- frame: 23
-  timeTicks: 3833341
+- frame: 30
+  timeTicks: 5000010
   input: {kind: key, control: "F5", down: true}
-- frame: 24
-  timeTicks: 4000008
+- frame: 31
+  timeTicks: 5166677
   input: {kind: key, control: "F5", down: false}

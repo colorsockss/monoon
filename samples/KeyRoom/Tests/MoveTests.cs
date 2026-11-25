@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using Engine.Core;
 
-// The input showcase: hold, tap and double-tap interactions from GameSettings, and rebinding Dash at run time.
+// The input showcase: hold, tap and double-tap interactions from GameSettings, and the K controls menu rebinding Dash.
 public sealed class MoveTests
 {
     private const string Moves = "Scenes/ShowcaseMoves.scene";
@@ -49,14 +49,25 @@ public sealed class MoveTests
     }
 
     [GameTest(Moves)]
-    public IEnumerable<ScriptWait> KRebindsDash(GameTestRun run)
+    public IEnumerable<ScriptWait> ControlsMenuRebindsDash(GameTestRun run)
     {
+        var menu = new System.Guid("cd60e7de-8966-4519-aabb-7209fb04fe2f");   // Scenes/ShowcaseBindings.scene
         run.Tap("K");
-        yield return ScriptWait.Frames(3);
+        yield return ScriptWait.Until(() => run.Session.IsSceneLoaded(menu));
+        yield return ScriptWait.Frames(2);   // the menu focuses Charge's key cell
+        run.Tap("Down");
+        yield return ScriptWait.Frames(2);
+        run.Tap("Down");
+        yield return ScriptWait.Frames(2);
+        run.Tap("Return");
+        yield return ScriptWait.Frames(2);
+        run.AreEqual("Dash", run.Session.RebindingAction, "Return on Dash's key cell waits for a key");
         run.Tap("P");
         yield return ScriptWait.Frames(3);
         run.AreEqual("P", run.Session.BindingFor("Dash", InputDevice.Keyboard), "dash key after rebinding");
         run.Assert(run.Session.Has("rebind"), "the rebind is announced");
+        run.Tap("K");
+        yield return ScriptWait.Until(() => !run.Session.IsSceneLoaded(menu));
         run.Tap("P");
         yield return ScriptWait.Frames(5);
         run.Tap("P");

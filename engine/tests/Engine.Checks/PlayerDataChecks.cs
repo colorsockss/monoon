@@ -71,23 +71,39 @@ internal static class PlayerDataChecks
         using var session = new GameSession(scene, null, null, store);
         var loop = new GameLoop(session, session.Actions);
         void Tap(string key) { session.Actions.Press(key); session.Actions.Release(key); loop.Advance(GameTime.FixedStep); }
+        var hero = scene.Objects.Single(o => o.Name == "Player").Id;
+        var chest = scene.Objects.Single(o => o.Name == "Chest").Id;
+        Vector2 At(GameSession game) => game.Current.TryGetPosition(hero, out var p) ? p : throw new Exception("Missing player");
+        // Walks one way until the condition holds; the showcase hero starts 88 px from the chest and 109 px from the key.
+        void Walk(GameSession game, Vector2 direction, Func<bool> done, int limit = 200)
+        {
+            for (int i = 0; i < limit && !done(); i++) game.FixedUpdate(direction, 1f/60);
+            if (!done()) throw new Exception("Player data: the walk did not arrive");
+        }
+        bool InReach(GameSession game) => game.Current.TryGetPosition(chest, out var c) && Vector2.Distance(At(game), c) <= 68;
+        // The spawned coin (y 167-189) is above the chest's base: step north 16 px, then east into it.
+        void Collect(GameSession game)
+        {
+            for (int i = 0; i < 4; i++) game.FixedUpdate(-Vector2.UnitY, 1f/60);
+            Walk(game, Vector2.UnitX, () => game.State.Has("coin"));
+        }
+        Walk(session, Vector2.UnitX, () => InReach(session));
         Tap("E");
         Tap("N");
         var pending = session.Current.Objects.Single(o => o.Name == "Coin");
-        var chest = scene.Objects.Single(o => o.Name == "Chest").Id;
         Check(pending.ParentId == chest && session.Current.TryGetPosition(pending.Id, out var moved) &&
-            moved == new Vector2(400,126), "N moves the spawned coin 16 pixels under Chest");
+            moved == new Vector2(432,167), "N moves the spawned coin 16 pixels under Chest");
         Tap("F5");
         Check(store.LoadSlot(1,2)!.GetBool("chest") && !store.LoadSlot(1,2)!.GetBool("coin"), "slot one saves an opened chest with pending loot");
-        Tap("Right");
-        for (int i = 0; i < 33; i++) session.FixedUpdate(Vector2.UnitX, 1f/60);
+        Collect(session);
         Check(session.State.Has("coin"), "collected the pending coin");
-        for (int i = 0; i < 58; i++) session.FixedUpdate(-Vector2.UnitX, 1f/60);
-        for (int i = 0; i < 65; i++) session.FixedUpdate(Vector2.Zero, 1f/60);
-        for (int i = 0; i < 120; i++) session.FixedUpdate(Vector2.UnitX, 1f/60);
+        Walk(session, -Vector2.UnitX, () => session.State.Has("key"));
+        for (int i = 0; i < 90; i++) session.FixedUpdate(Vector2.Zero, 1f/60);   // the door shot (1.4 s) returns to the room camera
+        Walk(session, Vector2.UnitX, () => At(session).X >= 277);                 // under the north doorway, then through it
+        Walk(session, -Vector2.UnitY, () => session.State.PendingScene != null || session.SceneId != scene.AssetId);
         SceneStreamingChecks.Wait(session);
         Tap("2"); Tap("F5"); Tap("H");
-        var second = ProjectAssets.ReadManifest(scene.ProjectDirectory!).IdFor("Scenes/SecondRoom.scene")!.Value;
+        var second = ProjectAssets.ReadManifest(scene.ProjectDirectory!).IdFor("Scenes/ShowcaseRoom2.scene")!.Value;
         Check(session.SceneId == second && store.LoadSlot(2,2)!.GetText("room") == second.ToString() &&
             store.LoadSlot(2,2)!.GetBool("key") && store.LoadSettings(1)!.GetBool("showControls"), "second room and preferences use independent files");
         using var restart = new GameSession(scene, null, null, store);
@@ -97,10 +113,10 @@ internal static class PlayerDataChecks
         Check(restart.State.Has("controls") && !restart.State.Has("coin") && restart.Current.Objects.Count(o => o.Name=="Coin")==1, "new session restores settings and exactly one uncollected coin");
         var restored = restart.Current.Objects.Single(o => o.Name == "Coin");
         Check(restored.Id == pending.Id && restored.ParentId == chest && restart.Current.TryGetPosition(restored.Id, out var pos) &&
-            pos == new Vector2(400,126), "F9 restores the saved coin ID, parent and edited position after restart");
+            pos == new Vector2(432,167), "F9 restores the saved coin ID, parent and edited position after restart");
         Press("F9");
         Check(restart.Current.Objects.Count(o => o.Name=="Coin")==1, "repeated load cannot duplicate loot");
-        for (int i = 0; i < 33; i++) restart.FixedUpdate(Vector2.UnitX, 1f/60);
+        Collect(restart);
         Press("F5"); Press("F9"); Press("F9"); Press("E");
         Check(restart.State.Has("coin") && !restart.Current.Objects.Any(o => o.Name == "Coin") &&
             !restart.Current.IsActive(scene.Objects.Single(o => o.Name == "Chest Lid").Id),
@@ -114,9 +130,9 @@ internal static class PlayerDataChecks
         Press("1"); Press("F9");
         var migrated = restart.Current.Objects.Single(o => o.Name == "Coin");
         Check(migrated.ParentId == chest && restart.Current.TryGetPosition(migrated.Id, out var initial) &&
-            initial == new Vector2(384,126), "v2 pending loot restores at its original location");
+            initial == new Vector2(416,167), "v2 pending loot restores at its original location");
         Press("N"); Press("F5"); Press("F9");
-        Check(restart.Current.TryGetPosition(migrated.Id, out var upgradedPosition) && upgradedPosition == new Vector2(400,126),
+        Check(restart.Current.TryGetPosition(migrated.Id, out var upgradedPosition) && upgradedPosition == new Vector2(432,167),
             "next explicit save adopts stable instance identity for legacy loot");
         var legacy = new GameData();
         legacy.Set("room", scene.AssetId!.Value.ToString());
@@ -127,7 +143,7 @@ internal static class PlayerDataChecks
         var door = scene.Objects.Single(o => o.Name == "Door").Id;
         Check(restart.SceneId==scene.AssetId && restart.State.Has("key") && !restart.State.Has("chest") &&
             restart.Current.IsActive(door) && !restart.Current.IsColliderEnabled(door) &&
-            restart.Current.GetComponent<SpriteRendererComponent>(door)?.Asset == "Assets/DoorOpen3.png", "legacy checkpoint migrates and reopens the unlocked door");
+            restart.Current.GetComponent<SpriteRendererComponent>(door)?.Asset == "Assets/Showcase/DoorOpen.png", "legacy checkpoint migrates and reopens the unlocked door");
     }
     private static void Recovery(string root)
     {

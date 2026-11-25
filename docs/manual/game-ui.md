@@ -90,13 +90,13 @@ KeyRoom에서 **M**으로 방 안내를 열고 **L**로 한글로 바꾼다. **�
 | `button.pressed` | 버튼 안에서 마우스를 누르고 있거나 포커스된 버튼의 활성화 키를 누르고 있음 |
 | `button.disabled` | Interactable을 끄거나 스크립트에서 비활성화함 |
 
-버튼 누름과 해제를 같은 버튼 안에서 마치면 클릭이 발생한다. 다른 방향으로 끌어 놓으면 취소된다. 고대비 설정을 켜면 접근성 색상과 포커스 테두리를 우선한다. KeyRoom 상단 HUD의 **UI Rect → Scale width and X with text**는 글자 배율에 따라 폭과 앵커 기준 가로 오프셋을 함께 조절한다. [KeyRoom 테마 테이블](../../samples/KeyRoom/Assets/KeyRoomTheme.table)
+버튼 누름과 해제를 같은 버튼 안에서 마치면 클릭이 발생한다. 다른 방향으로 끌어 놓으면 취소된다. 고대비 설정을 켜면 접근성 색상과 포커스 테두리를 우선한다. KeyRoom 오른쪽 아래 버튼의 **UI Rect → Scale width and X with text**는 글자 배율에 따라 폭과 앵커 기준 가로 오프셋을 함께 조절한다. [KeyRoom 테마 테이블](../../samples/KeyRoom/Assets/KeyRoomTheme.table)
 
 ### 늘어나는 안내 패널
 
 **UI Image → Sprite**에서 PNG를 선택한 뒤 **Mode → 9-slice**를 켠다. **L / R**에는 왼쪽과 오른쪽, **T / B**에는 위와 아래 테두리의 원본 PNG 픽셀 수를 입력한다. 서로 마주 보는 두 테두리 사이에는 최소 한 픽셀의 중심 영역이 있어야 한다.
 
-KeyRoom의 **Guide panel**은 24×24 PNG에 네 방향 8픽셀 테두리를 쓴다. 모서리는 게임 해상도 기준 크기를 유지하고, 네 변은 길이 방향으로, 가운데는 가로·세로로 늘어난다. 창 전체의 확대·축소는 게임과 같이 적용된다. 목적지가 양쪽 테두리보다 작아지면 양쪽을 비례 축소한다. **UI Layout**의 패딩은 테두리 안쪽 여백을 정하고, **UI Text → Wrap lines**는 번역 길이와 글자 배율에 맞춰 행 높이를 정한다. 그 결과로 계산한 버튼 사각형이 그리기와 입력 판정에 함께 사용된다. [원본 PNG](../../samples/KeyRoom/Assets/GuideFrame.png) · [방 안내 씬](../../samples/KeyRoom/Scenes/RoomGuide.scene) · [Mac 실행 기록](../../engine/tests/results/ui-theme/README.md)
+KeyRoom의 **Guide panel**은 24×24 PNG에 네 방향 8픽셀 테두리를 쓴다. 모서리는 게임 해상도 기준 크기를 유지하고, 네 변은 길이 방향으로, 가운데는 가로·세로로 늘어난다. 창 전체의 확대·축소는 게임과 같이 적용된다. 목적지가 양쪽 테두리보다 작아지면 양쪽을 비례 축소한다. **UI Layout**의 패딩은 테두리 안쪽 여백을 정하고, **UI Text → Wrap lines**는 번역 길이와 글자 배율에 맞춰 행 높이를 정한다. 그 결과로 계산한 버튼 사각형이 그리기와 입력 판정에 함께 사용된다. [원본 PNG](../../samples/KeyRoom/Assets/GuideFrame.png) · [방 안내 씬](../../samples/KeyRoom/Scenes/ShowcaseGuide.scene) · [Mac 실행 기록](../../engine/tests/results/ui-theme/README.md)
 
 ## 한글 이름 입력과 번역
 

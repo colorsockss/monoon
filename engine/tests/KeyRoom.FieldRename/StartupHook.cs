@@ -35,7 +35,7 @@ public static class StartupHook
     {
         string root = Environment.GetEnvironmentVariable("MONOON_QA_PROJECT")!;
         string asset = "Assets/MovementPlayer.prefab", sceneFile = Path.Combine(root,"Scenes/MovementWorkshop.scene");
-        await Until(() => Scene(main).Objects.Any(o => o.Name == "Player"), "Player");
+        await Until(() => Scene(main).Objects.Any(o => o.Name == "Inherited player"), "Inherited player");
         Task Open(string name) => (Task)Call(main,"SwitchScene",name)!;
         async Task Source(string field, bool save)
         {
@@ -83,7 +83,6 @@ public static class StartupHook
         var saved = File.ReadAllText(sceneFile);
         Require(!System.Text.RegularExpressions.Regex.IsMatch(saved, @"(?m)^\s*Speed\s*:") && saved.Contains("MoveSpeed: 320"),
             "Stale field in saved instance or baseline");
-        await Open("KeyRoom");
         var play = main.FindControl<Button>("PlayButton")!;
         play.RaiseEvent(new RoutedEventArgs(Button.ClickEvent,play));
         var view = main.FindControl<Control>("Viewport")!;

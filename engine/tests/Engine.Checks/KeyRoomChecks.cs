@@ -18,7 +18,7 @@ static class KeyRoomChecks
         if (!OperatingSystem.IsWindows())
         {
             var link = Directory.CreateSymbolicLink(Path.Combine(scratch, "kit-link"), Path.Combine(scratch, "Scenes")).FullName;
-            var real = NativeAotBuild.RealPath(Path.Combine(link, "KeyRoom.scene"));
+            var real = NativeAotBuild.RealPath(Path.Combine(link, Path.GetFileName(sceneFile)));
             Check(real == NativeAotBuild.RealPath(sceneFile) && !real.Contains("kit-link") && File.Exists(real), "Native AOT kit path resolves symlinks");
             Directory.Delete(link);
         }
@@ -34,8 +34,12 @@ static class KeyRoomChecks
         var main = scene.Camera!;
         var doorCam = scene.Objects.Single(o => o.Name == "Door Camera");
         scene.DefaultCameraId = doorCam.Id;
-        var copy = scene.DuplicateObject(scene.Objects.Single(o => o.Name == "Player"));
-        Check(scene.Cameras.Count() == 3 && scene.Camera == doorCam && scene.Cameras.Any(o => o.Parent == copy), "duplicate camera subtree");
+        // The showcase camera is static; hang it under the hero (as the old room did) so duplicating him copies a camera subtree.
+        var hero = scene.Objects.Single(o => o.Name == "Player");
+        Check(scene.Reparent(main, hero), "camera under the hero");
+        int cameras = scene.Cameras.Count();
+        var copy = scene.DuplicateObject(hero);
+        Check(scene.Cameras.Count() == cameras + 1 && scene.Camera == doorCam && scene.Cameras.Any(o => o.Parent == copy), "duplicate camera subtree");
         var dirty = scene.CaptureObjects();
         scene.RemoveObject(doorCam);
         Check(scene.Camera == main, "start camera fallback");
@@ -44,6 +48,7 @@ static class KeyRoomChecks
         scene.Save(sceneFile);
         Check(SceneDocument.Load(sceneFile).DefaultCameraId == doorCam.Id, "start camera round trip");
         scene.RestoreObjects(original);
+        scene.DefaultCameraId = main.Id;
         scene.Save(sceneFile);
         var legacyFile = Path.Combine(scratch, "Scenes", "Migration.scene");
         for (var version = 1; version <= 5; version++)
@@ -84,8 +89,8 @@ static class KeyRoomChecks
         RuntimePrefabChecks.Subtrees(scene, scratch);
         RuntimePrefabChecks.Cached(scene, scratch);
 
-        var wall = scene.Objects.Single(o => o.Name == "Wall");
-        const string prefabPath = "Assets/Wall.prefab";
+        var wall = scene.Objects.Single(o => o.Name == "Rug");
+        const string prefabPath = "Assets/Rug.prefab";
         scene.ExportPrefab(wall, Path.Combine(scratch, prefabPath));
         var instance1 = scene.PlacePrefab(prefabPath, new(123, 45));
         var instance2 = scene.PlacePrefab(prefabPath, new(-10, 60));
@@ -106,17 +111,17 @@ static class KeyRoomChecks
 
         scene.RestoreObjects(original);
         scene.Save(sceneFile);
-        var from = Path.Combine(scratch, "Assets", "Door.png");
-        var to = Path.Combine(scratch, "Assets", "DoorMoved.png");
+        var from = Path.Combine(scratch, "Assets", "Showcase", "Door.png");
+        var to = Path.Combine(scratch, "Assets", "Showcase", "DoorMoved.png");
         File.Move(from, to);
         var reopened = SceneDocument.Load(sceneFile);
-        Check(reopened.Objects.Single(o => o.Name == "Door").GetComponent<SpriteRendererComponent>()!.Asset == "Assets/DoorMoved.png", "move PNG without breaking sprite");
+        Check(reopened.Objects.Single(o => o.Name == "Door").GetComponent<SpriteRendererComponent>()!.Asset == "Assets/Showcase/DoorMoved.png", "move PNG without breaking sprite");
         var previousScene = reopened.AssetId;
         using (var game = new GameSession(reopened))
         {
             int prepareCount = 0;
             game.UseRenderer(_ => { if (++prepareCount > 1) throw new InvalidDataException("Texture upload failed."); });
-            game.State.LoadScene(ProjectAssets.ReadManifest(reopened.ProjectDirectory!).IdFor("Scenes/SecondRoom.scene")!.Value);
+            game.State.LoadScene(ProjectAssets.ReadManifest(reopened.ProjectDirectory!).IdFor("Scenes/ShowcaseRoom2.scene")!.Value);
             game.FixedUpdate(Vector2.Zero, 1f / 60);
             Check(prepareCount == 2 && previousScene == game.SceneId, "failed asset preload preserves running scene");
         }
@@ -152,7 +157,7 @@ static class KeyRoomChecks
             }
             var data = Path.Combine(contents, "Game");
             Check(!Directory.EnumerateFiles(data, "*", SearchOption.AllDirectories).Any(p => Path.GetExtension(p) is ".json" or ".yaml")
-                && File.Exists(Path.Combine(data, "Assets", "Door.clip")), "game data uses asset extensions for " + rid);
+                && File.Exists(Path.Combine(data, "Assets", "LidMotion.clip")), "game data uses asset extensions for " + rid);
             Check(File.Exists(Path.Combine(data,"Assets","KeyRoomRules.data")), "referenced YAML data exported for " + rid);
             Check(GameTable.Load(Path.Combine(data,"Assets","Loot.table")).Row("coin").GetText("flag")=="coin", "referenced YAML table exported for "+rid);
             foreach (var entry in ProjectAssets.Scan(data).Entries)
@@ -168,8 +173,8 @@ static class KeyRoomChecks
             // against the game's own framework (unused interface methods removed), so give it the untrimmed compile.
             Directory.CreateDirectory(Path.Combine(data, ".monoon-compiled"));
             File.WriteAllBytes(Path.Combine(data, ".monoon-compiled", "MoNoon.GameScripts.dll"), new ProjectScripts(project).Current().Bytes);
-            WalkGame(Path.Combine(data, "Scenes", "KeyRoom.scene"));
-            RuntimePrefabChecks.Chest(SceneDocument.Load(Path.Combine(data, "Scenes", "KeyRoom.scene")));
+            WalkGame(Path.Combine(data, "Scenes", "Showcase.scene"));
+            RuntimePrefabChecks.Chest(SceneDocument.Load(Path.Combine(data, "Scenes", "Showcase.scene")));
             Console.WriteLine(product);
         }
     }
@@ -187,13 +192,13 @@ static class KeyRoomChecks
         session.SoundRequested += _ => sounds++;
         Check(session.Current.ActiveCameraId == start && !session.State.Has("key"), "fresh session");
         const float step = 1f / 60;
-        // Same script runs both from project C# and from each export's compiled assembly.
-        session.Current.Ui.Pointer(true, 740, 25);
-        session.Current.Ui.Pointer(false, 680, 25);
+        // Same script runs both from project C# and from each export's compiled assembly. Controls sits bottom right.
+        session.Current.Ui.Pointer(true, 744, 416);
+        session.Current.Ui.Pointer(false, 744, 300);
         session.FixedUpdate(Vector2.Zero, step);
         Check(!session.State.Has("controls"), "release outside cancels UI click");
-        session.Current.Ui.Pointer(true, 740, 25);
-        session.Current.Ui.Pointer(false, 740, 25);
+        session.Current.Ui.Pointer(true, 744, 416);
+        session.Current.Ui.Pointer(false, 744, 416);
         session.FixedUpdate(Vector2.Zero, step);
         Check(session.State.Has("controls"), "screen button invokes project script once");
         session.Current.Ui.Key("Return", true);
@@ -201,32 +206,35 @@ static class KeyRoomChecks
         session.FixedUpdate(Vector2.Zero, step);
         Check(!session.State.Has("controls"), "focused button ignores repeated keydown");
         var world = session.Current;
-        bool GateHit() => world.Physics.Raycast(new(468, 130), Vector2.UnitX, 48)?.Target.ObjectId == gate.Id;
-        var probe = Shape2D.Circle(new(491, 130), 2);
+        // The door stands in the north wall (255,30 66×66): a ray and a sweep run north from below it.
+        bool GateHit() => world.Physics.Raycast(new(288, 130), -Vector2.UnitY, 48)?.Target.ObjectId == gate.Id;
+        var probe = Shape2D.Circle(new(288, 90), 2);
         Check(world.IsActive(gate.Id) && world.IsColliderEnabled(gate.Id) && GateHit(), "door collider initially blocks");
         Check(world.SetSpriteTint(gate.Id, "#23A4F8") && world.GetComponent<SpriteRendererComponent>(gate.Id)?.Tint == "#23A4F8" &&
             initial.Tint == null && !world.SetSpriteTint(gate.Id, "not-a-color") &&
             !world.SetSprite(gate.Id, new SpriteReference(Guid.NewGuid())) && world.SetSpriteTint(gate.Id, null),
             "runtime tint and invalid edits leave the authored renderer intact");
         // KeyRoom's door rules (blocking, pickup camera, hint, next room) are project tests: samples/KeyRoom/Tests/DoorTests.cs.
-        for (int i = 0; i < 60; i++) session.FixedUpdate(Vector2.UnitX, step);
+        for (int i = 0; i < 60; i++) session.FixedUpdate(-Vector2.UnitY, step);   // up against the shut door
+        for (int i = 0; i < 25; i++) session.FixedUpdate(Vector2.UnitY, step);    // back to the start row
         for (int i = 0; i < 70 && !session.State.Has("key"); i++) session.FixedUpdate(-Vector2.UnitX, step);
         Check(sounds == 1 && session.State.Has("key"), "pickup plays the door sound once");
         Check(world.IsActive(gate.Id) && !world.IsColliderEnabled(gate.Id) &&
-            world.GetComponent<SpriteRendererComponent>(gate.Id)?.Asset == "Assets/DoorOpen3.png" &&
+            world.GetComponent<SpriteRendererComponent>(gate.Id)?.Asset == "Assets/Showcase/DoorOpen.png" &&
             !GateHit() && world.Physics.Overlap(probe).All(hit => hit.ObjectId != gate.Id) &&
-            world.Physics.Sweep(Shape2D.Circle(new(468,130), 2), new(40,0))?.Target.ObjectId != gate.Id,
+            world.Physics.Sweep(Shape2D.Circle(new(288,130), 2), new(0,-40))?.Target.ObjectId != gate.Id,
             "opened door stays active, changes sprite and leaves movement and physics queries");
         Check(world.SetColliderEnabled(gate.Id, true) && GateHit() && world.SetColliderEnabled(gate.Id, false) && !GateHit(),
             "re-enabling and disabling the same collider updates queries immediately");
-        Check(initial.AssetId == closedSprite && initial.Asset != "Assets/DoorOpen3.png", "open play instance preserves the authored door");
+        Check(initial.AssetId == closedSprite && initial.Asset != "Assets/Showcase/DoorOpen.png", "open play instance preserves the authored door");
         var canvas = new CaptureCanvas();
         session.Draw(canvas, 1);
         Check(canvas.Images.Any(i => i.Path.EndsWith("Key.png") && i.Rect.X == 14), "screen-space key HUD");
         for (int i = 0; i < 60; i++) session.FixedUpdate(Vector2.Zero, step);
         session.Draw(canvas, 1);
-        Check(canvas.Images.Any(i => Path.GetFileName(i.Path) == "DoorOpen3.png"), "finished animation draws the assigned open PNG");
-        for (int i = 0; i < 115; i++) session.FixedUpdate(Vector2.UnitX, step);
+        Check(canvas.Images.Any(i => Path.GetFileName(i.Path) == "DoorOpen.png"), "finished animation draws the assigned open PNG");
+        for (int i = 0; i < 20; i++) session.FixedUpdate(Vector2.UnitX, step);    // back under the doorway
+        for (int i = 0; i < 40; i++) session.FixedUpdate(-Vector2.UnitY, step);   // north through it
         SceneStreamingChecks.Wait(session);
         Check(error == "" && session.SceneId != scene.AssetId && session.State.Has("key") && sounds == 1, "enter next room with key: " + error);
         var lastRoom = session.Current;
@@ -253,6 +261,7 @@ sealed class CaptureCanvas : ICanvas2D
     }
     public void Clear(Color color) => Images.Clear();
     public void FillRectangle(RectangleF rectangle, Color color) { }
+    public void DrawShader(ShaderClip shader, int frame, RectangleF local, Matrix3x2 matrix, Color tint, bool additive) { }   // torch lights
     public bool DrawTile(string path, RectangleF rect, SpriteRegion source, string layout) => DrawSprite(path,rect,source);
     public bool DrawSprite(string path, RectangleF rect) => DrawSprite(path, rect, null);
     public bool DrawSprite(string path, RectangleF rect, SpriteRegion? source) { Images.Add((path, rect, source)); return true; }

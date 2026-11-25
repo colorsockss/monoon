@@ -9,7 +9,7 @@
 3. **Undo 기록 100단계**: Position X와 Y를 번갈아 한 자리씩 100번 입력·확정한다. 걸린 시간, 할당, GC 후 남은 힙 증가, 기록과 현재 상태가 붙잡은 상태 수와 크기를 기록한다. 크기는 씬 전체 문자열이면 UTF-16 바이트, 오브젝트 항목으로 나눈 상태면 서로 다른 바이트 배열을 한 번씩 더하고 상태마다 오브젝트당 참조 8바이트를 더한다. 이어서 `SceneHistory.Restore`로 Undo 100번, Redo 100번을 각각 재고(`RestoreEdit`는 매번 1만 행 Hierarchy를 다시 만들기 때문에 기록만 잰다) Redo 뒤 씬 문자열이 100단계 직후와 같은지 확인한다.
 4. 씬을 저장한다. `editor.py`가 실행마다 저장 파일의 SHA-256을 비교해 모든 에디터·실행에서 같은지 확인한다.
 
-`MONOON_I1_SCENE=KeyRoom`을 주고 프로젝트로 `samples/KeyRoom`을 넘기면 1단계를 건너뛰고 KeyRoom 씬에서 Player의 Position X, `textKey`가 없는 첫 UI Text로 2–4단계를 실행한다.
+`MONOON_I1_SCENE=Showcase`를 주고 프로젝트로 `samples/KeyRoom`을 넘기면 1단계를 건너뛰고 KeyRoom의 쇼케이스 씬에서 Player의 Position X, `textKey`가 없는 첫 UI Text로 2–4단계를 실행한다.
 
 ```sh
 engine/scripts/build-editor-mac.sh

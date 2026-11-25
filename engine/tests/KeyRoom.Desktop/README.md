@@ -17,6 +17,8 @@ Linux는 Debian x64의 X11 가상 디스플레이와 기본 SDL 렌더러, Windo
 
 이미 설치된 다른 x64 데스크톱에서도 `python verify.py GAME_DIRECTORY OUTPUT_DIRECTORY`로 게임을 검사할 수 있다. Pillow가 필요하며 Linux X11에서는 xdotool도 필요하다.
 
+2026-11-26: 시작 씬이 쇼케이스(`Showcase.scene`)로 바뀌었다. `verify.py`의 배포 파일 목록은 쇼케이스 이름으로 고쳤지만, 경로 판정의 픽셀 위치와 색(옛 KeyRoom의 초록 사각형 플레이어, 동쪽 문, 타일 벽)은 아직 옛 씬 기준이다. Windows 검증 보류·Linux CI 전용 결정으로 게스트를 실행하지 않았으므로, 다음 게스트 실행 때 쇼케이스 화면으로 다시 잰다.
+
 2026-11-12: 이 Mac에서 두 게스트를 종료한 뒤 다시 부팅해 같은 YAML 배포본의 두 입력 경로를 재검증했다. Windows 오프라인 평가판 바탕화면에는 라이선스 만료 표시가 있었으며 실행·입력·캡처 검사는 통과했다. 장기 사용에는 유효한 라이선스 상태를 확인한다.
 
 ## 배포 에디터 조작 회귀
@@ -27,10 +29,10 @@ Linux는 Debian x64의 X11 가상 디스플레이와 기본 SDL 렌더러, Windo
 engine/scripts/build-editor-mac.sh
 python3 engine/scripts/package-editor.py keyroom
 engine/tests/KeyRoom.Desktop/mac/verify.sh editor/MoNoon.app samples/dist/KeyRoom-sample.zip \
-  /tmp/monoon-editor-result engine/tests/results/editor-packaging/collected.save
+  /tmp/monoon-editor-result engine/tests/KeyRoom.Desktop/collected.save
 ```
 
-결과 경로는 새 디렉터리여야 한다. macOS 결과에는 씬과 편집·재열기 F5 파일이 남는다. Xcode에서 `ScenePlay.xcresult`를 열면 단계별 캡처와 원래 위치의 F5 저장도 확인할 수 있다.
+결과 경로는 새 디렉터리여야 한다. 에디터는 씬의 첫 오브젝트를 골라 열므로, 검사기는 풀어 놓은 사본의 `Showcase.scene`에서 Player와 그 자식을 맨 앞으로 옮긴다. macOS 결과에는 씬과 편집·재열기 F5 파일이 남는다. Xcode에서 `ScenePlay.xcresult`를 열면 단계별 캡처와 원래 위치의 F5 저장도 확인할 수 있다.
 
 Windows에서는 배포 압축을 푼 뒤, Pillow가 있는 Python 3으로 아래 명령을 실행한다. 두 검사 스크립트는 같은 폴더에 둔다. 화면 배율 100%, 가려지지 않은 기본 크기의 에디터 창을 사용한다.
 
@@ -38,6 +40,6 @@ Windows에서는 배포 압축을 푼 뒤, Pillow가 있는 Python 3으로 아�
 python verify_editor.py .\editor\MoNoon.exe .\KeyRoom-sample.zip .\editor-result
 ```
 
-검사기는 새 결과 폴더 안에 샘플을 풀고 배포 실행 파일을 두 번 시작한다. 원래 배치는 이동 전 F5 저장에 `key: false`를 기록해야 한다. 검사기가 Inspector로 Player X를 190으로 바꾼 뒤 Ctrl+S를 보내면 씬 파일과 다음 실행의 Play에 그 값이 반영되어야 한다. 각 실행의 저장 폴더와 창 캡처를 결과 폴더에서 대조할 수 있다.
+검사기는 새 결과 폴더 안에 샘플을 풀고 배포 실행 파일을 두 번 시작한다. 원래 배치는 이동 전 F5 저장에 `key: false`를 기록해야 한다. 검사기는 Mac과 같이 사본의 Player를 씬 맨 앞으로 옮긴다. Inspector로 Player X를 277에서 190(열쇠 위치)으로 바꾼 뒤 Ctrl+S를 보내면 씬 파일과 다음 실행의 Play에 그 값이 반영되어야 한다. 각 실행의 저장 폴더와 창 캡처를 결과 폴더에서 대조할 수 있다.
 
-Windows 검사기에 `--expected-save`와 [Mac 기준 파일](../results/editor-packaging/collected.save)의 경로를 주면 편집 직후와 재시작 후의 F5 저장을 각각 바이트 단위로 비교한다. 불일치하면 로그에 실제값과 기준값의 바이트 수와 SHA-256이 남는다.
+Windows 검사기에 `--expected-save`와 [Mac 기준 파일](collected.save)(쇼케이스 방 ID, 열쇠만 얻은 상태)의 경로를 주면 편집 직후와 재시작 후의 F5 저장을 각각 바이트 단위로 비교한다. 불일치하면 로그에 실제값과 기준값의 바이트 수와 SHA-256이 남는다.

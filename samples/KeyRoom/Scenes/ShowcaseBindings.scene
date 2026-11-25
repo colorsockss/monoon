@@ -9,7 +9,7 @@ objects:
   name: Bindings panel
   parentId: 097a17e1-312a-43f9-858c-be09e5329451
   width: 440
-  height: 318
+  height: 283
   components:
   - type: uiRect
     anchor: Center
@@ -87,7 +87,7 @@ objects:
     insetX: 8
     insetY: 6
 - id: b51542c6-9511-4cac-879f-3fcc0d56b344
-  name: Interact row
+  name: Charge row
   parentId: 0c570194-d9ee-4bef-b9c0-6aa96d767223
   width: 410
   height: 28
@@ -99,20 +99,20 @@ objects:
     padding: 0
     stretch: false
 - id: 1b1f8f52-55e3-4876-bc0f-bc9cecb816fb
-  name: Interact label
+  name: Charge label
   parentId: b51542c6-9511-4cac-879f-3fcc0d56b344
   width: 150
   height: 28
   components:
   - type: uiRect
   - type: uiText
-    text: Open chest
-    translations: {"ko": "상자 열기"}
+    text: Charge (hold)
+    textKey: action.Charge
     size: 15
     insetX: 8
     insetY: 4
 - id: 069c1bd2-2106-4fa6-a95c-b87c8f6f79f1
-  name: Interact keyboard
+  name: Charge keyboard
   parentId: b51542c6-9511-4cac-879f-3fcc0d56b344
   width: 120
   height: 28
@@ -127,10 +127,10 @@ objects:
   - type: script
     script: RebindButton
     values:
-      Action: Interact
+      Action: Charge
       Gamepad: false
 - id: 091d911f-b9cf-4cdb-9364-f5824b8571e0
-  name: Interact gamepad
+  name: Charge gamepad
   parentId: b51542c6-9511-4cac-879f-3fcc0d56b344
   width: 120
   height: 28
@@ -145,10 +145,10 @@ objects:
   - type: script
     script: RebindButton
     values:
-      Action: Interact
+      Action: Charge
       Gamepad: true
 - id: a77ddd97-294f-489a-8bf5-241def0adeca
-  name: CarryCoin row
+  name: Flick row
   parentId: 0c570194-d9ee-4bef-b9c0-6aa96d767223
   width: 410
   height: 28
@@ -160,20 +160,20 @@ objects:
     padding: 0
     stretch: false
 - id: e9a1dfd4-dfb7-4179-974d-b7c999d661db
-  name: CarryCoin label
+  name: Flick label
   parentId: a77ddd97-294f-489a-8bf5-241def0adeca
   width: 150
   height: 28
   components:
   - type: uiRect
   - type: uiText
-    text: Carry coin
-    translations: {"ko": "동전 들기"}
+    text: Flick (tap)
+    textKey: action.Flick
     size: 15
     insetX: 8
     insetY: 4
 - id: 5b8df5b0-5647-45bc-bca4-408dcf4d6546
-  name: CarryCoin keyboard
+  name: Flick keyboard
   parentId: a77ddd97-294f-489a-8bf5-241def0adeca
   width: 120
   height: 28
@@ -188,10 +188,10 @@ objects:
   - type: script
     script: RebindButton
     values:
-      Action: CarryCoin
+      Action: Flick
       Gamepad: false
 - id: bd68481b-516f-456e-8fc4-048996c1c2f8
-  name: CarryCoin gamepad
+  name: Flick gamepad
   parentId: a77ddd97-294f-489a-8bf5-241def0adeca
   width: 120
   height: 28
@@ -206,10 +206,10 @@ objects:
   - type: script
     script: RebindButton
     values:
-      Action: CarryCoin
+      Action: Flick
       Gamepad: true
 - id: 9b831ae3-73bf-4538-bb21-558ebbe142ad
-  name: ShowControls row
+  name: Dash row
   parentId: 0c570194-d9ee-4bef-b9c0-6aa96d767223
   width: 410
   height: 28
@@ -221,20 +221,20 @@ objects:
     padding: 0
     stretch: false
 - id: 41861555-1ac4-48a9-9d8e-f8d6ec26ad5d
-  name: ShowControls label
+  name: Dash label
   parentId: 9b831ae3-73bf-4538-bb21-558ebbe142ad
   width: 150
   height: 28
   components:
   - type: uiRect
   - type: uiText
-    text: Help
-    translations: {"ko": "도움말"}
+    text: Dash (double tap)
+    textKey: action.Dash
     size: 15
     insetX: 8
     insetY: 4
 - id: 7d7417ec-c29c-4e32-b40f-083d3477690b
-  name: ShowControls keyboard
+  name: Dash keyboard
   parentId: 9b831ae3-73bf-4538-bb21-558ebbe142ad
   width: 120
   height: 28
@@ -249,10 +249,10 @@ objects:
   - type: script
     script: RebindButton
     values:
-      Action: ShowControls
+      Action: Dash
       Gamepad: false
 - id: 675e5190-058a-4b7c-bb13-8b39df050a06
-  name: ShowControls gamepad
+  name: Dash gamepad
   parentId: 9b831ae3-73bf-4538-bb21-558ebbe142ad
   width: 120
   height: 28
@@ -267,68 +267,7 @@ objects:
   - type: script
     script: RebindButton
     values:
-      Action: ShowControls
-      Gamepad: true
-- id: cda7d21c-9dec-47f2-9c6e-75e95cd4bdf8
-  name: PauseGame row
-  parentId: 0c570194-d9ee-4bef-b9c0-6aa96d767223
-  width: 410
-  height: 28
-  components:
-  - type: uiRect
-  - type: uiLayout
-    axis: Horizontal
-    gap: 10
-    padding: 0
-    stretch: false
-- id: e52b2e11-1f77-4ecb-86e6-b63af1421bdb
-  name: PauseGame label
-  parentId: cda7d21c-9dec-47f2-9c6e-75e95cd4bdf8
-  width: 150
-  height: 28
-  components:
-  - type: uiRect
-  - type: uiText
-    text: Pause
-    translations: {"ko": "일시정지"}
-    size: 15
-    insetX: 8
-    insetY: 4
-- id: 455fb4a6-4d57-4948-a0d8-421ddac0a7df
-  name: PauseGame keyboard
-  parentId: cda7d21c-9dec-47f2-9c6e-75e95cd4bdf8
-  width: 120
-  height: 28
-  components:
-  - type: uiRect
-  - type: uiButton
-  - type: uiText
-    text: "—"
-    size: 15
-    insetX: 8
-    insetY: 4
-  - type: script
-    script: RebindButton
-    values:
-      Action: PauseGame
-      Gamepad: false
-- id: fcab727f-e407-4cd5-a197-c8a3fb04412e
-  name: PauseGame gamepad
-  parentId: cda7d21c-9dec-47f2-9c6e-75e95cd4bdf8
-  width: 120
-  height: 28
-  components:
-  - type: uiRect
-  - type: uiButton
-  - type: uiText
-    text: "—"
-    size: 15
-    insetX: 8
-    insetY: 4
-  - type: script
-    script: RebindButton
-    values:
-      Action: PauseGame
+      Action: Dash
       Gamepad: true
 - id: 1d1fc62e-1e03-4e68-b987-523b7117c6db
   name: Bindings status

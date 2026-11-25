@@ -22,13 +22,13 @@ public sealed class KeyRoomTools : IEditorExtension
 {
     public void Register(EditorExtensionRegistry editor)
     {
-        editor.AddMenuCommand("Place Coin", context => context.PlacePrefab("Assets/Coin.prefab"));
+        editor.AddMenuCommand("Place Coin", context => context.PlacePrefab("Assets/Showcase/Coin.prefab"));
         editor.AddInspector("CollectCoin", inspector =>
         {
             inspector.Field("LootTable");
             inspector.Row("Coins", new TextBlock { Text = "…" });
         });
-        editor.AddPanel("Coins", context => new StackPanel { Children = { context.Row("Prefab", new TextBlock { Text = "Assets/Coin.prefab" }) } });
+        editor.AddPanel("Coins", context => new StackPanel { Children = { context.Row("Prefab", new TextBlock { Text = "Assets/Showcase/Coin.prefab" }) } });
     }
 }
 ```

@@ -14,7 +14,7 @@ Project 도구 줄의 검색 필드(**Search project**)는 현재 폴더와 관�
 
 **Project → + → Check Missing References…**는 시작 씬에서 사용하지 않는 에셋까지 포함하여 **디스크에 저장된 프로젝트**를 검사한다. 씬이나 프리팹을 수정했다면 저장하고, 파일을 복원했다면 **Rescan**한다. 없어진 파일, 알 수 없는 ID, 참조 타입 불일치, 사라진 오브젝트·스크립트와 읽을 수 없는 문서를 표시한다. 코드가 실행 중에 문자열로 만드는 경로는 검사 대상이 아니다.
 
-KeyRoom에서는 **Coin.prefab → Dependencies**에서 `CollectCoin.LootTable`이 [Loot.table](../../samples/KeyRoom/Assets/Loot.table)을 사용한다. 반대로 [KeyRoomRules.data](../../samples/KeyRoom/Assets/KeyRoomRules.data)의 **Used by**에서는 `Chest / OpenChest.Rules`을 확인할 수 있다.
+KeyRoom에서는 **Showcase/Coin.prefab → Dependencies**에서 `CollectCoin.LootTable`이 [Loot.table](../../samples/KeyRoom/Assets/Loot.table)을 사용한다. 반대로 [KeyRoomRules.data](../../samples/KeyRoom/Assets/KeyRoomRules.data)의 **Used by**에서는 `Chest / OpenChest.Rules`을 확인할 수 있다.
 
 ## 에셋 이동과 이름 변경
 
@@ -42,10 +42,10 @@ Project에서 PNG를 선택하면 목록 아래에 이미지가 표시된다. �
 
 **KeyRoom에서 확인하기**
 
-1. Project에서 `Door.clip`을 열고 Clip 패널에서 첫 프레임을 선택한다. Project에서 `Door.png`를 선택한다.
-2. 외부 편집기에서 `Assets/Door.png`의 문 색을 바꾸고 같은 경로에 저장한다. Scene의 닫힌 문, Project 미리보기, 클립 첫 프레임과 타임라인 썸네일의 색이 바뀐다.
-3. Clip 패널을 다시 선택하거나 프로젝트를 닫았다가 연다. 네 프레임의 시트 GUID, 셀 사각형과 재생 시간은 그대로다. 클립을 저장할 필요는 없다.
+1. Project에서 `Showcase/DoorOpen.clip`을 열고 Clip 패널에서 첫 프레임을 선택한다. Project에서 `Showcase/Door.png`를 선택한다.
+2. 외부 편집기에서 `Assets/Showcase/Door.png`의 문 색을 바꾸고 같은 경로에 저장한다. Scene의 닫힌 문, Project 미리보기, 클립 첫 프레임과 타임라인 썸네일의 색이 바뀐다.
+3. Clip 패널을 다시 선택하거나 프로젝트를 닫았다가 연다. 두 프레임의 PNG GUID와 재생 시간은 그대로다. 클립을 저장할 필요는 없다.
 
 `.aseprite` 원본도 같은 방식으로 감시한다. 저장하면 생성된 시트와 클립이 갱신된다. [Aseprite 파일 가져오기](sprites.md#aseprite-파일-가져오기)
 
-KeyRoom의 `DoorSheet.png.meta`에는 각 셀에 사용할 원본 PNG의 GUID와 마지막으로 가져온 내용 해시가 연결되어 있다. 원본이 바뀌면 해당 셀의 픽셀만 다시 쓰고, 프레임 순서와 시간은 클립에 남겨 둔다. 이미 잘라낸 셀 바깥까지 그림을 늘리거나 원본 캔버스 크기를 바꾸면 에디터가 맞지 않는 셀을 알려 준다. 올바른 크기로 다시 저장하면 기존 배치로 갱신된다. [시트 셀 사용법](sprites.md#시트의-일부만-프레임으로-쓰기) · [에디터 검증 기록](../../engine/tests/results/external-sprite-reimport/README.md)
+시트에서 잘라 쓰는 셀도 같다. 검사 자료 [KeyRoomDoorSheet](../../engine/tests/fixtures/KeyRoomDoorSheet/)의 `DoorSheet.png.meta`에는 각 셀에 사용할 원본 PNG의 GUID와 마지막으로 가져온 내용 해시가 연결되어 있다. 원본이 바뀌면 해당 셀의 픽셀만 다시 쓰고, 프레임 순서와 시간은 클립에 남겨 둔다. 이미 잘라낸 셀 바깥까지 그림을 늘리거나 원본 캔버스 크기를 바꾸면 에디터가 맞지 않는 셀을 알려 준다. 올바른 크기로 다시 저장하면 기존 배치로 갱신된다. [시트 셀 사용법](sprites.md#시트의-일부만-프레임으로-쓰기) · [에디터 검증 기록](../../engine/tests/results/external-sprite-reimport/README.md)

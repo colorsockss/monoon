@@ -16,7 +16,7 @@ using Engine.Desktop;
 using Engine.Editor;
 
 // Loaded into the packaged editor with DOTNET_STARTUP_HOOKS (roadmap 13.7, 13.9, 13.15, 13.17). MONOON_AF_PHASE selects one launch:
-// edit (KeyRoom: colour picks, object-field drags, refusals, Finder import, Particle panel texture, arrays, multi-selection, Ping,
+// edit (KeyRoom showcase: colour picks, object-field drags, refusals, Finder import, Particle panel texture, arrays, multi-selection, Ping,
 // alignment; saves), trace (Scene Play replay captures of the saved choice), field (CollisionLab Field10000 picker search) and
 // curves (ParticleLab workshop Flame: Inspector curve and gradient rows against the runtime table; saves the asset).
 public static partial class StartupHook
@@ -215,16 +215,16 @@ public static partial class StartupHook
         // 13.7/13.17: Project drag of Key.png onto the Door's Sprite field.
         await Select(Object("Door"));
         string beforeDrop = Text;
-        var sprite = await DragProject(["Assets/Key.png"], FieldIn(InspectorStack(), "Sprite"), "drag-sprite");
-        await Until(() => Object("Door").GetComponent<SpriteRendererComponent>()!.AssetId == Id("Assets/Key.png"), "Key.png on the Door sprite");
+        var sprite = await DragProject([KeyPng], FieldIn(InspectorStack(), "Sprite"), "drag-sprite");
+        await Until(() => Object("Door").GetComponent<SpriteRendererComponent>()!.AssetId == Id(KeyPng), "Key.png on the Door sprite");
         Require(Shown(FieldIn(InspectorStack(), "Sprite")) == "Key.png", "the Sprite field shows Key.png");
-        Step("sprite_drop", new { drag = sprite, undo = await OneStep("Door sprite ← Key.png", beforeDrop, () => Object("Door").GetComponent<SpriteRendererComponent>()!.Asset == "Assets/Key.png") });
+        Step("sprite_drop", new { drag = sprite, undo = await OneStep("Door sprite ← Key.png", beforeDrop, () => Object("Door").GetComponent<SpriteRendererComponent>()!.Asset == KeyPng) });
 
         // Wrong type: a PNG on the Sound field is refused (red border only, nothing changes, nothing recorded).
         string beforeReject = Text;
         int rejectAt = Position;
         var soundId = Object("Door").GetComponent<AudioSourceComponent>()!.Sound;
-        var reject = await DragProject(["Assets/Coin.png"], FieldIn(InspectorStack(), "Sound"), "drag-reject");
+        var reject = await DragProject([CoinPng], FieldIn(InspectorStack(), "Sound"), "drag-reject");
         Require(Object("Door").GetComponent<AudioSourceComponent>()!.Sound == soundId && Text == beforeReject && Position == rejectAt, "the PNG dropped on Sound was not refused");
         Require(((string[])Get(reject, "highlight")!).SequenceEqual(["referenceReject"]), "the refused drag marks the Sound field red");
         Step("sound_reject", reject);
@@ -249,7 +249,7 @@ public static partial class StartupHook
         var browser = Find<ListBox>("ProjectBrowser");
         var pinged = browser.SelectedItem is { } selected ? (string)Get(selected, "RelativePath")! : null;
         bool flashed = browser.ContainerFromItem(browser.SelectedItem!)?.Classes.Contains("ping") == true;
-        Require(pinged == "Assets/Key.png" && flashed, $"Ping showed {pinged} (flash {flashed})");
+        Require(pinged == KeyPng && flashed, $"Ping showed {pinged} (flash {flashed})");
         Step("ping", new { field = "Sprite", project_row = pinged, flashed, selection_unchanged = Get(main, "Selected") == Object("Door") });
 
         // The picker: Project thumbnails in the rows, search, pick (one Undo step), None clears.
@@ -302,21 +302,20 @@ public static partial class StartupHook
         var framesBefore = Frames(Object("Key"));
         string beforeFrames = Text;
         var header = Visible(InspectorStack()).OfType<Border>().First(b => b.Tag?.GetType().Name == "ReferenceDrop" && b.GetType().Name != "ReferenceField");
-        var many = await DragProject(["Assets/Coin.png", "Assets/Key.png"], header, "drag-array");
+        var many = await DragProject([CoinPng, KeyPng], header, "drag-array");
         var framesAfter = Frames(Object("Key"));
-        Require(framesAfter.SequenceEqual([.. framesBefore, Id("Assets/Coin.png"), Id("Assets/Key.png")]), $"Frames {string.Join(",", framesAfter)}");
+        Require(framesAfter.SequenceEqual([.. framesBefore, Id(CoinPng), Id(KeyPng)]), $"Frames {string.Join(",", framesAfter)}");
         Step("array_drop", new { drag = many, before = framesBefore.Length, after = framesAfter.Length, undo = await OneStep("Key Frames += Coin, Key", beforeFrames, () => Frames(Object("Key")).Length == framesBefore.Length + 2) });
         await Undo(); // keep the game as shipped
 
-        // Multi-selection: one drop on the common Sprite field sets both walls; one Undo step restores both.
-        SceneObject[] Walls() => [Object("Wall"), Object("Wall Top")];
-        var walls = Walls();
-        Call(main, "ShowSelection", (IReadOnlyList<SceneObject>)walls);
+        // Multi-selection: one drop on the common Sprite field sets both barrels; one Undo step restores both.
+        SceneObject[] Barrels() => [Object("Barrel 1"), Object("Barrel 2")];
+        Call(main, "ShowSelection", (IReadOnlyList<SceneObject>)Barrels());
         await Delay(500);
         string beforeMulti = Text;
-        var multi = await DragProject(["Assets/Oak.png"], FieldIn(Find<StackPanel>("MultiInspector"), "Sprite"), "drag-multi");
-        Require(Walls().All(w => w.GetComponent<SpriteRendererComponent>()!.AssetId == Id("Assets/Oak.png")), "both walls took Oak.png");
-        Step("multi_drop", new { drag = multi, undo = await OneStep("two walls ← Oak.png", beforeMulti, () => Walls().All(w => w.GetComponent<SpriteRendererComponent>()!.AssetId == Id("Assets/Oak.png"))) });
+        var multi = await DragProject([PotPng], FieldIn(Find<StackPanel>("MultiInspector"), "Sprite"), "drag-multi");
+        Require(Barrels().All(w => w.GetComponent<SpriteRendererComponent>()!.AssetId == Id(PotPng)), "both barrels took Pot.png");
+        Step("multi_drop", new { drag = multi, undo = await OneStep("two barrels ← Pot.png", beforeMulti, () => Barrels().All(w => w.GetComponent<SpriteRendererComponent>()!.AssetId == Id(PotPng))) });
         await Undo();
 
         // Particle panel: Coin.png dragged onto the QA Sparks texture field writes the .particles asset (one Undo step).
@@ -330,8 +329,8 @@ public static partial class StartupHook
         var texture = FieldIn(panel, "Texture");
         texture.BringIntoView();
         await Delay(300);
-        var tex = await DragProject(["Assets/Coin.png"], texture, "drag-particle-texture");
-        await Until(() => ParticleEffect.Load(particles).Texture == Id("Assets/Coin.png"), "Coin.png on the particle texture");
+        var tex = await DragProject([CoinPng], texture, "drag-particle-texture");
+        await Until(() => ParticleEffect.Load(particles).Texture == Id(CoinPng), "Coin.png on the particle texture");
         string fxAfter = File.ReadAllText(particles);
         await Undo();
         Require(File.ReadAllText(particles) == fxBefore, "Undo restored the .particles file");
@@ -342,7 +341,7 @@ public static partial class StartupHook
         Step("particle_texture", new { drag = tex, reject = wrong, undo_steps = 1 });
 
         Require(await Save(), "save cancelled");
-        var saved = SceneDocument.OpenForEditing(Path.Combine(Root, "Scenes", "KeyRoom.scene"));
+        var saved = SceneDocument.OpenForEditing(Path.Combine(Root, "Scenes", "Showcase.scene"));
         var savedDoor = saved.Objects.First(o => o.Name == "Door");
         Step("saved", new
         {
@@ -357,6 +356,7 @@ public static partial class StartupHook
     }
 
     private const string LongPng = "Assets/QaLongNameDoorMaskForInspectorTrimmingChecks0123456789.png";
+    private const string KeyPng = "Assets/Showcase/Key.png", CoinPng = "Assets/Showcase/Coin.png", PotPng = "Assets/Showcase/Pot.png";
     private static Guid[] Frames(SceneObject key) => ((IEnumerable<Guid>)Call(key.Components.OfType<ScriptComponent>().First(s => s.Script == "KeySequence"), "ReadReferences", "Frames", false)!).ToArray();
 
     // ---- trace (Scene Play of the saved project, captured with the player's software SDL canvas)

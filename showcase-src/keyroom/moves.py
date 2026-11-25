@@ -5,8 +5,9 @@
 # read tick.Input.Triggered with input interactions from GameSettings, and each one does something you can see: Charge (hold
 # J 30 ticks) fills a meter over the hero and smashes the crate in front of him, Flick (tap U, up within 12 ticks) throws a
 # coin at the training dummy, Dash (double-tap O within 15 ticks) dashes at the dummy and knocks it back. A press that misses
-# the rule says why in a word over the hero's head. K rebinds Dash at run time (Session.BeginRebind); the next key becomes the
-# dash key. MoveTrainer (Scripts/Showcase) runs it.
+# the rule says why in a word over the hero's head. K opens the controls menu (Scenes/ShowcaseBindings.scene, an additive UI
+# scene written by hand): a keyboard and a pad cell per move, a status line and Restore defaults; the choice is kept in
+# player.settings. MoveTrainer (Scripts/Showcase) runs the moves.
 import pathlib, re, shutil, struct, uuid
 
 SAMPLES = pathlib.Path(__file__).resolve().parents[2] / "samples"
@@ -33,17 +34,17 @@ body = src.split("objects:\n", 1)[1].split("defaultCameraId:")[0]
 blocks = ["- id: " + b for b in body.split("- id: ")[1:]]
 name_of = lambda b: re.search(r"\n  name: (.*)", b).group(1)
 id_of = lambda b: re.match(r"- id: (\S+)", b).group(1)
-drop = {"Exit", "Key", "Chest", "Chest shadow", "Door Camera", "Door dust", "Door feedback", "Chest feedback", "Interface",
+drop = {"Exit", "Key", "Chest", "Chest shadow", "Door Camera", "Detail Camera", "Door dust", "Door feedback", "Chest feedback", "Interface",
         "Crate", "Crate shadow"}   # the crate by the door becomes the breakable crate in front of the hero
 gone = set()
 for b in blocks:
     parent = re.search(r"\n  parentId: (\S+)", b)
     if name_of(b) in drop or (parent and parent.group(1) in gone): gone.add(id_of(b))
-scripts = re.compile(r"  - type: script\n    script: \S+\n    values: \{[^\n]*\}\n")
+scripts = re.compile(r"  - type: script\n(    .*\n)*")
 out = []
 for b in blocks:
     if id_of(b) in gone: continue
-    b = scripts.sub("", b)                                              # no door lock, movement or hero animation scripts
+    b = scripts.sub("", b)                                              # no room logic: door lock, movement, hero animation, drag, satchel
     b = re.sub(r"  - type: audioSource\n(    .*\n)*", "", b)
     if name_of(b) == "Player": b = re.sub(r"\n  x: \S+\n  y: \S+", "\n  x: 170\n  y: 200", b, 1)
     out.append(b)
@@ -92,24 +93,25 @@ obj("Dummy shadow", 437, 212, 44, 12, sprite("ShadowM.png", order=-1))
 dummy = obj("Dummy", 432, 216 - dh, dw, dh, sprite("Dummy.png", sortByY="true"))
 dummy_spark = obj("Dummy spark", 459, 180, 1, 1, burst("Sparkle.particles"))
 coin = obj("Coin", 0, 0, 14, 14, sprite("Coin.png", sortingLayer=5), extra=off)
-# Interface: caption, two feature tags, and a rebind prompt shown while the "rebinding" flag is up.
+# Interface: caption and two feature tags.
 canvas = obj("Interface", 0, 0, 1, 1, "  - type: uiCanvas\n")
 obj("Caption", 12, -12, 470, 44, "  - type: uiRect\n    anchor: BottomLeft\n" + panel, parent="Interface")
 obj("Caption title", 12, 5, 450, 20, '  - type: uiRect\n  - type: uiText\n    richText: true\n    text: "<b>KeyRoom</b>   Hold, tap and double-tap, set in GameSettings"\n    size: 15\n', parent="Caption")
-controls = obj("Controls", 12, 25, 450, 16, '  - type: uiRect\n  - type: uiText\n    text: "Charge  hold J      Flick  tap U      Dash  O O      Rebind  K"\n    size: 12\n    color: "#BFD0DC"\n', parent="Caption")
+controls = obj("Controls", 12, 25, 450, 16, '  - type: uiRect\n  - type: uiText\n    text: "Charge  hold J      Flick  tap U      Dash  O O      Controls  K"\n    size: 12\n    color: "#BFD0DC"\n', parent="Caption")
 tags = [("interact", "Input interactions", "hold, tap, double-tap"), ("rebind", "Rebinding", "change a key while it runs")]
 for i, (flag, feature, detail) in enumerate(tags):
     obj(f"Tag {i + 1}", -12, 12 + i * 28, 236, 24, f"  - type: uiRect\n    anchor: TopRight\n    showIf: {flag}\n" + panel
         + f'  - type: uiText\n    richText: true\n    text: "<b>{feature}</b>   <color=#BFD0DC>{detail}</color>"\n    size: 12\n    insetX: 10\n    insetY: 4\n', parent="Interface")
-obj("Rebind prompt", 0, 96, 240, 34, "  - type: uiRect\n    anchor: TopCenter\n    showIf: rebinding\n" + panel, parent="Interface")
-prompt = obj("Rebind text", 14, 8, 220, 20, '  - type: uiRect\n  - type: uiText\n    richText: true\n    text: "Dash: press a new key"\n    size: 14\n', parent="Rebind prompt")
 values = {"Player": ids["Player"], "Hero": hero, "Crate": crate, "CrateShadow": crate_shadow, "CrateDust": crate_dust, "CrateSpark": crate_spark,
           "Dummy": dummy, "DummySpark": dummy_spark, "Coin": coin, "MeterBack": meter_back, "Meter": meter, "Label": label,
-          "Prompt": prompt, "Controls": controls, "DashTrail": dash_trail}
+          "Controls": controls, "DashTrail": dash_trail}
 ref = lambda n: f'{{"Id": "{asset(n)}"}}'
 sprites = {"IdleE": ref("HeroIdleE.png")} | {f"Walk{d}{i}": ref(f"HeroWalk{d}{i}.png") for d in "EW" for i in range(1, 5)}
 obj("Trainer", 0, 0, 1, 1, "  - type: script\n    script: Showcase/MoveTrainer\n    values: {"
     + ", ".join([f'"{k}": "{v}"' for k, v in values.items()] + [f'"{k}": {v}' for k, v in sprites.items()]) + "}\n")
+# K opens the controls menu over the room (the same RoomGuide script M uses for the guide in the key room).
+out.append('- id: be0b6e23-58d7-4ed7-a8a4-19dad1c60dc6\n  name: Key bindings opener\n  x: 0\n  y: 0\n  width: 1\n  height: 1\n  components:\n'
+           '  - type: script\n    script: RoomGuide\n    values:\n      Guide:\n        Id: "cd60e7de-8966-4519-aabb-7209fb04fe2f"\n      Action: KeyBindings\n')
 camera = ids["Main Camera"]
 (ROOT / "Scenes/ShowcaseMoves.scene").write_text("schemaVersion: 42\nobjects:\n" + "".join(out) + f"defaultCameraId: {camera}\n")
 meta = ROOT / "Scenes/ShowcaseMoves.scene.meta"
@@ -119,8 +121,9 @@ scene_id = meta.read_text().split()[1]
 # GameSettings: the three actions with their interactions, and the scene in the build.
 gs = (ROOT / "GameSettings").read_text()
 if "name: Charge" not in gs:
-    gs = gs.replace("  - name: KeyBindings\n", "  - {name: Charge, controls: [J], interaction: Hold, ticks: 30}\n  - {name: Flick, controls: [U], interaction: Tap, ticks: 12}\n"
-                    "  - {name: Dash, controls: [O], interaction: DoubleTap, ticks: 15}\n  - name: KeyBindings\n", 1)
+    gs = gs.replace("  - name: KeyBindings\n", "  - {name: Charge, controls: [J, Pad.LeftShoulder], interaction: Hold, ticks: 30}\n"
+                    "  - {name: Flick, controls: [U, Pad.LeftTrigger], interaction: Tap, ticks: 12}\n"
+                    "  - {name: Dash, controls: [O, Pad.RightTrigger], interaction: DoubleTap, ticks: 15}\n  - name: KeyBindings\n", 1)
 if scene_id not in gs:
     gs = gs.replace("includedScenes:\n", f"includedScenes:\n- {scene_id}\n", 1)
 (ROOT / "GameSettings").write_text(gs)

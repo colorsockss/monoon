@@ -42,7 +42,7 @@ def run(editor, sample, probe, output):
     with zipfile.ZipFile(sample) as archive:
         archive.extractall(output)
     root = output / "KeyRoom"
-    prefab = root / "Assets/Coin.prefab"
+    prefab = root / "Assets/Showcase/Coin.prefab"
     before = prefab.read_text(encoding="utf-8")
     # Prove the GUI writes both fields in a disposable copy of the shipped sample.
     assert re.search(r"^  tag: Coin$", before, re.M) and "  - 수집품" in before

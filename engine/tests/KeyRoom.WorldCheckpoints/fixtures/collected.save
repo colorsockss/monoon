@@ -1,24 +1,24 @@
 version: 2
 values:
-  room: "64fb4cd6-2469-5cec-ba6d-9a49e61f42e7"
+  room: "dd96f9dd-668b-5df5-8786-252e6eb77e9e"
   key: false
   chest: true
   coin: true
   world:
     version: 1
     scenes:
-      64fb4cd6-2469-5cec-ba6d-9a49e61f42e7:
+      dd96f9dd-668b-5df5-8786-252e6eb77e9e:
         objects:
-        - id: "bc2c6d9b-c82c-4d72-981c-09e1a6a70d5d"
+        - id: "dfcc76b6-2cf9-53fa-9a2e-8c9c8c59ac43"
           fields: 3
           removed: false
           pose:
-            x: 332
-            y: 131
+            x: 364
+            y: 172
             angle: 0
           active: true
           collider: null
-        - id: "226c5154-4dbb-4f60-91af-14d7147ab88e"
+        - id: "289e4c51-d2b3-5790-b330-82d434e1548a"
           fields: 2
           removed: false
           pose: null

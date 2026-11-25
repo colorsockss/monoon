@@ -8,7 +8,8 @@ import sys
 
 HERE = Path(__file__).resolve().parent
 PROJECT = '64fb4cd6-2469-5cec-ba6d-9a49e61f42e7'
-SECOND = '97ae2562-6e93-5e7a-be3b-45ec603896c6'  # Scenes/SecondRoom.scene receives the pasted objects
+START = 'dd96f9dd-668b-5df5-8786-252e6eb77e9e'  # Scenes/Showcase.scene, the sample's start scene
+SECOND = 'eeac16ae-6a5c-58ce-995a-0e1c0f636572'  # Scenes/ShowcaseRoom2.scene receives the pasted objects
 EXPECTED = 'copied 1 chest 1 outside 1'  # Outside repointed in the editor; builds refuse missing references
 FORBIDDEN = ('Engine.Authoring', 'Engine.Editor', 'SkiaSharp', 'libSkiaSharp', 'Avalonia', 'MoNoon.dll', 'CopyPasteProbe')
 
@@ -16,9 +17,9 @@ def prepare(sample, dest):
     shutil.copytree(sample, dest, ignore=shutil.ignore_patterns('.monoon', '.monoon-compiled', '.DS_Store', 'bin', 'obj'))
     settings = dest / 'GameSettings'
     text = settings.read_text(encoding='utf-8')
-    assert f'startScene: {PROJECT}' in text and f'- {SECOND}\n' in text
+    assert f'startScene: {START}' in text and f'- {SECOND}\n' in text
     # Only this copy starts in the room that receives the pasted objects.
-    settings.write_text(text.replace(f'startScene: {PROJECT}', f'startScene: {SECOND}'), encoding='utf-8')
+    settings.write_text(text.replace(f'startScene: {START}', f'startScene: {SECOND}'), encoding='utf-8')
     shutil.copyfile(HERE / 'TraceCopies.source', dest / 'Scripts/TraceCopies.cs')
 
 def forbidden(bundle):

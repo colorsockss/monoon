@@ -89,7 +89,7 @@ public static class StartupHook
             main.UpdateLayout();
         }
 
-        // KeyRoom (MONOON_I1_SCENE=KeyRoom) skips the lab checks and measures its own small scene instead of Field10000.
+        // KeyRoom's showcase (MONOON_I1_SCENE=Showcase) skips the lab checks and measures its own small scene instead of Field10000.
         string sceneName = Environment.GetEnvironmentVariable("MONOON_I1_SCENE") ?? "Field10000";
         bool field = sceneName == "Field10000";
         // 1. Lab scene, new editor only (the base editor records each Sprite Order keystroke as its own undo step).

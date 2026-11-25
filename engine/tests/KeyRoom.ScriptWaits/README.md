@@ -1,13 +1,13 @@
 # KeyRoom 스크립트 대기 회귀
 
-`verify.py prepare`는 KeyRoom을 별도 폴더에 복사하고 관찰 스크립트 [TraceWaits](TraceWaits.source)를 붙인다. 이 스크립트는 매 화면 프레임의 `UpdateUi`에서 재생 프레임 번호, 게임 틱, 정지 상태, `key`·`doorHint` 플래그가 바뀌면 한 줄을 기록한다.
+`verify.py prepare`는 KeyRoom을 별도 폴더에 복사하고 시작 씬 `Showcase.scene`에 관찰 스크립트 [TraceWaits](TraceWaits.source)를 붙인다. 이 스크립트는 매 화면 프레임의 `UpdateUi`에서 재생 프레임 번호, 게임 틱, 정지 상태, `key`·`doorHint` 플래그가 바뀌면 한 줄을 기록한다.
 
 입력 기록은 120프레임(각 1/60초)이다.
 
 | 프레임 | 입력 | 의도 |
 | --- | --- | --- |
-| 5 → 22 | ← 누름 → 뗌 | 열쇠를 얻어 문이 열리고 `DoorLock.ShowHint`가 게임 시간 0.5초 대기를 시작 |
-| 28 | P | 대기 중 정지 |
+| 5 → 28 | ← 누름 → 뗌 | 왼쪽 열쇠를 얻어 북쪽 문이 열리고 `DoorLock.ShowHint`가 게임 시간 0.5초 대기를 시작 |
+| 33 | P | 대기 중 정지 |
 | 40, 46, 52 | . (StepGame) | 정지한 채 한 틱씩 세 번 진행 |
 | 70 | P | 재개 |
 

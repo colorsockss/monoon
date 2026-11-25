@@ -219,7 +219,7 @@ check(release["status"].startswith("Built "), "editor status " + release["status
 
 def asset_summary(step):
     console = step["console"]
-    check(any(line.startswith("Info: Shipped ") for line in console) and any(line.startswith("Info: Unreferenced under Assets/: 2 files") for line in console)
+    check(any(line.startswith("Info: Shipped ") for line in console) and any(line.startswith("Info: Unreferenced under Assets/: 3 files") for line in console)
           and console[-1].startswith("Info: Asset report: ") and console[-1].endswith("/assets.yaml"), "Console shows the asset report summary and path")
 
 

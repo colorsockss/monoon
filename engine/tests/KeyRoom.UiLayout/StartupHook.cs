@@ -58,7 +58,7 @@ public static class StartupHook
         }
         var scene = viewport.Scene;
         var project = scene.ProjectDirectory!;
-        var sourceFiles = new[] { Path.Combine(project, "GameSettings"), Path.Combine(project, "Scenes", "KeyRoom.scene") };
+        var sourceFiles = new[] { Path.Combine(project, "GameSettings"), Path.Combine(project, "Scenes", "Showcase.scene") };
         var before = sourceFiles.Select(File.ReadAllBytes).ToArray();
         var bag = scene.Objects.Single(o => o.Name == "Inventory");
         Guid Id(string name) => scene.Objects.Single(o => o.Name == name).Id;
@@ -187,8 +187,8 @@ public static class StartupHook
         Check(PreviewUi().Preferences.TextScale == scene.Settings.Accessibility.TextScale && scene.Settings.Width == 800 &&
             main.FindControl<TextBlock>("ResolutionLabel")!.Text == "800 × 450", "Use Project restores defaults");
         Check(sourceFiles.Select((path,i) => File.ReadAllBytes(path).SequenceEqual(before[i])).All(v=>v), "Source settings or scene changed");
-        await (Task)main.GetType().GetMethod("SwitchScene", Members)!.Invoke(main, ["RoomGuide"])!;
-        Check(viewport.Scene.Camera == null && viewport.Scene.IsUiOnly, "Camera-free RoomGuide");
+        await (Task)main.GetType().GetMethod("SwitchScene", Members)!.Invoke(main, ["ShowcaseGuide"])!;
+        Check(viewport.Scene.Camera == null && viewport.Scene.IsUiOnly, "Camera-free ShowcaseGuide");
         await SetPreview(640,360);
         Check(Property<Point>(viewport, "EditCenter") == new Point(320,180), "UI-only canvas framing");
         File.WriteAllText(Path.Combine(Output, "result.json"), JsonSerializer.Serialize(new { os = RuntimeInformation.OSDescription,

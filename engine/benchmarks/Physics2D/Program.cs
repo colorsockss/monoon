@@ -19,8 +19,9 @@ SceneObject Box(float x, float y)
 }
 if (args is ["tiles", var repository])
 {
-    var root = Path.Combine(Path.GetFullPath(repository), "samples", "KeyRoomTiles");
-    var tileset = SceneDocument.Load(Path.Combine(root, "Scenes", "KeyRoom.scene")).Objects.Single(o => o.Name == "Wall")
+    // The KeyRoom showcase's solid brick tiles (the KeyRoomTiles scene with its "Wall" map was retired, 2026-11-26).
+    var root = Path.Combine(Path.GetFullPath(repository), "samples", "KeyRoom");
+    var tileset = SceneDocument.Load(Path.Combine(root, "Scenes", "Showcase.scene")).Objects.Single(o => o.Name == "Wall face")
         .GetComponent<Tilemap2DComponent>()!.Tileset;
     scene.ProjectDirectory = root;
     var map = new Tilemap2DComponent { Tileset = tileset, CellSize = new(16, 16) };

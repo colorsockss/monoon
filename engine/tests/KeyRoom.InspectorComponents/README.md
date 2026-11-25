@@ -4,7 +4,7 @@ KeyRoom으로 로드맵 13.2(오브젝트 활성·컴포넌트 켜짐), 13.3(스
 
 ## 실행 경로별 런타임 기록 (13.2)
 
-[verify.py](verify.py) `prepare`는 KeyRoom을 복사해 시작 씬에 QA 오브젝트 넷과 스크립트 셋을 넣는다.
+[verify.py](verify.py) `prepare`는 KeyRoom을 복사해 시작 씬(쇼케이스 `Showcase.scene`)에 QA 오브젝트 넷과 스크립트 셋을 넣는다.
 
 | 오브젝트 | 저장 상태 | 확인 |
 | --- | --- | --- |
@@ -20,9 +20,9 @@ Main Camera의 [ComponentTrace](ComponentTrace.source)가 틱마다 한 줄을 �
 
 1. `save`: 손대지 않은 씬을 저장한다.
 2. `first`: [프로브](StartupHook.cs)가 UI로 다음을 확인하고 캡처를 남긴다. 각 편집은 Undo 한 번으로 이전 씬 텍스트와 같아지고 Redo로 다시 같아져야 한다.
-   - 13.2: Door 이름 행 체크를 끄면 `active: false`가 저장되고 Hierarchy 행이 0.55로 흐려지며 Scene 편집 화면에서 빠진다. Sprite Renderer 머리말 체크, Camera 2D에는 체크 없음. 프리팹 인스턴스 Courtyard oak의 Overrides에 `active`·`spriteRenderer.enabled`.
+   - 13.2: Door 이름 행 체크를 끄면 `active: false`가 저장되고 Hierarchy 행이 0.55로 흐려지며 Scene 편집 화면에서 빠진다. Sprite Renderer 머리말 체크, Camera 2D에는 체크 없음. 프리팹 인스턴스 Small pot(`Pot.prefab`)의 Overrides에 `active`·`spriteRenderer.enabled`.
    - 13.3: PlayerMovement의 **Movement** 머리글, MoveSpeed `[Range(60, 480)]` 슬라이더(240→300, Undo 1회), `///` 요약과 `[Tooltip]` 툴팁, `[SerializeField, Min(16)] private float coinReach`에 5를 입력하면 16으로 저장. Range 행의 입력 높이·오른쪽 끝이 다른 행과 같음.
-   - 13.4: Add Component 묶음 7개, "col" 검색에 충돌체 5종(16.4부터)(+ 이름이 맞는 CollectCoin), 메뉴 폭 180·220·360px에서 아이콘·이름 x가 같음. Door 충돌체 복사 → Chest에 Paste Component as New, Exit 충돌체 값 → Wall에 Paste Component Values, Reset, Move Up/Down, Remove가 각각 Undo 1회.
+   - 13.4: Add Component 묶음 7개, "col" 검색에 충돌체 5종(16.4부터)(+ 이름이 맞는 CollectCoin), 메뉴 폭 180·220·360px에서 아이콘·이름 x가 같음. Door 충돌체 복사 → Chest에 Paste Component as New, Exit 충돌체 값 → Chest base에 Paste Component Values, Reset, Move Up/Down, Remove가 각각 Undo 1회.
    - 13.14: Door에 Rigidbody 2D를 붙이고 충돌체를 지우면 노란 줄이 나오고 Undo하면 사라진다.
    - 정렬: 1280·1600·1920px와 긴 이름에서 모든 섹션의 제목·아이콘·체크 x가 하나씩이고, 이름 행 입력 x가 Tag 입력 x와 같다.
    - 13.12: Door에 잠근 뒤 Player를 골라도 Inspector가 Door를 보여 주고, 그 Inspector의 편집이 Door에 들어간다. `editor-state.json`에 씬별로 저장된다. Debug 보기는 오브젝트 키와 모든 컴포넌트의 원시 JSON을 읽기 전용으로 보여 준다. 잠금을 남긴 채 저장한다.

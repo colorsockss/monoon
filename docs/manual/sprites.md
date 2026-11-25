@@ -12,7 +12,7 @@
 
 1. 나무처럼 한 장으로 그리는 오브젝트는 **Sprite Renderer → Y sort → Use foot Y**를 켠다. 기준점은 오브젝트 사각형의 아래쪽 가운데다. PNG 밑에 투명 여백이 2만큼 있으면 **Foot ΔY**를 `-2`로 맞춘다. 오프셋은 오브젝트의 로컬 단위이며 부모의 회전·스케일도 적용된다.
 2. 캐릭터처럼 여러 장으로 그리려면 몸통이나 공통 부모에 **Add Component → Sorting Group 2D**를 붙인다. **그룹의 Use foot Y**를 켜고 나무와 그룹의 **Layer / Order**를 같게 둔다. 장비는 그 아래에 배치한다. 그룹 안에서는 몸통의 Order를 0, 가방을 20, 버클을 22로 두면 버클이 가방 위에 그려진다. 자식에 다시 그룹을 두면 그 그룹도 내부 순서를 유지한다.
-3. **Play**에서 아래로 걸으면 발의 월드 Y가 커진다. 발이 나무 기준보다 아래로 내려가면 캐릭터 전체가 나무 앞에 그려진다. KeyRoom 첫 방에서는 시작점에서 **↓ / S**로 나무를 지나고 **↑ / W**로 되돌아가 볼 수 있다. [Mac 실행 화면](../../engine/tests/results/y-sorting/README.md)
+3. **Play**에서 아래로 걸으면 발의 월드 Y가 커진다. 발이 나무 기준보다 아래로 내려가면 캐릭터 전체가 나무 앞에 그려진다. KeyRoom 첫 방에서는 왼쪽 아래 항아리(**Pot**) 옆을 **↓ / S**로 지나고 **↑ / W**로 되돌아가 볼 수 있다. 주인공의 가방(**Satchel**)은 그룹 안에서 Order 20으로 몸 위에 그려진다. [Mac 실행 화면](../../engine/tests/results/y-sorting/README.md)
 
 먼저 **Layer**, 그다음 **Order**가 작은 항목부터 그린다. 둘 다 같을 때 고정 순서 항목을 먼저 그리고 Y 정렬 항목을 발의 월드 Y가 작은 순서로 그린다. 발 Y까지 같으면 씬에 저장된 오브젝트 순서를 따른다. 캐릭터의 장비 순서는 그룹 안에서만 비교한다. 씬 편집과 클릭 선택도 같은 앞뒤 순서를 사용한다. 월드 이름표([Text 2D](game-ui.md#월드에-붙는-이름표와-데미지-숫자))도 같은 Layer·Order·Use foot Y로 스프라이트 사이에 끼어 그려진다.
 
@@ -54,13 +54,13 @@ Sprite Renderer의 `drawMode`로 그리는 방식을 고른다. 기본값 **Simp
 
 ## 시트의 일부만 프레임으로 쓰기
 
-[Door.clip](../../samples/KeyRoom/Assets/Door.clip)을 열고 **Add → Sheet cells…**에서 **DoorSheet.png**를 선택한다. 왼쪽의 닫힌 문이 1번, 오른쪽 위와 아래가 차례로 2번과 3번이다. 완전히 열린 4번은 투명한 1픽셀이므로 **Frames ▾ → Frame 4**로 고르기 쉽다. 그림이나 메뉴 항목을 눌러 선택·해제한 뒤 **Insert cells**로 타임라인에 넣는다. **Replace frame**은 한 프레임을 골랐을 때 사용할 수 있고 기존 재생 시간을 유지한다.
+예제 시트는 검사 자료 [KeyRoomDoorSheet](../../engine/tests/fixtures/KeyRoomDoorSheet/)에 있다. 폴더의 `Assets/` 내용을 프로젝트 복사본의 `Assets/`에 넣고 [Door.clip](../../engine/tests/fixtures/KeyRoomDoorSheet/Assets/Door.clip)을 연 뒤 **Add → Sheet cells…**에서 **DoorSheet.png**를 선택한다. 왼쪽의 닫힌 문이 1번, 오른쪽 위와 아래가 차례로 2번과 3번이다. 완전히 열린 4번은 투명한 1픽셀이므로 **Frames ▾ → Frame 4**로 고르기 쉽다. 그림이나 메뉴 항목을 눌러 선택·해제한 뒤 **Insert cells**로 타임라인에 넣는다. **Replace frame**은 한 프레임을 골랐을 때 사용할 수 있고 기존 재생 시간을 유지한다.
 
 ![시트에서 문 프레임 세 개를 선택한 모습](sheet-cells.png)
 
 각 영역의 좌표는 시트 PNG의 왼쪽 위를 기준으로 하며, 이 시트의 프레임 순서와 영역은 PNG 옆의 `.meta`에 저장되어 있다. 클립에는 선택한 영역, 잘라내기 전 크기와 그 안에서 그림이 시작하는 위치를 저장한다. 문은 24×94 크기를 기준으로 윗부분을 고정해 재생한다.
 
-KeyRoom의 원본 문 PNG를 외부에서 덮어쓰면 그 PNG에 연결된 셀이 갱신된다. [외부 PNG 자동 재임포트](project-assets.md#외부-png-자동-재임포트)
+이 예제의 원본 문 PNG를 외부에서 덮어쓰면 그 PNG에 연결된 셀이 갱신된다. [외부 PNG 자동 재임포트](project-assets.md#외부-png-자동-재임포트)
 
 규칙적으로 잘라 쓰는 PNG는 **Grid**에서 셀 크기, 여백, 간격을 설정한다. 시트 전체를 보려면 **Fit**, 픽셀을 확대하려면 **2×** 등 고정 배율을 고른다.
 
@@ -154,7 +154,7 @@ Line 2D나 [Path Follower 2D](platformer-physics.md#곡선-경로를-따라가�
 1. Project에서 KeyRoom의 **Assets/LidMotion.clip**을 더블클릭한다. **Component keys → Property → Rotation**을 고르면 타임라인 눈금에 회전 키가 표시된다.
 2. **Time (s)**에 `0.25`, **Value**에 `-18`을 입력하고 **Set Key**를 누른다. 눈금에서 해당 키를 누르면 그 시점으로 이동한다. 같은 시각에 다시 설정하면 기존 값을 바꾼다. **Remove**로 선택한 속성의 해당 키만 지운다. **Cmd+Z** 또는 **Ctrl+Z**로 되돌릴 수 있다.
 3. **Save Clip**을 누르고 다시 열어 변경한 값을 확인한다. 샘플을 원래대로 돌리려면 추가한 0.25초 키를 지우고 저장한다.
-4. Scene Play에서 닫힌 상자의 뚜껑을 본 뒤 **E**로 연다. 뚜껑은 열기 전까지 회전하고 세로로 늘어난다. 상자에서 나온 코인은 **CoinPulse.clip**에 따라 흰색에서 청록색으로 변하면서 흐려졌다가 다시 밝아진다.
+4. Scene Play에서 닫힌 상자를 본 뒤 다가가 **E**로 연다. 상자는 열기 전까지 바닥을 축으로 살짝 기울고(-4°) 세로로 1.06배 늘어난다. 상자에서 나온 코인은 **CoinPulse.clip**에 따라 흰색에서 금빛으로 변하면서 조금 흐려졌다가 다시 밝아진다.
 
 | 속성 | 입력값 | 적용 대상 |
 | --- | --- | --- |

@@ -1,7 +1,8 @@
 """KeyRoom input interactions and buffering (roadmap 16.12) in a disposable copy, replayed headless.
 
-prepare <sample> <dest>    copy KeyRoom; GameSettings gains Hold/Tap/DoubleTap/buffered actions and two 2D vectors
-                           (Walk from the existing move actions, Aim from V/B/T/G); a TraceInput observer joins the first room
+prepare <sample> <dest>    copy KeyRoom; GameSettings' Hold/Tap/DoubleTap actions (the moves showcase's) are replaced by the
+                           harness's, with a buffered action and two 2D vectors (Walk from the existing move actions, Aim from
+                           V/B/T/G); a TraceInput observer joins the key room showcase, the start scene
 play <MoNoonPlayer> <out>  --replay-input; the trace lists the game tick of every judgement
 check <out>...             traces are byte-identical, and the judgements are where the rules put them
 """
@@ -9,7 +10,7 @@ import os, shutil, subprocess, sys
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
-PROJECT = '64fb4cd6-2469-5cec-ba6d-9a49e61f42e7'
+PROJECT, START = '64fb4cd6-2469-5cec-ba6d-9a49e61f42e7', 'dd96f9dd-668b-5df5-8786-252e6eb77e9e'  # Showcase.scene
 FRAMES = 300
 HOLD, TAP, DOUBLE, BUFFER = 30, 12, 15, 8
 # (down frame, up frame, key): one recording exercises every rule, including the misses.
@@ -28,6 +29,10 @@ def prepare(sample, destination):
     text = settings.read_text(encoding='utf-8')
     anchor = '  - name: KeyBindings\n    controls: [K, Pad.RightShoulder]\n'
     assert text.count(anchor) == 1
+    lines = text.splitlines(keepends=True)
+    moves = [l for l in lines if l.startswith(('  - {name: Charge,', '  - {name: Flick,', '  - {name: Dash,'))]
+    assert len(moves) == 3, moves
+    text = ''.join(l for l in lines if l not in moves)
     text = text.replace(anchor, anchor +
         f'  - name: Charge\n    controls: [J]\n    interaction: Hold\n    ticks: {HOLD}\n'
         f'  - name: Flick\n    controls: [U]\n    interaction: Tap\n    ticks: {TAP}\n'
@@ -38,13 +43,11 @@ def prepare(sample, destination):
         '  vectors:\n  - {name: Walk, left: MoveLeft, right: MoveRight, up: MoveUp, down: MoveDown}\n'
         '  - {name: Aim, left: AimLeft, right: AimRight, up: AimUp, down: AimDown}\n')
     settings.write_text(text, encoding='utf-8')
-    scene = destination / 'Scenes/KeyRoom.scene'
+    scene = destination / 'Scenes/Showcase.scene'
     text = scene.read_text(encoding='utf-8')
-    anchor = '- id: be0b6e23-58d7-4ed7-a8a4-19dad1c60dc6\n  name: Key bindings opener\n'
-    assert text.count(anchor) == 1
-    probe = ('- id: 6a2f9c10-4b7e-4d1a-8c3e-2f5b7d9e1a20\n  name: Input trace\n  width: 1\n  height: 1\n  components:\n'
-             '  - type: script\n    script: TraceInput\n')
-    scene.write_text(text.replace(anchor, probe + anchor), encoding='utf-8')
+    assert 'defaultCameraId' not in text   # the probe goes last in the object list
+    scene.write_text(text + '- id: 6a2f9c10-4b7e-4d1a-8c3e-2f5b7d9e1a20\n  name: Input trace\n  width: 1\n  height: 1\n  components:\n'
+                     '  - type: script\n    script: TraceInput\n', encoding='utf-8')
 
 
 def recording(path):
@@ -53,7 +56,7 @@ def recording(path):
         events += [(down, key, 'true'), (up, key, 'false')]
     lines = ''.join(f'- frame: {f}\n  timeTicks: {f * 166667}\n  input: {{kind: key, control: "{k}", down: {d}}}\n'
                     for f, k, d in sorted(events, key=lambda e: e[0]))
-    path.write_text(f'version: 1\nproject: {PROJECT}\nstartScene: {PROJECT}\nframeTicks: [' + ', '.join(['166667'] * FRAMES) +
+    path.write_text(f'version: 1\nproject: {PROJECT}\nstartScene: {START}\nframeTicks: [' + ', '.join(['166667'] * FRAMES) +
                     ']\nevents:\n' + lines, encoding='utf-8')
 
 

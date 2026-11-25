@@ -138,7 +138,7 @@ internal static class ScriptFieldTypeChecks
         // The editor's view of a struct merges a partial save over the defaults; the scene keeps the saved JSON byte-exact.
         var first = (JsonElement)fields["First"].Value(new ScriptComponent { Script = "FieldKinds", Values = { ["First"] = JsonDocument.Parse("{\"Count\":7}").RootElement.Clone() } })!;
         Require(first.GetProperty("Count").GetInt32() == 7 && first.GetProperty("Kind").GetString() == "Rare", "struct view merges defaults");
-        var scenePath = Path.Combine(root, "Scenes", "KeyRoom.scene");
+        var scenePath = Path.Combine(root, "Scenes", "Showcase.scene");
         var scene = SceneDocument.Load(scenePath);
         var owner = new SceneObject { Name = "Kinds" };
         owner.AddComponent(component);

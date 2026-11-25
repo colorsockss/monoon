@@ -16,8 +16,8 @@ import sys
 
 HERE = Path(__file__).resolve().parent
 PROJECT = '64fb4cd6-2469-5cec-ba6d-9a49e61f42e7'
-SCENE = '64fb4cd6-2469-5cec-ba6d-9a49e61f42e7'  # KeyRoom.scene, the start scene
-CAMERA = 'edf9e38f-512b-4cce-93b6-76280f7403a6'
+SCENE = 'dd96f9dd-668b-5df5-8786-252e6eb77e9e'  # Showcase.scene, the start scene
+CAMERA = 'ce171431-9744-52c4-b68b-dc4375b02817'  # its Main Camera
 FRAMES = 120
 CAPTURES = [20, 50, 100]
 QA_OBJECTS = '''- id: 0a000000-0000-4000-8000-000000000001
@@ -25,7 +25,7 @@ QA_OBJECTS = '''- id: 0a000000-0000-4000-8000-000000000001
   tag: QaCoin
   active: false
   x: 420
-  y: 300
+  y: 240
   width: 24
   height: 24
   components:
@@ -86,14 +86,14 @@ def prepare(sample, dest):
     shutil.copytree(sample, dest, ignore=shutil.ignore_patterns('.monoon', '.monoon-compiled', '.DS_Store', 'bin', 'obj'))
     for name in ('ComponentTrace', 'CoinChildTicker', 'DisabledTicker'):
         shutil.copyfile(HERE / f'{name}.source', dest / f'Scripts/{name}.cs')
-    scene = dest / 'Scenes/KeyRoom.scene'
+    scene = dest / 'Scenes/Showcase.scene'
     text = scene.read_text(encoding='utf-8')
     camera = '  name: Main Camera\n'
     head = text.index(f'- id: {CAMERA}\n')
     comps = text.index('  components:\n', head) + len('  components:\n')
     text = text[:comps] + '  - type: script\n    script: ComponentTrace\n    values: {}\n' + text[comps:]
-    assert camera in text and text.count('\ndefaultCameraId:') == 1
-    text = text.replace('\ndefaultCameraId:', '\n' + QA_OBJECTS.rstrip('\n') + '\ndefaultCameraId:', 1)
+    assert camera in text and text.endswith('\n') and 'defaultCameraId:' not in text
+    text += QA_OBJECTS
     scene.write_text(text, encoding='utf-8')
 
 

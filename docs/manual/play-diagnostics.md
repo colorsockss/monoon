@@ -6,7 +6,7 @@ KeyRoom을 열고 **Play**를 누른다. 진단 도구는 에디터에서 실행
 
 Hierarchy에서 오브젝트를 선택하고 Inspector의 **Runtime**을 펼친다. 활성 상태(자신이 꺼졌는지, 부모가 꺼졌는지), 월드 좌표, 생성된 프리팹의 출처, 트리거 겹침 수를 읽을 수 있다. 애니메이터에는 현재 상태·프레임, 오디오 소스에는 재생 상태가 나온다. 스크립트는 단순 타입의 인스턴스 필드를 표시한다. 비공개 필드를 포함하며 프로퍼티의 getter는 실행하지 않는다. Runtime에 표시하는 값은 읽기 전용이다.
 
-KeyRoom에서는 **E**로 상자를 열고 Hierarchy 맨 아래에 생긴 **Coin**을 선택한다. Runtime에서 `Coin.prefab`, `Trigger`, `CollectCoin.available`을 확인한다. 플레이어가 코인을 획득하면 Hierarchy에서 사라진다. 값을 천천히 보려면 **Pause**, 한 물리 틱만 전진하려면 **Step**을 누른다.
+KeyRoom에서는 상자에 다가가 **E**로 열고 Hierarchy 맨 아래에 생긴 **Coin**을 선택한다. Runtime에서 `Coin.prefab`, `Trigger`, `CollectCoin.available`을 확인한다. 플레이어가 코인을 획득하면 Hierarchy에서 사라진다. 값을 천천히 보려면 **Pause**, 한 물리 틱만 전진하려면 **Step**을 누른다.
 
 ## Play 중 값 조정과 선택 적용
 

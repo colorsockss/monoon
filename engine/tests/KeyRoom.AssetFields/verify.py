@@ -19,7 +19,7 @@ import zlib
 
 HERE = Path(__file__).resolve().parent
 PROJECT = '64fb4cd6-2469-5cec-ba6d-9a49e61f42e7'
-SCENE = '64fb4cd6-2469-5cec-ba6d-9a49e61f42e7'  # KeyRoom.scene, the start scene
+SCENE = 'dd96f9dd-668b-5df5-8786-252e6eb77e9e'  # Showcase.scene, the start scene
 FRAMES = 90
 CAPTURES = [30, 80]
 CHIME = 'a5f1e000-0000-4000-8000-000000000001'
@@ -84,10 +84,10 @@ def prepare(sample, dest):
     # inspect (13.5): a script number the WallWorkshop walls share; the probe attaches it with different values.
     (dest / 'Scripts/QaWall.cs').write_text('using Engine.Core;\n\npublic sealed class QaWall : GameBehaviour\n{\n'
                                             '    public int Strength = 1;\n    public bool Breakable;\n}\n', encoding='utf-8')
-    scene = dest / 'Scenes/KeyRoom.scene'
+    scene = dest / 'Scenes/Showcase.scene'
     text = scene.read_text(encoding='utf-8')
-    assert text.count('\ndefaultCameraId:') == 1
-    scene.write_text(text.replace('\ndefaultCameraId:', '\n' + QA_OBJECTS.rstrip('\n') + '\ndefaultCameraId:', 1), encoding='utf-8')
+    assert text.endswith('\n') and 'defaultCameraId:' not in text
+    scene.write_text(text + QA_OBJECTS, encoding='utf-8')
 
 
 def finder(folder):

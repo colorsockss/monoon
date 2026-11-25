@@ -2146,7 +2146,7 @@
     },
     {
      "kind": "prepare",
-     "run": "cp \"$work/ie/ui/inspect-base.scene\" \"$work/ie/base/KeyRoom/Scenes/KeyRoom.scene\"   # 피벗만 바꾸기 전 씬"
+     "run": "cp \"$work/ie/ui/inspect-base.scene\" \"$work/ie/base/KeyRoom/Scenes/Showcase.scene\"   # 피벗만 바꾸기 전 씬"
     },
     {
      "kind": "build",
@@ -2396,7 +2396,7 @@
       "scene-play"
      ],
      "gui": true,
-     "run": "$lock \"$qa/mac/verify.sh\" editor/MoNoon.app \"$work/package/KeyRoom-sample.zip\" \"$work/editor-result\" engine/tests/results/editor-packaging/collected.save"
+     "run": "$lock \"$qa/mac/verify.sh\" editor/MoNoon.app \"$work/package/KeyRoom-sample.zip\" \"$work/editor-result\" engine/tests/KeyRoom.Desktop/collected.save"
     }
    ]
   },

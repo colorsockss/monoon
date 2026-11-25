@@ -5,7 +5,7 @@ from pathlib import Path
 WT = Path('/Users/paare/codex_project/brutal_engine/.claude/worktrees/agent-a1cc2177431e98601')
 TESTS = WT / 'engine/tests'
 sys.path.insert(0, str(TESTS / 'KeyRoom.WorldCheckpoints')); sys.path.insert(0, str(TESTS))
-IDS = {'KeyRoom': ('64fb4cd6-2469-5cec-ba6d-9a49e61f42e7', '64fb4cd6-2469-5cec-ba6d-9a49e61f42e7'),
+IDS = {'KeyRoom': ('64fb4cd6-2469-5cec-ba6d-9a49e61f42e7', 'dd96f9dd-668b-5df5-8786-252e6eb77e9e'),
        'InventoryLab': ('ade09cc3-a769-56d7-9832-a2bea14c7e71', '6a7b735e-336d-5674-b2e7-a136db5a7771'),
        'PlatformerLab': ('3b309c28-75ce-562e-92ac-f94ee48b18c7', '4fe9f1eb-5dcd-5f90-a033-78a61e876a0d')}
 label, sample, bin_dir = sys.argv[1], sys.argv[2], Path(sys.argv[3])

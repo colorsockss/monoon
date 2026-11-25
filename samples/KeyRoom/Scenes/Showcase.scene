@@ -561,6 +561,10 @@ objects:
     playOnStart: false
   - type: audioSource
     sound: 9741ea19-cad2-5668-ae72-fadf43b42ca2
+  - type: script
+    script: RemoveOnAction
+    values:
+      Action: "RemoveDoor"
 - id: af946aa4-da8f-5e8f-a254-3aa0dda897c3
   name: Door back wall
   x: 256
@@ -652,17 +656,6 @@ objects:
   height: 12
   components:
   - type: boxCollider2D
-- id: 45cd9f2e-4998-5643-99cd-7065a12a5185
-  name: Crate shadow
-  x: 440
-  y: 118.8
-  width: 44
-  height: 12
-  components:
-  - type: spriteRenderer
-    assetId: d6044226-b525-5845-8e0d-68450f82712e
-    asset: Assets/Showcase/ShadowL.png
-    order: -4
 - id: a0056442-de01-50dd-a9ef-7765daa0f342
   name: Crate
   x: 444
@@ -674,6 +667,23 @@ objects:
     assetId: d4232051-4a3c-5ebf-8f6b-d49d3b258a82
     asset: Assets/Showcase/Crate.png
     sortByY: true
+  - type: script
+    script: DragCrate
+    values:
+      Label: "Crate"
+      Readout: "e8281618-7fdb-5a3a-8d0d-d5654d2d34a3"
+- id: 45cd9f2e-4998-5643-99cd-7065a12a5185
+  parentId: a0056442-de01-50dd-a9ef-7765daa0f342
+  name: Crate shadow
+  x: -4
+  y: 30.8
+  width: 44
+  height: 12
+  components:
+  - type: spriteRenderer
+    assetId: d6044226-b525-5845-8e0d-68450f82712e
+    asset: Assets/Showcase/ShadowL.png
+    order: -4
 - id: 1a48bf8c-978c-58f3-9887-3ecc01f7fd62
   parentId: a0056442-de01-50dd-a9ef-7765daa0f342
   name: Crate base
@@ -714,8 +724,8 @@ objects:
   height: 12
   components:
   - type: boxCollider2D
-- id: 67992ac1-5318-5cbb-97e2-57b7b599954b
-  name: Pot 2 shadow
+- id: 75a87d02-3b3d-5f3a-8e9c-490897ace7d3
+  name: Pot shadow
   x: 39
   y: 242.8
   width: 44
@@ -725,8 +735,39 @@ objects:
     assetId: d6044226-b525-5845-8e0d-68450f82712e
     asset: Assets/Showcase/ShadowL.png
     order: -4
-- id: 54b4b04f-28ec-5a7b-9159-cce98f1a06da
-  name: Pot 2
+- id: 58456987-ba60-5c3d-82fd-501ff396ec74
+  name: Pot
+  prefab:
+    assetId: 9368f258-dc67-5daa-b688-5697d4810db4
+    instances:
+      6b76f43c-ccf2-5f3b-93d6-500ea7953da0: 58456987-ba60-5c3d-82fd-501ff396ec74
+    revision: 51EBE8042DA29478E54791894B8F91DDC5201C12C2BE2D5D20E4C9803A8A22A2
+    baseline:
+      6b76f43c-ccf2-5f3b-93d6-500ea7953da0:
+        id: "58456987-ba60-5c3d-82fd-501ff396ec74"
+        name: "Pot"
+        x: 0
+        y: 0
+        width: 34
+        height: 40
+        components:
+        - type: "spriteRenderer"
+          sortingLayer: 0
+          order: 0
+          sortByY: true
+          footOffset: 0
+          flipX: false
+          flipY: false
+          pixelSnap: false
+          squareColor: "#FFFFFF"
+          assetId: "bb9f9bfb-35b7-547a-bf8b-5eea9a4e5c53"
+          asset: "Assets/Showcase/Pot.png"
+        rotation: 0
+        scaleX: 1
+        scaleY: 1
+        pivotX: 0
+        pivotY: 0
+        shear: 0
   x: 44
   y: 210
   width: 34
@@ -736,17 +777,16 @@ objects:
     assetId: bb9f9bfb-35b7-547a-bf8b-5eea9a4e5c53
     asset: Assets/Showcase/Pot.png
     sortByY: true
-- id: ec175d27-0e58-53a4-9db1-7a74ea7a16ec
-  parentId: 54b4b04f-28ec-5a7b-9159-cce98f1a06da
-  name: Pot 2 base
-  x: 2
-  y: 26
+- id: 4ca3eed2-bc60-5316-9edb-083428bd500d
+  name: Pot base
+  x: 46
+  y: 236
   width: 30
   height: 12
   components:
   - type: boxCollider2D
-- id: d8f74d1c-1df3-5e0c-8b3b-c8a39eda9819
-  name: Pot 3 shadow
+- id: 1c8a7821-c36d-5dca-90e4-8a450a7049e5
+  name: Small pot shadow
   x: 80
   y: 252
   width: 32
@@ -756,8 +796,39 @@ objects:
     assetId: 5d73fe99-b84a-5664-b667-b9f554cdb749
     asset: Assets/Showcase/ShadowM.png
     order: -4
-- id: 077de3d3-985e-550c-82df-c0a479d955cd
-  name: Pot 3
+- id: 5d0f8b8a-8d97-4fc9-b807-19318affa919
+  name: Small pot
+  prefab:
+    assetId: 9368f258-dc67-5daa-b688-5697d4810db4
+    instances:
+      6b76f43c-ccf2-5f3b-93d6-500ea7953da0: 5d0f8b8a-8d97-4fc9-b807-19318affa919
+    revision: 51EBE8042DA29478E54791894B8F91DDC5201C12C2BE2D5D20E4C9803A8A22A2
+    baseline:
+      6b76f43c-ccf2-5f3b-93d6-500ea7953da0:
+        id: "5d0f8b8a-8d97-4fc9-b807-19318affa919"
+        name: "Pot"
+        x: 0
+        y: 0
+        width: 34
+        height: 40
+        components:
+        - type: "spriteRenderer"
+          sortingLayer: 0
+          order: 0
+          sortByY: true
+          footOffset: 0
+          flipX: false
+          flipY: false
+          pixelSnap: false
+          squareColor: "#FFFFFF"
+          assetId: "bb9f9bfb-35b7-547a-bf8b-5eea9a4e5c53"
+          asset: "Assets/Showcase/Pot.png"
+        rotation: 0
+        scaleX: 1
+        scaleY: 1
+        pivotX: 0
+        pivotY: 0
+        shear: 0
   x: 84
   y: 228
   width: 24
@@ -767,26 +838,14 @@ objects:
     assetId: ab522357-e08f-5cf3-a7f7-430b2b530a1e
     asset: Assets/Showcase/PotSmall.png
     sortByY: true
-- id: 948c93eb-417d-5570-9661-3b03f0cbb957
-  parentId: 077de3d3-985e-550c-82df-c0a479d955cd
-  name: Pot 3 base
-  x: 2
-  y: 16
+- id: 406a9716-b62a-58e3-9330-133d695e1a58
+  name: Small pot base
+  x: 86
+  y: 244
   width: 20
   height: 12
   components:
   - type: boxCollider2D
-- id: a2ff4be3-53ba-53dd-95ab-eb41dd5c491f
-  name: Crate 2 shadow
-  x: 448
-  y: 278.8
-  width: 44
-  height: 12
-  components:
-  - type: spriteRenderer
-    assetId: d6044226-b525-5845-8e0d-68450f82712e
-    asset: Assets/Showcase/ShadowL.png
-    order: -4
 - id: d74a4912-d492-515b-a799-ded64454e5f3
   name: Crate 2
   x: 452
@@ -798,6 +857,23 @@ objects:
     assetId: d4232051-4a3c-5ebf-8f6b-d49d3b258a82
     asset: Assets/Showcase/Crate.png
     sortByY: true
+  - type: script
+    script: DragCrate
+    values:
+      Label: "Crate 2"
+      Readout: "e8281618-7fdb-5a3a-8d0d-d5654d2d34a3"
+- id: a2ff4be3-53ba-53dd-95ab-eb41dd5c491f
+  parentId: d74a4912-d492-515b-a799-ded64454e5f3
+  name: Crate 2 shadow
+  x: -4
+  y: 30.8
+  width: 44
+  height: 12
+  components:
+  - type: spriteRenderer
+    assetId: d6044226-b525-5845-8e0d-68450f82712e
+    asset: Assets/Showcase/ShadowL.png
+    order: -4
 - id: e59b2925-fe79-5f9d-9e0f-646325962cfa
   parentId: d74a4912-d492-515b-a799-ded64454e5f3
   name: Crate 2 base
@@ -871,6 +947,8 @@ objects:
 - id: 289e4c51-d2b3-5790-b330-82d434e1548a
   parentId: dfcc76b6-2cf9-53fa-9a2e-8c9c8c59ac43
   name: Chest Lid
+  pivotX: 0.5
+  pivotY: 1
   x: 0
   y: 8
   width: 40
@@ -880,6 +958,9 @@ objects:
     assetId: 479a6383-a387-56ca-984a-20623253e139
     asset: Assets/Showcase/Chest.png
     order: 1
+  - type: spriteAnimator
+    clip: a035d2c0-22b0-4dc1-b601-fa828b99d308
+    playOnStart: true
 - id: eda43089-e0d4-5f37-b962-4127484cc950
   parentId: dfcc76b6-2cf9-53fa-9a2e-8c9c8c59ac43
   name: Chest open
@@ -942,6 +1023,10 @@ objects:
       DoorCamera: "94babcab-726b-5e65-89ab-f08d5e276393"
       PlayerCamera: "ce171431-9744-52c4-b68b-dc4375b02817"
       HoldSeconds: 1.4
+  - type: script
+    script: RemoveOnAction
+    values:
+      Action: "RemoveKey"
 - id: 2fda7ad4-e416-5090-84ee-ed0999750d60
   parentId: c73ec514-78dc-5899-8044-a045d52dc0d2
   name: Key Image
@@ -1023,6 +1108,45 @@ objects:
   - type: script
     script: HeroAnimation
     values: {}
+- id: 51c1580c-0444-5d49-84bc-ad7df3a3add4
+  parentId: 28257eb9-be3d-5c9a-9044-ed519d6d63fa
+  name: Satchel
+  x: 16
+  y: -12
+  width: 14
+  height: 12
+  components:
+  - type: spriteRenderer
+    assetId: 2309a4b0-5962-5a05-a6c6-6e1a8032dc0e
+    asset: Assets/Showcase/Satchel.png
+    order: 20
+  - type: script
+    script: SatchelPop
+    values: {}
+- id: b6d5d8c0-a8ea-5c41-8b0e-af85769fea68
+  parentId: 51c1580c-0444-5d49-84bc-ad7df3a3add4
+  name: Satchel flap
+  x: 0
+  y: 0
+  width: 14
+  height: 4
+  components:
+  - type: spriteRenderer
+    assetId: 80acbe06-659d-5d90-bab6-b7e3ad64926b
+    asset: Assets/Showcase/SatchelFlap.png
+    order: 21
+- id: a766bff7-7292-5f98-8e01-c6ce52d95fbc
+  parentId: 51c1580c-0444-5d49-84bc-ad7df3a3add4
+  name: Satchel clasp
+  x: 6
+  y: 3
+  width: 2
+  height: 2
+  components:
+  - type: spriteRenderer
+    assetId: c75dc243-34b8-5e5b-b4b5-dff75dc0b798
+    asset: Assets/Showcase/SatchelClasp.png
+    order: 22
 - id: ce171431-9744-52c4-b68b-dc4375b02817
   name: Main Camera
   x: 288
@@ -1032,6 +1156,10 @@ objects:
   components:
   - type: camera2D
     zoom: 1.5
+  - type: script
+    script: DetailView
+    values:
+      Camera: "13bae7c5-4756-5946-b6f2-760f128c34e2"
 - id: 94babcab-726b-5e65-89ab-f08d5e276393
   name: Door Camera
   x: 288
@@ -1041,6 +1169,18 @@ objects:
   components:
   - type: camera2D
     zoom: 3
+- id: 13bae7c5-4756-5946-b6f2-760f128c34e2
+  name: Detail Camera
+  active: false
+  x: 384
+  y: 200
+  width: 40
+  height: 40
+  components:
+  - type: camera2D
+    output: Extra
+    zoom: 2.5
+    viewport: {x: 0.02, y: 0.2, width: 0.25, height: 0.32}
 - id: 3aaefc38-45a1-56a9-ac0e-ec5e30c59c8b
   name: Door dust
   x: 288
@@ -1127,7 +1267,7 @@ objects:
   components:
   - type: uiRect
   - type: uiText
-    text: "Move  WASD / arrows      Open  E      Save  F5"
+    text: "Move  WASD      Open  E      Bag  I      Help  H"
     size: 12
     color: "#BFD0DC"
 - id: 876b7f6f-52e9-5f36-985e-457305a15f74
@@ -1214,6 +1354,46 @@ objects:
     size: 12
     insetX: 10
     insetY: 4
+- id: e8281618-7fdb-5a3a-8d0d-d5654d2d34a3
+  parentId: d93c0603-aada-5d27-b72a-798ac8bf5d19
+  name: Tag 4
+  x: -12
+  y: 96
+  width: 236
+  height: 24
+  components:
+  - type: uiRect
+    anchor: TopRight
+    showIf: dragged
+  - type: uiImage
+    sprite: 8417743f-7aed-49af-becf-fce814d4d466
+    borders: {left: 8, top: 8, right: 8, bottom: 8}
+  - type: uiText
+    richText: true
+    text: "<b>Mouse drag</b>   <color=#BFD0DC>World pointer → crate</color>"
+    size: 12
+    insetX: 10
+    insetY: 4
+- id: ae2c48be-c8e4-53a2-ba06-81bfe5647587
+  parentId: d93c0603-aada-5d27-b72a-798ac8bf5d19
+  name: Tag 5
+  x: -12
+  y: 124
+  width: 236
+  height: 24
+  components:
+  - type: uiRect
+    anchor: TopRight
+    showIf: detail
+  - type: uiImage
+    sprite: 8417743f-7aed-49af-becf-fce814d4d466
+    borders: {left: 8, top: 8, right: 8, bottom: 8}
+  - type: uiText
+    richText: true
+    text: "<b>Second camera</b>   <color=#BFD0DC>F8 inset viewport</color>"
+    size: 12
+    insetX: 10
+    insetY: 4
 - id: e3419d02-be2b-56f3-8462-ac9f86dc344b
   parentId: 471d77be-d5ae-520a-b07b-de1cdf72883a
   name: Save status
@@ -1229,4 +1409,446 @@ objects:
     color: "#FFD84A"
   - type: script
     script: Checkpoint
+    values: {}
+  - type: script
+    script: RoomGuide
+    values:
+      Guide:
+        Id: "25fc2224-7695-4e19-a05c-d8524a2ffe50"
+- id: 82979000-dcbc-443e-baa1-60ada0400003
+  parentId: d93c0603-aada-5d27-b72a-798ac8bf5d19
+  name: Controls button
+  x: -12
+  y: -20
+  width: 88
+  height: 28
+  components:
+  - type: uiRect
+    anchor: BottomRight
+    scaleHorizontalWithText: true
+  - type: uiButton
+  - type: uiText
+    wrap: true
+    text: "Controls"
+    textKey: hud.controls
+    size: 14
+    insetX: 10
+    insetY: 4
+  - type: script
+    script: ToggleControls
+    values:
+      Hint: "82979000-dcbc-443e-baa1-60ada0400004"
+      CheckpointHint: "82979000-dcbc-443e-baa1-60ada0400007"
+- id: 2b2c92d0-1e21-5077-820e-3364ee5484b4
+  parentId: d93c0603-aada-5d27-b72a-798ac8bf5d19
+  name: Language
+  x: -200
+  y: -20
+  width: 102
+  height: 28
+  components:
+  - type: uiRect
+    anchor: BottomRight
+    scaleHorizontalWithText: true
+  - type: uiButton
+  - type: uiText
+    wrap: true
+    text: "한국어 [L]"
+    textKey: ui.language
+    size: 14
+    insetX: 10
+    insetY: 4
+  - type: script
+    script: GameLanguageButton
+    values: {}
+- id: 8fcb65a1-aaee-59d8-82cc-1f9a3148b9a3
+  parentId: d93c0603-aada-5d27-b72a-798ac8bf5d19
+  name: Controls panel
+  x: 12
+  y: -62
+  width: 580
+  height: 40
+  components:
+  - type: uiRect
+    anchor: BottomLeft
+    showIf: controls
+  - type: uiImage
+    sprite: 8417743f-7aed-49af-becf-fce814d4d466
+    borders: {left: 8, top: 8, right: 8, bottom: 8}
+  - type: uiLayout
+    padding: 12
+    gap: 4
+- id: 82979000-dcbc-443e-baa1-60ada0400004
+  parentId: 8fcb65a1-aaee-59d8-82cc-1f9a3148b9a3
+  name: Controls hint
+  x: 0
+  y: 0
+  width: 556
+  height: 20
+  components:
+  - type: uiRect
+  - type: uiText
+    wrap: true
+    text: "Move: arrows / WASD   Chest: E"
+    size: 13
+    insetX: 0
+    insetY: 0
+- id: 82979000-dcbc-443e-baa1-60ada0400007
+  parentId: 8fcb65a1-aaee-59d8-82cc-1f9a3148b9a3
+  name: Checkpoint controls
+  x: 0
+  y: 0
+  width: 556
+  height: 20
+  components:
+  - type: uiRect
+  - type: uiText
+    wrap: true
+    text: "1 / 2: Slot   F5: Save   F9: Load   M: Guide"
+    size: 13
+    color: "#BFD0DC"
+    insetX: 0
+    insetY: 0
+- id: 9ef4faec-37e6-5dea-bd27-be9e4f573dee
+  parentId: d93c0603-aada-5d27-b72a-798ac8bf5d19
+  name: Bag button
+  x: -106
+  y: -20
+  width: 88
+  height: 28
+  components:
+  - type: uiRect
+    anchor: BottomRight
+    scaleHorizontalWithText: true
+  - type: uiButton
+  - type: uiText
+    wrap: true
+    text: "Bag [I]"
+    textKey: hud.bag
+    size: 14
+    insetX: 10
+    insetY: 4
+  - type: script
+    script: BagMenu
+    values:
+      OpenPanel: "81219816-44aa-59c3-97aa-2346740f68c3"
+      Shortcut: "OpenBag"
+      StatusLabel: "cbe0f906-a75c-5c2a-8aae-8b99fb2883c9"
+      QuestLabel: "9e77730f-bb5a-5e3e-a533-63d4ff4bb294"
+      QuestionLabel: "bd029c08-06dd-59ad-8fd6-eb3f1a369fa7"
+- id: d52a177a-7bb8-5476-aae2-d41591bb0bfe
+  parentId: d93c0603-aada-5d27-b72a-798ac8bf5d19
+  name: Compass bearing
+  x: 14
+  y: 46
+  width: 215
+  height: 26
+  components:
+  - type: uiRect
+    anchor: TopLeft
+    showIf: compass
+  - type: uiImage
+    sprite: 8417743f-7aed-49af-becf-fce814d4d466
+    borders: {left: 8, top: 8, right: 8, bottom: 8}
+  - type: uiText
+    text: "Compass  /  Exit north"
+    textKey: hud.bearing
+    size: 14
+    insetX: 10
+    insetY: 4
+- id: 81219816-44aa-59c3-97aa-2346740f68c3
+  parentId: d93c0603-aada-5d27-b72a-798ac8bf5d19
+  name: Inventory
+  x: 0
+  y: 0
+  width: 320
+  height: 150
+  components:
+  - type: uiRect
+    left: 64
+    right: 64
+    top: 36
+    bottom: 36
+    anchor: Center
+    inputModeRoot: true
+  - type: uiImage
+    sprite: 8417743f-7aed-49af-becf-fce814d4d466
+    borders: {left: 8, top: 8, right: 8, bottom: 8}
+  - type: uiText
+    text: "Inventory"
+    textKey: bag.title
+    size: 20
+    insetX: 18
+    insetY: 13
+- id: b9bb97a9-e5ad-42d8-ae63-4a3a42677052
+  parentId: 81219816-44aa-59c3-97aa-2346740f68c3
+  name: Inventory details
+  x: 0
+  y: 0
+  width: 284
+  height: 80
+  components:
+  - type: uiRect
+    left: 18
+    right: 18
+    top: 84
+    bottom: 80
+  - type: uiLayout
+    gap: 4
+    padding: 0
+  - type: uiScroll
+- id: cbe0f906-a75c-5c2a-8aae-8b99fb2883c9
+  parentId: b9bb97a9-e5ad-42d8-ae63-4a3a42677052
+  name: Inventory item
+  x: 18
+  y: 54
+  width: 284
+  height: 30
+  components:
+  - type: uiRect
+  - type: uiText
+    wrap: true
+    text: "Pocket compass  /  In bag"
+    size: 15
+    insetX: 0
+    insetY: 0
+- id: 9e77730f-bb5a-5e3e-a533-63d4ff4bb294
+  parentId: b9bb97a9-e5ad-42d8-ae63-4a3a42677052
+  name: Key quest
+  x: 18
+  y: 77
+  width: 284
+  height: 20
+  components:
+  - type: uiRect
+  - type: uiText
+    wrap: true
+    text: ""
+    size: 14
+    color: "#FFD84A"
+    insetX: 0
+    insetY: 0
+- id: d948ac49-b490-51a5-8d7a-4ad5024c7fa0
+  parentId: 81219816-44aa-59c3-97aa-2346740f68c3
+  name: Manage compass
+  x: 18
+  y: 100
+  width: 164
+  height: 32
+  components:
+  - type: uiRect
+    left: 18
+    right: 158
+    bottom: 18
+  - type: uiButton
+  - type: uiText
+    text: "Manage compass"
+    textKey: bag.manage
+    size: 15
+    insetX: 12
+    insetY: 5
+  - type: script
+    script: BagMenu
+    values:
+      OpenPanel: "78501a61-6ef7-5566-aa40-7ea88ed55f9a"
+- id: 7ede8c1f-280e-5b28-a233-919a040f8cab
+  parentId: 81219816-44aa-59c3-97aa-2346740f68c3
+  name: Close inventory
+  x: 192
+  y: 100
+  width: 128
+  height: 32
+  components:
+  - type: uiRect
+    right: 18
+    bottom: 18
+  - type: uiButton
+  - type: uiText
+    text: "Close"
+    textKey: ui.close
+    size: 15
+    insetX: 12
+    insetY: 5
+  - type: script
+    script: BagMenu
+    values:
+      ClosePanel: "81219816-44aa-59c3-97aa-2346740f68c3"
+      Shortcut: "MenuBack"
+- id: 78501a61-6ef7-5566-aa40-7ea88ed55f9a
+  parentId: 81219816-44aa-59c3-97aa-2346740f68c3
+  name: Compass confirmation
+  x: 0
+  y: 0
+  width: 320
+  height: 150
+  components:
+  - type: uiRect
+    left: 0
+    right: 0
+    top: 0
+    bottom: 0
+    anchor: Center
+    inputModeRoot: true
+  - type: uiImage
+    sprite: 8417743f-7aed-49af-becf-fce814d4d466
+    borders: {left: 8, top: 8, right: 8, bottom: 8}
+  - type: uiText
+    text: "Confirm"
+    textKey: ui.confirm
+    size: 20
+    insetX: 18
+    insetY: 13
+- id: bd029c08-06dd-59ad-8fd6-eb3f1a369fa7
+  parentId: 78501a61-6ef7-5566-aa40-7ea88ed55f9a
+  name: Compass question
+  x: 18
+  y: 54
+  width: 284
+  height: 30
+  components:
+  - type: uiRect
+    left: 18
+    right: 18
+    top: 86
+  - type: uiText
+    wrap: true
+    text: "Equip the pocket compass?"
+    size: 15
+    insetX: 0
+    insetY: 0
+- id: 9b97ca2b-1584-5cd8-9f40-e670c8189b71
+  parentId: 78501a61-6ef7-5566-aa40-7ea88ed55f9a
+  name: Apply compass
+  x: 18
+  y: 100
+  width: 164
+  height: 32
+  components:
+  - type: uiRect
+    left: 18
+    right: 158
+    bottom: 18
+  - type: uiButton
+  - type: uiText
+    text: "Apply"
+    textKey: ui.apply
+    size: 15
+    insetX: 12
+    insetY: 5
+  - type: script
+    script: BagMenu
+    values:
+      ClosePanel: "78501a61-6ef7-5566-aa40-7ea88ed55f9a"
+      EquipCompass: true
+- id: 3cc78ff7-0243-5079-a571-3c5c546a65f7
+  parentId: 78501a61-6ef7-5566-aa40-7ea88ed55f9a
+  name: Cancel compass
+  x: 192
+  y: 100
+  width: 128
+  height: 32
+  components:
+  - type: uiRect
+    right: 18
+    bottom: 18
+  - type: uiButton
+  - type: uiText
+    text: "Cancel"
+    textKey: ui.cancel
+    size: 15
+    insetX: 12
+    insetY: 5
+  - type: script
+    script: BagMenu
+    values:
+      ClosePanel: "78501a61-6ef7-5566-aa40-7ea88ed55f9a"
+      Shortcut: "MenuBack"
+- id: 805b7643-0644-5aaf-96ee-e6d1f6797699
+  parentId: 81219816-44aa-59c3-97aa-2346740f68c3
+  name: Bag language
+  x: -18
+  y: 14
+  width: 150
+  height: 28
+  components:
+  - type: uiRect
+    right: 18
+    top: 14
+    anchor: TopRight
+  - type: uiButton
+  - type: uiText
+    wrap: true
+    text: "한국어"
+    textKey: ui.languageName
+    size: 14
+    insetX: 8
+    insetY: 4
+  - type: script
+    script: GameLanguageButton
+    values: {}
+- id: c514b1c6-a8cf-5d57-84f5-47ec5e984f6a
+  parentId: 78501a61-6ef7-5566-aa40-7ea88ed55f9a
+  name: Confirm language
+  x: -18
+  y: 14
+  width: 150
+  height: 28
+  components:
+  - type: uiRect
+    right: 18
+    top: 14
+    anchor: TopRight
+  - type: uiButton
+  - type: uiText
+    wrap: true
+    text: "한국어"
+    textKey: ui.languageName
+    size: 14
+    insetX: 8
+    insetY: 4
+  - type: script
+    script: GameLanguageButton
+    values: {}
+- id: 6d1f3a52-0b7e-4c19-9e2d-5a8b7c4e1f20
+  parentId: d93c0603-aada-5d27-b72a-798ac8bf5d19
+  name: Door hint
+  x: 0
+  y: 12
+  width: 280
+  height: 26
+  components:
+  - type: uiRect
+    anchor: TopCenter
+    showIf: doorHint
+  - type: uiImage
+    sprite: 8417743f-7aed-49af-becf-fce814d4d466
+    borders: {left: 8, top: 8, right: 8, bottom: 8}
+  - type: uiText
+    text: "The door is open. Head north."
+    textKey: hud.door
+    size: 14
+    insetX: 10
+    insetY: 4
+- id: 82979000-dcbc-443e-baa1-60ada0400005
+  parentId: d93c0603-aada-5d27-b72a-798ac8bf5d19
+  name: Pause indicator
+  x: 0
+  y: 44
+  width: 116
+  height: 26
+  components:
+  - type: uiRect
+    anchor: TopCenter
+    showIf: paused
+  - type: uiImage
+    sprite: 8417743f-7aed-49af-becf-fce814d4d466
+    borders: {left: 8, top: 8, right: 8, bottom: 8}
+  - type: uiText
+    text: "Paused"
+    textKey: hud.paused
+    size: 14
+    insetX: 10
+    insetY: 4
+  - type: script
+    script: PauseGame
     values: {}

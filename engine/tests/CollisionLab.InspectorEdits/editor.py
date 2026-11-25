@@ -1,7 +1,7 @@
 """Inspector edit cost (I-1) on CollisionLab: run one or more packaged editors alternately and report medians.
 
 usage: editor.py <project> <out> <runs> <label>=<editor>,<hook> [<label>=<editor>,<hook> ...]
-MONOON_I1_SCENE=KeyRoom (with samples/KeyRoom as <project>) measures that scene instead of Field10000 and skips the lab checks.
+MONOON_I1_SCENE=Showcase (with samples/KeyRoom as <project>) measures that scene instead of Field10000 and skips the lab checks.
 The label "base" runs without the new-editor checks (one undo record per commit); every other label runs them.
 """
 import hashlib

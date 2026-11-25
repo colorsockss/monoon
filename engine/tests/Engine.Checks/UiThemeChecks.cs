@@ -3,10 +3,10 @@ using Engine.Core;
 
 internal static class UiThemeChecks
 {
-    [Check(9100)] static void Registered(CheckRun c) => Run(c.Project);
+    [Check(9100, "ui-theme")] static void Registered(CheckRun c) => Run(c.Project);
     internal static void Run(string project)
     {
-        var guide = SceneDocument.Load(Path.Combine(project, "Scenes", "RoomGuide.scene"));
+        var guide = SceneDocument.Load(Path.Combine(project, "Scenes", "ShowcaseGuide.scene"));
         var assets = ProjectAssets.ReadManifest(project);
         var ui = new ScreenUi(guide, assets);
         var probe = new PaintProbe();

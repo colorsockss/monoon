@@ -8,7 +8,7 @@ tracks:
   - time: 0
     value: "0"
   - time: 0.5
-    value: "-24"
+    value: "-4"
   - time: 1
     value: "0"
 - property: ScaleY
@@ -16,10 +16,10 @@ tracks:
   - time: 0
     value: "1"
   - time: 0.5
-    value: "1.4"
+    value: "1.06"
   - time: 1
     value: "1"
 - property: Tint
   keys:
   - time: 0
-    value: "#EBB854"
+    value: "#FFFFFF"

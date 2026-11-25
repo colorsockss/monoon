@@ -1,6 +1,6 @@
 # KeyRoom 에디터 디자인 토큰 회귀
 
-배포 에디터로 KeyRoom 복사본을 열고 **Door**를 선택한다. 메인 창과 Inspector를 1280px과 1920px 너비에서 캡처한다. Door 이름을 긴 이름으로 바꿔 1280px에서 다시 캡처한다. 이어서 예전 별도 창 9개를 차례로 열어 캡처하고 닫는다: Console, Animator Controller, Sprite Animation(`Door.clip`), 시트 셀 선택, Input Actions, Data Asset, Data Table, Dialogue, Tileset. 로드맵 12.4부터 시트 셀 선택을 뺀 8개는 도킹 패널이므로 패널 영역을 캡처하고 탭의 **×**로 닫는다. 시트 셀 선택은 대화 상자 창이다. 마지막으로 Scene Play에서 프레임 프로파일러를 켠 화면을 캡처한다.
+배포 에디터로 KeyRoom 복사본을 열고 **Door**를 선택한다. 메인 창과 Inspector를 1280px과 1920px 너비에서 캡처한다. Door 이름을 긴 이름으로 바꿔 1280px에서 다시 캡처한다. 이어서 예전 별도 창 9개를 차례로 열어 캡처하고 닫는다: Console, Animator Controller, Sprite Animation(`Showcase/DoorOpen.clip`), 시트 셀 선택, Input Actions, Data Asset, Data Table, Dialogue, Tileset. 로드맵 12.4부터 시트 셀 선택을 뺀 8개는 도킹 패널이므로 패널 영역을 캡처하고 탭의 **×**로 닫는다. 시트 셀 선택은 대화 상자 창이다. 마지막으로 Scene Play에서 프레임 프로파일러를 켠 화면을 캡처한다.
 
 저장소 루트에서 실행한다. 결과 폴더는 실행마다 새 경로를 지정한다.
 

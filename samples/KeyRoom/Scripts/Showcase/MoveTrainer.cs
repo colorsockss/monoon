@@ -1,5 +1,6 @@
 using System;
 using System.Drawing;
+using System.IO;
 using System.Numerics;
 using Engine.Core;
 
@@ -7,23 +8,30 @@ using Engine.Core;
 // (Hold 30 ticks, Tap within 12, DoubleTap within 15); Triggered reports them on the deciding tick, and each one does something
 // in the room: Charge fills a meter over the hero and smashes the crate in front of him, Flick throws a coin at the dummy,
 // Dash dashes at the dummy and knocks it back. A press that misses its rule says why in a word over the hero's head.
-// K rebinds Dash: the next key pressed replaces O. Raises "interact" on the first triggered move, "rebind" after a rebind and
-// "rebinding" while the prompt is up.
+// K opens the controls menu (ShowcaseBindings); the caption follows the current keys. Raises "interact" on the first triggered
+// move and "rebind" after a rebind. Controls saved in player.settings by the menu are loaded on start.
 public sealed class MoveTrainer : GameBehaviour
 {
-    public Guid Player, Hero, Crate, CrateShadow, CrateDust, CrateSpark, Dummy, DummySpark, Coin, MeterBack, Meter, Label, Prompt, Controls, DashTrail;
+    public Guid Player, Hero, Crate, CrateShadow, CrateDust, CrateSpark, Dummy, DummySpark, Coin, MeterBack, Meter, Label, Controls, DashTrail;
     // The hero's sprites: he has no animator here (it only turns him while walking), so the trainer picks the frame.
     public SpriteReference IdleE, WalkE1, WalkE2, WalkE3, WalkE4, WalkW1, WalkW2, WalkW3, WalkW4;
     private static readonly Vector2 Home = new(170, 200), DashTo = new(380, 200);
     private Vector2 dummyHome;
-    private int held, pressTicks, lastDashPress = -100, tick;
-    private float labelLeft, coinLeft = -1, crateLeft = -1, dashLeft = -1, returnLeft = -1, promptLeft = -1, walkClock;
-    private bool rebinding, crateUp = true;
+    private int held, pressTicks, lastDashPress = -100, tick, revision = -1;
+    private float labelLeft, coinLeft = -1, crateLeft = -1, dashLeft = -1, returnLeft = -1, walkClock;
+    private bool crateUp = true;
 
     public override void OnCreate(ScriptLife life)
     {
         life.Objects.TryGetPosition(Dummy, out dummyHome);
         life.Objects.SetSprite(Hero, IdleE);
+        if (!life.Session.Storage.IsAvailable) return;
+        try
+        {
+            if (life.Session.Storage.LoadSettings(1) is { } settings) life.Session.LoadInputBindings(settings);
+        }
+        catch (Exception ex) when (ex is IOException or InvalidDataException or UnauthorizedAccessException)
+        { life.Session.Log(ex.Message, GameLogLevel.Error); }
     }
 
     public override void FixedUpdate(ScriptTick t)
@@ -34,25 +42,12 @@ public sealed class MoveTrainer : GameBehaviour
         var objects = t.Objects;
         var input = t.Input;
         Timers(t, dt);
-        if (rebinding)
+        if (revision != session.InputRevision)   // a rebind, a restore or saved controls: the caption shows the keys in use
         {
-            if (session.RebindingAction != null) return;
-            rebinding = false;
-            var result = session.LastRebind;
-            string key = session.BindingFor("Dash", InputDevice.Keyboard) ?? "-";
-            t.Ui.SetText(Prompt, result is { Cancelled: false } ? $"Dash is now <b><color=#FFD84A>{key}</color></b>" : "Rebinding cancelled");
-            t.Ui.SetText(Controls, $"Charge  hold J      Flick  tap U      Dash  {key} {key}      Rebind  K");
-            if (result is { Cancelled: false }) session.Set("rebind");
-            promptLeft = 1.6f;
-            return;
-        }
-        if (input.Pressed("KeyBindings"))
-        {
-            session.BeginRebind("Dash", InputDevice.Keyboard);
-            rebinding = true;
-            session.Set("rebinding");
-            t.Ui.SetText(Prompt, "Dash: press a new key");
-            return;
+            revision = session.InputRevision;
+            string Key(string action) => session.BindingFor(action, InputDevice.Keyboard) ?? "-";
+            t.Ui.SetText(Controls, $"Charge  hold {Key("Charge")}      Flick  tap {Key("Flick")}      Dash  {Key("Dash")} {Key("Dash")}      Controls  {Key("KeyBindings")}");
+            if (session.LastRebind is { Cancelled: false }) session.Set("rebind");
         }
 
         // Charge: the meter over the hero fills while J is held; Triggered fires once on the 30th tick.
@@ -123,7 +118,6 @@ public sealed class MoveTrainer : GameBehaviour
     {
         var objects = t.Objects;
         if (labelLeft > 0 && (labelLeft -= dt) <= 0) objects.SetWorldText(Label, "");
-        if (promptLeft > 0 && (promptLeft -= dt) <= 0) t.Session.Clear("rebinding");
         if (crateLeft >= 0 && (crateLeft -= dt) < 0)
         {
             objects.SetActive(Crate, false);

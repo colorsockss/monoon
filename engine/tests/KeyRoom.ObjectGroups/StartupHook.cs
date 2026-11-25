@@ -50,12 +50,12 @@ public static class StartupHook
     {
         var main = ((IClassicDesktopStyleApplicationLifetime)Application.Current!.ApplicationLifetime!).MainWindow!;
         var project = Path.Combine(Output, "KeyRoom");
-        var path = Path.Combine(project, "Assets", "Coin.prefab");
+        var path = Path.Combine(project, "Assets", "Showcase", "Coin.prefab");
         await Until(() => main.IsVisible && main.FindControl<ListBox>("Hierarchy")!.Items.Count > 1, "KeyRoom");
         var edit = main.GetType().GetMethod("EditPrefabSource", Private)!;
         async Task EditPrefab(bool write)
         {
-            var closing = (Task)edit.Invoke(main, ["Assets/Coin.prefab"])!;
+            var closing = (Task)edit.Invoke(main, ["Assets/Showcase/Coin.prefab"])!;
             await Until(() => main.OwnedWindows.Any(w => w.IsVisible), "Coin prefab source window");
             var prefab = main.OwnedWindows.Single(w => w.IsVisible);
             prefab.Width = 850; prefab.Height = 640;
@@ -120,12 +120,15 @@ public static class StartupHook
         var members = game.Current.FindByGroup(Group);
         var tagged = game.Current.FindByTag("Coin");
         Record("before-open", members, tagged, 0);
+        // The showcase hero starts 88 px from the chest: six steps east bring it within reach.
+        for (int n = 0; n < 6; n++) Step(Vector2.UnitX);
         Step(Vector2.Zero, true);
         Record("spawn-tick", members, tagged, 1);
         var coin = members.Single();
         Check(game.Current.ObjectLabel(coin) == "Coin", "Wrong spawned object");
         await Shows("1 · Coin");
         Capture((Control)caption.Parent!, "spawn-query");
+        for (int n = 0; n < 4; n++) Step(-Vector2.UnitY);   // level with the coin, above the chest's base
         for (int n = 0; n < 55 && !game.State.Has("coin"); n++) Step(Vector2.UnitX);
         Check(game.State.Has("coin") && !game.Current.TryGetPosition(coin, out _), "No trigger pickup");
         Record("pickup-tick", members, tagged, 0);
@@ -138,6 +141,7 @@ public static class StartupHook
         var originalScene = game.SceneId;
         members = oldRoom.FindByGroup(Group);
         tagged = oldRoom.FindByTag("Coin");
+        for (int n = 0; n < 6; n++) Step(Vector2.UnitX);
         Step(Vector2.Zero, true);
         coin = members.Single();
         Check(game.Actions.Press("C"), "CarryCoin binding");
@@ -147,7 +151,9 @@ public static class StartupHook
         Check(oldRoom.TryGetParent(coin, out var parent) && parent == player, "C did not pick up the grouped coin for carrying");
         for (int i = 0; i < 110 && !game.State.Has("key"); i++) Step(-Vector2.UnitX);
         Check(game.State.Has("key"), "No key for exit");
-        for (int i = 0; i < 160 && game.State.PendingScene == null; i++) Step(Vector2.UnitX);
+        // The door is in the north wall: back east under the doorway, then north through it.
+        for (int i = 0; i < 40 && oldRoom.TryGetPosition(player, out var at) && at.X < 277; i++) Step(Vector2.UnitX);
+        for (int i = 0; i < 160 && game.State.PendingScene == null; i++) Step(-Vector2.UnitY);
         Check(game.State.PendingScene != null && !game.State.Has("coin"), "Expected exit transition with a live coin");
         Record("leaving-with-coin", members, tagged, 1);
         await Until(() =>
@@ -155,14 +161,14 @@ public static class StartupHook
             if (game.Current == oldRoom) game.UpdateUi(default, 1f / 60);
             return game.Current != oldRoom;
         }, "Enter second room");
-        Check(game.SceneId != originalScene && game.SceneId == ProjectAssets.Scan(project).IdFor("Scenes/SecondRoom.scene") && !game.State.Has("coin"), "Coin was consumed before leaving");
+        Check(game.SceneId != originalScene && game.SceneId == ProjectAssets.Scan(project).IdFor("Scenes/ShowcaseRoom2.scene") && !game.State.Has("coin"), "Coin was consumed before leaving");
         Record("old-room-after-exit", members, tagged, 0);
         Record("second-room", game.Current.FindByGroup(Group), game.Current.FindByTag("Coin"), 0);
         await Shows("0");
         Capture((Control)caption.Parent!, "exit-query");
         Click(play);
         var result = new { platform = RuntimeInformation.OSDescription, architecture = RuntimeInformation.ProcessArchitecture.ToString(),
-            group = Group, tag = "Coin", prefabReopened = true, reachedScene = game.SceneId, input = "Interact, Right; restart, Interact, CarryCoin, Left, Right", changes };
+            group = Group, tag = "Coin", prefabReopened = true, reachedScene = game.SceneId, input = "Right, Interact, Up, Right; restart, Right, Interact, CarryCoin, Left, Right, Up", changes };
         File.WriteAllText(Path.Combine(Output, "result.json"), JsonSerializer.Serialize(result, new JsonSerializerOptions { WriteIndented = true }));
         main.Close();
     }

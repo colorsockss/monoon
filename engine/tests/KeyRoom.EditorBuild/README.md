@@ -3,7 +3,7 @@
 배포 에디터로 KeyRoom 복사본을 열고 **Build → Build Game…** 대화 상자의 컨트롤만으로 빌드 설정을 바꿔 빌드한다. 같은 복사본을 `./monoon build <프로젝트>`(인자 없음)로 다시 빌드해 두 결과를 파일별 SHA-256으로 비교한다. macOS arm64 전용이다.
 
 1. 메인 창을 1280px과 1920px로 바꿔 대화 상자를 열고 캡처한다. 8개 행(Start scene부터 Icon까지)의 레이블 x, 입력 x, 세로 중심, 콤보 높이, 아래 버튼 세 개의 y를 측정한다.
-2. **Platform** `osx-arm64`, **Build type** Release, **Profile** Distribution, **Package** 체크, **Icon** `Assets/Key.png`로 바꾸고 **Save Settings**를 누른다. 다시 열어 같은 값이 보이는지 확인한 뒤 **Build**를 누른다(Release, 서명·zip·dmg).
+2. **Platform** `osx-arm64`, **Build type** Release, **Profile** Distribution, **Package** 체크, **Icon** `Assets/Showcase/Key.png`로 바꾸고 **Save Settings**를 누른다. 다시 열어 같은 값이 보이는지 확인한 뒤 **Build**를 누른다(Release, 서명·zip·dmg).
 3. 출력 폴더를 옮겨 두고 `./monoon build <복사본>`을 실행한다. `BuildSettings`가 바뀌지 않았는지 확인하고 두 결과를 비교한다.
 4. 에디터를 다시 시작한다. 저장한 값이 그대로 보이는지 확인한다. `win-x64` Native AOT가 저장된 파일로 열면 **Release**만 표시되는지 보고 파일을 되돌린다. Platform을 `linux-x64`로 바꾸면 Build type이 Release뿐인지 확인하고, `osx-arm64` · **Native AOT**로 **Build**를 누른다.
 5. 3과 같이 CLI로 다시 빌드해 비교한다. 마지막으로 `win-x64` Native AOT가 저장된 상태에서 CLI가 종료 코드 1과 `Build the win-x64 Native AOT player on a matching host.`로 끝나는지 확인한다.

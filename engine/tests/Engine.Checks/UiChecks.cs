@@ -9,9 +9,9 @@ internal static class UiChecks
         var obj = scene.Objects.Single(o => o.Name == "Controls button");
         var assets = ProjectAssets.Scan(scratch);
         var ui = new ScreenUi(scene, assets);
-        Require(ui.Bounds(obj.Id) == new RectangleF(698,14,88,28), "right anchor uses game width");
+        Require(ui.Bounds(obj.Id) == new RectangleF(700,402,88,28), "bottom-right anchor uses game width and height");
         var duplicate = scene.DuplicateObject(obj);
-        Require(new ScreenUi(scene, assets).Pick(720,20) == duplicate, "topmost duplicate wins picking");
+        Require(new ScreenUi(scene, assets).Pick(744,416) == duplicate, "topmost duplicate wins picking");
         scene.RemoveObject(duplicate);
         var menu = new SceneDocument();
         var canvas = menu.CreateUi("Canvas", null);
@@ -37,7 +37,7 @@ internal static class UiChecks
         Require(new ScreenUi(scene, assets).Bounds(obj.Id) == ui.Bounds(obj.Id), "UI survives Undo snapshot restore");
         var old = Path.Combine(scratch, "Scenes", "OldHud.scene");
         var id = Guid.NewGuid();
-        File.WriteAllText(old, $"schemaVersion: 6\nobjects:\n- id: {id}\n  name: Badge\n  x: 14\n  width: 36\n  components:\n  - {{type: hud, text: KEY, image: fb750913-c06a-50c4-beae-cb27d559af91, requiredFlag: key}}\n");
+        File.WriteAllText(old, $"schemaVersion: 6\nobjects:\n- id: {id}\n  name: Badge\n  x: 14\n  width: 36\n  components:\n  - {{type: hud, text: KEY, image: 875948d6-2de7-530e-8e85-b9b197747518, requiredFlag: key}}\n");
         var converted = SceneDocument.Load(old);
         var badge = converted.Objects.Single();
         Require(File.ReadAllText(old).Contains("type: hud") && badge.Id == id && badge.GetComponent<UiTextComponent>()?.InsetX == 42 &&

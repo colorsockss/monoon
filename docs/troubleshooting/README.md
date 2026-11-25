@@ -9,7 +9,7 @@
 ## 내보내기: 증상 → 조치
 
 - **`Missing … player template`**: 기본 Release는 에디터 밖의 `player-templates/<RID>/`를 사용한다. `MONOON_PLAYERS_DIR`를 설정했다면 값은 `win-x64` 같은 개별 폴더가 아니라 그 **부모의 절대 경로**여야 한다. 소스에서 예컨대 `./engine/scripts/build-players.sh win-x64`로 템플릿을 갱신한 뒤, 에디터의 **Build → Build Game…**에서 플랫폼을 선택해 게임을 **다시 내보낸다**. 템플릿 갱신만으로 기존 배포본은 바뀌지 않는다.
-- **시작 씬/카메라/참조 오류**: Build에서 시작 씬을 포함 목록에 넣고 해당 씬의 시작 카메라를 확인한다. KeyRoom은 두 번째 씬도 포함해야 한다. 오류가 지목한 GUID는 프로젝트의 `.meta`와 대응시킨다. 파일을 옮겼다면 원본과 `.meta`를 함께 복원해 같은 GUID를 유지한다. 옛 JSON 프로젝트는 **복사본을 에디터에서 열어** YAML 변환·재열기를 확인한 뒤 내보낸다. 배포 플레이어는 변환기가 아니다.
+- **시작 씬/카메라/참조 오류**: Build에서 시작 씬을 포함 목록에 넣고 해당 씬의 시작 카메라를 확인한다. KeyRoom은 ShowcaseRoom2와 겹쳐 여는 UI 씬(ShowcaseGuide, ShowcaseBindings)도 포함해야 한다. 오류가 지목한 GUID는 프로젝트의 `.meta`와 대응시킨다. 파일을 옮겼다면 원본과 `.meta`를 함께 복원해 같은 GUID를 유지한다. 옛 JSON 프로젝트는 **복사본을 에디터에서 열어** YAML 변환·재열기를 확인한 뒤 내보낸다. 배포 플레이어는 변환기가 아니다.
 - **에디터와 게임의 내용이 다름**: 씬을 저장하고 새 빈 출력 위치에 빌드한다. 실행 파일 옆 `Game/`(Mac은 앱 안 `Contents/MacOS/Game/`)에서 `GameSettings`, `.monoon-assets`, 포함한 씬·클립과 PNG를 확인한다. 배포는 앱 또는 대상 폴더 **전체**를 복사한다. `.monoon-player`는 빌더가 기존 게임을 식별하는 표식이다. 다른 폴더를 덮어쓰기 위해 직접 만들지 않는다.
 - **Release는 되지만 Native AOT 실패**: Release 템플릿은 타깃별로 교차 내보낼 수 있다. Native AOT는 대상 OS·아키텍처와 일치하는 호스트, .NET 10 SDK, 네이티브 링커, `player-templates/native-aot/` 빌드 키트가 필요하다. 키트가 없거나 엔진 변경 전 것이라면 [키트 생성 스크립트](../../engine/scripts/build-native-aot-kit.sh)로 갱신한다. Mac AOT 결과는 별도 `NativeAOT/`에 남기고 Release와 구분한다.
 

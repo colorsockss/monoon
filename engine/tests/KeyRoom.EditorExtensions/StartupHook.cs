@@ -26,7 +26,7 @@ public static class StartupHook
         main = life.MainWindow!;
         view = main.FindControl<SceneViewport>("Viewport")!;
         dock = main.FindControl<DockHost>("Dock")!;
-        await Until(() => main.IsVisible && Scene.Objects.Any(o => o.Name == "Coin counter"), "KeyRoom");
+        await Until(() => main.IsVisible && Scene.Objects.Any(o => o.Name == "Bag button"), "KeyRoom showcase");
         Result["os"] = System.Runtime.InteropServices.RuntimeInformation.RuntimeIdentifier;
         await Resize(1280, 800);
         await Run();

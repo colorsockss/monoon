@@ -1,6 +1,6 @@
 # 씬 전환과 리소스 수명
 
-KeyRoom에서 **M**으로 방 안내를 열고 **Close**를 누른다. 방 안내는 별개의 `RoomGuide.scene`이다. 원래 방의 카메라와 물리 계산은 계속되고, 안내를 닫으면 그 씬의 UI와 버튼 클릭 영역이 함께 사라진다. 왼쪽에서 열쇠를 얻고 오른쪽 문을 통과하면 진행 막대를 표시한 뒤 두 번째 방이 열린다. [방 안내 씬](../../samples/KeyRoom/Scenes/RoomGuide.scene) · [실제 화면](../../engine/tests/results/scene-streaming/README.md)
+KeyRoom에서 **M**으로 방 안내를 열고 **Close**를 누른다. 방 안내는 별개의 `ShowcaseGuide.scene`이다. 원래 방의 카메라와 물리 계산은 계속되고, 안내를 닫으면 그 씬의 UI와 버튼 클릭 영역이 함께 사라진다. 왼쪽에서 열쇠를 얻고 북쪽 문을 통과하면 진행 막대를 표시한 뒤 두 번째 방이 열린다. [방 안내 씬](../../samples/KeyRoom/Scenes/ShowcaseGuide.scene) · [실제 화면](../../engine/tests/results/scene-streaming/README.md)
 
 ## 씬을 연결하는 방법
 

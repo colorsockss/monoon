@@ -72,7 +72,7 @@ for row in first["hierarchy_search"]:
 marks = first["scene_marks"]
 print("  eye:", marks["hidden"], "lock:", marks["locked"])
 check(marks["scene_sha_before"] == scene_sha == marks["scene_sha_after"], "eye/lock toggles + save leave the scene file bytes unchanged")
-check(first["scene"]["sha"] == scene_sha, "scene saved with Door hidden and Wall Top locked is byte-identical to the untouched save")
+check(first["scene"]["sha"] == scene_sha, "scene saved with Door hidden and the Rug locked is byte-identical to the untouched save")
 state = json.loads(first["scene"]["state"])
 scene_key = first["scene"]["path"]
 check(len(state["Hidden"].get(scene_key, [])) == 1 and len(state["Locked"].get(scene_key, [])) == 1,

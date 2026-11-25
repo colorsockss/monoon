@@ -2,10 +2,10 @@ using System;
 using System.Collections.Generic;
 using Engine.Core;
 
-// KeyRoom door rules. Run: ./monoon test project samples/KeyRoom
+// KeyRoom door rules (the showcase room; the door is in the north wall). Run: ./monoon test project samples/KeyRoom
 public sealed class DoorTests
 {
-    private const string Room = "Scenes/KeyRoom.scene";
+    private const string Room = "Scenes/Showcase.scene";
 
     private static IEnumerable<ScriptWait> TakeKey(GameTestRun run)
     {
@@ -17,9 +17,9 @@ public sealed class DoorTests
     [GameTest(Room)]
     public IEnumerable<ScriptWait> ClosedDoorStopsPlayer(GameTestRun run)
     {
-        run.Press("Right");
+        run.Press("Up");
         yield return ScriptWait.Frames(60);
-        run.Assert(MathF.Abs(run.PositionOf("Player").X - 440) < .01f, "the closed door stops the player's leading edge at x 440");
+        run.Assert(MathF.Abs(run.PositionOf("Player").Y - 96) < .01f, "the closed door stops the player's leading edge at y 96");
         run.Assert(!run.Session.Has("key") && run.Objects.IsColliderEnabled(run.Find("Door")), "the door stays closed without the key");
     }
 
@@ -30,13 +30,13 @@ public sealed class DoorTests
         var door = run.Find("Door");
         long opened = run.Time.TickCount;
         run.Assert(run.Objects.IsActive(door) && !run.Objects.IsColliderEnabled(door), "the key turns the door's collider off");
-        run.AreEqual("Assets/DoorOpen3.png", run.Objects.GetComponent<SpriteRendererComponent>(door)?.Asset, "open door sprite");
+        run.AreEqual("Assets/Showcase/DoorOpen.png", run.Objects.GetComponent<SpriteRendererComponent>(door)?.Asset, "open door sprite");
         run.AreEqual(run.Find("Door Camera"), run.World.ActiveCameraId ?? Guid.Empty, "camera after the pickup");
         run.Assert(!run.Session.Has("doorHint"), "no hint the moment the door opens");
         yield return ScriptWait.Until(() => run.Session.Has("doorHint"));
         run.AreEqual(30L, run.Time.TickCount - opened, "ticks from opening to the hint");
-        yield return ScriptWait.Seconds(0.6);
-        run.AreEqual(run.Find("Main Camera"), run.World.ActiveCameraId ?? Guid.Empty, "camera one second after the pickup");
+        yield return ScriptWait.Seconds(1);
+        run.AreEqual(run.Find("Main Camera"), run.World.ActiveCameraId ?? Guid.Empty, "camera after the 1.4 s door shot");
     }
 
     [GameTest(Room)]
@@ -83,7 +83,10 @@ public sealed class DoorTests
     {
         var start = run.SceneId;
         foreach (var wait in TakeKey(run)) yield return wait;
-        run.Press("Right");
+        run.Press("Right");               // back under the doorway, then north through it
+        yield return ScriptWait.Until(() => run.PositionOf("Player").X >= 277);
+        run.Release("Right");
+        run.Press("Up");
         yield return ScriptWait.Until(() => run.SceneId != start);
         run.Assert(run.Session.Has("key"), "the key carries into the second room");
     }

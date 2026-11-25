@@ -197,15 +197,15 @@ public static class StartupHook
         bool cameraCheck = EnabledCheck(Section("Camera 2D")).IsVisible;
         Require(!cameraCheck, "a Camera 2D cannot be turned off (no header check)");
 
-        var oak = Object("Courtyard oak");
-        Require(oak.Prefab != null, "Courtyard oak is a prefab instance");
-        Select(oak);
+        var pot = Object("Small pot");
+        Require(pot.Prefab != null, "Small pot is a prefab instance");
+        Select(pot);
         await Delay(300);
         Find<CheckBox>("ObjectActive").IsChecked = false;
         await Delay(200);
         EnabledCheck(Section("Sprite Renderer")).IsChecked = false;
         await Delay(300);
-        var overrides = ((IEnumerable)Call(Scene, "PropertyOverrides", Object("Courtyard oak"))!).Cast<object>().Select(o => o.ToString()!).ToArray();
+        var overrides = ((IEnumerable)Call(Scene, "PropertyOverrides", Object("Small pot"))!).Cast<object>().Select(o => o.ToString()!).ToArray();
         Require(overrides.Any(o => o.EndsWith("· active")) && overrides.Any(o => o.EndsWith("· spriteRenderer.enabled")), "overrides: " + string.Join(" | ", overrides));
         await Undo();
         await Undo();
@@ -315,24 +315,24 @@ public static class StartupHook
             return what;
         }
         var done = new List<string>();
-        // Door's collider pasted onto the chest (it has none: Paste Component as New), the exit trigger's values onto the wall.
+        // Door's collider pasted onto the chest (it has none: Paste Component as New), the exit trigger's values onto the chest's base.
         Select(Object("Door")); await Delay(300);
         await Gear("Box Collider 2D", "Copy Component");
         done.Add(await Once("Paste Component as New (Door collider → Chest)", async () =>
         {
             Select(Object("Chest")); await Delay(300);
-            await Gear("Sprite Renderer", "Paste Component as New");
+            await Gear("OpenChest", "Paste Component as New");
             Require(Object("Chest").GetComponent<BoxCollider2DComponent>() is { IsTrigger: false }, "Chest got Door's collider");
         }));
         Select(Object("Exit")); await Delay(300);
         var exitCollider = Object("Exit").GetComponent<Collider2DComponent>()!;
         await Gear(Sections().First(s => Component(s) is Collider2DComponent).Header as string ?? "", "Copy Component");
-        done.Add(await Once("Paste Component Values (Exit → Wall)", async () =>
+        done.Add(await Once("Paste Component Values (Exit → Chest base)", async () =>
         {
-            Select(Object("Wall")); await Delay(300);
-            var wallSection = Sections().First(s => Component(s) is Collider2DComponent).Header as string ?? "";
-            await Gear(wallSection, "Paste Component Values");
-            Require(Object("Wall").GetComponent<Collider2DComponent>()!.IsTrigger == exitCollider.IsTrigger, "Wall collider has Exit's values");
+            Select(Object("Chest base")); await Delay(300);
+            var baseSection = Sections().First(s => Component(s) is Collider2DComponent).Header as string ?? "";
+            await Gear(baseSection, "Paste Component Values");
+            Require(Object("Chest base").GetComponent<Collider2DComponent>()!.IsTrigger == exitCollider.IsTrigger, "Chest base collider has Exit's values");
         }));
         done.Add(await Once("Reset (Door Sprite Renderer)", async () =>
         {
@@ -443,7 +443,7 @@ public static class StartupHook
         // Edits on the locked Inspector go to Door, not the selection.
         EnabledCheck(Section("Sprite Renderer")).IsChecked = false;
         await Delay(300);
-        Require(!Object("Door").GetComponent<SpriteRendererComponent>()!.Enabled && Object("Player").GetComponent<SpriteRendererComponent>()!.Enabled, "edit reaches the locked object");
+        Require(!Object("Door").GetComponent<SpriteRendererComponent>()!.Enabled && Object("Hero").GetComponent<SpriteRendererComponent>()!.Enabled, "edit reaches the locked object");
         await Undo();
         Require(Text == before, "Undo of the locked edit");
         var debugTool = Tab<ToggleButton>("InspectorDebugToggle");

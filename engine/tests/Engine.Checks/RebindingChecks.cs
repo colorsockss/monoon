@@ -15,73 +15,77 @@ internal static class RebindingChecks
     {
         Actions();
         var storage = new PlayerStorage(Path.Combine(scratch, "rebinding-profile"));
-        var room = SceneDocument.Load(Path.Combine(project, "Scenes", "KeyRoom.scene"));
-        var menu = SceneDocument.Load(Path.Combine(project, "Scenes", "KeyBindings.scene"));
+        // The moves showcase: K opens the controls menu (ShowcaseBindings) over it; the caption shows the keyboard keys in use.
+        var room = SceneDocument.Load(Path.Combine(project, "Scenes", "ShowcaseMoves.scene"));
+        var menu = SceneDocument.Load(Path.Combine(project, "Scenes", "ShowcaseBindings.scene"));
         Guid Menu(string name) => menu.Objects.Single(o => o.Name == name).Id;
-        var hint = room.Objects.Single(o => o.Name == "Controls hint").Id;
+        var hint = room.Objects.Single(o => o.Name == "Controls").Id;
 
         // First run: swap, cancel on both devices, pad swap, then play with the new key.
         using (var run = new Play(room, storage))
         {
-            Check(run.Text(hint).Contains("Interact: E"), "default keyboard prompt");
+            Check(run.Text(hint).Contains("Dash  O O"), "default keyboard prompt");
             run.Open(menu);
-            Check(run.Ui.Focused == Menu("Interact keyboard") && run.Text(Menu("Bindings status")) == "Choose a control to change.",
+            Check(run.Ui.Focused == Menu("Charge keyboard") && run.Text(Menu("Bindings status")) == "Choose a control to change.",
                 "K opens the controls screen on the first keyboard binding");
             float Left(string name) => run.Ui.Bounds(Menu(name))!.Value.Left;
             var panel = run.Ui.Bounds(Menu("Bindings panel"))!.Value;
-            Check(Left("Action heading") == Left("Interact label") && Left("Interact label") == Left("Restore defaults") &&
-                Left("Keyboard heading") == Left("PauseGame keyboard") && Left("PauseGame keyboard") == Left("Close bindings") &&
-                Left("Gamepad heading") == Left("CarryCoin gamepad") && run.Ui.Bounds(Menu("Close bindings"))!.Value.Bottom <= panel.Bottom - 15 &&
+            Check(Left("Action heading") == Left("Charge label") && Left("Charge label") == Left("Restore defaults") &&
+                Left("Keyboard heading") == Left("Dash keyboard") && Left("Dash keyboard") == Left("Close bindings") &&
+                Left("Gamepad heading") == Left("Flick gamepad") && run.Ui.Bounds(Menu("Close bindings"))!.Value.Bottom <= panel.Bottom - 15 &&
                 panel.Left >= 0 && panel.Top >= 0 && panel.Right <= 800 && panel.Bottom <= 450, $"columns line up inside the panel {panel}, restore {run.Ui.Bounds(Menu("Restore defaults"))}");
+            run.Key("Down"); run.Key("Down");
+            Check(run.Ui.Focused == Menu("Dash keyboard"), "Down walks the keyboard column to Dash");
             run.Router.Key("Return", true); run.Step();
             run.Router.Key("Return", true); run.Step(); // Host key repeat while the activation key is still held.
             run.Router.Key("Return", false); run.Step();
-            Check(run.State.RebindingAction == "Interact" && run.Text(Menu("Interact keyboard")) == "…", "Return starts capture, key repeat does not finish it");
-            run.Key("C");
-            Check(run.State.ControlsFor("Interact").SequenceEqual(["C", "Space", "Pad.South"]) &&
-                run.State.ControlsFor("CarryCoin").SequenceEqual(["E"]) && run.State.LastRebind!.Swapped.SequenceEqual(["CarryCoin"]),
-                "capturing C swaps it with Carry coin's E");
-            Check(run.Text(Menu("Bindings status")) == "Open chest: C. Carry coin now uses E." &&
-                run.Text(Menu("CarryCoin keyboard")) == "E" && run.Text(hint).Contains("Interact: C"), "screen and HUD prompt show the swap");
+            Check(run.State.RebindingAction == "Dash" && run.Text(Menu("Dash keyboard")) == "…", "Return starts capture, key repeat does not finish it");
+            run.Key("J");
+            Check(run.State.ControlsFor("Dash").SequenceEqual(["J", "Pad.RightTrigger"]) &&
+                run.State.ControlsFor("Charge").SequenceEqual(["O", "Pad.LeftShoulder"]) && run.State.LastRebind!.Swapped.SequenceEqual(["Charge"]),
+                "capturing J swaps it with Charge's O");
+            Check(run.Text(Menu("Bindings status")) == "Dash (double tap): J. Charge (hold) now uses O." &&
+                run.Text(Menu("Charge keyboard")) == "O" && run.Text(hint).Contains("Dash  J J") && run.Text(hint).Contains("Charge  hold O"),
+                "screen and caption show the swap");
             var saved = storage.LoadSettings(1)!.Values[InputActions.SettingsKey];
-            Check(saved.GetProperty("Interact"u8).EnumerateArray().Select(e => e.GetString()).SequenceEqual(["C", "Space", "Pad.South"]) &&
-                saved.GetProperty("CarryCoin"u8)[0].GetString() == "E" && !saved.TryGetProperty("PauseGame"u8, out _), "player.settings stores only changed actions");
+            Check(saved.GetProperty("Dash"u8).EnumerateArray().Select(e => e.GetString()).SequenceEqual(["J", "Pad.RightTrigger"]) &&
+                saved.GetProperty("Charge"u8)[0].GetString() == "O" && !saved.TryGetProperty("Flick"u8, out _), "player.settings stores only changed actions");
 
             run.Key("Return"); run.Key("Escape");
-            Check(run.State.RebindingAction == null && run.State.LastRebind!.Cancelled && run.State.BindingFor("Interact", InputDevice.Keyboard) == "C" &&
-                run.Text(Menu("Bindings status")) == "Cancelled. Open chest stays C.", "Esc cancels a keyboard capture");
-            run.Ui.FocusWidget(Menu("Interact gamepad"));
+            Check(run.State.RebindingAction == null && run.State.LastRebind!.Cancelled && run.State.BindingFor("Dash", InputDevice.Keyboard) == "J" &&
+                run.Text(Menu("Bindings status")) == "Cancelled. Dash (double tap) stays J.", "Esc cancels a keyboard capture");
+            run.Ui.FocusWidget(Menu("Dash gamepad"));
             run.Key("Return"); run.Key("X");
-            Check(run.State.LastRebind!.Cancelled && run.State.BindingFor("Interact", InputDevice.Gamepad) == "Pad.South", "a key cancels a pad capture");
+            Check(run.State.LastRebind!.Cancelled && run.State.BindingFor("Dash", InputDevice.Gamepad) == "Pad.RightTrigger", "a key cancels a pad capture");
             run.Key("Return"); run.Pad("Pad.North");
-            Check(run.State.BindingFor("Interact", InputDevice.Gamepad) == "Pad.North" && run.State.ControlsFor("RoomGuide").SequenceEqual(["M", "Pad.South"]) &&
-                run.Text(hint).Contains("Interact: North"), "pad capture swaps with Room guide and the pad prompt follows");
+            Check(run.State.BindingFor("Dash", InputDevice.Gamepad) == "Pad.North" && run.State.ControlsFor("RoomGuide").SequenceEqual(["M", "Pad.RightTrigger"]) &&
+                run.Text(Menu("Dash gamepad")) == "North", "pad capture swaps with Room guide and the pad cell follows");
             run.Key("K");
             Check(!run.State.IsSceneLoaded(menu.AssetId!.Value), "K closes the controls screen");
-            run.Key("E");
-            Check(!run.State.Has("chest") && run.Text(hint).Contains("Interact: C"), "the old key no longer opens the chest");
-            run.Key("C");
-            Check(run.State.Has("chest"), "the new key opens the chest");
+            run.Key("O"); run.Key("O");
+            Check(!run.State.Has("interact"), "the old key no longer dashes");
+            run.Key("J"); run.Key("J");
+            Check(run.State.Has("interact") && run.State.Has("rebind"), "the new key dashes and the rebind is announced");
         }
 
-        // Restart: the saved bindings come back before the first input.
+        // Restart: the saved bindings come back before the first input (MoveTrainer loads player.settings).
         using (var run = new Play(room, storage))
         {
-            Check(run.State.BindingFor("Interact", InputDevice.Keyboard) == "C" && run.Text(hint).Contains("Interact: C"), "restart restores the key and its prompt");
-            run.Key("E");
-            Check(!run.State.Has("chest"), "after restart E stays on Carry coin");
-            run.Key("C");
-            Check(run.State.Has("chest"), "after restart C opens the chest");
+            Check(run.State.BindingFor("Dash", InputDevice.Keyboard) == "J" && run.Text(hint).Contains("Dash  J J"), "restart restores the key and its prompt");
+            run.Key("O"); run.Key("O");
+            Check(!run.State.Has("interact"), "after restart O stays on Charge");
+            run.Key("J"); run.Key("J");
+            Check(run.State.Has("interact"), "after restart J J dashes");
             run.Open(menu);
             run.Click(Menu("Restore defaults"));
-            Check(run.State.ControlsFor("Interact").SequenceEqual(["E", "Space", "Pad.South"]) && run.State.ControlsFor("RoomGuide").SequenceEqual(["M", "Pad.North"]) &&
-                run.Text(Menu("Bindings status")) == "Default controls restored." && run.Text(hint).Contains("Interact: E") &&
+            Check(run.State.ControlsFor("Dash").SequenceEqual(["O", "Pad.RightTrigger"]) && run.State.ControlsFor("RoomGuide").SequenceEqual(["M", "Pad.North"]) &&
+                run.Text(Menu("Bindings status")) == "Default controls restored." && run.Text(hint).Contains("Dash  O O") &&
                 !storage.LoadSettings(1)!.Values.ContainsKey(InputActions.SettingsKey), "Restore defaults resets every action and clears the saved map");
         }
         using (var run = new Play(room, storage))
         {
-            run.Key("E");
-            Check(run.State.Has("chest") && run.State.BindingFor("CarryCoin", InputDevice.Keyboard) == "C", "restored defaults persist across a restart");
+            run.Key("O"); run.Key("O");
+            Check(run.State.Has("interact") && run.State.BindingFor("Charge", InputDevice.Keyboard) == "J", "restored defaults persist across a restart");
         }
     }
 

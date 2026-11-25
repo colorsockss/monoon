@@ -23,6 +23,9 @@ internal static class RuntimeTransformChecks
             foreach (var point in new Vector2[] { Vector2.Zero, new(22, 0), new(22, 22), new(0, 22) })
                 Check(Vector2.Distance(Vector2.Transform(point, a), Vector2.Transform(point, b)) < .002f, what);
         }
+        input.Key("Right", true);   // the showcase hero starts out of the chest's reach
+        for (int i = 0; i < 5; i++) Frame();
+        input.Key("Right", false); Frame();
         Press("E");
         var coin = game.Objects.Single(o => o.Name == "Coin").Id;
         Press("C");
@@ -76,7 +79,7 @@ internal static class RuntimeTransformChecks
         void CheckFootprint()
         {
             var filter = new PhysicsFilter(IncludeTriggers: true);
-            foreach (var (p, expected) in new[] { (new Vector2(21, 11), true), (new Vector2(23, 11), false) })
+            foreach (var (p, expected) in new[] { (new Vector2(27, 11), true), (new Vector2(29, 11), false) })   // the 28×22 coin pile
             {
                 var point = Vector2.Transform(p, moved);
                 bool hit = game.Physics.Overlap(Shape2D.Circle(point, .1f), filter).Any(h => h.ObjectId == coin);

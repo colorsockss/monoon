@@ -12,7 +12,7 @@ using Avalonia.VisualTree;
 using Engine.Core;
 
 // Drives the packaged editor: copy a parent with a child and a prefab instance, paste them into the same scene and
-// into SecondRoom through the Edit menu, Undo and Redo each step, show the missing reference, save and Play.
+// into ShowcaseRoom2 through the Edit menu, Undo and Redo each step, show the missing reference, save and Play.
 public static class StartupHook
 {
     private static readonly string Output = Environment.GetEnvironmentVariable("MONOON_COPY_EDITOR")!;
@@ -140,7 +140,7 @@ public static class StartupHook
         // Copy again: the cut replaced the clipboard with Rig (1) alone.
         Call(main, "ShowSelection", new List<SceneObject> { scene.Objects.Single(o => o.Name == "Rig"), scene.Objects.Single(o => o.Name == "Chest 1") });
         await Choose(main, "Copy", "Copied 2 objects.");
-        await (Task)Call(main, "SwitchScene", "SecondRoom")!;
+        await (Task)Call(main, "SwitchScene", "ShowcaseRoom2")!;
         var second = Scene(main);
         var secondBefore = second.CaptureObjects();
         Call(main, "Select", (SceneObject?)null);
@@ -150,7 +150,7 @@ public static class StartupHook
         Require(Field(moved, "Copied") == movedChest.Id && Field(moved, "Outside") == floor.Id && second.Objects.All(o => o.Id != floor.Id), "cross-scene references");
         Require(second.Objects.Single(o => o.Parent == moved).Name == "Rig Arm" && movedChest.Prefab?.AssetId == chest.Prefab.AssetId, "cross-scene hierarchy and prefab");
         Require(second.Objects.Select(o => o.Id).Distinct().Count() == second.Objects.Count && !known.Contains(moved.Id), "cross-scene IDs");
-        Log("SecondRoom: Rig, Rig Arm, Chest 1, Chest Lid; Rig.Copied -> pasted Chest 1, Rig.Outside -> PrefabWorkshop Floor (missing)");
+        Log("ShowcaseRoom2: Rig, Rig Arm, Chest 1, Chest Lid; Rig.Copied -> pasted Chest 1, Rig.Outside -> PrefabWorkshop Floor (missing)");
 
         Call(main, "Select", moved);
         await Delay(800);
@@ -186,44 +186,53 @@ public static class StartupHook
         Require(second.CaptureObjects() == secondBefore, "one Undo did not remove the cross-scene paste");
         await (Task)Call(main, "RestoreEdit", true)!;
         Require(second.CaptureObjects() == secondPasted, "Redo did not restore the cross-scene paste");
-        Log("SecondRoom: Undo removes the paste, Redo restores it");
-        Require(await (Task<bool>)Call(main, "Save")!, "SecondRoom save cancelled");
-        var reopened = SceneDocument.OpenForEditing(Path.Combine(root, "Scenes", "SecondRoom.scene"));
+        Log("ShowcaseRoom2: Undo removes the paste, Redo restores it");
+        Require(await (Task<bool>)Call(main, "Save")!, "ShowcaseRoom2 save cancelled");
+        var reopened = SceneDocument.OpenForEditing(Path.Combine(root, "Scenes", "ShowcaseRoom2.scene"));
         var saved = reopened.Objects.Single(o => o.Name == "Rig");
         Require(Field(saved, "Outside") == floor.Id && Field(saved, "Copied") == reopened.Objects.Single(o => o.Name == "Chest 1").Id &&
-                reopened.Objects.Single(o => o.Name == "Chest 1").Prefab?.AssetId == chest.Prefab.AssetId, "saved SecondRoom");
+                reopened.Objects.Single(o => o.Name == "Chest 1").Prefab?.AssetId == chest.Prefab.AssetId, "saved ShowcaseRoom2");
         var workshop = SceneDocument.OpenForEditing(Path.Combine(root, "Scenes", "PrefabWorkshop.scene"));
         Require(workshop.Objects.Count(o => o.Name is "Rig" or "Rig (1)") == 2 && workshop.Objects.Any(o => o.Name == "Chest 1 (1)" && o.Prefab != null), "saved PrefabWorkshop");
-        Log("saved files: SecondRoom keeps the missing Outside reference and the prefab link; PrefabWorkshop has Rig, Rig (1), Chest 1 (1)");
+        Log("saved files: ShowcaseRoom2 keeps the missing Outside reference and the prefab link; PrefabWorkshop has Rig, Rig (1), Chest 1 (1)");
 
         await Play(main, trace, "copied 1 chest 1 outside 0");
 
         // Game builds refuse a missing reference, so point it at an object of this room as an author would.
         var pastedRig = second.Objects.Single(o => o.Name == "Rig");
-        var wall = second.Objects.Single(o => o.Name == "North Wall");
+        var wall = second.Objects.Single(o => o.Name == "Pressure Plate");
         Call(main, "Select", pastedRig);
         await Delay(500);
         var repoint = Picker("Outside");
         // The picker (13.7): search, then choose the one match.
         ((Avalonia.Controls.Primitives.FlyoutBase)Member(repoint, "Picker")!).ShowAt(repoint);
         await Delay(200);
-        ((TextBox)Member(repoint, "Search")!).Text = "North Wall";
-        var match = ((ListBox)Member(repoint, "List")!).Items.Cast<object>().Single(i => i.ToString() == "North Wall");
+        ((TextBox)Member(repoint, "Search")!).Text = "Pressure Plate";
+        var match = ((ListBox)Member(repoint, "List")!).Items.Cast<object>().Single(i => i.ToString() == "Pressure Plate");
         repoint.GetType().GetMethod("Choose", BindingFlags.NonPublic | BindingFlags.Instance)!.Invoke(repoint, [match]);
         await Until(() => Field(second.Objects.Single(o => o.Name == "Rig"), "Outside") == wall.Id, "repointing Outside");
-        Require(await (Task<bool>)Call(main, "Save")!, "SecondRoom save cancelled");
-        reopened = SceneDocument.OpenForEditing(Path.Combine(root, "Scenes", "SecondRoom.scene"));
+        Require(await (Task<bool>)Call(main, "Save")!, "ShowcaseRoom2 save cancelled");
+        reopened = SceneDocument.OpenForEditing(Path.Combine(root, "Scenes", "ShowcaseRoom2.scene"));
         Require(Field(reopened.Objects.Single(o => o.Name == "Rig"), "Outside") == wall.Id, "saved repointed reference");
-        Log("Outside repointed to North Wall in the Inspector and saved");
+        Log("Outside repointed to Pressure Plate in the Inspector and saved");
         await Play(main, trace, "copied 1 chest 1 outside 1");
     }
 
     private static async Task Play(Window main, string trace, string expected)
     {
         File.Delete(trace);
+        // Play pauses while the editor window is not the active one; a test desktop does not always keep it active.
+        var viewport = main.FindControl<Control>("Viewport")!;
+        viewport.GetType().GetField("KeepSimulationActive", Members)!.SetValue(viewport, (Func<bool>)(() => true));
         var play = main.FindControl<Button>("PlayButton")!;
         play.RaiseEvent(new RoutedEventArgs(Button.ClickEvent, play));
-        await Until(() => File.Exists(trace), "Scene Play trace");
+        try { await Until(() => File.Exists(trace), "Scene Play trace"); }
+        catch (TimeoutException)
+        {
+            // Name what the Console said instead of a bare timeout.
+            var rows = ((System.Collections.IEnumerable)main.GetType().GetField("consoleRows", Members)!.GetValue(main)!).Cast<object>().Select(r => r.ToString());
+            throw new TimeoutException("Scene Play trace; Console: " + string.Join(" | ", rows.TakeLast(6)));
+        }
         var row = File.ReadAllText(trace).Trim();
         play.RaiseEvent(new RoutedEventArgs(Button.ClickEvent, play));
         Require(row == expected, "Scene Play trace " + row);

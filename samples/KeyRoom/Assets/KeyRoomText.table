@@ -28,7 +28,7 @@ rows:
 - key: hud.bag
   cells: ["Bag [I]", "가방 [I]"]
 - key: hud.bearing
-  cells: ["Compass  /  Exit east", "나침반  /  출구는 동쪽"]
+  cells: ["Compass  /  Exit north", "나침반  /  출구는 북쪽"]
 - key: hud.bindings
   cells: ["Move: {0} / {1}   Interact: {2}   Help: {3}   Pause: {4}", "이동: {0} / {1}   상호작용: {2}   도움말: {3}   정지: {4}"]
 - key: hud.coin
@@ -36,7 +36,7 @@ rows:
 - key: hud.controls
   cells: ["Controls", "조작법"]
 - key: hud.door
-  cells: ["The door is open. Head east.", "문이 열렸다. 동쪽으로 가자."]
+  cells: ["The door is open. Head north.", "문이 열렸다. 북쪽으로 가자."]
 - key: hud.key
   cells: ["KEY", "열쇠"]
 - key: hud.key2
@@ -101,6 +101,12 @@ rows:
   cells: ["Help", "도움말"]
 - key: action.PauseGame
   cells: ["Pause", "일시정지"]
+- key: action.Charge
+  cells: ["Charge (hold)", "차지 (누르고 있기)"]
+- key: action.Flick
+  cells: ["Flick (tap)", "튕기기 (짧게)"]
+- key: action.Dash
+  cells: ["Dash (double tap)", "대시 (두 번)"]
 - key: rebind.choose
   cells: ["Choose a control to change.", "바꿀 조작을 선택하세요."]
 - key: rebind.waitKey

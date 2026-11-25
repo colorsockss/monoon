@@ -18,6 +18,7 @@ internal static class RuntimePrefabChecks
         var collectibles = game.FindByGroup("수집품");
         var tagged = game.FindByTag("Coin");
         Require(!Coins().Any() && collectibles.Count == 0 && tagged.Count == 0, "no preplaced coin");
+        for (int i = 0; i < 5; i++) game.FixedUpdate(Vector2.UnitX, Step);   // into the chest's reach
         game.FixedUpdate(new GameInput(Vector2.Zero, true), Step);
         var coin = Coins().Single();
         Require(collectibles.Single() == coin.Id && tagged.Single() == coin.Id &&
@@ -26,11 +27,12 @@ internal static class RuntimePrefabChecks
         Require(collectibles.Single() == coin.Id && !game.IsActive(coin.Id), "inactive members retain their classification");
         game.SetActive(coin.Id, true);
         Require(coin.GetComponent<BoxCollider2DComponent>()?.IsTrigger == true &&
-            game.TryGetPosition(coin.Id, out var at) && at == new Vector2(384,126), "spawned trigger transform");
+            game.TryGetPosition(coin.Id, out var at) && at == new Vector2(416,167), "spawned trigger transform");
         // The chest rules (one coin, reach, pickup) are project tests: samples/KeyRoom/Tests/ChestTests.cs.
-        for (int i = 0; i < 30; i++) game.FixedUpdate(Vector2.UnitX, Step);
+        for (int i = 0; i < 4; i++) game.FixedUpdate(-Vector2.UnitY, Step);   // level with the coin, above the chest's base
+        for (int i = 0; i < 35; i++) game.FixedUpdate(Vector2.UnitX, Step);
         Require(!game.Destroy(coin.Id) && collectibles.Count == 0 && tagged.Count == 0, "held lists update on pickup");
-        var reference = new PrefabReference(ProjectAssets.Scan(scene.ProjectDirectory!).IdFor("Assets/Coin.prefab")!.Value);
+        var reference = new PrefabReference(ProjectAssets.Scan(scene.ProjectDirectory!).IdFor("Assets/Showcase/Coin.prefab")!.Value);
         var first = game.Instantiate(reference, new(700, 230));
         var second = game.Instantiate(reference, new(710, 230));
         Require(collectibles.SequenceEqual(new[] { first, second }), "spawn order before the next tick");
@@ -53,12 +55,12 @@ internal static class RuntimePrefabChecks
         var a = game.Instantiate(asset, new(120,70), player.Id);
         var b = game.Instantiate(asset, new(210,80));
         game.FixedUpdate(Vector2.Zero, Step);
-        var lidA = game.Objects.Single(o => o.ParentId == a);
-        var lidB = game.Objects.Single(o => o.ParentId == b);
+        var lidA = game.Objects.Single(o => o.ParentId == a && o.Name == "Chest Lid");
+        var lidB = game.Objects.Single(o => o.ParentId == b && o.Name == "Chest Lid");
         var script = game.Objects.Single(o => o.Id == a).GetComponent<ScriptComponent>()!;
         Require(game.TryGetPosition(lidA.Id, out var local), "child has a transform");
         Require(a != b && lidA.Id != lidB.Id && script.ReadOverride("Lid", Guid.Empty) == lidA.Id &&
-            local == new Vector2(120,65), "fresh IDs, internal references and parent placement");
+            Vector2.Distance(local, new Vector2(120,78)) < .5f, "fresh IDs, internal references and parent placement");   // LidMotion has rocked it one tick
         game.SetActive(lidA.Id, false);
         game.SetActive(a, false);
         game.FixedUpdate(Vector2.UnitX, Step);
@@ -83,7 +85,7 @@ internal static class RuntimePrefabChecks
         {
             using var game = new SceneGame(scene);
             SceneObject Get(Guid id) => game.Objects.Single(o => o.Id == id);
-            Guid Lid(Guid id) => game.Objects.Single(o => o.ParentId == id).Id;
+            Guid Lid(Guid id) => game.Objects.Single(o => o.ParentId == id && o.Name == "Chest Lid").Id;
             var a = game.Instantiate(asset, new(100, 70));
             var scriptA = Get(a).GetComponent<ScriptComponent>()!;
             scriptA.Values["Probe"] = JsonSerializer.SerializeToElement(1);

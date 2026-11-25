@@ -52,7 +52,7 @@ final class KeyRoomTests: XCTestCase {
         let project = try path("MONOON_TEST_PROJECT")
         let results = try path("MONOON_TEST_RESULTS")
         let reference = try Data(contentsOf: path("MONOON_TEST_REFERENCE"))
-        let scene = project.appendingPathComponent("Scenes/KeyRoom.scene")
+        let scene = project.appendingPathComponent("Scenes/Showcase.scene")
         let app = XCUIApplication(url: try path("MONOON_TEST_APP"))
         defer { if app.state != .notRunning { app.terminate() } }
 
@@ -64,7 +64,7 @@ final class KeyRoomTests: XCTestCase {
         for name in ["baseline", "edit", "reopen"] {
             let phase = results.appendingPathComponent(name)
             let profile = phase.appendingPathComponent("profile")
-            XCTAssertTrue(playerAt(name == "reopen" ? 190 : 274), "Unexpected Player X before launch")
+            XCTAssertTrue(playerAt(name == "reopen" ? 190 : 277), "Unexpected Player X before launch")
             app.launchArguments = [project.path]
             app.launchEnvironment = ["MONOON_USER_DATA": profile.path, "SDL_AUDIO_DRIVER": "dummy"]
             app.launch()

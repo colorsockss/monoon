@@ -32,7 +32,7 @@ Inspector에서 앵커와 크기를 고르고, Scene의 시작 카메라 프레�
 
 초기 Canvas 형식은 v7에서 도입했다. 이후 기능은 쓸 때만 버전을 올린다: 자동 배치·스크롤·텍스트 필드·줄바꿈 v14, 번역 키 v23, 버튼 테마·9-slice v25, 슬라이더·토글·드롭다운 v26, 독립적인 가장자리 고정 **v28**, 월드 Text 2D v40, Grid·Wrap 배치와 끌어 놓기 칸 v41. v6의 `hud`는 읽을 때 같은 오브젝트 ID의 Rect·Text와 선택적 Image로 바꾼다. 이미지 너비와 글자 사이 6픽셀, 글자 크기 16, 표시 플래그를 보존한다. 열기만 해서는 기존 씬 파일을 다시 쓰지 않으며 다음 저장부터 새 형식이다. 새 컴포넌트 목록에는 예전 HUD가 나오지 않는다.
 
-[KeyRoom](../../samples/KeyRoom/Scenes/KeyRoom.scene)에서 **Controls 클릭 → 안내 표시 → Enter → 안내 숨김**을 확인할 수 있다. 열쇠를 먹은 뒤에는 시점이 바뀌어도 아이콘이 유지되고, 다음 방에 들어가면 `ROOM 2 / KEY`가 표시된다. [통합 검사](../../engine/tests/Engine.Checks/UiChecks.cs)에서는 앵커, 겹친 위젯 선택, 저장 형식 호환을 확인하고, [게임 검사](../../engine/tests/Engine.Checks/Program.cs)에서는 버튼 취소·중복 실행 방지와 두 방 진행을 확인한다.
+[KeyRoom 쇼케이스](../../samples/KeyRoom/Scenes/Showcase.scene)에서 **Controls 클릭 → 안내 표시 → Enter → 안내 숨김**을 확인할 수 있다. 열쇠를 먹은 뒤에는 시점이 바뀌어도 열쇠 아이콘이 유지되고, 다음 방(ShowcaseRoom2)에서도 표시된다. [통합 검사](../../engine/tests/Engine.Checks/UiChecks.cs)에서는 앵커, 겹친 위젯 선택, 저장 형식 호환을 확인하고, [게임 검사](../../engine/tests/Engine.Checks/Program.cs)에서는 버튼 취소·중복 실행 방지와 두 방 진행을 확인한다.
 
 [Mac 에디터·Release·Native AOT 및 Windows·Linux x64 Release의 실제 실행 기록과 화면](../../engine/tests/results/screen-ui/README.md)
 

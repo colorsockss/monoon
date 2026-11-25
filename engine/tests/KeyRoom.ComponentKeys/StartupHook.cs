@@ -61,11 +61,11 @@ public static class StartupHook
         Click(edited.FindControl<Button>("WriteKey")!);
         Check(time.Text == "0.3333333333333333", "Selected key lost timestamp precision");
         Click(edited.FindControl<Button>("DeleteKey")!);
-        Check(Math.Abs(SpritePose(edited, 1.0 / 3).Rotation!.Value + 16) < .0001, "Remove precise key");
+        Check(Math.Abs(SpritePose(edited, 1.0 / 3).Rotation!.Value + 8.0 / 3) < .0001, "Remove precise key");
         time.Text = "0.25"; value.Text = "-18";
         Click(edited.FindControl<Button>("WriteKey")!);
         Call(edited,"History",false);
-        Check(SpritePose(edited,.25).Rotation == -12, "Undo");
+        Check(SpritePose(edited,.25).Rotation == -2, "Undo");
         Call(edited,"History",true);
         Check(SpritePose(edited,.25).Rotation == -18, "Redo");
         Click(edited.FindControl<Button>("SaveButton")!);
@@ -74,7 +74,7 @@ public static class StartupHook
         Check(SpritePose(edited,.25).Rotation == -18, "Reopened authored key");
         Click(edited.FindControl<Button>("DeleteKey")!);
         Click(edited.FindControl<Button>("SaveButton")!);
-        Check(SpritePose(edited,.25).Rotation == -12, "Deleted key did not restore interpolation");
+        Check(SpritePose(edited,.25).Rotation == -2, "Deleted key did not restore interpolation");
         var readings = new List<object>();
         foreach (string label in new[] { "lid","coin" })
         {
@@ -94,9 +94,9 @@ public static class StartupHook
         Close(edited);
         Click(main.FindControl<Button>("PlayButton")!);
         var session = Field<GameSession>(view,"game");
-        InputReplay.Load(Path.Combine(Output,"Compare.inputreplay")).Play(session,session.SceneId!.Value);
+        InputReplay.Load(Path.Combine(Output,"Compare.inputreplay")).Play(session,GameSettings.Load(project).ProjectId!.Value);
         Click(main.FindControl<Button>("PlayButton")!);
-        var lid=SceneDocument.Load(Path.Combine(project,"Scenes","KeyRoom.scene")).Objects.Single(o=>o.Name=="Chest Lid");
+        var lid=SceneDocument.Load(Path.Combine(project,"Scenes","Showcase.scene")).Objects.Single(o=>o.Name=="Chest Lid");
         Check(lid.Rotation==0 && lid.ScaleY==1,"Play changed the source");
         File.WriteAllText(Path.Combine(Output,"preview.json"),JsonSerializer.Serialize(readings,new JsonSerializerOptions { WriteIndented=true }));
     }

@@ -9,6 +9,7 @@ import sys
 
 HERE = Path(__file__).resolve().parent
 PROJECT = '64fb4cd6-2469-5cec-ba6d-9a49e61f42e7'
+WORKSHOP = '98b900c4-6465-5df6-b547-6f8744d7123f'  # Scenes/MovementWorkshop.scene, a test-only scene outside the build list
 
 def prepare(sample, dest):
     shutil.copytree(sample, dest, ignore=shutil.ignore_patterns('.monoon', '.DS_Store', 'bin', 'obj'))
@@ -38,11 +39,16 @@ def prepare(sample, dest):
     scene.write_text(text.replace(anchor, '  - type: script\n    script: TraceSpeeds\n    values: {Inherited: "'+
         handles['Inherited']+'", Overridden: "'+handles['Overridden']+'"}\n'+anchor), encoding='utf-8')
     shutil.copyfile(HERE/'TraceSpeeds.source', dest/'Scripts/TraceSpeeds.cs')
+    # The copy starts in the workshop and builds it.
+    settings = dest / 'GameSettings'
+    s = settings.read_text(encoding='utf-8')
+    start = s.split('startScene: ', 1)[1].split('\n', 1)[0]
+    settings.write_text(s.replace('startScene: ' + start, 'startScene: ' + WORKSHOP).replace('includedScenes:\n', f'includedScenes:\n- {WORKSHOP}\n', 1), encoding='utf-8')
 
 def recording(path):
     frames = [166667]*30
-    events = [(2,'F3',True),(3,'F3',False),(8,'Right',True),(23,'Right',False)]
-    text = f'version: 1\nproject: {PROJECT}\nstartScene: {PROJECT}\nframeTicks: [{", ".join(map(str,frames))}]\nevents:\n'
+    events = [(8,'Right',True),(23,'Right',False)]
+    text = f'version: 1\nproject: {PROJECT}\nstartScene: {WORKSHOP}\nframeTicks: [{", ".join(map(str,frames))}]\nevents:\n'
     for frame,key,down in events:
         text += f'- frame: {frame}\n  timeTicks: {frame*166667}\n  input: {{kind: key, control: "{key}", down: {str(down).lower()}}}\n'
     path.write_text(text,encoding='utf-8')

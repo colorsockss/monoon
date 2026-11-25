@@ -43,7 +43,7 @@ unsafe
     var profile = Directory.CreateTempSubdirectory("monoon-pad-");
     try
     {
-        var scene = SceneDocument.Load(Path.GetFullPath(args.Length == 0 ? "samples/KeyRoom/Scenes/KeyRoom.scene" : args[0]));
+        var scene = SceneDocument.Load(Path.GetFullPath(args.Length == 0 ? "samples/KeyRoom/Scenes/Showcase.scene" : args[0]));
         using var game = new GameSession(scene, null, null, new PlayerStorage(profile.FullName));
         var router = new GameInputRouter(game.Actions, () => game.Current.Ui, game.LogicalSize);
         using var joystick = Sdl.Joystick.OpenJoystick(second);
@@ -63,9 +63,17 @@ unsafe
         Button(SdlGamepadButton.Start, true);
         Check(!game.State.Has("controls"), "Start closes KeyRoom controls");
         Button(SdlGamepadButton.Start, false);
+        // The showcase hero starts 88 px from the chest (reach 72): five ticks east first.
+        Button(SdlGamepadButton.DpadRight, true);
+        for (int i = 0; i < 4; i++) Step();
+        Button(SdlGamepadButton.DpadRight, false);
         Button(SdlGamepadButton.South, true);
         Check(game.Current.Objects.Any(o => o.Name == "Coin"), "South opens chest and spawns coin");
         Button(SdlGamepadButton.South, false);
+        // The coin lies north-east of the chest's base: four ticks north, then east into it.
+        Button(SdlGamepadButton.DpadUp, true);
+        for (int i = 0; i < 3; i++) Step();
+        Button(SdlGamepadButton.DpadUp, false);
         Button(SdlGamepadButton.DpadRight, true);
         for (int i = 0; i < 32; i++) Step();
         Check(game.State.Has("coin") && !game.Current.Objects.Any(o => o.Name == "Coin"), "D-pad moves player to collect coin");

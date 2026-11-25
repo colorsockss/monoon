@@ -19,7 +19,7 @@ internal static class InspectorEditChecks
         MultiEdit(root);
         OverrideRows(root);
         PngImportSettings(root);
-        Console.WriteLine("PASS Inspector edit: built-in field keys, ten-wall multi-edit (width, Is Trigger, script number) with one Undo; oak width override reverted alone; PNG import pivot kept by reimport scans.");
+        Console.WriteLine("PASS Inspector edit: built-in field keys, ten-wall multi-edit (width, Is Trigger, script number) with one Undo; pot width override reverted alone; PNG import pivot kept by reimport scans.");
     }
 
     // Default-valued fields have no key in a snapshot; discovery still finds their saved names.
@@ -81,23 +81,23 @@ internal static class InspectorEditChecks
         Require(scene.CaptureObjects() == edited, "Redo gives the edited scene");
     }
 
-    // 13.6: KeyRoom's two oaks. The Courtyard oak overrides name, width and height; the other has none. Reverting the
-    // width row alone keeps the height override; one Undo brings the width override back.
+    // 13.6: the KeyRoom showcase's two Pot.prefab instances. "Small pot" overrides name, width, height and picture; "Pot"
+    // has none. Reverting the width row alone keeps the height override; one Undo brings the width override back.
     private static void OverrideRows(string root)
     {
-        var scene = SceneDocument.OpenForEditing(Path.Combine(root, "Scenes", "KeyRoom.scene"));
-        var courtyard = scene.Objects.Single(o => o.Name == "Courtyard oak");
-        var plain = scene.Objects.Single(o => o.Name == "Oak tree" && o.Prefab != null);
-        Require(!scene.PropertyOverrides(plain).Any(), "the plain oak has no overrides");
+        var scene = SceneDocument.OpenForEditing(Path.Combine(root, "Scenes", "Showcase.scene"));
+        var courtyard = scene.Objects.Single(o => o.Name == "Small pot");
+        var plain = scene.Objects.Single(o => o.Name == "Pot" && o.Prefab != null);
+        Require(!scene.PropertyOverrides(plain).Any(), "the plain pot has no overrides: " + string.Join(",", scene.PropertyOverrides(plain)));
         var fields = scene.PropertyOverrides(courtyard).Select(c => c.Property.Field).ToArray();
-        Require(fields.Contains("width") && fields.Contains("height"), "courtyard oak overrides " + string.Join(",", fields));
+        Require(fields.Contains("width") && fields.Contains("height"), "small pot overrides " + string.Join(",", fields));
         var history = new SceneHistory();
         history.Reset(scene);
         var before = scene.CaptureObjects();
         var width = scene.PropertyOverrides(courtyard).Single(c => c.Property.Field == "width");
         scene.EditPrefabProperty(courtyard, width, apply: false);
         var reverted = scene.Objects.Single(o => o.Id == courtyard.Id);
-        Require(reverted.Width == 102 && reverted.Height == 70, $"width reverted alone ({reverted.Width}x{reverted.Height})");
+        Require(reverted.Width == 34 && reverted.Height == 30, $"width reverted alone ({reverted.Width}x{reverted.Height})");
         Require(scene.PropertyOverrides(reverted).Any(c => c.Property.Field == "height") &&
             !scene.PropertyOverrides(reverted).Any(c => c.Property.Field == "width"), "only the width override is gone");
         Require(history.Record(scene, courtyard.Id, courtyard.Id, null), "one record");
@@ -110,7 +110,7 @@ internal static class InspectorEditChecks
     // (8.2 path) and an ID rewrite; a two-file atlas edit restores in reverse order.
     private static void PngImportSettings(string root)
     {
-        var door = Path.Combine(root, "Assets", "Door.png");
+        var door = Path.Combine(root, "Assets", "Showcase", "Door.png");
         var metaFile = door + ".meta";
         var original = File.ReadAllBytes(metaFile);
         var meta = ProjectYaml.Read<AssetMeta>(metaFile);

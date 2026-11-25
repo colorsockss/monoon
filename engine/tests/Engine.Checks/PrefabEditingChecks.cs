@@ -7,14 +7,17 @@ internal static class PrefabEditingChecks
     internal static void Run(string project)
     {
         string Asset(string name)=>Path.Combine(project,"Assets",name+".prefab");
-        var scene=SceneDocument.Load(Path.Combine(project,"Scenes","KeyRoom.scene"));
+        var scene=SceneDocument.Load(Path.Combine(project,"Scenes","Showcase.scene"));
         var chest=scene.Objects.Single(o=>o.Name=="Chest");
+        // The showcase chest body has no picture (its lid and open sprite are children); give it a renderer to carry the
+        // per-property overrides of one component below.
+        chest.AddComponent(new SpriteRendererComponent());
         var lid=scene.Objects.Single(o=>o.Name=="Chest Lid");
         var nestedId=lid.Id;
         scene.ExportPrefab(lid,Asset("CheckLid"));
         scene.ExportPrefab(chest,Asset("CheckChest"));
         var placed=scene.PlacePrefab("Assets/CheckChest.prefab",new(80,64));
-        var placedLid=scene.Objects.Single(o=>o.Parent==placed);
+        var placedLid=scene.Objects.Single(o=>o.Parent==placed && o.Name=="Chest Lid");
         Check(placedLid.Prefab?.AssetId==lid.Prefab!.AssetId,"placing a nested prefab preserves its link");
         placed.Width=56;
         placed.GetComponent<SpriteRendererComponent>()!.Order=7;
@@ -23,7 +26,7 @@ internal static class PrefabEditingChecks
         var variantId=placed.Prefab!.AssetId;
         var second=scene.PlacePrefab("Assets/CheckVariant.prefab",new(144,100));
         var secondId=second.Id;
-        var secondLid=scene.Objects.Single(o=>o.Parent==second).Id;
+        var secondLid=scene.Objects.Single(o=>o.Parent==second && o.Name=="Chest Lid").Id;
         second.GetComponent<SpriteRendererComponent>()!.Order=9;
         var copy=scene.DuplicateObject(second);
         var copyId=copy.Id;
@@ -46,7 +49,7 @@ internal static class PrefabEditingChecks
         using(var game=new SceneGame(reopened))
         {
             var spawned=game.Instantiate(new(variantId),new(90,50));
-            Check(game.Objects.Single(o=>o.Id==spawned).Width==56 && game.Objects.Single(o=>o.Parent?.Id==spawned).Height==14,
+            Check(game.Objects.Single(o=>o.Id==spawned).Width==56 && game.Objects.Single(o=>o.Parent?.Id==spawned && o.Name=="Chest Lid").Height==14,
                 "runtime instantiation resolves the nested variant");
         }
         var sourceFile=Asset("CheckChest");
@@ -71,7 +74,7 @@ internal static class PrefabEditingChecks
         var project = scene.ProjectDirectory!;
         var stage = SceneDocument.OpenPrefabSource(project, relative);
         var root = stage.Document.Objects.Single(o => o.Id == stage.RootId);
-        var childId = stage.Document.Objects.Single(o => o.Parent == root).Id;
+        var childId = stage.Document.Objects.Single(o => o.Parent == root && o.Name == "Chest Lid").Id;
         root.Height = 38;
         SceneDocument.SavePrefabSource(stage);
         scene.RefreshPrefabs(ProjectAssets.Scan(project));
