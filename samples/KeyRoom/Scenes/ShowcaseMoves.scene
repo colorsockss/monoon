@@ -823,14 +823,6 @@ objects:
     assetId: cbe7c7c6-9b00-5540-bffc-ee40ea0eab63
     asset: Assets/Showcase/HeroIdleE.png
     order: 0
-  - type: trail2D
-    time: 0.3
-    width: 14
-    startColor: "#9FE6FF"
-    endColor: "#3B5BFF"
-    maxPoints: 30
-    minStep: 2
-    order: -1
 - id: ce171431-9744-52c4-b68b-dc4375b02817
   name: Main Camera
   x: 288
@@ -840,6 +832,23 @@ objects:
   components:
   - type: camera2D
     zoom: 1.5
+- id: b64e5407-be1b-598a-a512-ec1ed02f59ba
+  parentId: 28257eb9-be3d-5c9a-9044-ed519d6d63fa
+  name: Dash trail
+  active: false
+  x: 11
+  y: -22
+  width: 1
+  height: 1
+  components:
+  - type: trail2D
+    time: 0.3
+    width: 14
+    startColor: "#9FE6FF"
+    endColor: "#3B5BFF"
+    maxPoints: 30
+    minStep: 2
+    order: -1
 - id: a44baf3f-16d5-5b3f-b791-7e32f2272ef0
   parentId: 28257eb9-be3d-5c9a-9044-ed519d6d63fa
   name: Meter back
@@ -1093,5 +1102,5 @@ objects:
   components:
   - type: script
     script: Showcase/MoveTrainer
-    values: {"Player": "28257eb9-be3d-5c9a-9044-ed519d6d63fa", "Hero": "a4692bba-9e29-5644-84a8-dcf9e30300fa", "Crate": "3ce140d2-c016-5ea4-8c67-7febb81da353", "CrateShadow": "7d9dc81a-2d06-547c-8537-164ba2cab163", "CrateDust": "e398b53a-c305-5949-b9fc-db9ef248b2eb", "CrateSpark": "c78717f5-d47d-534a-b710-e98be063c0a3", "Dummy": "1f47c167-61ab-5718-beb6-740bff667de1", "DummySpark": "1cb76e9c-377e-5c09-bd8f-0304400f0876", "Coin": "2bb73cee-0775-5bf4-8e3d-c2fd4a94fbc2", "MeterBack": "a44baf3f-16d5-5b3f-b791-7e32f2272ef0", "Meter": "ec484903-e37d-5c51-9e45-617325e9591c", "Label": "65c7af96-1732-55c8-b814-43cf617bedfc", "Prompt": "e374f8da-8cf9-5eea-adec-add31ceb58c5", "Controls": "bb32d279-a345-5440-9187-9a39b0567bf5", "IdleE": {"Id": "cbe7c7c6-9b00-5540-bffc-ee40ea0eab63"}, "WalkE1": {"Id": "e83bd9f4-a765-502c-a3fa-916cc23e4d4f"}, "WalkE2": {"Id": "016d748e-74eb-5140-af4c-ddfd47a1c785"}, "WalkE3": {"Id": "4ecf1c0c-b67e-5244-bc67-31836a1590f1"}, "WalkE4": {"Id": "dca94204-55bf-5458-8ccb-375b1fa0acdc"}, "WalkW1": {"Id": "19a7e2a7-526f-5cbd-888e-3f760e08a40d"}, "WalkW2": {"Id": "54ee4d6a-9657-5190-a8c1-94ea67746854"}, "WalkW3": {"Id": "073741bb-436e-5f61-acaa-d905f72e1d31"}, "WalkW4": {"Id": "cff9dc79-0b4b-5b2f-ad76-e5404a719a57"}}
+    values: {"Player": "28257eb9-be3d-5c9a-9044-ed519d6d63fa", "Hero": "a4692bba-9e29-5644-84a8-dcf9e30300fa", "Crate": "3ce140d2-c016-5ea4-8c67-7febb81da353", "CrateShadow": "7d9dc81a-2d06-547c-8537-164ba2cab163", "CrateDust": "e398b53a-c305-5949-b9fc-db9ef248b2eb", "CrateSpark": "c78717f5-d47d-534a-b710-e98be063c0a3", "Dummy": "1f47c167-61ab-5718-beb6-740bff667de1", "DummySpark": "1cb76e9c-377e-5c09-bd8f-0304400f0876", "Coin": "2bb73cee-0775-5bf4-8e3d-c2fd4a94fbc2", "MeterBack": "a44baf3f-16d5-5b3f-b791-7e32f2272ef0", "Meter": "ec484903-e37d-5c51-9e45-617325e9591c", "Label": "65c7af96-1732-55c8-b814-43cf617bedfc", "Prompt": "e374f8da-8cf9-5eea-adec-add31ceb58c5", "Controls": "bb32d279-a345-5440-9187-9a39b0567bf5", "DashTrail": "b64e5407-be1b-598a-a512-ec1ed02f59ba", "IdleE": {"Id": "cbe7c7c6-9b00-5540-bffc-ee40ea0eab63"}, "WalkE1": {"Id": "e83bd9f4-a765-502c-a3fa-916cc23e4d4f"}, "WalkE2": {"Id": "016d748e-74eb-5140-af4c-ddfd47a1c785"}, "WalkE3": {"Id": "4ecf1c0c-b67e-5244-bc67-31836a1590f1"}, "WalkE4": {"Id": "dca94204-55bf-5458-8ccb-375b1fa0acdc"}, "WalkW1": {"Id": "19a7e2a7-526f-5cbd-888e-3f760e08a40d"}, "WalkW2": {"Id": "54ee4d6a-9657-5190-a8c1-94ea67746854"}, "WalkW3": {"Id": "073741bb-436e-5f61-acaa-d905f72e1d31"}, "WalkW4": {"Id": "cff9dc79-0b4b-5b2f-ad76-e5404a719a57"}}
 defaultCameraId: ce171431-9744-52c4-b68b-dc4375b02817

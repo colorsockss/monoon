@@ -11,7 +11,7 @@ using Engine.Core;
 // "rebinding" while the prompt is up.
 public sealed class MoveTrainer : GameBehaviour
 {
-    public Guid Player, Hero, Crate, CrateShadow, CrateDust, CrateSpark, Dummy, DummySpark, Coin, MeterBack, Meter, Label, Prompt, Controls;
+    public Guid Player, Hero, Crate, CrateShadow, CrateDust, CrateSpark, Dummy, DummySpark, Coin, MeterBack, Meter, Label, Prompt, Controls, DashTrail;
     // The hero's sprites: he has no animator here (it only turns him while walking), so the trainer picks the frame.
     public SpriteReference IdleE, WalkE1, WalkE2, WalkE3, WalkE4, WalkW1, WalkW2, WalkW3, WalkW4;
     private static readonly Vector2 Home = new(170, 200), DashTo = new(380, 200);
@@ -111,6 +111,7 @@ public sealed class MoveTrainer : GameBehaviour
     {
         var objects = t.Objects;
         Moved(t.Session);
+        objects.SetActive(DashTrail, true);   // the trail exists only for the dash itself
         objects.Tween(Player).Move(DashTo, .16f, TweenEase.EaseOut);
         objects.SetSprite(Hero, WalkE2);
         dashLeft = .16f;
@@ -147,7 +148,11 @@ public sealed class MoveTrainer : GameBehaviour
         if (returnLeft >= 0)
         {
             returnLeft -= dt;
-            if (returnLeft is < .55f and >= 0 && returnLeft + dt >= .55f) objects.Tween(Player).Move(Home, .55f, TweenEase.Linear);
+            if (returnLeft is < .55f and >= 0 && returnLeft + dt >= .55f)
+            {
+                objects.SetActive(DashTrail, false);   // clears it, so the walk back draws none
+                objects.Tween(Player).Move(Home, .55f, TweenEase.Linear);
+            }
             if (returnLeft is < .55f and >= 0)   // walking back west
             {
                 int step = (int)((walkClock += dt) / .1f) % 4;

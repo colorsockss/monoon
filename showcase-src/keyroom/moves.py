@@ -71,12 +71,14 @@ def burst(particles):
 
 
 off = "  active: false\n"
-# The hero faces east and gets a dash trail in place of his animator (the animator only turns him while walking, so
-# MoveTrainer sets his sprite itself); a hold meter and a one-word label float over his head.
+# The hero faces east and loses his animator (it only turns him while walking, so MoveTrainer sets his sprite itself). A dash
+# trail rides on a child that is active only during a dash (deactivating clears its points), so the walk back leaves none.
+# A hold meter and a one-word label float over his head.
 hero = ids["Hero"]
 trail = '  - type: trail2D\n    time: 0.3\n    width: 14\n    startColor: "#9FE6FF"\n    endColor: "#3B5BFF"\n    maxPoints: 30\n    minStep: 2\n    order: -1\n'
-out = [re.sub(r"  - type: spriteAnimator\n(    .*\n)*", trail, b, 1).replace("HeroIdleS.png", "HeroIdleE.png").replace(asset("HeroIdleS.png"), asset("HeroIdleE.png"))
+out = [re.sub(r"  - type: spriteAnimator\n(    .*\n)*", "", b, 1).replace("HeroIdleS.png", "HeroIdleE.png").replace(asset("HeroIdleS.png"), asset("HeroIdleE.png"))
        if id_of(b) == hero else b for b in out]
+dash_trail = obj("Dash trail", 11, -22, 1, 1, trail, parent="Player", extra=off)
 meter_back = obj("Meter back", -10, -60, 42, 6, '  - type: spriteRenderer\n    squareColor: "#1B1626"\n    sortingLayer: 5\n', parent="Player", extra=off)
 meter = obj("Meter fill", 1, 1, 40, 4, '  - type: spriteRenderer\n    squareColor: "#FFD84A"\n    sortingLayer: 5\n    order: 1\n', parent="Meter back")
 label = obj("Label", 11, -80, 1, 1, '  - type: text2D\n    text: ""\n    richText: true\n    size: 11\n    color: "#FFFFFF"\n    sortingLayer: 5\n', parent="Player")
@@ -104,7 +106,7 @@ obj("Rebind prompt", 0, 96, 240, 34, "  - type: uiRect\n    anchor: TopCenter\n 
 prompt = obj("Rebind text", 14, 8, 220, 20, '  - type: uiRect\n  - type: uiText\n    richText: true\n    text: "Dash: press a new key"\n    size: 14\n', parent="Rebind prompt")
 values = {"Player": ids["Player"], "Hero": hero, "Crate": crate, "CrateShadow": crate_shadow, "CrateDust": crate_dust, "CrateSpark": crate_spark,
           "Dummy": dummy, "DummySpark": dummy_spark, "Coin": coin, "MeterBack": meter_back, "Meter": meter, "Label": label,
-          "Prompt": prompt, "Controls": controls}
+          "Prompt": prompt, "Controls": controls, "DashTrail": dash_trail}
 ref = lambda n: f'{{"Id": "{asset(n)}"}}'
 sprites = {"IdleE": ref("HeroIdleE.png")} | {f"Walk{d}{i}": ref(f"HeroWalk{d}{i}.png") for d in "EW" for i in range(1, 5)}
 obj("Trainer", 0, 0, 1, 1, "  - type: script\n    script: Showcase/MoveTrainer\n    values: {"
