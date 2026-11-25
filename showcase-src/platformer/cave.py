@@ -1,8 +1,9 @@
 # Writes PlatformerLab's lighting showcase Scenes/ShowcaseCave.scene in the Showcase scene's look (its night sky, moon, ground
 # and hero; ground blocks and pillars are cut from Ground.png by blocks.py).  Run:  python3 showcase-src/platformer/cave.py
 #
-# A ruined gate at dusk. CaveNight (Scripts/Showcase) switches the Global Light 2D on: the world drops to a dark ambient and the
-# torches (Sprite Shader 2D flames over shadow-casting Point Light 2D) and the hero's lantern light up. Pillars, the beam and the
+# A ruined gate at dusk. CaveNight (Scripts/Showcase) switches the Global Light 2D on: the world drops to a dark ambient and only
+# the hero's lantern shines. Walking east he lights the torches one by one (sparks, then a Sprite Shader 2D flame over a
+# shadow-casting Point Light 2D), so the shadows build up torch by torch; then he walks back through them. Pillars, the beam and the
 # crates (one sliding on a Position Tween 2D) cast the shadows. Every caster's collider is its whole, fully opaque picture:
 # shadows start at the collider's far edges, so a caster with transparent corners would show them lit. The hero has no
 # collider. The moon sits on the unlit layer and keeps its glow.
@@ -62,16 +63,33 @@ bw, bh = png_size("Beam.png")
 s.obj("Beam", 151, G - 150 - bh, bw, bh, sprite("Beam.png", order=-4) + box)
 # Torches: a pole, the Showcase scene's bracket, a shader flame and a light that starts off.
 pole = blocks.squeeze("DeckLeg.png", "Pole12x90.png", 12, 90)
-for i, x in enumerate((60, 269, 478)):
+TORCHES = (110, 269, 430)   # left of the gate, under the beam, right of the gate; CaveNight lights each as the hero passes
+(ART / "Ignite.particles").write_text("""duration: 0.6
+looping: false
+rate: 0
+bursts: [{time: 0, count: 30}]
+spread: 120
+speed: {min: 40, max: 130}
+lifetime: {min: 0.3, max: 0.7}
+size: {min: 1.5, max: 3}
+color: {min: "#FF8A3A", max: "#FFE9A0"}
+endSize: 0.3
+gravity: 160
+blend: Additive
+""")
+for i, x in enumerate(TORCHES):
     s.obj(f"Torch pole {i + 1}", x - 6, G - 90, 12, 90, sprite(pole, order=-6))
     s.obj(f"Torch post {i + 1}", x - 23, G - 100, 46, 32, sprite("TorchPost.png", order=-4))
-    s.obj(f"Torch flame {i + 1}", x - 12, G - 134, 24, 36, f"  - type: spriteShader2D\n    shader: {asset('Torch.shader', 'Assets')}\n    sortingLayer: 5\n")
+    s.obj(f"Torch flame {i + 1}", x - 12, G - 134, 24, 36, f"  - type: spriteShader2D\n    shader: {asset('Torch.shader', 'Assets')}\n    sortingLayer: 5\n", extra=off)
+    s.obj(f"Torch spark {i + 1}", x, G - 112, 1, 1, f"  - type: particleEmitter2D\n    particles: {asset('Ignite.particles')}\n    trigger: Manual\n    sortingLayer: 5\n")
     s.obj(f"Torch light {i + 1}", x - 1, G - 118, 2, 2, light(200, ["#FFB060", "#FFC070", "#FFA050"][i], [.3, .25, .35][i], 1), extra=off)
 cw, ch = png_size("Crate.png")
-for name, x, y in (("Crate 1", 92, G - ch), ("Crate 2", 410, G - ch), ("Crate 3", 418, G - 2 * ch)):
+for name, x, y in (("Crate 1", 56, G - ch), ("Crate 2", 466, G - ch), ("Crate 3", 474, G - 2 * ch)):
     s.obj(name, x, y, cw, ch, sprite("Crate.png", order=-3) + box)
 s.obj("Sliding crate", 212, G - ch, cw, ch, sprite("Crate.png", order=-3) + box + '  - type: rigidbody2D\n    bodyType: "Kinematic"\n'
       "  - type: positionTween2D\n    offsetX: 70\n    offsetY: 0\n    duration: 2.4\n")
+pw, ph = png_size("Pennant.png")
+s.obj("Pennant", 247 - pw / 2 + 20, G - 150 - bh - ph, pw, ph, sprite("Pennant.png", order=-4))   # a flag on the gate's beam
 hw, hh = png_size("HeroWalkE1.png")
 s.obj("Hero", 20, G - hh, hw, hh, sprite("HeroWalkE1.png", order=0))
 s.obj("Lantern light", hw / 2 + 8, 24, 2, 2, light(160, "#FFF0C0", .05, 1), parent="Hero", extra=off)
@@ -86,8 +104,9 @@ for i, (flag, feature, detail) in enumerate(tags):
 s.obj("Caption", 12, -12, 330, 30, "  - type: uiRect\n    anchor: BottomLeft\n" + panel(), parent="Canvas")
 s.obj("Caption text", 12, 5, 310, 20, '  - type: uiRect\n  - type: uiText\n    richText: true\n    text: "<b>PlatformerLab</b>   2D lights and shadows"\n    size: 15\n', parent="Caption")
 ref = lambda n: f'{{"Id": "{asset(n)}"}}'
-lights = [s.oid(f"Torch light {i + 1}") for i in range(3)] + [s.oid("Lantern light")]
-values = {"Night": f'"{s.oid("Night")}"', "Hero": f'"{s.oid("Hero")}"', "Lights": "[" + ", ".join(f'"{l}"' for l in lights) + "]"} \
+ids = lambda name: "[" + ", ".join(f'"{s.oid(f"{name} {i + 1}")}"' for i in range(len(TORCHES))) + "]"
+values = {"Night": f'"{s.oid("Night")}"', "Hero": f'"{s.oid("Hero")}"', "Lantern": f'"{s.oid("Lantern light")}"',
+          "Flames": ids("Torch flame"), "Lights": ids("Torch light"), "Sparks": ids("Torch spark")} \
          | {f"Walk{d}{i}": ref(f"HeroWalk{d}{i}.png") for d in "EW" for i in range(1, 5)}
 s.obj("Show", 0, 0, 1, 1, "  - type: script\n    script: Showcase/CaveNight\n    values: {" + ", ".join(f'"{k}": {v}' for k, v in values.items()) + "}\n")
 (ROOT / "Scenes/ShowcaseCave.scene").write_text("schemaVersion: 42\nobjects:\n" + "".join(s.out) + f"defaultCameraId: {s.oid('Camera')}\n")

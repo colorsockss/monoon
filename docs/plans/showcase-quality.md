@@ -246,7 +246,7 @@ Parallax는 PlatformerLab의 한 씬이라 PlatformerLab 영상 안에서 다룬
 
 | 쇼케이스 씬 (생성 스크립트) | 보여 주는 기능 | 영상 | 확인 |
 | --- | --- | --- | --- |
-| PlatformerLab `ShowcaseCave` (`platformer/cave.py`, `CaveNight.cs`) | 해 질 녘 유적에서 Global Light 2D와 횃불·랜턴 Point Light 2D가 함께 켜지고, 기둥·들보·상자가 그림자를 드리운다. Sprite Shader 2D 불꽃, 조명 안 받는 레이어의 달 | `PlatformerLab-Lights.mp4` 21.5초 | 에디터 Play 녹화 |
+| PlatformerLab `ShowcaseCave` (`platformer/cave.py`, `CaveNight.cs`) | 해 질 녘 유적에 밤(Global Light 2D)이 오면 랜턴만 켜지고, 주인공이 지나가며 횃불 셋에 차례로 불을 붙인다(불꽃 입자 `Ignite.particles`, Sprite Shader 2D 불꽃, 그림자 드리우는 Point Light 2D). 그림자가 횃불마다 늘고, 돌아올 때 쓸려 간다. 달은 조명 안 받는 레이어 | `PlatformerLab-Lights.mp4` 19.3초 | 에디터 Play 녹화, `Tests/LightsTests.cs`(랜턴만 켜진 밤, 횃불이 순서대로 켜짐) 통과 |
 | PlatformerLab `ShowcaseCourse` (`platformer/course.py`, `CourseRunner.cs`) | Showcase 주인공(옆모습 걷기 클립, 리그·발 IK 없음)을 캡슐 + Character Motor 2D로 움직임, 회전 관절 흔들다리, 슬라이더 관절 도르래, 베지어 Path Follower 2D 승강대와 곡선 Line 2D, Edge Collider 2D 언덕 | `PlatformerLab-Course.mp4` 19.0초 | 에디터 Play 녹화 |
 
 PlatformerLab 두 씬 다시 만듦(2026-11-25, 사용자 지적: 화풍이 다르다, 투명 픽셀이 빛을 받는다, 코스 캐릭터가 IK를 쓴다).
@@ -255,7 +255,8 @@ PlatformerLab 두 씬 다시 만듦(2026-11-25, 사용자 지적: 화풍이 다�
 - **투명 픽셀이 밝게 남던 것**: 엔진 조명은 그림자를 콜라이더에서 광원을 등진 변부터 만든다(설명서 effects.md). 둥근 나무통의 사각형 콜라이더 안쪽이 밝게 남아 투명한 모서리가 사각형으로 비쳤다. 그림자를 드리우는 물체를 그림 전체가 불투명한 것(바위 기둥, 들보, 상자)으로 바꿨다. 주인공은 콜라이더가 없다. 엔진은 바꾸지 않았다.
 - **밝기**: 밤이 되기 전에도 조명이 켜져 하얗게 번지던 것을 고쳤다. 이제 조명은 Global Light와 함께 켜진다. Point Light 세기는 최대 1이라, 반경을 200·160으로 늘리고 Ambient를 `#2A2C50`으로 낮췄다.
 - **IK**: 코스 러너가 `Runner.rig`(발 IK 포함)를 쓰던 것을 Showcase 주인공 스프라이트와 `Hero.animator`·`MotionFacing`으로 바꿨다. 태그도 "Skeleton Animator 2D"에서 "Character Motor 2D"로 바꿨다. 이제 어떤 쇼케이스 씬도 리그를 쓰지 않는다.
-- 이전 영상은 `showcase-video/raw/PlatformerLab-Lights-v1.mp4`·`PlatformerLab-Course-v1.mp4`로 옮겨 두었다. 더 쓰지 않는 PlatformerLab `Assets/Showcase`의 `Barrel.png`·`Crystal.png`·`WallFace.png`·`WallCap.png`는 지우지 않았다.
+- 이전 영상은 `showcase-video/raw/PlatformerLab-Lights-v1.mp4`·`PlatformerLab-Course-v1.mp4`로 옮겨 두었다.
+- 두 번째 품질 지적 뒤(같은 날): 조명 장면은 모든 빛이 한꺼번에 켜져 반응이 없었다. 이제 주인공이 횃불에 하나씩 불을 붙이고, 들보에 깃발을 달았다. 두 번째 판은 `raw/PlatformerLab-Lights-v2.mp4`. 더 쓰지 않는 PlatformerLab `Assets/Showcase`의 `Barrel.png`·`Crystal.png`·`WallFace.png`·`WallCap.png`는 지우지 않았다.
 | CameraLab `ShowcaseFraming` (`camera/framing.py`, `FramingTour.cs`) | 약초 줍기: 모닥불 옆 세 개는 데드존 안이라 카메라가 가만히 있고, 동쪽 약초 길을 달리면 앞보기로 카메라가 앞서고, 마지막 약초에서 Frame 카메라로 바뀌어 멀리 있던 동료와 만나 약초상에게 간다 | `CameraLab-Framing.mp4` 15.3초 | 에디터 Play 녹화, `Tests/FramingTests.cs`(일곱 개를 모두 줍고 둘이 약초상 앞에 섬) 통과 |
 
 CameraLab-Framing 다시 만듦(2026-11-25, 품질 지적). 첫 판은 데드존 옆에 "Deadzone 120 × 80" 디버그 글자가 있었고, 이동에 목적이 없었고, 끝에서 둘이 맵 양 끝으로 흩어져 화면이 크게 줌아웃되며 인물이 점처럼 작아졌다. 이제 목적은 약초 일곱 개(`Herb1~3.png`, 주울 때 `HerbPick.particles`)와 "HERBS 0 / 7" 숫자 하나다. 동료는 처음부터 약초상 밭에 있어 만날 때만 조금 줌아웃되고, 둘이 함께 걸어 끝난다. 데드존 테두리는 옅은 금색 선만 남겼다. 이전 영상은 `raw/CameraLab-Framing-v1.mp4`로 옮겼다.

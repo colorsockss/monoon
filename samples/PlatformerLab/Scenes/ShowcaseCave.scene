@@ -93,7 +93,7 @@ objects:
   - type: boxCollider2D
 - id: b4bf85fa-4ab8-5766-bc36-a6a5632658ea
   name: Torch pole 1
-  x: 54
+  x: 104
   y: 160
   width: 12
   height: 90
@@ -104,7 +104,7 @@ objects:
     order: -6
 - id: 0f077a06-d646-5def-8689-32f7f2a6d904
   name: Torch post 1
-  x: 37
+  x: 87
   y: 150
   width: 46
   height: 32
@@ -115,7 +115,8 @@ objects:
     order: -4
 - id: f34cf88f-7ca3-5d34-9bf0-7e4a6e735344
   name: Torch flame 1
-  x: 48
+  active: false
+  x: 98
   y: 116
   width: 24
   height: 36
@@ -123,10 +124,21 @@ objects:
   - type: spriteShader2D
     shader: 0fb966b8-d9b4-4ac6-8875-a5a0514fd681
     sortingLayer: 5
+- id: ed390d2e-e8fd-5c36-b38d-af6e237d332c
+  name: Torch spark 1
+  x: 110
+  y: 138
+  width: 1
+  height: 1
+  components:
+  - type: particleEmitter2D
+    particles: 21925939-8c6c-59b5-bf06-8c9c5f1787bb
+    trigger: Manual
+    sortingLayer: 5
 - id: 4d30167d-cd9d-5a8f-9c06-a117359f61f3
   name: Torch light 1
   active: false
-  x: 59
+  x: 109
   y: 132
   width: 2
   height: 2
@@ -162,6 +174,7 @@ objects:
     order: -4
 - id: ca189eee-3911-5102-93ce-a4340531e26b
   name: Torch flame 2
+  active: false
   x: 257
   y: 116
   width: 24
@@ -169,6 +182,17 @@ objects:
   components:
   - type: spriteShader2D
     shader: 0fb966b8-d9b4-4ac6-8875-a5a0514fd681
+    sortingLayer: 5
+- id: 5a76470a-15ba-543b-b3d7-3e4a2723ad14
+  name: Torch spark 2
+  x: 269
+  y: 138
+  width: 1
+  height: 1
+  components:
+  - type: particleEmitter2D
+    particles: 21925939-8c6c-59b5-bf06-8c9c5f1787bb
+    trigger: Manual
     sortingLayer: 5
 - id: 249d676e-44ce-59ae-a9b3-201949c2fa3d
   name: Torch light 2
@@ -187,7 +211,7 @@ objects:
     shadows: true
 - id: 1483fabb-161f-5f28-9d41-c3d65ee873c4
   name: Torch pole 3
-  x: 472
+  x: 424
   y: 160
   width: 12
   height: 90
@@ -198,7 +222,7 @@ objects:
     order: -6
 - id: 7fc1ee04-ed4a-59f2-82c6-9ed01b257894
   name: Torch post 3
-  x: 455
+  x: 407
   y: 150
   width: 46
   height: 32
@@ -209,7 +233,8 @@ objects:
     order: -4
 - id: dc1fb1c1-cb95-5dbc-a7ab-d92e9a26c1d0
   name: Torch flame 3
-  x: 466
+  active: false
+  x: 418
   y: 116
   width: 24
   height: 36
@@ -217,10 +242,21 @@ objects:
   - type: spriteShader2D
     shader: 0fb966b8-d9b4-4ac6-8875-a5a0514fd681
     sortingLayer: 5
+- id: d3e770a4-9e84-5ea0-b8e4-b324492918b9
+  name: Torch spark 3
+  x: 430
+  y: 138
+  width: 1
+  height: 1
+  components:
+  - type: particleEmitter2D
+    particles: 21925939-8c6c-59b5-bf06-8c9c5f1787bb
+    trigger: Manual
+    sortingLayer: 5
 - id: a619cb59-c97c-508d-bc6b-fdd43e4ce027
   name: Torch light 3
   active: false
-  x: 477
+  x: 429
   y: 132
   width: 2
   height: 2
@@ -234,7 +270,7 @@ objects:
     shadows: true
 - id: 2db2c9b9-92df-58b3-bbe6-0c0a9cea537f
   name: Crate 1
-  x: 92
+  x: 56
   y: 212
   width: 36
   height: 38
@@ -246,7 +282,7 @@ objects:
   - type: boxCollider2D
 - id: 2fc10add-24bf-5302-b9b0-9cf932845fc9
   name: Crate 2
-  x: 410
+  x: 466
   y: 212
   width: 36
   height: 38
@@ -258,7 +294,7 @@ objects:
   - type: boxCollider2D
 - id: b2e8f9bb-97f7-5d6e-8a22-3030d0284f41
   name: Crate 3
-  x: 418
+  x: 474
   y: 174
   width: 36
   height: 38
@@ -286,6 +322,17 @@ objects:
     offsetX: 70
     offsetY: 0
     duration: 2.4
+- id: 09e19fb1-cee4-54eb-8066-2fcb554042c4
+  name: Pennant
+  x: 247
+  y: 26
+  width: 40
+  height: 58
+  components:
+  - type: spriteRenderer
+    assetId: 34e622de-b909-54c3-aeee-270fb33c457d
+    asset: Assets/Showcase/Pennant.png
+    order: -4
 - id: d8e85256-d3a1-578c-b93e-68e2f5856f9d
   name: Hero
   x: 20
@@ -445,5 +492,5 @@ objects:
   components:
   - type: script
     script: Showcase/CaveNight
-    values: {"Night": "94afdabe-0cfe-5d42-b626-81e85470cbac", "Hero": "d8e85256-d3a1-578c-b93e-68e2f5856f9d", "Lights": ["4d30167d-cd9d-5a8f-9c06-a117359f61f3", "249d676e-44ce-59ae-a9b3-201949c2fa3d", "a619cb59-c97c-508d-bc6b-fdd43e4ce027", "b2d0375a-99f2-5ea9-81f8-6c01bdbf2786"], "WalkE1": {"Id": "71cd46b3-4774-5655-9f95-d2687bdbef92"}, "WalkE2": {"Id": "7b715515-6468-55db-9f21-4ff91cc83ac5"}, "WalkE3": {"Id": "f8fdb303-f1af-5ea5-8fb5-e1f446f95d8c"}, "WalkE4": {"Id": "d9860f37-42cb-5ca8-b535-3f6c706110fd"}, "WalkW1": {"Id": "7c0cb51d-89ca-56c5-9209-2e0eb04884c5"}, "WalkW2": {"Id": "8bfb80bc-0db4-5358-983c-9f552c34b9cc"}, "WalkW3": {"Id": "306f3015-c289-5db0-af9d-66d8ba96a05d"}, "WalkW4": {"Id": "631086c6-19bb-58c3-b032-8d00b0265276"}}
+    values: {"Night": "94afdabe-0cfe-5d42-b626-81e85470cbac", "Hero": "d8e85256-d3a1-578c-b93e-68e2f5856f9d", "Lantern": "b2d0375a-99f2-5ea9-81f8-6c01bdbf2786", "Flames": ["f34cf88f-7ca3-5d34-9bf0-7e4a6e735344", "ca189eee-3911-5102-93ce-a4340531e26b", "dc1fb1c1-cb95-5dbc-a7ab-d92e9a26c1d0"], "Lights": ["4d30167d-cd9d-5a8f-9c06-a117359f61f3", "249d676e-44ce-59ae-a9b3-201949c2fa3d", "a619cb59-c97c-508d-bc6b-fdd43e4ce027"], "Sparks": ["ed390d2e-e8fd-5c36-b38d-af6e237d332c", "5a76470a-15ba-543b-b3d7-3e4a2723ad14", "d3e770a4-9e84-5ea0-b8e4-b324492918b9"], "WalkE1": {"Id": "71cd46b3-4774-5655-9f95-d2687bdbef92"}, "WalkE2": {"Id": "7b715515-6468-55db-9f21-4ff91cc83ac5"}, "WalkE3": {"Id": "f8fdb303-f1af-5ea5-8fb5-e1f446f95d8c"}, "WalkE4": {"Id": "d9860f37-42cb-5ca8-b535-3f6c706110fd"}, "WalkW1": {"Id": "7c0cb51d-89ca-56c5-9209-2e0eb04884c5"}, "WalkW2": {"Id": "8bfb80bc-0db4-5358-983c-9f552c34b9cc"}, "WalkW3": {"Id": "306f3015-c289-5db0-af9d-66d8ba96a05d"}, "WalkW4": {"Id": "631086c6-19bb-58c3-b032-8d00b0265276"}}
 defaultCameraId: ea4ab372-8081-574c-b35f-7fdcdf2964b5
