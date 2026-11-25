@@ -2123,8 +2123,8 @@ objects:
     playOnStart: true
 - id: f47deacd-1674-577d-93ad-b3c718d0cdec
   name: Partner
-  x: 470
-  y: 560
+  x: 1400
+  y: 760
   width: 22
   height: 12
   groups:
@@ -2216,7 +2216,7 @@ objects:
   components:
   - type: uiRect
   - type: uiImage
-    color: "#FFD84A"
+    color: "#D8B848"
 - id: 1920ccf6-cdb3-5edf-998e-094d6520e74c
   parentId: a86b4ae0-a46c-5fac-b14b-863ac6c30216
   name: Deadzone edge 2
@@ -2227,7 +2227,7 @@ objects:
   components:
   - type: uiRect
   - type: uiImage
-    color: "#FFD84A"
+    color: "#D8B848"
 - id: 450614d5-ece4-52dc-9aaa-cdf70b634875
   parentId: a86b4ae0-a46c-5fac-b14b-863ac6c30216
   name: Deadzone edge 3
@@ -2238,7 +2238,7 @@ objects:
   components:
   - type: uiRect
   - type: uiImage
-    color: "#FFD84A"
+    color: "#D8B848"
 - id: 1f0bea84-b9cd-58e9-8df0-57ac9f81cb84
   parentId: a86b4ae0-a46c-5fac-b14b-863ac6c30216
   name: Deadzone edge 4
@@ -2249,19 +2249,134 @@ objects:
   components:
   - type: uiRect
   - type: uiImage
-    color: "#FFD84A"
-- id: d5f96867-6e07-544b-8e6c-bf5f2ad3b792
-  parentId: a86b4ae0-a46c-5fac-b14b-863ac6c30216
-  name: Deadzone label
+    color: "#D8B848"
+- id: 2e501e01-a8a0-5f04-8f34-cc70998cc92a
+  name: Pick 1
+  x: 449
+  y: 479
+  width: 34
+  height: 34
+  components:
+  - type: spriteRenderer
+    assetId: dbb0f5c3-ceb4-588e-a94a-bb45044e4ba3
+    asset: Assets/Showcase/Herb1.png
+    sortByY: true
+- id: ea3894b1-3bac-54c5-a03c-6dc7f6666728
+  name: Pick 2
+  x: 386
+  y: 509
+  width: 34
+  height: 34
+  components:
+  - type: spriteRenderer
+    assetId: 6569d9c2-d383-5f66-9fac-a67afd87777e
+    asset: Assets/Showcase/Herb2.png
+    sortByY: true
+- id: 98e51358-df7e-554e-bca1-2c180f531a6e
+  name: Pick 3
+  x: 442
+  y: 522
+  width: 34
+  height: 34
+  components:
+  - type: spriteRenderer
+    assetId: 8b3fa01a-f79e-50bd-b1c2-b61b7ade9ae8
+    asset: Assets/Showcase/Herb3.png
+    sortByY: true
+- id: 1bc24819-99c6-58c6-8e9c-c8e18997e219
+  name: Pick 4
+  x: 594
+  y: 494
+  width: 34
+  height: 34
+  components:
+  - type: spriteRenderer
+    assetId: dbb0f5c3-ceb4-588e-a94a-bb45044e4ba3
+    asset: Assets/Showcase/Herb1.png
+    sortByY: true
+- id: 6800f321-c09d-5223-87e8-16c79e5507b9
+  name: Pick 5
+  x: 754
+  y: 489
+  width: 34
+  height: 34
+  components:
+  - type: spriteRenderer
+    assetId: 6569d9c2-d383-5f66-9fac-a67afd87777e
+    asset: Assets/Showcase/Herb2.png
+    sortByY: true
+- id: 65b6bb2d-5d91-5ec8-903e-58aa50226502
+  name: Pick 6
+  x: 914
+  y: 499
+  width: 34
+  height: 34
+  components:
+  - type: spriteRenderer
+    assetId: 8b3fa01a-f79e-50bd-b1c2-b61b7ade9ae8
+    asset: Assets/Showcase/Herb3.png
+    sortByY: true
+- id: 054a52a6-c214-5d65-b7a0-e9a2ffae7064
+  name: Pick 7
+  x: 1074
+  y: 494
+  width: 34
+  height: 34
+  components:
+  - type: spriteRenderer
+    assetId: dbb0f5c3-ceb4-588e-a94a-bb45044e4ba3
+    asset: Assets/Showcase/Herb1.png
+    sortByY: true
+- id: d5ddfd37-e020-5b77-ae96-fe74d861ed53
+  name: Pick spark
   x: 0
-  y: -16
-  width: 160
+  y: 0
+  width: 1
+  height: 1
+  components:
+  - type: particleEmitter2D
+    particles: 37dcc3cd-baa6-59c4-b275-3f1c88411116
+    trigger: Manual
+    sortingLayer: 5
+- id: 8e8d4b01-a767-53eb-a7e7-79b3094a79dc
+  parentId: d56aad34-125f-5fec-bbd5-fecdf3c0bee2
+  name: Herb panel
+  x: -12
+  y: 12
+  width: 150
+  height: 56
+  components:
+  - type: uiRect
+    anchor: TopRight
+  - type: uiImage
+    sprite: 2739c0db-ab1d-58b2-a7bd-b6c3a6e7adbe
+    borders: {left: 4, top: 4, right: 4, bottom: 4}
+- id: 35c6ccfa-296e-535c-8cc7-791b38303197
+  parentId: 8e8d4b01-a767-53eb-a7e7-79b3094a79dc
+  name: Herb label
+  x: 12
+  y: 8
+  width: 126
   height: 14
   components:
   - type: uiRect
   - type: uiText
-    text: "Deadzone 120 × 80"
+    text: "HERBS"
     size: 11
+    color: "#BFD0DC"
+- id: 60ff9788-a627-532e-ae1a-7fd75ecab890
+  parentId: 8e8d4b01-a767-53eb-a7e7-79b3094a79dc
+  name: Herb count
+  x: 12
+  y: 22
+  width: 126
+  height: 30
+  components:
+  - type: uiRect
+  - type: uiText
+    richText: true
+    text: "0 / 7"
+    size: 24
     color: "#FFD84A"
 - id: 77710cf5-c759-5980-bf49-09614508b81c
   parentId: d56aad34-125f-5fec-bbd5-fecdf3c0bee2
@@ -2324,9 +2439,9 @@ objects:
   parentId: d56aad34-125f-5fec-bbd5-fecdf3c0bee2
   name: Caption
   x: 12
-  y: -10
-  width: 320
-  height: 26
+  y: -12
+  width: 420
+  height: 30
   components:
   - type: uiRect
     anchor: BottomLeft
@@ -2337,15 +2452,15 @@ objects:
   parentId: 7c1b9664-4b8c-595f-a9be-7abe34992e45
   name: Caption text
   x: 12
-  y: 4
-  width: 300
-  height: 18
+  y: 5
+  width: 400
+  height: 20
   components:
   - type: uiRect
   - type: uiText
     richText: true
     text: "<b>CameraLab</b>   Deadzone, look-ahead, group framing"
-    size: 13
+    size: 15
 - id: a6c545fc-6617-575f-b31e-e0ced3bff8cb
   name: Tour
   x: 0
@@ -2355,5 +2470,5 @@ objects:
   components:
   - type: script
     script: Showcase/FramingTour
-    values: {"Player": "f4c851f5-01e3-51a2-82d2-ea6a6422e1df", "Partner": "f47deacd-1674-577d-93ad-b3c718d0cdec", "PlayerPicture": "ffa416b4-304c-5f5b-a737-124221966d1a", "PartnerPicture": "f3ba9e59-a9e1-51d7-99df-227402faab3a", "Follow": "0616e3ba-aef9-5cbb-847f-67072d8a6427", "Frame": "89b4f455-4002-5afb-92d6-bae3883787c3", "Deadzone": "a86b4ae0-a46c-5fac-b14b-863ac6c30216"}
+    values: {"Player": "f4c851f5-01e3-51a2-82d2-ea6a6422e1df", "Partner": "f47deacd-1674-577d-93ad-b3c718d0cdec", "PlayerPicture": "ffa416b4-304c-5f5b-a737-124221966d1a", "PartnerPicture": "f3ba9e59-a9e1-51d7-99df-227402faab3a", "Follow": "0616e3ba-aef9-5cbb-847f-67072d8a6427", "Frame": "89b4f455-4002-5afb-92d6-bae3883787c3", "Deadzone": "a86b4ae0-a46c-5fac-b14b-863ac6c30216", "Spark": "d5ddfd37-e020-5b77-ae96-fe74d861ed53", "Counter": "60ff9788-a627-532e-ae1a-7fd75ecab890", "Picks": ["2e501e01-a8a0-5f04-8f34-cc70998cc92a", "ea3894b1-3bac-54c5-a03c-6dc7f6666728", "98e51358-df7e-554e-bca1-2c180f531a6e", "1bc24819-99c6-58c6-8e9c-c8e18997e219", "6800f321-c09d-5223-87e8-16c79e5507b9", "65b6bb2d-5d91-5ec8-903e-58aa50226502", "054a52a6-c214-5d65-b7a0-e9a2ffae7064"]}
 defaultCameraId: 0616e3ba-aef9-5cbb-847f-67072d8a6427

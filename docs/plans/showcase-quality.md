@@ -256,7 +256,9 @@ PlatformerLab 두 씬 다시 만듦(2026-11-25, 사용자 지적: 화풍이 다�
 - **밝기**: 밤이 되기 전에도 조명이 켜져 하얗게 번지던 것을 고쳤다. 이제 조명은 Global Light와 함께 켜진다. Point Light 세기는 최대 1이라, 반경을 200·160으로 늘리고 Ambient를 `#2A2C50`으로 낮췄다.
 - **IK**: 코스 러너가 `Runner.rig`(발 IK 포함)를 쓰던 것을 Showcase 주인공 스프라이트와 `Hero.animator`·`MotionFacing`으로 바꿨다. 태그도 "Skeleton Animator 2D"에서 "Character Motor 2D"로 바꿨다. 이제 어떤 쇼케이스 씬도 리그를 쓰지 않는다.
 - 이전 영상은 `showcase-video/raw/PlatformerLab-Lights-v1.mp4`·`PlatformerLab-Course-v1.mp4`로 옮겨 두었다. 더 쓰지 않는 PlatformerLab `Assets/Showcase`의 `Barrel.png`·`Crystal.png`·`WallFace.png`·`WallCap.png`는 지우지 않았다.
-| CameraLab `ShowcaseFraming` (`camera/framing.py`, `FramingTour.cs`) | 데드존(상자 표시), 앞보기, 12초에 Frame 카메라로 바꿔 무리(Party) 프레이밍 줌아웃 | `CameraLab-Framing.mp4` 29.0초 | 에디터 Play 녹화. 생성기가 지운 Canvas의 손자 오브젝트를 남겨 빌드가 "Missing parent"로 실패했던 것을 고쳤다 |
+| CameraLab `ShowcaseFraming` (`camera/framing.py`, `FramingTour.cs`) | 약초 줍기: 모닥불 옆 세 개는 데드존 안이라 카메라가 가만히 있고, 동쪽 약초 길을 달리면 앞보기로 카메라가 앞서고, 마지막 약초에서 Frame 카메라로 바뀌어 멀리 있던 동료와 만나 약초상에게 간다 | `CameraLab-Framing.mp4` 15.3초 | 에디터 Play 녹화, `Tests/FramingTests.cs`(일곱 개를 모두 줍고 둘이 약초상 앞에 섬) 통과 |
+
+CameraLab-Framing 다시 만듦(2026-11-25, 품질 지적). 첫 판은 데드존 옆에 "Deadzone 120 × 80" 디버그 글자가 있었고, 이동에 목적이 없었고, 끝에서 둘이 맵 양 끝으로 흩어져 화면이 크게 줌아웃되며 인물이 점처럼 작아졌다. 이제 목적은 약초 일곱 개(`Herb1~3.png`, 주울 때 `HerbPick.particles`)와 "HERBS 0 / 7" 숫자 하나다. 동료는 처음부터 약초상 밭에 있어 만날 때만 조금 줌아웃되고, 둘이 함께 걸어 끝난다. 데드존 테두리는 옅은 금색 선만 남겼다. 이전 영상은 `raw/CameraLab-Framing-v1.mp4`로 옮겼다.
 | SeedLab `ShowcaseRoute` (`seed/route.py`, `RouteCourier.cs`) | 타일셋 지형 비용(길 1, 풀 3, 진흙 8, 다리 1)으로 `TileNavigation.FindPath`, 실행 중 `SetTile`(비 → 진흙, 새 다리)로 다시 계산. 비용 22 → 35 → 11 | `SeedLab-Route.mp4` 14.5초 | 에디터 Play 녹화, `Tests/RouteTests.cs`(진흙 앞에서 돌아서 남쪽 다리로 건너 상자 옆에 섬) 통과 |
 
 SeedLab-Route 다시 만듦(2026-11-25, 품질 지적). 첫 판은 지형 타일을 단색 점무늬로 새로 그려 SeedLab의 다른 장면과 따로 놀았고, 택배원이 화면 높이의 6%였으며, 범례·상태창 글자가 많았다. 이제 타일은 샘플 그림에서 만든다: 풀은 `Grass.png`, 흙길과 진흙은 그 풀을 갈색 계열로 다시 칠한 것(CardLab 디딤돌 하나), 물은 SpriteLab 연못, 다리는 `Plank.png` 색의 판자다. 덤불(`Bush.png`)이 테두리와 막힌 칸에 서고 꽃을 흩었다. 지도는 씬의 타일 청크에 있고(스크립트의 `ReplaceTiles` 제거), 주인공은 KeyRoom 걷기 프레임으로 한 칸씩 걸으며 Tween으로 미끄러지듯 움직인다(화면 높이의 17%). 비는 반복 입자(`Rain.particles`)로 북쪽에 내리고 진흙이 한 칸씩 번진다. 다리는 판자가 한 칸씩 놓이며 먼지(`Build.particles`)가 인다. 도착하면 상자가 튀고 반짝인다. 글자는 Maze 장면의 SEED 패널과 같은 "ROUTE COST" 큰 숫자 하나와 자막 두 줄이다. 비가 온 뒤에는 풀밭 우회와 남쪽 길로 돌아가 7열 풀밭을 오르는 길이 비용이 같아 남쪽이 골라진다. 그래서 주인공이 진흙 앞에서 돌아서서 남쪽 길로 가고, 바로 앞 여울에 놓인 다리를 건넌다. 이전 영상은 `raw/SeedLab-Route-v1.mp4`로 옮겼다.
@@ -287,6 +289,10 @@ KeyRoom-Moves 다시 만듦(2026-11-25, 사용자: 이번 영상들이 예전보
 | 5 | 3순위. 소리 녹음 도구가 정해지면 시작한다. | — |
 
 0단계에서 화풍이 승인되지 않으면 1단계 이후를 시작하지 않는다. 1차 작업이 그 확인 없이 5개 샘플로 넓혀서 전부 다시 하게 됐다.
+
+## 촬영이 끝난 뒤 할 일: 영상 사이 겹치는 기능 조사
+
+사용자 지적(2026-11-25): SeedLab·길찾기처럼 이미 다른 영상에 나온 기능이 새 영상에 또 나오는 것 같다. 촬영이 모두 끝나면 전체 영상의 장면과 태그를 기능별로 모아 겹치는 것을 찾고, 영상마다 겹침을 줄이거나 합칠지 정한다. 그 전까지는 남은 영상 촬영을 먼저 끝낸다. 지금 알려진 후보: SeedLab 길찾기(`SeedLab.mp4` 미로·군중 길찾기, `SeedLab-Route.mp4` 지형 비용), KeyRoomTiles 격자 길찾기, PlatformerLab 관절(`PlatformerLab.mp4` 사슬, `PlatformerLab-Course.mp4` 흔들다리·도르래), 조명(KeyRoom 횃불, `PlatformerLab-Lights.mp4`).
 
 ## 촬영이 끝난 뒤 할 일: 데모 브랜치 정리
 
