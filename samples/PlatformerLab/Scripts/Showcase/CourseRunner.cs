@@ -2,7 +2,7 @@ using System;
 using System.Numerics;
 using Engine.Core;
 
-// PlatformerLab motion showcase: drives the capsule runner through the course without input. It walks right, jumps from the
+// PlatformerLab motion showcase: drives the capsule hero through the course without input. It walks right, jumps from the
 // sinking pulley deck to the rising one and from there to the ledge, stands still on the path lift (which it starts with PlayTween) until the lift has
 // arrived, then walks over the chain hill to the end. The pulley ropes follow the decks. Raises the HUD flags as it goes.
 public sealed class CourseRunner : GameBehaviour
@@ -19,7 +19,7 @@ public sealed class CourseRunner : GameBehaviour
         if (!motion.TryGetMotion(tick.ObjectId, out var body)) return;
         float x = tick.Position.X;
         var session = tick.Session;
-        session.Set("rig");
+        session.Set("motor");
         if (x > 180) session.Set("bridge");
         if (x > 460) session.Set("pulley");
         if (x > 1640) session.Set("chain");

@@ -2,14 +2,16 @@ using System;
 using System.Numerics;
 using Engine.Core;
 
-// PlatformerLab lighting showcase: the hall starts lit, then the Global Light 2D object is switched on and the hall drops to
-// its dark ambient, so only the torches, the hero's lantern and the unlit-layer crystals show. The hero walks back and forth
-// so the lantern's shadows sweep across pillars, barrels and the sliding crate. Raises "shader", "dark", "shadow", "unlit".
+// PlatformerLab lighting showcase: the ruins start in plain dusk with no lights, then the Global Light 2D object and every
+// Point Light 2D (torches and the hero's lantern) are switched on together, so the world drops to its dark ambient and only
+// the lights, the shader flames and the unlit-layer moon show. The hero walks back and forth so the lantern's shadows sweep
+// across the pillars, the beam and the crates. Raises "shader", "dark", "shadow", "unlit".
 public sealed class CaveNight : GameBehaviour
 {
     public Guid Night, Hero;
+    public Guid[] Lights = [];
     public SpriteReference WalkE1, WalkE2, WalkE3, WalkE4, WalkW1, WalkW2, WalkW3, WalkW4;
-    private const float Left = 40, Right = 700, Speed = 75, NightAt = 3f;
+    private const float Left = 20, Right = 470, Speed = 60, NightAt = 2.2f;
     private float x = Left, time;
     private int direction = 1;
     private bool night;
@@ -19,7 +21,13 @@ public sealed class CaveNight : GameBehaviour
         time += tick.DeltaTime;
         var session = tick.Session;
         if (time > .6f) session.Set("shader");
-        if (!night && time >= NightAt) { tick.Objects.SetActive(Night, true); night = true; session.Set("dark"); }
+        if (!night && time >= NightAt)
+        {
+            night = true;
+            tick.Objects.SetActive(Night, true);
+            foreach (var light in Lights) tick.Objects.SetActive(light, true);
+            session.Set("dark");
+        }
         if (time > NightAt + 1.6f) session.Set("shadow");
         if (time > NightAt + 4f) session.Set("unlit");
 

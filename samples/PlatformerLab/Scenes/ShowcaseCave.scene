@@ -9,73 +9,103 @@ objects:
   height: 1
   components:
   - type: globalLight2D
-    color: "#2C3450"
+    color: "#2A2C50"
     unlitLayer: 5
-- id: 0d3c9022-ef79-58a5-be5a-e0dfa6e40436
-  name: Wall
-  x: 0
-  y: 0
+- id: 806c5858-7ef1-591d-b03f-97ab767f5a64
+  name: Sky backing
+  x: -100
+  y: -100
   width: 800
-  height: 380
+  height: 500
   components:
   - type: spriteRenderer
-    assetId: 15aa99cb-5117-54ed-a497-1bc195d823ec
-    asset: Assets/Showcase/WallFace.png
-    drawMode: Tiled
-    order: -20
-- id: 75365e43-f5ac-5847-9f33-0c2945abca00
-  name: Wall cap
-  x: 0
-  y: 0
-  width: 800
-  height: 32
+    sortingLayer: -31
+    squareColor: "#3E2C7C"
+- id: 64501a05-9e56-5eb5-ba55-ae85e23abc1a
+  name: Sky
+  x: -190
+  y: -176
+  width: 912
+  height: 456
   components:
   - type: spriteRenderer
-    assetId: 6d18eb2d-e975-565b-9699-df044b8ec825
-    asset: Assets/Showcase/WallCap.png
-    drawMode: Tiled
-    order: -19
-- id: 92cff6a1-2eb9-59ad-89e7-b5af6015f523
-  name: Floor
-  x: 0
-  y: 380
-  width: 800
-  height: 70
+    assetId: dd698e3c-24ed-5c0a-b76a-06ff5a4c4ad2
+    asset: Assets/Showcase/Sky.png
+    sortingLayer: -30
+- id: a24f1187-f634-5da7-9dad-d1f6e14e5385
+  name: Moon
+  x: 430
+  y: 34
+  width: 36
+  height: 36
   components:
   - type: spriteRenderer
-    assetId: 0853b46e-ba8c-5509-a1b5-318ebc87c031
-    asset: Assets/Showcase/Ground.png
-    drawMode: Tiled
-    order: -10
+    assetId: 07237847-ccea-5b53-947f-11e89f3ac360
+    asset: Assets/Showcase/Moon.png
+    sortingLayer: 5
+- id: c70e90d7-ab4d-5f61-9dce-c0c7edbc6017
+  name: Ground
+  x: -30
+  y: 250
+  width: 600
+  height: 60
+  components:
+  - type: spriteRenderer
+    assetId: d5e23a00-53f6-5f4d-bde3-93b7dddfe901
+    asset: Assets/Showcase/Block600x60.png
+    order: -5
   - type: boxCollider2D
 - id: 1d80da00-15a3-5716-9a55-794294f983fd
   name: Pillar 1
-  x: 236
-  y: 40
-  width: 66
-  height: 340
+  x: 150
+  y: 100
+  width: 44
+  height: 150
   components:
   - type: spriteRenderer
-    assetId: 1f05ce45-611e-5ebc-a38d-4e035baf9cdd
-    asset: Assets/Showcase/Pillar.png
+    assetId: 069f57f3-1289-5e5e-9c44-2f8573d98de2
+    asset: Assets/Showcase/Block44x150.png
     order: -5
   - type: boxCollider2D
 - id: 33704b46-9a73-5976-bafa-9504724064f1
   name: Pillar 2
-  x: 548
-  y: 40
-  width: 66
-  height: 340
+  x: 340
+  y: 100
+  width: 44
+  height: 150
   components:
   - type: spriteRenderer
-    assetId: 1f05ce45-611e-5ebc-a38d-4e035baf9cdd
-    asset: Assets/Showcase/Pillar.png
+    assetId: 069f57f3-1289-5e5e-9c44-2f8573d98de2
+    asset: Assets/Showcase/Block44x150.png
     order: -5
   - type: boxCollider2D
+- id: b6edc30c-a4e0-5d5f-920e-191bfc048fda
+  name: Beam
+  x: 151
+  y: 84
+  width: 232
+  height: 16
+  components:
+  - type: spriteRenderer
+    assetId: d94c6f9c-b4e8-5ce0-bf0e-741d8b74e984
+    asset: Assets/Showcase/Beam.png
+    order: -4
+  - type: boxCollider2D
+- id: b4bf85fa-4ab8-5766-bc36-a6a5632658ea
+  name: Torch pole 1
+  x: 54
+  y: 160
+  width: 12
+  height: 90
+  components:
+  - type: spriteRenderer
+    assetId: c7f9e56b-d388-5cf7-836a-b34b607fd6ec
+    asset: Assets/Showcase/Pole12x90.png
+    order: -6
 - id: 0f077a06-d646-5def-8689-32f7f2a6d904
   name: Torch post 1
-  x: 89
-  y: 196
+  x: 37
+  y: 150
   width: 46
   height: 32
   components:
@@ -85,8 +115,8 @@ objects:
     order: -4
 - id: f34cf88f-7ca3-5d34-9bf0-7e4a6e735344
   name: Torch flame 1
-  x: 100
-  y: 160
+  x: 48
+  y: 116
   width: 24
   height: 36
   components:
@@ -95,22 +125,34 @@ objects:
     sortingLayer: 5
 - id: 4d30167d-cd9d-5a8f-9c06-a117359f61f3
   name: Torch light 1
-  x: 111
-  y: 176
+  active: false
+  x: 59
+  y: 132
   width: 2
   height: 2
   components:
   - type: pointLight2D
-    radius: 240
-    intensity: 1.0
-    flicker: 0.35
+    radius: 200
+    intensity: 1
+    flicker: 0.3
     frequency: 1.7
     color: "#FFB060"
     shadows: true
+- id: f6429c91-aebc-53a0-a356-d609b66882eb
+  name: Torch pole 2
+  x: 263
+  y: 160
+  width: 12
+  height: 90
+  components:
+  - type: spriteRenderer
+    assetId: c7f9e56b-d388-5cf7-836a-b34b607fd6ec
+    asset: Assets/Showcase/Pole12x90.png
+    order: -6
 - id: 3f7959d1-252f-517b-93fb-9c530905b8fb
   name: Torch post 2
-  x: 377
-  y: 196
+  x: 246
+  y: 150
   width: 46
   height: 32
   components:
@@ -120,8 +162,8 @@ objects:
     order: -4
 - id: ca189eee-3911-5102-93ce-a4340531e26b
   name: Torch flame 2
-  x: 388
-  y: 160
+  x: 257
+  y: 116
   width: 24
   height: 36
   components:
@@ -130,22 +172,34 @@ objects:
     sortingLayer: 5
 - id: 249d676e-44ce-59ae-a9b3-201949c2fa3d
   name: Torch light 2
-  x: 399
-  y: 176
+  active: false
+  x: 268
+  y: 132
   width: 2
   height: 2
   components:
   - type: pointLight2D
-    radius: 240
-    intensity: 1.0
-    flicker: 0.3
+    radius: 200
+    intensity: 1
+    flicker: 0.25
     frequency: 1.7
     color: "#FFC070"
     shadows: true
+- id: 1483fabb-161f-5f28-9d41-c3d65ee873c4
+  name: Torch pole 3
+  x: 472
+  y: 160
+  width: 12
+  height: 90
+  components:
+  - type: spriteRenderer
+    assetId: c7f9e56b-d388-5cf7-836a-b34b607fd6ec
+    asset: Assets/Showcase/Pole12x90.png
+    order: -6
 - id: 7fc1ee04-ed4a-59f2-82c6-9ed01b257894
   name: Torch post 3
-  x: 667
-  y: 196
+  x: 455
+  y: 150
   width: 46
   height: 32
   components:
@@ -155,8 +209,8 @@ objects:
     order: -4
 - id: dc1fb1c1-cb95-5dbc-a7ab-d92e9a26c1d0
   name: Torch flame 3
-  x: 678
-  y: 160
+  x: 466
+  y: 116
   width: 24
   height: 36
   components:
@@ -165,34 +219,23 @@ objects:
     sortingLayer: 5
 - id: a619cb59-c97c-508d-bc6b-fdd43e4ce027
   name: Torch light 3
-  x: 689
-  y: 176
+  active: false
+  x: 477
+  y: 132
   width: 2
   height: 2
   components:
   - type: pointLight2D
-    radius: 240
-    intensity: 1.0
-    flicker: 0.4
+    radius: 200
+    intensity: 1
+    flicker: 0.35
     frequency: 1.7
     color: "#FFA050"
     shadows: true
-- id: 9756336d-2605-5a73-8fb0-bc2420127970
-  name: Barrel 1
-  x: 160
-  y: 338
-  width: 34
-  height: 42
-  components:
-  - type: spriteRenderer
-    assetId: 8d977646-e943-5428-85a9-16108a64f08e
-    asset: Assets/Showcase/Barrel.png
-    order: -3
-  - type: boxCollider2D
 - id: 2db2c9b9-92df-58b3-bbe6-0c0a9cea537f
   name: Crate 1
-  x: 336
-  y: 342
+  x: 92
+  y: 212
   width: 36
   height: 38
   components:
@@ -201,22 +244,34 @@ objects:
     asset: Assets/Showcase/Crate.png
     order: -3
   - type: boxCollider2D
-- id: 474074fc-62c7-50f6-a192-f71bd3166ab5
-  name: Barrel 2
-  x: 640
-  y: 338
-  width: 34
-  height: 42
+- id: 2fc10add-24bf-5302-b9b0-9cf932845fc9
+  name: Crate 2
+  x: 410
+  y: 212
+  width: 36
+  height: 38
   components:
   - type: spriteRenderer
-    assetId: 8d977646-e943-5428-85a9-16108a64f08e
-    asset: Assets/Showcase/Barrel.png
+    assetId: c892e735-1a43-5a80-92b2-23fb1770e092
+    asset: Assets/Showcase/Crate.png
+    order: -3
+  - type: boxCollider2D
+- id: b2e8f9bb-97f7-5d6e-8a22-3030d0284f41
+  name: Crate 3
+  x: 418
+  y: 174
+  width: 36
+  height: 38
+  components:
+  - type: spriteRenderer
+    assetId: c892e735-1a43-5a80-92b2-23fb1770e092
+    asset: Assets/Showcase/Crate.png
     order: -3
   - type: boxCollider2D
 - id: 9f5cbd97-c05b-5fa0-b3e0-ad8795d3441c
   name: Sliding crate
-  x: 452
-  y: 342
+  x: 212
+  y: 212
   width: 36
   height: 38
   components:
@@ -231,32 +286,10 @@ objects:
     offsetX: 70
     offsetY: 0
     duration: 2.4
-- id: b8fd742c-d48e-56d5-8d3b-50b27d5c3274
-  name: Crystal 1
-  x: 716
-  y: 352
-  width: 28
-  height: 28
-  components:
-  - type: spriteRenderer
-    assetId: 12baa814-23c6-5f8f-a1c2-af21832f3123
-    asset: Assets/Showcase/Crystal.png
-    sortingLayer: 5
-- id: 532f57ea-fc86-59d2-a052-4269608f1bcd
-  name: Crystal 2
-  x: 744
-  y: 348
-  width: 28
-  height: 28
-  components:
-  - type: spriteRenderer
-    assetId: 12baa814-23c6-5f8f-a1c2-af21832f3123
-    asset: Assets/Showcase/Crystal.png
-    sortingLayer: 5
 - id: d8e85256-d3a1-578c-b93e-68e2f5856f9d
   name: Hero
-  x: 40
-  y: 322
+  x: 20
+  y: 190
   width: 42
   height: 60
   components:
@@ -267,13 +300,14 @@ objects:
 - id: b2d0375a-99f2-5ea9-81f8-6c01bdbf2786
   parentId: d8e85256-d3a1-578c-b93e-68e2f5856f9d
   name: Lantern light
+  active: false
   x: 29
   y: 24
   width: 2
   height: 2
   components:
   - type: pointLight2D
-    radius: 170
+    radius: 160
     intensity: 1
     flicker: 0.05
     frequency: 1.7
@@ -281,12 +315,13 @@ objects:
     shadows: true
 - id: ea4ab372-8081-574c-b35f-7fdcdf2964b5
   name: Camera
-  x: 400
-  y: 225
+  x: 266.5
+  y: 150
   width: 1
   height: 1
   components:
   - type: camera2D
+    zoom: 1.5
 - id: b0300962-90ef-50b3-a077-26472cf64afd
   name: Canvas
   x: 0
@@ -299,11 +334,12 @@ objects:
   parentId: b0300962-90ef-50b3-a077-26472cf64afd
   name: Tag 1
   x: 12
-  y: 40
-  width: 284.4
-  height: 22
+  y: 12
+  width: 309.2
+  height: 24
   components:
   - type: uiRect
+    anchor: TopLeft
     showIf: shader
   - type: uiImage
     sprite: bf477ce7-700b-4462-ba37-ecad01ce5ee2
@@ -313,71 +349,74 @@ objects:
     text: "<b>Sprite Shader 2D</b>   <color=#BFD0DC>procedural torch flames</color>"
     size: 12
     insetX: 10
-    insetY: 3
+    insetY: 4
 - id: 1a97980f-6bca-50cd-8687-b54a0cbf8048
   parentId: b0300962-90ef-50b3-a077-26472cf64afd
   name: Tag 2
   x: 12
-  y: 66
-  width: 284.4
-  height: 22
+  y: 40
+  width: 309.2
+  height: 24
   components:
   - type: uiRect
+    anchor: TopLeft
     showIf: dark
   - type: uiImage
     sprite: bf477ce7-700b-4462-ba37-ecad01ce5ee2
     borders: {left: 4, top: 4, right: 4, bottom: 4}
   - type: uiText
     richText: true
-    text: "<b>Global Light 2D</b>   <color=#BFD0DC>ambient darkness</color>"
+    text: "<b>Global Light 2D</b>   <color=#BFD0DC>dusk falls over the ruins</color>"
     size: 12
     insetX: 10
-    insetY: 3
+    insetY: 4
 - id: 417a7459-46ed-5639-a75e-9a77979a63e6
   parentId: b0300962-90ef-50b3-a077-26472cf64afd
   name: Tag 3
   x: 12
-  y: 92
-  width: 284.4
-  height: 22
+  y: 68
+  width: 309.2
+  height: 24
   components:
   - type: uiRect
+    anchor: TopLeft
     showIf: shadow
   - type: uiImage
     sprite: bf477ce7-700b-4462-ba37-ecad01ce5ee2
     borders: {left: 4, top: 4, right: 4, bottom: 4}
   - type: uiText
     richText: true
-    text: "<b>Shadows</b>   <color=#BFD0DC>colliders block every light</color>"
+    text: "<b>Shadows</b>   <color=#BFD0DC>pillars, beam and crates block light</color>"
     size: 12
     insetX: 10
-    insetY: 3
+    insetY: 4
 - id: 9327211b-29e1-5303-b07d-7ac09782619e
   parentId: b0300962-90ef-50b3-a077-26472cf64afd
   name: Tag 4
   x: 12
-  y: 118
-  width: 284.4
-  height: 22
+  y: 96
+  width: 309.2
+  height: 24
   components:
   - type: uiRect
+    anchor: TopLeft
     showIf: unlit
   - type: uiImage
     sprite: bf477ce7-700b-4462-ba37-ecad01ce5ee2
     borders: {left: 4, top: 4, right: 4, bottom: 4}
   - type: uiText
     richText: true
-    text: "<b>Unlit layer</b>   <color=#BFD0DC>crystals keep their glow</color>"
+    text: "<b>Unlit layer</b>   <color=#BFD0DC>the moon keeps its glow</color>"
     size: 12
     insetX: 10
-    insetY: 3
+    insetY: 4
 - id: edabf90e-6cc6-5b74-adf1-25fd60d43894
   parentId: b0300962-90ef-50b3-a077-26472cf64afd
   name: Caption
   x: 12
-  y: -8
-  width: 300
-  height: 24
+  y: -12
+  width: 330
+  height: 30
   components:
   - type: uiRect
     anchor: BottomLeft
@@ -388,15 +427,15 @@ objects:
   parentId: edabf90e-6cc6-5b74-adf1-25fd60d43894
   name: Caption text
   x: 12
-  y: 3
-  width: 280
-  height: 18
+  y: 5
+  width: 310
+  height: 20
   components:
   - type: uiRect
   - type: uiText
     richText: true
     text: "<b>PlatformerLab</b>   2D lights and shadows"
-    size: 13
+    size: 15
 - id: af80ec6f-4b80-5a8a-90fb-d42c20f1b09d
   name: Show
   x: 0
@@ -406,5 +445,5 @@ objects:
   components:
   - type: script
     script: Showcase/CaveNight
-    values: {"Night": "94afdabe-0cfe-5d42-b626-81e85470cbac", "Hero": "d8e85256-d3a1-578c-b93e-68e2f5856f9d", "WalkE1": {"Id": "71cd46b3-4774-5655-9f95-d2687bdbef92"}, "WalkE2": {"Id": "7b715515-6468-55db-9f21-4ff91cc83ac5"}, "WalkE3": {"Id": "f8fdb303-f1af-5ea5-8fb5-e1f446f95d8c"}, "WalkE4": {"Id": "d9860f37-42cb-5ca8-b535-3f6c706110fd"}, "WalkW1": {"Id": "7c0cb51d-89ca-56c5-9209-2e0eb04884c5"}, "WalkW2": {"Id": "8bfb80bc-0db4-5358-983c-9f552c34b9cc"}, "WalkW3": {"Id": "306f3015-c289-5db0-af9d-66d8ba96a05d"}, "WalkW4": {"Id": "631086c6-19bb-58c3-b032-8d00b0265276"}}
+    values: {"Night": "94afdabe-0cfe-5d42-b626-81e85470cbac", "Hero": "d8e85256-d3a1-578c-b93e-68e2f5856f9d", "Lights": ["4d30167d-cd9d-5a8f-9c06-a117359f61f3", "249d676e-44ce-59ae-a9b3-201949c2fa3d", "a619cb59-c97c-508d-bc6b-fdd43e4ce027", "b2d0375a-99f2-5ea9-81f8-6c01bdbf2786"], "WalkE1": {"Id": "71cd46b3-4774-5655-9f95-d2687bdbef92"}, "WalkE2": {"Id": "7b715515-6468-55db-9f21-4ff91cc83ac5"}, "WalkE3": {"Id": "f8fdb303-f1af-5ea5-8fb5-e1f446f95d8c"}, "WalkE4": {"Id": "d9860f37-42cb-5ca8-b535-3f6c706110fd"}, "WalkW1": {"Id": "7c0cb51d-89ca-56c5-9209-2e0eb04884c5"}, "WalkW2": {"Id": "8bfb80bc-0db4-5358-983c-9f552c34b9cc"}, "WalkW3": {"Id": "306f3015-c289-5db0-af9d-66d8ba96a05d"}, "WalkW4": {"Id": "631086c6-19bb-58c3-b032-8d00b0265276"}}
 defaultCameraId: ea4ab372-8081-574c-b35f-7fdcdf2964b5

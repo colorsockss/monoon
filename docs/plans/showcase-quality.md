@@ -246,8 +246,16 @@ Parallax는 PlatformerLab의 한 씬이라 PlatformerLab 영상 안에서 다룬
 
 | 쇼케이스 씬 (생성 스크립트) | 보여 주는 기능 | 영상 | 확인 |
 | --- | --- | --- | --- |
-| PlatformerLab `ShowcaseCave` (`platformer/cave.py`, `CaveNight.cs`) | Global Light 2D로 밤이 되며 횃불·랜턴 Point Light 2D와 그림자, Sprite Shader 2D 불꽃, 조명 안 받는 레이어(수정) | `PlatformerLab-Lights.mp4` 20.5초 | 에디터 Play 녹화 |
-| PlatformerLab `ShowcaseCourse` (`platformer/course.py`, `CourseRunner.cs`) | 뼈대 애니메이션 러너(캡슐 + Character Motor 2D), 회전 관절 흔들다리, 슬라이더 관절 도르래, 베지어 Path Follower 2D 승강대와 곡선 Line 2D, Edge Collider 2D 언덕 | `PlatformerLab-Course.mp4` 20.7초 | 에디터 Play 녹화 |
+| PlatformerLab `ShowcaseCave` (`platformer/cave.py`, `CaveNight.cs`) | 해 질 녘 유적에서 Global Light 2D와 횃불·랜턴 Point Light 2D가 함께 켜지고, 기둥·들보·상자가 그림자를 드리운다. Sprite Shader 2D 불꽃, 조명 안 받는 레이어의 달 | `PlatformerLab-Lights.mp4` 21.5초 | 에디터 Play 녹화 |
+| PlatformerLab `ShowcaseCourse` (`platformer/course.py`, `CourseRunner.cs`) | Showcase 주인공(옆모습 걷기 클립, 리그·발 IK 없음)을 캡슐 + Character Motor 2D로 움직임, 회전 관절 흔들다리, 슬라이더 관절 도르래, 베지어 Path Follower 2D 승강대와 곡선 Line 2D, Edge Collider 2D 언덕 | `PlatformerLab-Course.mp4` 19.0초 | 에디터 Play 녹화 |
+
+PlatformerLab 두 씬 다시 만듦(2026-11-25, 사용자 지적: 화풍이 다르다, 투명 픽셀이 빛을 받는다, 코스 캐릭터가 IK를 쓴다).
+
+- **화풍**: 처음 판은 `Ground.png` 시트 전체를 반복해 칸마다 풀 줄이 생겼고, 기둥 그림을 반 너비로 찌그러뜨렸고, 하늘이 단색 띠였고, 조명 씬은 KeyRoom 벽·나무통과 InventoryLab 수정을 썼다. 이제 `showcase-src/platformer/blocks.py`가 `Ground.png` 4비트 자동 타일 규칙(위·오른쪽·아래·왼쪽 이웃)으로 크기마다 윗면 풀과 테두리가 맞는 덩어리 그림을 만든다. `Deck.png`·`DeckLeg.png`는 가장자리를 남기고 줄인다. 언덕은 곡선을 따라 풀을 깐다. 하늘·산·달은 Showcase 씬과 같은 `Sky.png`·`Moon.png`·`#3E2C7C`이고, 두 씬 모두 Showcase 씬과 같은 텍셀당 1.5 화면 픽셀(1 텍셀 = 1 단위, 카메라 zoom 1.5)이다. 새 그림 17개는 합쳐서 64 KB다.
+- **투명 픽셀이 밝게 남던 것**: 엔진 조명은 그림자를 콜라이더에서 광원을 등진 변부터 만든다(설명서 effects.md). 둥근 나무통의 사각형 콜라이더 안쪽이 밝게 남아 투명한 모서리가 사각형으로 비쳤다. 그림자를 드리우는 물체를 그림 전체가 불투명한 것(바위 기둥, 들보, 상자)으로 바꿨다. 주인공은 콜라이더가 없다. 엔진은 바꾸지 않았다.
+- **밝기**: 밤이 되기 전에도 조명이 켜져 하얗게 번지던 것을 고쳤다. 이제 조명은 Global Light와 함께 켜진다. Point Light 세기는 최대 1이라, 반경을 200·160으로 늘리고 Ambient를 `#2A2C50`으로 낮췄다.
+- **IK**: 코스 러너가 `Runner.rig`(발 IK 포함)를 쓰던 것을 Showcase 주인공 스프라이트와 `Hero.animator`·`MotionFacing`으로 바꿨다. 태그도 "Skeleton Animator 2D"에서 "Character Motor 2D"로 바꿨다. 이제 어떤 쇼케이스 씬도 리그를 쓰지 않는다.
+- 이전 영상은 `showcase-video/raw/PlatformerLab-Lights-v1.mp4`·`PlatformerLab-Course-v1.mp4`로 옮겨 두었다. 더 쓰지 않는 PlatformerLab `Assets/Showcase`의 `Barrel.png`·`Crystal.png`·`WallFace.png`·`WallCap.png`는 지우지 않았다.
 | CameraLab `ShowcaseFraming` (`camera/framing.py`, `FramingTour.cs`) | 데드존(상자 표시), 앞보기, 12초에 Frame 카메라로 바꿔 무리(Party) 프레이밍 줌아웃 | `CameraLab-Framing.mp4` 29.0초 | 에디터 Play 녹화. 생성기가 지운 Canvas의 손자 오브젝트를 남겨 빌드가 "Missing parent"로 실패했던 것을 고쳤다 |
 | SeedLab `ShowcaseRoute` (`seed/route.py`, `RouteCourier.cs`) | 타일셋 지형 비용(길 1, 풀 3, 진흙 8, 다리 1)으로 `TileNavigation.FindPath`, 실행 중 `SetTile`(비 → 진흙, 새 다리)로 다시 계산. 비용 29 → 42 → 19 | `SeedLab-Route.mp4` 15.6초 | 에디터 Play 녹화, `Tests/RouteTests.cs`(우회·남쪽 다리 경유) 통과 |
 | KeyRoom `ShowcaseMoves` (`keyroom/moves.py`, `MoveTrainer.cs`) | GameSettings 상호작용 Hold 30·Tap 12·DoubleTap 15, K로 Dash 키 실행 중 재설정 | `KeyRoom-Moves.mp4` 25.0초 | 에디터 Play에서 직접 입력해 녹화(짧은 J, 긴 J, U 탭, 긴 U, O 더블탭, 느린 O 두 번, K → P 재설정, P 더블탭). `Tests/MoveTests.cs` 4개 통과. 합성 키는 누름·뗌이 한 틱에 들어올 수 있어 Flick 로그에서 틱 수를 뺐다 |

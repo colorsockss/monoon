@@ -1,25 +1,47 @@
 schemaVersion: 42
 objects:
+- id: f567fb8f-1ce3-565d-a6da-cfd375ebcb3c
+  name: Sky backing
+  x: -400
+  y: -300
+  width: 1600
+  height: 900
+  components:
+  - type: spriteRenderer
+    sortingLayer: -31
+    squareColor: "#3E2C7C"
+  - type: parallax2D
+    scrollX: 0
+    scrollY: 0
 - id: 2217116d-d564-5623-ba5a-0ebe866ed872
   name: Sky
-  x: -200
-  y: -200
-  width: 2800
-  height: 420
+  x: -190
+  y: -140
+  width: 912
+  height: 456
   components:
   - type: spriteRenderer
-    squareColor: "#8FC9E8"
-    order: -40
-- id: 17e15d31-1563-57ea-b6c7-9a36e3e0710e
-  name: Sky low
-  x: -200
-  y: 220
-  width: 2800
-  height: 500
+    assetId: dd698e3c-24ed-5c0a-b76a-06ff5a4c4ad2
+    asset: Assets/Showcase/Sky.png
+    sortingLayer: -30
+  - type: parallax2D
+    scrollX: 0.15
+    scrollY: 0
+    repeatX: true
+- id: e1565bae-9a00-5267-bc9c-318d514de216
+  name: Moon
+  x: 420
+  y: 30
+  width: 36
+  height: 36
   components:
   - type: spriteRenderer
-    squareColor: "#BFE3EE"
-    order: -40
+    assetId: 07237847-ccea-5b53-947f-11e89f3ac360
+    asset: Assets/Showcase/Moon.png
+    sortingLayer: -29
+  - type: parallax2D
+    scrollX: 0.05
+    scrollY: 0
 - id: 0167db76-e9ae-5f56-883b-5b992032e4d4
   name: Start ledge
   x: 0
@@ -28,9 +50,8 @@ objects:
   height: 150
   components:
   - type: spriteRenderer
-    assetId: 0853b46e-ba8c-5509-a1b5-318ebc87c031
-    asset: Assets/Showcase/Ground.png
-    drawMode: Tiled
+    assetId: b8685b8d-589d-5e3e-ae22-2490c8b81ec8
+    asset: Assets/Showcase/Block200x150.png
     order: -5
   - type: boxCollider2D
 - id: 76881e4e-2e0f-5cfb-b24c-4a4c07fe5940
@@ -41,9 +62,8 @@ objects:
   height: 20
   components:
   - type: spriteRenderer
-    assetId: 0853b46e-ba8c-5509-a1b5-318ebc87c031
-    asset: Assets/Showcase/Ground.png
-    drawMode: Tiled
+    assetId: 05fba063-6395-5d0a-999f-c0e0612ad738
+    asset: Assets/Showcase/Block190x20.png
     order: -5
   - type: boxCollider2D
 - id: 301044ca-81ab-5ed2-94b3-6bd220524765
@@ -57,9 +77,8 @@ objects:
   height: 6
   components:
   - type: spriteRenderer
-    assetId: d72c3b8c-1b7f-5087-871f-46c9ae587566
-    asset: Assets/Showcase/Deck.png
-    drawMode: Tiled
+    assetId: 077862c7-ad47-5d0d-8f32-1d89be904978
+    asset: Assets/Showcase/Deck24x6.png
     order: 1
   - type: boxCollider2D
   - type: rigidbody2D
@@ -79,9 +98,8 @@ objects:
   height: 6
   components:
   - type: spriteRenderer
-    assetId: d72c3b8c-1b7f-5087-871f-46c9ae587566
-    asset: Assets/Showcase/Deck.png
-    drawMode: Tiled
+    assetId: 077862c7-ad47-5d0d-8f32-1d89be904978
+    asset: Assets/Showcase/Deck24x6.png
     order: 1
   - type: boxCollider2D
   - type: rigidbody2D
@@ -101,9 +119,8 @@ objects:
   height: 6
   components:
   - type: spriteRenderer
-    assetId: d72c3b8c-1b7f-5087-871f-46c9ae587566
-    asset: Assets/Showcase/Deck.png
-    drawMode: Tiled
+    assetId: 077862c7-ad47-5d0d-8f32-1d89be904978
+    asset: Assets/Showcase/Deck24x6.png
     order: 1
   - type: boxCollider2D
   - type: rigidbody2D
@@ -123,9 +140,8 @@ objects:
   height: 6
   components:
   - type: spriteRenderer
-    assetId: d72c3b8c-1b7f-5087-871f-46c9ae587566
-    asset: Assets/Showcase/Deck.png
-    drawMode: Tiled
+    assetId: 077862c7-ad47-5d0d-8f32-1d89be904978
+    asset: Assets/Showcase/Deck24x6.png
     order: 1
   - type: boxCollider2D
   - type: rigidbody2D
@@ -145,9 +161,8 @@ objects:
   height: 6
   components:
   - type: spriteRenderer
-    assetId: d72c3b8c-1b7f-5087-871f-46c9ae587566
-    asset: Assets/Showcase/Deck.png
-    drawMode: Tiled
+    assetId: 077862c7-ad47-5d0d-8f32-1d89be904978
+    asset: Assets/Showcase/Deck24x6.png
     order: 1
   - type: boxCollider2D
   - type: rigidbody2D
@@ -167,9 +182,8 @@ objects:
   height: 6
   components:
   - type: spriteRenderer
-    assetId: d72c3b8c-1b7f-5087-871f-46c9ae587566
-    asset: Assets/Showcase/Deck.png
-    drawMode: Tiled
+    assetId: 077862c7-ad47-5d0d-8f32-1d89be904978
+    asset: Assets/Showcase/Deck24x6.png
     order: 1
   - type: boxCollider2D
   - type: rigidbody2D
@@ -189,9 +203,8 @@ objects:
   height: 6
   components:
   - type: spriteRenderer
-    assetId: d72c3b8c-1b7f-5087-871f-46c9ae587566
-    asset: Assets/Showcase/Deck.png
-    drawMode: Tiled
+    assetId: 077862c7-ad47-5d0d-8f32-1d89be904978
+    asset: Assets/Showcase/Deck24x6.png
     order: 1
   - type: boxCollider2D
   - type: rigidbody2D
@@ -211,9 +224,8 @@ objects:
   height: 6
   components:
   - type: spriteRenderer
-    assetId: d72c3b8c-1b7f-5087-871f-46c9ae587566
-    asset: Assets/Showcase/Deck.png
-    drawMode: Tiled
+    assetId: 077862c7-ad47-5d0d-8f32-1d89be904978
+    asset: Assets/Showcase/Deck24x6.png
     order: 1
   - type: boxCollider2D
   - type: rigidbody2D
@@ -230,9 +242,8 @@ objects:
   height: 150
   components:
   - type: spriteRenderer
-    assetId: 0853b46e-ba8c-5509-a1b5-318ebc87c031
-    asset: Assets/Showcase/Ground.png
-    drawMode: Tiled
+    assetId: f6fa9edf-26a7-5c4a-8d20-bdd467abcfdc
+    asset: Assets/Showcase/Block80x150.png
     order: -5
   - type: boxCollider2D
   - type: revoluteJoint2D
@@ -249,9 +260,8 @@ objects:
   height: 12
   components:
   - type: spriteRenderer
-    assetId: d72c3b8c-1b7f-5087-871f-46c9ae587566
-    asset: Assets/Showcase/Deck.png
-    drawMode: Tiled
+    assetId: 347329e7-deb3-545e-8b4b-536227b1e71d
+    asset: Assets/Showcase/Deck70x12.png
     order: 1
   - type: boxCollider2D
   - type: rigidbody2D
@@ -276,9 +286,8 @@ objects:
   height: 12
   components:
   - type: spriteRenderer
-    assetId: d72c3b8c-1b7f-5087-871f-46c9ae587566
-    asset: Assets/Showcase/Deck.png
-    drawMode: Tiled
+    assetId: 347329e7-deb3-545e-8b4b-536227b1e71d
+    asset: Assets/Showcase/Deck70x12.png
     order: 1
   - type: boxCollider2D
   - type: rigidbody2D
@@ -290,6 +299,17 @@ objects:
     limit: true
     lower: -16
     upper: 16
+- id: 4d4bf0b3-288e-52a9-84b8-d15d66436504
+  name: Pulley post
+  x: 566
+  y: 140
+  width: 12
+  height: 290
+  components:
+  - type: spriteRenderer
+    assetId: a0cf65bf-0302-5a62-a54c-f11016751623
+    asset: Assets/Showcase/BeamPost.png
+    order: -6
 - id: 61578b61-512d-5540-bcff-0bd65d355a05
   name: Pulley wheel
   x: 560
@@ -339,9 +359,8 @@ objects:
   height: 20
   components:
   - type: spriteRenderer
-    assetId: 0853b46e-ba8c-5509-a1b5-318ebc87c031
-    asset: Assets/Showcase/Ground.png
-    drawMode: Tiled
+    assetId: afdea63a-1d96-5623-b9c0-ec14e3056101
+    asset: Assets/Showcase/Block220x20.png
     order: -5
   - type: boxCollider2D
 - id: 71b5edd7-a621-566e-919d-d9df6ec7bdc9
@@ -352,9 +371,8 @@ objects:
   height: 150
   components:
   - type: spriteRenderer
-    assetId: 0853b46e-ba8c-5509-a1b5-318ebc87c031
-    asset: Assets/Showcase/Ground.png
-    drawMode: Tiled
+    assetId: 67c4e380-f8f9-5963-a13a-8140dfde5860
+    asset: Assets/Showcase/Block310x150.png
     order: -5
   - type: boxCollider2D
 - id: e8b9a62d-0e5f-5137-b0cb-9fa7b756e585
@@ -365,9 +383,8 @@ objects:
   height: 20
   components:
   - type: spriteRenderer
-    assetId: 0853b46e-ba8c-5509-a1b5-318ebc87c031
-    asset: Assets/Showcase/Ground.png
-    drawMode: Tiled
+    assetId: 4acb2034-8098-5307-a36f-c7afb18af1ae
+    asset: Assets/Showcase/Block400x20.png
     order: -5
   - type: boxCollider2D
 - id: af65d16b-903b-5805-85e9-9e1925f29868
@@ -378,9 +395,9 @@ objects:
   height: 220
   components:
   - type: spriteRenderer
-    assetId: 1f05ce45-611e-5ebc-a38d-4e035baf9cdd
-    asset: Assets/Showcase/Pillar.png
-    order: -6
+    assetId: 8286da16-a678-5dda-9f82-3c1c30ba48ec
+    asset: Assets/Showcase/Block40x220.png
+    order: -5
   - type: boxCollider2D
 - id: 61c77573-7037-59db-80d8-c0d2c3e6943e
   name: Path lift
@@ -390,9 +407,8 @@ objects:
   height: 12
   components:
   - type: spriteRenderer
-    assetId: d72c3b8c-1b7f-5087-871f-46c9ae587566
-    asset: Assets/Showcase/Deck.png
-    drawMode: Tiled
+    assetId: 666ba46e-6c67-58f7-a293-9dcea5798324
+    asset: Assets/Showcase/Deck80x12.png
     order: 1
   - type: boxCollider2D
   - type: rigidbody2D
@@ -429,9 +445,8 @@ objects:
   height: 190
   components:
   - type: spriteRenderer
-    assetId: 0853b46e-ba8c-5509-a1b5-318ebc87c031
-    asset: Assets/Showcase/Ground.png
-    drawMode: Tiled
+    assetId: 98b5a693-c0c7-592a-ac76-b2d91522370c
+    asset: Assets/Showcase/Block200x190R.png
     order: -5
   - type: boxCollider2D
 - id: 4590b7d3-c332-554d-80ed-1e4e0b426f11
@@ -460,14 +475,17 @@ objects:
     - {x: 0.88320, y: 0.80312}
     - {x: 0.94263, y: 0.89453}
     - {x: 1.00000, y: 1.00000}
-  - type: line2D
-    points:
-    - {x: 0, y: 100, outX: 144, outY: -60}
-    - {x: 480, y: 100, inX: -144, inY: -60}
-    width: 6
-    startColor: "#7CC36A"
-    endColor: "#4F9A55"
-    order: 2
+- id: d1c117a4-50c7-5f81-9b5e-bc461dad6d62
+  name: Hill ground
+  x: 1600
+  y: 200
+  width: 480
+  height: 250
+  components:
+  - type: spriteRenderer
+    assetId: 291bc458-c2a9-5950-8370-f3ec6b82705e
+    asset: Assets/Showcase/Hill.png
+    order: -5
 - id: 066238ca-9b2c-52b0-999b-a1cdc4215b5b
   name: Hill floor
   x: 1600
@@ -475,11 +493,6 @@ objects:
   width: 480
   height: 20
   components:
-  - type: spriteRenderer
-    assetId: 0853b46e-ba8c-5509-a1b5-318ebc87c031
-    asset: Assets/Showcase/Ground.png
-    drawMode: Tiled
-    order: -5
   - type: boxCollider2D
 - id: 1fd0dbb4-81fa-5554-935f-e4f82d70acd4
   name: End ledge
@@ -489,17 +502,16 @@ objects:
   height: 190
   components:
   - type: spriteRenderer
-    assetId: 0853b46e-ba8c-5509-a1b5-318ebc87c031
-    asset: Assets/Showcase/Ground.png
-    drawMode: Tiled
+    assetId: 04abca9f-b8f4-5df9-b978-7a3f1db7fcda
+    asset: Assets/Showcase/Block260x190L.png
     order: -5
   - type: boxCollider2D
 - id: 9ace23a2-d72f-50f7-951c-3bfb12bc3507
   name: Goal pennant
   x: 2280
-  y: 196
+  y: 202
   width: 40
-  height: 64
+  height: 58
   components:
   - type: spriteRenderer
     assetId: 34e622de-b909-54c3-aeee-270fb33c457d
@@ -508,23 +520,40 @@ objects:
 - id: f373d37f-5d2d-53e4-8679-e33133f2c5b6
   name: Runner
   x: 60
-  y: 268
-  width: 22
-  height: 30
+  y: 244
+  width: 24
+  height: 56
   components:
-  - type: skeletonAnimator2D
-    rig: 125e32af-6a4f-40ca-acb2-c88f5fc833ce
-    order: 3
-    clock: Travel
-    stride: 28
   - type: capsuleCollider2D
     layer: 1
   - type: rigidbody2D
     freezeRotation: true
+  - type: particleEmitter2D
+    particles: 414d124e-1584-5d99-bcd2-00f409d6d342
+    trigger: Landing
+    offsetY: 28
   - type: characterMotor2D
   - type: script
     script: Showcase/CourseRunner
     values: {"Lift": "61c77573-7037-59db-80d8-c0d2c3e6943e", "DeckA": "e5fdbd64-7c28-5ec0-8389-fbb479a36afd", "DeckB": "7b5e294a-f984-52e4-8863-92e33b961586", "RopeA": "e27664ac-8bd6-5036-9a14-e7224b82920a", "RopeB": "76537411-6fa6-5c1b-bf94-147882b6aa2b"}
+- id: bd19a9e5-7806-5380-9152-d8416cabb604
+  parentId: f373d37f-5d2d-53e4-8679-e33133f2c5b6
+  name: Hero
+  x: -9
+  y: -4
+  width: 42
+  height: 60
+  components:
+  - type: spriteRenderer
+    assetId: ec945f79-bbec-501d-ac7b-a846e8a0e9fe
+    asset: Assets/Showcase/HeroIdleE.png
+    order: 4
+  - type: spriteAnimator
+    controller: 8c7eb4b0-8e81-5967-a2b9-62ebffed7ef6
+    playOnStart: true
+  - type: script
+    script: MotionFacing
+    values: {}
 - id: 40439bd9-e7d5-5918-8cdf-6d69e0a2e648
   name: Camera
   x: 400
@@ -550,29 +579,31 @@ objects:
   name: Tag 1
   x: 12
   y: 12
-  width: 358.8
-  height: 22
+  width: 346.4
+  height: 24
   components:
   - type: uiRect
-    showIf: rig
+    anchor: TopLeft
+    showIf: motor
   - type: uiImage
     sprite: bf477ce7-700b-4462-ba37-ecad01ce5ee2
     borders: {left: 4, top: 4, right: 4, bottom: 4}
   - type: uiText
     richText: true
-    text: "<b>Skeleton Animator 2D</b>   <color=#BFD0DC>bones on a capsule body</color>"
+    text: "<b>Character Motor 2D</b>   <color=#BFD0DC>a capsule hero walks it all</color>"
     size: 12
     insetX: 10
-    insetY: 3
+    insetY: 4
 - id: e114eaca-9441-5362-a266-7346bd84ccb8
   parentId: 1ee4d7b1-452b-5bd6-930b-75a02409deaa
   name: Tag 2
   x: 12
-  y: 38
-  width: 358.8
-  height: 22
+  y: 40
+  width: 346.4
+  height: 24
   components:
   - type: uiRect
+    anchor: TopLeft
     showIf: bridge
   - type: uiImage
     sprite: bf477ce7-700b-4462-ba37-ecad01ce5ee2
@@ -582,16 +613,17 @@ objects:
     text: "<b>Revolute Joint 2D</b>   <color=#BFD0DC>a rope bridge of planks</color>"
     size: 12
     insetX: 10
-    insetY: 3
+    insetY: 4
 - id: 3372dd8b-6769-541f-bed6-136341a56949
   parentId: 1ee4d7b1-452b-5bd6-930b-75a02409deaa
   name: Tag 3
   x: 12
-  y: 64
-  width: 358.8
-  height: 22
+  y: 68
+  width: 346.4
+  height: 24
   components:
   - type: uiRect
+    anchor: TopLeft
     showIf: pulley
   - type: uiImage
     sprite: bf477ce7-700b-4462-ba37-ecad01ce5ee2
@@ -601,16 +633,17 @@ objects:
     text: "<b>Slider joints</b>   <color=#BFD0DC>a pulley: one deck sinks, one rises</color>"
     size: 12
     insetX: 10
-    insetY: 3
+    insetY: 4
 - id: 10c8e86a-ad81-5100-9ed1-4eada6242038
   parentId: 1ee4d7b1-452b-5bd6-930b-75a02409deaa
   name: Tag 4
   x: 12
-  y: 90
-  width: 358.8
-  height: 22
+  y: 96
+  width: 346.4
+  height: 24
   components:
   - type: uiRect
+    anchor: TopLeft
     showIf: path
   - type: uiImage
     sprite: bf477ce7-700b-4462-ba37-ecad01ce5ee2
@@ -620,33 +653,34 @@ objects:
     text: "<b>Path Follower 2D</b>   <color=#BFD0DC>a lift on a Bezier curve</color>"
     size: 12
     insetX: 10
-    insetY: 3
+    insetY: 4
 - id: 8f41b585-3443-5b46-ae90-e80160f0d440
   parentId: 1ee4d7b1-452b-5bd6-930b-75a02409deaa
   name: Tag 5
   x: 12
-  y: 116
-  width: 358.8
-  height: 22
+  y: 124
+  width: 346.4
+  height: 24
   components:
   - type: uiRect
+    anchor: TopLeft
     showIf: chain
   - type: uiImage
     sprite: bf477ce7-700b-4462-ba37-ecad01ce5ee2
     borders: {left: 4, top: 4, right: 4, bottom: 4}
   - type: uiText
     richText: true
-    text: "<b>Edge Collider 2D</b>   <color=#BFD0DC>a chain hill under a smooth Line 2D</color>"
+    text: "<b>Edge Collider 2D</b>   <color=#BFD0DC>a curved hill on a collider chain</color>"
     size: 12
     insetX: 10
-    insetY: 3
+    insetY: 4
 - id: 609150c7-9323-52cb-a32e-115613cdac8c
   parentId: 1ee4d7b1-452b-5bd6-930b-75a02409deaa
   name: Caption
   x: 12
-  y: -8
-  width: 330
-  height: 24
+  y: -12
+  width: 400
+  height: 30
   components:
   - type: uiRect
     anchor: BottomLeft
@@ -657,13 +691,13 @@ objects:
   parentId: 609150c7-9323-52cb-a32e-115613cdac8c
   name: Caption text
   x: 12
-  y: 3
-  width: 310
-  height: 18
+  y: 5
+  width: 380
+  height: 20
   components:
   - type: uiRect
   - type: uiText
     richText: true
-    text: "<b>PlatformerLab</b>   Joints, curves and a rigged runner"
-    size: 13
+    text: "<b>PlatformerLab</b>   Joints, curves and a moving lift"
+    size: 15
 defaultCameraId: 40439bd9-e7d5-5918-8cdf-6d69e0a2e648
