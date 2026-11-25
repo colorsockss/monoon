@@ -11,40 +11,13 @@ public sealed class Runner : GameBehaviour
     private Vector2 start, boardedAt, ferryAt;
     private float rise, drift, jointError, swing;
 
-    private bool sawOutbound, sawReturn, animationReported;
-    private int rearPlants, frontPlants, rampSwings;
-    private float maxSoleError, maxAngleError, maxFootSlip, maxRideSlip, maxTravel;
-    private Vector2? lastRear, lastFront;
+    private bool sawOutbound, sawReturn, rideReported;
+    private float maxRideSlip, maxTravel;
 
-    // Record the actual post-physics pose from the preceding step. The incline endpoints
-    // are transformed separately so the check does not simply reread the IK raycast.
-    private void MeasureAnimation(ScriptTick tick, MotionState2D motion)
+    // Record the rider on the shuttle from the preceding step: it must travel out and back without slipping on the deck.
+    private void MeasureRide(ScriptTick tick, MotionState2D motion)
     {
-        if (animationReported) return;
-        if (motion.Support==Ramp && tick.Objects.TryGetWorldMatrix(Ramp,out var matrix))
-        {
-            // Platform.scene defines the ramp edge from (0,90) to (190,0) in local pixels.
-            var a=Affine2D.Transform(new Vector2(0,90),matrix);
-            var b=Affine2D.Transform(new Vector2(190,0),matrix);
-            var tangent=Vector2.Normalize(b-a);
-            void Foot(string name,ref int planted,ref Vector2? previous)
-            {
-                if (!tick.Objects.TryGetBonePose(tick.ObjectId,name,out var foot) || foot.Ground!=Ramp ||
-                    foot.Start.X<a.X+12 || foot.Start.X>b.X-12) {previous=null;return;}
-                var axis=Vector2.Normalize(foot.End-foot.Start);
-                float alignment=Math.Abs(axis.X*tangent.Y-axis.Y*tangent.X);
-                maxAngleError=Math.Max(maxAngleError,float.RadiansToDegrees(MathF.Asin(Math.Min(1,alignment))));
-                float height=(foot.Start.X-a.X)*tangent.Y/tangent.X+a.Y-foot.Start.Y;
-                if (!foot.Planted) {if(height>2)rampSwings++;previous=null;return;}
-                if (Math.Abs(motion.Velocity.X)>1) planted++;
-                maxSoleError=Math.Max(maxSoleError,Math.Abs(height));
-                if(previous is Vector2 last)maxFootSlip=Math.Max(maxFootSlip,Vector2.Distance(foot.Start,last));
-                previous=foot.Start;
-            }
-            Foot("RearFoot",ref rearPlants,ref lastRear);
-            Foot("FrontFoot",ref frontPlants,ref lastFront);
-        }
-        else {lastRear=null;lastFront=null;}
+        if (rideReported) return;
         if (rideTicks==0 || motion.Support!=Ferry || !tick.Objects.TryGetPosition(Ferry,out var deck)) return;
         float distance=deck.X-ferryAt.X;
         maxTravel=Math.Max(maxTravel,distance);
@@ -52,23 +25,19 @@ public sealed class Runner : GameBehaviour
         if (distance>133.99f) sawOutbound=true;
         if (sawOutbound && distance<100) sawReturn=true;
         if (!sawReturn || distance>.01f) return;
-        animationReported=true;
-        bool passed=rearPlants>0 && frontPlants>0 && rampSwings>0 && maxSoleError<.1f && maxAngleError<.1f &&
-            maxFootSlip<.1f && maxRideSlip<.1f;
+        rideReported=true;
         var data=new GameData();
-        data.Set("passed",passed);data.Set("rearPlants",rearPlants);data.Set("frontPlants",frontPlants);
-        data.Set("swingSamples",rampSwings);data.Set("maxSoleError",maxSoleError);data.Set("maxAngleError",maxAngleError);
-        data.Set("maxPlantedSlip",maxFootSlip);data.Set("maxRideSlip",maxRideSlip);
+        data.Set("passed",maxRideSlip<.1f);data.Set("maxRideSlip",maxRideSlip);
         data.Set("outbound",maxTravel);data.Set("returned",distance);
         if(tick.Session.Storage.IsAvailable) tick.Session.Storage.SaveSlot(5,data);
-        tick.Session.Log($"Shuttle round trip: {maxTravel:F1} px; foot IK error: {maxSoleError:F3} px.");
+        tick.Session.Log($"Shuttle round trip: {maxTravel:F1} px; ride slip: {maxRideSlip:F3} px.");
     }
 
     public override void FixedUpdate(ScriptTick tick)
     {
         var motion = tick.Objects.Motion;
         if (!motion.TryGetMotion(tick.ObjectId, out var body)) return;
-        MeasureAnimation(tick,body);
+        MeasureRide(tick,body);
         if (!launched && (tick.Input.Pressed("Route") || tick.Direction.X != 0))
         {
             launched = true;

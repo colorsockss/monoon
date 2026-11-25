@@ -1,8 +1,8 @@
 # 플랫포머 물리
 
-[PlatformerLab](../../samples/PlatformerLab)을 열고 **Play**를 누른다. **→ / D**를 눌러 초록색 경사로를 올라간 뒤 주황색 발판을 밟는다. 발판과 캐릭터가 함께 움직이고, 건너편 카메라에서 [탑승 대화](cutscenes.md)가 시작된다. Enter로 대사를 넘기거나 X로 건너뛴다. **Space**로 발판에서 점프하고 **← / A**로 돌아갈 수 있다. 세 실행 방식에서 같은 경로를 비교하려면 처음부터 **R**을 누른다. 직접 조작할 때와 같은 캐릭터 이동 API를 사용한다.
+[PlatformerLab](../../samples/PlatformerLab)을 열고 **Play**를 누른다. 쇼케이스(`Scenes/Showcase.scene`)에서 **→ / D**를 눌러 경사를 올라간 뒤 뗏목 발판을 밟는다. 발판과 캐릭터가 함께 움직이고, 건너편 카메라에서 [탑승 대화](cutscenes.md)가 시작된다. Enter로 대사를 넘기거나 X로 건너뛴다. **Space**로 발판에서 점프하고 **← / A**로 돌아갈 수 있다. 세 실행 방식에서 같은 경로를 비교하려면 처음부터 **R**을 누른다. 직접 조작할 때와 같은 캐릭터 이동 API를 사용한다.
 
-발판을 타고 오른쪽 착지대 끝까지 걸어가면 **Joints** 씬으로 넘어간다. 흔들다리를 건너고 도르래 발판 두 개를 점프로 옮겨 탄 뒤 오른쪽 언덕에 오르면 **Crossed the bridge and the pulley**가 표시된다. 에디터에서 `Scenes/Joints.scene`을 직접 열어 Play해도 된다.
+흔들다리, 도르래 발판, 곡선 경로 발판, 캡슐 캐릭터와 체인 언덕은 코스 쇼케이스(`Scenes/ShowcaseCourse.scene`)에 있다. 에디터에서 열어 Play하면 주인공이 입력 없이 코스를 달리며 동전을 줍고 깃발에 닿는다.
 
 강체, 조인트, 마찰·반발은 BRUTAL의 [Box2D](../brutal.md#물리오디오네트워크) 3.1로 계산한다. 1px을 Box2D 길이 단위 1로 쓰고, 고정 틱마다 Box2D 월드를 한 번(서브스텝 4) 진행한다. 같은 입력을 넣으면 Scene Play, Release, Native AOT에서 위치가 같다.
 
@@ -27,21 +27,21 @@ Character Motor는 Box2D가 플랫포머 캐릭터에 권하는 방식처럼 직
 
 ## 캡슐 캐릭터와 체인 경사
 
-**Slopes** 씬(`Scenes/Slopes.scene`, 에디터에서 직접 열어 Play)은 8px 타일을 이어 깐 바닥과 Edge Collider 2D로 만든 경사·언덕을 둔다. 캐릭터는 [Capsule Collider 2D](collision.md)와 Character Motor 2D를 쓴다. **→ / D**로 타일 이음새를 지나 14° 경사를 올라가고 **← / A**로 돌아온다. 걷는 중 지면에 선 채 한 틱에 반 걸음도 못 가면 걸림으로 센다. 왕복을 마치면 **Round trip without a snag**가 표시된다. 오른쪽의 회색 캡슐(Dynamic 강체)은 Box2D 체인 위에 떨어져 서고, 경사 중간의 노란 캡슐 트리거를 지날 때마다 [진입 이벤트](collision.md#진입유지이탈-이벤트)가 온다. [SlopeRunner](../../samples/PlatformerLab/Scripts/SlopeRunner.cs)
+코스 쇼케이스의 주인공은 [Capsule Collider 2D](collision.md)와 Character Motor 2D를 쓰고, 끝부분의 언덕(`Hill`)은 Edge Collider 2D 체인이다. 주인공은 걸리는 틱 없이 언덕을 넘는다(지면에 선 채 한 틱에 반 걸음도 못 가면 걸림으로 센다). [CourseRunner](../../samples/PlatformerLab/Scripts/Showcase/CourseRunner.cs). 옛 Slopes 씬의 8px 타일 이음새 바닥과 체인 위 Dynamic 캡슐 바위는 2026-11-26 쇼케이스로 바꿀 때 빠졌다.
 
 캐릭터의 키네마틱 Box2D 캡슐도 다각형처럼 발바닥에서 2px 위까지만 둔다. 같은 입력에서 Scene Play·Release·Native AOT의 캐릭터·캡슐 위치 기록이 같다. [Mac 실행 검증](../../engine/tests/results/colliders-capsule-chain/README.md)
 
 ## 흔들다리와 도르래 발판
 
-Joints 씬의 다리는 24×6px 판자 8개를 Revolute Joint 2D로 이은 것이다. 각 판자는 왼쪽 위 모서리(Anchor −12, −3)에서 앞 판자와 묶이고, 첫 판자는 Start ledge에, 마지막 판자는 Far ledge가 가진 조인트에 묶인다. 판자 사슬(192px)이 두 언덕 사이(190px)보다 조금 길어 처지고, 캐릭터의 무게로 더 휜다. 판자 위쪽 모서리가 회전축이므로 이웃 판자의 윗면이 이어진다.
+코스 쇼케이스의 다리는 24×6px 판자 8개를 Revolute Joint 2D로 이은 것이다. 각 판자는 왼쪽 위 모서리(Anchor −12, −3)에서 앞 판자와 묶이고, 첫 판자는 Start ledge에, 마지막 판자는 Far ledge가 가진 조인트에 묶인다. 판자 사슬(192px)이 두 언덕 사이(190px)보다 조금 길어 처지고, 캐릭터의 무게로 더 휜다. 판자 위쪽 모서리가 회전축이므로 이웃 판자의 윗면이 이어진다.
 
 Box2D 3에는 도르래 조인트가 없다. 도르래 발판 두 개는 각각 Slider Joint 2D(축 0, 1, 한계 ±16px)로 위아래로만 움직이고 중력을 0으로 둔다(평형추가 무게를 맞춘 상태). [PulleyPair](../../samples/PlatformerLab/Scripts/PulleyPair.cs) 스크립트가 매 고정 틱 물리 계산 전에 두 발판의 세로 속도를 평균 내어 한쪽이 내려가는 만큼 다른 쪽을 올린다. 반올림으로 줄 길이가 어긋나면 초당 4배의 속도로 되돌린다. 질량이 같은 이상적인 도르래처럼, 캐릭터가 한쪽에 올라서면 무게의 절반 가속도로 그 발판이 내려가고 반대쪽이 올라간다.
 
-샘플은 경사 접촉 후 올라간 높이, 발판에 정지한 뒤 100틱 동안 발판이 이동한 거리와 캐릭터의 상대 변위, 진자의 조인트 오차를 측정한다. 성공하면 게임 화면에 **Route complete**가 표시된다. [macOS 실행 기록](../../engine/tests/results/platformer/README.md)에서 Scene Play와 두 배포 빌드의 측정값을 비교할 수 있다. Joints 씬의 세 실행 경로 위치 기록 비교는 [Box2D 전환 결과](../../engine/tests/results/physics-box2d/README.md)에 있다.
+샘플은 경사 접촉 후 올라간 높이, 발판에 정지한 뒤 100틱 동안 발판이 이동한 거리와 캐릭터의 상대 변위, 진자의 조인트 오차를 측정한다. 성공하면 게임 화면에 **Route complete**가 표시된다. [macOS 실행 기록](../../engine/tests/results/platformer/README.md)에서 Scene Play와 두 배포 빌드의 측정값을 비교할 수 있다. 조인트의 세 실행 경로 위치 기록 비교는 [Box2D 전환 결과](../../engine/tests/results/physics-box2d/README.md)에 있다.
 
 ## 곡선 경로를 따라가는 발판
 
-Joints 씬의 언덕 오른쪽 끝으로 걸어가면 Paths 씬이 열린다. 주황 발판에 올라서면 발판이 기둥 위로 휘어진 경로를 따라 초당 90px로 이동해 건너편 언덕 높이에 멈추고, 다시 돌아간다. 발판 위에 가만히 서 있으면 캐릭터가 함께 옮겨진다. [Paths 씬](../../samples/PlatformerLab/Scenes/Paths.scene) · [PathRider](../../samples/PlatformerLab/Scripts/PathRider.cs)
+코스 쇼케이스에서 주인공이 발판(`Path lift`)에 올라서면 `tick.Objects.PlayTween`으로 발판을 출발시킨다. 발판은 기둥 위로 휘어진 경로를 따라 초당 90px로 이동해 건너편 선반 높이에 멈추고(Once), 그동안 가만히 선 주인공이 함께 옮겨진다. [코스 쇼케이스](../../samples/PlatformerLab/Scenes/ShowcaseCourse.scene) · [CourseRunner](../../samples/PlatformerLab/Scripts/Showcase/CourseRunner.cs)
 
 **Add Component → Path Follower 2D**를 붙이고 Scene에서 점과 접선 핸들을 편집한다([점 편집](sprites.md#scene에서-점-편집하기)). 점은 오브젝트의 시작 위치에서의 변위(부모 좌표계)이고 첫 점이 시작 위치다. 첫 점의 위치는 고정되어 있으므로 경로 전체를 옮기려면 오브젝트를 옮긴다. **Speed**는 경로를 따라가는 속도(px/s)다. 곡선을 잘게 나눈 길이를 기준으로 위치를 찾으므로 곡선 구간에서도 틱마다 같은 거리를 이동한다. **Repeat**의 Once는 끝에서 멈추고, PingPong은 왕복하며, Loop는 마지막 점에서 첫 점으로 닫힌 경로를 돈다.
 

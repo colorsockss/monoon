@@ -6,13 +6,22 @@ using System.Numerics;
 internal static class TileWorldChecks
 {
     [Check(3300)] static void Registered(CheckRun c) => Run(c.Repository, c.Scratch);
+    // The Ridge autotile fixture (an edge brush #1, a different brush #2) copied to scratch, so the asset scan writes no manifest
+    // into the repository.
+    internal static (Tilemap2DComponent Map, TilePalette Palette) Ridge(string repository,string scratch)
+    {
+        var root=Path.Combine(scratch,"ridge-fixture");
+        var source=Path.Combine(repository,"engine","tests","fixtures","PlatformerRidge","Assets");
+        Directory.CreateDirectory(Path.Combine(root,"Assets"));
+        foreach (var file in Directory.EnumerateFiles(source)) File.Copy(file,Path.Combine(root,"Assets",Path.GetFileName(file)),true);
+        var assets=ProjectAssets.Scan(root);
+        var id=assets.IdFor("Assets/Ridge.tileset")!.Value;
+        return (new Tilemap2DComponent { Tileset=id, CellSize=new(8,12), StreamRadius=1 },TilePalette.Load(root,assets,id));
+    }
+
     public static void Run(string repository,string scratch)
     {
-        var project = Path.Combine(repository,"samples","PlatformerLab");
-        var scene = SceneDocument.Load(Path.Combine(project,"Scenes","Platform.scene"));
-        var ground = scene.Objects.Single(o => o.Name == "Ridge terrain");
-        var source = ground.GetComponent<Tilemap2DComponent>()!;
-        var palette = TilePalette.Load(project,ProjectAssets.ReadManifest(project),source.Tileset!.Value);
+        var (source,palette) = Ridge(repository,scratch);
         var map = source with { Chunks=[] };
         Point left=new(-1,0), right=new(0,0);
         var stroke=new TileStroke(map,TileTool.Brush,1,left);
@@ -57,23 +66,52 @@ internal static class TileWorldChecks
         map.Layout=TileGrid.Isometric;map.Set(new(1,0),1);
         Check(map.DisplayTile(palette,new(0,0),1)==3,"isometric adjacency uses shared grid edges");
 
-        var store=new PlayerStorage(Path.Combine(scratch,"tileworld-profile"));
-        using var session=new GameSession(scene,null,null,store);
-        var runner=scene.Objects.Single(o=>o.Name=="Runner");
-        session.Current.TryGetTileStream(ground.Id,out var initial);
-        Check(initial.Resident==3 && initial.Total==9 && initial.Loads==3,"only initial focus window is resident before first tick");
-        const float step=1f/60;
-        session.Actions.Press("Right");
-        for (int i=0;i<147;i++) session.FixedUpdate(session.Actions.Take(),step);
-        session.Actions.Release("Right");session.Actions.Press("Left");
-        for (int i=0;i<147;i++) session.FixedUpdate(session.Actions.Take(),step);
-        session.Actions.Release("Left");
-        var outbound=store.LoadSlot(2,1);var back=store.LoadSlot(3,1);
-        session.Current.TryGetPosition(runner.Id,out var pos);
-        Check(outbound?.GetBool("passed")==true && back?.GetBool("passed")==true,
-            $"runner crosses two boundaries and returns; residency and physics swap both ways (x={pos.X:F1})");
-        Check(source.Chunks.Length==9,"Play leaves authored pages intact");
+        Streaming(repository);
     }
+
+    // The ShowcaseStream ridge: seven 32-cell pages that stream around the scripted runner (radius 1). Pages load ahead of him
+    // and unload behind, and the tile collider exists only for resident pages.
+    private static void Streaming(string repository)
+    {
+        var scene=SceneDocument.Load(Path.Combine(repository,"samples","PlatformerLab","Scenes","ShowcaseStream.scene"));
+        var ground=scene.Objects.Single(o=>o.Name=="Ground");
+        var runner=scene.Objects.Single(o=>o.Name=="Runner");
+        var authored=ground.GetComponent<Tilemap2DComponent>()!;
+        int pages=authored.Chunks.Length;
+        const float page=32*16, step=1f/60;
+        using var session=new GameSession(scene);
+        var game=session.Current;
+        game.TryGetTileStream(ground.Id,out var initial);
+        Check(initial.Resident==InitialResident && initial.Total==pages && initial.Loads==initial.Resident && game.IsTileChunkLoaded(ground.Id,0,0) &&
+            !game.IsTileChunkLoaded(ground.Id,pages-1,0),$"only the focus window is resident before the first tick ({initial})");
+        // A probe inside the far page's ground surface (row 22 is the floor of every page).
+        bool Solid(int chunk) => game.Physics.Overlap(Shape2D.Circle(new(chunk*page+page/2,22*16+8),2)).Any(h=>h.ObjectId==ground.Id);
+        Check(!Solid(pages-1),"an unloaded page has no tile collider");
+        int maxResident=0, lastCenter=0;bool window=true, follows=true;float lowest=0;
+        for (int i=0;i<1500;i++)
+        {
+            session.FixedUpdate(session.Actions.Take(),step);
+            game.TryGetPosition(runner.Id,out var at);
+            game.TryGetTileStream(ground.Id,out var state);
+            int here=(int)((at.X+11)/page);
+            maxResident=Math.Max(maxResident,state.Resident);
+            lowest=Math.Max(lowest,at.Y);
+            // Resident pages are exactly the radius-1 window around the stream centre, which stays on the runner's page or the one
+            // he just left.
+            for (int c=0;c<pages;c++) window&=game.IsTileChunkLoaded(ground.Id,c,0)==(Math.Abs(c-state.Center.X)<=1);
+            follows&=state.Center.X==here || state.Center.X==here-1;
+            lastCenter=state.Center.X;
+        }
+        game.TryGetPosition(runner.Id,out var end);
+        game.TryGetTileStream(ground.Id,out var final);
+        Check(end.X>=3392 && lowest<352,$"the runner crosses every page on streamed ground without falling (x={end.X:F1}, lowest y={lowest:F1})");
+        Check(window && follows && lastCenter==pages-1 && maxResident==3,
+            $"the resident window follows the runner to the last page: one page ahead loaded, older pages unloaded ({maxResident} at most)");
+        Check(final.Loads>=pages && final.Unloads>=pages-3 && Solid(pages-1) && !Solid(0),
+            $"streaming swapped residency and collision along the ridge ({final})");
+        Check(authored.Chunks.Length==pages && ground.GetComponent<Tilemap2DComponent>()==authored,"Play leaves authored pages intact");
+    }
+    const int InitialResident=2; // pages 0 and 1: the runner starts in page 0 and there is no page -1
     private static void Check(bool ok,string detail)
     {
         if (!ok) throw new Exception("Tile world: "+detail);

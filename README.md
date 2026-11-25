@@ -11,7 +11,7 @@ macOS arm64, Windows x64, Linux x64를 지원합니다. 게임은 Release 또는
 | 샘플 | 직접 해볼 수 있는 일 | 구현과 검증 |
 | --- | --- | --- |
 | [KeyRoom](samples/KeyRoom/) | 왼쪽에서 열쇠를 주우면 오른쪽 문이 열립니다. 문을 지나 두 번째 방으로 이동합니다. | [문을 여는 C# 코드](samples/KeyRoom/Scripts/DoorLock.cs) · [이벤트 검증](engine/tests/results/game-events/README.md) |
-| [PlatformerLab](samples/PlatformerLab/) | 경사면에서는 캐릭터의 발이 지면에 맞춰집니다. 움직이는 발판에 올라서면 함께 이동합니다. | [발판과 발 IK 설정](docs/manual/rig-animation.md) · [실행 화면과 측정값](engine/tests/results/rig-animation/README.md) |
+| [PlatformerLab](samples/PlatformerLab/) | 경사 타일을 오르고, 한쪽 통과 발판을 뛰어오르고, 움직이는 발판을 타고, 경비병의 길찾기와 컷신을 봅니다. 흔들다리·도르래·곡선 경로 발판, 조명, 타일 스트리밍은 다른 쇼케이스 씬에 있습니다. | [발판과 스켈레탈 애니메이션](docs/manual/rig-animation.md) · [플랫폼 물리](docs/manual/platformer-physics.md) |
 | [InventoryLab](samples/InventoryLab/) | 약초상과 대화해 의뢰를 받고 보상을 수령합니다. 최신 저장이 손상되면 직전 저장에서 이어갑니다. | [게임 스크립트 API](docs/manual/api.md) · [세 운영체제에서 확인한 저장 복구](engine/tests/results/slot-recovery/README.md) |
 
 ## 엔진은 어떻게 동작하나요?

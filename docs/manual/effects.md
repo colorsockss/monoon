@@ -1,6 +1,6 @@
 # 파티클, 스프라이트 셰이더, 점광원과 2D 조명
 
-PlatformerLab을 열고 Play에서 Space를 누르면 Runner가 제자리에서 점프한다. 착지 직후 발 양옆으로 먼지가 퍼진다. 경사 위 발판에 있는 횃불은 가만히 서 있어도 불꽃 모양과 주변 밝기가 바뀐다. [샘플 씬](../../samples/PlatformerLab/Scenes/Platform.scene) · [Mac 실행 검증](../../engine/tests/results/effects/README.md)
+PlatformerLab 쇼케이스(`Scenes/Showcase.scene`)를 Play하고 Space를 누르면 주인공이 점프하고, 착지 직후 발 양옆으로 먼지가 퍼진다. 코스·동굴 쇼케이스의 횃불은 셰이더로 그린 불꽃(`Assets/Torch.shader`)과 깜빡이는 점광원이다. [코스 쇼케이스](../../samples/PlatformerLab/Scenes/ShowcaseCourse.scene) · [Mac 실행 검증](../../engine/tests/results/effects/README.md)
 
 [ParticleLab](../../samples/ParticleLab/)에는 쇼케이스 씬이 둘 있다. 첫 장면(`Scenes/Showcase.scene`)은 밤 야영지를 걸으며 모닥불(곡선·가산), 타일에 튀는 비, 분수, Space로 쏘는 불꽃놀이(서브 방출기), 입자 10,240개의 포털을 지난다. 두 번째 **입자 공방**(`Scenes/ShowcaseWorkshop.scene`)은 다섯 거점을 지난다: 방출 형태·Prewarm·로컬/월드 공간(Space를 누르면 수동 방출기가 버스트를 한 번 낸다), 정렬·블렌드·텍스처 시트, 프리셋과 같은 에셋을 쓰는 프리팹, 수명 곡선·그라데이션, 노이즈·콜라이더 충돌. 효과마다 아래에 이름이 붙어 있다. [검증과 측정](../../engine/tests/results/particles/README.md)
 
@@ -226,7 +226,7 @@ Release·Native AOT 플레이어는 준비 단계에서 PNG를 SDL 텍스처로 
 
 ## Global Light 2D: 어둠과 그림자
 
-PlatformerLab의 **Cave** 씬을 열면 어두운 동굴 안에서 횃불 7개와 위아래로 움직이는 등불 하나가 바위·기둥·상자 뒤로 그림자를 드리운다. 가운데 상자가 좌우로 움직이면 그 그림자도 따라 움직인다. 제목 글자와 횃불 심지는 어둡게 하지 않는다. [샘플 씬](../../samples/PlatformerLab/Scenes/Cave.scene) · [검증과 측정](../../engine/tests/results/lighting/README.md)
+PlatformerLab의 조명 쇼케이스(`Scenes/ShowcaseCave.scene`)에서는 날이 저물면 Global Light 2D가 켜져 폐허가 어두워지고, 주인공이 지나가며 횃불을 하나씩 켤 때마다 기둥·들보·상자의 그림자가 늘어난다. 좌우로 움직이는 상자의 그림자도 따라 움직이고, Unlit 레이어의 달은 어둡게 하지 않는다. [샘플 씬](../../samples/PlatformerLab/Scenes/ShowcaseCave.scene) · [검증과 측정](../../engine/tests/results/lighting/README.md)
 
 아무 오브젝트에 **Add Component → Global Light 2D**를 붙이면 씬이 어두워진다. 월드는 **Ambient** 색을 곱한 밝기로 보이고, Point Light 2D는 화면에 더하는 대신 그 어둠을 밝힌다. 흰색 Ambient는 조명이 없는 화면과 같고, 검은색은 광원이 닿는 곳만 보인다.
 

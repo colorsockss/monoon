@@ -110,29 +110,55 @@ internal static class LinesChecks
         }
     }
 
-    // PlatformerLab Paths: walk onto the lift, stand while it follows its curve over the pillar, walk off at the goal.
-    internal const int Walk = 10, Stand = 86, Leave = 346, Ticks = 400;
+    // PlatformerLab ShowcaseCourse: CourseRunner stands on the path lift, starts it with PlayTween, rides its curve over the
+    // pillar and walks off at the goal ledge. The check observes the scripted run.
+    internal const int Ticks = 1200;
     internal static void RunPaths(string repository, string scratch)
     {
-        var scene = SceneDocument.Load(Path.Combine(repository, "samples", "PlatformerLab", "Scenes", "Paths.scene"));
+        var scene = SceneDocument.Load(Path.Combine(repository, "samples", "PlatformerLab", "Scenes", "ShowcaseCourse.scene"));
         var runner = scene.Objects.Single(o => o.Name == "Runner").Id;
-        var lift = scene.Objects.Single(o => o.Name == "Path lift").Id;
-        var storage = new PlayerStorage(Path.Combine(scratch, "paths-profile"));
-        using var session = new GameSession(scene, null, null, storage);
+        var liftObject = scene.Objects.Single(o => o.Name == "Path lift");
+        var lift = liftObject.Id;
+        var follower = liftObject.GetComponent<PathFollower2DComponent>()!;
+        var guide = scene.Objects.Single(o => o.Name == "Lift path").GetComponent<Line2DComponent>()!;
+        Check(guide.Points.SequenceEqual(follower.Points), "the drawn Lift path line shares the follower's curve points");
+        using var session = new GameSession(scene);
+        var world = session.Current;
         var trace = new List<string>();
+        var steps = new List<float>();
+        float slip = 0;
+        int rideTicks = 0;
+        Vector2 previous = new(liftObject.X, liftObject.Y), offset = default, end = default;
+        bool riding = false, leftOnGoal = false;
         for (int i = 0; i < Ticks; i++)
         {
-            if (i == Walk || i == Leave) session.Actions.Press("Right");
-            if (i == Stand) session.Actions.Release("Right");
             session.FixedUpdate(session.Actions.Take(), Step);
-            session.Current.TryGetPosition(runner, out var r);
-            session.Current.TryGetPosition(lift, out var l);
-            session.Current.TryGetMotion(runner, out var m);
-            trace.Add($"{i} runner {r} lift {l} support {(m.Support == lift ? "lift" : m.Support == null ? "-" : "other")}");
+            world.TryGetPosition(runner, out var r);
+            world.TryGetPosition(lift, out var l);
+            world.TryGetMotion(runner, out var m);
+            float moved = Vector2.Distance(l, previous);
+            if (moved > 0) steps.Add(moved);
+            previous = l;
+            bool on = m.Support == lift;
+            // CourseRunner walks off once the lift is within 0.5 px of its end, so the carried stretch stops 1 px short of it.
+            if (on && moved > 0 && l.X < liftObject.X + 320 - 1)
+            {
+                if (!riding) { riding = true; offset = r - l; }
+                slip = Math.Max(slip, Vector2.Distance(r - l, offset));
+                rideTicks++;
+            }
+            if (riding && !on && m.Grounded && r.X > 1400) leftOnGoal = true;
+            end = l;
+            trace.Add($"{i} runner {r} lift {l} support {(on ? "lift" : m.Support == null ? "-" : "other")}");
         }
         if (Environment.GetEnvironmentVariable("MONOON_PATHS_TRACE") == "1") trace.ForEach(Console.WriteLine);
-        var data = storage.LoadSlot(1, 1);
-        Check(data?.GetBool("rode") == true, $"PlatformerLab Paths: the runner rides the path lift over the pillar to the goal ({data?.GetNumber("ticks")} ticks)");
+        // Interior ticks only: the first and last moving ticks can be partial.
+        var interior = steps.Skip(1).SkipLast(1).ToArray();
+        Check(interior.Length > 60 && interior.All(d => Math.Abs(d - 1.5f) < 1.5f * .005f),
+            $"the lift follows its curve at a constant 90 px/s ({interior.Min():F4}–{interior.Max():F4} px per tick over {interior.Length} ticks)");
+        Check(Vector2.Distance(end, new Vector2(liftObject.X, liftObject.Y) + new Vector2(320, -40)) < .01f, $"a Once path stops at its last point ({end})");
+        Check(rideTicks > 60 && slip < .05f && leftOnGoal,
+            $"the kinematic path lift carries the scripted runner over the pillar to the goal ledge ({rideTicks} ticks, slip {slip:F4} px)");
     }
 
     private static bool Throws(Action action)

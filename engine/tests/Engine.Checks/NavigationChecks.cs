@@ -7,7 +7,7 @@ internal static class NavigationChecks
     public static void Run(string repository,string scratch)
     {
         SightAndClearance();
-        var scene=SceneDocument.Load(Path.Combine(repository,"samples","PlatformerLab","Scenes","Platform.scene"));
+        var scene=SceneDocument.Load(Path.Combine(repository,"samples","PlatformerLab","Scenes","Showcase.scene"));
         var enemy=scene.Objects.Single(o=>o.Name=="Lookout").Id;
         var region=scene.Objects.Single(o=>o.Name=="Walk region").Id;
         var runner=scene.Objects.Single(o=>o.Name=="Runner").Id;

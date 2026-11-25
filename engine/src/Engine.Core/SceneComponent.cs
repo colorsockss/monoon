@@ -21,8 +21,6 @@ namespace Engine.Core;
 [YamlObjectUnion("positionTween2D", typeof(PositionTween2DComponent), DiscriminatorKey = "type")]
 [JsonDerivedType(typeof(SkeletonAnimator2DComponent), "skeletonAnimator2D")]
 [YamlObjectUnion("skeletonAnimator2D", typeof(SkeletonAnimator2DComponent), DiscriminatorKey = "type")]
-[JsonDerivedType(typeof(FootIK2DComponent), "footIK2D")]
-[YamlObjectUnion("footIK2D", typeof(FootIK2DComponent), DiscriminatorKey = "type")]
 [JsonDerivedType(typeof(ParticleEmitter2DComponent), "particleEmitter2D")]
 [YamlObjectUnion("particleEmitter2D", typeof(ParticleEmitter2DComponent), DiscriminatorKey = "type")]
 [JsonDerivedType(typeof(PointLight2DComponent), "pointLight2D")]

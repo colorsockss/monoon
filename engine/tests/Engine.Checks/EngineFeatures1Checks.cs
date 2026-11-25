@@ -14,7 +14,7 @@ internal static class EngineFeatures1Checks
         IntegerScale(repository);
         Console.WriteLine("PASS integer scale settings and whole-pixel cameras");
         Parallax(repository);
-        Console.WriteLine("PASS parallax layers, tiled and sliced sprites (one draw per layer, no allocation)");
+        Console.WriteLine("PASS parallax layers following the camera, repeated strips, tiled and sliced fallbacks (no allocation)");
         Tweens();
         Console.WriteLine("PASS script tweens: sequences, delays, game and UI clocks, owner lifetime, no allocation");
     }
@@ -45,8 +45,7 @@ internal static class EngineFeatures1Checks
     {
         public readonly List<(string Path, RectangleF Local, Matrix3x2 Matrix, bool Tiled, bool Borders)> Grids = [];
         public readonly List<(RectangleF Local, SpriteRegion? Source)> Pieces = [];
-        public Size SpriteSize(string path) => path.EndsWith("FarHills.png", StringComparison.Ordinal) ? new(64, 32) : path.EndsWith("NearTrees.png", StringComparison.Ordinal) ? new(32, 48) :
-            path.EndsWith("Ground.png", StringComparison.Ordinal) ? new(16, 16) : path.EndsWith("SignBoard.png", StringComparison.Ordinal) ? new(12, 12) : Size.Empty;
+        public readonly List<(string? Path, RectangleF Local, Matrix3x2 Matrix)> Affine = [];
         public bool DrawGrid(string path, RectangleF local, Matrix3x2 matrix, Color tint, SpriteRegion? source, Size size, UiBorders? borders, bool tiled)
         {
             if (!own) return SpriteGrid.Draw(this, path, local, matrix, tint, source, size, borders, tiled);
@@ -54,13 +53,14 @@ internal static class EngineFeatures1Checks
             return true;
         }
         public bool DrawAffine(string? path, RectangleF r, Matrix3x2 matrix, Color tint, SpriteRegion? source = null, string layout = TileGrid.Orthogonal)
-        { Pieces.Add((r, source)); return true; }
+        { Pieces.Add((r, source)); Affine.Add((path, r, matrix)); return true; }
         public IDisposable PushClip(RectangleF area) => new Scope();
         private sealed class Scope : IDisposable { public void Dispose() { } }
         public void Clear(Color color) { }
         public void FillRectangle(RectangleF rectangle, Color color) { }
         public bool DrawSprite(string path, RectangleF destination) => true;
         public void DrawText(string text, float x, float y, float size, Color color) { }
+        public void DrawShader(ShaderClip shader, int frame, RectangleF local, Matrix3x2 matrix, Color tint, bool additive) { }
     }
 
     private static void Parallax(string repository)
@@ -76,44 +76,51 @@ internal static class EngineFeatures1Checks
             pieces.Pieces[4] == (new RectangleF(4, 4, 132, 42), new SpriteRegion(28, 12, 4, 4)) && pieces.Pieces[8].Local == new RectangleF(136, 46, 4, 4),
             "sliced fallback keeps 4 px corners inside an atlas cell and stretches the centre");
 
-        var path = Path.Combine(repository, "samples", "PlatformerLab", "Scenes", "Parallax.scene");
+        // The PlatformerLab showcase: Sky backing (scroll 0), Moon (0.05) and a repeating Sky strip (0.15) behind a camera that
+        // follows the runner.
+        var path = Path.Combine(repository, "samples", "PlatformerLab", "Scenes", "Showcase.scene");
         var scene = SceneDocument.Load(path);
         Check(scene.SchemaVersion == 33, "parallax scenes need schema 33");
         Guid Id(string name) => scene.Objects.Single(o => o.Name == name).Id;
         using var session = new GameSession(scene);
         var game = session.Current;
-        var layers = new[] { ("Sky", 0f), ("Far hills", .25f), ("Near trees", .6f) };
-        Check(!game.TryGetParallaxOffset(Id("Ground"), out _), "a plain sprite has no parallax offset");
+        var layers = new[] { ("Sky backing", 0f), ("Moon", .05f), ("Sky", .15f) };
+        Check(!game.TryGetParallaxOffset(Id("Sign"), out _), "a plain sprite has no parallax offset");
         var canvas = new Grid(own: true);
         var camera = Id("Camera");
+        float skyWidth = scene.Objects.Single(o => o.Name == "Sky").Width;
+        Check(game.TryGetView(camera, out var first), "camera view");
+        var home = first.Center;
+        float farthest = 0;
         long allocated = 0;
+        session.Actions.Press("Right");
         for (int tick = 0; tick <= 120; tick++)
         {
             if (tick > 0) session.FixedUpdate(session.Actions.Take(), 1 / 60f);
-            Check(game.TryGetView(Id("Camera"), out var view), "camera view");
-            float travel = view.Center.X - 400;
+            Check(game.TryGetView(camera, out var view), "camera view");
+            var travel = view.Center - home;
+            farthest = Math.Max(farthest, travel.X);
+            // PlatformerLab turns on integer scale: offsets snap to whole screen pixels at the camera's zoom.
+            float Snap(float v) => game.IntegerScale ? MathF.Round(v * view.Zoom) / view.Zoom : v;
             foreach (var (name, scroll) in layers)
-                Check(game.TryGetParallaxOffset(Id(name), out var offset) && Math.Abs(offset.X - travel * (1 - scroll)) < 1e-3f && offset.Y == 0,
-                    $"tick {tick}: {name} follows {scroll} of the camera's {travel} travel");
-            canvas.Grids.Clear(); canvas.Pieces.Clear();
+                Check(game.TryGetParallaxOffset(Id(name), out var offset) && Math.Abs(offset.X - Snap(travel.X * (1 - scroll))) < 1e-3f &&
+                    Math.Abs(offset.Y - Snap(travel.Y)) < 1e-3f, $"tick {tick}: {name} follows {scroll} of the camera's {travel} travel ({offset})");
+            canvas.Grids.Clear(); canvas.Pieces.Clear(); canvas.Affine.Clear();
             // The world pass only: this test canvas measures UI text with the allocating default.
             game.PrepareCameraDraw(1);
             long before = GC.GetAllocatedBytesForCurrentThread();
             game.DrawCamera(canvas, camera, 1);
             if (tick >= 60) allocated += GC.GetAllocatedBytesForCurrentThread() - before;
-            // Each tiled layer is one grid draw that covers the camera frame (repeat) or its own rectangle.
-            var hills = canvas.Grids.Where(g => g.Path.EndsWith("FarHills.png", StringComparison.Ordinal)).ToArray();
-            var trees = canvas.Grids.Where(g => g.Path.EndsWith("NearTrees.png", StringComparison.Ordinal)).ToArray();
-            Check(hills.Length == 1 && trees.Length == 1 && canvas.Grids.Count(g => g.Path.EndsWith("Ground.png", StringComparison.Ordinal)) == 1 &&
-                canvas.Grids.Count(g => g.Path.EndsWith("SignBoard.png", StringComparison.Ordinal) && g.Borders && !g.Tiled) == 1, $"tick {tick}: one draw per layer");
-            foreach (var (local, matrix) in new[] { (hills[0].Local, hills[0].Matrix), (trees[0].Local, trees[0].Matrix) })
-            {
-                var drawn = Affine2D.Bounds(local, matrix);
-                Check(drawn.Left <= .001f && drawn.Right >= 799.999f && local.X % (local == hills[0].Local ? 64 : 32) == 0,
-                    $"tick {tick}: a repeated layer covers the view from a whole tile ({drawn})");
-            }
+            // The repeating Sky layer is drawn in whole strips from its origin until the camera frame is covered.
+            var sky = canvas.Affine.Where(g => g.Path?.EndsWith("Showcase/Sky.png", StringComparison.Ordinal) == true).ToArray();
+            var covered = sky.Select(g => Affine2D.Bounds(g.Local, g.Matrix)).ToArray();
+            Check(sky.Length is >= 1 and <= 3 && sky.All(g => g.Local.X % skyWidth == 0) && covered.Min(r => r.Left) <= view.World.Left + .001f &&
+                covered.Max(r => r.Right) >= view.World.Right - .001f, $"tick {tick}: the repeated Sky strip covers the view from a whole period ({sky.Length} draws)");
+            Check(canvas.Affine.Count(g => g.Path?.EndsWith("Showcase/Moon.png", StringComparison.Ordinal) == true) <= 1, $"tick {tick}: one Moon draw");
         }
-        Check(allocated == 0, $"drawing parallax and tiled layers allocates nothing ({allocated} bytes over 60 frames)");
+        session.Actions.Release("Right");
+        Check(farthest > 50, $"the follow camera travels with the runner ({farthest:F1} px)");
+        Check(allocated == 0, $"drawing parallax layers allocates nothing ({allocated} bytes over 60 frames)");
     }
 
     private static void Tweens()

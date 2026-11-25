@@ -7,8 +7,9 @@ internal static class RigChecks
     internal static void Run(string repo,string scratch)
     {
         const float dt=1f/60;
-        var scene=SceneDocument.Load(Path.Combine(repo,"samples/PlatformerLab/Scenes/Platform.scene"));
+        var scene=SceneDocument.Load(Path.Combine(repo,"samples/PlatformerLab/Scenes/Showcase.scene"));
         var runner=scene.Objects.Single(o=>o.Name=="Runner");
+        var rigRunner=scene.Objects.Single(o=>o.Name=="Rig runner");
         var deck=scene.Objects.Single(o=>o.Name=="Shuttle");
         var store=new PlayerStorage(Path.Combine(scratch,"rig-profile"));
         using var session=new GameSession(scene,null,null,store);
@@ -16,16 +17,25 @@ internal static class RigChecks
         Step();session.Actions.Press("R"); Step();session.Actions.Release("R");
         for(int i=0;i<505;i++) Step();
         var data=store.LoadSlot(5,1);
-        Check(data?.GetBool("passed")==true,$"both stance soles stay on the incline; swing clears it; occupied shuttle travels out and back ({data?.ToYaml()})");
+        Check(data?.GetBool("passed")==true,$"occupied shuttle travels out and back ({data?.ToYaml()})");
         Check(data!.GetNumber("outbound")>133.99 && data.GetNumber("maxRideSlip")<.05 &&
             Math.Abs(data.GetNumber("returned"))<.01,"rider stays on the kinematic tween through both reversals");
-        session.Actions.Press("X");Step();session.Actions.Release("X");
-        session.Actions.Press("Space");Step();session.Actions.Release("Space");
-        Check(session.Current.TryGetBonePose(runner.Id,"RearFoot",out var airborne) && airborne.Ground==null,"jump releases IK contact");
-        Check(session.Current.TryGetBonePose(runner.Id,"RearThigh",out var thigh) &&
-            session.Current.TryGetBonePose(runner.Id,"RearShin",out var shin) &&
-            Vector2.Distance(thigh.End,shin.Start)<.001f && Vector2.Distance(shin.End,airborne.Start)<.001f &&
-            Math.Abs(Vector2.Distance(shin.Start,shin.End)-12)<.001f,"airborne animation keeps joints connected and bone lengths fixed");
+        // The Time-clocked jog must move the legs while every joint stays attached and every bone keeps its authored length.
+        Vector2? firstKnee=null;bool moved=false, attached=true;
+        for(int sample=0;sample<6;sample++)
+        {
+            for(int i=0;i<7;i++) Step();
+            attached&=session.Current.TryGetBonePose(rigRunner.Id,"RearThigh",out var thigh) &&
+                session.Current.TryGetBonePose(rigRunner.Id,"RearShin",out var shin) &&
+                session.Current.TryGetBonePose(rigRunner.Id,"RearFoot",out var foot) &&
+                Vector2.Distance(thigh.End,shin.Start)<.001f && Vector2.Distance(shin.End,foot.Start)<.001f &&
+                Math.Abs(Vector2.Distance(thigh.Start,thigh.End)-13)<.001f && Math.Abs(Vector2.Distance(shin.Start,shin.End)-12)<.001f &&
+                Math.Abs(Vector2.Distance(foot.Start,foot.End)-7)<.001f;
+            firstKnee??=thigh.End;
+            moved|=Vector2.Distance(firstKnee.Value,thigh.End)>1;
+        }
+        Check(attached,"six jog samples keep the rear leg's joints connected and its bone lengths fixed");
+        Check(moved,"the Time clock swings the rear thigh");
         Check(deck.X==470 && runner.X==78,"preview does not edit authored transforms");
         var rig=SkeletonRig.Load(Path.Combine(repo,"samples/PlatformerLab/Assets/Runner.rig"));
         bool rejected=false;

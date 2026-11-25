@@ -23,7 +23,7 @@ internal sealed record ComponentChoice(Type Type, string Name)
         nameof(Rigidbody2DComponent) or nameof(CharacterMotor2DComponent) => "Physics",
         _ when typeof(Collider2DComponent).IsAssignableFrom(Type) || typeof(Joint2DComponent).IsAssignableFrom(Type) => "Physics",
         nameof(AudioSourceComponent) or nameof(AudioListener2DComponent) => "Audio",
-        nameof(SpriteAnimatorComponent) or nameof(SkeletonAnimator2DComponent) or nameof(FootIK2DComponent) or nameof(PositionTween2DComponent)
+        nameof(SpriteAnimatorComponent) or nameof(SkeletonAnimator2DComponent) or nameof(PositionTween2DComponent)
             or nameof(PathFollower2DComponent) or nameof(CutsceneDirectorComponent) => "Animation",
         nameof(NavigationRegion2DComponent) => "Navigation",
         _ => "Rendering", // sprites, sorting, lines, trails, particles, lights, shaders, tiles, cameras

@@ -1,6 +1,6 @@
-"""Run PlatformerLab's Cave scene (2D lighting, roadmap 16.7) for 120 ticks and capture the lightmap and shadows.
+"""Run PlatformerLab's lighting showcase (ShowcaseCave: 2D lighting, roadmap 16.7) and capture the lightmap and shadows.
 
-prepare: copy the sample and make Cave its start scene. play: Release / Native AOT headless replay.
+prepare: copy the sample and make the cave showcase its start scene. play: Release / Native AOT headless replay.
 editor: Scene Play in the packaged Mac editor with the probe. compare: captures must be byte-identical across runs.
 """
 from pathlib import Path
@@ -11,7 +11,7 @@ import subprocess
 import sys
 
 HERE = Path(__file__).resolve().parent
-PROJECT, PLATFORM, CAVE = '3b309c28-75ce-562e-92ac-f94ee48b18c7', '4fe9f1eb-5dcd-5f90-a033-78a61e876a0d', '28e725e4-f779-5785-8b85-1ac5755a7cc9'
+PROJECT, SHOWCASE, CAVE = '3b309c28-75ce-562e-92ac-f94ee48b18c7', '40845ca7-0281-5a45-878a-c1da3b04f822', 'af055f28-c07d-5aa3-9add-c94206f2de0d'
 FRAMES = 120
 # No input: the lantern and crate tweens move a light and a caster; torch flicker changes every capture.
 CAPTURES = [1, 20, 45, 70, 100]
@@ -66,6 +66,6 @@ if __name__ == '__main__':
     if command == 'prepare':
         shutil.copytree(paths[0], paths[1], ignore=shutil.ignore_patterns('.monoon', '.monoon-compiled', '.DS_Store', 'bin', 'obj'))
         settings = Path(paths[1]) / 'GameSettings'
-        settings.write_text(settings.read_text(encoding='utf-8').replace(f'startScene: {PLATFORM}', f'startScene: {CAVE}'), encoding='utf-8')
+        settings.write_text(settings.read_text(encoding='utf-8').replace(f'startScene: {SHOWCASE}', f'startScene: {CAVE}'), encoding='utf-8')
     elif command == 'compare': compare(*paths)
     else: {'play': play, 'editor': editor}[command](*(Path(p) for p in paths))

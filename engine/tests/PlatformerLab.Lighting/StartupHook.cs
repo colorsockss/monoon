@@ -18,7 +18,7 @@ public static class StartupHook
     {
         var view = main.FindControl<Control>("Viewport")!;
         var scene = view.GetType().GetProperty("Scene")!;
-        await Until(() => ((SceneDocument)scene.GetValue(view)!).Objects.Any(o => o.Name == "Torch flame"), "Torch flame");
+        await Until(() => ((SceneDocument)scene.GetValue(view)!).Objects.Any(o => o.Name == "Torch flame 1"), "Torch flame 1");
         await Task.Delay(500);
         var play = main.FindControl<Button>("PlayButton")!;
         play.RaiseEvent(new RoutedEventArgs(Button.ClickEvent, play));

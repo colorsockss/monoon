@@ -31,9 +31,10 @@ def prepare(dest):
     shutil.copytree(SAMPLES / "InventoryLab", dest, ignore=shutil.ignore_patterns(".DS_Store", ".monoon"))
     assets = dest / "Assets" / "MarketArt"
     assets.mkdir()
-    for name in ("Torch.shader", "Ridge.tileset", "Terrain.png"):
+    ridge = SAMPLES.parent / "engine/tests/fixtures/PlatformerRidge/Assets"
+    for folder, name in ((SAMPLES / "PlatformerLab/Assets", "Torch.shader"), (ridge, "Ridge.tileset"), (ridge, "Terrain.png")):
         for suffix in ("", ".meta"):
-            shutil.copy2(SAMPLES / "PlatformerLab/Assets" / (name + suffix), assets)
+            shutil.copy2(folder / (name + suffix), assets)
     scene = dest / "Scenes/Inventory.scene"
     text = scene.read_text(encoding="utf-8").replace("schemaVersion: 14", "schemaVersion: 19")
     scene.write_text(text.replace("defaultCameraId:", SCENERY + "defaultCameraId:"), encoding="utf-8")

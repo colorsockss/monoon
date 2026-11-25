@@ -54,7 +54,7 @@ internal static class EditorTokens
         Camera2DComponent => Geometry("IconCamera"),
         AudioSourceComponent or AudioListener2DComponent => Geometry("IconAudio"),
         Tilemap2DComponent or NavigationRegion2DComponent => Geometry("IconTilemap"),
-        SpriteAnimatorComponent or SkeletonAnimator2DComponent or PositionTween2DComponent or PathFollower2DComponent or FootIK2DComponent => Geometry("IconAnimator"),
+        SpriteAnimatorComponent or SkeletonAnimator2DComponent or PositionTween2DComponent or PathFollower2DComponent => Geometry("IconAnimator"),
         ParticleEmitter2DComponent or Line2DComponent or Trail2DComponent => Geometry("IconParticle"),
         PointLight2DComponent or GlobalLight2DComponent => Geometry("IconLight"),
         _ when component.GetType().Name.StartsWith("Ui", StringComparison.Ordinal) || component is HudComponent => Geometry("IconUi"),

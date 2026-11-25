@@ -97,13 +97,10 @@ internal static class TileTerrainChecks
         Check(authored.Length > 0 && Authored() == authored, "Play leaves the authored layer untouched");
     }
 
-    // Streamed pages: edits resolve auto-terrain borders and survive eviction.
+    // Streamed pages of the Ridge autotile fixture: edits resolve auto-terrain borders and survive eviction.
     private static void Streamed(string repository, string scratch)
     {
-        var project = Path.Combine(repository, "samples", "PlatformerLab");
-        var scene = SceneDocument.Load(Path.Combine(project, "Scenes", "Platform.scene"));
-        var source = scene.Objects.Single(o => o.Name == "Ridge terrain").GetComponent<Tilemap2DComponent>()!;
-        var palette = TilePalette.Load(project, ProjectAssets.ReadManifest(project), source.Tileset!.Value);
+        var (source, palette) = TileWorldChecks.Ridge(repository, scratch);
         Point left = new(-1, 0), right = new(0, 0), east = new(1, 0);
         var full = source with { Chunks = [] };
         full.Set(left, 1); full.Set(right, 1);

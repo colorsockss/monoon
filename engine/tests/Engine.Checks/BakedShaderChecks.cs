@@ -14,10 +14,13 @@ internal static class BakedShaderChecks
         const string relative = "Assets/Torch.shader";
         File.Copy(Path.Combine(sample, relative), Path.Combine(root, relative));
         var assets = ProjectAssets.ReadManifest(sample);
-        var torch = SceneDocument.Load(Path.Combine(sample, "Scenes", "Platform.scene")).Objects.Single(o => o.Name == "Torch flame");
+        // The course showcase's torch: the shader flame and the Point Light 2D beside it (which asks for the light falloff sheet).
+        var course = SceneDocument.Load(Path.Combine(sample, "Scenes", "ShowcaseCourse.scene"));
+        var torch = course.Objects.Single(o => o.Name == "Torch flame 1");
         var builder = new ShaderSheetBuild();
         builder.Collect(torch, sample, assets, null);
         builder.Collect(torch, sample, assets, null);
+        builder.Collect(course.Objects.Single(o => o.Name == "Torch light 1"), sample, assets, null);
         var asset = assets.Entries.Single(e => e.Path == relative);
         AssetEntry[] entries = builder.Write(root, [asset], ShaderPixels.WritePng);
         if (entries.Length != 2 || entries.Single(e => e.Id == asset.Id).Hash == asset.Hash)

@@ -24,12 +24,12 @@ internal static class FeatureSwitchChecks
                 $"the {feature} switch the build writes ({NativeAotBuild.FeatureSwitch(feature)}) is the one EngineFeatures reads");
         }
 
-        // Every sample scene without scripts, with each feature it does not use switched off.
+        // Every sample scene, with each feature it does not use switched off. Play() strips the scripts, so scripted showcases
+        // play their authored state (the samples are showcases since 2026-11-26; few scenes are script-free).
         int scenes = 0, frames = 0;
         foreach (var file in Directory.EnumerateFiles(Path.Combine(repository, "samples"), "*.scene", SearchOption.AllDirectories).Order(StringComparer.Ordinal))
         {
             var scene = SceneDocument.Load(file);
-            if (scene.Objects.Any(o => o.Components.OfType<ScriptComponent>().Any())) continue;
             // Content loaded additively into another scene (CollisionLab ShowcaseStones) has no camera of its own.
             if (!scene.Objects.Any(o => o.Components.OfType<Camera2DComponent>().Any())) continue;
             var used = scene.Objects.SelectMany(o => o.Components).Select(BuildFeatures.Of).OfType<EngineFeature>().ToHashSet();
@@ -38,7 +38,7 @@ internal static class FeatureSwitchChecks
             Check(on == cut, $"{Path.GetRelativePath(repository, file)} draws the same with {string.Join(", ", off)} switched off");
             scenes++; frames += on.Split('\n').Count(l => l == "frame");
         }
-        Check(scenes >= 4, "sample scenes without scripts were found");
+        Check(scenes >= 20, $"sample scenes were found ({scenes})");
 
         // A component of a switched-off feature (content the build did not see) stops with the message that names the fix.
         var unseen = new SceneDocument();
@@ -68,7 +68,9 @@ internal static class FeatureSwitchChecks
         var log = new StringBuilder();
         Switched(off, () =>
         {
-            using var game = new SceneGame(SceneDocument.Load(file));
+            var scene = SceneDocument.Load(file);
+            foreach (var obj in scene.Objects) foreach (var script in obj.Components.OfType<ScriptComponent>().ToArray()) obj.RemoveComponent(script);
+            using var game = new SceneGame(scene);
             var canvas = new Log(log);
             for (int i = 0; i < 90; i++)
             {

@@ -59,11 +59,11 @@ Project에서 타일셋을 더블클릭하고 셀을 선택한다. **Collision**
 
 점은 셀의 왼쪽 위가 `0,0`, 오른쪽 아래가 `1,1`인 좌표다. 미리보기의 노란 선이 충돌면이고 짧은 수직선은 막는 쪽을 가리킨다. 단방향 면의 반대쪽에서 올라가는 캐릭터와 레이는 통과한다. **Overlap**은 방향 없이 실제 선분과 겹치는지 검사한다.
 
-**PlatformerLab에서 시험하기.** 시작 위치에서 **Space**를 눌러 머리 위 발판을 통과하고 착지한다. **→ / D**로 오른쪽 경사를 끝까지 오른 뒤 **← / A**로 내려온다. **Assets/Incline.tileset**의 다섯 타일이 경사를 이루고, 발판에는 **Assets/Ridge.tileset**의 16번 타일을 사용한다. [실행 기록](../../engine/tests/results/tile-collision/README.md)
+**PlatformerLab에서 시험하기.** 시작 위치에서 **Space**를 눌러 머리 위 발판을 통과하고 착지한다. **→ / D**로 오른쪽 경사를 끝까지 오른 뒤 **← / A**로 내려온다. 쇼케이스의 **Assets/Showcase/Incline.tileset** 다섯 타일이 경사를 이루고, 발판은 **Assets/Showcase/Ledge.tileset**의 한쪽 통과 타일이다. [실행 기록](../../engine/tests/results/tile-collision/README.md)
 
 ## 오토타일 브러시
 
-[PlatformerLab](../../samples/PlatformerLab/)의 **Ridge terrain → Tilemap 2D → Edit Tiles**에서 **#1 · Terrain**을 선택한다. 빈 공간에 하나를 찍고, 바로 옆에 하나 더 찍으면 두 셀이 서로를 향해 연결된다. **Eraser**로 가운데를 지우면 양쪽 끝이 닫힌다. 청크 경계에서도 같다. **Cmd+Z** 한 번은 마지막 획만 되돌린다. 씬에는 선택한 브러시 ID가 저장되므로 이웃 그림을 따로 고칠 필요가 없다.
+[PlatformerLab](../../samples/PlatformerLab/) 쇼케이스의 **Ground → Tilemap 2D → Edit Tiles**에서 브러시 **#1**을 선택한다. 빈 공간에 하나를 찍고, 바로 옆에 하나 더 찍으면 두 셀이 서로를 향해 연결된다. **Eraser**로 가운데를 지우면 양쪽 끝이 닫힌다. 청크 경계에서도 같다. **Cmd+Z** 한 번은 마지막 획만 되돌린다. 씬에는 선택한 브러시 ID가 저장되므로 이웃 그림을 따로 고칠 필요가 없다.
 
 새 브러시를 만들려면 타일셋 편집기에서 시트의 **첫 셀**을 선택한 뒤 **Brush**를 설정한다. 브러시의 **Collision** 설정이 모든 연결 모양에 적용된다. 시트의 나머지 셀을 일반 타일로 직접 칠할 수도 있다.
 

@@ -21,7 +21,7 @@
 | UI | UI Layout · UI Scroll View · UI Text Field · UI Slider · UI Toggle · UI Dropdown | 자동 배치·스크롤 목록, 이름 입력, 설정 화면 위젯. [UI 제작](game-ui.md#슬라이더토글드롭다운) |
 | Audio | Audio Source · Audio Listener 2D | 음악·효과음 스트리밍, 루프·페이드, 공간 음향을 듣는 기준점. [오디오](audio.md) |
 | Animation | Sprite Animator | **Clip**에 프레임 애니메이션을 연결한다. **Play on start**를 켜면 씬 시작과 함께 재생한다. [애니메이션](sprites.md#게임에서-재생하기) |
-| Animation | Skeleton Animator 2D · Foot IK 2D · Position Tween 2D | 뼈대 애니메이션, 발 IK, 위치 왕복. [리그 애니메이션](rig-animation.md) |
+| Animation | Skeleton Animator 2D · Position Tween 2D | 뼈대 애니메이션, 위치 왕복. [리그 애니메이션](rig-animation.md) |
 | Animation | Path Follower 2D | 곡선 경로를 일정한 속도로 따라간다. [경로 발판](platformer-physics.md#곡선-경로를-따라가는-발판) |
 | Animation | Cutscene Director | 카메라 전환과 대화를 순서대로 재생한다. [컷신과 대화](cutscenes.md) |
 | Navigation | Navigation Region 2D | 플랫폼 보행 길찾기와 탑다운 자유 이동 길찾기의 영역. [내비게이션](navigation.md) |

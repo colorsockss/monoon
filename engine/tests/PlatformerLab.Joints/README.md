@@ -1,8 +1,8 @@
 # PlatformerLab 조인트 회귀
 
-[Joints 씬](../../../samples/PlatformerLab/Scenes/Joints.scene)에서 흔들다리(Revolute Joint 2D 사슬)를 걸어서 건너고, 도르래 발판(Slider Joint 2D 두 개와 [PulleyPair](../../../samples/PlatformerLab/Scripts/PulleyPair.cs)) 사이를 두 번 점프해 오른쪽 언덕에 오른다. 입력은 [Cross.inputreplay](Cross.inputreplay)에 있다. 60Hz 고정 업데이트 300틱 동안 10틱에 →를 누르고, 190틱과 244틱에 Space를 한 틱씩 누르고, 280틱에 →를 뗀다.
+코스 쇼케이스([ShowcaseCourse](../../../samples/PlatformerLab/Scenes/ShowcaseCourse.scene))에서 [CourseRunner](../../../samples/PlatformerLab/Scripts/Showcase/CourseRunner.cs)가 입력 없이 흔들다리(Revolute Joint 2D 사슬)를 건너고, 도르래 발판(Slider Joint 2D 두 개와 [PulleyPair](../../../samples/PlatformerLab/Scripts/PulleyPair.cs)) 사이를 점프해 옮겨 탄다. [Cross.inputreplay](Cross.inputreplay)는 이벤트 없는 600틱이다. 검사: 캐릭터가 x > 690(실측 1247.6)까지 가고, 다리가 y > 300(실측 319.4)까지 처지고, 두 발판이 반대로 10px 넘게(실측 +16.01, −16.00) 움직인다(2026-11-26부터, 이전에는 옛 Joints 씬을 입력으로 건넜다).
 
-복사본에만 붙이는 [관찰 스크립트](JointTrace.source)가 매 틱 캐릭터 위치, 판자 8개와 도르래 발판 2개의 위치·각도를 소수 4자리(각도 3자리)로 기록한다. 준비 단계는 복사본의 시작 씬을 Joints로 바꾼다. 독립 게임은 배포 플레이어의 입력 리플레이 진입점(헤드리스)을, Scene Play는 에디터의 Play 세션에 같은 기록을 재생한다. 세 기록은 바이트 단위로 같아야 한다.
+복사본에만 붙이는 [관찰 스크립트](JointTrace.source)가 매 틱 캐릭터 위치, 판자 8개와 도르래 발판 2개의 위치·각도를 소수 4자리(각도 3자리)로 기록한다. 준비 단계는 복사본의 시작 씬을 코스 쇼케이스로 바꾸고 관찰 스크립트를 CourseRunner 앞에 붙인다. 독립 게임은 배포 플레이어의 입력 리플레이 진입점(헤드리스)을, Scene Play는 에디터의 Play 세션에 같은 기록을 재생한다. 세 기록은 바이트 단위로 같아야 한다.
 
 Mac에서는 저장소 루트에서 다음 명령을 실행한다. 에디터를 실행하기 전에 Release와 Native AOT용 [플레이어 템플릿](../../../docs/manual/build.md)을 준비한다.
 

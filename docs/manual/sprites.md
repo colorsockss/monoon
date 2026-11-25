@@ -28,7 +28,7 @@ Sprite Renderer의 `drawMode`로 그리는 방식을 고른다. 기본값 **Simp
 
 ```yaml
 - type: spriteRenderer
-  asset: Assets/SignBoard.png
+  asset: Assets/Board.png
   drawMode: Sliced
   slice: {left: 4, top: 4, right: 4, bottom: 4}
 ```

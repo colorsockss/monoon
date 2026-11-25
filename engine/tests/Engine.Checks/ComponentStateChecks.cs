@@ -27,16 +27,24 @@ internal static class ComponentStateChecks
         Require(!back.Active && !back.Components[0].Enabled && ProjectYaml.Decode<SceneObject>(Encoding.UTF8.GetBytes(plainText)) is { Active: true } p &&
             p.Components[0].Enabled, "round trip");
 
-        // Every sample scene and prefab saves without the new keys (unchanged content).
+        // Every sample scene and prefab: one that turns nothing off writes no keys; one that does (the showcases start some
+        // objects hidden) is version 32 or later and writes exactly its false values back.
         int files = 0;
         foreach (var file in Directory.EnumerateFiles(Path.Combine(repository, "samples"), "*.*", SearchOption.AllDirectories)
                      .Where(f => f.EndsWith(".scene", StringComparison.Ordinal) || f.EndsWith(".prefab", StringComparison.Ordinal)))
         {
             var doc = SceneDocument.ReadAsset(file);
-            // Schemas 33 (parallax, sprite draw modes) and 34 (capsule/edge colliders) is above the active/enabled version 32 but does not imply it.
-            Require(doc.Objects.All(o => o.Active && o.Components.All(c => c.Enabled)) && doc.SchemaVersion != 32, $"{file} reads as active and enabled");
-            var text = Encoding.UTF8.GetString(ProjectYaml.Encode(doc));
-            Require(!text.Contains("\n  active:") && !text.Contains("    enabled:"), $"{file} writes no active/enabled keys");
+            string Off(SceneDocument d) => string.Join(",", d.Objects.Where(o => !o.Active).Select(o => o.Id)) + "|" +
+                string.Join(",", d.Objects.SelectMany(o => o.Components.Where(c => !c.Enabled).Select(c => $"{o.Id}/{c.Kind}")));
+            var bytes = ProjectYaml.Encode(doc);
+            var text = Encoding.UTF8.GetString(bytes);
+            bool keys = text.Contains("\n  active:") || text.Contains("    enabled:");
+            if (Off(doc) == "|")
+                // Schemas 33 (parallax, sprite draw modes) and 34 (capsule/edge colliders) are above the active/enabled version 32 but do not imply it.
+                Require(doc.SchemaVersion != 32 && !keys, $"{file} turns nothing off, is not version 32 and writes no active/enabled keys");
+            else
+                Require(doc.SchemaVersion >= 32 && keys && Off(ProjectYaml.Decode<SceneDocument>(bytes)) == Off(doc),
+                    $"{file} keeps its inactive objects and disabled components through a save ({doc.SchemaVersion})");
             files++;
         }
 
@@ -76,7 +84,7 @@ internal static class ComponentStateChecks
             Require(game.Physics.Overlap(Shape2D.Circle(new(320, 120), 4), new PhysicsFilter(IncludeTriggers: true)).Count == 1, "the enabled collider is found");
         }
         Require(scene.CaptureObjects() == authored, "Play did not change the authored state");
-        Console.WriteLine($"PASS object active / component enabled: only false is stored ({files} sample files unchanged), " +
+        Console.WriteLine($"PASS object active / component enabled: only false is stored ({files} sample files keep their keys), " +
             "runtime starts inactive subtrees and turned-off components disabled");
     }
 }

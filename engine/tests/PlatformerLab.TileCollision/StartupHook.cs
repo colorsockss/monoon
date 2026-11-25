@@ -63,10 +63,10 @@ public static class StartupHook
             Require(window.GetVisualRoot() == null, window.FindControl<TextBlock>("Info")!.Text ?? "Save failed");
             await closing;
         }
-        await Edit("Assets/Incline.tileset",new(76,0,38,90),2,"0,0.65  1,0.4  1,1  0,1","0,0.6  1,0.4  1,1  0,1",false);
-        await Edit("Assets/Incline.tileset",new(76,0,38,90),2,"0,0.6  1,0.4  1,1  0,1","0,0.65  1,0.4  1,1  0,1",true);
-        await Edit("Assets/Ridge.tileset",new(24,24,8,8),3,"1,0  0,0","0,0  1,0",false);
-        await Edit("Assets/Ridge.tileset",new(24,24,8,8),3,"0,0  1,0","1,0  0,0",true);
+        await Edit("Assets/Showcase/Incline.tileset",new(76,0,76,180),2,"0,0.85  1,0.6  1,1  0,1","0,0.8  1,0.6  1,1  0,1",false);
+        await Edit("Assets/Showcase/Incline.tileset",new(76,0,76,180),2,"0,0.8  1,0.6  1,1  0,1","0,0.85  1,0.6  1,1  0,1",true);
+        await Edit("Assets/Showcase/Ledge.tileset",new(0,0,32,12),3,"1,0  0,0","0,0  1,0",false);
+        await Edit("Assets/Showcase/Ledge.tileset",new(0,0,32,12),3,"0,0  1,0","1,0  0,0",true);
         Click(main.FindControl<Button>("PlayButton")!);
         var game=(GameSession)view.GetType().GetField("game",Private)!.GetValue(view)!;
         InputReplay.Load(Path.Combine(Output,"Traverse.inputreplay")).Play(game,GameSettings.Load(Environment.GetEnvironmentVariable("MONOON_QA_PROJECT")!).ProjectId!.Value);

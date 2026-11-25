@@ -8,7 +8,7 @@ internal static class RigidBodyChecks
 
     public static void Run(string repository, string scratch)
     {
-        var path = Path.Combine(repository, "samples", "PlatformerLab", "Scenes", "Platform.scene");
+        var path = Path.Combine(repository, "samples", "PlatformerLab", "Scenes", "Showcase.scene");
         var scene = SceneDocument.Load(path);
         var runner = scene.Objects.Single(o => o.Name == "Runner");
         var storage = new PlayerStorage(Path.Combine(scratch, "platform-profile"));

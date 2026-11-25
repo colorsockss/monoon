@@ -1,5 +1,9 @@
-"""Roadmap 16.2: PlatformerLab's three parallax layers under a moving camera, traced in Scene Play, Release and Native AOT."""
-import os
+"""Roadmap 16.2: PlatformerLab's showcase parallax layers under a following camera, traced in Scene Play, Release and Native AOT.
+
+The showcase (Scenes/Showcase.scene, the start scene) has three layers: the sky backing fixed to the screen (scroll 0), the moon
+(0.05) and the sky picture (0.15), all with scrollY 0. The recording holds → so the camera follows the runner east.
+"""
+import os, re
 from pathlib import Path
 import shutil
 import subprocess
@@ -7,10 +11,12 @@ import sys
 
 HERE = Path(__file__).resolve().parent
 PROJECT = '3b309c28-75ce-562e-92ac-f94ee48b18c7'
-SCENE = 'b58454d1-1dc3-5f31-a496-cd03cf3983b2'
+SCENE = '40845ca7-0281-5a45-878a-c1da3b04f822'
 FRAMES = 120
+EVENTS = [(5, 'Right', 'true'), (115, 'Right', 'false')]
 SNAPSHOTS = [0, 30, 60, 119]
-SCROLL = {'sky': 0.0, 'hills': 0.25, 'trees': 0.6}
+SCROLL = {'back': 0.0, 'moon': 0.05, 'sky': 0.15}
+ZOOM = 3   # PlatformerLab uses integer scale: offsets land on whole screen pixels, 1/3 unit at zoom 3
 
 
 def expect(ok, message):
@@ -20,24 +26,22 @@ def expect(ok, message):
 
 
 def prepare(sample, destination):
-    shutil.copytree(sample, destination, ignore=shutil.ignore_patterns('.monoon', '.DS_Store', 'bin', 'obj'))
+    shutil.copytree(sample, destination, ignore=shutil.ignore_patterns('.monoon', '.monoon-compiled', '.DS_Store', 'bin', 'obj'))
     shutil.copyfile(HERE / 'TraceParallax.source', destination / 'Scripts/TraceParallax.cs')
-    settings = destination / 'GameSettings'
-    text = settings.read_text(encoding='utf-8')
-    assert text.count('startScene: 4fe9f1eb-5dcd-5f90-a033-78a61e876a0d') == 1
-    settings.write_text(text.replace('startScene: 4fe9f1eb-5dcd-5f90-a033-78a61e876a0d', f'startScene: {SCENE}'), encoding='utf-8')
-    scene = destination / 'Scenes/Parallax.scene'
+    scene = destination / 'Scenes/Showcase.scene'
     text = scene.read_text(encoding='utf-8')
-    anchor = '- id: de22555b-b604-55df-bd6c-cbfdc53c089a\n  name: Canvas\n'
-    assert text.count(anchor) == 1
+    ids = {m.group(2): m.group(1) for m in re.finditer(r'(?m)^- id: (\S+)\n(?:  parentId: \S+\n)?  name: (.*)$', text)}
     probe = ('- id: 9a1d6c52-7b0e-4f3a-8e21-5c4d3b2a1f09\n  name: Parallax trace\n  width: 1\n  height: 1\n  components:\n'
-             '  - type: script\n    script: TraceParallax\n')
-    scene.write_text(text.replace(anchor, probe + anchor), encoding='utf-8')
+             f'  - type: script\n    script: TraceParallax\n    values: {{"Camera": "{ids["Camera"]}", "Back": "{ids["Sky backing"]}", '
+             f'"Moon": "{ids["Moon"]}", "Sky": "{ids["Sky"]}"}}\n')
+    assert text.count('defaultCameraId:') == 1
+    scene.write_text(text.replace('defaultCameraId:', probe + 'defaultCameraId:'), encoding='utf-8')
 
 
 def recording(path):
+    lines = ''.join(f'- frame: {f}\n  timeTicks: {f * 166667}\n  input: {{kind: key, control: "{k}", down: {d}}}\n' for f, k, d in EVENTS)
     path.write_text(f'version: 1\nproject: {PROJECT}\nstartScene: {SCENE}\nframeTicks: [' +
-                    ', '.join(['166667'] * FRAMES) + ']\nevents: []\n', encoding='utf-8')
+                    ', '.join(['166667'] * FRAMES) + ']\nevents:\n' + lines, encoding='utf-8')
 
 
 def summary(path):
@@ -45,18 +49,21 @@ def summary(path):
     for line in path.read_text(encoding='utf-8').splitlines():
         frame, *fields = line.split('|')
         row = dict(f.split('=', 1) for f in fields)
-        rows.append((int(frame), int(row['tick']), float(row['camera']),
+        rows.append((int(frame), int(row['tick']), tuple(map(float, row['camera'].split(','))),
                      {k: tuple(map(float, row[k].split(','))) for k in SCROLL}))
     expect(len(rows) >= FRAMES - 1, f'{path.name}: {len(rows)} traced ticks')
-    travel = rows[-1][2] - rows[0][2]
+    start = rows[0][2]
+    travel = rows[-1][2][0] - start[0]
     expect(travel > 100, f'{path.name}: the camera travels {travel:.1f} units')
     for _, tick, camera, offsets in rows:
-        moved = camera - 400
+        moved = (camera[0] - start[0], camera[1] - start[1])
         for name, scroll in SCROLL.items():
             x, y = offsets[name]
-            if abs(x - moved * (1 - scroll)) > 1e-3 or y != 0:
-                raise SystemExit(f'FAIL {path.name} tick {tick}: {name} offset {x} for travel {moved} at scroll {scroll}')
-    print(f'PASS {path.name}: every layer moves (1 - scroll) x the camera travel; on screen sky 0, hills 0.25, trees 0.6 of it', flush=True)
+            # Each layer keeps the screen place it had on the first frame: it moves (1 - scroll) x the camera, and with
+            # scrollY 0 all of the vertical travel.
+            if abs(x - moved[0] * (1 - scroll)) > 1 / ZOOM or abs(y - moved[1]) > 1 / ZOOM:   # within one screen pixel
+                raise SystemExit(f'FAIL {path.name} tick {tick}: {name} offset {x},{y} for travel {moved} at scroll {scroll}')
+    print(f'PASS {path.name}: every layer moves (1 - scroll) x the camera travel; on screen back 0, moon 0.05, sky 0.15 of it', flush=True)
     return rows
 
 

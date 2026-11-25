@@ -21,7 +21,7 @@ objects:
     values: {"Crossing": "aa3341d7-e660-5897-97d2-c381f7781199", "Ramp": "e70cebb0-0ef8-5472-a5b9-cd3aacff666c", "Ferry": "4c68af1e-0aea-503c-aed8-67b2efab19e6", "Anchor": "e6b334ea-53a4-5e4c-ae16-6f31b4edcb6f", "Bob": "804e8e8e-8467-56ed-bc5b-681fa97abb27", "Readout": "cd0e1182-9f8c-5665-b23e-714179e29a09", "Result": "a8ddbb2a-a5e2-5077-9e47-6b49daf16479"}
   - type: script
     script: BeatFlags
-    values: {"Ledge": "62b3835e-d06d-590f-8cb1-4607513352f7", "Ramp": "e70cebb0-0ef8-5472-a5b9-cd3aacff666c", "Ferry": "4c68af1e-0aea-503c-aed8-67b2efab19e6", "Lookout": "a848c454-5f39-5b5a-bc81-b0a09597025b"}
+    values: {"Ledge": "62b3835e-d06d-590f-8cb1-4607513352f7", "Ramp": "e70cebb0-0ef8-5472-a5b9-cd3aacff666c", "Ferry": "4c68af1e-0aea-503c-aed8-67b2efab19e6", "Lookout": "a848c454-5f39-5b5a-bc81-b0a09597025b", "Rig": "5e3309df-0d6e-577c-9f8b-904b7f86d16b"}
 - id: a581858d-3676-5ea4-82cc-76515e4703c6
   parentId: 28ae72e3-83b8-57b8-b45a-2f8c1096e196
   name: Hero
@@ -455,6 +455,18 @@ objects:
     - x: 1
       y: 0
       cells: [{index: 0, tile: 1}, {index: 32, tile: 1}, {index: 64, tile: 1}, {index: 96, tile: 1}, {index: 1, tile: 1}, {index: 33, tile: 1}, {index: 65, tile: 1}, {index: 97, tile: 1}, {index: 2, tile: 1}, {index: 34, tile: 1}, {index: 66, tile: 1}, {index: 98, tile: 1}, {index: 3, tile: 1}, {index: 35, tile: 1}, {index: 67, tile: 1}, {index: 99, tile: 1}, {index: 4, tile: 1}, {index: 36, tile: 1}, {index: 68, tile: 1}, {index: 100, tile: 1}, {index: 20, tile: 1}, {index: 52, tile: 1}, {index: 84, tile: 1}, {index: 116, tile: 1}, {index: 21, tile: 1}, {index: 53, tile: 1}, {index: 85, tile: 1}, {index: 117, tile: 1}, {index: 22, tile: 1}, {index: 54, tile: 1}, {index: 86, tile: 1}, {index: 118, tile: 1}, {index: 23, tile: 1}, {index: 55, tile: 1}, {index: 87, tile: 1}, {index: 119, tile: 1}, {index: 24, tile: 1}, {index: 56, tile: 1}, {index: 88, tile: 1}, {index: 120, tile: 1}, {index: 25, tile: 1}, {index: 57, tile: 1}, {index: 89, tile: 1}, {index: 121, tile: 1}]
+- id: 5e3309df-0d6e-577c-9f8b-904b7f86d16b
+  name: Rig runner
+  x: -20
+  y: 300
+  width: 22
+  height: 30
+  components:
+  - type: skeletonAnimator2D
+    rig: 125e32af-6a4f-40ca-acb2-c88f5fc833ce
+    order: 3
+    clock: Time
+    period: 0.7
 - id: 0301c141-eaa8-513c-816c-23ccfc414912
   name: Sign
   x: 8
@@ -693,6 +705,26 @@ objects:
   - type: uiText
     richText: true
     text: "<b>Kinematic deck</b>   <color=#BFD0DC>Carries its rider</color>"
+    size: 12
+    insetX: 10
+    insetY: 4
+- id: f4fa6b84-aa63-59ad-ab3b-bf5c75eb9a0d
+  parentId: dc1560db-722d-5991-984f-c9104d5f837e
+  name: Tag 6
+  x: 12
+  y: 152
+  width: 252
+  height: 24
+  components:
+  - type: uiRect
+    anchor: TopLeft
+    showIf: rig
+  - type: uiImage
+    sprite: bf477ce7-700b-4462-ba37-ecad01ce5ee2
+    borders: {left: 4, top: 4, right: 4, bottom: 4}
+  - type: uiText
+    richText: true
+    text: "<b>Skeletal rig</b>   <color=#BFD0DC>Bones keyed over one stride</color>"
     size: 12
     insetX: 10
     insetY: 4

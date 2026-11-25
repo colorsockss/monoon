@@ -432,7 +432,6 @@ public sealed partial class SceneGame
         lights = bodies.Where(b => b.Light != null && !b.Interface).ToArray();
         trails = bodies.Where(b => b.Trail != null && !b.Interface).ToArray();
         skeletons=bodies.Where(b=>b.Skeleton!=null && !b.Interface).ToArray();
-        foreach (var b in skeletons) if (b.FootIK is {} ik) b.FootFilter=new(ik.Mask,Ignore:b.MotionOwner?.Id??b.Id);
         IndexCameras();
         IndexAudio();
         tileLayers = bodies.Where(b => b.Map != null).ToArray();

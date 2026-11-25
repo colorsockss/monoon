@@ -214,13 +214,10 @@ internal static class PlayerYamlRegistration
         if (EngineFeatures.Skeletons)
         {
             BoneKey.__RegisterVYamlFormatter();
-            FootChain.__RegisterVYamlFormatter();
-            FootIK2DComponent.__RegisterVYamlFormatter();
             RigBone.__RegisterVYamlFormatter();
             SkeletonAnimator2DComponent.__RegisterVYamlFormatter();
             SkeletonRig.__RegisterVYamlFormatter();
             GeneratedResolver.Register(new ArrayFormatter<BoneKey>());
-            GeneratedResolver.Register(new ArrayFormatter<FootChain>());
             GeneratedResolver.Register(new ArrayFormatter<RigBone>());
             GeneratedResolver.Register(new EnumAsStringFormatter<SkeletonClock>());
         }

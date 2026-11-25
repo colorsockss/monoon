@@ -1,10 +1,10 @@
 # PlatformerLab 패럴랙스 회귀 (16.2)
 
-`verify.py prepare`는 PlatformerLab을 별도 폴더에 복사해 시작 씬을 [Parallax.scene](../../../samples/PlatformerLab/Scenes/Parallax.scene)으로 바꾸고 관찰 스크립트 [TraceParallax](TraceParallax.source)를 붙인다. 이 스크립트는 고정 틱마다 카메라 중심 X와 하늘(Scroll 0)·언덕(0.25)·나무(0.6)의 `TryGetParallaxOffset` 값을 `R` 형식으로 기록한다.
+`verify.py prepare`는 PlatformerLab을 별도 폴더에 복사하고 쇼케이스(`Scenes/Showcase.scene`, 시작 씬)에 관찰 스크립트 [TraceParallax](TraceParallax.source)를 붙인다. 이 스크립트는 고정 틱마다 카메라 중심과 하늘 배경(Scroll 0)·달(0.05)·하늘 그림(0.15)의 `TryGetParallaxOffset` 값을 `R` 형식으로 기록한다(2026-11-26부터, 이전에는 옛 Parallax 씬의 하늘·언덕·나무).
 
-입력 기록은 입력 없는 120프레임(각 1/60초)이다. 카메라는 Position Tween 2D(640, 4초, 왕복)로 오른쪽으로 320 이동한다.
+입력 기록은 120프레임(각 1/60초)이고 5–115프레임에 →를 눌러 주인공을 오른쪽으로 걷게 한다. 카메라가 주인공을 따라 100 넘게 움직인다.
 
-- 모든 틱에서 레이어 오프셋이 `(1 − Scroll) × 카메라 이동량`과 같은지(오차 0.001) 확인한다.
+- 모든 틱에서 레이어 오프셋이 `(1 − Scroll) × 카메라 가로 이동량`, 세로는 카메라 세로 이동량(ScrollY 0)과 화면 한 픽셀(1/3 단위, 정수 배율·줌 3) 안에서 같은지 확인한다.
 - `compare`는 Scene Play·Release·Native AOT 기록 파일이 바이트 단위로 같은지 비교한다.
 - `snapshots`는 Release와 Native AOT가 창 없는 재생에서 0·30·60·119프레임에 저장한 PNG가 같은지 비교한다(`MONOON_REPLAY_SNAPSHOTS`, SDL 소프트웨어 렌더러).
 

@@ -15,7 +15,13 @@ internal static class EffectsChecks
         public void FillRectangle(RectangleF r,Color c) { }
         public void DrawText(string text,float x,float y,float size,Color c) { }
         public bool DrawSprite(string p,RectangleF r)=>true;
-        public bool DrawAffine(string? p,RectangleF r,Matrix3x2 m,Color tint,SpriteRegion? source=null,string layout=TileGrid.Orthogonal)=>true;
+        // Landing dust is textured (Assets/Showcase/DustPuff.png), so it arrives as sprite draws, not the built-in puff shader.
+        public bool DrawAffine(string? p,RectangleF r,Matrix3x2 m,Color tint,SpriteRegion? source=null,string layout=TileGrid.Orthogonal)
+        {
+            if (p?.EndsWith("DustPuff.png",StringComparison.Ordinal)==true) Dust.Add(Affine2D.Bounds(r,m));
+            return true;
+        }
+        public void FillStrip(ReadOnlySpan<Vector2> edges,ReadOnlySpan<Color> colors,Matrix3x2 matrix) { }
         public void DrawShader(ShaderClip shader,int frame,RectangleF local,Matrix3x2 m,Color tint,bool additive)
         {
             if (additive) Light=tint.A;
@@ -24,12 +30,19 @@ internal static class EffectsChecks
         }
     }
 
+    // Torch light 1 flickers by 0.12 of its 0.8 intensity (alpha about 180..204 over 100 steps); parallax sets the main showcase's
+    // schema to 33 and the course's capsule and edge colliders set it to 34.
+    const int LightSwing=15, SchemaShowcase=33, SchemaCourse=34;
     internal static void Run(string repository)
     {
         string project=Path.Combine(repository,"samples","PlatformerLab");
-        var scene=SceneDocument.Load(Path.Combine(project,"Scenes","Platform.scene"));
-        var torch=scene.Objects.Single(o=>o.Name=="Torch flame");
+        var scene=SceneDocument.Load(Path.Combine(project,"Scenes","Showcase.scene"));
+        // The shader torch and its flickering light live on the course showcase; the landing dust on the main one.
+        var course=SceneDocument.Load(Path.Combine(project,"Scenes","ShowcaseCourse.scene"));
+        var torch=course.Objects.Single(o=>o.Name=="Torch flame 1");
+        var torchLight=course.Objects.Single(o=>o.Name=="Torch light 1");
         var runner=scene.Objects.Single(o=>o.Name=="Runner");
+        var camera=scene.Objects.Single(o=>o.Name=="Camera").Id;
         var clip=ProjectAssets.ReadManifest(project).LoadShader(project,torch.GetComponent<SpriteShader2DComponent>()!.Shader!.Value);
         using (var pixels=ShaderPixels.Bake(clip,Color.White))
         {
@@ -55,8 +68,7 @@ internal static class EffectsChecks
         for (int i=0;i<5;i++) Next();
         Check(canvas.Dust.Count==0,"starting on the floor produces no landing burst");
         game.Actions.Press("Space"); Next(); game.Actions.Release("Space");
-        int min=255,max=0, burst=0;
-        var frames=new HashSet<int>();
+        int burst=0;
         for (int i=0;i<100;i++)
         {
             Next();
@@ -67,24 +79,39 @@ internal static class EffectsChecks
                 burst=canvas.Dust.Count;
                 game.Actions.Press("Right");
             }
-            min=Math.Min(min,canvas.Light);max=Math.Max(max,canvas.Light);frames.Add(canvas.Frame);
             if (burst>0 && canvas.Dust.Count>0 && i>60)
             {
-                var center=canvas.Dust.Average(r=>r.X+r.Width*.5f);
+                // The canvas sees screen space; the zoomed follow camera maps it back to world x.
+                game.Current.TryGetView(camera,out var view);
+                var center=view.World.X+canvas.Dust.Average(r=>r.X+r.Width*.5f)/view.Zoom;
                 game.Current.TryGetPosition(runner.Id,out var pos);
                 if (pos.X-center<25) throw new Exception("Dust followed the player");
             }
         }
         game.Actions.Release("Right");
-        Check(burst==22 && canvas.Dust.Count==0,"landing emits 22 world-space particles once and they expire while the player moves");
-        Check(max-min>75 && frames.Count==clip.Frames,"fixed steps cover the shader loop and vary the light intensity");
+        Check(burst==16 && canvas.Dust.Count==0,$"landing emits 16 world-space particles once and they expire while the player moves ({burst}, {canvas.Dust.Count} left)");
+        using (var lit=new GameSession(course))
+        {
+            var torchCanvas=new Canvas();
+            int min=255,max=0;
+            var frames=new HashSet<int>();
+            for (int i=0;i<100;i++)
+            {
+                lit.FixedUpdate(lit.Actions.Take(),dt); lit.Draw(torchCanvas,1);
+                min=Math.Min(min,torchCanvas.Light);max=Math.Max(max,torchCanvas.Light);frames.Add(torchCanvas.Frame);
+            }
+            Check(max-min>LightSwing && frames.Count==clip.Frames,$"fixed steps cover the shader loop and vary the light intensity ({min}..{max}, {frames.Count}/{clip.Frames} frames)");
+        }
         Check(game.Current.EmitParticles(runner.Id),"scripts can emit a manual burst");
         game.Current.SetActive(runner.Id,false); game.Current.SetActive(runner.Id,true); game.Draw(canvas,1);
         Check(canvas.Dust.Count==0,"disabling the emitter clears its particles");
         var saved=ProjectYaml.Decode<SceneDocument>(ProjectYaml.Encode(scene));
-        Check(saved.SchemaVersion==31 && saved.Objects.Single(o=>o.Id==torch.Id).GetComponent<PointLight2DComponent>()==torch.GetComponent<PointLight2DComponent>() &&
+        var savedCourse=ProjectYaml.Decode<SceneDocument>(ProjectYaml.Encode(course));
+        Check(saved.SchemaVersion==SchemaShowcase && savedCourse.SchemaVersion==SchemaCourse &&
+            savedCourse.Objects.Single(o=>o.Id==torchLight.Id).GetComponent<PointLight2DComponent>()==torchLight.GetComponent<PointLight2DComponent>() &&
+            savedCourse.Objects.Single(o=>o.Id==torch.Id).GetComponent<SpriteShader2DComponent>()==torch.GetComponent<SpriteShader2DComponent>() &&
             saved.Objects.Single(o=>o.Id==runner.Id).GetComponent<ParticleEmitter2DComponent>()==runner.GetComponent<ParticleEmitter2DComponent>(),
-            "effect settings round-trip through scene YAML");
+            $"effect settings round-trip through scene YAML (schemas {saved.SchemaVersion}, {savedCourse.SchemaVersion})");
         DrawWithoutAllocating(clip);
     }
 

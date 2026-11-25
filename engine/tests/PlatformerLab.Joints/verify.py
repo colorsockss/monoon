@@ -1,4 +1,5 @@
-"""Replay the Joints scene through its input actions and compare the Box2D position traces of the three run paths."""
+"""Run PlatformerLab's course showcase (ShowcaseCourse: CourseRunner crosses the rope bridge and the pulley decks without input)
+and compare the Box2D position traces of the three run paths. Cross.inputreplay is 600 frames with no events."""
 from pathlib import Path
 import json
 import os
@@ -7,21 +8,22 @@ import subprocess
 import sys
 
 HERE = Path(__file__).resolve().parent
-PLATFORM = '4fe9f1eb-5dcd-5f90-a033-78a61e876a0d'
-JOINTS = '4fbf8054-5a0b-5822-86eb-a809b0f6c0dd'
-FRAMES = 300
+SHOWCASE = '40845ca7-0281-5a45-878a-c1da3b04f822'
+COURSE = 'e4366c3e-3cfa-5c9b-b11e-7e2f25ffb84f'
+FRAMES = 600
 
 def prepare(sample, dest):
     shutil.copytree(sample, dest, ignore=shutil.ignore_patterns('.monoon', '.DS_Store', 'bin', 'obj'))
     shutil.copyfile(HERE/'JointTrace.source', dest/'Scripts/JointTrace.cs')
     settings = dest/'GameSettings'
     text = settings.read_text(encoding='utf-8')
-    assert f'startScene: {PLATFORM}' in text
-    settings.write_text(text.replace(f'startScene: {PLATFORM}', f'startScene: {JOINTS}', 1), encoding='utf-8')
-    scene = dest/'Scenes/Joints.scene'
+    assert f'startScene: {SHOWCASE}' in text
+    settings.write_text(text.replace(f'startScene: {SHOWCASE}', f'startScene: {COURSE}', 1), encoding='utf-8')
+    scene = dest/'Scenes/ShowcaseCourse.scene'
     text = scene.read_text(encoding='utf-8')
-    assert text.count('    script: Crosser\n') == 1
-    scene.write_text(text.replace('    script: Crosser\n', '    script: JointTrace\n  - type: script\n    script: Crosser\n', 1), encoding='utf-8')
+    runner = '    script: Showcase/CourseRunner\n'
+    assert text.count(runner) == 1
+    scene.write_text(text.replace(runner, '    script: JointTrace\n  - type: script\n' + runner, 1), encoding='utf-8')
 
 def check(out):
     rows = [line.split(' ') for line in (out/'trace.tsv').read_text(encoding='utf-8').splitlines()]

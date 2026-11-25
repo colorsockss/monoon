@@ -7,7 +7,7 @@ internal static class CutsceneChecks
     public static void Run(string repository, string scratch)
     {
         string project = Path.Combine(repository, "samples/PlatformerLab");
-        var scene = SceneDocument.Load(Path.Combine(project, "Scenes/Platform.scene"));
+        var scene = SceneDocument.Load(Path.Combine(project, "Scenes/Showcase.scene"));
         Guid Id(string name) => scene.Objects.Single(o => o.Name == name).Id;
         Guid shot = Id("Far landing shot"), runner = Id("Runner"), ferry = Id("Shuttle");
         var sequenceId = scene.Objects.Single(o => o.Id == shot).GetComponent<CutsceneDirectorComponent>()!.Sequence!.Value;

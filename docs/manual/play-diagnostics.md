@@ -71,7 +71,7 @@ Play 중 **Debug** 도구 줄의 **Profiler** 체크, **Run → Frame Profiler**
 | Frame | 완료된 Scene 프레임 사이 전체. Self는 아래 항목에 속하지 않은 시간이다. 에디터 UI의 배치·그리기, GC 일시정지, 다음 프레임까지의 대기가 여기에 들어간다. |
 | UpdateUi · Simulate | 게임 루프의 UI 갱신과 고정 틱. Simulate의 Calls는 그 프레임에서 실행한 고정 틱 수다. |
 | `스크립트.메서드` | `FixedUpdate`, `UpdateUi`, `OnUiClick`, `OnUiValueChanged`, 접촉·트리거 콜백과 `OnCreate` 등의 생명주기 콜백. 스크립트 타입 이름으로 구분한다. |
-| Physics.Overlap · Raycast · Sweep | `IPhysics2D` 질의 한 번이 호출 한 번이다. 엔진 내부의 발 IK 레이도 Raycast로 집계한다. |
+| Physics.Overlap · Raycast · Sweep | `IPhysics2D` 질의 한 번이 호출 한 번이다. |
 | Physics.Move · Rigidbodies · Contacts | 스크립트 이동과 `TryMoveStep`의 충돌 검사, 리지드바디 단계, 접촉 판정과 접촉 콜백 |
 | UI.Input · UI.Layout · UI.Draw | 화면 UI의 입력 처리, 배치 계산, 그리기 |
 | Render · Render.World · Present | 프레임 그리기 전체, 카메라별 월드 그리기, SDL Present 호출 |

@@ -26,6 +26,3 @@ bones:
   width: 3
   color: "#FFBE7B"
   keys: [{phase: 0, degrees: -34}, {phase: 0.5, degrees: 34}]
-feet:
-- {upper: RearThigh, lower: RearShin, foot: RearFoot, homeX: 7, homeY: 30, phase: 0.75, bend: 1}
-- {upper: FrontThigh, lower: FrontShin, foot: FrontFoot, homeX: 15, homeY: 30, phase: 0.25, bend: 1}

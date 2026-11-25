@@ -308,7 +308,7 @@ Native AOT 빌드는 같은 판정으로 빠진 기능의 엔진 코드까지 �
 | `tilemaps` | Tilemap 2D, 스크립트의 타일 API(`SetTile`, `ReplaceTiles`, `TryGetTile`, `TileNavigation`, `TryGetTileStream`, `IsTileChunkLoaded`) | 타일 그리기·스트리밍·팔레트, 타일셋·타일 페이지 읽기 |
 | `particles` | Particle Emitter 2D, 스크립트의 `EmitParticles`·`ReadParticles`·`ReadParticleEvents` | 입자 시뮬레이션·그리기, `.particles` 읽기 |
 | `lighting` | Point Light 2D, Global Light 2D | 조명·그림자 그리기 |
-| `skeletons` | Skeleton Animator 2D, Foot IK 2D, 스크립트의 `TryGetBonePose` | 뼈대 포즈·그리기, `.rig` 읽기 |
+| `skeletons` | Skeleton Animator 2D, 스크립트의 `TryGetBonePose` | 뼈대 포즈·그리기, `.rig` 읽기 |
 | `tweens` | Position Tween 2D, Path Follower 2D, 스크립트의 `PlayTween` | 두 컴포넌트의 진행 코드(스크립트 트윈 `Tween()`은 항상 남는다) |
 
 - 새 기능들은 네이티브 라이브러리가 없어 Release 배포본은 바뀌지 않는다. `GameSettings`의 `features`에 같은 이름(`Tilemaps` 등)을 넣으면 강제로 포함한다.

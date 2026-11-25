@@ -2,7 +2,7 @@
 # Run after art.sh:  python3 showcase-src/platformer/scene.py
 #
 # The game objects that carry logic (runner, incline, ledge, deck, shuttle, pendulum, lookout, cutscene camera, walk
-# region) are copied from Scenes/Platform.scene with every object id remapped, so Runner.cs and Lookout.cs run unchanged.
+# region) are copied from the retired Scenes/Platform.scene (platform-objects.yaml) with every object id remapped, so Runner.cs and Lookout.cs run unchanged.
 # Their coloured squares are replaced by the pixel art in Assets/Showcase; new scripts: BeatFlags, MotionFacing, ChainLinks.
 import pathlib, re, struct, uuid
 
@@ -97,7 +97,7 @@ blend: Alpha
 """)
 
 # ---- copy the logic objects from Platform.scene -------------------------------------------------------------------
-source = (ROOT / "Scenes/Platform.scene").read_text()
+source = (pathlib.Path(__file__).resolve().parent / "platform-objects.yaml").read_text()   # the retired Platform scene
 blocks = {}
 for block in re.split(r"\n(?=- id: )", source.split("objects:\n", 1)[1]):
     name = re.search(r"\n  name: (.*)", block)[1]
@@ -135,7 +135,7 @@ def picture(name, image, x, y, parent, **kw):
 
 # Runner: no skeleton or foot IK (user decision 2026-11-25); a walking sprite child, and BeatFlags for the HUD tags.
 def runner(b):
-    b = drop_component(drop_component(b, "skeletonAnimator2D"), "footIK2D")
+    b = drop_component(b, "skeletonAnimator2D")
     b = b.replace("particles: 1cf31b57-f933-e958-b00f-7ff94fcfaae8", f"particles: {landing_dust}").replace("    offsetY: 13\n", "    offsetY: 14\n")
     return b + (f"  - type: script\n    script: BeatFlags\n    values: {{\"Ledge\": \"{old_id('Jump-through ledge')}\", \"Ramp\": \"{old_id('Incline')}\", "
                 f"\"Ferry\": \"{old_id('Shuttle')}\", \"Lookout\": \"{old_id('Lookout')}\"}}\n")

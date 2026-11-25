@@ -1,6 +1,7 @@
-"""Jump once in PlatformerLab's Platform scene and capture the torch shader, point light and landing dust.
+"""Run PlatformerLab's course showcase (ShowcaseCourse, no input: CourseRunner jumps between the pulley decks) and capture
+the torch shader, point lights and the runner's landing dust.
 
-play: Release / Native AOT headless replay. editor: Scene Play in the packaged Mac editor with the probe.
+prepare: copy the sample and make the course its start scene. play: Release / Native AOT headless replay. editor: Scene Play in the packaged Mac editor with the probe.
 compare: every capture must be byte-identical across the given runs (also across builds of two engine commits).
 """
 from pathlib import Path
@@ -11,17 +12,17 @@ import subprocess
 import sys
 
 HERE = Path(__file__).resolve().parent
-PROJECT, PLATFORM = '3b309c28-75ce-562e-92ac-f94ee48b18c7', '4fe9f1eb-5dcd-5f90-a033-78a61e876a0d'
+PROJECT, SHOWCASE, COURSE = '3b309c28-75ce-562e-92ac-f94ee48b18c7', '40845ca7-0281-5a45-878a-c1da3b04f822', 'e4366c3e-3cfa-5c9b-b11e-7e2f25ffb84f'
 FRAMES = 120
-EVENTS = [(10, 'Space', 'true'), (14, 'Space', 'false')]
+EVENTS = []
 # Before the jump, in the air, landing burst, dust fading, settled. The torch cell and light flicker change every capture.
 CAPTURES = [8, 30, 50, 54, 58, 62, 70, 80, 110]
 
 
 def recording(path):
     lines = [f'- frame: {f}\n  timeTicks: {f * 166667}\n  input: {{kind: key, control: "{k}", down: {d}}}\n' for f, k, d in EVENTS]
-    path.write_text(f'version: 1\nproject: {PROJECT}\nstartScene: {PLATFORM}\nframeTicks: [' + ', '.join(['166667'] * FRAMES) +
-                    ']\nevents:\n' + ''.join(lines), encoding='utf-8')
+    path.write_text(f'version: 1\nproject: {PROJECT}\nstartScene: {COURSE}\nframeTicks: [' + ', '.join(['166667'] * FRAMES) +
+                    ']\nevents:' + (''.join(['\n'] + lines) if lines else ' []\n'), encoding='utf-8')
 
 
 def play(exe, out):
@@ -67,5 +68,7 @@ if __name__ == '__main__':
     command, *paths = sys.argv[1:]
     if command == 'prepare':
         shutil.copytree(paths[0], paths[1], ignore=shutil.ignore_patterns('.monoon', '.monoon-compiled', '.DS_Store', 'bin', 'obj'))
+        settings = Path(paths[1]) / 'GameSettings'
+        settings.write_text(settings.read_text(encoding='utf-8').replace(f'startScene: {SHOWCASE}', f'startScene: {COURSE}'), encoding='utf-8')
     elif command == 'compare': compare(*paths)
     else: {'play': play, 'editor': editor}[command](*(Path(p) for p in paths))

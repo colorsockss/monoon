@@ -8,7 +8,7 @@
 | --- | --- | --- |
 | 1 | 테스트 전용으로 남기는 씬 | 오디오 전용(AudioLab/AudioLab, RhythmLab/Practice), 스트레스(CollisionLab/Field1000·Field10000, ParticleLab/Stress), 배포하지 않는 에디터 검사 씬(KeyRoom/PrefabWorkshop·WallWorkshop·MovementWorkshop) |
 | 2 | 부하가 큰 씬 | BarrageLab/Barrage(총알 2,000발 이상)와 SeedLab/Crowd(200명)는 스트레스가 아니라 쇼케이스로 옮긴다. 두 쇼케이스가 같은 스크립트(`SpiralBarrage`, `CrowdRun`)를 쓴다 |
-| 3 | 발 IK | PlatformerLab/Platform의 Runner 리그와 Foot IK 2D는 쇼케이스로 옮기지 않고 이번 작업에서 엔진 기능과 함께 지운다. 손댈 곳은 [showcase-quality.md](showcase-quality.md#촬영이-끝난-뒤-할-일-발-ik-기능-제거) |
+| 3 | 발 IK | Foot IK 2D만 엔진에서 지운다. 스켈레탈 애니메이션(`.rig`, Skeleton Animator 2D)은 남기고 PlatformerLab 쇼케이스에 리그 인물로 옮긴다(사용자 답 "발 IK만 지우기", 2026-11-26) |
 | 4 | 영상 | 기능을 넣어 화면이 바뀐 쇼케이스는 영상을 다시 찍는다 |
 | 6 | 연출형 쇼케이스의 조작 시험 | 쇼케이스가 자동 연출이라 기존 씬의 키 조작 시험을 화면에 넣기 어려우면, 시험 복사본에서만 쇼케이스 오브젝트에 시험용 드라이버를 붙여 같은 지도·컨트롤러로 검사한다(AnimatorLab 경비병·정찰병, SeedLab Route. 사용자 결정 2026-11-26) |
 | 7 | SeedLab Meadow | 47칸 블롭 오토타일을 쇼케이스 Route의 덤불 울타리 타일맵으로 옮기고 영상을 다시 찍는다(사용자 결정 2026-11-26) |
@@ -97,6 +97,7 @@
 | 2026-11-26 | ParticleLab | 두 번째 쇼케이스 `ShowcaseWorkshop.scene`(입자 공방, 거점 다섯: 형태·정렬·프리셋·곡선·노이즈와 충돌)을 만들고 기존 랩 씬 여섯과 쓰지 않는 에셋(Downpour, Rocket, 바닥) 삭제, Stress는 테스트 전용으로 남김(사용자 결정). 공방 영상을 새로 찍어야 함. Trace(야영지·공방·Curves·Stress), Editor, Reload 하네스와 파티클 엔진 검사 통과. KeyRoom.AssetFields의 curves 단계는 공방으로 옮겼지만 KeyRoom 묶음에서 함께 돌린다 |
 | 2026-11-26 | CollisionLab | 랩 씬을 두 번째 쇼케이스 `ShowcaseCasts.scene`(같은 씬 id·개체 id·충돌체, 밤 풀밭 그림)으로 바꾸고 레이 선과 스윕 정지 자리를 그림. Field1000·Field10000은 테스트 전용으로 빌드 씬 목록에서 뺌. 하네스는 [collision_lab.py](../../engine/tests/Shared/collision_lab.py) 복사본(시작 씬 ShowcaseCasts, 카메라에 FieldSelector, 필드 씬 포함)을 씀. Spatial·SplitLoading·FrameProfiler(Release·AOT·Scene Play), EditorPerf, InspectorEdits(후보 에디터 1회), AssetFields field 단계, physics·history 검사 통과. 캐스트 영상을 새로 찍어야 함 |
 | 2026-11-26 | CameraLab | 기존 CameraLab 씬과 FieldPlayer·MirrorPlayer 삭제. ScreenFxDemo(충격·섬광·페이드·색 보정, 진동, 사용자 커서, 편의 설정 저장, 정지·한 틱 진행)를 쇼케이스에 효과 패널과 함께 넣음(영상 다시 찍어야 함). 디버그 그리기는 프레이밍 쇼케이스의 FramingTour가 이미 보여 줌. 하네스는 시험용 드라이버 없이 쇼케이스를 그대로 기록: SplitScreen(쇼케이스, 방향키로 동료에게 다가갔다 돌아옴), Framing·DebugDraw(ShowcaseFraming 연출). CameraChecks·ScreenEffectsChecks를 쇼케이스로 다시 씀. CameraChecks의 201 vs 200.9752 실패는 카메라 중심이 화면 픽셀 단위로 맞춰지는 동작이어서 기대값에 반영. SplitScreen·Framing·DebugDraw 세 경로, ScreenEffects 헤드리스 재생(Release), camera·screen-effects 검사 통과. ScreenEffects GUI 단계(가상 패드)는 시험 창이 앞으로 오지 못해(window 도구 종료 7) 확인 못 함 |
+| 2026-11-26 | PlatformerLab | Foot IK 2D를 엔진·에디터·문서에서 제거(`BonePose2D`는 Start·End만). 쇼케이스 시작 표지판 옆에 `Runner.rig` 리그 인물(Time 시계, 제자리 달리기)과 "Skeletal rig" 태그를 넣음(영상 다시 찍어야 함). 옛 씬 여섯(Platform, Cave, Joints, Paths, Slopes, Parallax)과 그 씬만 쓰던 스크립트·에셋 삭제, Ridge.tileset·Terrain.png는 검사 자료 `engine/tests/fixtures/PlatformerRidge`로 옮김. `scene.py`는 옛 Platform 데이터를 `platform-objects.yaml`에서 읽음. 하네스 7개를 쇼케이스로(Effects·Joints·Paths·Colliders는 코스, Lighting은 동굴, Parallax·TileCollision은 쇼케이스) 옮겨 세 경로 통과. 엔진 검사 12개를 다시 써 통과(ComponentStateChecks는 쇼케이스의 `active: false`를 허용하게, FeatureSwitchChecks는 스크립트를 뗀 모든 샘플 씬 40개로). 쇼케이스에 없어 빠진 것: 8px 타일 이음새 위 캡슐, 체인 위 Dynamic 캡슐 바위, Slopes의 트리거 마커, 장면 안의 Tiled·9-slice 스프라이트. 발견: 코스의 흔들다리 판자 8개가 잠들지 않아 플레이 중 틱당 5,184 B를 할당한다(PhysicsAllocationChecks에서 제외, 엔진 쪽 후속 과제) |
 | 2026-11-26 | 공통 | FeatureChecks(쇼케이스에서 글자를 뺀 SpriteLab), FeatureSwitchChecks(카메라 없는 추가 로딩 씬 제외), AssetReportChecks(KeyRoom 쇼케이스 기준 이유·기능), Dialogue·Inventory·Quests 패키지를 바뀐 InventoryLab 데이터로 다시 만듦, EngineFeatures1의 정수 배율 예시를 AudioLab 설정으로 |
 
 ### `./monoon test`에 남은 실패 (2026-11-26, 단계별로 계속 실행해 모음)
@@ -105,7 +106,5 @@
 | --- | --- | --- |
 | RichTextChecks | InventoryLab `Inventory.scene`의 ko-KR 약초상 대사 | InventoryLab |
 | InputInteractionChecks | KeyRoom 설정을 그대로 읽는지 | KeyRoom |
-| EngineFeatures1Checks | Parallax 씬의 Far hills 이동량(PlatformerLab이 정수 배율을 켬) | PlatformerLab |
 | ProjectCatalogChecks | 폴더를 넘는 형식 검색 | KeyRoom(확인 필요) |
-| HistoryChecks | PlatformerLab `Showcase.scene` 컴포넌트 활성 상태 | PlatformerLab |
 | BuildSizeChecks | 빌드 용량 기준값 | 마지막 전체 회귀 때 다시 측정 |

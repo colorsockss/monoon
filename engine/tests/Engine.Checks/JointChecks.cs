@@ -1,39 +1,39 @@
 using System.Numerics;
 using Engine.Core;
 
-// PlatformerLab Joints scene: a revolute rope bridge and Box2D slider decks tied by the PulleyPair script.
+// PlatformerLab ShowcaseCourse scene: a revolute rope bridge and Box2D slider decks tied by the PulleyPair script. The scripted
+// CourseRunner crosses both without input; the check only observes.
 internal static class JointChecks
 {
     [Check(3800, "physics")] static void Registered(CheckRun c) => Run(c.Repository, c.Scratch);
     private const float Step = 1f / 60;
-    // Same timeline as engine/tests/PlatformerLab.Joints/Cross.inputreplay (frame: key down/up).
-    internal static readonly (int Frame, string Key, bool Down)[] Route =
-        [(10, "Right", true), (JumpA, "Space", true), (JumpA + 1, "Space", false), (JumpB, "Space", true), (JumpB + 1, "Space", false),
-         (TraceEnd - 20, "Right", false)];
-    private const int JumpA = 190, JumpB = 244, TraceEnd = 300;
+    private const int TraceEnd = 420;
 
     public static void Run(string repository, string scratch)
     {
-        var path = Path.Combine(repository, "samples", "PlatformerLab", "Scenes", "Joints.scene");
+        var path = Path.Combine(repository, "samples", "PlatformerLab", "Scenes", "ShowcaseCourse.scene");
         var scene = SceneDocument.Load(path);
         Guid Id(string name) => scene.Objects.Single(o => o.Name == name).Id;
         var runner = Id("Runner");
-        var storage = new PlayerStorage(Path.Combine(scratch, "joints-profile"));
         var trace = Environment.GetEnvironmentVariable("MONOON_JOINT_DEBUG") != null;
-        float lowestPlank = 0, deckA = 0, deckB = 0, maxPivotError = 0;
-        using (var session = new GameSession(scene, null, null, storage))
+        float lowestPlank = 0, deckA = 0, deckB = 0, maxPivotError = 0, plankStart = 0;
+        bool onBridge = false, onA = false, onB = false;
+        Vector2 end;
+        using (var session = new GameSession(scene))
         {
             var world = session.Current;
             var planks = Enumerable.Range(1, 8).Select(i => Id($"Plank {i}")).ToArray();
-            world.TryGetPosition(Id("Pulley deck A"), out var a0);
-            world.TryGetPosition(Id("Pulley deck B"), out var b0);
-            for (int frame = 0, next = 0; frame < TraceEnd; frame++)
+            Guid deckIdA = Id("Pulley deck A"), deckIdB = Id("Pulley deck B");
+            world.TryGetPosition(deckIdA, out var a0);
+            world.TryGetPosition(deckIdB, out var b0);
+            foreach (var plank in planks) { world.TryGetPosition(plank, out var q); plankStart = Math.Max(plankStart, q.Y); }
+            for (int frame = 0; frame < TraceEnd; frame++)
             {
-                for (; next < Route.Length && Route[next].Frame == frame; next++)
-                    if (Route[next].Down) session.Actions.Press(Route[next].Key); else session.Actions.Release(Route[next].Key);
                 session.FixedUpdate(session.Actions.Take(), Step);
                 world.TryGetPosition(runner, out var p);
                 world.TryGetMotion(runner, out var m);
+                onBridge |= m.Support is Guid s && planks.Contains(s);
+                onA |= m.Support == deckIdA; onB |= m.Support == deckIdB;
                 foreach (var plank in planks) { world.TryGetPosition(plank, out var q); lowestPlank = Math.Max(lowestPlank, q.Y); }
                 // Neighbouring planks meet at the revolute pivot: plank i's top right corner is plank i+1's top left corner.
                 for (int i = 0; i + 1 < planks.Length; i++)
@@ -41,15 +41,15 @@ internal static class JointChecks
                     world.TryGetWorldMatrix(planks[i], out var left); world.TryGetWorldMatrix(planks[i + 1], out var right);
                     maxPivotError = Math.Max(maxPivotError, Vector2.Distance(Vector2.Transform(new(24, 0), left), Vector2.Transform(new(0, 0), right)));
                 }
-                world.TryGetPosition(Id("Pulley deck A"), out var a); world.TryGetPosition(Id("Pulley deck B"), out var b);
+                world.TryGetPosition(deckIdA, out var a); world.TryGetPosition(deckIdB, out var b);
                 deckA = Math.Max(deckA, a.Y - a0.Y); deckB = Math.Min(deckB, b.Y - b0.Y);
                 if (trace && frame % 30 == 0) Console.WriteLine("planks " + string.Join(" ", planks.Select(id => { world.TryGetWorldMatrix(id, out var w); return $"{w.Translation.X:F1},{w.Translation.Y:F1}@{float.RadiansToDegrees(MathF.Atan2(w.M12, w.M11)):F0}"; })));
                 if (trace) Console.WriteLine($"{frame} runner {p.X:F2},{p.Y:F2} vy {m.Velocity.Y:F1} support {scene.Objects.FirstOrDefault(o => o.Id == m.Support)?.Name} decks {a.Y - a0.Y:F2} {b.Y - b0.Y:F2}");
             }
-            var data = storage.LoadSlot(1, 1);
-            Check(data?.GetBool("crossed") == true, $"runner crosses the rope bridge and both pulley decks ({data?.ToYaml()})");
+            world.TryGetPosition(runner, out end);
         }
-        Check(lowestPlank > 300 && maxPivotError < .5f, $"revolute bridge sags under the runner and keeps its pivots together (lowest plank {lowestPlank:F1}, pivot gap {maxPivotError:F3} px)");
+        Check(onBridge && onA && onB && end.X > 700 && end.Y < 300, $"runner crosses the rope bridge and both pulley decks onto the middle ledge (at {end.X:F1},{end.Y:F1})");
+        Check(lowestPlank > plankStart + 3 && maxPivotError < .5f, $"revolute bridge sags under the runner and keeps its pivots together (lowest plank {lowestPlank:F1} from {plankStart:F1}, pivot gap {maxPivotError:F3} px)");
         Check(deckA > 10 && deckB < -10 && deckA <= 16.5f && deckB >= -16.5f, $"pulley decks move opposite within the ±16 px slider limits ({deckA:F2}, {deckB:F2})");
         Sandbox();
     }

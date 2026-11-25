@@ -38,7 +38,7 @@ internal static class BuildFeatures
                 EngineFeature.Tilemaps => "no Tilemap 2D or script tile API",
                 EngineFeature.Particles => "no Particle Emitter 2D or script particle API",
                 EngineFeature.Lighting => "no Point Light 2D or Global Light 2D",
-                EngineFeature.Skeletons => "no Skeleton Animator 2D, Foot IK 2D or script bone API",
+                EngineFeature.Skeletons => "no Skeleton Animator 2D or script bone API",
                 _ => "no Position Tween 2D, Path Follower 2D or PlayTween"
             })).ToArray();
 

@@ -8,11 +8,9 @@ namespace Engine.Core;
 [YamlObject] public sealed partial record BoneKey(float Phase, float Degrees);
 [YamlObject] public sealed partial record RigBone(string Name, string? Parent, float X, float Y, float Angle,
     float Length, float Width, string Color, BoneKey[]? Keys=null);
-[YamlObject] public sealed partial record FootChain(string Upper, string Lower, string Foot,
-    float HomeX, float HomeY, float Phase, int Bend);
 
 [YamlObject]
-public sealed partial record SkeletonRig(RigBone[] Bones, FootChain[]? Feet=null)
+public sealed partial record SkeletonRig(RigBone[] Bones)
 {
     public const string Extension=".rig";
     public static SkeletonRig Load(string file)
@@ -39,16 +37,6 @@ public sealed partial record SkeletonRig(RigBone[] Bones, FootChain[]? Feet=null
                 previous=k.Phase;
             }
         }
-        var used=new HashSet<string>();
-        foreach(var leg in Feet??[])
-        {
-            if (leg==null || leg.Upper==null || leg.Lower==null || leg.Foot==null ||
-                !names.TryGetValue(leg.Upper,out var a) || !names.TryGetValue(leg.Lower,out var b) || !names.TryGetValue(leg.Foot,out var c) ||
-                b.Parent!=a.Name || c.Parent!=b.Name || b.X!=a.Length || b.Y!=0 || c.X!=b.Length || c.Y!=0 ||
-                !used.Add(a.Name) || !used.Add(b.Name) || !used.Add(c.Name) || leg.Bend is not (-1 or 1) ||
-                leg.Phase is not (>=0 and <1) || !Shape2D.Finite(new(leg.HomeX,leg.HomeY)))
-                throw new InvalidDataException($"{file}: each foot needs a distinct connected two-bone chain ending at the sole.");
-        }
     }
 }
 
@@ -72,19 +60,4 @@ public sealed partial record SkeletonAnimator2DComponent : SceneComponent
     }
 }
 
-[DisplayName("Foot IK 2D"), YamlObject, EngineFeature(EngineFeature.Skeletons)]
-public sealed partial record FootIK2DComponent : SceneComponent
-{
-    public FootIK2DComponent() { }
-    [YamlConstructor] public FootIK2DComponent(float probe=22,float lift=5,uint mask=uint.MaxValue) => (Probe,Lift,Mask)=(probe,lift,mask);
-    public float Probe {get;set;}=22;
-    public float Lift {get;set;}=5;
-    public uint Mask {get;set;}=uint.MaxValue;
-    internal void Validate(string owner)
-    {
-        if (Probe is not (>.01f and <=16384) || Lift is not (>=0 and <=4096))
-            throw new InvalidDataException($"{owner}: invalid IK probe distance or step height.");
-    }
-}
-
-public readonly record struct BonePose2D(Vector2 Start, Vector2 End, Guid? Ground, bool Planted);
+public readonly record struct BonePose2D(Vector2 Start, Vector2 End);

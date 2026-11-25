@@ -10,22 +10,17 @@ internal sealed class SkeletonPose
     private readonly Dictionary<string,int> indices=new(StringComparer.Ordinal);
     private readonly int[] parents;
     private readonly Color[] colors;
-    private readonly bool[] soles;
     private readonly Matrix3x2[] pose, render;
     private float[] angles, previous;
-    private readonly (int upper,int lower,int foot,FootChain config)[] legs;
-    private readonly Guid?[] ground;
-    private readonly bool[] planted;
     private double phase;
-    private float swingWeight;
 
     public SkeletonPose(SkeletonRig rig)
     {
         this.rig=rig;
         int count=rig.Bones.Length;
-        parents=new int[count]; colors=new Color[count]; soles=new bool[count];
+        parents=new int[count]; colors=new Color[count];
         pose=new Matrix3x2[count]; render=new Matrix3x2[count];
-        ground=new Guid?[count]; planted=new bool[count]; angles=new float[count]; previous=new float[count];
+        angles=new float[count]; previous=new float[count];
         for (int i=0;i<count;i++)
         {
             var bone=rig.Bones[i];
@@ -33,8 +28,6 @@ internal sealed class SkeletonPose
             indices.Add(bone.Name,i);
             SceneObject.TryColor(bone.Color,out colors[i]);
         }
-        legs=(rig.Feet??[]).Select(f=>(indices[f.Upper],indices[f.Lower],indices[f.Foot],f)).ToArray();
-        foreach (var leg in legs) soles[leg.foot]=true;
         SampleAnimation();
         Array.Copy(angles,previous,count);
     }
@@ -69,9 +62,8 @@ internal sealed class SkeletonPose
         local.Translation=new(b.X,b.Y);
         output[i]=parents[i]<0?local:local*output[parents[i]];
     }
-    private float ParentAngle(int bone) => parents[bone]<0?0:MathF.Atan2(pose[parents[bone]].M12,pose[parents[bone]].M11);
 
-    internal void Step(SceneGame game,SceneGame.Body owner,float dt)
+    internal void Step(SceneGame.Body owner,float dt)
     {
         (angles,previous)=(previous,angles);
         var config=owner.SkeletonConfig!;
@@ -87,42 +79,7 @@ internal sealed class SkeletonPose
         float travel=Affine2D.TransformNormal(displacement,inverse).X;
         phase+=config.Clock==SkeletonClock.Travel ? travel/config.Stride : dt/config.Period;
         phase-=Math.Floor(phase);
-        float want=config.Clock==SkeletonClock.Time || Math.Abs(travel)>.0001f ? 1 : 0;
-        swingWeight+=Math.Clamp(want-swingWeight,-dt*10,dt*10);
         SampleAnimation();
-        Array.Clear(ground); Array.Clear(planted);
-        if (owner.FootIK is not {} ik || owner.MotionOwner is {Support:null}) return;
-        foreach (var (upper,lower,foot,leg) in legs)
-        {
-            float p=(float)((phase+leg.Phase)%1);
-            float s=Math.Clamp((p-.5f)*2,0,1);
-            // Stance cancels the body's travel. The swing catches up by exactly one stride.
-            float offset=config.Stride*(.25f-p+s*s*(3-2*s));
-            float lift=ik.Lift*MathF.Sin(MathF.PI*s)*swingWeight;
-            var home=Affine2D.Transform(new(leg.HomeX+offset,leg.HomeY),matrix);
-            var hit=game.Raycast(home-new Vector2(0,ik.Probe),Vector2.UnitY,2*ik.Probe,owner.FootFilter);
-            if (hit is not {} surface || surface.Normal.Y>=-.05f) continue;
-            var contact=home+new Vector2(0,surface.Distance-ik.Probe);
-            var target=Affine2D.Transform(contact+surface.Normal*lift,inverse);
-            var hip=pose[upper].Translation;
-            var delta=target-hip;
-            float a=rig.Bones[upper].Length,b=rig.Bones[lower].Length;
-            float distance=Math.Clamp(delta.Length(),Math.Max(.0001f,Math.Abs(a-b)),a+b);
-            float along=(a*a-b*b+distance*distance)/(2*distance);
-            var axis=delta.LengthSquared()>1e-10f ? Vector2.Normalize(delta) : Vector2.UnitY;
-            var knee=axis*along+new Vector2(axis.Y,-axis.X)*(leg.Bend*MathF.Sqrt(Math.Max(0,a*a-along*along)));
-            var shin=axis*distance-knee;
-            float thighAngle=MathF.Atan2(knee.Y,knee.X);
-            float shinAngle=MathF.Atan2(shin.Y,shin.X);
-            angles[upper]=thighAngle-ParentAngle(upper);
-            angles[lower]=shinAngle-thighAngle;
-            var tangent=Affine2D.TransformNormal(new(-surface.Normal.Y,surface.Normal.X),inverse);
-            angles[foot]=MathF.Atan2(tangent.Y,tangent.X)-shinAngle;
-            // Rebuild descendants including attachments and the bases of any later chains.
-            for (int i=upper;i<angles.Length;i++) Forward(i,angles[i],pose);
-            ground[foot]=surface.Target.ObjectId;
-            planted[foot]=lift<.01f && Vector2.DistanceSquared(pose[foot].Translation,target)<.0025f;
-        }
     }
 
     internal bool TryGet(string name,Matrix3x2 world,out BonePose2D result)
@@ -130,7 +87,7 @@ internal sealed class SkeletonPose
         if (indices.TryGetValue(name,out int i))
         {
             var m=pose[i]*world;
-            result=new(m.Translation,Affine2D.Transform(new(rig.Bones[i].Length,0),m),ground[i],planted[i]);
+            result=new(m.Translation,Affine2D.Transform(new(rig.Bones[i].Length,0),m));
             return true;
         }
         result=default;return false;
@@ -144,8 +101,7 @@ internal sealed class SkeletonPose
             var b=rig.Bones[i];
             if (b.Width==0) continue;
             var m=render[i]*world;
-            var rect=soles[i]?new RectangleF(-b.Length*.4f,-b.Width,b.Length,b.Width):
-                new RectangleF(0,-b.Width*.5f,b.Length,b.Width);
+            var rect=new RectangleF(0,-b.Width*.5f,b.Length,b.Width);
             if (visible.IntersectsWith(Affine2D.Bounds(rect,m))) canvas.DrawAffine(null,rect,m*view,colors[i]);
         }
     }

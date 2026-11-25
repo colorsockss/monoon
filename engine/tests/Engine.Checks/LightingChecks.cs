@@ -4,7 +4,7 @@ using Brutal.SdlApi;
 using Engine.Core;
 using Engine.Desktop;
 
-// Roadmap 16.7: shader-free 2D lighting. Shadow quads, the SDL lightmap (software renderer), the PlatformerLab Cave scene's
+// Roadmap 16.7: shader-free 2D lighting. Shadow quads, the SDL lightmap (software renderer), the PlatformerLab ShowcaseCave scene's
 // shadow cache and per-frame allocation, and the scene schema.
 internal static class LightingChecks
 {
@@ -99,14 +99,16 @@ internal static class LightingChecks
 
     private static unsafe void Cave(string project)
     {
-        var scene = SceneDocument.Load(Path.Combine(project, "Scenes", "Cave.scene"));
+        var scene = SceneDocument.Load(Path.Combine(project, "Scenes", "ShowcaseCave.scene"));
         Check(scene.SchemaVersion == 42, $"Global Light 2D and shadows raise the scene schema to 42 ({scene.SchemaVersion})");
         var saved = ProjectYaml.Decode<SceneDocument>(ProjectYaml.Encode(scene));
-        var global = scene.Objects.Single(o => o.Name == "Cave light");
+        var global = scene.Objects.Single(o => o.Name == "Night");
         Check(saved.SchemaVersion == 42 && saved.Objects.Single(o => o.Id == global.Id).GetComponent<GlobalLight2DComponent>() ==
-            global.GetComponent<GlobalLight2DComponent>() && saved.Objects.Count(o => o.GetComponent<PointLight2DComponent>() is { Shadows: true }) == 8,
+            global.GetComponent<GlobalLight2DComponent>() && saved.Objects.Count(o => o.GetComponent<PointLight2DComponent>() is { Shadows: true }) == 4,
             "lighting settings round-trip through scene YAML");
-        Check(SceneDocument.Load(Path.Combine(project, "Scenes", "Platform.scene")).SchemaVersion == 31, "a scene without lighting keeps its schema");
+        // The main showcase has Point Light 2D torches without shadows: only its parallax layers decide the schema.
+        var plain = SceneDocument.Load(Path.Combine(project, "Scenes", "Showcase.scene"));
+        Check(plain.SchemaVersion == 33, $"point lights without shadows do not raise the schema to 42 ({plain.SchemaVersion})");
 
         var surface = Sdl.PInvoke.CreateSurface(800, 450, SdlPixelFormat.Rgba32);
         try
@@ -129,17 +131,17 @@ internal static class LightingChecks
                 }
                 return bytes;
             }
-            Frames(360); // A full lantern and crate cycle grows the shadow buffers once.
+            Frames(1000); // A full walk lights all three torches and brings the lantern back, growing the shadow buffers once.
             long lit = Frames(120);
             world.SetActive(global.Id, false);
             Frames(30);
             long unlit = Frames(120);
             world.SetActive(global.Id, true);
             Frames(30);
-            Check(lit == unlit, $"lighting with 8 shadow lights adds no per-frame allocation ({lit / 120.0:F1} B/frame lit, {unlit / 120.0:F1} unlit)");
+            Check(lit == unlit, $"lighting with 4 shadow lights adds no per-frame allocation ({lit / 120.0:F1} B/frame lit, {unlit / 120.0:F1} unlit)");
 
-            var lantern = scene.Objects.Single(o => o.Name == "Lantern").Id;
-            var crate = scene.Objects.Single(o => o.Name == "Moving crate").Id;
+            var lantern = scene.Objects.Single(o => o.Name == "Lantern light").Id;
+            var crate = scene.Objects.Single(o => o.Name == "Sliding crate").Id;
             int start = world.ShadowRebuilds;
             Frames(60);
             int moving = world.ShadowRebuilds - start;
@@ -148,17 +150,24 @@ internal static class LightingChecks
             start = world.ShadowRebuilds;
             Frames(60);
             int still = world.ShadowRebuilds - start;
-            Check(moving >= 60 && moving < 8 * 60 && still == 0,
+            Check(moving >= 60 && moving <= 4 * 60 && still == 0,
                 $"shadows rebuild only for lights whose casters or position change ({moving} rebuilds in 60 moving frames, {still} when still)");
-            var rock = scene.Objects.Single(o => o.Name == "Cave rock").Id;
-            Check(world.SetTile(rock, new Point(10, 10), 1), "a tile can be placed in the cave");
+            // The cave has no tilemap: switching off a static caster stands in for a world edit.
+            var box = scene.Objects.Single(o => o.Name == "Crate 1").Id;
+            Check(world.SetColliderEnabled(box, false), "a caster's collider can be switched off in the cave");
             start = world.ShadowRebuilds;
             Frames(1);
-            Check(world.ShadowRebuilds - start == 7, $"a tile change rebuilds every visible shadow light once ({world.ShadowRebuilds - start})");
+            int edited = world.ShadowRebuilds - start;
+            start = world.ShadowRebuilds;
+            Frames(30);
+            Check(edited == EditRebuilds && world.ShadowRebuilds == start,
+                $"a caster change rebuilds each shadow light in its reach once ({edited}, then {world.ShadowRebuilds - start})");
         }
         finally { Sdl.PInvoke.DestroySurface(surface); }
     }
 
+    // Crate 1 lies within the 200 px radius of Torch lights 1 and 2 (about 81 and 194 px away); Torch light 3 is too far.
+    const int EditRebuilds = 2;
     private static void Check(bool pass, string label)
     {
         if (!pass) throw new Exception("Lighting: " + label);

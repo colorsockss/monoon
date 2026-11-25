@@ -7,14 +7,12 @@ using System.Text;
 using Engine.Core;
 
 // 16.4: Capsule Collider 2D and Edge Collider 2D (Box2D capsule and chain) in queries, contacts, the Box2D world, YAML and
-// the PlatformerLab Slopes scene, plus the 8.8-style spatial grid comparison at 1,000 and 10,000 colliders.
+// the PlatformerLab ShowcaseCourse scene (scripted capsule runner over the Hill edge chain), plus the 8.8-style spatial grid comparison at 1,000 and 10,000 colliders.
 internal static class ColliderShapeChecks
 {
     [Check(3900, "colliders", "physics")] static void Registered(CheckRun c) => Run(c.Repository, c.Scratch);
     private const float Step = 1f / 60;
-    // Same timeline as engine/tests/PlatformerLab.Colliders/RoundTrip.inputreplay.
-    internal static readonly (int Frame, string Key, bool Down)[] Route = [(10, "Right", true), (200, "Right", false), (200, "Left", true), (390, "Left", false)];
-    internal const int Frames = 450;
+    internal const int Frames = 1500;
     private static void Check(bool ok, string what) { if (!ok) throw new Exception("Colliders: " + what); }
     private static void Near(float actual, float expected, string what, float tolerance = .001f) =>
         Check(Math.Abs(actual - expected) < tolerance, $"{what}: {actual} vs {expected}");
@@ -23,7 +21,7 @@ internal static class ColliderShapeChecks
     {
         Queries();
         Documents();
-        Slopes(repository, scratch);
+        Course(repository);
         Allocation();
         foreach (int count in new[] { 1000, 10000 }) Spatial(count);
     }
@@ -135,46 +133,55 @@ internal static class ColliderShapeChecks
     internal static string Trace(SceneGame world, SceneDocument scene, int frame)
     {
         world.TryGetPosition(scene.Objects.Single(o => o.Name == "Runner").Id, out var p);
-        world.TryGetWorldMatrix(scene.Objects.Single(o => o.Name == "Boulder").Id, out var b);
+        world.TryGetWorldMatrix(scene.Objects.Single(o => o.Name == "Plank 4").Id, out var b);
         return string.Create(CultureInfo.InvariantCulture,
             $"{frame} {p.X:F4} {p.Y:F4} {b.Translation.X:F4} {b.Translation.Y:F4} {MathF.Atan2(b.M12, b.M11) * 180 / MathF.PI:F3}\n");
     }
 
-    private static void Slopes(string repository, string scratch)
+    // The CourseRunner script drives the 24×56 capsule (radius 12) without input; the check watches it ride the Hill edge chain.
+    private static void Course(string repository)
     {
-        var path = Path.Combine(repository, "samples", "PlatformerLab", "Scenes", "Slopes.scene");
-        string Play(string profile, out GameData? report, out float lowest)
+        var path = Path.Combine(repository, "samples", "PlatformerLab", "Scenes", "ShowcaseCourse.scene");
+        string Play(out int hillTicks, out float sink, out float hover, out float slowest, out Vector2 end)
         {
             var scene = SceneDocument.Load(path);
-            var storage = new PlayerStorage(Path.Combine(scratch, profile));
+            var hill = scene.Objects.Single(o => o.Name == "Hill");
+            var points = hill.GetComponent<EdgeCollider2DComponent>()!.Points.Select(q => new Vector2(hill.X + q.X * hill.Width, hill.Y + q.Y * hill.Height)).ToArray();
+            float Surface(float x)
+            {
+                for (int i = 0; i + 1 < points.Length; i++)
+                    if (x <= points[i + 1].X) return float.Lerp(points[i].Y, points[i + 1].Y, (x - points[i].X) / (points[i + 1].X - points[i].X));
+                return points[^1].Y;
+            }
             var trace = new StringBuilder();
-            lowest = 0;
-            using (var session = new GameSession(scene, null, null, storage))
+            (hillTicks, sink, hover, slowest) = (0, 0, 0, float.MaxValue);
+            using (var session = new GameSession(scene))
             {
                 var world = session.Current;
                 var runner = scene.Objects.Single(o => o.Name == "Runner").Id;
-                for (int frame = 0, next = 0; frame < Frames; frame++)
+                for (int frame = 0; frame < Frames; frame++)
                 {
-                    for (; next < Route.Length && Route[next].Frame == frame; next++)
-                        if (Route[next].Down) session.Actions.Press(Route[next].Key); else session.Actions.Release(Route[next].Key);
                     session.FixedUpdate(session.Actions.Take(), Step);
                     trace.Append(Trace(world, scene, frame));
                     world.TryGetPosition(runner, out var p);
-                    lowest = Math.Max(lowest, p.Y);
+                    world.TryGetMotion(runner, out var m);
+                    if (m.Support != hill.Id || p.X + 12 < points[0].X + 12 || p.X + 12 > points[^1].X - 12) continue;
+                    hillTicks++;
+                    // A capsule on a slope touches it off-centre, so its bottom-centre may sit up to r(1/cos θ − 1) above the line.
+                    float gap = Surface(p.X + 12) - (p.Y + 56);
+                    sink = Math.Max(sink, -gap); hover = Math.Max(hover, gap);
+                    slowest = Math.Min(slowest, MathF.Abs(m.Velocity.X));
                 }
+                world.TryGetPosition(runner, out end);
             }
-            report = storage.LoadSlot(1, 1);
             return trace.ToString();
         }
-        var first = Play("slopes-a", out var data, out var lowest);
-        var second = Play("slopes-b", out _, out _);
-        Check(first == second, "Slopes trace repeats exactly");
-        Check(data?.GetNumber("snags", -1) == 0 && data.GetNumber("markers") == 2, $"capsule runner crossed tile seams and the edge slope both ways without a snag ({data?.ToYaml()})");
-        Check(lowest < 270.01f, $"runner never sank into the seams ({lowest})");
-        var last = first.Split('\n', StringSplitOptions.RemoveEmptyEntries)[^1].Split(' ');
-        float bx = float.Parse(last[3], CultureInfo.InvariantCulture), by = float.Parse(last[4], CultureInfo.InvariantCulture);
-        Check(Math.Abs(bx - 710) < 1 && Math.Abs(by - 204) < .5f, $"Box2D capsule boulder rests on the edge chain ({bx}, {by})");
-        Console.WriteLine($"PASS Slopes: capsule round trip over 8 px tile seams and an edge slope, 0 snags, 2 trigger entries, boulder at ({bx:F2}, {by:F2}), repeatable trace {SHA256.HashData(Encoding.UTF8.GetBytes(first)).AsSpan(0, 4).ToArray().Aggregate("", (s, b) => s + b.ToString("x2"))}");
+        var first = Play(out int ticks, out float sink, out float hover, out float slowest, out var end);
+        var second = Play(out _, out _, out _, out _, out _);
+        Check(first == second, "Course trace repeats exactly");
+        Check(ticks > 60 && sink < .05f && hover < 1.5f, $"capsule runner rides the edge chain without sinking ({ticks} ticks, sink {sink:F3}, hover {hover:F3} px)");
+        Check(slowest > 100 && end.X >= 2240, $"no snag on the chain's 16 segments: speed stays above 100 px/s ({slowest:F1}) and the runner reaches the pennant ({end.X:F1})");
+        Console.WriteLine($"PASS Course: capsule over the Hill edge chain for {ticks} ticks, sink {sink:F3} px, slowest {slowest:F1} px/s, repeatable trace {SHA256.HashData(Encoding.UTF8.GetBytes(first)).AsSpan(0, 4).ToArray().Aggregate("", (s, b) => s + b.ToString("x2"))}");
     }
 
     // Box2D step and contact collection allocate no more with capsules and edges than with boxes (rotation frozen: a turned

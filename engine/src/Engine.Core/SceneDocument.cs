@@ -227,7 +227,7 @@ public sealed partial class SceneDocument
             Objects.SelectMany(o => o.Components).Any(c => c is SortingGroup2DComponent or
                 SpriteRendererComponent { SortByY: true } or SpriteRendererComponent { FootOffset: not 0 }) ? 22 :
             Objects.Any(o => o.GetComponent<CutsceneDirectorComponent>() != null) ? 21 :
-            Objects.SelectMany(o=>o.Components).Any(c=>c is PositionTween2DComponent or SkeletonAnimator2DComponent or FootIK2DComponent) ? 20 :
+            Objects.SelectMany(o=>o.Components).Any(c=>c is PositionTween2DComponent or SkeletonAnimator2DComponent) ? 20 :
             Objects.SelectMany(o=>o.Components).Any(c=>c is ParticleEmitter2DComponent or PointLight2DComponent or SpriteShader2DComponent) ? 19 :
             Objects.Any(o=>o.GetComponent<NavigationRegion2DComponent>()!=null) ? 18 :
             Objects.Any(o => o.GetComponent<Tilemap2DComponent>()?.StreamRadius != null) ? 17 :
@@ -279,7 +279,6 @@ public sealed partial class SceneDocument
         if (component is Text2DComponent text) text.Validate(obj.Name);
         if (component is Trail2DComponent trail) trail.Validate(obj.Name);
         if (component is SkeletonAnimator2DComponent skeleton) skeleton.Validate(obj.Name);
-        if (component is FootIK2DComponent feet) feet.Validate(obj.Name);
         if (component is ParticleEmitter2DComponent emitter) emitter.Validate(obj.Name);
         if (component is PointLight2DComponent light) light.Validate(obj.Name);
         if (component is GlobalLight2DComponent global) global.Validate(obj.Name);

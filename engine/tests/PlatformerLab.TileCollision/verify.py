@@ -1,4 +1,5 @@
-"""Replay the sample through its normal input actions and check every fixed tick."""
+"""Replay PlatformerLab's showcase (Scenes/Showcase.scene: the Runner jumps through the one-way ledge and walks up and down
+the incline tiles) through its normal input actions and check every fixed tick."""
 from pathlib import Path
 import json
 import os
@@ -7,13 +8,13 @@ import subprocess
 import sys
 
 HERE = Path(__file__).resolve().parent
-LEDGE = 'a2f7dad5-3289-4f71-80ad-0658ff909109'
-SLOPE = 'f2ae5d95-77d2-5ef3-b2c8-d1777109540b'
+LEDGE = '62b3835e-d06d-590f-8cb1-4607513352f7'   # Jump-through ledge
+SLOPE = 'e70cebb0-0ef8-5472-a5b9-cd3aacff666c'   # Incline
 
 def prepare(sample, dest):
     shutil.copytree(sample,dest,ignore=shutil.ignore_patterns('.monoon','.DS_Store','bin','obj'))
     shutil.copyfile(HERE/'TraceRunner.source', dest/'Scripts/TraceRunner.cs')
-    p = dest/'Scenes/Platform.scene'
+    p = dest/'Scenes/Showcase.scene'
     p.write_text(p.read_text(encoding='utf-8').replace('    script: "Runner"', '    script: TraceRunner\n  - type: script\n    script: "Runner"',1),encoding='utf-8')
 
 def check(out):

@@ -169,11 +169,6 @@ public partial class MainWindow
                 if(skeleton.Clock==SkeletonClock.Travel) Number("Stride",skeleton.Stride,.1m,16384,v=>skeleton.Stride=v);
                 else Number("Cycle (s)",skeleton.Period,.001m,86400,v=>skeleton.Period=v);
                 break;
-            case FootIK2DComponent feet:
-                Number("Probe",feet.Probe,.02m,16384,v=>feet.Probe=v);
-                Number("Lift",feet.Lift,0,4096,v=>feet.Lift=v);
-                CollisionMaskField(feet.Mask,v=>feet.Mask=v,Row);
-                break;
             case SpriteShader2DComponent shader:
                 Asset("Shader",ShaderClip.Extension,shader.Shader,v=>shader.Shader=v);
                 break;

@@ -38,8 +38,6 @@ public sealed partial class SceneGame : IGameObjects, IGame2D, IGameCameras, IDi
         public readonly SkeletonPose? Skeleton=obj.GetComponent<SkeletonAnimator2DComponent>()?.Rig is not Guid rig ? null
             : !EngineFeatures.Skeletons ? throw EngineFeatures.Disabled(EngineFeature.Skeletons, obj.Name)
             : new(assets?.LoadRig(project!,rig) ?? throw new InvalidDataException($"{obj.Name}: rig requires a project."));
-        public readonly FootIK2DComponent? FootIK=obj.GetComponent<FootIK2DComponent>();
-        public PhysicsFilter? FootFilter;
         public readonly ShaderClip? Shader = obj.GetComponent<SpriteShader2DComponent>()?.Shader is Guid id
             ? assets?.LoadShader(project!,id) ?? throw new InvalidDataException($"{obj.Name}: shader requires a project.") : null;
         public readonly PointLight2DComponent? Light = obj.GetComponent<PointLight2DComponent>() is not {} light ? null
@@ -548,7 +546,7 @@ public sealed partial class SceneGame : IGameObjects, IGame2D, IGameCameras, IDi
             foreach (var member in group) member.Translate(translation);
         }
         if (EngineFeatures.Physics) if (rigidBodies.Length > 0) using (FrameProfiler.Sample(FrameProfiler.Rigidbodies)) StepRigidBodies(seconds);
-        if (EngineFeatures.Skeletons) using (FrameProfiler.Sample(FrameProfiler.Animation)) foreach (var body in skeletons) if (body.Active) body.Skeleton!.Step(this,body,seconds);
+        if (EngineFeatures.Skeletons) using (FrameProfiler.Sample(FrameProfiler.Animation)) foreach (var body in skeletons) if (body.Active) body.Skeleton!.Step(body,seconds);
         using (FrameProfiler.Sample(FrameProfiler.Effects)) { StepEffects(seconds); StepTrails(); }
         // Contacts need colliders or tile collision, both physics.
         if (EngineFeatures.Physics) using (FrameProfiler.Sample(FrameProfiler.Contacts)) DispatchContacts();

@@ -1,3 +1,4 @@
+# The retired Scenes/Platform.scene (footIK2D removed): scene.py copies its logic objects into the showcase.
 schemaVersion: 31
 objects:
 - id: 2c1b062b-ee75-5c5c-bdef-fe19469fb5eb
@@ -12,10 +13,6 @@ objects:
     order: 3
     clock: Travel
     stride: 28
-  - type: footIK2D
-    mask: 9
-    lift: 5
-    probe: 22
   - type: boxCollider2D
     layer: 1
   - type: rigidbody2D
