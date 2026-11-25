@@ -25,8 +25,9 @@ public partial class MainWindow
             inspectedRevision = world?.HierarchyRevision ?? 0;
             var objects = world?.Objects ?? Scene.Objects;
             var selected = objects.FirstOrDefault(o => o.Id == id);
-            if (sameWorld && world != null && RefreshHierarchyRows(world)) Select(selected);
-            else RebuildHierarchy(selected);
+            bool keepInspector = sameWorld && world != null && InspectorRowsCurrent(selected);
+            if (sameWorld && world != null && RefreshHierarchyRows(world)) { if (keepInspector) RefreshInspector(); else Select(selected); }
+            else RebuildHierarchyRows(selected, keepInspector);
         }
         else if (world != null && Selected != null && Environment.TickCount64 - lastInspectorTick >= 100)
         {

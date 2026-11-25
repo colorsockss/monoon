@@ -1,0 +1,726 @@
+{
+ "split": {
+  "base budget 0": [
+   {
+    "run": "split-base-1",
+    "commit_ms": 7397.1,
+    "alloc_mb": 6648.4,
+    "gen0": 515,
+    "top": [
+     [
+      "Frame",
+      7397.1
+     ],
+     [
+      "UpdateUi",
+      26.0
+     ],
+     [
+      "Simulate",
+      23.4
+     ],
+     [
+      "Editor",
+      895.6
+     ],
+     [
+      "Render",
+      4.3
+     ]
+    ],
+    "cancel_returned": true
+   },
+   {
+    "run": "split-base-2",
+    "commit_ms": 7118.2,
+    "alloc_mb": 6648.4,
+    "gen0": 515,
+    "top": [
+     [
+      "Frame",
+      7118.2
+     ],
+     [
+      "UpdateUi",
+      24.4
+     ],
+     [
+      "Simulate",
+      28.0
+     ],
+     [
+      "Editor",
+      1002.8
+     ],
+     [
+      "Render",
+      4.5
+     ]
+    ],
+    "cancel_returned": true
+   },
+   {
+    "run": "split-base-3",
+    "commit_ms": 7633.2,
+    "alloc_mb": 6648.4,
+    "gen0": 516,
+    "top": [
+     [
+      "Frame",
+      7633.2
+     ],
+     [
+      "UpdateUi",
+      27.8
+     ],
+     [
+      "Simulate",
+      26.5
+     ],
+     [
+      "Editor",
+      937.1
+     ],
+     [
+      "Render",
+      4.5
+     ]
+    ],
+    "cancel_returned": true
+   },
+   {
+    "run": "split-base-4",
+    "commit_ms": 8015.3,
+    "alloc_mb": 6648.4,
+    "gen0": 516,
+    "top": [
+     [
+      "Frame",
+      8015.3
+     ],
+     [
+      "UpdateUi",
+      23.5
+     ],
+     [
+      "Simulate",
+      27.3
+     ],
+     [
+      "Editor",
+      914.1
+     ],
+     [
+      "Render",
+      4.4
+     ]
+    ],
+    "cancel_returned": true
+   },
+   {
+    "run": "split-base-5",
+    "commit_ms": 7204.5,
+    "alloc_mb": 6648.5,
+    "gen0": 515,
+    "top": [
+     [
+      "Frame",
+      7204.5
+     ],
+     [
+      "UpdateUi",
+      23.3
+     ],
+     [
+      "Simulate",
+      26.6
+     ],
+     [
+      "Editor",
+      942.6
+     ],
+     [
+      "Render",
+      4.2
+     ]
+    ],
+    "cancel_returned": true
+   }
+  ],
+  "base budget 4": [
+   {
+    "run": "split-base-1",
+    "commit_ms": 7300.1,
+    "alloc_mb": 6648.4,
+    "gen0": 515,
+    "top": [
+     [
+      "Frame",
+      7300.1
+     ],
+     [
+      "UpdateUi",
+      26.7
+     ],
+     [
+      "Simulate",
+      21.6
+     ],
+     [
+      "Editor",
+      897.9
+     ],
+     [
+      "Render",
+      4.9
+     ]
+    ],
+    "cancel_returned": true
+   },
+   {
+    "run": "split-base-2",
+    "commit_ms": 7416.0,
+    "alloc_mb": 6648.4,
+    "gen0": 515,
+    "top": [
+     [
+      "Frame",
+      7416.0
+     ],
+     [
+      "UpdateUi",
+      26.8
+     ],
+     [
+      "Simulate",
+      20.0
+     ],
+     [
+      "Editor",
+      924.1
+     ],
+     [
+      "Render",
+      5.0
+     ]
+    ],
+    "cancel_returned": true
+   },
+   {
+    "run": "split-base-3",
+    "commit_ms": 7203.1,
+    "alloc_mb": 6648.5,
+    "gen0": 515,
+    "top": [
+     [
+      "Frame",
+      7203.1
+     ],
+     [
+      "UpdateUi",
+      27.8
+     ],
+     [
+      "Simulate",
+      22.6
+     ],
+     [
+      "Editor",
+      1041.5
+     ],
+     [
+      "Render",
+      4.8
+     ]
+    ],
+    "cancel_returned": true
+   },
+   {
+    "run": "split-base-4",
+    "commit_ms": 7222.1,
+    "alloc_mb": 6648.5,
+    "gen0": 515,
+    "top": [
+     [
+      "Frame",
+      7222.1
+     ],
+     [
+      "UpdateUi",
+      25.4
+     ],
+     [
+      "Simulate",
+      17.8
+     ],
+     [
+      "Editor",
+      965.2
+     ],
+     [
+      "Render",
+      4.6
+     ]
+    ],
+    "cancel_returned": true
+   },
+   {
+    "run": "split-base-5",
+    "commit_ms": 7250.8,
+    "alloc_mb": 6648.5,
+    "gen0": 515,
+    "top": [
+     [
+      "Frame",
+      7250.8
+     ],
+     [
+      "UpdateUi",
+      26.0
+     ],
+     [
+      "Simulate",
+      16.6
+     ],
+     [
+      "Editor",
+      961.5
+     ],
+     [
+      "Render",
+      4.4
+     ]
+    ],
+    "cancel_returned": true
+   }
+  ],
+  "cand budget 0": [
+   {
+    "run": "split-cand-1",
+    "commit_ms": 97.4,
+    "alloc_mb": 12.4,
+    "gen0": 1,
+    "top": [
+     [
+      "Frame",
+      97.4
+     ],
+     [
+      "UpdateUi",
+      25.4
+     ],
+     [
+      "Simulate",
+      26.2
+     ],
+     [
+      "Editor",
+      24.1
+     ],
+     [
+      "Render",
+      3.8
+     ]
+    ],
+    "cancel_returned": true
+   },
+   {
+    "run": "split-cand-2",
+    "commit_ms": 97.8,
+    "alloc_mb": 12.4,
+    "gen0": 1,
+    "top": [
+     [
+      "Frame",
+      97.8
+     ],
+     [
+      "UpdateUi",
+      25.5
+     ],
+     [
+      "Simulate",
+      25.9
+     ],
+     [
+      "Editor",
+      24.9
+     ],
+     [
+      "Render",
+      4.2
+     ]
+    ],
+    "cancel_returned": true
+   },
+   {
+    "run": "split-cand-3",
+    "commit_ms": 98.8,
+    "alloc_mb": 12.4,
+    "gen0": 1,
+    "top": [
+     [
+      "Frame",
+      98.8
+     ],
+     [
+      "UpdateUi",
+      25.2
+     ],
+     [
+      "Simulate",
+      27.9
+     ],
+     [
+      "Editor",
+      24.8
+     ],
+     [
+      "Render",
+      4.0
+     ]
+    ],
+    "cancel_returned": true
+   },
+   {
+    "run": "split-cand-4",
+    "commit_ms": 99.9,
+    "alloc_mb": 12.4,
+    "gen0": 1,
+    "top": [
+     [
+      "Frame",
+      99.9
+     ],
+     [
+      "UpdateUi",
+      26.4
+     ],
+     [
+      "Simulate",
+      27.4
+     ],
+     [
+      "Editor",
+      25.1
+     ],
+     [
+      "Render",
+      4.2
+     ]
+    ],
+    "cancel_returned": true
+   },
+   {
+    "run": "split-cand-5",
+    "commit_ms": 100.2,
+    "alloc_mb": 12.4,
+    "gen0": 1,
+    "top": [
+     [
+      "Frame",
+      100.2
+     ],
+     [
+      "UpdateUi",
+      26.7
+     ],
+     [
+      "Simulate",
+      26.5
+     ],
+     [
+      "Editor",
+      25.3
+     ],
+     [
+      "Render",
+      4.2
+     ]
+    ],
+    "cancel_returned": true
+   }
+  ],
+  "cand budget 4": [
+   {
+    "run": "split-cand-1",
+    "commit_ms": 95.0,
+    "alloc_mb": 12.5,
+    "gen0": 1,
+    "top": [
+     [
+      "Frame",
+      95.0
+     ],
+     [
+      "UpdateUi",
+      28.5
+     ],
+     [
+      "Simulate",
+      20.1
+     ],
+     [
+      "Editor",
+      24.3
+     ],
+     [
+      "Render",
+      4.2
+     ]
+    ],
+    "cancel_returned": true
+   },
+   {
+    "run": "split-cand-2",
+    "commit_ms": 95.5,
+    "alloc_mb": 12.5,
+    "gen0": 1,
+    "top": [
+     [
+      "Frame",
+      95.5
+     ],
+     [
+      "UpdateUi",
+      28.6
+     ],
+     [
+      "Simulate",
+      19.4
+     ],
+     [
+      "Editor",
+      25.6
+     ],
+     [
+      "Render",
+      4.0
+     ]
+    ],
+    "cancel_returned": true
+   },
+   {
+    "run": "split-cand-3",
+    "commit_ms": 94.8,
+    "alloc_mb": 12.5,
+    "gen0": 1,
+    "top": [
+     [
+      "Frame",
+      94.8
+     ],
+     [
+      "UpdateUi",
+      27.7
+     ],
+     [
+      "Simulate",
+      18.1
+     ],
+     [
+      "Editor",
+      26.6
+     ],
+     [
+      "Render",
+      4.4
+     ]
+    ],
+    "cancel_returned": true
+   },
+   {
+    "run": "split-cand-4",
+    "commit_ms": 97.4,
+    "alloc_mb": 12.5,
+    "gen0": 1,
+    "top": [
+     [
+      "Frame",
+      97.4
+     ],
+     [
+      "UpdateUi",
+      30.1
+     ],
+     [
+      "Simulate",
+      17.4
+     ],
+     [
+      "Editor",
+      27.5
+     ],
+     [
+      "Render",
+      4.0
+     ]
+    ],
+    "cancel_returned": true
+   },
+   {
+    "run": "split-cand-5",
+    "commit_ms": 95.7,
+    "alloc_mb": 12.5,
+    "gen0": 1,
+    "top": [
+     [
+      "Frame",
+      95.7
+     ],
+     [
+      "UpdateUi",
+      29.2
+     ],
+     [
+      "Simulate",
+      17.5
+     ],
+     [
+      "Editor",
+      27.1
+     ],
+     [
+      "Render",
+      4.4
+     ]
+    ],
+    "cancel_returned": true
+   }
+  ]
+ },
+ "perf": {
+  "base": {
+   "edit_frame": {
+    "median_ms": 5.0583,
+    "min_ms": 4.9638,
+    "max_ms": 5.7275,
+    "median_mb": 0.16
+   },
+   "world_items": {
+    "median_ms": 4.0171,
+    "min_ms": 3.1982,
+    "max_ms": 4.1941,
+    "median_mb": 1.24
+   },
+   "edit_items": {
+    "median_ms": 0.3297,
+    "min_ms": 0.1407,
+    "max_ms": 0.3487,
+    "median_mb": 0.0
+   },
+   "edit_rebuild": {
+    "median_ms": 3496.3356,
+    "min_ms": 3404.1148,
+    "max_ms": 4793.8505,
+    "median_mb": 2632.14
+   },
+   "edit_rebuild_layout": {
+    "median_ms": 9403.874,
+    "min_ms": 9130.3841,
+    "max_ms": 10947.3031,
+    "median_mb": 7924.14
+   },
+   "play_enter": {
+    "median_ms": 13302.3496,
+    "min_ms": 12319.3783,
+    "max_ms": 14418.4251,
+    "median_mb": 9199.01
+   },
+   "toggle": {
+    "median_ms": 11.6519,
+    "min_ms": 10.8653,
+    "max_ms": 13.2569,
+    "median_mb": 1.43
+   },
+   "toggle_layout": {
+    "median_ms": 17.0791,
+    "min_ms": 12.8527,
+    "max_ms": 22.6101,
+    "median_mb": 7.18
+   },
+   "play_rebuild": {
+    "median_ms": 781.6442,
+    "min_ms": 766.0957,
+    "max_ms": 820.2696,
+    "median_mb": 221.27
+   },
+   "play_rebuild_layout": {
+    "median_ms": 5929.4261,
+    "min_ms": 5630.6823,
+    "max_ms": 6334.088,
+    "median_mb": 6343.82
+   },
+   "play_enter_layout": {
+    "median_ms": 3.9866
+   },
+   "toggle_reused_rows": true
+  },
+  "cand": {
+   "edit_frame": {
+    "median_ms": 4.2296,
+    "min_ms": 2.7637,
+    "max_ms": 4.9677,
+    "median_mb": 0.16
+   },
+   "world_items": {
+    "median_ms": 3.5959,
+    "min_ms": 2.7571,
+    "max_ms": 3.6819,
+    "median_mb": 1.24
+   },
+   "edit_items": {
+    "median_ms": 0.3758,
+    "min_ms": 0.368,
+    "max_ms": 0.3919,
+    "median_mb": 0.0
+   },
+   "edit_rebuild": {
+    "median_ms": 58.6216,
+    "min_ms": 58.1207,
+    "max_ms": 61.232,
+    "median_mb": 6.93
+   },
+   "edit_rebuild_layout": {
+    "median_ms": 43.2712,
+    "min_ms": 42.1835,
+    "max_ms": 46.1677,
+    "median_mb": 4.49
+   },
+   "play_enter": {
+    "median_ms": 414.6094,
+    "min_ms": 393.5945,
+    "max_ms": 429.0561,
+    "median_mb": 44.32
+   },
+   "toggle": {
+    "median_ms": 0.2505,
+    "min_ms": 0.2278,
+    "max_ms": 0.5377,
+    "median_mb": 0.01
+   },
+   "toggle_layout": {
+    "median_ms": 0.4267,
+    "min_ms": 0.1666,
+    "max_ms": 0.475,
+    "median_mb": 0.01
+   },
+   "play_rebuild": {
+    "median_ms": 11.8772,
+    "min_ms": 11.2605,
+    "max_ms": 37.757,
+    "median_mb": 4.42
+   },
+   "play_rebuild_layout": {
+    "median_ms": 20.7026,
+    "min_ms": 18.2342,
+    "max_ms": 56.3343,
+    "median_mb": 7.19
+   },
+   "play_enter_layout": {
+    "median_ms": 4.4964
+   },
+   "toggle_reused_rows": true
+  }
+ }
+}

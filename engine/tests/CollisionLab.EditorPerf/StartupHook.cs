@@ -146,9 +146,11 @@ public static class StartupHook
         var target = world.Objects[^1];
         var canvasRow = world.Objects.First(o => o.GetComponent<UiCanvasComponent>() != null);
         Call(main, "Select", target);
-        TreeViewItem Row(SceneObject obj) => (TreeViewItem)tree[obj]!;
-        Row(canvasRow).IsExpanded = false;
-        var hierarchy = main.FindControl<TreeView>("Hierarchy")!;
+        // Hierarchy rows are nodes (Obj, IsExpanded, Opacity) listed by a virtualized ListBox.
+        object Row(SceneObject obj) => tree[obj]!;
+        T Node<T>(object row, string name) => (T)row.GetType().GetProperty(name)!.GetValue(row)!;
+        var hierarchy = main.FindControl<ListBox>("Hierarchy")!;
+        Call(main, "SetExpanded", Row(canvasRow), false);
 
         // Active toggles bump HierarchyRevision without changing the object set.
         List<(double, long)> toggle = [], toggleLayout = [];
@@ -161,10 +163,11 @@ public static class StartupHook
             toggle.Add(Measure(() => Call(main, "SyncPlayInspector")));
             toggleLayout.Add(Measure(main.UpdateLayout));
             reused &= ReferenceEquals(before, Row(target));
-            Require(Row(target).Opacity == (active ? 1 : 0.55), $"row opacity {Row(target).Opacity} after SetActive({active})");
-            Require((hierarchy.SelectedItem as TreeViewItem)?.Tag == target, "selection kept");
-            Require(!Row(canvasRow).IsExpanded, "collapsed row kept");
-            Require(Row(world.Objects[^2]).Opacity == 1, "other rows unchanged");
+            double opacity = Node<double>(Row(target), "Opacity");
+            Require(opacity == (active ? 1 : 0.55), $"row opacity {opacity} after SetActive({active})");
+            Require(hierarchy.SelectedItem == Row(target), "selection kept");
+            Require(!Node<bool>(Row(canvasRow), "IsExpanded"), "collapsed row kept");
+            Require(Node<double>(Row(world.Objects[^2]), "Opacity") == 1, "other rows unchanged");
         }
 
         // A full Play rebuild (what a structural change still costs).
@@ -174,7 +177,7 @@ public static class StartupHook
             playBuild.Add(Measure(() => Call(main, "RebuildHierarchy", target)));
             playLayout.Add(Measure(main.UpdateLayout));
         }
-        Require((hierarchy.SelectedItem as TreeViewItem)?.Tag == target && !Row(canvasRow).IsExpanded, "full rebuild keeps selection and expansion");
+        Require(hierarchy.SelectedItem == Row(target) && !Node<bool>(Row(canvasRow), "IsExpanded"), "full rebuild keeps selection and expansion");
         play.RaiseEvent(new RoutedEventArgs(Button.ClickEvent, play));
 
         // Correctness only, after every timed step: edit the small lab scene, then save the scratch copy so nothing prompts.

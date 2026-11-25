@@ -24,7 +24,7 @@ public partial class MainWindow
         var obj=selection.LastOrDefault();
         inspectedAsset=null; // an object selection takes the Inspector back from a Project asset (13.16)
         Viewport.Selection=selection;
-        foreach(var (owner,row) in treeItems)row.Classes.Set("groupSelected",selection.Count>1 && selection.Contains(owner));
+        foreach(var row in Hierarchy.GetRealizedContainers())if(row.Tag is SceneObject owner)row.Classes.Set("groupSelected",GroupSelected(owner));
         refreshing = true;
         if (Viewport.TileEditOwner != null && (Viewport.TileEditOwner != obj?.Id || obj?.GetComponent<Tilemap2DComponent>() == null))
             Viewport.EditTiles(null);

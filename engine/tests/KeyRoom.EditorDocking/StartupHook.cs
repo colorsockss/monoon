@@ -32,7 +32,7 @@ public static class StartupHook
     {
         main = life.MainWindow!;
         dock = main.FindControl<DockHost>("Dock")!;
-        await Until(() => main.IsVisible && main.FindControl<TreeView>("Hierarchy")!.Items.Count > 1, "KeyRoom");
+        await Until(() => main.IsVisible && main.FindControl<ListBox>("Hierarchy")!.Items.Count > 1, "KeyRoom");
         await Delay(500);
         Result["os"] = System.Runtime.InteropServices.RuntimeInformation.RuntimeIdentifier;
         Result["captures"] = Captures;

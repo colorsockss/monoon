@@ -14,31 +14,50 @@ namespace Engine.Editor;
 
 public partial class MainWindow
 {
-    private readonly Dictionary<SceneObject, TreeViewItem> treeItems = [];
+    // One object's place in the Hierarchy. The ListBox lists only the rows under expanded, matching parents and realizes
+    // containers just for the rows on screen, so a 10,000-object scene costs about one screen of rows (a TreeView made all).
+    private sealed class HierarchyNode(SceneObject obj)
+    {
+        public SceneObject Obj { get; } = obj;
+        public HierarchyNode? Parent { get; set; }
+        public List<HierarchyNode> Children { get; } = [];
+        public int Depth => Parent == null ? 0 : Parent.Depth + 1;
+        public bool IsExpanded { get; set; } = true;
+        public bool Shown { get; set; } = true;
+        public double Opacity { get; set; } = 1;
+        public bool Listed => Shown && (Parent == null || Parent.IsExpanded && Parent.Listed);
+    }
+
+    private readonly Dictionary<SceneObject, HierarchyNode> treeItems = [];
+    private readonly List<HierarchyNode> hierarchyRoots = [];
+    private List<HierarchyNode> hierarchyRows = [];
     private (SceneObject Obj, SceneObject? Parent, string Name)[] hierarchyShape = [];
     private SceneObject? pressedNode;
     private Point pressPoint;
     private SceneObject? rangeAnchor;
-
-    private IEnumerable<SceneObject> VisibleRows(ItemCollection items)
-    {
-        foreach (var row in items.OfType<TreeViewItem>())
-        {
-            if (!row.IsVisible) continue;
-            if (row.Tag is SceneObject owner) yield return owner;
-            if (row.IsExpanded)
-                foreach (var child in VisibleRows(row.Items)) yield return child;
-        }
-    }
     private bool draggingNode;
-    private TreeViewItem? dropTarget;
+    private SceneObject? dropTarget;
 
     private void InitializeHierarchy()
     {
         Hierarchy.SelectionChanged += (_, _) =>
         {
-            if (!refreshing) Select((Hierarchy.SelectedItem as TreeViewItem)?.Tag as SceneObject);
+            if (!refreshing) Select((Hierarchy.SelectedItem as HierarchyNode)?.Obj);
         };
+        Hierarchy.ItemTemplate = new FuncDataTemplate<HierarchyNode>((node, _) => node == null ? null : HierarchyItem(node), supportsRecycling: false);
+        Hierarchy.ContainerPrepared += (_, e) =>
+        {
+            var node = hierarchyRows[e.Index];
+            var row = e.Container;
+            row.Tag = node.Obj;
+            row.Opacity = node.Opacity;
+            AutomationProperties.SetName(row, node.Obj.Name);
+            row.Classes.Set("groupSelected", GroupSelected(node.Obj));
+            row.Classes.Set("dropTarget", node.Obj == dropTarget);
+            row.Classes.Remove("ping");
+        };
+        // Tunnel: the ListBox would otherwise take Left and Right first.
+        Hierarchy.AddHandler(KeyDownEvent, HierarchyKeyDown, RoutingStrategies.Tunnel);
         Hierarchy.ContextRequested += HierarchyContextRequested;
         Hierarchy.AddHandler(PointerPressedEvent, HierarchyPressed, RoutingStrategies.Tunnel, handledEventsToo: true);
         Hierarchy.AddHandler(PointerMovedEvent, HierarchyMoved, RoutingStrategies.Tunnel, handledEventsToo: true);
@@ -48,22 +67,75 @@ public partial class MainWindow
         HierarchySearch.KeyDown += (_, e) => { if (e.Key == Key.Escape) { HierarchySearch.Text = ""; e.Handled = true; } };
     }
 
-    // Matching objects stay visible with their parents; the tree is filtered in place so row lookups keep working.
+    // Matching objects stay visible with their parents, and parents of matches are expanded.
     private void ApplyHierarchyFilter()
     {
         var query = HierarchySearch.Text?.Trim() ?? "";
         int matches = 0;
-        bool Show(TreeViewItem item)
+        bool Show(HierarchyNode node)
         {
             bool child = false;
-            foreach (var row in item.Items.OfType<TreeViewItem>()) child |= Show(row);
-            bool self = query.Length == 0 || ((SceneObject)item.Tag!).Name.Contains(query, StringComparison.OrdinalIgnoreCase);
+            foreach (var row in node.Children) child |= Show(row);
+            bool self = query.Length == 0 || node.Obj.Name.Contains(query, StringComparison.OrdinalIgnoreCase);
             if (self && query.Length > 0) matches++;
-            if (child && query.Length > 0) item.IsExpanded = true;
-            return item.IsVisible = self || child;
+            if (child && query.Length > 0) node.IsExpanded = true;
+            return node.Shown = self || child;
         }
-        foreach (var row in Hierarchy.Items.OfType<TreeViewItem>()) Show(row);
+        foreach (var root in hierarchyRoots) Show(root);
         HierarchyNoMatch.IsVisible = query.Length > 0 && matches == 0;
+        ShowHierarchyRows();
+    }
+
+    // Lists the shown rows under expanded parents in tree order and keeps the selected object's row selected.
+    private void ShowHierarchyRows()
+    {
+        var rows = new List<HierarchyNode>(treeItems.Count);
+        void Add(HierarchyNode node)
+        {
+            if (!node.Shown) return;
+            rows.Add(node);
+            if (node.IsExpanded) foreach (var child in node.Children) Add(child);
+        }
+        foreach (var root in hierarchyRoots) Add(root);
+        bool was = refreshing, focused = Hierarchy.IsKeyboardFocusWithin;
+        refreshing = true;
+        hierarchyRows = rows;
+        Hierarchy.ItemsSource = rows;
+        var selected = Selected != null && treeItems.TryGetValue(Selected, out var node) && node.Listed ? node : null;
+        Hierarchy.SelectedItem = selected;
+        refreshing = was;
+        // Replacing the rows recycles the focused row; give keyboard focus back to the selected one.
+        if (focused) Dispatcher.UIThread.Post(() => ((selected != null ? Hierarchy.ContainerFromItem(selected) : null) ?? Hierarchy).Focus(), DispatcherPriority.Loaded);
+    }
+
+    private void SetExpanded(HierarchyNode node, bool expanded)
+    {
+        if (node.IsExpanded == expanded) return;
+        node.IsExpanded = expanded;
+        ShowHierarchyRows();
+    }
+
+    private static bool ExpandParents(HierarchyNode node)
+    {
+        bool changed = false;
+        for (var parent = node.Parent; parent != null; parent = parent.Parent)
+            if (!parent.IsExpanded) changed = parent.IsExpanded = true;
+        return changed;
+    }
+
+    private bool GroupSelected(SceneObject obj) => Viewport.Selection.Count > 1 && Viewport.Selection.Contains(obj);
+
+    // The keys a TreeView row answered: Right/+ expand (then go to the first child), Left/- collapse (then go to the parent).
+    private void HierarchyKeyDown(object? sender, KeyEventArgs e)
+    {
+        if (e.KeyModifiers != KeyModifiers.None || Hierarchy.SelectedItem is not HierarchyNode node) return;
+        bool parent = node.Children.Count > 0;
+        if (e.Key is Key.Right or Key.Add && parent && !node.IsExpanded) SetExpanded(node, true);
+        else if (e.Key is Key.Left or Key.Subtract && parent && node.IsExpanded) SetExpanded(node, false);
+        else if (e.Key == Key.Right && node.Children.FirstOrDefault(c => c.Shown) is { } child) { Select(child.Obj); FocusHierarchySelection(); }
+        else if (e.Key == Key.Left && node.Parent != null) { Select(node.Parent.Obj); FocusHierarchySelection(); }
+        else return;
+        e.Handled = true;
     }
 
     // Editor-only marks for the current scene, kept in the user's editor state rather than the scene file.
@@ -119,6 +191,21 @@ public partial class MainWindow
         return row;
     }
 
+    // Indent, expander and row at the TreeView's places: 16px per level, the chevron 13px in, the icon 27px after it.
+    private Control HierarchyItem(HierarchyNode node)
+    {
+        var item = new Grid { ColumnDefinitions = new("12,15,*"), Margin = new Thickness(12 + 16 * node.Depth, 0, 3, 0) };
+        var chevron = new ToggleButton { Theme = (Avalonia.Styling.ControlTheme)this.FindResource("FluentTreeViewExpandCollapseChevron")!,
+            Focusable = false, MinHeight = 0, Height = 20, Padding = new Thickness(0), IsChecked = node.IsExpanded, IsVisible = node.Children.Count > 0 };
+        chevron.IsCheckedChanged += (_, _) => SetExpanded(node, chevron.IsChecked == true);
+        item.Children.Add(chevron);
+        var row = HierarchyRow(node.Obj);
+        row.VerticalAlignment = Avalonia.Layout.VerticalAlignment.Center;
+        Grid.SetColumn(row, 2);
+        item.Children.Add(row);
+        return item;
+    }
+
     private ToggleButton RowToggle(SceneObject obj, bool hide)
     {
         var toggle = new ToggleButton { Classes = { "rowToggle" }, IsChecked = (hide ? Viewport.HiddenIds : Viewport.LockedIds).Contains(obj.Id) };
@@ -138,32 +225,40 @@ public partial class MainWindow
         return toggle;
     }
 
-    private void RebuildHierarchy(SceneObject? selected)
+    private void RebuildHierarchy(SceneObject? selected) => RebuildHierarchyRows(selected, keepInspector: false);
+
+    // keepInspector: selected is already shown with current Inspector rows (InspectorRowsCurrent); only values are refreshed.
+    private void RebuildHierarchyRows(SceneObject? selected, bool keepInspector)
     {
         refreshing = true;
-        var collapsed = treeItems.Where(pair => pair.Value.Items.Count > 0 && !pair.Value.IsExpanded)
-            .Select(pair => pair.Key.Id).ToHashSet();
+        var collapsed = treeItems.Values.Where(node => node.Children.Count > 0 && !node.IsExpanded).Select(node => node.Obj.Id).ToHashSet();
         var objects = Viewport.PlayWorld?.Objects ?? Scene.Objects;
-        Hierarchy.Items.Clear();
         treeItems.Clear();
+        hierarchyRoots.Clear();
+        foreach (var obj in objects)
+            treeItems.Add(obj, new HierarchyNode(obj) { IsExpanded = !collapsed.Contains(obj.Id),
+                Opacity = (Viewport.PlayWorld is { } world ? !world.IsActive(obj.Id) : !obj.ActiveInHierarchy) ? 0.55 : 1 });
         foreach (var obj in objects)
         {
-            var item = new TreeViewItem { Header = obj.Name, Tag = obj, IsExpanded = !collapsed.Contains(obj.Id),
-                Opacity = (Viewport.PlayWorld is { } world ? !world.IsActive(obj.Id) : !obj.ActiveInHierarchy) ? 0.55 : 1,
-                HeaderTemplate = new FuncDataTemplate<object>((_, _) => HierarchyRow(obj), supportsRecycling: false) };
-            AutomationProperties.SetName(item, obj.Name);
-            treeItems.Add(obj, item);
-        }
-        foreach (var obj in objects)
-        {
-            var items = obj.Parent == null ? Hierarchy.Items : treeItems[obj.Parent].Items;
-            items.Add(treeItems[obj]);
+            var node = treeItems[obj];
+            if (obj.Parent == null) { hierarchyRoots.Add(node); continue; }
+            node.Parent = treeItems[obj.Parent];
+            node.Parent.Children.Add(node);
         }
         hierarchyShape = objects.Select(o => (o, o.Parent, o.Name)).ToArray();
         Viewport.InvalidateDrawOrder();
         ApplyHierarchyFilter();
-        refreshing = false;
-        Select(selected);
+        if (keepInspector)
+        {
+            SelectHierarchyItem(selected);
+            refreshing = false;
+            RefreshInspector();
+        }
+        else
+        {
+            refreshing = false;
+            Select(selected);
+        }
     }
 
     // Pool Rent/Return and active toggles bump the play world's HierarchyRevision without changing its rows.
@@ -177,14 +272,17 @@ public partial class MainWindow
             var (obj, parent, name) = hierarchyShape[i];
             if (objects[i] != obj || obj.Parent != parent || obj.Name != name) return false;
         }
-        foreach (var (obj, item) in treeItems) item.Opacity = world.IsActive(obj.Id) ? 1 : 0.55;
+        foreach (var (obj, node) in treeItems) node.Opacity = world.IsActive(obj.Id) ? 1 : 0.55;
+        foreach (var row in Hierarchy.GetRealizedContainers()) if (row.Tag is SceneObject obj) row.Opacity = treeItems[obj].Opacity;
         return true;
     }
 
     private void SelectHierarchyItem(SceneObject? obj)
     {
-        for (var parent = obj?.Parent; parent != null; parent = parent.Parent) treeItems[parent].IsExpanded = true;
-        Hierarchy.SelectedItem = obj != null ? treeItems[obj] : null;
+        var node = obj != null ? treeItems[obj] : null;
+        if (node != null && ExpandParents(node)) ShowHierarchyRows();
+        Hierarchy.SelectedItem = node is { Listed: true } ? node : null;
+        if (Hierarchy.SelectedItem != null) Hierarchy.ScrollIntoView(node!);
     }
 
     private static string ObjectPath(SceneObject obj)
@@ -202,8 +300,8 @@ public partial class MainWindow
         MarkDirty();
     }
 
-    private static TreeViewItem? TreeItemAt(Visual? visual) =>
-        visual as TreeViewItem ?? visual?.FindAncestorOfType<TreeViewItem>();
+    private static ListBoxItem? TreeItemAt(Visual? visual) =>
+        visual as ListBoxItem ?? visual?.FindAncestorOfType<ListBoxItem>();
 
     private static bool IsDeleteObjectShortcut(KeyEventArgs e) => OperatingSystem.IsMacOS()
         ? e.KeyModifiers == KeyModifiers.Meta && e.Key is Key.Back or Key.Delete
@@ -228,10 +326,10 @@ public partial class MainWindow
         var selected = Selected;
         Dispatcher.UIThread.Post(() =>
         {
-            if (selected == Selected && selected != null && treeItems.TryGetValue(selected, out var item))
+            if (selected == Selected && selected != null && treeItems.TryGetValue(selected, out var node) && node.Listed)
             {
-                item.BringIntoView();
-                item.Focus();
+                Hierarchy.ScrollIntoView(node);
+                Hierarchy.ContainerFromItem(node)?.Focus();
             }
         }, DispatcherPriority.Loaded);
     }
@@ -240,7 +338,8 @@ public partial class MainWindow
     {
         if (busy || Viewport.IsPlaying) return;
         bool atPointer = e.TryGetPosition(Hierarchy, out var point);
-        var item = atPointer ? TreeItemAt(Hierarchy.InputHitTest(point) as Visual) : Hierarchy.SelectedItem as TreeViewItem;
+        var item = atPointer ? TreeItemAt(Hierarchy.InputHitTest(point) as Visual)
+            : Hierarchy.SelectedItem is { } row ? Hierarchy.ContainerFromItem(row) : null;
         var parent = item?.Tag as SceneObject;
         if (parent == null && prefabSource != null) parent = Scene.Objects.Single(o => o.Id == prefabSource.RootId);
         item?.Focus();
@@ -337,7 +436,7 @@ public partial class MainWindow
         {
             if (e.KeyModifiers.HasFlag(KeyModifiers.Shift))
             {
-                var visible = VisibleRows(Hierarchy.Items).ToList();
+                var visible = hierarchyRows.Select(row => row.Obj).ToList();
                 int end = visible.IndexOf(obj);
                 int start = visible.IndexOf(rangeAnchor ?? Selected ?? obj);
                 if (start < 0) start = end;
@@ -367,7 +466,7 @@ public partial class MainWindow
         if (!draggingNode && ((Vector)(point - pressPoint)).Length < 5) return;
         draggingNode = true;
         var item = TreeItemAt(Hierarchy.InputHitTest(point) as Visual);
-        HighlightTarget(item?.Tag is SceneObject target && !target.IsWithin(pressedNode) ? item : null);
+        HighlightTarget(item?.Tag is SceneObject target && !target.IsWithin(pressedNode) ? target : null);
         bool allowed = new Rect(Hierarchy.Bounds.Size).Contains(point) && (item == null || dropTarget != null);
         bool export = prefabSource == null && project != null && new Rect(ProjectBrowser.Bounds.Size).Contains(e.GetPosition(ProjectBrowser));
         var reference = ReferenceTarget(e);
@@ -392,7 +491,7 @@ public partial class MainWindow
         if (source != null && !moved)
         {
             Select(source);
-            treeItems[source].Focus();
+            Hierarchy.ContainerFromItem(treeItems[source])?.Focus();
             e.Handled = true;
             return;
         }
@@ -421,12 +520,11 @@ public partial class MainWindow
         e.Handled = true;
     }
 
-    private void HighlightTarget(TreeViewItem? item)
+    private void HighlightTarget(SceneObject? target)
     {
-        if (item == dropTarget) return;
-        dropTarget?.Classes.Remove("dropTarget");
-        dropTarget = item;
-        item?.Classes.Add("dropTarget");
+        if (target == dropTarget) return;
+        dropTarget = target;
+        foreach (var row in Hierarchy.GetRealizedContainers()) row.Classes.Set("dropTarget", row.Tag == target && target != null);
     }
 
     private void EndHierarchyDrag()

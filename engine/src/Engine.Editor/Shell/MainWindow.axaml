@@ -191,20 +191,21 @@
               </Button>
             </Grid>
           </Border>
-          <TreeView x:Name="Hierarchy" Grid.Row="1" Margin="4,3,4,6" Background="Transparent"
-                    ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                    AutomationProperties.Name="Scene objects" ToolTip.Tip="Right-click to add an object. Drag onto a parent or onto empty space for the scene root.">
-            <TreeView.Styles>
-              <Style Selector="TreeViewItem /template/ ToggleButton#PART_ExpandCollapseChevron">
-                <Setter Property="MinHeight" Value="0"/><Setter Property="Height" Value="20"/><Setter Property="Padding" Value="0"/>
+          <ListBox x:Name="Hierarchy" Grid.Row="1" Margin="4,3,4,6" Background="Transparent" AutoScrollToSelectedItem="False"
+                   ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                   AutomationProperties.Name="Scene objects" ToolTip.Tip="Right-click to add an object. Drag onto a parent or onto empty space for the scene root.">
+            <ListBox.Styles>
+              <!-- The TreeView row box these rows replaced: 22px tall, square, with a clear 1px border.
+                   HierarchyItem adds the indent and chevron. -->
+              <Style Selector="ListBoxItem">
+                <Setter Property="Padding" Value="0"/><Setter Property="MinHeight" Value="22"/>
+                <Setter Property="BorderThickness" Value="1"/><Setter Property="BorderBrush" Value="Transparent"/><Setter Property="CornerRadius" Value="0"/>
+                <Setter Property="HorizontalContentAlignment" Value="Stretch"/><Setter Property="VerticalContentAlignment" Value="Center"/>
+                <Setter Property="Foreground" Value="{DynamicResource TreeViewItemForeground}"/>
               </Style>
-              <Style Selector="TreeViewItem"><Setter Property="Padding" Value="3,0"/></Style>
-              <!-- Rows fill the width so the eye and lock sit at the right edge. -->
-              <Style Selector="TreeViewItem /template/ ContentPresenter#PART_HeaderPresenter">
-                <Setter Property="HorizontalAlignment" Value="Stretch"/><Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-              </Style>
-            </TreeView.Styles>
-          </TreeView>
+              <Style Selector="ListBoxItem.groupSelected, ListBoxItem.dropTarget"><Setter Property="Foreground" Value="{DynamicResource EditorAccent}"/></Style>
+            </ListBox.Styles>
+          </ListBox>
           <TextBlock x:Name="HierarchyNoMatch" Grid.Row="1" Classes="label" Margin="10,8" IsHitTestVisible="False" VerticalAlignment="Top" IsVisible="False" Text="No matching objects"/>
       </Grid>
       <Grid local:DockHost.Panel="Project" x:Name="ProjectPanel" MinWidth="140" MinHeight="100" RowDefinitions="Auto,Auto,*" Background="{DynamicResource EditorPanel}">

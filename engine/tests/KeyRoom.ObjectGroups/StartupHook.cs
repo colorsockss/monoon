@@ -51,7 +51,7 @@ public static class StartupHook
         var main = ((IClassicDesktopStyleApplicationLifetime)Application.Current!.ApplicationLifetime!).MainWindow!;
         var project = Path.Combine(Output, "KeyRoom");
         var path = Path.Combine(project, "Assets", "Coin.prefab");
-        await Until(() => main.IsVisible && main.FindControl<TreeView>("Hierarchy")!.Items.Count > 1, "KeyRoom");
+        await Until(() => main.IsVisible && main.FindControl<ListBox>("Hierarchy")!.Items.Count > 1, "KeyRoom");
         var edit = main.GetType().GetMethod("EditPrefabSource", Private)!;
         async Task EditPrefab(bool write)
         {

@@ -45,8 +45,8 @@ public static class StartupHook
             var next = control.PointToScreen(center);
             var hit = top.InputHitTest(top.PointToClient(next)) as Visual;
             bool matches = hit == control || hit?.GetVisualAncestors().Contains(control) == true;
-            if (control is TextBlock && control.FindAncestorOfType<TreeViewItem>() is {} item)
-                matches = hit == item || hit?.FindAncestorOfType<TreeViewItem>() == item;
+            if (control is TextBlock && control.FindAncestorOfType<ListBoxItem>() is {} item)
+                matches = hit == item || hit?.FindAncestorOfType<ListBoxItem>() == item;
             stable = matches && next == point ? stable + 1 : 0;
             point = next;
             return stable >= 7;
@@ -64,12 +64,13 @@ public static class StartupHook
         var viewport = Control<Control>("Viewport");
         var play = Control<Button>("PlayButton");
         var apply = Control<Button>("ApplyPlayValues");
-        var hierarchy = Control<TreeView>("Hierarchy");
+        var hierarchy = Control<ListBox>("Hierarchy");
+        SceneObject? Row(object? node) => (SceneObject?)node?.GetType().GetProperty("Obj")!.GetValue(node);
         void Trace(string message) => File.AppendAllText(Path.Combine(Output, "input.log"), message + Environment.NewLine);
         window.AddHandler(InputElement.PointerPressedEvent, (_, e) =>
-            Trace($"click {e.GetPosition(window)} on {e.Source?.GetType().Name}, selected {((hierarchy.SelectedItem as TreeViewItem)?.Tag as SceneObject)?.Name}"),
+            Trace($"click {e.GetPosition(window)} on {e.Source?.GetType().Name}, selected {Row(hierarchy.SelectedItem)?.Name}"),
             RoutingStrategies.Tunnel, handledEventsToo: true);
-        hierarchy.SelectionChanged += (_, _) => Trace($"selected {((hierarchy.SelectedItem as TreeViewItem)?.Tag as SceneObject)?.Name}");
+        hierarchy.SelectionChanged += (_, _) => Trace($"selected {Row(hierarchy.SelectedItem)?.Name}");
         var project = Environment.GetEnvironmentVariable("MONOON_QA_PROJECT")!;
         string path = Path.Combine(project, "Scenes", "KeyRoom.scene");
         string OnDisk() => SceneDocument.Load(path).CaptureObjects();
@@ -83,7 +84,7 @@ public static class StartupHook
         T Field<T>(string name) where T : Control => window.GetVisualDescendants().OfType<T>()
             .Single(c => c.IsEffectivelyVisible && AutomationProperties.GetName(c) == name);
 
-        await Until(() => window.IsVisible && hierarchy.Items.OfType<TreeViewItem>().Any(i => (string?)i.Header == "Player"), "KeyRoom Hierarchy");
+        await Until(() => window.IsVisible && hierarchy.Items.Cast<object>().Any(i => Row(i)?.Name == "Player"), "KeyRoom Hierarchy");
         window.Width = 1040;
         window.Height = 720;
         if (OperatingSystem.IsWindows() && window.Screens.Primary is {} screen)
@@ -100,11 +101,13 @@ public static class StartupHook
         Check(!CanUndo() && SavedSpeed() == 240, "Expected a fresh KeyRoom copy at 240");
         async Task SelectPlayer()
         {
-            var row = hierarchy.Items.OfType<TreeViewItem>().Single(i => (string?)i.Header == "Player");
+            var row = hierarchy.Items.Cast<object>().Single(i => Row(i)?.Name == "Player");
             bool IsPlayerSelected() => hierarchy.SelectedItem == row && Control<TextBox>("ObjectName").IsEffectivelyVisible
                 && Control<TextBox>("ObjectName").Text == "Player";
             if (IsPlayerSelected()) return;
-            await Input("click", row.GetVisualDescendants().OfType<TextBlock>().First(t => t.Text == "Player"));
+            hierarchy.ScrollIntoView(row);
+            await Until(() => hierarchy.ContainerFromItem(row) != null, "Player row realized");
+            await Input("click", hierarchy.ContainerFromItem(row)!.GetVisualDescendants().OfType<TextBlock>().First(t => t.Text == "Player"));
             await Until(IsPlayerSelected, "select Player");
         }
         async Task Start()

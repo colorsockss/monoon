@@ -32,7 +32,7 @@ public static class StartupHook
     {
         main = life.MainWindow!;
         view = main.FindControl<SceneViewport>("Viewport")!;
-        await Until(() => main.IsVisible && Find<TreeView>("Hierarchy").Items.Count > 1, "KeyRoom", 120);
+        await Until(() => main.IsVisible && Find<ListBox>("Hierarchy").Items.Count > 1, "KeyRoom", 120);
         if (Phase == "trace") { await Trace(); return; }
         main.Width = 1280; main.Height = 800;
         await Delay(800);
@@ -171,11 +171,11 @@ public static class StartupHook
         await Delay(300);
         var door = Object("Door");
         var items = (IDictionary)Get(main, "treeItems")!;
-        double opacity = ((Visual)items[door]!).Opacity;
+        double opacity = (double)Get(items[door]!, "Opacity")!;
         bool drawn = ((IEnumerable)Call(view, "EditItems")!).Cast<System.Runtime.CompilerServices.ITuple>().Any(item => item[0] == door);
         Require(!door.Active && opacity == 0.55 && !drawn && Text.Contains("  active: false\n"), $"inactive Door: opacity {opacity}, drawn {drawn}");
         Capture(Find<Border>("InspectorPanel"), "i2-door-inactive");
-        Capture(Find<TreeView>("Hierarchy"), "i2-hierarchy-dimmed");
+        Capture(Find<ListBox>("Hierarchy"), "i2-hierarchy-dimmed");
         await Undo();
         Require(Text == before && Object("Door").Active, "one Undo restores the active Door");
         await Redo();

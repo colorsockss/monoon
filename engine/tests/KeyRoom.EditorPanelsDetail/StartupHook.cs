@@ -32,7 +32,7 @@ public static class StartupHook
     {
         main = life.MainWindow!;
         view = main.FindControl<SceneViewport>("Viewport")!;
-        await Until(() => main.IsVisible && Find<TreeView>("Hierarchy").Items.Count > 1, "KeyRoom");
+        await Until(() => main.IsVisible && Find<ListBox>("Hierarchy").Items.Count > 1, "KeyRoom");
         Result["os"] = System.Runtime.InteropServices.RuntimeInformation.RuntimeIdentifier;
         Result["captures"] = Captures;
         main.Width = 1280; main.Height = 800;
@@ -139,9 +139,17 @@ public static class StartupHook
     }
 
     // ---- Hierarchy
-    private static TreeView Tree => Find<TreeView>("Hierarchy");
+    private static ListBox Tree => Find<ListBox>("Hierarchy");
     private static IEnumerable<TreeViewItem> Items(ItemCollection items) => items.OfType<TreeViewItem>().SelectMany(i => Items(i.Items).Prepend(i));
-    private static Grid Row(SceneObject obj) => Tree.GetVisualDescendants().OfType<Grid>().First(g => g.Classes.Contains("hierarchyRow") && g.Tag == obj);
+    // The Hierarchy lists one row per shown object under expanded parents and realizes only the rows on screen.
+    private static object Node(SceneObject obj) => ((IDictionary)Get(main, "treeItems")!)[obj]!;
+    private static List<SceneObject> Listed => Tree.Items.Cast<object>().Select(n => (SceneObject)Get(n, "Obj")!).ToList();
+    private static Grid Row(SceneObject obj)
+    {
+        Tree.ScrollIntoView(Node(obj));
+        Tree.UpdateLayout();
+        return Tree.GetVisualDescendants().OfType<Grid>().First(g => g.Classes.Contains("hierarchyRow") && g.Tag == obj && g.IsEffectivelyVisible);
+    }
 
     private static async Task<object> HierarchySearch()
     {
@@ -151,20 +159,19 @@ public static class StartupHook
         {
             search.Text = query;
             await Delay(200);
-            var all = Items(Tree.Items).ToList();
-            bool Matches(TreeViewItem i) => ((SceneObject)i.Tag!).Name.Contains(query, StringComparison.OrdinalIgnoreCase);
-            bool Within(TreeViewItem i) => Matches(i) || Items(i.Items).Any(Matches);
-            var visible = all.Where(i => i.IsVisible && (i.Parent is not TreeViewItem p || p.IsVisible)).ToList();
-            Require(all.All(i => i.IsVisible == Within(i)), $"'{query}': rows other than matches and their parents are visible");
-            Require(all.Where(Matches).All(i => i.IsEffectivelyVisible), $"'{query}': a match is collapsed out of view");
+            var all = Scene.Objects;
+            bool Matches(SceneObject o) => o.Name.Contains(query, StringComparison.OrdinalIgnoreCase);
+            bool Within(SceneObject o) => Matches(o) || all.Any(c => c.Parent == o && Within(c));
+            var visible = Listed;
+            Require(visible.ToHashSet().SetEquals(all.Where(Within)), $"'{query}': rows other than matches and their parents are listed, or a match is collapsed out of view");
             var none = Find<TextBlock>("HierarchyNoMatch").IsVisible;
             Require(none == !all.Any(Matches), $"'{query}': empty-result text {none}");
-            results.Add(new { query, matches = all.Count(Matches), shown = visible.Select(i => (string)i.Header!).ToArray(), no_match_text = none });
+            results.Add(new { query, matches = all.Count(Matches), shown = visible.Select(o => o.Name).ToArray(), no_match_text = none });
             if (query == "satchel") Capture(Find<Control>("Hierarchy").Parent as Visual ?? Tree, "hierarchy-search");
         }
         search.Text = "";
         await Delay(200);
-        Require(Items(Tree.Items).All(i => i.IsVisible), "clearing the search left rows hidden");
+        Require(((IDictionary)Get(main, "treeItems")!).Values.Cast<object>().All(n => (bool)Get(n, "Shown")!), "clearing the search left rows hidden");
         return results;
     }
 

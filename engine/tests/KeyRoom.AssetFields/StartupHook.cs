@@ -33,7 +33,7 @@ public static partial class StartupHook
     {
         main = life.MainWindow!;
         view = main.FindControl<SceneViewport>("Viewport")!;
-        await Until(() => main.IsVisible && Find<TreeView>("Hierarchy").Items.Count > 1, "project open", 120);
+        await Until(() => main.IsVisible && Find<ListBox>("Hierarchy").Items.Count > 1, "project open", 120);
         main.Width = 1280; main.Height = 800;
         await Delay(800);
         await (Phase switch { "edit" => Edit(), "trace" => Trace(), "field" => Field(), "curves" => Curves(), "inspect" => Inspect(), _ => throw new ArgumentException(Phase) });

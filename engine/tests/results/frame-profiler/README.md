@@ -30,7 +30,7 @@ QueryField는 충돌체 1만 개 씬에 들어올 때와 **R**을 누를 때 한
 | 개발용 Native AOT | 108.094 ms | 104.785 ms | 82,388,200 B | 12 |
 | 에디터 Scene Play | 5,488.723 ms | 370.861 ms | 6,390,117,720 B | – |
 
-에디터의 이 프레임에서는 Editor 샘플(Hierarchy·Inspector·진단 갱신)이 595.241 ms, 어느 샘플에도 속하지 않은 Frame Self가 4,517.881 ms였다. UI 스레드 할당 약 6.4 GB도 이 프레임에 기록됐다. 이 시간과 할당이 에디터 UI의 어느 부분에서 발생하는지는 이번에 분석하지 않았다.
+에디터의 이 프레임에서는 Editor 샘플(Hierarchy·Inspector·진단 갱신)이 595.241 ms, 어느 샘플에도 속하지 않은 Frame Self가 4,517.881 ms였다. UI 스레드 할당 약 6.4 GB도 이 프레임에 기록됐다. 이 시간과 할당이 에디터 UI의 어느 부분에서 발생하는지는 이번에 분석하지 않았다. 원인(비가상화 Hierarchy)과 수정은 [Hierarchy 가상화](../hierarchy-virtualization/README.md)에 있다.
 
 ## 배포용 빌드
 

@@ -58,6 +58,7 @@ public partial class MainWindow
         componentMenu?.Hide();
         ResolveInspectorLock();
         var owner = Inspected;
+        inspectorObjectFields.Clear();
         inspectorSourceStamp = null;
         RefreshMultiComponents();
         if (!InspectingOne) owner = null;
@@ -86,7 +87,19 @@ public partial class MainWindow
         inspectorAssets = null;
         RefreshComponentWarnings();
         RefreshOverrides();
+        inspectedShape = (owner, owner?.Components ?? default, Viewport.PlayWorld);
     }
+
+    // What the component rows were built for, and for each object field whether it would still show the same target.
+    private (SceneObject? Owner, System.Collections.Immutable.ImmutableArray<SceneComponent> Components, SceneGame? World) inspectedShape;
+    private readonly List<Func<bool>> inspectorObjectFields = [];
+
+    // True when a structural Play change leaves the Inspector's rows as they are: one selected object (or none) with the
+    // same components in the same world, and object fields that would show the same names. Then only values are refreshed.
+    private bool InspectorRowsCurrent(SceneObject? selected) =>
+        selected == Selected && lockedObject == null && Viewport.Selection.Count == (selected == null ? 0 : 1)
+        && inspectedShape.Owner == selected && inspectedShape.World == Viewport.PlayWorld
+        && (selected?.Components ?? default) == inspectedShape.Components && inspectorObjectFields.All(current => current());
 
     // Inspector lock (13.12): the Inspector keeps showing one object while the selection changes. Edit mode only; the
     // locked object is kept per scene in the user's editor-state.json, never in the scene.

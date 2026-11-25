@@ -70,8 +70,8 @@ public static class StartupHook
 
     private static object Hierarchy(Window main, string name)
     {
-        var tree = main.FindControl<TreeView>("Hierarchy")!;
-        var item = tree.GetVisualDescendants().OfType<TreeViewItem>().First(i => i.Header as string == name);
+        var tree = main.FindControl<ListBox>("Hierarchy")!;
+        var item = tree.GetVisualDescendants().OfType<ListBoxItem>().First(i => (i.Tag as Engine.Core.SceneObject)?.Name == name && i.IsEffectivelyVisible);
         var text = item.GetVisualDescendants().OfType<TextBlock>().First(t => t.Text == name);
         var natural = new TextBlock { Text = name, FontSize = text.FontSize };
         natural.Measure(Size.Infinity);

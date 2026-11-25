@@ -34,11 +34,12 @@ public partial class MainWindow : IReferenceHost
     // A scene-object field; accepts filters the objects offered and dropped from the Hierarchy.
     private ReferenceField ObjectField(string name, Func<SceneObject, bool> accepts, Guid? current, Action<Guid?> set, string none = "None")
     {
-        var objects = Viewport.PlayWorld?.Objects ?? Scene.Objects;
         var empty = None with { Label = none };
-        var shown = current is not Guid id || id == Guid.Empty ? empty
-            : objects.FirstOrDefault(o => o.Id == id) is { } obj ? new ReferenceChoice(id, ObjectPath(obj), null, EditorTokens.ObjectIcon(obj))
+        ReferenceChoice Shown() => current is not Guid id || id == Guid.Empty ? empty
+            : (Viewport.PlayWorld?.Objects ?? Scene.Objects).FirstOrDefault(o => o.Id == id) is { } obj ? new ReferenceChoice(id, ObjectPath(obj), null, EditorTokens.ObjectIcon(obj))
             : new ReferenceChoice(id, "Missing object or component", null, EditorTokens.Geometry("IconWarning"));
+        var shown = Shown();
+        inspectorObjectFields.Add(() => Shown() == shown);
         IReadOnlyList<ReferenceChoice> Choices() =>
             [empty, .. (Viewport.PlayWorld?.Objects ?? Scene.Objects).Where(accepts).Select(o => new ReferenceChoice(o.Id, ObjectPath(o), null, EditorTokens.ObjectIcon(o)))];
         var field = new ReferenceField(name, asset: false, shown, Choices, id =>
@@ -125,13 +126,18 @@ public partial class MainWindow : IReferenceHost
             Status.Text = path;
             return;
         }
-        if (Scene.Objects.FirstOrDefault(o => o.Id == id) is not { } obj || !treeItems.TryGetValue(obj, out var row)) { Status.Text = "The object is not in this scene."; return; }
+        if (Scene.Objects.FirstOrDefault(o => o.Id == id) is not { } obj || !treeItems.TryGetValue(obj, out var node)) { Status.Text = "The object is not in this scene."; return; }
         if (select) { Select(obj); return; }
         if (!Dock.IsOpen("Hierarchy")) OpenPanel("Hierarchy");
         Dock.Activate("Hierarchy");
-        for (var parent = obj.Parent; parent != null; parent = parent.Parent) treeItems[parent].IsExpanded = true;
-        row.BringIntoView();
-        Flash(row);
+        if (ExpandParents(node)) ShowHierarchyRows();
+        // A panel opened just now has no rows yet; scroll and tint once it is laid out.
+        Dispatcher.UIThread.Post(() =>
+        {
+            if (!node.Listed) return;
+            Hierarchy.ScrollIntoView(node);
+            Flash(Hierarchy.ContainerFromItem(node));
+        }, DispatcherPriority.Loaded);
         Status.Text = ObjectPath(obj);
     }
 
