@@ -4572,14 +4572,14 @@
      "modes": [
       "release"
      ],
-     "run": "python3 \"$qa/verify.py\" play \"$work/builds/SeedLab.app/Contents/MacOS/MoNoonPlayer\" \"$work/release\" \"$work/SeedLab/Assets/Route.tileset\""
+     "run": "python3 \"$qa/verify.py\" play \"$work/builds/SeedLab.app/Contents/MacOS/MoNoonPlayer\" \"$work/release\" \"$work/SeedLab/Assets/Showcase/Field.tileset\""
     },
     {
      "kind": "play",
      "modes": [
       "native-aot"
      ],
-     "run": "python3 \"$qa/verify.py\" play \"$work/builds/NativeAOT/SeedLab.app/Contents/MacOS/MoNoonPlayer\" \"$work/native-aot\" \"$work/SeedLab/Assets/Route.tileset\""
+     "run": "python3 \"$qa/verify.py\" play \"$work/builds/NativeAOT/SeedLab.app/Contents/MacOS/MoNoonPlayer\" \"$work/native-aot\" \"$work/SeedLab/Assets/Showcase/Field.tileset\""
     },
     {
      "kind": "probe",

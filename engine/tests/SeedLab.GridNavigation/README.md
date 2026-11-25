@@ -1,6 +1,8 @@
 # SeedLab 길찾기 회귀
 
-`verify.py prepare`는 별도 프로젝트에 관찰 스크립트를 붙인다. 이 스크립트는 배달원의 로컬 Transform과 설정 변경 입력만 기록한다. 프레임마다 입력을 재생하고 실제 방문 좌표를 타일 좌표로 변환한다. 검사는 독립적인 다익스트라 탐색으로 최소 비용을 구해 방문 기록과 대조한다. 실시간 문 열기의 경우 문을 연 칸부터 남은 비용을 비교한다.
+대상은 SeedLab 쇼케이스의 Route 지도다(`Scenes/ShowcaseRoute.scene`, `Assets/Showcase/Field.tileset`: 길 1, 풀 3, 진흙 8, 다리 1, 물·울타리는 막힘). 쇼케이스의 RouteCourier는 비와 다리가 저절로 흘러가는 연출이라, `verify.py prepare`는 복사본에서 그 스크립트를 시험용 키 드라이버 [DriveRoute](DriveRoute.source)로 바꾸고(사용자 결정 2026-11-26) 시작 씬을 Route로 바꾼다. 드라이버 키는 R 시작점으로, Space 출발(12틱에 한 칸), V 4/8방향, O 남쪽 여울에 다리 놓기/걷기, B 북쪽 길에 비(길 ↔ 진흙)다.
+
+관찰 스크립트 [TraceCourier](TraceCourier.source)는 배달원의 로컬 Transform과 설정 변경 입력만 기록한다. 검사는 [route_model.py](route_model.py)의 독립 다익스트라로 최소 비용을 구해 여섯 경우(4방향·8방향 × 다리 유무, 비, 걷는 중에 다리 놓기)의 방문 기록과 대조한다. 걷는 중에 바꾼 경우는 바꾼 칸부터 남은 비용을 비교한다.
 
 Mac에서 저장소 루트 기준으로 실행한다. 먼저 [플레이어 템플릿과 에디터](../../../docs/manual/build.md)를 최신 소스로 빌드한다.
 

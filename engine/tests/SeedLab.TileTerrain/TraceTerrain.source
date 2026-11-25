@@ -6,38 +6,40 @@ using System.Linq;
 using System.Numerics;
 using Engine.Core;
 
-// Attached to the courier only in the test copy. Reads the engine's tile layer, tile collision and the
+// Attached to the route's Field only in the test copy, after DriveRoute. Reads the engine's tile layer, tile collision and the
 // courier transform; never the planner's own state.
 public sealed class TraceTerrain : GameBehaviour
 {
+    public Guid Courier;
+    private const int Cell = 32, Width = 18, Height = 9;
     private Vector2? previous;
-    private string pending;
+    private string? pending;
 
     public override void FixedUpdate(ScriptTick tick)
     {
         string path = Environment.GetEnvironmentVariable("MONOON_ROUTE_TRACE");
-        if (string.IsNullOrEmpty(path) || !tick.Objects.TryGetLocalTransform(tick.ObjectId, out var local) ||
-            !tick.Objects.TryGetParent(tick.ObjectId, out var parent) || parent is not Guid board) return;
+        if (string.IsNullOrEmpty(path) || !tick.Objects.TryGetLocalTransform(Courier, out var local)) return;
         // Snapshot the tick after an input so every script has applied it.
-        if (pending != null) File.AppendAllText(path, State(tick.Objects, board, pending));
+        if (pending != null) File.AppendAllText(path, State(tick.Objects, tick.ObjectId, pending));
         var input = tick.Input;
-        string action = input.Pressed("Rebuild") ? "reset" : input.Pressed("ToggleGate") ? "gate" :
-            input.Pressed("RouteDirections") ? "directions" : input.Pressed("MudCost") ? "mud" :
-            input.Pressed("PaintMud") ? "paint" : input.Pressed("WaitTurn") ? "walk" : "-";
+        string action = input.Pressed("Rebuild") ? "reset" : input.Pressed("ToggleGate") ? "bridge" :
+            input.Pressed("RouteDirections") ? "directions" : input.Pressed("PaintMud") ? "rain" : input.Pressed("WaitTurn") ? "walk" : "-";
         pending = action == "-" ? null : action;
         if (previous == local.Position && action == "-") return;
         previous = local.Position;
         File.AppendAllText(path, string.Create(CultureInfo.InvariantCulture, $"{action} {local.Position.X} {local.Position.Y}\n"));
     }
 
+    // Every cell as display:terrain:cost, then tile collision at the ford (8, 5), a hedge (5, 3), the north road (3, 1) and
+    // grass (3, 2).
     private static string State(IGameObjects objects, Guid board, string action)
     {
         objects.TryGetWorldMatrix(board, out var world);
-        int Hit(int x, int y) => objects.Physics.Overlap(Shape2D.Circle(Vector2.Transform(new Vector2(x * 40 + 20, y * 40 + 20), world), 1))
+        int Hit(int x, int y) => objects.Physics.Overlap(Shape2D.Circle(Vector2.Transform(new Vector2(x * Cell + Cell / 2, y * Cell + Cell / 2), world), 1))
             .Any(h => h.ObjectId == board) ? 1 : 0;
-        string Cell(int x, int y) => objects.TryGetTile(board, new Point(x, y), out var info)
+        string Shown(int x, int y) => objects.TryGetTile(board, new Point(x, y), out var info)
             ? $"{info.Display}:{info.Terrain}:{info.MoveCost}".Replace(' ', '_') : "?";
-        string cells = string.Join(",", Enumerable.Range(0, 7).SelectMany(y => Enumerable.Range(0, 13).Select(x => Cell(x, y))));
-        return $"state {action} {cells} {Hit(6, 4)} {Hit(6, 3)} {Hit(6, 1)} {Hit(3, 5)}\n";
+        string cells = string.Join(",", Enumerable.Range(0, Height).SelectMany(y => Enumerable.Range(0, Width).Select(x => Shown(x, y))));
+        return $"state {action} {cells} {Hit(8, 5)} {Hit(5, 3)} {Hit(3, 1)} {Hit(3, 2)}\n";
     }
 }

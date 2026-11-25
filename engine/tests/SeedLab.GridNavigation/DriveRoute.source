@@ -1,0 +1,75 @@
+using System;
+using System.Drawing;
+using System.Linq;
+using System.Numerics;
+using Engine.Core;
+
+// Test-only driver that replaces the showcase RouteCourier in a disposable SeedLab copy, on the same Field map and tileset
+// (road 1, grass 3, mud 8, bridge 1; water and hedges block). R puts the courier back on the start, Space walks the cheapest
+// route one cell every 12 ticks, V switches 4 / 8 directions, O lays or lifts the south ford bridge (water <-> bridge) and B
+// turns the north road to mud or back (road <-> mud). Every SetTile changes the grid's Revision, so the courier re-plans from
+// the cell he stands on, even mid-walk.
+public sealed class DriveRoute : GameBehaviour
+{
+    public Guid Courier;
+    private const int Cell = 32, Road = 2, Mud = 3, Water = 4, Bridge = 5, Width = 18, Height = 9;
+    private static readonly Point[] North = [new(3, 1), new(4, 1), new(5, 1), new(6, 1), new(7, 1)];
+    private static readonly Point[] Ford = [new(8, 5), new(9, 5)];
+    private static readonly Point Start = new(1, 5), Goal = new(15, 5);
+    private GridNavigation grid = null!;
+    private GridPath route = null!;
+    private GridDirections mode = GridDirections.Four;
+    private Point position;
+    private bool bridge, rain, walking;
+    private int next, ticks;
+    private long planned = -1;
+    private readonly int[] road = new int[North.Length];   // the north road's own tiles (route.py mixes two road pictures)
+
+    public override void OnCreate(ScriptLife life)
+    {
+        grid = life.Objects.TileNavigation(life.ObjectId, new Rectangle(0, 0, Width, Height))
+               ?? throw new InvalidOperationException("DriveRoute needs a non-streamed tilemap.");
+        for (int i = 0; i < North.Length; i++) road[i] = life.Objects.TryGetTile(life.ObjectId, North[i], out var shown) ? shown.Tile : Road;
+        Place(life.Objects, Start);
+    }
+
+    // The 42 x 60 hero stands with his feet low in the cell, as RouteCourier places him.
+    private void Place(IGameObjects objects, Point cell)
+    {
+        position = cell;
+        objects.SetLocalTransform(Courier, new LocalTransform2D(new Vector2(cell.X * Cell + Cell / 2f - 21, cell.Y * Cell + Cell / 2f - 48), 0, Vector2.One));
+    }
+
+    public override void FixedUpdate(ScriptTick tick)
+    {
+        var input = tick.Input;
+        bool replan = false;
+        if (input.Pressed("ToggleGate") && !Ford.Contains(position))
+        {
+            bridge = !bridge;
+            foreach (var cell in Ford) tick.Objects.SetTile(tick.ObjectId, cell, bridge ? Bridge : Water);
+        }
+        if (input.Pressed("RouteDirections")) { mode = mode == GridDirections.Four ? GridDirections.Eight : GridDirections.Four; replan = true; }
+        if (input.Pressed("PaintMud"))
+        {
+            rain = !rain;
+            for (int i = 0; i < North.Length; i++) tick.Objects.SetTile(tick.ObjectId, North[i], rain ? Mud : road[i]);
+        }
+        if (input.Pressed("Rebuild")) { Place(tick.Objects, Start); walking = false; replan = true; }
+        if (input.Pressed("WaitTurn"))
+        {
+            if (position == Goal) { Place(tick.Objects, Start); replan = true; }
+            walking = !walking;
+        }
+        if (replan || grid.Revision != planned)
+        {
+            route = grid.FindPath(position, Goal, mode);
+            planned = grid.Revision;
+            (next, ticks) = (1, 0);
+        }
+        if (!walking || ++ticks < 12) return;
+        ticks = 0;
+        if (next < route.Cells.Count) Place(tick.Objects, route.Cells[next++]);
+        if (next >= route.Cells.Count) walking = false;
+    }
+}

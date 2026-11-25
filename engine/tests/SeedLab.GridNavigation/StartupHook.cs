@@ -14,7 +14,7 @@ public static class StartupHook
         var main = life.MainWindow!;
         var viewport = main.FindControl<Control>("Viewport")!;
         var scene = viewport.GetType().GetProperty("Scene")!;
-        await Until(() => ((SceneDocument)scene.GetValue(viewport)!).Objects.Any(o => o.Name == "Board"), "Board");
+        await Until(() => ((SceneDocument)scene.GetValue(viewport)!).Objects.Any(o => o.Name == "Field"), "Field");
         var play = main.FindControl<Button>("PlayButton")!;
         play.RaiseEvent(new RoutedEventArgs(Button.ClickEvent, play));
         var game = (GameSession)viewport.GetType().GetField("game", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(viewport)!;

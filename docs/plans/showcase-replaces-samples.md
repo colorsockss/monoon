@@ -10,6 +10,8 @@
 | 2 | 부하가 큰 씬 | BarrageLab/Barrage(총알 2,000발 이상)와 SeedLab/Crowd(200명)는 스트레스가 아니라 쇼케이스로 옮긴다. 두 쇼케이스가 같은 스크립트(`SpiralBarrage`, `CrowdRun`)를 쓴다 |
 | 3 | 발 IK | PlatformerLab/Platform의 Runner 리그와 Foot IK 2D는 쇼케이스로 옮기지 않고 이번 작업에서 엔진 기능과 함께 지운다. 손댈 곳은 [showcase-quality.md](showcase-quality.md#촬영이-끝난-뒤-할-일-발-ik-기능-제거) |
 | 4 | 영상 | 기능을 넣어 화면이 바뀐 쇼케이스는 영상을 다시 찍는다 |
+| 6 | 연출형 쇼케이스의 조작 시험 | 쇼케이스가 자동 연출이라 기존 씬의 키 조작 시험을 화면에 넣기 어려우면, 시험 복사본에서만 쇼케이스 오브젝트에 시험용 드라이버를 붙여 같은 지도·컨트롤러로 검사한다(AnimatorLab 경비병·정찰병, SeedLab Route. 사용자 결정 2026-11-26) |
+| 7 | SeedLab Meadow | 47칸 블롭 오토타일을 쇼케이스 Route의 덤불 울타리 타일맵으로 옮기고 영상을 다시 찍는다(사용자 결정 2026-11-26) |
 | 5 | ContentUpdates | 씬이 아니라 `monoon content-update pack`에 쓰는 InventoryLab 교체 파일이라 그대로 둔다 |
 
 ## 기존 씬 48개와 옮길 곳

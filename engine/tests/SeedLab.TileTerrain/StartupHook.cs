@@ -23,11 +23,11 @@ public static class StartupHook
         string project = Environment.GetEnvironmentVariable("MONOON_QA_PROJECT")!;
         var view = main.FindControl<Control>("Viewport")!;
         var scene = view.GetType().GetProperty("Scene")!;
-        await Until(() => ((SceneDocument)scene.GetValue(view)!).Objects.Any(o => o.Name == "Board"), "Board");
-        SpriteRegion mud = new(16, 0, 8, 8);
+        await Until(() => ((SceneDocument)scene.GetValue(view)!).Objects.Any(o => o.Name == "Field"), "Field");
+        SpriteRegion mud = new(64, 0, 32, 32);   // Field.tileset tile 3
         async Task Edit(string expectName, int expectCost, string name, int cost, bool capture)
         {
-            var closing = (Task)main.GetType().GetMethod("EditTileset", Private)!.Invoke(main, ["Assets/Route.tileset"])!;
+            var closing = (Task)main.GetType().GetMethod("EditTileset", Private)!.Invoke(main, ["Assets/Showcase/Field.tileset"])!;
             // The tileset editor is a dock panel in the main window (roadmap 12.4); it appears after the panel's layout pass.
             await closing;
             Visual? found = null;
@@ -62,12 +62,12 @@ public static class StartupHook
             // Saving closes the editor and empties its panel, as it closed the window before.
             Require(window.GetVisualRoot() == null, window.FindControl<TextBlock>("Info")!.Text ?? "Save failed");
             await closing;
-            var saved = Tileset.Load(Path.Combine(project, "Assets/Route.tileset")).Tiles.Single(t => t.Source == mud);
+            var saved = Tileset.Load(Path.Combine(project, "Assets/Showcase/Field.tileset")).Tiles.Single(t => t.Source == mud);
             Require(saved.Terrain == name && saved.MoveCost == cost, $"saved {saved.Terrain} x{saved.MoveCost}");
         }
-        await Edit("mud", 12, "bog", 9, true);
-        await Edit("bog", 9, "mud", 12, false);
-        File.WriteAllText(Path.Combine(Output, "tileset-edit.txt"), "mud -> bog x9 -> mud x12 saved and reopened\n");
+        await Edit("mud", 8, "bog", 9, true);
+        await Edit("bog", 9, "mud", 8, false);
+        File.WriteAllText(Path.Combine(Output, "tileset-edit.txt"), "mud -> bog x9 -> mud x8 saved and reopened\n");
         var play = main.FindControl<Button>("PlayButton")!;
         Click(play);
         var game = (GameSession)view.GetType().GetField("game", Private)!.GetValue(view)!;
