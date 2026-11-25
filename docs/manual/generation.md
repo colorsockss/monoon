@@ -1,16 +1,16 @@
 # 절차 생성과 시드
 
-[SeedLab](../../samples/SeedLab)을 MoNoon에서 열고 **Play**를 누른다. 흰색 탐험가가 청록색 입구에서 출발한다. **WASD**나 방향키로 한 번에 한 칸씩 이동해 금색 출구에 닿으면 상단에 도착 메시지가 표시된다. 현재 시드는 오른쪽 **Current seed**에서 읽을 수 있다.
+[SeedLab](../../samples/SeedLab)을 MoNoon에서 열고 **Play**를 누른다(`Scenes/ShowcaseMaze.scene`). 탐험가가 던전 입구에서 출발한다. 방향키로 한 번에 한 칸씩 이동해 상자에 닿으면 아래 상태 줄에 도착 메시지가 표시된다. 현재 시드는 오른쪽 **SEED** 패널에서 읽을 수 있다.
 
 | 조작 | 결과 |
 | --- | --- |
-| **G** | 배달원 길찾기 씬으로 이동한다. [진흙과 문으로 경로 비교하기](navigation.md#탑다운-그리드-길찾기) |
 | **K / T / J** | 현재 플레이 저장 / 자동 재생 / 한 턴씩 재생. [턴과 리플레이](turn-replay.md) |
 | **N / P** | 다음 / 이전 시드로 바꾸고 입구에서 다시 시작한다. |
-| **R** | 현재 시드로 같은 지도를 다시 만들고 탐험가를 입구로 돌려놓는다. |
-| **Custom seed → Apply seed** | 0부터 4294967295까지의 정수를 직접 입력해 해당 지도를 연다. 범위 밖 숫자나 빈 입력은 현재 지도를 유지한다. |
+| **R** | 현재 시드로 같은 던전을 다시 만들고 탐험가를 입구로 돌려놓는다. |
+| **Return** | 입구에서 상자까지 가장 짧은 길을 따라 걷는다. |
+| **SEED 입력란 → Go** | 0부터 4294967295까지의 정수를 직접 입력해 해당 던전을 연다. 범위 밖 숫자나 빈 입력은 현재 던전을 유지한다. |
 
-예를 들어 **42**를 적용하고 **N**, **P**를 차례로 누르면 처음의 벽과 출구가 그대로 돌아온다. 다른 사람이 같은 샘플에서 42를 입력해도 같은 지도다. 시작 시드는 씬의 **Board → MazeRun → InitialSeed**에서 바꿀 수 있다. 이 Inspector 값은 부호 있는 32비트 정수이고, 음수는 같은 비트 패턴의 부호 없는 시드로 해석된다.
+예를 들어 **42**를 적용하고 **N**, **P**를 차례로 누르면 처음의 벽과 상자 위치가 그대로 돌아온다. 상태 줄의 layout 코드도 같다. 다른 사람이 같은 샘플에서 42를 입력해도 같은 던전이다. 시작 시드는 씬의 **Board → DungeonMaze → InitialSeed**에서 바꿀 수 있다. 이 Inspector 값은 부호 있는 32비트 정수이고, 음수는 같은 비트 패턴의 부호 없는 시드로 해석된다.
 
 ## 게임 스크립트에서 사용하기
 
@@ -30,4 +30,4 @@ tick.Objects.ReplaceTiles(layerId, maze.Width, maze.Height, tiles);
 
 미로 외의 생성 규칙에도 `SeededRandom`을 쓸 수 있다. `new SeededRandom(seed).NextInt(10)`은 0~9 중 하나를 반환한다. `Fork(1)`, `Fork(2)`처럼 용도별로 별도 난수열을 만들면 보상 추첨 횟수가 늘어도 지형은 달라지지 않는다. 스트림마다 인스턴스를 한 번 만들어 보관하고, 채널 번호는 같은 용도에 같은 상수를 쓴다.
 
-같은 지도를 재현하려면 **시드, 방 크기, 생성기 버전**을 함께 보관한다. 현재 미로 생성기는 `MazeLayout.Version == 1`이다. [샘플 구현](../../samples/SeedLab/Scripts/MazeRun.cs) · [Mac 실제 실행 검증](../../engine/tests/results/generation/README.md).
+같은 지도를 재현하려면 **시드, 방 크기, 생성기 버전**을 함께 보관한다. 현재 미로 생성기는 `MazeLayout.Version == 1`이다. [샘플 구현](../../samples/SeedLab/Scripts/Showcase/DungeonMaze.cs) · [Mac 실제 실행 검증](../../engine/tests/results/generation/README.md).

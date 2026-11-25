@@ -3,7 +3,7 @@
 #
 # A meadow crossed by a river. The tiles are cut from the sample's own art so the scene matches the Crowd and Maze scenes:
 # grass from Grass.png, a dirt road and mud recoloured from it, water from SpriteLab's pond, a plank bridge in Plank.png's
-# colours; bushes (Bush.png) stand on solid hedge cells. RouteCourier (Scripts/Showcase) builds a TileNavigation over the
+# colours; a hedge layer (hedges.py) shapes itself over the solid hedge cells. RouteCourier (Scripts/Showcase) builds a TileNavigation over the
 # field and walks the hero along the cheapest route (road 1, grass 3, mud 8; water and hedges block). Rain turns the north road
 # to mud and the hero takes the grass; a bridge is built over the south ford and he turns to it. Every SetTile re-plans.
 import pathlib, shutil, sys, uuid
@@ -149,12 +149,16 @@ s = Scene("route")
 s.obj("Backdrop", -200, -200, 1000, 700, '  - type: spriteRenderer\n    squareColor: "#1B1626"\n    order: -30\n')
 s.obj("Field", 0, 0, T, T, f"  - type: tilemap2D\n    tileset: {tileset}\n    cellSize: {{width: {T}, height: {T}}}\n    order: -10\n"
       f"    chunks:\n    - x: 0\n      y: 0\n      cells: [{', '.join(cells)}]\n")
-bw, bh = 50, 42
-for y, line in enumerate(MAP):
-    for x, c in enumerate(line):
-        if c == "H": s.obj(f"Bush {x},{y}", x * T + (T - bw) / 2, y * T + T - bh + 4, bw, bh, sprite("Bush.png", sortByY="true"))
-for i, (x, y) in enumerate(((4, 2), (12, 6), (5, 7), (13, 2))):
-    s.obj(f"Flowers {i + 1}", x * T - 11, y * T, 54, 32, sprite("Flowers.png", order=-5))
+# Hedges and decoration come from Hedges.tileset (hedges.py): every H cell gets the hedge brush, which the engine resolves to
+# one of 47 blob shapes from its 8 neighbours (and a random berry variant for the full shape). Flower tufts are a random brush,
+# the two torches an animated tile. The Field's own hedge tiles stay underneath for collision and navigation.
+hedges = asset("Hedges.tileset")
+layer = lambda name, order, cells: s.obj(name, 0, 0, T, T, f"  - type: tilemap2D\n    tileset: {hedges}\n    cellSize: {{width: {T}, height: {T}}}\n"
+                                          f"    order: {order}\n    chunks:\n    - x: 0\n      y: 0\n      cells: [{', '.join(f'{{index: {y * 32 + x}, tile: {t}}}' for (x, y), t in cells)}]\n")
+layer("Hedges", -9, [((x, y), 1) for y, line in enumerate(MAP) for x, c in enumerate(line) if c == "H"])
+# Ripples drift over the river except where the bridges lie (row 1) or are laid (the south ford, row 5).
+layer("Decor", -8, [((x, y), 51) for x, y in ((4, 2), (12, 6), (5, 7), (13, 2))] + [((16, 4), 57), ((1, 6), 57)]
+      + [((x, y), 61) for y in (0, 2, 3, 4, 6, 7, 8) for x in (8, 9)])
 plan = s.obj("Plan", 0, 0, 1, 1, '  - type: line2D\n    points:\n    - {x: 0, y: 0}\n    - {x: 1, y: 0}\n    width: 5\n    startColor: "#FFE08C"\n    endColor: "#FF9F6B"\n    order: -4\n')
 chest = s.obj("Goal chest", 16 * T, 5 * T - 4, 32, 32, sprite("Chest.png", sortByY="true"))
 spark = s.obj("Goal spark", 16 * T + 16, 5 * T + 10, 1, 1, f"  - type: particleEmitter2D\n    particles: {asset('Sparkle.particles')}\n    trigger: Manual\n    sortingLayer: 5\n")
@@ -170,7 +174,7 @@ s.obj("Cost label", 12, 8, 150, 14, text("ROUTE COST", 11, "#BFD0DC"), parent="C
 number = s.obj("Cost number", 12, 22, 150, 32, text("22", 28, "#FFD84A"), parent="Cost panel")
 note = s.obj("Cost note", 12, 56, 150, 16, text("Road all the way", 11, "#BFD0DC"), parent="Cost panel")
 tags = [("cost", "Terrain costs", "the cheapest route, not the shortest"), ("rain", "Runtime SetTile", "rain turns the road to mud"),
-        ("bridge", "New bridge", "a cheaper way opens mid-walk")]
+        ("bridge", "New bridge", "a cheaper way opens mid-walk"), ("arrived", "Autotile hedges", "one brush, 47 shapes")]
 for i, (flag, feature, detail) in enumerate(tags):
     s.obj(f"Tag {i + 1}", 12, 12 + i * 28, 300, 24, f"  - type: uiRect\n    anchor: TopLeft\n    showIf: {flag}\n" + panel()
           + f'  - type: uiText\n    richText: true\n    text: "<b>{feature}</b>   <color=#BFD0DC>{detail}</color>"\n    size: 12\n    insetX: 10\n    insetY: 4\n', parent="Canvas")

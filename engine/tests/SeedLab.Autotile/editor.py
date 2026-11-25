@@ -1,4 +1,4 @@
-"""Scene Play: change and restore the hedge seed in the Tileset panel, then replay the Meadow recording in the packaged editor."""
+"""Scene Play: change and restore the hedge seed in the Tileset panel, then replay the route showcase recording in the packaged editor."""
 import os
 from pathlib import Path
 import subprocess

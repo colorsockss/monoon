@@ -82,7 +82,7 @@ Project에서 타일셋을 더블클릭하고 셀을 선택한다. **Collision**
 
 잔디처럼 같은 칸이 반복되어 보이는 바닥은 타일셋 편집기의 **Random**에 그림 수(2–64)를 입력한다. 일반 타일은 선택한 셀과 그 뒤로 이어지는 셀에서, 지형 브러시는 사방이 연결된 안쪽 그림과 지형 블록 바로 뒤의 셀에서 고른다. 어느 그림이 나올지는 셀 좌표와 **Seed**로 정해진다. 같은 칸을 지웠다가 다시 칠하거나, 게임을 다시 실행하거나, 다른 컴퓨터에서 열어도 같은 그림이 나온다. 무늬를 바꾸려면 **Seed**만 바꾼다. 씬에는 여전히 브러시 ID 하나만 저장되므로 셀당 데이터는 늘지 않는다. **Random**을 비우면 기능이 꺼지고 타일셋 파일도 이전과 같은 내용으로 저장된다.
 
-**SeedLab에서 시험하기.** Courier routes에서 **G**를 누르면 **Hedge garden**이 열린다. 생울타리는 47칸 브러시, 바닥 잔디와 생울타리 안쪽은 네 그림 중 하나를 고르는 무작위 타일이다. 화면 가운데를 지나는 십자선이 네 청크의 경계이고, 아래 두 줄에는 다른 도형에서 나오지 않는 연결 모양이 하나씩 놓여 있다. 에디터에서 **Hedge → Edit Tiles**를 누르고 **#1 · Terrain · Random**으로 칠하고 지워 본다. [Meadow.tileset](../../samples/SeedLab/Assets/Meadow.tileset)
+**SeedLab에서 시험하기.** `Scenes/ShowcaseRoute.scene`을 연다. 들판을 두른 생울타리는 **Hedges** 레이어에 47칸 브러시 하나로 칠했고, 엔진이 칸마다 여덟 이웃을 보고 모양을 고른다(가득 찬 칸은 열매 달린 무작위 그림 셋 중 하나). **Decor** 레이어의 꽃 무더기는 네 그림 중 하나를 고르는 무작위 타일이고, 횃불과 강물 위 물결은 움직이는 타일이다. 에디터에서 **Hedges → Edit Tiles**를 누르고 **#1 · Terrain · Random**으로 칠하고 지워 본다. 모든 47개 연결 모양은 `./monoon test`의 AutotileChecks가 한 번씩 그려 본다. [Hedges.tileset](../../samples/SeedLab/Assets/Showcase/Hedges.tileset)
 
 Play와 배포 게임은 씬을 불러올 때 모든 셀의 그림을 한 번 계산해 두고, 프레임마다 이웃을 다시 보지 않는다. 스크립트의 `SetTile`은 바꾼 칸과 여덟 이웃만, `ReplaceTiles`는 그 레이어 전체를 다시 계산한다. [세 실행 경로의 기록](../../engine/tests/results/engine-features-3/README.md)
 
@@ -95,7 +95,7 @@ Play와 배포 게임은 씬을 불러올 때 모든 셀의 그림을 한 번 �
 - Scene 편집 화면은 첫 장만 보여 준다. 움직임은 Play에서 확인한다.
 - 지형 브러시나 **Random**과 같은 타일에 함께 쓸 수 없다. **Frames**를 비우면 기능이 꺼지고 타일셋 파일도 이전과 같은 내용으로 저장된다.
 
-**SeedLab에서 시험하기.** **Hedge garden** 가운데 연못(세 장, 4 FPS)과 생울타리 위 횃불 두 개(네 장, 8 FPS)가 움직인다. 연못은 네 청크에 걸쳐 있어도 같은 장을 보여 준다. 타일셋에서 연못 첫 칸(**#57 · Animated**)을 선택해 **FPS**를 바꿔 본다.
+**SeedLab에서 시험하기.** `Scenes/ShowcaseRoute.scene`의 강물 위 물결(세 장, 4 FPS)과 횃불 두 개(네 장, 8 FPS)가 움직인다. 물결 열네 칸은 하나의 시계를 따라 늘 같은 장을 보여 준다. [Hedges.tileset](../../samples/SeedLab/Assets/Showcase/Hedges.tileset)에서 물결 첫 칸(**#61 · Animated**)을 선택해 **FPS**를 바꿔 본다.
 
 ## 캐릭터 주변 청크만 실행하기
 
@@ -111,9 +111,9 @@ PlatformerLab에서 **→ / D**로 경사를 올라 **Chunk 2**가 표시되면 
 
 타일셋 편집기에서 셀을 선택하고 **Terrain**에 지형 이름을, **Cost**에 그리드 길찾기의 진입 비용을 입력한 뒤 **Save Tileset**을 누른다. 0은 통행 불가, 1 이상은 그 칸에 들어갈 때 곱하는 가중치다. **Cost**를 비워 두면 **Collision**이 None인 타일은 1, 충돌이 있는 타일은 0으로 처리한다. 값은 `.tileset`의 타일마다 `terrain`, `moveCost`로 저장되고, 같은 타일을 쓰는 모든 레이어에 적용된다. 프로젝트 타일 목록에도 지형 이름이 함께 표시된다.
 
-![Route 타일셋에서 진흙 타일의 Terrain과 Cost를 편집하는 Tileset 편집기](../../engine/tests/results/tile-terrain/tileset-terrain.png)
+![타일셋에서 진흙 타일의 Terrain과 Cost를 편집하는 Tileset 편집기](../../engine/tests/results/tile-terrain/tileset-terrain.png)
 
-**SeedLab에서 시험하기.** Play 후 **G**로 **Courier routes**를 연다. **B**를 누르면 북쪽 통로의 다섯 칸이 진흙으로 바뀌고, 점으로 표시된 경로가 남쪽 진흙 세 칸을 건너는 길로 옮겨 간다. **Space**로 걷기 시작한 뒤 **B**나 **O**를 누르면 배달원이 현재 칸에서 다시 경로를 계산한다. **O**는 문 칸 하나를 닫힌 문 타일(충돌, 비용 0)과 열린 문 타일(비용 1)로 바꾸고, **M**은 모든 진흙 칸을 마른 진흙(비용 1)과 진흙(비용 12) 사이에서 바꾼다. 비용은 스크립트가 아닌 [Route 타일셋](../../samples/SeedLab/Assets/Route.tileset)에서 읽는다. 조작 전체는 [탑다운 그리드 길찾기](navigation.md#탑다운-그리드-길찾기)에 있다.
+**SeedLab에서 시험하기.** `Scenes/ShowcaseRoute.scene`을 열고 Play한다. 주인공이 길(비용 1)을 따라 가장 싼 경로로 상자를 향한다. 1.6초쯤 비가 오면 스크립트가 북쪽 길 다섯 칸을 `SetTile`로 진흙(비용 8)으로 바꾸고, 주인공은 서 있던 칸에서 다시 계산해 풀(비용 3)로 돌아간다. 이어서 남쪽 여울에 다리 두 칸(비용 1)이 놓이면 다시 계산해 그 다리로 건넌다. 오른쪽 위 **ROUTE COST**는 지금 경로의 비용이다. 비용과 물·울타리의 충돌은 스크립트가 아니라 [Field 타일셋](../../samples/SeedLab/Assets/Showcase/Field.tileset)에서 읽는다. 4/8방향과 다리·진흙을 키로 바꿔 보는 경우들은 [SeedLab.TileTerrain](../../engine/tests/SeedLab.TileTerrain/README.md) 하네스가 같은 지도에서 시험한다.
 
 게임 스크립트에서는 타일맵 오브젝트 ID와 셀 좌표로 한 칸을 읽고 바꾼다.
 

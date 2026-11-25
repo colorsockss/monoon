@@ -25,12 +25,14 @@ internal static class AutotileChecks
 
         var project = Path.Combine(repository,"samples","SeedLab");
         var assets = ProjectAssets.ReadManifest(project);
-        var scene = SceneDocument.Load(Path.Combine(project,"Scenes","Meadow.scene"));
-        var hedge = scene.Objects.Single(o => o.Name == "Hedge").GetComponent<Tilemap2DComponent>()!;
-        var grass = scene.Objects.Single(o => o.Name == "Grass").GetComponent<Tilemap2DComponent>()!;
+        // The SeedLab route showcase: its Hedges layer paints every hedge cell with the blob brush (1), its Decor layer flower tufts
+        // with a random brush (51) and two animated torches.
+        var scene = SceneDocument.Load(Path.Combine(project,"Scenes","ShowcaseRoute.scene"));
+        var hedge = scene.Objects.Single(o => o.Name == "Hedges").GetComponent<Tilemap2DComponent>()!;
+        var decor = scene.Objects.Single(o => o.Name == "Decor").GetComponent<Tilemap2DComponent>()!;
         var palette = TilePalette.Load(project,assets,hedge.Tileset!.Value);
         Check(palette.Variants[1].Length == 256 && palette.Randoms[1].SequenceEqual([47,48,49,50]) &&
-              palette.Randoms[51].SequenceEqual([51,52,53,54]) && palette.Seeds[51] == 2026, "Meadow.tileset resolves a blob brush and two random brushes");
+              palette.Randoms[51].SequenceEqual([51,52,53,54]) && palette.Seeds[51] == 2026, "Hedges.tileset resolves a blob brush and two random brushes");
 
         int Expected(Tilemap2DComponent map, Point p, int seed = 7)
         {
@@ -41,16 +43,34 @@ internal static class AutotileChecks
             int index = order.IndexOf(Reduce(mask));
             return index != 46 ? 1 + index : new[] { 47, 48, 49, 50 }[Tilemap2DComponent.Pick(p,seed,4)];
         }
-        var art = new HashSet<int>();
         foreach (var (cell,_) in hedge.OccupiedCells())
         {
             int got = hedge.DisplayTile(palette,cell,1);
             Check(got == Expected(hedge,cell), $"hedge {cell} draws #{got}", quiet: true);
+        }
+        Check(true, "every showcase hedge cell draws the blob shape its eight neighbours call for");
+        // The showcase ring holds only some shapes: a specimen of every mask (centre plus its neighbours, 4 cells apart) and a
+        // 12 x 12 block for the random full cells must draw all 47 blob cells and the three random ones.
+        var specimens = hedge with { Chunks = [] };
+        for (int k = 0; k < 47; k++)
+        {
+            var centre = new Point(-16 + 4 * (k % 8), -12 + 4 * (k / 8));
+            specimens.Set(centre,1);
+            for (int i = 0; i < 8; i++) if ((order[k] >> i & 1) != 0) specimens.Set(new(centre.X + Around[i].X, centre.Y + Around[i].Y),1);
+        }
+        for (int y = 14; y < 26; y++) for (int x = -6; x < 6; x++) specimens.Set(new(x,y),1);
+        var art = new HashSet<int>();
+        foreach (var (cell,_) in specimens.OccupiedCells())
+        {
+            int got = specimens.DisplayTile(palette,cell,1);
+            Check(got == Expected(specimens,cell), $"specimen {cell} draws #{got}", quiet: true);
             art.Add(got);
         }
-        Check(art.Count == 50, "the Meadow hedge draws all 47 blob cells and the three random full cells");
-        Check(grass.OccupiedCells().All(c => grass.DisplayTile(palette,c.Cell,51) == Expected(grass,c.Cell)) &&
-              grass.OccupiedCells().Select(c => grass.DisplayTile(palette,c.Cell,51)).Distinct().Count() == 4, "grass picks from its four tiles by cell and seed");
+        Check(art.Count == 50, "the hedge brush draws all 47 blob cells and the three random full cells");
+        var tufts = decor with { Chunks = [] };
+        for (int y = 0; y < 10; y++) for (int x = 0; x < 10; x++) tufts.Set(new(x,y),51);
+        Check(decor.OccupiedCells().Where(c => decor.Get(c.Cell) == 51).All(c => decor.DisplayTile(palette,c.Cell,51) == Expected(decor,c.Cell)) &&
+              tufts.OccupiedCells().Select(c => tufts.DisplayTile(palette,c.Cell,51)).Distinct().Count() == 4, "flower tufts pick from their four tiles by cell and seed");
 
         // Editor strokes on an empty layer: a 3x3 block across both chunk seams, then erase, cancel and repaint.
         var map = hedge with { Chunks = [] };
@@ -86,18 +106,19 @@ internal static class AutotileChecks
         var store = new PlayerStorage(Path.Combine(scratch,"autotile-profile"));
         using (var session = new GameSession(scene,null,null,store))
         {
-            var id = scene.Objects.Single(o => o.Name == "Hedge").Id;
+            var id = scene.Objects.Single(o => o.Name == "Hedges").Id;
             Check(hedge.OccupiedCells().All(c => session.Current.TryGetTile(id,c.Cell,out var info) && info.Display == hedge.DisplayTile(palette,c.Cell,1)), "Play reads the authored art at every hedge cell");
             var edited = hedge with { };
-            foreach (var (cell,tile) in new[] { (new Point(-1,-1),1), (new Point(7,0),0), (new Point(0,-6),1), (new Point(-1,5),0) })
+            // Remove an inner bush, grow another beside it, cut the corner and bridge the river gap.
+            foreach (var (cell,tile) in new[] { (new Point(5,3),0), (new Point(6,4),1), (new Point(0,0),0), (new Point(8,8),1) })
             {
                 Check(session.Current.SetTile(id,cell,tile), $"SetTile {cell}", quiet: true);
                 edited.Set(cell,tile);
             }
             Check(edited.OccupiedCells().All(c => session.Current.TryGetTile(id,c.Cell,out var info) && info.Display == edited.DisplayTile(palette,c.Cell,1)) &&
-                  session.Current.TryGetTile(id,new(7,0),out var gone) && gone.Tile == 0, "runtime edits at seams re-resolve the cell and its eight neighbours");
+                  session.Current.TryGetTile(id,new(5,3),out var gone) && gone.Tile == 0, "runtime edits re-resolve the cell and its eight neighbours");
         }
-        Check(hedge.Chunks.Length == 4, "Play leaves the authored layer intact");
+        Check(hedge.Chunks.Length == 1 && hedge.Get(new(5,3)) == 1 && hedge.Get(new(6,4)) == 0, "Play leaves the authored layer intact");
 
         // Streamed pages bake the same blob and random art.
         var folder = Path.Combine(scratch,"autotile-world",TileWorld.Folder);
@@ -109,7 +130,7 @@ internal static class AutotileChecks
         }
 
         // Validation names the gap; existing tilesets keep their bytes.
-        var sheet = Tileset.Load(Path.Combine(project,"Assets","Meadow.tileset"));
+        var sheet = Tileset.Load(Path.Combine(project,"Assets","Showcase","Hedges.tileset"));
         Expect(() => (sheet with { Tiles = sheet.Tiles.Where(t => t.Id != 47).ToArray() }).Resolve(project,assets,"cut"), "missing mask 46");
         Expect(() => (sheet with { Tiles = sheet.Tiles.Select(t => t.Id == 51 ? t with { RandomTiles = 1 } : t).ToArray() }).Resolve(project,assets,"one"), "invalid auto terrain or random tiles");
         Expect(() => (sheet with { Tiles = sheet.Tiles.Select(t => t.Id == 51 ? t with { RandomTiles = 15 } : t).ToArray() }).Resolve(project,assets,"short"), "14 random sheet cells");

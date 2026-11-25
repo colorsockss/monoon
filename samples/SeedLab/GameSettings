@@ -4,7 +4,7 @@ width: 800
 height: 450
 integerScale: true
 startScene: cdfa4adc-9fd0-58dc-bdff-271497eca1f0
-includedScenes: [4b08196c-cd93-50b1-9a6a-ef1a4ecefbe4, cdfa4adc-9fd0-58dc-bdff-271497eca1f0, 578c4bc5-e685-5420-b1ac-42e255eb5bea, 0cfbf6ac-2359-53aa-abc6-f603bdf4dbee, fecb609a-9302-5710-a253-9ccc6e859b64, ec43fb3c-96cf-5ba3-9a32-cb3a85c67e40, 620cbdb0-f61b-59bf-beed-2647e824c624]
+includedScenes: [4b08196c-cd93-50b1-9a6a-ef1a4ecefbe4, cdfa4adc-9fd0-58dc-bdff-271497eca1f0, 578c4bc5-e685-5420-b1ac-42e255eb5bea]
 input:
   actions:
   - name: MoveLeft
@@ -31,15 +31,9 @@ input:
     controls: ["J"]
   - name: SaveReplay
     controls: ["K"]
-  - name: SwitchLab
-    controls: ["G"]
   - name: ToggleGate
     controls: ["O"]
   - name: RouteDirections
     controls: ["V"]
-  - name: MudCost
-    controls: ["M"]
   - name: PaintMud
     controls: ["B"]
-  - name: CrowdLab
-    controls: ["C"]

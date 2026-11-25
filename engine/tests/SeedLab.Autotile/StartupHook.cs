@@ -24,10 +24,10 @@ public static class StartupHook
         var view = main.FindControl<Control>("Viewport")!;
         var scene = view.GetType().GetProperty("Scene")!;
         await Until(() => ((SceneDocument)scene.GetValue(view)!).Objects.Any(o => o.Name == "Autotile trace"), "Autotile trace");
-        SpriteRegion hedge = new(0, 0, 16, 16), water = new(0, 112, 16, 16);
+        SpriteRegion hedge = new(0, 0, 32, 32), water = new(128, 224, 32, 32);   // Hedges.tileset: the hedge brush and the ripples
         async Task Edit(int expectSeed, int seed, int expectFps, int fps, bool capture)
         {
-            var closing = (Task)main.GetType().GetMethod("EditTileset", Private)!.Invoke(main, ["Assets/Meadow.tileset"])!;
+            var closing = (Task)main.GetType().GetMethod("EditTileset", Private)!.Invoke(main, ["Assets/Showcase/Hedges.tileset"])!;
             Visual? found = null;
             for (int i = 0; i < 200 && (found = main.GetVisualDescendants().SingleOrDefault(c => c.GetType().Name == "TilesetWindow")) == null; i++) await Delay(50);
             var window = (ContentControl)(found ?? throw new InvalidDataException("Tileset panel did not open"));
@@ -67,9 +67,9 @@ public static class StartupHook
             Click(window.FindControl<Button>("SaveAsset")!);
             Require(window.GetVisualRoot() == null, window.FindControl<TextBlock>("Info")!.Text ?? "Save failed");
             await closing;
-            var saved = Tileset.Load(Path.Combine(project, "Assets/Meadow.tileset")).Tiles.Single(t => t.Source == hedge);
+            var saved = Tileset.Load(Path.Combine(project, "Assets/Showcase/Hedges.tileset")).Tiles.Single(t => t.Source == hedge);
             Require(saved.AutoEdges == 8 && saved.RandomTiles == 4 && saved.RandomSeed == seed, $"saved {saved.AutoEdges}/{saved.RandomTiles}/{saved.RandomSeed}");
-            var pond = Tileset.Load(Path.Combine(project, "Assets/Meadow.tileset")).Tiles.Single(t => t.Source == water);
+            var pond = Tileset.Load(Path.Combine(project, "Assets/Showcase/Hedges.tileset")).Tiles.Single(t => t.Source == water);
             Require(pond.Frames == 3 && pond.Fps == fps, $"saved water {pond.Frames} frames at {pond.Fps} FPS");
         }
         await Edit(7, 8, 4, 6, true);
