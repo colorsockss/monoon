@@ -52,8 +52,7 @@ MoNoon에서 게임을 만드는 순서는 프로젝트 열기 → 씬 편집 �
 | [Transform 2D: 상자와 뚜껑](transform-2d.md) | 회전·스케일·피벗, 부모 변경과 월드 좌표 보존을 확인한다. |
 | [런타임 프리팹: KeyRoom의 상자와 코인](runtime-prefabs.md) | E로 상자를 열어 코인을 생성하고, 태그·그룹 조회와 트리거 획득을 확인한다. |
 | [Door.clip](../../samples/KeyRoom/Assets/Door.clip) | Project에서 더블클릭하고 타임라인의 두 프레임을 바꾼 뒤 문이 열리는 순서를 확인한다. |
-| [Room.tileset](../../samples/KeyRoomTiles/Assets/Room.tileset) | **KeyRoomTiles** 프로젝트에서 바닥과 벽의 Collision 설정을 비교한다. |
-| [GridLayouts.scene](../../samples/KeyRoomTiles/Scenes/GridLayouts.scene) | 같은 시트를 쓰는 마름모·육각형 두 방향을 한 씬에서 편집하고 충돌 경계를 비교한다. |
+| [ShowcaseGrids.scene](../../samples/KeyRoomTiles/Scenes/ShowcaseGrids.scene) | 정사각형·마름모·육각형 두 방향 레이어를 한 씬에서 보고, 실행 중 `SetTile`로 깔리는 길을 확인한다. |
 
 이 매뉴얼의 기능별 절차와 별도로, 기존 프로젝트 변환과 실행 장애는 [플랫폼별 문제 해결](../troubleshooting/README.md)에서 찾을 수 있다.
 

@@ -5,9 +5,11 @@ using Engine.Editor;
 
 internal static class ProjectedTileChecks
 {
-    internal static void Run(string root, Guid tileset)
+    // grids: a copy of KeyRoomTiles, whose showcase has one isometric and two hexagonal layers; root and tileset: a copy of KeyRoom
+    // with its solid showcase wall tiles for the collision moves.
+    internal static void Run(string grids, string root, Guid tileset)
     {
-        var path = Path.Combine(root,"Scenes","GridLayouts.scene");
+        var path = Path.Combine(grids,"Scenes","ShowcaseGrids.scene");
         var demo = SceneDocument.Load(path);
         string[] layouts = [TileGrid.Isometric,TileGrid.HexPointy,TileGrid.HexFlat];
         foreach (string layout in layouts)
@@ -60,7 +62,7 @@ internal static class ProjectedTileChecks
         var map = new Tilemap2DComponent { Layout=layout, CellSize=new(64,64), Tileset=tileset };
         map.Set(Point.Empty,1); wall.AddComponent(map); scene.Objects.Add(wall);
         var actor = new SceneObject { Name="Mover", Width=2, Height=2 };
-        actor.AddComponent(new SpriteRendererComponent { Asset="Assets/Key.png" });
+        actor.AddComponent(new SpriteRendererComponent { Asset="Assets/Showcase/Key.png" });
         actor.AddComponent(new BoxCollider2DComponent());
         actor.AddComponent(new ScriptComponent { Script="PlayerMovement" });
         scene.Objects.Add(actor);

@@ -6,7 +6,13 @@ using Engine.Editor;
 internal static class TileChecks
 {
     [Check(7700)]
-    static void Registered(CheckRun c) { var root = Path.Combine(c.Scratch, "TileTest"); Prepare(c.TileSample, root); Run(root); Directory.Delete(root, true); }
+    static void Registered(CheckRun c)
+    {
+        string root = Path.Combine(c.Scratch, "TileTest"), grids = Path.Combine(c.Scratch, "TileGrids");
+        Prepare(c.TileSample, root); Prepare(c.GridSample, grids);
+        Run(root, grids);
+        Directory.Delete(root, true); Directory.Delete(grids, true);
+    }
     internal static void Prepare(string original, string root)
     {
         if (Directory.Exists(root) && Directory.EnumerateFileSystemEntries(root).Any()) throw new IOException($"Expected an empty fixture directory: {root}");
@@ -55,22 +61,26 @@ internal static class TileChecks
         Console.WriteLine("PASS tile stroke interpolation, rectangle, eraser cancellation, mixed Undo/Redo and save point");
     }
 
-    private static void CheckSlideAndDraw(string root, Guid tileset)
+    // A wall of solid tiles with a non-solid decoration layer beside it and a foreground layer over it (KeyRoom showcase tilesets:
+    // WallFace tiles are solid, Floor tiles are not).
+    private static void CheckSlideAndDraw(string root, Guid wallTiles, Guid floorTiles)
     {
         var scene = SceneDocument.Empty(new());
         scene.ProjectDirectory = root;
         var wall = new SceneObject { Name = "Tile wall" };
-        var map = new Tilemap2DComponent { Tileset = tileset, Order = -2 };
+        var map = new Tilemap2DComponent { Tileset = wallTiles, Order = -2 };
         for (int y = -33; y <= 33; y++) map.Set(new(2, y), 1);
-        map.Set(new(1, 0), 2);
         wall.AddComponent(map); scene.Objects.Add(wall);
+        var decoration = new SceneObject { Name = "Decoration" };
+        var rug = new Tilemap2DComponent { Tileset = floorTiles, Order = -1 };
+        rug.Set(new(1, 0), 2); decoration.AddComponent(rug); scene.Objects.Add(decoration);
         var actor = new SceneObject { Name = "Mover", X = 0, Y = -20, Width = 8, Height = 8 };
         actor.AddComponent(new BoxCollider2DComponent());
-        actor.AddComponent(new SpriteRendererComponent { Asset = "Assets/Key.png" });
+        actor.AddComponent(new SpriteRendererComponent { Asset = "Assets/Showcase/Key.png" });
         actor.AddComponent(new ScriptComponent { Script = "PlayerMovement" });
         scene.Objects.Add(actor);
         var front = new SceneObject();
-        var frontMap = new Tilemap2DComponent { Tileset = tileset, Order = 2 };
+        var frontMap = new Tilemap2DComponent { Tileset = floorTiles, Order = 2 };
         frontMap.Set(new(1, 2), 2); front.AddComponent(frontMap); scene.Objects.Add(front);
         using var game = new GameSession(scene);
         var direction = Vector2.Normalize(Vector2.One);
@@ -79,36 +89,40 @@ internal static class TileChecks
         game.Draw(canvas, 1);
         var player = canvas.Images.Single(i => i.Path.EndsWith("Key.png")).Rect;
         if (Math.Abs(player.X - 56) > .01f || Math.Abs(player.Y - (-20 + 120 * direction.Y)) > .02f ||
-            canvas.Images[0].Source == null || canvas.Images[^1].Rect.X != 32 || canvas.Images[^1].Source?.X != 8)
+            canvas.Images[0].Source == null || canvas.Images[^1].Rect.X != 32 || canvas.Images[^1].Source?.X != 32)
             throw new Exception($"Unexpected tile slide or world sorting: {player}.");
         Console.WriteLine("PASS diagonal slide across chunk boundary, decorative tile traversal and foreground ordering");
     }
 
-    internal static void Run(string root)
+    // root: a copy of KeyRoom (its showcase walls and player); grids: a copy of KeyRoomTiles (its projected showcase layouts).
+    internal static void Run(string root, string grids)
     {
-        var path = Path.Combine(root, "Scenes", "KeyRoom.scene");
+        var path = Path.Combine(root, "Scenes", "Showcase.scene");
         var scene = SceneDocument.Load(path);
-        var wall = scene.Objects.Single(o => o.Name == "Wall");
+        var wall = scene.Objects.Single(o => o.Name == "Wall face");
         var map = wall.GetComponent<Tilemap2DComponent>()!;
+        var floorTiles = scene.Objects.Single(o => o.Name == "Floor").GetComponent<Tilemap2DComponent>()!.Tileset!.Value;
         CollisionChecks.Tiles(root,map.Tileset!.Value);
         ContactChecks.Tiles(root,map.Tileset.Value);
         CheckEditing();
-        ProjectedTileChecks.Run(root,map.Tileset!.Value);
-        CheckSlideAndDraw(root, map.Tileset!.Value);
+        ProjectedTileChecks.Run(grids,root,map.Tileset!.Value);
+        CheckSlideAndDraw(root, map.Tileset!.Value, floorTiles);
         foreach (var invalid in new[] { new[]{new TileChunk(0,0,[new(-1,1)])}, new[]{new TileChunk(0,0,[new(1024,1)])},
             new[]{new TileChunk(0,0,[new(0,1),new(0,2)])}, new[]{new TileChunk(0,0,[new(0,1)]),new TileChunk(0,0,[new(2,1)])} })
         {
             try { _ = new Tilemap2DComponent { Chunks = invalid }; throw new Exception("Accepted invalid chunks."); }
             catch (InvalidDataException) { }
         }
+        var (first, firstTile) = map.OccupiedCells().First();
+        var (last, lastTile) = map.OccupiedCells().Last();
         var copy = scene.DuplicateObject(wall);
-        copy.GetComponent<Tilemap2DComponent>()!.Set(new(0, 0), 0);
-        if (map.Get(new(0, 0)) != 1 || map.Get(new(-8, -6)) != 1) throw new Exception("Tile copy shared mutations");
+        copy.GetComponent<Tilemap2DComponent>()!.Set(first, 0);
+        if (map.Get(first) != firstTile || map.Get(last) != lastTile) throw new Exception("Tile copy shared mutations");
         scene.RemoveObject(copy);
         scene.ExportPrefab(wall, Path.Combine(root, "Assets", "Wall.prefab"));
         var instance = scene.PlacePrefab("Assets/Wall.prefab", new(-320, 0));
-        instance.GetComponent<Tilemap2DComponent>()!.Set(new(0, 0), 0);
-        if (map.Get(new(0, 0)) != 1) throw new Exception("Prefab mutated original tiles");
+        instance.GetComponent<Tilemap2DComponent>()!.Set(first, 0);
+        if (map.Get(first) != firstTile) throw new Exception("Prefab mutated original tiles");
         var palette = TilePalette.Load(root, ProjectAssets.Scan(root), map.Tileset!.Value);
         var visible = new RectangleF(470, 170, 256, 250);
         int count = map.InView(wall.WorldPosition, visible).Count();
@@ -117,12 +131,17 @@ internal static class TileChecks
         map.Set(new(-33, -1), 9999);
         try { map.ValidateTiles(palette, "Wall"); throw new Exception("Accepted missing tile"); }
         catch (InvalidDataException ex) when (ex.Message.Contains("9999") && ex.Message.Contains("-33")) { }
+
+        // A whole second of walking south in one step stops at the room's bottom wall (the Wall cap row 9), not past it, and
+        // leaves the player touching no solid tile.
         using var game = new GameSession(SceneDocument.Load(path));
-        game.FixedUpdate(Vector2.UnitY, 1); // A complete sweep through the two-unit ledge in one step.
-        var canvas = new CaptureCanvas();
-        game.Draw(canvas, 1);
-        if (!canvas.Images.Any(i => Path.GetFileName(i.Path) == "Tiles.png" && i.Source?.X == 0 && Math.Abs(i.Rect.Y - 154) < .05))
-            throw new Exception("Fast movement crossed the ledge.");
-        Console.WriteLine("PASS tile coordinates, deep copies, prefab instances, visible chunks and swept wall collision");
+        var player = game.Current.Objects.Single(o => o.Name == "Player");
+        if (!game.Current.TryGetPosition(player.Id, out var before)) throw new Exception("Missing player");
+        game.FixedUpdate(Vector2.UnitY, 1);
+        if (!game.Current.TryGetPosition(player.Id, out var after)) throw new Exception("Missing player");
+        var box = Shape2D.Box(new RectangleF(after.X + .1f, after.Y + .1f, player.Width - .2f, player.Height - .2f));
+        if (after.Y <= before.Y + 32 || after.Y + player.Height > 9 * 32 + .05f || game.Current.Physics.Overlap(box).Any(h => h.Tile != null))
+            throw new Exception($"Fast movement crossed the wall: {before} -> {after}.");
+        Console.WriteLine($"PASS tile coordinates, deep copies, prefab instances, visible chunks and swept wall collision (walked {after.Y - before.Y:0.#} down to the bottom wall)");
     }
 }

@@ -4,13 +4,11 @@
 
 ## 세 가지 모양을 한 씬에서 열어 보기
 
-**File → Open Project…**로 [KeyRoomTiles](../../samples/KeyRoomTiles/) 폴더를 연다. Project에서 **Scenes → GridLayouts.scene**을 더블클릭한다. 왼쪽은 아이소메트릭, 가운데는 꼭짓점이 위인 육각형, 오른쪽은 평평한 면이 위인 육각형이다. 밝은 타일은 벽이고 어두운 타일은 걸어갈 수 있다. **Play**를 누르고 방향키 또는 WASD로 작은 플레이어를 움직여 본다. [예제 씬](../../samples/KeyRoomTiles/Scenes/GridLayouts.scene)
-
-![GridLayouts 씬의 세 타일 레이어와 Isometric 레이아웃을 선택한 Inspector](grid-layouts.png)
+**File → Open Project…**로 [KeyRoomTiles](../../samples/KeyRoomTiles/) 폴더를 열고 **Play**를 누른다(`Scenes/ShowcaseGrids.scene`). 움직이는 물 위에 네 섬이 있고, 왼쪽부터 정사각형, 아이소메트릭, 꼭짓점이 위인 육각형, 평평한 면이 위인 육각형 레이어다. 스크립트가 섬마다 `SetTile`로 길을 한 칸씩 깔고(길 타일은 지형 브러시라 새 칸이 이웃과 다시 이어진다), 가운데 칸을 풀로 되돌렸다가 다시 깐 뒤 주민을 길을 따라 걷게 한다. [예제 씬](../../samples/KeyRoomTiles/Scenes/ShowcaseGrids.scene)
 
 ## 레이어와 격자 선택
 
-Hierarchy의 빈 공간에서 우클릭해 **Create Tilemap**을 선택한다. 기존 오브젝트에는 **Add Component → Tilemap 2D**를 붙인다. Inspector의 **Tileset**에서 팔레트를 지정하고 **Layout**, **Cell W**, **Cell H**를 설정한다. 세 예제 레이어는 같은 [Room.tileset](../../samples/KeyRoomTiles/Assets/Room.tileset)을 사용한다.
+Hierarchy의 빈 공간에서 우클릭해 **Create Tilemap**을 선택한다. 기존 오브젝트에는 **Add Component → Tilemap 2D**를 붙인다. Inspector의 **Tileset**에서 팔레트를 지정하고 **Layout**, **Cell W**, **Cell H**를 설정한다. 네 예제 레이어는 레이아웃마다 자기 타일셋([Square](../../samples/KeyRoomTiles/Assets/Showcase/Square.tileset), [Iso](../../samples/KeyRoomTiles/Assets/Showcase/Iso.tileset), [HexPointy](../../samples/KeyRoomTiles/Assets/Showcase/HexPointy.tileset), [HexFlat](../../samples/KeyRoomTiles/Assets/Showcase/HexFlat.tileset))을 쓴다.
 
 | Layout | 셀 모양과 배치 | 실습용 Cell W × H |
 | --- | --- | --- |
@@ -46,7 +44,7 @@ Hierarchy에서 레이어를 선택하고 **Edit Tiles**를 누른다. **Tile**�
 
 Player에 **Box Collider 2D**를 붙이고 한 타일을 **Full cell**로 지정해 칠한다. Play에서 타일 중앙으로 들어가면 벽에 막히고, 빈 모서리는 지나갈 수 있다. 사선에 비스듬히 접근하면 변을 따라 미끄러진다. 이 타일 충돌은 정적인 셀을 대상으로 한다. 이벤트가 필요한 문·열쇠는 별도 오브젝트의 **Is Trigger**와 스크립트로 구성한다.
 
-예제 씬을 독립 게임의 첫 화면으로 내보내려면 **Build → Build Game…**에서 **GridLayouts.scene**을 **Start scene**으로 선택하고 같은 씬을 **Included scenes**에도 체크한다. KeyRoomTiles의 기본 시작 씬은 첫 번째 방이다. [빌드 절차](build.md)
+타일 벽과 걷는 플레이어의 충돌은 [KeyRoom](../../samples/KeyRoom/) 쇼케이스의 방에서 볼 수 있다. 벽면과 벽 윗면 타일이 단단하고 바닥 타일은 통과한다. [빌드 절차](build.md)
 
 ## 타일별 충돌 도형과 단방향 발판
 

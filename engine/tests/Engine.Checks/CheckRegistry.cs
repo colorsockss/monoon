@@ -26,7 +26,9 @@ sealed class CheckRun(string repository, string scratch, string[] args, string? 
     public string[] Args => args;
     public string? Only => only;
     public string Project => Path.Combine(repository, "samples", "KeyRoom");
-    public string TileSample => Path.Combine(repository, "samples", "KeyRoomTiles");
+    // Tile collision runs on the KeyRoom showcase (solid wall tiles, a walking player); projected layouts on the KeyRoomTiles showcase.
+    public string TileSample => Path.Combine(repository, "samples", "KeyRoom");
+    public string GridSample => Path.Combine(repository, "samples", "KeyRoomTiles");
     public string SceneFile => Path.Combine(scratch, "Scenes", "KeyRoom.scene");
     bool copied;
     SceneDocument? scene;

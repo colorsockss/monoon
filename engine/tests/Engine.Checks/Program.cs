@@ -29,13 +29,15 @@ if (args.Contains("--list"))
     return;
 }
 var project = Path.Combine(repository, "samples", "KeyRoom");
-var tileSample=Path.Combine(repository,"samples","KeyRoomTiles");
+var tileSample=Path.Combine(repository,"samples","KeyRoom");
 if (args is [_, "--tile-build",var fixture,var output])
 {
     TileChecks.Prepare(tileSample,fixture);
+    var grids=fixture+"-grids";
+    TileChecks.Prepare(Path.Combine(repository,"samples","KeyRoomTiles"),grids);
     foreach (var rid in new[]{"osx-arm64","win-x64","linux-x64"})
         Console.WriteLine(GameBuild.Export(fixture,GameBuild.FindPlayerTemplate(Path.Combine(repository,"engine"),rid),rid,output,GameSettings.Load(fixture)));
-    TileChecks.Run(fixture);
+    TileChecks.Run(fixture,grids);
     return;
 }
 if (args is [_, "--check-vorbis-stream", var musicFile])
