@@ -4646,14 +4646,14 @@
      "modes": [
       "release"
      ],
-     "run": "python3 \"$qa/verify.py\" play \"$work/builds/SpriteLab.app/Contents/MacOS/MoNoonPlayer\" \"$work/release\" \"$work/SpriteLab/Assets/ArrowCycle.aseprite\""
+     "run": "python3 \"$qa/verify.py\" play \"$work/builds/SpriteLab.app/Contents/MacOS/MoNoonPlayer\" \"$work/release\" \"$work/SpriteLab/Assets/Showcase/FireflyBlink.aseprite\""
     },
     {
      "kind": "play",
      "modes": [
       "native-aot"
      ],
-     "run": "python3 \"$qa/verify.py\" play \"$work/builds/NativeAOT/SpriteLab.app/Contents/MacOS/MoNoonPlayer\" \"$work/native-aot\" \"$work/SpriteLab/Assets/ArrowCycle.aseprite\""
+     "run": "python3 \"$qa/verify.py\" play \"$work/builds/NativeAOT/SpriteLab.app/Contents/MacOS/MoNoonPlayer\" \"$work/native-aot\" \"$work/SpriteLab/Assets/Showcase/FireflyBlink.aseprite\""
     },
     {
      "kind": "compare",

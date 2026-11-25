@@ -1,0 +1,13 @@
+id: ba6a0c8b-2e5e-4a87-8e6d-0d08443f7bbe
+slices:
+- source:
+    x: 0
+    y: 0
+    width: 10
+    height: 10
+- source:
+    x: 10
+    y: 0
+    width: 10
+    height: 10
+importHash: A7CFA7194543C8BDF33004A89105354642ABC9C18D79C64FEB2D69BBDFC8575E

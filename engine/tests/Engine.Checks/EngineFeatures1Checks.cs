@@ -21,7 +21,8 @@ internal static class EngineFeatures1Checks
 
     private static void IntegerScale(string repository)
     {
-        var display = GameSettings.Load(Path.Combine(repository, "samples", "DisplayLab"));
+        // AudioLab is a test-only sample whose settings predate the option (DisplayLab now turns it on).
+        var display = GameSettings.Load(Path.Combine(repository, "samples", "AudioLab"));
         Check(display.IntegerScale == null && !Encoding.UTF8.GetString(ProjectYaml.Encode(display)).Contains("integerScale"),
             "an existing GameSettings file reads the option as off and saves without the key");
         Check(ProjectYaml.Decode<GameSettings>(ProjectYaml.Encode(display with { IntegerScale = true })).IntegerScale == true, "option round-trips");

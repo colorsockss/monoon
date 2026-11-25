@@ -2,7 +2,7 @@ using System;
 using System.IO;
 using Engine.Core;
 
-// Attached to the animated arrow only in the test copy. Records the tick at which each clip frame starts.
+// Attached to the showcase firefly only in the test copy. Records the tick at which each clip frame starts.
 public sealed class TraceFrames : GameBehaviour
 {
     public override void OnAnimationEvent(ScriptAnimationEvent frame)

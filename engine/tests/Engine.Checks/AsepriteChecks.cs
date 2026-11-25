@@ -80,16 +80,16 @@ internal static class AsepriteChecks
             Directory.CreateDirectory(Path.GetDirectoryName(target)!);
             File.Copy(file, target);
         }
-        File.WriteAllText(Path.Combine(copy, "Assets", "ArrowCycle.png.meta"), File.ReadAllText(Path.Combine(copy, "Assets", "ArrowCycle.png.meta")).Replace("importHash:", "importHash: stale #"));
+        string art = Path.Combine("Assets", "Showcase");
+        File.WriteAllText(Path.Combine(copy, art, "FireflyBlink.png.meta"), File.ReadAllText(Path.Combine(copy, art, "FireflyBlink.png.meta")).Replace("importHash:", "importHash: stale #"));
         SpriteSheetImporter.Scan(copy);
-        foreach (var name in new[] { "ArrowCycle.png", "ArrowCycle.png.meta", "ArrowCycle.clip" })
-            Check(File.ReadAllBytes(Path.Combine(sample, "Assets", name)).SequenceEqual(File.ReadAllBytes(Path.Combine(copy, "Assets", name))), $"SpriteLab {name} is current");
-        var art = AsepriteImporter.Read(File.ReadAllBytes(Path.Combine(sample, "Assets", "ArrowCycle.aseprite")));
-        foreach (var (frame, png) in new[] { (0, "Arrow.png"), (1, "Dot.png") })
+        foreach (var name in new[] { "FireflyBlink.png", "FireflyBlink.png.meta", "FireflyBlink.clip" })
+            Check(File.ReadAllBytes(Path.Combine(sample, art, name)).SequenceEqual(File.ReadAllBytes(Path.Combine(copy, art, name))), $"SpriteLab {name} is current");
+        var blink = AsepriteImporter.Read(File.ReadAllBytes(Path.Combine(sample, art, "FireflyBlink.aseprite")));
+        using (var original = new SKBitmap(new SKImageInfo(10, 10, SKColorType.Rgba8888, SKAlphaType.Unpremul)))
         {
-            using var original = new SKBitmap(new SKImageInfo(16, 12, SKColorType.Rgba8888, SKAlphaType.Unpremul));
-            using (var codec = SKCodec.Create(Path.Combine(sample, "Assets", png))) codec.GetPixels(original.Info, original.GetPixels());
-            Check(art.Frames[frame].Rgba.AsSpan().SequenceEqual(original.GetPixelSpan()), $"SpriteLab frame {frame + 1} equals {png}");
+            using (var codec = SKCodec.Create(Path.Combine(sample, art, "Firefly.png"))) codec.GetPixels(original.Info, original.GetPixels());
+            Check(blink.Frames[0].Rgba.AsSpan().SequenceEqual(original.GetPixelSpan()), "SpriteLab firefly frame 1 equals Firefly.png");
         }
         Directory.Delete(copy, true);
         Console.WriteLine("PASS Aseprite RGBA/indexed layers, opacity, linked cels, tags, sheet/clip import, reimport, SpriteLab sample");

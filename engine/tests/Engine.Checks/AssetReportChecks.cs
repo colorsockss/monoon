@@ -33,7 +33,7 @@ internal static class AssetReportChecks
         }
         WriteWav(Path.Combine(unused, "BigUnused.wav"), 2 << 20);
         WriteWav(Path.Combine(root, "Assets", "Unlock.wav"), (int)AssetBuildReport.LargeWav + 4096); // referenced by the Door
-        File.Copy(Path.Combine(repository, "samples", "SpriteLab", "Assets", "ArrowCycle.aseprite"), Path.Combine(unused, "Art.aseprite"));
+        File.Copy(Path.Combine(repository, "samples", "SpriteLab", "Assets", "Showcase", "FireflyBlink.aseprite"), Path.Combine(unused, "Art.aseprite"));
 
         // Roadmap 15.13: Key.png (a SpriteRenderer in KeyRoom.scene; UiImage keeps its PNG too) shares an atlas with eight
         // unused 128×128 noise sprites. The build must ship a repacked atlas with only Key's cell and leave the project's
@@ -102,7 +102,7 @@ internal static class AssetReportChecks
         // (c) Every walked asset carries the chain that pulled it in; only build outputs fall back to a generated reason.
         string Reason(string path) => report.Shipped.Single(f => f.Path == path).Reason;
         Require(Reason("Assets/Coin.png") == "Scenes/KeyRoom.scene > Chest > Assets/Coin.prefab > Coin > SpriteRenderer", "prefab chain: " + Reason("Assets/Coin.png"));
-        Require(Reason("Assets/Unlock.wav") == "Scenes/KeyRoom.scene > Door > AudioSource", "component reason: " + Reason("Assets/Unlock.wav"));
+        Require(Reason("Assets/Unlock.wav") == "Scenes/Showcase.scene > Door > AudioSource", "component reason: " + Reason("Assets/Unlock.wav"));
         Require(Reason("Assets/Fonts/NanumGothic-Regular.ttf") == "GameSettings localization" && Reason("Scenes/SecondRoom.scene") == "GameSettings includedScenes",
             "GameSettings reasons");
         var unexplained = report.Shipped.Where(f => (f.Path.StartsWith("Assets/", StringComparison.Ordinal) || f.Path.StartsWith("Scenes/", StringComparison.Ordinal))
@@ -138,10 +138,10 @@ internal static class AssetReportChecks
             && usage.ShippedSheetBytes == new FileInfo(Path.Combine(game, shippedAtlas.ImagePath())).Length && usage.ShippedPixels == (keyCell.Source.Width + 2) * (keyCell.Source.Height + 2)
             && Reason(shippedAtlas.ImagePath()) == Reason("Assets/Props.atlas"), "report names the repacked atlas, its usage and sizes");
         Require(result.AssetSummary.Any(l => l.StartsWith("Atlas Assets/Props.atlas: 1 of 9 cells used", StringComparison.Ordinal)), "Console summary names the atlas");
-        // KeyRoom draws text, plays the door sound and moves the player with colliders: it keeps all three native libraries
-        // and leaves the code-only features (roadmap 15.12) out.
+        // The KeyRoom showcase draws text, plays the door sound, moves the player with colliders, lays tilemaps, burns torches
+        // (particles, lights): it keeps all three native libraries and leaves skeletons and tweens (roadmap 15.12) out.
         Require(report.Features.Length == Enum.GetValues<EngineFeature>().Length && report.Features.All(f => f.Included ==
-            f.Feature is EngineFeature.Text or EngineFeature.Audio or EngineFeature.Physics), "KeyRoom keeps text, audio and physics only: " + string.Join(", ", report.Features.Select(f => $"{f.Feature} {f.Included}")));
+            f.Feature is not (EngineFeature.Skeletons or EngineFeature.Tweens)), "KeyRoom leaves skeletons and tweens out: " + string.Join(", ", report.Features.Select(f => $"{f.Feature} {f.Included}")));
         Require(result.AssetSummary.Count(l => l.StartsWith("  ", StringComparison.Ordinal)) <= 20 && result.AssetSummary[^1] == "Asset report: " + result.AssetReport,
             "Console summary is short and ends with the report path");
         Console.WriteLine($"PASS asset report and reachability exclusion ({mode}): {report.Shipped.Length} shipped, unreferenced {string.Join(", ", unreferenced)}; "

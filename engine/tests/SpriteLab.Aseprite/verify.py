@@ -1,4 +1,4 @@
-"""SpriteLab's animated arrow plays the clip imported from ArrowCycle.aseprite: check frame order and start ticks."""
+"""The SpriteLab showcase firefly blinks with the clip imported from FireflyBlink.aseprite: check frame order and start ticks."""
 import json
 import os
 from pathlib import Path
@@ -28,13 +28,14 @@ def prepare(sample, destination):
     shutil.copytree(sample, destination, ignore=shutil.ignore_patterns('.DS_Store', 'bin', 'obj'))
     (destination / 'Scripts').mkdir(exist_ok=True)
     shutil.copyfile(HERE / 'TraceFrames.source', destination / 'Scripts/TraceFrames.cs')
-    scene = destination / 'Scenes/Sprites.scene'
+    scene = destination / 'Scenes/ShowcaseYard.scene'
     text = scene.read_text(encoding='utf-8')
-    anchor = '    playOnStart: true\n'
+    clip_id = (destination / 'Assets/Showcase/FireflyBlink.clip.meta').read_text(encoding='utf-8').split()[1]
+    anchor = f'    clip: {clip_id}\n    playOnStart: true\n'
     assert text.count(anchor) == 1
     scene.write_text(text.replace(anchor, anchor + '  - type: script\n    script: TraceFrames\n'), encoding='utf-8')
     # Frame events only report which frame starts; order, timing and cells stay as generated.
-    clip = destination / 'Assets/ArrowCycle.clip'
+    clip = destination / 'Assets/Showcase/FireflyBlink.clip'
     text = clip.read_text(encoding='utf-8')
     assert text.count('- sprite:') == 2
     parts = text.split('- sprite:')

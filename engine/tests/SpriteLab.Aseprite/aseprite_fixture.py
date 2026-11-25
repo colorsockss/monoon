@@ -1,8 +1,8 @@
 """Write small .aseprite files from the documented format (Aseprite itself is not needed).
 
   python3 aseprite_fixture.py fixtures <directory>   Rgba / Indexed / Multiply regression fixtures
-  python3 aseprite_fixture.py sample <SpriteLab>     Assets/ArrowCycle.aseprite from Arrow.png and Dot.png
-  python3 aseprite_fixture.py variant <file>         the sample with 1.0 s / 0.3 s frames and a red dot
+  python3 aseprite_fixture.py sample <SpriteLab>     Assets/Showcase/FireflyBlink.aseprite from Firefly.png
+  python3 aseprite_fixture.py variant <file>         the sample with 1.0 s / 0.3 s frames and a red dim frame
 """
 from pathlib import Path
 import struct
@@ -116,17 +116,16 @@ def read_png(path):
     return width, height, b''.join(rows)
 
 
-def sample(spritelab, durations=(4000, 700), dot_color=None):
-    """Two frames: the arrow, then the dot. A hidden Sketch layer covers the canvas and must not reach the sheet."""
-    assets = Path(spritelab) / 'Assets'
-    w, h, arrow = read_png(assets / 'Arrow.png')
-    _, _, dot = read_png(assets / 'Dot.png')
-    if dot_color:
-        dot = b''.join(bytes(dot_color) + bytes([dot[i + 3]]) if dot[i + 3] else dot[i:i + 4] for i in range(0, len(dot), 4))
+def sample(spritelab, durations=(900, 300), dim_color=None):
+    """The SpriteLab showcase firefly's blink: the bright Firefly.png, then the same glow at a third of its alpha (or, with
+    dim_color, recoloured). A hidden Sketch layer covers the canvas and must not reach the sheet."""
+    w, h, bright = read_png(Path(spritelab) / 'Assets' / 'Showcase' / 'Firefly.png')
+    dim = b''.join((bytes(dim_color) + bytes([bright[i + 3]])) if dim_color and bright[i + 3] else
+                   bright[i:i + 3] + bytes([bright[i + 3] // 3]) for i in range(0, len(bright), 4))
     sketch = fill(w, h, b'\xff\x00\xff\xff')
     frames = [(durations[0], [palette([(0, 0, 0, 255), (255, 255, 255, 255)]), layer('Art'), layer('Sketch', HIDDEN),
-                              cel(0, 0, 0, w, h, arrow), cel(1, 0, 0, w, h, sketch)]),
-              (durations[1], [cel(0, 0, 0, w, h, dot), linked(1, 0)])]
+                              cel(0, 0, 0, w, h, bright), cel(1, 0, 0, w, h, sketch)]),
+              (durations[1], [cel(0, 0, 0, w, h, dim), linked(1, 0)])]
     return aseprite(w, h, 32, frames, colors=2)
 
 
@@ -138,9 +137,9 @@ if __name__ == '__main__':
         (target / 'Indexed.aseprite').write_bytes(fixture(True))
         (target / 'Multiply.aseprite').write_bytes(fixture(False, multiply=True))
     elif command == 'sample':
-        (target / 'Assets' / 'ArrowCycle.aseprite').write_bytes(sample(target))
+        (target / 'Assets' / 'Showcase' / 'FireflyBlink.aseprite').write_bytes(sample(target))
     elif command == 'variant':
-        # Reads Arrow.png and Dot.png next to the given .aseprite file.
-        target.write_bytes(sample(target.parent.parent, (1000, 300), (255, 64, 64)))
+        # Reads Firefly.png next to the given .aseprite file (Assets/Showcase).
+        target.write_bytes(sample(target.parent.parent.parent, (1000, 300), (255, 64, 64)))
     else:
         raise SystemExit(__doc__)

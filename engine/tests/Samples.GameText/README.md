@@ -22,6 +22,6 @@ done
 
 - KeyRoom 입력(60 Hz, 240프레임): 10 **I** 가방 → 40 **L** 한국어 → 90 **I** 닫기 → 100–125 **←** 열쇠 줍기 → 160 **I** → 200 **L** 영어. 캡처 5, 70, 190, 230.
 - PlatformerLab 입력(420프레임): 10–193 **→** 발판까지 달리기 → 컷신 → 290·350 **Return**. 캡처 260, 320, 380.
-- SpriteLab 입력(300프레임, 입력 없음): 캡처 5, 120, 250, 290. 빌드는 `Icons.atlas`를 쓰는 셀만 다시 패킹해 배포하고 Scene Play는 프로젝트의 원본 아틀라스로 그린다(로드맵 15.13). 세 캡처가 같아야 한다. [검증 기록](../results/size-wave3/README.md)
+- SpriteLab 입력(300프레임, 입력 없음): 쇼케이스 ShowcaseYard. 캡처 5, 120, 250, 290. 동전·꽃·덤불은 `Props.atlas` 셀로, 표지판과 HUD는 SDL_ttf 글자로 그린다. 세 캡처가 같아야 한다. [검증 기록](../results/size-wave3/README.md)
 - `play`는 헤드리스 재생에 `MONOON_REPLAY_SNAPSHOTS`를 주어 플레이어의 SDL 캔버스(소프트웨어 렌더러)로 저장한다. `editor.py`는 `DOTNET_STARTUP_HOOKS`로 [검사기](StartupHook.cs)를 넣어 Play를 누르고 같은 입력을 재생한 뒤 Scene 패널과 같은 `SdlCanvas`로 같은 프레임을 오프스크린 렌더링한다.
 - [검증 기록](../results/text-ttf/README.md)

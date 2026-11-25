@@ -18,7 +18,7 @@ public static class StartupHook
         var main = life.MainWindow!;
         var viewport = main.FindControl<Control>("Viewport")!;
         var scene = viewport.GetType().GetProperty("Scene")!;
-        await Until(() => ((SceneDocument)scene.GetValue(viewport)!).Objects.Any(o => o.Name == "Animated copy"), "Animated copy");
+        await Until(() => ((SceneDocument)scene.GetValue(viewport)!).Objects.Any(o => o.Name == "Firefly"), "Firefly");
         var play = main.FindControl<Button>("PlayButton")!;
         play.RaiseEvent(new RoutedEventArgs(Button.ClickEvent, play));
         var game = (GameSession)viewport.GetType().GetField("game", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(viewport)!;
@@ -27,13 +27,13 @@ public static class StartupHook
         play.RaiseEvent(new RoutedEventArgs(Button.ClickEvent, play));
 
         var applied = viewport.GetType().GetField("tileAssets", BindingFlags.Instance | BindingFlags.NonPublic)!;
-        string png = Path.Combine(root, "Assets", "ArrowCycle.png");
+        string png = Path.Combine(root, "Assets", "Showcase", "FireflyBlink.png");
         string Hash(string file) => Convert.ToHexString(SHA256.HashData(File.ReadAllBytes(file)));
         string before = Hash(png);
         var variant = File.ReadAllBytes(Path.Combine(output, "variant.aseprite"));
         string expectedSource = Convert.ToHexString(SHA256.HashData(variant));
         var clock = Stopwatch.StartNew();
-        File.WriteAllBytes(Path.Combine(root, "Assets", "ArrowCycle.aseprite"), variant);
+        File.WriteAllBytes(Path.Combine(root, "Assets", "Showcase", "FireflyBlink.aseprite"), variant);
         // Done when the sheet on disk was generated from the new file and the Scene panel holds that sheet's hash.
         while (true)
         {
@@ -41,7 +41,7 @@ public static class StartupHook
             if (clock.Elapsed > TimeSpan.FromSeconds(20 * Slow)) throw new TimeoutException("No reimport after the external save.");
             if (!File.ReadAllText(png + ".meta").Contains(expectedSource)) continue;
             var now = Hash(png);
-            if (((AssetEntry[])applied.GetValue(viewport)!).Any(e => e.Path == "Assets/ArrowCycle.png" && e.Hash == now)) break;
+            if (((AssetEntry[])applied.GetValue(viewport)!).Any(e => e.Path == "Assets/Showcase/FireflyBlink.png" && e.Hash == now)) break;
         }
         File.WriteAllText(Path.Combine(output, "reimport.json"),
             $"{{\"secondsUntilSceneUpdated\": {clock.Elapsed.TotalSeconds:F2}, \"windowActive\": {main.IsActive.ToString().ToLowerInvariant()}, " +

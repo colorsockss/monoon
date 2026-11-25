@@ -17,9 +17,8 @@ SCENARIOS = {
                           # Run right onto the moving deck; the ferry cutscene opens its dialogue panel; Return advances.
                           events=[(10, 193, 'Right'), (290, 'Return'), (350, 'Return')],
                           captures=[260, 320, 380]),
-    # Roadmap 15.13: builds ship a repacked Icons.atlas (only Arrow's cell); Scene Play draws the project's full atlas.
-    # No input; the animated copy switches ArrowCycle cells at 4.0 s.
-    'SpriteLab': dict(project='4394934e-c0de-4350-a585-27a682237b83', start='4394934e-c0de-4350-a585-27a682237b83', frames=300,
+    # The showcase yard: Props.atlas cells (coins, flowers, bushes), sign and HUD text, the firefly's Aseprite blink. No input.
+    'SpriteLab': dict(project='4394934e-c0de-4350-a585-27a682237b83', start='ca068bfb-56be-582f-8265-252f3f4116da', frames=300,
                       events=[], captures=[5, 120, 250, 290]),
 }
 MODES = ['scene-play', 'release', 'native-aot']

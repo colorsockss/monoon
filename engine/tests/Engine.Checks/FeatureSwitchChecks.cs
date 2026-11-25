@@ -30,6 +30,8 @@ internal static class FeatureSwitchChecks
         {
             var scene = SceneDocument.Load(file);
             if (scene.Objects.Any(o => o.Components.OfType<ScriptComponent>().Any())) continue;
+            // Content loaded additively into another scene (CollisionLab ShowcaseStones) has no camera of its own.
+            if (!scene.Objects.Any(o => o.Components.OfType<Camera2DComponent>().Any())) continue;
             var used = scene.Objects.SelectMany(o => o.Components).Select(BuildFeatures.Of).OfType<EngineFeature>().ToHashSet();
             var off = features.Where(f => !used.Contains(f)).ToArray();
             string on = Play(file, []), cut = Play(file, off);

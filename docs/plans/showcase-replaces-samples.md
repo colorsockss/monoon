@@ -81,3 +81,23 @@
 4. PlatformerLab(발 IK 제거 포함), InventoryLab
 5. KeyRoom
 6. 전체 회귀(`--build-editor`)와 main 비교, 그다음 main 합치기 확인
+
+## 진행 기록
+
+| 날짜 | 묶음 | 결과 |
+| --- | --- | --- |
+| 2026-11-26 | AccessLab, CardLab, DisplayLab | 기존 씬 삭제. Accessibility.Mac, DisplayLab.Desktop, DisplayLab.IntegerScale 세 모드 통과. CardLab `TrailTests` 추가 |
+| 2026-11-26 | SpriteLab | 기존 씬과 화살표·`Icons.atlas`·`StripeMask` 삭제. 쇼케이스 반딧불에 `FireflyBlink.aseprite` 깜빡임과 HUD 태그, 소품 `Props.atlas`를 넣었다(화면이 바뀌어 영상 재촬영 필요). SpriteLab.Aseprite 세 모드, Samples.GameText의 SpriteLab 시나리오 세 경로 캡처 일치 |
+| 2026-11-26 | 공통 | FeatureChecks(쇼케이스에서 글자를 뺀 SpriteLab), FeatureSwitchChecks(카메라 없는 추가 로딩 씬 제외), AssetReportChecks(KeyRoom 쇼케이스 기준 이유·기능), Dialogue·Inventory·Quests 패키지를 바뀐 InventoryLab 데이터로 다시 만듦, EngineFeatures1의 정수 배율 예시를 AudioLab 설정으로 |
+
+### `./monoon test`에 남은 실패 (2026-11-26, 단계별로 계속 실행해 모음)
+
+| 검사 | 첫 실패 | 처리할 묶음 |
+| --- | --- | --- |
+| RichTextChecks | InventoryLab `Inventory.scene`의 ko-KR 약초상 대사 | InventoryLab |
+| CameraChecks | 이동 후 추적 한 틱 201 vs 200.9752 | CameraLab |
+| InputInteractionChecks | KeyRoom 설정을 그대로 읽는지 | KeyRoom |
+| EngineFeatures1Checks | Parallax 씬의 Far hills 이동량(PlatformerLab이 정수 배율을 켬) | PlatformerLab |
+| ProjectCatalogChecks | 폴더를 넘는 형식 검색 | KeyRoom(확인 필요) |
+| HistoryChecks | PlatformerLab `Showcase.scene` 컴포넌트 활성 상태 | PlatformerLab |
+| BuildSizeChecks | 빌드 용량 기준값 | 마지막 전체 회귀 때 다시 측정 |

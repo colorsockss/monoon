@@ -5,7 +5,6 @@ gameTitle: SpriteLab
 startScene: ca068bfb-56be-582f-8265-252f3f4116da
 includedScenes:
 - ca068bfb-56be-582f-8265-252f3f4116da
-- 4394934e-c0de-4350-a585-27a682237b83
 input:
   actions:
   - name: MoveLeft

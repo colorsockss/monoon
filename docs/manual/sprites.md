@@ -43,7 +43,7 @@ Sprite Renderer의 `drawMode`로 그리는 방식을 고른다. 기본값 **Simp
 
 한 PNG는 한 아틀라스에만 넣을 수 있다. 시트의 최대 크기는 4096×4096이다. 원본 파일, `.atlas`, 프로젝트 루트 `.monoon-atlas/`를 함께 보관한다. `.atlas`는 YAML이고 실제 시트는 내용 해시가 이름인 PNG다. 재패킹이 실패해도 이전 시트는 유지된다. 빌드에는 참조되는 세대만 포함된다. 빌드가 쓰는 셀이 시트의 70%보다 적으면 쓰는 셀만 다시 패킹한 시트를 배포한다(프로젝트 파일은 그대로다). [빌드용 아틀라스 재패킹](build.md#빌드용-아틀라스-재패킹) 원본 시트에서 좌표로 잘라 쓴 클립, UI, 타일맵 또는 마스크가 원본을 필요로 하면 그 PNG도 함께 배포된다.
 
-[SpriteLab 샘플](../../samples/SpriteLab)에서 왼쪽은 원본, 가운데는 반전·색상·마스크를 적용한 그림이다. 오른쪽은 같은 설정에서 화살표와 점을 번갈아 재생하는 클립으로, `ArrowCycle.aseprite`에서 가져왔다. [Aseprite 파일 가져오기](#aseprite-파일-가져오기)
+[SpriteLab 샘플](../../samples/SpriteLab)의 동전·꽃·덤불은 `Assets/Showcase/Props.atlas` 한 장의 셀로 그린다. 연못가의 반사는 같은 걷기 프레임에 상하 반전·색상·물결 마스크를 적용한 것이다. 등불 옆 반딧불의 깜빡임은 `FireflyBlink.aseprite`에서 가져온 두 프레임 클립이다. [Aseprite 파일 가져오기](#aseprite-파일-가져오기)
 
 ## 개별 PNG로 클립 만들기
 
@@ -78,7 +78,7 @@ KeyRoom의 원본 문 PNG를 외부에서 덮어쓰면 그 PNG에 연결된 셀�
 
 Aseprite에서 같은 경로에 다시 저장하면 시트와 클립이 다시 만들어진다. 시트의 GUID는 유지되므로 씬, Sprite Animator, 애니메이터의 참조를 다시 연결하지 않아도 된다. 원본 내용이 같으면 출력 파일을 다시 쓰지 않는다. 생성된 PNG와 클립은 원본을 다시 저장할 때마다 덮어쓰므로, 시간이나 이벤트를 바꾸려면 Aseprite에서 수정한다. 태그를 지우거나 이름을 바꿔도 이전 태그의 클립은 지워지지 않는다. 쓰지 않는 클립은 직접 삭제한다. 같은 이름의 PNG가 이미 있고 Aseprite에서 만든 것이 아니면 덮어쓰지 않고 오류를 낸다. 둘 중 하나의 이름을 바꾼다.
 
-게임 빌드에는 생성된 PNG와 클립 중 씬에서 쓰는 것만 들어간다. `.aseprite` 원본과 임포터 코드는 포함되지 않는다. SpriteLab의 오른쪽 화살표에서 확인할 수 있다. [Mac 검증 기록](../../engine/tests/results/aseprite-import/README.md)
+게임 빌드에는 생성된 PNG와 클립 중 씬에서 쓰는 것만 들어간다. `.aseprite` 원본과 임포터 코드는 포함되지 않는다. SpriteLab의 반딧불에서 확인할 수 있다. [Mac 검증 기록](../../engine/tests/results/aseprite-import/README.md)
 
 ## 게임에서 재생하기
 

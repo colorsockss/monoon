@@ -1,0 +1,35 @@
+imageHash: 353D427F55B63974256FF6DF25F1CC2E39CE368252CBDD3559AEB7EFDD0779C3
+entries:
+- sprite: 714a0969-d8e7-507d-b67f-cc2738ff5f79
+  source:
+    x: 1
+    y: 1
+    width: 50
+    height: 42
+  canvas:
+    width: 50
+    height: 42
+    offsetX: 0
+    offsetY: 0
+- sprite: c32ee5d8-c0ec-5b08-afbe-501fd5420393
+  source:
+    x: 1
+    y: 45
+    width: 52
+    height: 32
+  canvas:
+    width: 54
+    height: 32
+    offsetX: 0
+    offsetY: 0
+- sprite: 7dcc1cf2-7987-5eae-84e6-4b036c8a561b
+  source:
+    x: 1
+    y: 79
+    width: 14
+    height: 14
+  canvas:
+    width: 14
+    height: 14
+    offsetX: 0
+    offsetY: 0

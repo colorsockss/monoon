@@ -24,6 +24,7 @@ public sealed class SpriteTour : GameBehaviour
         if (time > .5f) session.Set("slice");
         if (time > 2.6f) session.Set("keys");
         if (time > 3.6f) session.Set("trail");
+        if (time > 4.6f) session.Set("blink");
 
         var to = Loop[next] - foot;
         float step = Speed * tick.DeltaTime;

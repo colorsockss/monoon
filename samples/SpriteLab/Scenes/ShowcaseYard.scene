@@ -186,6 +186,9 @@ objects:
     assetId: b860bbd2-7915-53cc-bde8-f052de6911fa
     asset: Assets/Showcase/Firefly.png
     order: 6
+  - type: spriteAnimator
+    clip: 25dac1fb-0f04-44f5-9284-b367ad3fe183
+    playOnStart: true
   - type: trail2D
     time: 0.8
     width: 4
@@ -293,7 +296,7 @@ objects:
   parentId: 22ef78fe-c0a1-530b-8d17-f8c0edfde44f
   name: Tag 1
   x: 12
-  y: 300
+  y: 274
   width: 315.4
   height: 22
   components:
@@ -312,7 +315,7 @@ objects:
   parentId: 22ef78fe-c0a1-530b-8d17-f8c0edfde44f
   name: Tag 2
   x: 12
-  y: 324
+  y: 298
   width: 315.4
   height: 22
   components:
@@ -331,7 +334,7 @@ objects:
   parentId: 22ef78fe-c0a1-530b-8d17-f8c0edfde44f
   name: Tag 3
   x: 12
-  y: 348
+  y: 322
   width: 315.4
   height: 22
   components:
@@ -350,7 +353,7 @@ objects:
   parentId: 22ef78fe-c0a1-530b-8d17-f8c0edfde44f
   name: Tag 4
   x: 12
-  y: 372
+  y: 346
   width: 315.4
   height: 22
   components:
@@ -369,7 +372,26 @@ objects:
   parentId: 22ef78fe-c0a1-530b-8d17-f8c0edfde44f
   name: Tag 5
   x: 12
-  y: 396
+  y: 370
+  width: 315.4
+  height: 22
+  components:
+  - type: uiRect
+    showIf: blink
+  - type: uiImage
+    sprite: a8fe5959-a0d2-5e4e-9f09-4e95f76e6fa3
+    borders: {left: 4, top: 4, right: 4, bottom: 4}
+  - type: uiText
+    richText: true
+    text: "<b>Aseprite import</b>   <color=#BFD0DC>the firefly's blink</color>"
+    size: 12
+    insetX: 10
+    insetY: 3
+- id: 8603fa1b-6d6c-547b-be55-81321fb2d36b
+  parentId: 22ef78fe-c0a1-530b-8d17-f8c0edfde44f
+  name: Tag 6
+  x: 12
+  y: 394
   width: 315.4
   height: 22
   components:

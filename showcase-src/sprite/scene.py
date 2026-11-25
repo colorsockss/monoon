@@ -51,7 +51,10 @@ for i, (x, w, h) in enumerate(((16, 96, 56), (122, 160, 56), (292, 232, 76))):
 s.obj("Post", 600, 8, 60, 96, sprite("Post.png", order=1))
 s.obj("Lantern", 624, 24, 40, 40, sprite("Lantern.png", order=2) + f"  - type: spriteAnimator\n    clip: {asset('LanternSwing.clip')}\n    playOnStart: true\n",
       extra="  pivotX: 0.5\n  pivotY: 0\n")
+# The firefly's blink is a two-frame clip imported from FireflyBlink.aseprite (engine/tests/SpriteLab.Aseprite/aseprite_fixture.py
+# writes the file; the build or the editor imports it into FireflyBlink.png and FireflyBlink.clip).
 s.obj("Firefly", 700, 120, 10, 10, sprite("Firefly.png", order=6)
+      + f"  - type: spriteAnimator\n    clip: {asset('FireflyBlink.clip')}\n    playOnStart: true\n"
       + '  - type: trail2D\n    time: 0.8\n    width: 4\n    startColor: "#FFE08C"\n    endColor: "#6CFFB0"\n    maxPoints: 60\n    minStep: 1.5\n    order: 5\n')
 for i, (x, y) in enumerate(((560, 236), (592, 248), (624, 236))):
     s.obj(f"Coin {i + 1}", x, y, 14, 14, sprite("Coin.png", sortByY="true") + f"  - type: spriteAnimator\n    clip: {asset('CoinPulse.clip')}\n    playOnStart: true\n")
@@ -63,10 +66,12 @@ s.obj("Camera", 400, 225, 1, 1, "  - type: camera2D\n")
 s.obj("Canvas", 0, 0, 1, 1, "  - type: uiCanvas\n")
 # In the order they light up during the tour.
 tags = [("slice", "9-slice", "one sign PNG, three sizes"), ("ysort", "Y sort by foot", "behind or in front of the well"),
-        ("keys", "Property keys", "lantern swing, coin pulse"), ("trail", "Trail 2D", "the firefly's path"), ("mask", "Tint, flip, mask", "a rippled reflection")]
+        ("keys", "Property keys", "lantern swing, coin pulse"), ("trail", "Trail 2D", "the firefly's path"),
+        ("blink", "Aseprite import", "the firefly's blink"), ("mask", "Tint, flip, mask", "a rippled reflection")]
 tw = 24 + 6.2 * max(len(f) + len(d) + 3 for _, f, d in tags)
 for i, (flag, feature, detail) in enumerate(tags):
-    s.obj(f"Tag {i + 1}", 12, 300 + i * 24, tw, 22, f"  - type: uiRect\n    showIf: {flag}\n" + panel()
+    # 2 units apart; the last one ends 2 above the caption.
+    s.obj(f"Tag {i + 1}", 12, 274 + i * 24, tw, 22, f"  - type: uiRect\n    showIf: {flag}\n" + panel()
           + f'  - type: uiText\n    richText: true\n    text: "<b>{feature}</b>   <color=#BFD0DC>{detail}</color>"\n    size: 12\n    insetX: 10\n    insetY: 3\n', parent="Canvas")
 s.obj("Caption", 12, -8, 300, 24, "  - type: uiRect\n    anchor: BottomLeft\n" + panel(), parent="Canvas")
 s.obj("Caption text", 12, 3, 280, 18, '  - type: uiRect\n  - type: uiText\n    richText: true\n    text: "<b>SpriteLab</b>   One sprite renderer, many tricks"\n    size: 13\n', parent="Caption")

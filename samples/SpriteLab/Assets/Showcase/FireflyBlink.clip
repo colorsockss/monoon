@@ -1,0 +1,18 @@
+frames:
+- sprite: ba6a0c8b-2e5e-4a87-8e6d-0d08443f7bbe
+  seconds: 0.9
+  source:
+    x: 0
+    y: 0
+    width: 10
+    height: 10
+  useRenderer: false
+- sprite: ba6a0c8b-2e5e-4a87-8e6d-0d08443f7bbe
+  seconds: 0.3
+  source:
+    x: 10
+    y: 0
+    width: 10
+    height: 10
+  useRenderer: false
+loop: true
