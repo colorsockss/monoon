@@ -4,7 +4,7 @@ from uuid import NAMESPACE_URL, uuid5
 
 sample = Path(__file__).resolve().parents[3] / "samples" / "CollisionLab"
 scenes = sample / "Scenes"
-lab = (scenes / "CollisionLab.scene.meta").read_text().split()[1]
+lab = (scenes / "ShowcaseCasts.scene.meta").read_text().split()[1]
 
 
 def guid(key):

@@ -1,6 +1,6 @@
 """Load CollisionLab's 10,000-collider field with large backdrops in development players and compare split and one-step loading.
 
-prepare <output project>         copy samples/CollisionLab and add four 4096x4096 backdrop PNGs to Field10000
+prepare <output project>         copy samples/CollisionLab (with the test-only fields, Shared/collision_lab.py) and add four 4096x4096 backdrop PNGs to Field10000
 run <player> <output> [--runs N]  replay add, add+cancel and replace loads with budget 0 (previous) and 4 ms
 """
 import argparse
@@ -10,6 +10,7 @@ import os
 from pathlib import Path
 import shutil
 import struct
+import sys
 import subprocess
 import uuid
 import zlib
@@ -20,6 +21,8 @@ PRESS, FRAMES = 2, 300
 BACKDROPS, SIZE = 4, 4096
 BUDGETS = {"previous": "0", "split": "4"}
 SAMPLE = Path(__file__).resolve().parents[3] / "samples" / "CollisionLab"
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "Shared"))
+import collision_lab  # noqa: E402
 
 
 def png(path, seed):
@@ -33,7 +36,7 @@ def png(path, seed):
 
 
 def prepare(project):
-    shutil.copytree(SAMPLE, project)
+    collision_lab.prepare(SAMPLE, project)
     lines = []
     for i in range(1, BACKDROPS + 1):
         asset = uuid.uuid5(uuid.NAMESPACE_URL, f"monoon/split-loading/backdrop{i}")

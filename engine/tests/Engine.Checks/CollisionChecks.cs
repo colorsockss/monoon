@@ -11,7 +11,7 @@ internal static class CollisionChecks
     internal static void Run(string repository)
     {
         CheckSpatialGrid();
-        var path=Path.Combine(repository,"samples","CollisionLab","Scenes","CollisionLab.scene");
+        var path=Path.Combine(repository,"samples","CollisionLab","Scenes","ShowcaseCasts.scene");
         var scene=SceneDocument.Load(path);
         var obj=scene.Objects.Single(o=>o.Name=="Ramp"); var poly=obj.GetComponent<PolygonCollider2DComponent>()!;
         var probe=scene.Objects.Single(o=>o.Name=="Probe"); var sensor=scene.Objects.Single(o=>o.Name=="Sensor");

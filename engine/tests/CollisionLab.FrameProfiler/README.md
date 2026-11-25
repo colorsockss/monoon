@@ -10,8 +10,9 @@ CollisionLab의 충돌체 1만 개 씬에서 질의가 몰린 프레임을 찾�
 qa=engine/tests/CollisionLab.FrameProfiler
 work=$(mktemp -d)
 engine/scripts/build-players.sh osx-arm64
-./monoon build samples/CollisionLab release --profile development --output "$work/builds"
-./monoon build samples/CollisionLab release --profile distribution --output "$work/builds"
+python3 engine/tests/Shared/collision_lab.py samples/CollisionLab "$work/CollisionLab"
+./monoon build "$work/CollisionLab" release --profile development --output "$work/builds"
+./monoon build "$work/CollisionLab" release --profile distribution --output "$work/builds"
 python3 "$qa/replay.py" "$work/builds/Development/CollisionLab.app/Contents/MacOS/MoNoonPlayer" \
   "$work/builds/CollisionLab.app/Contents/MacOS/MoNoonPlayer" "$work/release"
 ./monoon profile "$work/release/development.csv"
@@ -19,7 +20,7 @@ python3 "$qa/replay.py" "$work/builds/Development/CollisionLab.app/Contents/MacO
 
 Native AOT는 `native-aot`로 빌드하고 `Development/NativeAOT/`와 `NativeAOT/` 아래의 실행 파일을 넘긴다.
 
-[replay.py](replay.py)는 150프레임짜리 입력 기록을 만든다. 2번째 프레임에 **2**를 눌러 1만 개 씬을 열고, 90번째 프레임에 **R**을 누른다. 두 플레이어를 `MONOON_FRAME_PROFILE`과 함께 `--replay-input`으로 헤드리스 실행한다. 프레임마다 1/60초가 지나며 SDL 비디오·오디오는 사용하지 않는다. Release 런타임에는 `DOTNET_TieredCompilation=0`을 적용한다.
+샘플은 쇼케이스만 배포하므로 [collision_lab.py](../Shared/collision_lab.py)가 복사본을 `ShowcaseCasts`(기존 랩 씬의 id를 그대로 쓴다)로 시작하게 하고, 카메라에 테스트 전용 FieldSelector를, 빌드 씬 목록에 Field1000·Field10000을 넣는다. [replay.py](replay.py)는 150프레임짜리 입력 기록을 만든다. 2번째 프레임에 **2**를 눌러 1만 개 씬을 열고, 90번째 프레임에 **R**을 누른다. 두 플레이어를 `MONOON_FRAME_PROFILE`과 함께 `--replay-input`으로 헤드리스 실행한다. 프레임마다 1/60초가 지나며 SDL 비디오·오디오는 사용하지 않는다. Release 런타임에는 `DOTNET_TieredCompilation=0`을 적용한다.
 
 합격 기준은 다음과 같다.
 
@@ -34,7 +35,7 @@ Native AOT는 `native-aot`로 빌드하고 `Development/NativeAOT/`와 `NativeAO
 ```sh
 engine/scripts/build-editor-mac.sh
 dotnet build "$qa" -c Release -m:1 -p:UsedAvaloniaProducts=
-python3 "$qa/editor.py" editor/MoNoon.app/Contents/MacOS/MoNoon samples/CollisionLab \
+python3 "$qa/editor.py" editor/MoNoon.app/Contents/MacOS/MoNoon "$work/CollisionLab" \
   engine/.artifacts/bin/ProfilerProbe/release/ProfilerProbe.dll "$work/scene-play"
 ```
 

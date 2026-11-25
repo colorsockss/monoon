@@ -42,7 +42,7 @@ public static class StartupHook
         string Items(IEnumerable<(SceneObject Owner, Tilemap2DComponent? Map, int Layer, int Order)> items) =>
             string.Join(";", items.Select(i => $"{i.Owner.Id}/{i.Map != null}/{i.Layer}/{i.Order}"));
         string Shown() => Items((IEnumerable<(SceneObject, Tilemap2DComponent?, int, int)>)Call(view, "EditItems")!);
-        string Fresh() => Items(scene.WorldItems());
+        string Fresh() => Items(scene.WorldItems().Where(i => i.Owner.ActiveInHierarchy));   // the edit view leaves inactive objects out
         void Same(string step) => Require(Shown() == Fresh(), $"draw order after {step}");
         int Rank(SceneObject obj) => scene.WorldItems().Select(i => i.Owner).ToList().IndexOf(obj);
         Same("open");
@@ -181,7 +181,7 @@ public static class StartupHook
         play.RaiseEvent(new RoutedEventArgs(Button.ClickEvent, play));
 
         // Correctness only, after every timed step: edit the small lab scene, then save the scratch copy so nothing prompts.
-        await (Task)Call(main, "SwitchScene", "CollisionLab")!;
+        await (Task)Call(main, "SwitchScene", "ShowcaseCasts")!;
         await Until(() => Scene().Objects.Count < 10000, "lab scene open");
         await DrawOrderEdits(main, view, Scene());
         Require(await (Task<bool>)Call(main, "Save")!, "save cancelled");

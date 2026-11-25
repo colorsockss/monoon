@@ -1,0 +1,338 @@
+schemaVersion: 42
+objects:
+- id: 9591f5b6-6681-5255-b0e6-d8da507e120d
+  name: Night grass
+  x: 0
+  y: 0
+  width: 800
+  height: 450
+  components:
+  - type: spriteRenderer
+    assetId: 7ac619dd-3bc8-509b-afa8-d23252401691
+    asset: Assets/Showcase/NightGrass.png
+    drawMode: Tiled
+    order: -20
+- id: 28c9ab58-5a68-5d3f-844c-721497af8acb
+  name: Ray
+  x: 0
+  y: 0
+  width: 1
+  height: 1
+  components:
+  - type: line2D
+    points:
+    - {x: 0, y: 0}
+    - {x: 1, y: 0}
+    width: 2
+    startColor: "#FFE08C"
+    endColor: "#FF9F6B"
+    order: 4
+- id: 22074fd4-bfd8-56bb-b7c4-75296c30e8ab
+  name: Sweep stop
+  active: false
+  x: 0
+  y: 0
+  width: 40
+  height: 40
+  components:
+  - type: spriteRenderer
+    assetId: 9bd92d3d-8e64-5d5f-beea-dbd8ef6b614e
+    asset: Assets/Showcase/PebbleLit.png
+    tint: "#9C98B8"
+    order: 3
+- id: f6bf5031-579f-560b-9bdc-9b9f007cc814
+  name: Probe
+  x: 80
+  y: 180
+  width: 40
+  height: 40
+  components:
+  - type: spriteRenderer
+    assetId: 9bd92d3d-8e64-5d5f-beea-dbd8ef6b614e
+    asset: Assets/Showcase/PebbleLit.png
+    order: 10
+  - type: circleCollider2D
+    layer: 1
+    mask: 44
+  - type: script
+    script: Probe
+    values: {"Status": "7f5e0b61-85f9-556e-ad9e-189b6c3a009d", "Metrics": "ad0a8179-0349-5cbd-bd6c-acd40cb22956", "Wall": "f13ad8d5-3899-5e4c-a37e-a52f69661de0", "Sensor": "91298410-d245-500d-93af-4d10a6465374", "RayLine": "28c9ab58-5a68-5d3f-844c-721497af8acb", "SweepStop": "22074fd4-bfd8-56bb-b7c4-75296c30e8ab"}
+- id: 91298410-d245-500d-93af-4d10a6465374
+  name: Sensor
+  x: 218
+  y: 178
+  width: 44
+  height: 44
+  components:
+  - type: spriteRenderer
+    assetId: 8f516392-0819-591c-a87e-0ba5a4417685
+    asset: Assets/Showcase/Lantern.png
+    tint: "#9FE4FF"
+    order: 2
+  - type: circleCollider2D
+    layer: 3
+    mask: 2
+    isTrigger: true
+  - type: script
+    script: SensorEntry
+- id: 34f2f966-38e7-5e2a-978b-9cd5047cd054
+  name: Pass A
+  x: 325
+  y: 155
+  width: 10
+  height: 90
+  components:
+  - type: spriteRenderer
+    assetId: 781191a6-8795-5bf3-838f-450d48d481ef
+    asset: Assets/Showcase/Block.png
+    drawMode: Tiled
+    tint: "#8FB4FF"
+    order: 2
+  - type: boxCollider2D
+    layer: 4
+- id: 9ce8a341-74b7-5cf9-aec6-69306e76ff71
+  name: Pass B
+  x: 380
+  y: 155
+  width: 10
+  height: 90
+  components:
+  - type: spriteRenderer
+    assetId: 781191a6-8795-5bf3-838f-450d48d481ef
+    asset: Assets/Showcase/Block.png
+    drawMode: Tiled
+    tint: "#FFB48F"
+    order: 2
+  - type: boxCollider2D
+    layer: 5
+    mask: 0
+- id: f13ad8d5-3899-5e4c-a37e-a52f69661de0
+  name: Ramp
+  x: 500
+  y: 140
+  width: 100
+  height: 120
+  components:
+  - type: spriteRenderer
+    assetId: 607883bc-7b68-55f9-a576-2585a8be32c2
+    asset: Assets/Triangle.png
+    tint: "#B7A6E8"
+    order: 2
+  - type: polygonCollider2D
+    layer: 2
+    mask: 2
+    points:
+    - {x: 0, y: 0}
+    - {x: 1, y: 0.5}
+    - {x: 0, y: 1}
+- id: aa364bf6-24b5-5dfe-9bde-191b0c9c94c9
+  name: Camera
+  x: 400
+  y: 225
+  width: 1
+  height: 1
+  components:
+  - type: camera2D
+- id: 38c04c97-d92c-5d23-be0a-5111ea8522ba
+  name: Canvas
+  x: 0
+  y: 0
+  width: 1
+  height: 1
+  components:
+  - type: uiCanvas
+- id: 5b023bc3-7dc3-59bc-a2ce-9232d81f4e2a
+  name: Probe name
+  x: 30
+  y: 268
+  width: 140
+  height: 18
+  components:
+  - type: text2D
+    text: "Probe"
+    size: 12
+    color: "#BFD0DC"
+    align: Center
+    order: 20
+- id: e7d6ecec-e524-5099-8016-65c87685e7d7
+  name: Sensor name
+  x: 170
+  y: 268
+  width: 140
+  height: 18
+  components:
+  - type: text2D
+    text: "Sensor (trigger)"
+    size: 12
+    color: "#BFD0DC"
+    align: Center
+    order: 20
+- id: e9a74c97-7677-5b2d-828e-ab2f7fdb2921
+  name: Gates name
+  x: 287
+  y: 268
+  width: 140
+  height: 18
+  components:
+  - type: text2D
+    text: "Gates A and B"
+    size: 12
+    color: "#BFD0DC"
+    align: Center
+    order: 20
+- id: 1a296b3d-5ea5-5884-802c-37ff2dd73786
+  name: Ramp name
+  x: 470
+  y: 268
+  width: 140
+  height: 18
+  components:
+  - type: text2D
+    text: "Polygon wall"
+    size: 12
+    color: "#BFD0DC"
+    align: Center
+    order: 20
+- id: 0b4d15a2-9631-5930-92d7-ff403ae5f62f
+  parentId: 38c04c97-d92c-5d23-be0a-5111ea8522ba
+  name: Readout
+  x: -12
+  y: 12
+  width: 330
+  height: 64
+  components:
+  - type: uiRect
+    anchor: TopRight
+  - type: uiImage
+    sprite: 9a537ccd-f083-5c9e-8d2d-d1f76dbecd32
+    borders: {left: 4, top: 4, right: 4, bottom: 4}
+- id: ad0a8179-0349-5cbd-bd6c-acd40cb22956
+  parentId: 0b4d15a2-9631-5930-92d7-ff403ae5f62f
+  name: Metrics
+  x: 12
+  y: 9
+  width: 306
+  height: 18
+  components:
+  - type: uiRect
+  - type: uiText
+    richText: true
+    text: "Ready"
+    size: 13
+    color: "#F4F6F4"
+- id: 7f5e0b61-85f9-556e-ad9e-189b6c3a009d
+  parentId: 0b4d15a2-9631-5930-92d7-ff403ae5f62f
+  name: Status
+  x: 12
+  y: 34
+  width: 306
+  height: 18
+  components:
+  - type: uiRect
+  - type: uiText
+    richText: true
+    text: "Press → to move the probe"
+    size: 12
+    color: "#BFD0DC"
+- id: 86bd5dcf-e002-5a43-897b-d35c9afa35c2
+  parentId: 38c04c97-d92c-5d23-be0a-5111ea8522ba
+  name: Tag 1
+  x: 12
+  y: 12
+  width: 440
+  height: 24
+  components:
+  - type: uiRect
+    anchor: TopLeft
+    showIf: cast
+  - type: uiImage
+    sprite: 9a537ccd-f083-5c9e-8d2d-d1f76dbecd32
+    borders: {left: 4, top: 4, right: 4, bottom: 4}
+  - type: uiText
+    richText: true
+    text: "<b>Ray and sweep</b>   <color=#BFD0DC>the line hits the wall, the circle stops 20 short</color>"
+    size: 12
+    insetX: 10
+    insetY: 4
+- id: 2d11af98-14f5-5f02-bab5-20713cacc0d9
+  parentId: 38c04c97-d92c-5d23-be0a-5111ea8522ba
+  name: Tag 2
+  x: 12
+  y: 40
+  width: 440
+  height: 24
+  components:
+  - type: uiRect
+    anchor: TopLeft
+    showIf: crossed
+  - type: uiImage
+    sprite: 9a537ccd-f083-5c9e-8d2d-d1f76dbecd32
+    borders: {left: 4, top: 4, right: 4, bottom: 4}
+  - type: uiText
+    richText: true
+    text: "<b>Sensor</b>   <color=#BFD0DC>a trigger reports the probe passing through</color>"
+    size: 12
+    insetX: 10
+    insetY: 4
+- id: c9781d4e-c6ec-5457-b9d0-aa2ce7fc68b1
+  parentId: 38c04c97-d92c-5d23-be0a-5111ea8522ba
+  name: Tag 3
+  x: 12
+  y: 68
+  width: 440
+  height: 24
+  components:
+  - type: uiRect
+    anchor: TopLeft
+    showIf: stopped
+  - type: uiImage
+    sprite: 9a537ccd-f083-5c9e-8d2d-d1f76dbecd32
+    borders: {left: 4, top: 4, right: 4, bottom: 4}
+  - type: uiText
+    richText: true
+    text: "<b>Layer masks</b>   <color=#BFD0DC>both gates let the probe by, the wall stops it</color>"
+    size: 12
+    insetX: 10
+    insetY: 4
+- id: 4960bc11-6157-5c0f-9c2e-a5e60779376e
+  parentId: 38c04c97-d92c-5d23-be0a-5111ea8522ba
+  name: Caption
+  x: 12
+  y: -12
+  width: 470
+  height: 44
+  components:
+  - type: uiRect
+    anchor: BottomLeft
+  - type: uiImage
+    sprite: 9a537ccd-f083-5c9e-8d2d-d1f76dbecd32
+    borders: {left: 4, top: 4, right: 4, bottom: 4}
+- id: 2915733e-f201-5997-a61a-e7099f3e9745
+  parentId: 4960bc11-6157-5c0f-9c2e-a5e60779376e
+  name: Caption title
+  x: 12
+  y: 5
+  width: 446
+  height: 20
+  components:
+  - type: uiRect
+  - type: uiText
+    richText: true
+    text: "<b>CollisionLab</b>   Rays, sweeps, sensors and layer masks"
+    size: 15
+    color: "#F4F6F4"
+- id: fb05cc35-ec75-5a9c-86e8-b8c106ec8ff8
+  parentId: 4960bc11-6157-5c0f-9c2e-a5e60779376e
+  name: Caption controls
+  x: 12
+  y: 25
+  width: 446
+  height: 16
+  components:
+  - type: uiRect
+  - type: uiText
+    richText: true
+    text: "Move the probe  →"
+    size: 12
+    color: "#BFD0DC"
+defaultCameraId: aa364bf6-24b5-5dfe-9bde-191b0c9c94c9

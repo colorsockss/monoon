@@ -1057,6 +1057,10 @@
    ],
    "steps": [
     {
+     "kind": "prepare",
+     "run": "python3 engine/tests/Shared/collision_lab.py samples/CollisionLab \"$work/CollisionLab\""
+    },
+    {
      "kind": "probe",
      "modes": [
       "scene-play"
@@ -1069,7 +1073,7 @@
       "scene-play"
      ],
      "gui": true,
-     "run": "$lock python3 $qa/editor.py samples/CollisionLab \"$work/editor-perf\" 5 cand=$app,$bin/EditorPerfProbe/release/EditorPerfProbe.dll"
+     "run": "$lock python3 $qa/editor.py \"$work/CollisionLab\" \"$work/editor-perf\" 5 cand=$app,$bin/EditorPerfProbe/release/EditorPerfProbe.dll"
     }
    ]
   },
@@ -1099,18 +1103,22 @@
    ],
    "steps": [
     {
+     "kind": "prepare",
+     "run": "python3 engine/tests/Shared/collision_lab.py samples/CollisionLab \"$work/CollisionLab\""
+    },
+    {
      "kind": "build",
      "modes": [
       "release"
      ],
-     "run": "for p in development distribution; do ./monoon build samples/CollisionLab release --profile $p --output \"$work/builds\"; done"
+     "run": "for p in development distribution; do ./monoon build \"$work/CollisionLab\" release --profile $p --output \"$work/builds\"; done"
     },
     {
      "kind": "build",
      "modes": [
       "native-aot"
      ],
-     "run": "for p in development distribution; do ./monoon build samples/CollisionLab native-aot --profile $p --output \"$work/builds\"; done"
+     "run": "for p in development distribution; do ./monoon build \"$work/CollisionLab\" native-aot --profile $p --output \"$work/builds\"; done"
     },
     {
      "kind": "play",
@@ -1146,7 +1154,7 @@
       "scene-play"
      ],
      "gui": true,
-     "run": "$lock python3 \"$qa/editor.py\" $app samples/CollisionLab $bin/ProfilerProbe/release/ProfilerProbe.dll \"$work/scene-play\""
+     "run": "$lock python3 \"$qa/editor.py\" $app \"$work/CollisionLab\" $bin/ProfilerProbe/release/ProfilerProbe.dll \"$work/scene-play\""
     }
    ]
   },
@@ -1173,6 +1181,10 @@
    "manual": "기준 에디터와 후보 에디터를 번갈아 재는 성능 측정이다. README의 base=<기준 에디터> 경로를 정해 직접 실행한다.",
    "steps": [
     {
+     "kind": "prepare",
+     "run": "python3 engine/tests/Shared/collision_lab.py samples/CollisionLab \"$work/CollisionLab\""
+    },
+    {
      "kind": "probe",
      "modes": [
       "scene-play"
@@ -1185,7 +1197,7 @@
       "scene-play"
      ],
      "gui": true,
-     "run": "$lock python3 $qa/editor.py samples/CollisionLab \"$work/inspector-edits\" 5   base=<기준 에디터>/MoNoon.app/Contents/MacOS/MoNoon,$bin/InspectorEditsProbe/release/InspectorEditsProbe.dll cand=$app,$bin/InspectorEditsProbe/release/InspectorEditsProbe.dll"
+     "run": "$lock python3 $qa/editor.py \"$work/CollisionLab\" \"$work/inspector-edits\" 5   base=<기준 에디터>/MoNoon.app/Contents/MacOS/MoNoon,$bin/InspectorEditsProbe/release/InspectorEditsProbe.dll cand=$app,$bin/InspectorEditsProbe/release/InspectorEditsProbe.dll"
     }
    ]
   },
@@ -1213,18 +1225,22 @@
    ],
    "steps": [
     {
+     "kind": "prepare",
+     "run": "python3 engine/tests/Shared/collision_lab.py samples/CollisionLab \"$work/CollisionLab\""
+    },
+    {
      "kind": "build",
      "modes": [
       "release"
      ],
-     "run": "./monoon build samples/CollisionLab release --profile distribution --output \"$work/builds\""
+     "run": "./monoon build \"$work/CollisionLab\" release --profile distribution --output \"$work/builds\""
     },
     {
      "kind": "build",
      "modes": [
       "native-aot"
      ],
-     "run": "./monoon build samples/CollisionLab native-aot --profile distribution --output \"$work/builds\""
+     "run": "./monoon build \"$work/CollisionLab\" native-aot --profile distribution --output \"$work/builds\""
     },
     {
      "kind": "play",

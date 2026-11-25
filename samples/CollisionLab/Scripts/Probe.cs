@@ -2,9 +2,13 @@ using System;
 using System.Numerics;
 using Engine.Core;
 
+// CollisionLab showcase probe: on its first step it measures a ray and a circle sweep toward the wall, an overlap inside the
+// sensor (with and without triggers) and the polygon's empty corner, and draws the ray (RayLine) and where the sweep stops
+// (SweepStop). → moves it once by 800 units: through the sensor (SensorEntry raises "crossed") and both gates, against the wall.
+// It then saves what it measured to slot 1. Raises the HUD flags "cast" and "stopped".
 public sealed class Probe : GameBehaviour
 {
-    public Guid Status, Metrics, Wall, Sensor;
+    public Guid Status, Metrics, Wall, Sensor, RayLine, SweepStop;
     private int step;
     private PhysicsHit? ray,sweep;
     private bool sensorInside,cornerClear,filtered;
@@ -24,6 +28,13 @@ public sealed class Probe : GameBehaviour
             ray=physics.Raycast(center,Vector2.UnitX,800,walls);
             sweep=physics.Sweep(Shape2D.Circle(center,20),new(800,0),walls);
             tick.Ui.SetText(Metrics,$"Ray {ray?.Distance:F1}     Sweep {sweep?.Distance:F1}     Sensor overlap {(sensorInside?1:0)}");
+            if (RayLine!=Guid.Empty && ray is { } hit) tick.Objects.SetLinePoints(RayLine,[center,hit.Point]);
+            if (SweepStop!=Guid.Empty && sweep is { } stop)
+            {
+                tick.Objects.SetLocalTransform(SweepStop,new LocalTransform2D(center+new Vector2(stop.Distance,0)-new Vector2(20),0,Vector2.One));
+                tick.Objects.SetActive(SweepStop,true);
+            }
+            tick.Session.Set("cast");
             step=1;
         }
         if (step==1 && tick.Input.Pressed("MoveRight"))
@@ -36,7 +47,8 @@ public sealed class Probe : GameBehaviour
         bool pass=crossed && filtered && cornerClear && sensorInside && ray?.Target.ObjectId==Wall && sweep?.Target.ObjectId==Wall &&
             Math.Abs(ray.Value.Distance-400)<.001f && Math.Abs(sweep.Value.Distance-380)<.001f &&
             sweep.Value.Normal==new Vector2(-1,0) && Math.Abs(tick.Position.X-460)<.001f;
-        tick.Ui.SetText(Status,$"{(pass?"PASS":"FAIL")}     Stop X {tick.Position.X:F1}     Sensor {(crossed?"entered":"missed")}     Both gates {(tick.Position.X>390?"passed":"blocked")}");
+        tick.Ui.SetText(Status,$"Stopped at x {tick.Position.X:F0}     Sensor {(crossed?"entered":"missed")}     Gates {(tick.Position.X>390?"passed":"blocked")}");
+        tick.Session.Set("stopped");
         var report=new GameData();
         report.Set("pass",pass); report.Set("sensorOverlap",sensorInside);report.Set("sensorEntered",crossed);
         report.Set("triggerExcluded",filtered);report.Set("emptyPolygonCorner",cornerClear);

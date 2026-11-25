@@ -4,7 +4,7 @@ CollisionLab의 충돌체 1만 개 방에 4096×4096 배경 PNG 네 장을 더�
 
 ## 준비
 
-[replay.py](replay.py) `prepare`는 `samples/CollisionLab`을 새 폴더에 복사한다. 그 복사본의 `Field10000.scene`에 배경 오브젝트 네 개를 추가하고, 그 씬의 QueryField 컴포넌트는 지운다. QueryField는 방에 들어온 첫 틱에 질의 4,032회를 실행해 연결 프레임을 약 140 ms 늘린다. 이 작업은 로딩이 아니므로 측정에서 제외한다.
+[replay.py](replay.py) `prepare`는 [collision_lab.py](../Shared/collision_lab.py)로 `samples/CollisionLab`을 새 폴더에 복사한다(시작 씬 `ShowcaseCasts`, 카메라의 FieldSelector, 빌드에 넣은 필드 씬). 그 복사본의 `Field10000.scene`에 배경 오브젝트 네 개를 추가하고, 그 씬의 QueryField 컴포넌트는 지운다. QueryField는 방에 들어온 첫 틱에 질의 4,032회를 실행해 연결 프레임을 약 140 ms 늘린다. 이 작업은 로딩이 아니므로 측정에서 제외한다.
 
 배경 PNG는 한 행을 회전한 행으로 이루어진다. 파일은 약 470 KB지만 디코딩할 때 64 MiB를 풀고, 모든 행에 Paeth 필터를 적용한다. 저장소에는 생성 스크립트만 둔다.
 

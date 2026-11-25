@@ -28,7 +28,7 @@ KeyRoom에서 **M**으로 방 안내를 열고 **Close**를 누른다. 방 안�
 
 ## 큰 방을 여러 프레임에 나눠 읽기
 
-`LoadSceneAsync`와 `AddSceneAsync`는 로딩 작업을 여러 업데이트에 나눈다. CollisionLab에서 **3**은 충돌체 1만 개 방으로 교체하고, **4**는 현재 방을 계속 실행하면서 그 방을 추가한다. 추가 중 **Backspace**를 누르면 취소한다. [실제 스크립트](../../samples/CollisionLab/Scripts/FieldSelector.cs)
+`LoadSceneAsync`와 `AddSceneAsync`는 로딩 작업을 여러 업데이트에 나눈다. CollisionLab [하네스 복사본](../../engine/tests/Shared/collision_lab.py)에서 **3**은 충돌체 1만 개 방으로 교체하고, **4**는 현재 방을 계속 실행하면서 그 방을 추가한다. 추가 중 **Backspace**를 누르면 취소한다. [실제 스크립트](../../samples/CollisionLab/Scripts/FieldSelector.cs)
 
 1. 워커 스레드가 YAML 씬을 읽는다.
 2. 게임 스레드가 업데이트마다 `state.SceneLoadBudgetMilliseconds`(기본 4 ms) 동안 오브젝트와 컴포넌트를 만든다. 예산이 끝나면 남은 오브젝트는 다음 업데이트에서 만든다. 오브젝트 하나는 중간에 멈추지 않는다.
