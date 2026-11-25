@@ -107,4 +107,3 @@
 | 검사 | 첫 실패 | 처리할 묶음 |
 | --- | --- | --- |
 | BuildSizeChecks | 빌드 용량 기준값 | 마지막 전체 회귀 때 다시 측정 |
-| Samples.GameText(하네스) | PlatformerLab 시나리오의 시작 씬 4fe9f1eb가 지워져 녹화가 맞지 않음 | PlatformerLab(KeyRoom 묶음에서 발견) |

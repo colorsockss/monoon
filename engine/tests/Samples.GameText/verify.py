@@ -13,7 +13,7 @@ SCENARIOS = {
     'KeyRoom': dict(project='64fb4cd6-2469-5cec-ba6d-9a49e61f42e7', start='dd96f9dd-668b-5df5-8786-252e6eb77e9e', frames=240,
                     events=[(10, 'I'), (40, 'L'), (90, 'I'), (100, 128, 'Left'), (160, 'I'), (200, 'L')],
                     captures=[5, 70, 190, 230]),
-    'PlatformerLab': dict(project='3b309c28-75ce-562e-92ac-f94ee48b18c7', start='4fe9f1eb-5dcd-5f90-a033-78a61e876a0d', frames=420,
+    'PlatformerLab': dict(project='3b309c28-75ce-562e-92ac-f94ee48b18c7', start='40845ca7-0281-5a45-878a-c1da3b04f822', frames=420,
                           # Run right onto the moving deck; the ferry cutscene opens its dialogue panel; Return advances.
                           events=[(10, 193, 'Right'), (290, 'Return'), (350, 'Return')],
                           captures=[260, 320, 380]),
