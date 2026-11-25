@@ -1,0 +1,12 @@
+version: 1
+values:
+  accessibility.locale: "ja"
+  accessibility.textScale: 1.5
+  accessibility.highContrast: true
+  accessibility.shakeScale: 1
+  accessibility.flashScale: 1
+  accessibility.rumble: true
+  name: "한글"
+  scroll: 37.600006103515625
+  saveFocused: true
+  sawComposition: true

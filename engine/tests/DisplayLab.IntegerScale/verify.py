@@ -10,7 +10,7 @@ import time
 import zlib
 
 LOGICAL = (800, 450)
-BADGE = (696, 42, 48, 48)  # logical rectangle of the 12 x 12 PixelBadge.png
+BADGE = (750, 26, 24, 24)  # logical rectangle of the 12 x 12 PixelBadge.png on ShowcaseDisplay's settings panel
 ART = ["............", ".##########.", ".#oooooooo#.", ".#o##oo##o#.", ".#o##oo##o#.", ".#oooooooo#.",
        ".#o######o#.", ".#oo####oo#.", ".#oooooooo#.", ".##########.", "....####....", "..########.."]
 
@@ -23,10 +23,8 @@ def expect(ok, message):
 
 def prepare(sample, destination):
     shutil.copytree(sample, destination, ignore=shutil.ignore_patterns('.monoon', '.DS_Store', 'bin', 'obj'))
-    settings = destination / 'GameSettings'
-    text = settings.read_text(encoding='utf-8')
-    assert 'integerScale' not in text
-    settings.write_text(text + 'integerScale: true\n', encoding='utf-8')
+    # The showcase sample already turns integer scale on; the copy keeps the harness's builds out of the repository.
+    assert 'integerScale: true' in (destination / 'GameSettings').read_text(encoding='utf-8')
 
 
 def read_png(path):
@@ -96,7 +94,7 @@ def analyse(path, client):
             x0, y0 = left + BADGE[0] * k + i * cell, top + BADGE[1] * k + j * cell
             block = {px(x, y) for y in range(y0, y0 + cell) for x in range(x0, x0 + cell)}
             if len(block) != 1 or seen.setdefault(texel, next(iter(block))) not in block: wrong.append((i, j, sorted(block)[:3]))
-    background = px(left + 20 * k, top + 20 * k)
+    background = px(left + (BADGE[0] - 4) * k, top + (BADGE[1] + 12) * k)  # the panel just left of the badge
     expect(not wrong and len(set(seen.values())) == 3 and seen['.'] == background,
            f'{path.name}: every badge texel is one uniform {cell}x{cell} block in one of three colours (no filtering) {wrong[:3]}')
     return dict(client=list(client), density=w / client[0], viewport=[left, top, width, height], scale=k)
@@ -134,20 +132,26 @@ def play(player, out, helper):
         report[name] = analyse(out / f'{name}.png', tuple(client))
     scales = [report[n]['scale'] for n in ['default', 'small', 'large']]
     expect(len(set(scales)) == 3, f'three window sizes use three whole scales {scales}')
-    expect(game_pixels(out / 'reopened.png', (1300, 760)) == game_pixels(out / 'large.png', (1300, 760)), 'the relaunched game reopens at the saved size with the same pixels')
+    expect(report['reopened']['viewport'] == report['large']['viewport'] and
+           badge_pixels(out / 'reopened.png', report['reopened']) == badge_pixels(out / 'large.png', report['large']),
+           'the relaunched game reopens at the saved size with the same viewport and badge pixels')
     (out / 'report.json').write_text(json.dumps(report, indent=2) + '\n')
 
 
-def game_pixels(path, client):
-    w, h, ch, rows = client_area(path, client)
-    return rows[2:]  # the first client point (2 px) carries the window's focus-dependent title bar separator
+def badge_pixels(path, shot):
+    # The showcase room animates (walking hero, flames, frame meter), so whole frames differ between runs; the badge on the
+    # settings panel is still.
+    w, h, ch, rows = client_area(path, tuple(shot['client']))
+    (left, top, _, _), k = shot['viewport'], shot['scale']
+    x0, y0 = left + BADGE[0] * k, top + BADGE[1] * k
+    return [rows[y][x0 * ch:(x0 + BADGE[2] * k) * ch] for y in range(y0, y0 + BADGE[3] * k)]
 
 
 def compare(release, aot):
     report = json.loads((Path(release) / 'report.json').read_text())
     for shot in sorted(Path(release).glob('*.png')):
-        client = report[shot.stem]['client']
-        expect(game_pixels(shot, client) == game_pixels(Path(aot) / shot.name, client), f'Release and Native AOT {shot.name} client pixels are identical')
+        expect(badge_pixels(shot, report[shot.stem]) == badge_pixels(Path(aot) / shot.name, report[shot.stem]),
+               f'Release and Native AOT {shot.name} badge pixels are identical')
 
 
 if __name__ == '__main__':

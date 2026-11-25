@@ -3,7 +3,7 @@ gameTitle: CardLab
 width: 800
 height: 450
 startScene: a272ed8e-b7f6-5570-992c-664053831571
-includedScenes: [a272ed8e-b7f6-5570-992c-664053831571, 1b7eb1cc-9243-552d-9d25-844015f98200]
+includedScenes: [a272ed8e-b7f6-5570-992c-664053831571]
 input:
   actions:
   - name: Draw

@@ -9,8 +9,14 @@ using Engine.Core;
 public sealed class OptionSetting : GameBehaviour
 {
     public int Action;
-    public Guid NameField, Language, Receipt;
+    public Guid NameField, Language, Receipt, Form;
     private static readonly string[] Locales = ["ko-KR", "ja", "en"];
+
+    // The save also records how it was reached (IME composition seen, save focused, form scroll) for Accessibility.Mac.
+    public override void UpdateUi(UiTick tick)
+    {
+        if (Action == 6 && tick.Ui.Preedit.Length != 0) tick.Session.Set("sawComposition");
+    }
 
     public override void OnUiValueChanged(UiValueChanged change)
     {
@@ -33,6 +39,9 @@ public sealed class OptionSetting : GameBehaviour
         ui.Preferences.SaveTo(settings);
         string name = ui.Value(NameField) ?? "";
         settings.Set("name", name);
+        settings.Set("scroll", ui.ScrollOffset(Form));
+        settings.Set("saveFocused", ui.Focused == click.ObjectId);
+        settings.Set("sawComposition", click.Session.Has("sawComposition"));
         try { if (click.Session.Storage.IsAvailable) click.Session.Storage.SaveSettings(settings); }
         catch (Exception e) when (e is IOException or UnauthorizedAccessException) { ui.SetText(Receipt, "Could not save."); return; }
         string saved = ui.Preferences.Locale switch { "ja" => "保存しました", "en" => "Saved", _ => "저장했습니다" };

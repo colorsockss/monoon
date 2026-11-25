@@ -432,7 +432,7 @@ objects:
     insetY: 4
   - type: script
     script: Showcase/OptionSetting
-    values: {"Action": 6, "NameField": "ad1f0b20-17c3-5304-ad5a-4388c5b0d394", "Language": "1df284bb-a49b-5284-99c7-fa20c7975970", "Receipt": "15c3ac98-2133-53f3-a945-9a2b65e24d94"}
+    values: {"Action": 6, "NameField": "ad1f0b20-17c3-5304-ad5a-4388c5b0d394", "Language": "1df284bb-a49b-5284-99c7-fa20c7975970", "Receipt": "15c3ac98-2133-53f3-a945-9a2b65e24d94", "Form": "5a9a28c3-514c-5a92-9d1c-7a03d7ecd439"}
 - id: feb6e55f-2f03-521f-a3a4-a7d74eee078b
   parentId: 2c1739c6-1174-5b57-a6ef-19e9e03e7302
   name: Tag 1

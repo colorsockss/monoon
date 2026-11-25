@@ -169,7 +169,7 @@ tick.Objects.SetWorldText(id, values[i]);   // 미리 만든 문자열: 프레�
 | 버튼 활성화 / 입력 시작 | Enter 또는 Space | 아래쪽 페이스 버튼(A / Cross) |
 | 입력 끝내기 | Enter, Esc 또는 Tab | 아래쪽 버튼으로 끝내기, 오른쪽 버튼으로 포커스 해제 |
 
-포커스 링으로 현재 위젯을 표시한다. 비활성·숨김 항목은 건너뛴다. 게임플레이가 있는 씬에서는 먼저 Tab이나 클릭으로 UI에 포커스를 주고, UI 전용 씬에서는 방향키·패드로 바로 탐색할 수 있다. [AccessLab 프로젝트](../../samples/AccessLab/)에는 한국어·일본어·영어로 바꿀 수 있는 설정 화면과 [저장 버튼 스크립트](../../samples/AccessLab/Scripts/PlayerOptions.cs)가 있다.
+포커스 링으로 현재 위젯을 표시한다. 비활성·숨김 항목은 건너뛴다. 게임플레이가 있는 씬에서는 먼저 Tab이나 클릭으로 UI에 포커스를 주고, UI 전용 씬에서는 방향키·패드로 바로 탐색할 수 있다. [AccessLab 프로젝트](../../samples/AccessLab/)에는 한국어·일본어·영어로 바꿀 수 있는 설정 화면과 [설정 스크립트](../../samples/AccessLab/Scripts/Showcase/OptionSetting.cs)가 있다.
 
 인벤토리 위에 확인창을 겹쳐 열고 각 단계의 입력과 포커스를 관리하려면 UI Rect에서 **Input mode root**를 켠다. [입력 모드 전환과 복귀](input-actions.md#입력-모드-전환과-복귀)
 

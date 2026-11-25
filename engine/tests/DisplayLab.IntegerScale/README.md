@@ -1,14 +1,14 @@
 # DisplayLab 정수 배율 검증 (16.8)
 
-`verify.py prepare`는 DisplayLab을 별도 폴더에 복사하고 `GameSettings`에 `integerScale: true`를 더한다. 저장소의 DisplayLab은 레터박스 그대로 두어 [8.7 화면 설정 검사](../DisplayLab.Desktop/README.md)의 기준을 바꾸지 않는다.
+`verify.py prepare`는 DisplayLab을 별도 폴더에 복사하고 `GameSettings`에 `integerScale: true`가 있는지 확인한다. 2026-11-26부터 샘플은 쇼케이스 씬 [ShowcaseDisplay](../../../samples/DisplayLab/Scenes/ShowcaseDisplay.scene) 하나이고 정수 배율을 켠 채로 배포한다.
 
 `verify.py play`는 배포 게임을 실제 Mac 창으로 네 번 연다. 프로필의 `display.settings`에 창 콘텐츠 크기 800×450, 720×540, 1300×760을 차례로 쓰고, 마지막에는 파일을 바꾸지 않고 다시 연다. 각 실행에서 `screencapture -l`로 창을 찍어 다음을 본다.
 
 - 검은 여백을 뺀 게임 영역이 정확히 800×450의 정수 배(Retina에서 2·1·3배)이고 가운데에 있다.
-- 오른쪽 위 [PixelBadge.png](../../../samples/DisplayLab/Assets/PixelBadge.png)(12×12, 논리 48×48)의 모든 텍셀이 한 색으로 채운 정사각형 블록이고, 전체가 세 색뿐이다. 캡처는 색 관리를 거치므로 정확한 RGB 대신 텍셀끼리 비교한다. 보간하면 경계에 중간색이 생겨 실패한다.
-- 다시 연 창의 게임 픽셀이 직전 1300×760 캡처와 같다.
+- 설정 패널 오른쪽 위 [PixelBadge.png](../../../samples/DisplayLab/Assets/PixelBadge.png)(12×12, 논리 24×24, (750, 26))의 모든 텍셀이 한 색으로 채운 정사각형 블록이고, 전체가 세 색뿐이다. 캡처는 색 관리를 거치므로 정확한 RGB 대신 텍셀끼리 비교한다. 보간하면 경계에 중간색이 생겨 실패한다.
+- 다시 연 창의 게임 영역 위치와 배지 픽셀이 직전 1300×760 캡처와 같다. 쇼케이스 방은 주인공·횃불·프레임 미터가 움직여 프레임 전체는 실행마다 다르다.
 
-`compare`는 Release와 Native AOT 캡처의 콘텐츠 픽셀이 같은지 비교한다. 첫 1pt(2px) 행은 창 포커스에 따라 바뀌는 제목 표시줄 구분선이라 제외한다.
+`compare`는 Release와 Native AOT 캡처의 배지 픽셀이 같은지 비교한다.
 
 ```sh
 qa=engine/tests/DisplayLab.IntegerScale

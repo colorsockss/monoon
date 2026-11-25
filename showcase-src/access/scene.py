@@ -99,7 +99,7 @@ label("Flashes", "번쩍임", "フラッシュ")
 child("Flash slider", 26, "  - type: uiSlider\n    minimum: 0\n    maximum: 100\n    step: 25\n    initial: 100\n" + script("OptionSetting", values(5)))
 save = s.oid(f"{row + 1:02d} Save")   # the button's own text becomes the receipt, so it stays in view while focused
 child("Save", 30, "  - type: uiButton\n" + text("Save settings", "설정 저장", "設定を保存", 14, extra="    insetX: 10\n    insetY: 4\n")
-      + script("OptionSetting", values(6, {"NameField": f'"{name}"', "Language": f'"{lang}"', "Receipt": f'"{save}"'})))
+      + script("OptionSetting", values(6, {"NameField": f'"{name}"', "Language": f'"{lang}"', "Receipt": f'"{save}"', "Form": f'"{s.oid("Settings")}"'})))
 
 tags = [("lang", "Three languages", "ko · ja · en"), ("scale", "Text scale", "75-200%"),
         ("contrast", "High contrast", "focus ring"), ("calm", "Calmer screen", "less shake, flash")]

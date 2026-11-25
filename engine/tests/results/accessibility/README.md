@@ -1,5 +1,19 @@
 # AccessLab — macOS UI·접근성 검증
 
+## 2026-11-26 쇼케이스 씬으로 다시 검증
+
+AccessLab의 기존 `AccessLab.scene`을 지우고 [ShowcaseOptions](../../../../samples/AccessLab/Scenes/ShowcaseOptions.scene)를 검증 대상으로 바꿨다([계획](../../../../docs/plans/showcase-replaces-samples.md)). 하네스가 이름 입력란을 클릭해 두벌식 **ㅎ ㅏ ㄴ ㄱ ㅡ ㄹ**을 치고, 언어 드롭다운을 Tab·Enter·↑·Enter로 日本語, 글자 크기 슬라이더를 → 두 번으로 150%로 바꾼다. 가상 패드 D-pad ↓·A로 고대비를 켜고, D-pad ↓ 두 번과 왼쪽 스틱 ↓로 저장 버튼까지 내려가 A로 저장한다. 저장 버튼 스크립트([OptionSetting](../../../../samples/AccessLab/Scripts/Showcase/OptionSetting.cs))가 `player.settings`에 설정과 함께 이름, 저장 시 포커스, 조합을 봤는지, 설정 패널 스크롤을 쓴다.
+
+| 실측 | Scene Play | Release | Native AOT |
+| --- | --- | --- | --- |
+| 이름 / 언어 / 글자 크기 / 고대비 | 한글 / ja / 1.5 / 켬 | 한글 / ja / 1.5 / 켬 | 한글 / ja / 1.5 / 켬 |
+| 저장 시 포커스 / 스크롤 오프셋 | 저장 / 37.6 | 저장 / 37.6 | 저장 / 37.6 |
+| 리사이즈 후 포커스 테두리 중앙 클릭 | 1100×720, 재저장 | 920×660, 재저장 | 920×660, 재저장 |
+
+[Scene Play](editor.settings) · [Release](release.settings) · [Native AOT](aot.settings) 설정 파일의 SHA-256은 모두 `280a7dc3192770f54b14b47619d3e682959e9aa3571ab6eb65106368ed0bdaa8`다. 캡처(`*-ready/composition/large/saved/resized.png`)는 이번 실행으로 바뀌었다. 하네스 수정: 에디터 툴바가 가운데로 옮겨진 뒤 Play 버튼 위치와 재생 중 판정(`■  Stop`)을 고쳤다. 새로 연 Release 창은 IME가 붙기 전에 첫 자모를 받은 적이 한 번 있어 클릭 뒤 대기를 1.2초로 늘렸다.
+
+## 2026-11-14 기존 AccessLab.scene
+
 2026-11-14, macOS 27.0.1 arm64. [AccessLab](../../../../samples/AccessLab/)을 에디터 Scene Play, .NET Release 앱, Native AOT 앱으로 각각 실행했다. 에디터는 프로젝트 복사본을 열고, 세 프로세스는 서로 다른 빈 사용자 데이터 폴더에서 시작했다.
 
 | 조작 및 실측 | Scene Play | Release | Native AOT |
