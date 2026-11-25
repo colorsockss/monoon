@@ -48,6 +48,7 @@ public sealed class MoveTrainer : GameBehaviour
         }
 
         // Charge: the meter shows how long J has been held; Triggered fires once at the 30th tick.
+        if (input.Released("Charge") && held is > 0 and < 30) Say(ui, $"Released J after {held} ticks: no charge yet.");
         held = input.Held("Charge") ? held + 1 : 0;
         t.Objects.Tween(Meter, TweenClock.Ui).UiRect(new RectangleF(0, 0, MathF.Min(held, 30) / 30f * MeterWidth, 0), .02f, TweenEase.Linear);
         if (input.Triggered("Charge"))
@@ -66,7 +67,7 @@ public sealed class MoveTrainer : GameBehaviour
             Light(ui, 1);
             float y = Pos(t, Hero).Y;
             t.Objects.Tween(Hero, TweenClock.Game).Move(new Vector2(HeroX + 14, y), .06f, TweenEase.EaseOut).Move(new Vector2(HeroX, y), .18f);
-            Say(ui, $"Flick: tap released after {pressTicks} ticks.");
+            Say(ui, "Flick: U released within 12 ticks.");   // a fast key can go down and up in one tick, so no count here
         }
         else if (input.Released("Flick") && pressTicks > 12) Say(ui, $"Held U for {pressTicks} ticks: too long for a tap.");
 

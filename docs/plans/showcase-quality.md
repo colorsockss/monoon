@@ -250,7 +250,7 @@ Parallax는 PlatformerLab의 한 씬이라 PlatformerLab 영상 안에서 다룬
 | PlatformerLab `ShowcaseCourse` (`platformer/course.py`, `CourseRunner.cs`) | 뼈대 애니메이션 러너(캡슐 + Character Motor 2D), 회전 관절 흔들다리, 슬라이더 관절 도르래, 베지어 Path Follower 2D 승강대와 곡선 Line 2D, Edge Collider 2D 언덕 | `PlatformerLab-Course.mp4` 20.7초 | 에디터 Play 녹화 |
 | CameraLab `ShowcaseFraming` (`camera/framing.py`, `FramingTour.cs`) | 데드존(상자 표시), 앞보기, 12초에 Frame 카메라로 바꿔 무리(Party) 프레이밍 줌아웃 | `CameraLab-Framing.mp4` 29.0초 | 에디터 Play 녹화. 생성기가 지운 Canvas의 손자 오브젝트를 남겨 빌드가 "Missing parent"로 실패했던 것을 고쳤다 |
 | SeedLab `ShowcaseRoute` (`seed/route.py`, `RouteCourier.cs`) | 타일셋 지형 비용(길 1, 풀 3, 진흙 8, 다리 1)으로 `TileNavigation.FindPath`, 실행 중 `SetTile`(비 → 진흙, 새 다리)로 다시 계산. 비용 29 → 42 → 19 | `SeedLab-Route.mp4` 15.6초 | 에디터 Play 녹화, `Tests/RouteTests.cs`(우회·남쪽 다리 경유) 통과 |
-| KeyRoom `ShowcaseMoves` (`keyroom/moves.py`, `MoveTrainer.cs`) | GameSettings 상호작용 Hold 30·Tap 12·DoubleTap 15, K로 Dash 키 실행 중 재설정 | 아직 없음 | `Tests/MoveTests.cs` 4개 통과(짧은 홀드·긴 탭·느린 더블탭은 안 됨, 재설정한 P로 대시). 글자 키 입력에 전체 화면 제어가 필요해 녹화를 미뤘다 |
+| KeyRoom `ShowcaseMoves` (`keyroom/moves.py`, `MoveTrainer.cs`) | GameSettings 상호작용 Hold 30·Tap 12·DoubleTap 15, K로 Dash 키 실행 중 재설정 | `KeyRoom-Moves.mp4` 25.0초 | 에디터 Play에서 직접 입력해 녹화(짧은 J, 긴 J, U 탭, 긴 U, O 더블탭, 느린 O 두 번, K → P 재설정, P 더블탭). `Tests/MoveTests.cs` 4개 통과. 합성 키는 누름·뗌이 한 틱에 들어올 수 있어 Flick 로그에서 틱 수를 뺐다 |
 
 - 다섯 씬 모두 포함 씬에 넣었고 `.monoon-assets`를 다시 만들었다. 네 샘플(CameraLab, KeyRoom, PlatformerLab, SeedLab) Release 빌드와 에셋 보고서를 확인했다. KeyRoom 기존 테스트 9개도 통과했다.
 - 아직 없음: 입력 기록·재생 영상, 카메라 디버그 그리기, 타일 청크 스트리밍, 오디오.
