@@ -160,6 +160,7 @@ public sealed partial class SceneGame : IGameObjects, IGame2D, IGameCameras, IDi
         public Vector2 CameraStart, CameraEnd, CameraTarget;
         public float CameraZoomStart, CameraZoomEnd;
         public bool CameraReady, CameraTracked;
+        public SplitPair? Split;
         public int Index, SubtreeEnd;
         private Vector2 start = obj.WorldPosition;
         private readonly List<MotionPath> translations = [];
@@ -588,7 +589,7 @@ public sealed partial class SceneGame : IGameObjects, IGame2D, IGameCameras, IDi
 
     private void DrawOverlays(ICanvas2D canvas, float interpolation)
     {
-        foreach (var extra in overlays) if (extra.Active) DrawCamera(canvas,extra,interpolation);
+        foreach (var extra in overlays) if (extra.Active && !Merged(extra,interpolation)) DrawCamera(canvas,extra,interpolation);
     }
 
     private ScreenFrame screen = ScreenFrame.None;
@@ -607,7 +608,10 @@ public sealed partial class SceneGame : IGameObjects, IGame2D, IGameCameras, IDi
     private int DrawCamera(ICanvas2D canvas, Body lens, float interpolation, List<Guid>? spriteOrder = null)
     {
         var shot=Sample(lens,interpolation);
+        double effectTime=Math.Max(0,Time.GameSeconds-(1-interpolation)*effectStep);
+        var own=State.Screen.Sample(lens.Id,effectTime);
         if (screen.Moves && lens.Camera!.Output!=Camera2DComponent.Minimap) shot=ScreenEffects.Move(shot,screen);
+        if (own.Moves) shot=ScreenEffects.Move(shot,own);
         var port=shot.Viewport;
         bool full=port.X==0 && port.Y==0 && port.Size==LogicalSize;
         using var clip=full?null:canvas.PushClip(port);
@@ -615,7 +619,6 @@ public sealed partial class SceneGame : IGameObjects, IGame2D, IGameCameras, IDi
         if (!full || lens!=ViewCamera) canvas.FillRectangle(port,Background);
         var frame=shot.World;
         var view=Matrix3x2.CreateTranslation(-frame.X,-frame.Y)*Matrix3x2.CreateScale(shot.Zoom)*Matrix3x2.CreateTranslation(port.X,port.Y);
-        double effectTime=Math.Max(0,Time.GameSeconds-(1-interpolation)*effectStep);
         var ranks = UseRenderGrid ? renderGrid?.Ranks(frame, drawOrder) : null;
         int count = ranks?.Count ?? drawOrder.Items.Length;
         var global = EngineFeatures.Lighting ? GlobalLight() : null;
@@ -659,8 +662,12 @@ public sealed partial class SceneGame : IGameObjects, IGame2D, IGameCameras, IDi
         {
             if (camera?.Active==true) OutlineView(camera,Color.White);
             foreach (var extra in overlays)
-                if (extra.Active && extra.Camera!.Output==Camera2DComponent.Extra) OutlineView(extra,Color.LightSkyBlue);
+                if (extra.Active && extra.Camera!.Output==Camera2DComponent.Extra && !Merged(extra,interpolation)) OutlineView(extra,Color.LightSkyBlue);
         }
+        // This camera's own colour adjustment, fade and flash stay inside its viewport, under the HUD.
+        if (own.Adjusted) canvas.AdjustRectangle(port,own.Multiply,own.Lift);
+        if (own.Fade.A > 0) canvas.FillRectangle(port,own.Fade);
+        if (own.Flash.A > 0) canvas.FillRectangle(port,own.Flash);
         return count;
 
         void OutlineView(Body other,Color color)

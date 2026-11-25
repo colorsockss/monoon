@@ -22,7 +22,7 @@ public partial class MainWindow
             return picker;
         }
         row("Output",Choices([Camera2DComponent.Primary,Camera2DComponent.Extra,Camera2DComponent.Minimap],camera.Output,
-            v=>{ camera.Output=v; RefreshComponentList(); }));
+            v=>{ camera.Output=v; if (v!=Camera2DComponent.Primary) camera.SplitWith=null; RefreshComponentList(); }));
         if (camera.Output==Camera2DComponent.Primary)
         {
             bool start=Inspected?.Id==Scene.Camera?.Id;
@@ -61,6 +61,34 @@ public partial class MainWindow
         ToolTip.SetTip(padding,"World pixels kept around the framed group."); row("Padding",padding);
         Box("Bounds",()=>camera.Bounds,b=>camera.Bounds=b,new(0,0,Scene.Settings.Width,Scene.Settings.Height),false);
         Box("Viewport",()=>camera.Viewport,b=>camera.Viewport=b,camera.DefaultViewport(),true);
+        if (camera.Output==Camera2DComponent.Primary) SplitRows();
+
+        // Merging split screen: an Extra camera to share the viewports with, the merge / split distances and the blend time.
+        void SplitRows()
+        {
+            var partners=new List<ObjectReference> { new(Guid.Empty,"None") };
+            partners.AddRange((Viewport.PlayWorld?.Objects??Scene.Objects).Where(o=>o.GetComponent<Camera2DComponent>()?.Output==Camera2DComponent.Extra)
+                .Select(o=>new ObjectReference(o.Id,ObjectPath(o))));
+            var paired=partners.Find(x=>x.Id==(camera.SplitWith??Guid.Empty));
+            if (paired==null) { paired=new(camera.SplitWith!.Value,"Missing camera"); partners.Add(paired); }
+            var pick=Choices(partners.ToArray(),paired,o=>
+            {
+                camera.SplitWith=o.Id==Guid.Empty?null:o.Id;
+                // Start from distances that fit the game view: merge within 40% of its width, split past 50%.
+                if (camera.SplitWith!=null && camera.MergeDistance==0)
+                    (camera.MergeDistance,camera.SplitDistance,camera.BlendSeconds)=(Scene.Settings.Width*.4f/camera.Zoom,Scene.Settings.Width*.5f/camera.Zoom,.5f);
+                RefreshComponentList();
+            });
+            ToolTip.SetTip(pick,"Extra camera that splits this view left and right when the two targets move apart.");
+            row("Split with",pick);
+            if (camera.SplitWith==null) return;
+            var merge=Field(camera.MergeDistance,.01m,1000000,1,v=>camera.MergeDistance=v);
+            ToolTip.SetTip(merge,"World pixels between the targets: closer than this merges the views."); row("Merge at",merge);
+            var split=Field(camera.SplitDistance,.01m,1000000,1,v=>camera.SplitDistance=v);
+            ToolTip.SetTip(split,"World pixels between the targets: farther than this splits the views (at least Merge at)."); row("Split at",split);
+            var blend=Field(camera.BlendSeconds,0,(decimal)Camera2DComponent.MaxBlendSeconds,.05m,v=>camera.BlendSeconds=v);
+            ToolTip.SetTip(blend,"Seconds the views take to merge or split."); row("Blend",blend);
+        }
 
         // Each coordinate pair shares the existing inspector field column.
         void Box(string label,Func<CameraRect?> read,Action<CameraRect?> write,CameraRect fallback,bool normalized)

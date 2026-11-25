@@ -81,7 +81,7 @@ public sealed partial class SceneDocument
                 copy.AddComponent(component is ScriptComponent script ? script.Duplicate(copies, library) :
                     component is Tilemap2DComponent { StreamTarget: Guid anchor } map && copies.TryGetValue(anchor,out var focus) ? map with { StreamTarget=focus.Id } :
                     component is Joint2DComponent { Connected: Guid link } joint && copies.TryGetValue(link, out var other) ? joint with { Connected = other.Id } :
-                    component is Camera2DComponent { Follow: Guid id } cam && copies.TryGetValue(id,out var followed) ? cam with { Follow=followed.Id } : component with { });
+                    component is Camera2DComponent cam ? cam.Relink(id => copies.TryGetValue(id, out var to) ? to.Id : null) : component with { });
         }
         return copies;
     }

@@ -193,8 +193,7 @@ public sealed partial class SceneGame
         foreach (var src in template.ParentFirst())
         {
             var obj = src.CopyTransform(ids[src.Id]);
-            obj.Components = src.Components.Select(Own).Select(c=>c is Camera2DComponent { Follow: Guid link } cam && ids.TryGetValue(link,out var mapped)
-                ? cam with { Follow=mapped } : c is Tilemap2DComponent { StreamTarget: Guid anchor } map && ids.TryGetValue(anchor,out var focus) ? map with { StreamTarget=focus } : c is Joint2DComponent { Connected: Guid connected } joint && ids.TryGetValue(connected,out var jointTarget)
+            obj.Components = src.Components.Select(Own).Select(c=>c is Camera2DComponent cam ? cam.Relink(ids) : c is Tilemap2DComponent { StreamTarget: Guid anchor } map && ids.TryGetValue(anchor,out var focus) ? map with { StreamTarget=focus } : c is Joint2DComponent { Connected: Guid connected } joint && ids.TryGetValue(connected,out var jointTarget)
                     ? joint with { Connected=jointTarget } : c).ToImmutableArray();
             var p = src.Parent == null ? owner : staged[src.Parent.Id];
             obj.SetParent(p?.Source);

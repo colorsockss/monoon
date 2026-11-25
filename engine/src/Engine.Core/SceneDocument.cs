@@ -16,7 +16,7 @@ public sealed partial class SceneDocument
     public const int Width = 800;
     [Obsolete("Use Settings.Height for a project's game resolution.")]
     public const int Height = 450;
-    internal const int CurrentVersion = 42;
+    internal const int CurrentVersion = 43;
     internal ScriptLibrary ResolveScripts(ScriptLibrary? library) => library ??
         ScriptLibrary.Open(ProjectDirectory ?? throw new InvalidDataException("Save the project before running scripts."));
 
@@ -204,7 +204,8 @@ public sealed partial class SceneDocument
         UpgradeHud();
         // Older readers must reject transformed scenes instead of silently flattening them.
         // 36–39 were reserved for other roadmap 16 work.
-        SchemaVersion = Objects.SelectMany(o => o.Components).Any(c => c is GlobalLight2DComponent or PointLight2DComponent { Shadows: true }) ? 42 :
+        SchemaVersion = Cameras.Any(o => o.GetComponent<Camera2DComponent>()!.Splits) ? 43 :
+            Objects.SelectMany(o => o.Components).Any(c => c is GlobalLight2DComponent or PointLight2DComponent { Shadows: true }) ? 42 :
             Objects.SelectMany(o => o.Components).Any(c => c is UiLayoutComponent { Axis: "Grid" or "Wrap" } or UiButtonComponent { Draggable: true }) ? 41 :
             Objects.SelectMany(o => o.Components).Any(c => c is Text2DComponent) ? 40 :
             Cameras.Any(o => o.GetComponent<Camera2DComponent>()!.Framing) ? 35 :

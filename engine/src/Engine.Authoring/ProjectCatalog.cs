@@ -68,6 +68,7 @@ public sealed class ProjectCatalog
                 }
                 foreach (var joint in o.Components.OfType<Joint2DComponent>()) if (joint.Connected is {} endpoint) ObjectRef(joint is DistanceJoint2DComponent ? "Distance Joint.Connected" : $"{joint.Kind[..^"Component".Length]}.Connected", endpoint);
                 if (o.GetComponent<Camera2DComponent>()?.Follow is {} follow) ObjectRef("Camera.Follow",follow);
+                if (o.GetComponent<Camera2DComponent>()?.SplitWith is {} pair) ObjectRef("Camera.SplitWith",pair);
                 if (o.GetComponent<Tilemap2DComponent>()?.StreamTarget is {} anchor) ObjectRef("Tilemap.StreamTarget",anchor);
                 Id(F("Cutscene Sequence"),o.GetComponent<CutsceneDirectorComponent>()?.Sequence,CutsceneSequence.Extension);
                 Id(F("Skeleton Rig"),o.GetComponent<SkeletonAnimator2DComponent>()?.Rig,SkeletonRig.Extension);

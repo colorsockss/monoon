@@ -194,14 +194,16 @@ public sealed partial class SceneViewport
         public IDisposable PushClip(RectangleF r) => context.PushClip(new Rect(r.X,r.Y,r.Width,r.Height));
         public void BeginColorAdjust() { }
         // Same arithmetic as the SDL layer (colour × multiply + lift) with blended fills over the game area.
-        public void EndColorAdjust(GameColor multiply, byte lift)
+        public void EndColorAdjust(GameColor multiply, byte lift) => Adjust(area, multiply, lift);
+        public void AdjustRectangle(RectangleF r, GameColor multiply, byte lift) => Adjust(new Rect(r.X,r.Y,r.Width,r.Height), multiply, lift);
+        private void Adjust(Rect region, GameColor multiply, byte lift)
         {
             void Fill(GameColor c, BitmapBlendingMode mode)
             {
                 using var pixel = new WriteableBitmap(new PixelSize(1,1), new Vector(96,96), Avalonia.Platform.PixelFormat.Rgba8888, Avalonia.Platform.AlphaFormat.Unpremul);
                 using (var target = pixel.Lock()) Marshal.Copy(new byte[] { c.R, c.G, c.B, 255 }, 0, target.Address, 4);
                 using var blend = context.PushRenderOptions(new RenderOptions { BitmapBlendingMode = mode, BitmapInterpolationMode = BitmapInterpolationMode.None });
-                context.DrawImage(pixel, new Rect(0,0,1,1), area);
+                context.DrawImage(pixel, new Rect(0,0,1,1), region);
                 Submissions++;
             }
             Fill(multiply, BitmapBlendingMode.Multiply);

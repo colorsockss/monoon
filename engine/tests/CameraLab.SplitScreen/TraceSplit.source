@@ -1,0 +1,27 @@
+using System;
+using System.Drawing;
+using System.Globalization;
+using System.IO;
+using Engine.Core;
+
+// Test-only observer copied into a disposable CameraLab with a merging split screen. It starts per-camera effects on fixed
+// ticks and writes one line per game tick: both cameras' viewport and centre, then each camera's and the screen's effects.
+public sealed class TraceSplit : GameBehaviour
+{
+    public Guid Main, Second;
+
+    public override void FixedUpdate(ScriptTick tick)
+    {
+        var screen = tick.Session.Screen;
+        long now = tick.Session.Time.TickCount;
+        if (now == 20) { screen.For(Main).Adjust(Color.White, -1); screen.For(Second).Flash(Color.Red, .3); }
+        if (now == 24) screen.For(Main).Adjust(Color.White, 0);
+        if (now == 90) { screen.For(Main).Shake(6, .5); screen.For(Second).ZoomPunch(.2f, .5); }
+        if (Environment.GetEnvironmentVariable("MONOON_SPLIT_TRACE") is not { Length: > 0 } path) return;
+        if (!tick.Cameras.TryGetView(Main, out var a) || !tick.Cameras.TryGetView(Second, out var b)) return;
+        static string F(float v) => v.ToString("R", CultureInfo.InvariantCulture);
+        static string V(CameraView v) => $"{v.Viewport.X},{v.Viewport.Y},{v.Viewport.Width},{v.Viewport.Height},{F(v.Center.X)},{F(v.Center.Y)},{F(v.Zoom)}";
+        static string E(ScreenFrame f) => $"{F(f.Shake.X)},{F(f.Shake.Y)},{F(f.Zoom)},{f.Flash.A},{f.Fade.A},{f.Tint.R},{F(f.Brightness)}";
+        File.AppendAllText(path, $"{now}|{V(a)}|{V(b)}|{E(screen.For(Main).Current)}|{E(screen.For(Second).Current)}|{E(screen.Current)}\n");
+    }
+}

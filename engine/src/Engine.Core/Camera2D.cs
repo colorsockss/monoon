@@ -32,13 +32,29 @@ public sealed partial record Camera2DComponent
     public string? FrameGroup { get; set; }
     public float FramePadding { get; set; }
     public const float MaxLookAhead = 10;
+    // Merging split screen: this Primary camera and the Extra camera SplitWith share the union of their viewports. Closer
+    // targets than MergeDistance (world pixels) merge into this view at their midpoint; farther than SplitDistance splits
+    // it left and right again. The transition takes BlendSeconds.
+    public Guid? SplitWith { get; set; }
+    public float MergeDistance { get; set; }
+    public float SplitDistance { get; set; }
+    public float BlendSeconds { get; set; }
+    public const float MaxBlendSeconds = 10;
 
+    // Copies of a subtree point at the copied Follow and SplitWith objects; links outside it stay.
+    internal Camera2DComponent Relink(Func<Guid,Guid?> copy) => this with {
+        Follow=Follow is Guid f ? copy(f) ?? f : null, SplitWith=SplitWith is Guid s ? copy(s) ?? s : null };
+    internal Camera2DComponent Relink(IReadOnlyDictionary<Guid,Guid> ids) => Relink(id => ids.TryGetValue(id,out var to) ? to : null);
     internal bool Tracks => Follow!=null || FrameGroup!=null;
     internal bool Framing => DeadZoneWidth!=0 || DeadZoneHeight!=0 || LookAhead!=0 || FrameGroup!=null || FramePadding!=0;
+    internal bool Splits => SplitWith!=null || MergeDistance!=0 || SplitDistance!=0 || BlendSeconds!=0;
     internal bool Extended => Output!=Primary || Viewport!=null || Order!=0 || Follow!=null || HalfLife!=0 || Bounds!=null || Framing;
     internal void Validate(string owner)
     {
         static bool Size(float v) => float.IsFinite(v) && v>=0;
+        if (!Size(MergeDistance) || !Size(SplitDistance) || !Size(BlendSeconds) || BlendSeconds>MaxBlendSeconds ||
+            SplitWith!=null && (Output!=Primary || MergeDistance<=0 || SplitDistance<MergeDistance))
+            throw new InvalidDataException($"{owner}: a split screen needs a Primary camera, a merge distance above 0, a split distance at least as large and a blend of 0–{MaxBlendSeconds} seconds.");
         if (!(Zoom>=MinZoom && Zoom<=MaxZoom) || Output is not (Primary or Extra or Minimap) ||
             !float.IsFinite(HalfLife) || HalfLife<0 || Bounds is { Valid:false } ||
             !Size(DeadZoneWidth) || !Size(DeadZoneHeight) || !Size(FramePadding) || !Size(LookAhead) || LookAhead>MaxLookAhead ||
@@ -49,9 +65,9 @@ public sealed partial record Camera2DComponent
 
     private static readonly CameraRect Full=new(0,0,1,1), Inset=new(.73f,.03f,.25f,.25f);
     public CameraRect DefaultViewport() => Output==Minimap ? Inset : Full;
-    internal Rectangle Port(Size resolution)
+    internal Rectangle Port(Size resolution) { var v=Viewport??DefaultViewport(); return Port(resolution,new(v.X,v.Y,v.Width,v.Height)); }
+    internal static Rectangle Port(Size resolution,RectangleF v)
     {
-        var v=Viewport??DefaultViewport();
         // Round shared edges, not widths: split views meet even at odd logical resolutions.
         static int Edge(float value,int extent) => Math.Clamp((int)MathF.Round(value*extent),0,extent);
         int left=Math.Min(resolution.Width-1,Edge(v.X,resolution.Width)), top=Math.Min(resolution.Height-1,Edge(v.Y,resolution.Height));
@@ -59,9 +75,10 @@ public sealed partial record Camera2DComponent
     }
     public CameraView View(Size resolution,Vector2 center) => View(resolution,center,Zoom);
     // zoom: the group framing's zoom. Bounds may still raise it so the view never shows outside the map.
-    public CameraView View(Size resolution,Vector2 center,float zoom)
+    public CameraView View(Size resolution,Vector2 center,float zoom) => View(Port(resolution),center,zoom);
+    // port: this camera's viewport in logical pixels (a split screen moves it at run time).
+    internal CameraView View(Rectangle port,Vector2 center,float zoom)
     {
-        var port=Port(resolution);
         if (Bounds is {} b) zoom=Math.Max(zoom,Math.Max(port.Width/b.Width,port.Height/b.Height));
         float w=port.Width/zoom,h=port.Height/zoom;
         var frame=new RectangleF(center.X-w/2,center.Y-h/2,w,h);

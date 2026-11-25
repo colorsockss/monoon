@@ -244,6 +244,7 @@ internal sealed class MacSceneHost : NativeControlHost
         public IDisposable PushClip(RectangleF r) => target.PushClip(ToPixels(r));
         public void BeginColorAdjust() => target.BeginColorAdjust();
         public void EndColorAdjust(Color multiply, byte lift) => target.EndColorAdjust(multiply, lift);
+        public void AdjustRectangle(RectangleF r, Color multiply, byte lift) => target.AdjustRectangle(ToPixels(r), multiply, lift);
         public void BeginLighting(RectangleF area, Color ambient) => target.BeginLighting(ToPixels(area), ambient);
         public void DrawLight(ShaderClip sheet, RectangleF local, System.Numerics.Matrix3x2 matrix, Color tint, ReadOnlySpan<System.Numerics.Vector2> shadowQuads, System.Numerics.Matrix3x2 view)
         {

@@ -394,6 +394,25 @@ public sealed class SdlCanvas(SdlRenderer renderer, Func<ShaderClip, RgbaImage>?
         renderer.SetRenderClipRect(hasClip ? &clip : null);
     }
 
+    // One camera viewport in canvas units, straight on the current target: its pixels are opaque, so MOD and ADD need no layer.
+    public unsafe void AdjustRectangle(RectangleF area, Color multiply, byte lift)
+    {
+        FlushSprites();
+        var bounds = new SdlFRect { x = area.X, y = area.Y, w = area.Width, h = area.Height };
+        renderer.SetRenderDrawBlendMode(4);
+        renderer.SetRenderDrawColor(multiply.R, multiply.G, multiply.B, 255);
+        renderer.RenderFillRect(&bounds);
+        directDraws++;
+        if (lift > 0)
+        {
+            renderer.SetRenderDrawBlendMode(2);
+            renderer.SetRenderDrawColor(lift, lift, lift, 255);
+            renderer.RenderFillRect(&bounds);
+            directDraws++;
+        }
+        renderer.SetRenderDrawBlendMode(1);
+    }
+
     public unsafe void EndColorAdjust(Color multiply, byte lift)
     {
         FlushSprites();

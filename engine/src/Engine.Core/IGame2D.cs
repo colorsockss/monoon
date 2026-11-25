@@ -56,6 +56,9 @@ public interface ICanvas2D
     // Screen colour adjustment: the world drawn between these calls is multiplied by a colour, then lifted toward white.
     void BeginColorAdjust() => throw new NotSupportedException("This canvas does not implement screen colour adjustment.");
     void EndColorAdjust(Color multiply, byte lift) { }
+    // One camera's colour adjustment: the same arithmetic over area of what is already drawn there (opaque camera pixels).
+    void AdjustRectangle(RectangleF area, Color multiply, byte lift) =>
+        throw new NotSupportedException("This canvas does not implement camera colour adjustment.");
     // 2D lighting (roadmap 16.7). BeginLighting starts a lightmap over area (canvas units) cleared to ambient; DrawLight adds
     // one falloff sprite to it with shadow quads (4 world points each, drawn with view) cut out of that light only;
     // EndLighting multiplies what is already drawn under area by the lightmap. This fallback, for canvases without render

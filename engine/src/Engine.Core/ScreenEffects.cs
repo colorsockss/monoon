@@ -19,11 +19,31 @@ public readonly record struct ScreenFrame(Vector2 Shake, float Zoom, Color Fade,
 /// Camera shake, zoom punch, fade, flash and colour adjustment of the whole game screen. Effects run on game time and shake
 /// phases come from a fixed seed, so the same calls on the same ticks draw the same frames in a replay; pausing freezes them.
 /// Shake and zoom move every Primary and Extra view (not minimaps) without changing <see cref="IGameCameras.TryGetView"/>.
+/// <see cref="For"/> gives the same effects for one camera: they move only that view and cover only its viewport.
 /// </summary>
 public sealed class ScreenEffects
 {
+    private const ulong Seed = 0x5348414B45;
     private readonly SessionState state;
-    internal ScreenEffects(SessionState state) => this.state = state;
+    private readonly bool single;
+    private Dictionary<Guid, ScreenEffects>? views;
+    internal ScreenEffects(SessionState state) => (this.state, seeds) = (state, new(Seed));
+    // Guid.GetHashCode xors the four ints: the same per-camera phases on every platform and run.
+    private ScreenEffects(SessionState state, Guid camera) => (this.state, seeds, single) = (state, new(Seed ^ (uint)camera.GetHashCode()), true);
+
+    /// <summary>
+    /// Effects of one camera only: shake and zoom move that view (minimaps included), and flash, fade and colour adjustment cover
+    /// its viewport but not the HUD. They combine with the screen-wide effects and last for the session like them.
+    /// </summary>
+    public ScreenEffects For(Guid camera)
+    {
+        if (single) throw new InvalidOperationException("Call For on Session.Screen, not on one camera's effects.");
+        views ??= new();
+        if (!views.TryGetValue(camera, out var effects)) views[camera] = effects = new(state, camera);
+        return effects;
+    }
+    internal ScreenFrame Sample(Guid camera, double t) =>
+        views != null && views.TryGetValue(camera, out var effects) ? effects.Sample(t) : ScreenFrame.None;
 
     private readonly record struct Ramp(double Start, double Seconds, Vector4 From, Vector4 To)
     {
@@ -34,7 +54,7 @@ public sealed class ScreenEffects
         // Full strength on the first tick, easing out to zero at the end.
         public float At(double t) => t < Start || t >= Start + Seconds ? 0 : Strength * (float)Math.Pow(1 - (t - Start) / Seconds, 2);
     }
-    private readonly SeededRandom seeds = new(0x5348414B45);
+    private readonly SeededRandom seeds;
     private Pulse shake, zoom, flash;
     private float frequency;
     private double phaseX, phaseY;
@@ -90,7 +110,7 @@ public sealed class ScreenEffects
         adjust = new(Now, seconds, adjust.At(Now), new(tint.R / 255f, tint.G / 255f, tint.B / 255f, brightness));
     }
 
-    /// <summary>Stops every effect at once.</summary>
+    /// <summary>Stops every effect of this screen or camera at once (Session.Screen.Clear leaves the per-camera effects).</summary>
     public void Clear()
     {
         shake = zoom = flash = default;

@@ -96,7 +96,7 @@ public sealed partial class SceneDocument
                         Tilemap2DComponent {StreamTarget: Guid anchor} map when copies.TryGetValue(anchor,out var focus) => map with { StreamTarget=focus.Id },
                         Joint2DComponent {Connected: Guid linkId} joint when copies.TryGetValue(linkId, out var other) => joint with { Connected = other.Id },
                         ScriptComponent script => script.Duplicate(copies,library),
-                        Camera2DComponent {Follow: Guid follow} camera when copies.TryGetValue(follow,out var target)=>camera with {Follow=target.Id},
+                        Camera2DComponent camera=>camera.Relink(id=>copies.TryGetValue(id,out var to)?to.Id:null),
                         _=>component });
                 }
                 baseline[source]=PrefabMerge.Snapshot(mapped);
@@ -126,9 +126,9 @@ public sealed partial class SceneDocument
             }
             if (component is Camera2DComponent cam)
             {
-                Guid? target=cam.Follow is Guid id && copies.TryGetValue(id,out var followed) ? followed.Id :
-                    exporting ? null : previous?.GetComponent<Camera2DComponent>()?.Follow;
-                dest.AddComponent(cam with { Follow=target }); continue;
+                Guid? Link(Guid? own,Guid? old) => own is Guid id && copies.TryGetValue(id,out var linked) ? linked.Id : exporting ? null : old;
+                var before=previous?.GetComponent<Camera2DComponent>();
+                dest.AddComponent(cam with { Follow=Link(cam.Follow,before?.Follow), SplitWith=Link(cam.SplitWith,before?.SplitWith) }); continue;
             }
             if (component is not ScriptComponent script) { dest.AddComponent(component with { }); continue; }
             var clone = script.Duplicate(copies, library);

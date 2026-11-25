@@ -35,6 +35,32 @@ CameraLab 복사본에서 주 카메라에 데드존 120×80과 앞보기 0.25�
 
 **Viewport → Custom region**을 켜고 화면 왼쪽 위 기준 **X, Y, W, H**를 0–1 비율로 입력한다. 두 플레이어를 좌우로 나누려면 Primary는 `0, 0, 0.5, 1`, Extra는 `0.5, 0, 0.5, 1`이다. 각자 Follow 대상을 정한다. 위아래 분할도 같은 방식으로 높이를 반씩 나누면 된다. 각 화면의 종횡비를 유지하며, 겹치는 곳에서는 나중 카메라가 자기 영역을 덮는다.
 
+### 가까우면 합쳐지고 멀어지면 갈라지는 분할 화면
+
+위처럼 좌우로 나눈 두 카메라를 한 쌍으로 묶으면, 두 대상이 가까울 때는 한 화면으로 합쳐 두 대상의 중점을 따라가고 멀어지면 다시 좌우로 갈라진다.
+
+1. 왼쪽 Primary 카메라의 Inspector에서 **Split with**에 오른쪽 Extra 카메라를 고른다. 목록에는 Output이 Extra인 카메라만 나온다. 처음 고르면 **Merge at**·**Split at**이 게임 화면 폭의 40%·50%(÷ Zoom), **Blend**가 0.5초로 채워진다.
+2. **Merge at** / **Split at**: 두 대상(각 카메라의 Follow 또는 Frame 그룹 중심) 사이의 월드 거리. 첫 값보다 가까워지면 합치고, 둘째 값보다 멀어지면 가른다. 그 사이에서는 지금 상태를 유지하므로 경계 근처에서 깜빡이지 않는다. 둘째 값은 첫 값 이상이어야 한다. 예: 800×450 화면, Zoom 1이면 `320`과 `400`. 두 대상이 화면 한가운데에서 엇갈리며 지나가는 게임은 차이를 100px 이상 둔다.
+3. **Blend**: 합치거나 가르는 데 걸리는 초(0–10, 0이면 즉시). viewport 폭과 카메라 중심이 smoothstep으로 함께 바뀐다. 갈라질 때 새 화면은 합쳐진 화면에서 그 자리에 보이던 부분에서 열리기 시작한다.
+
+합친 화면은 두 카메라 viewport를 감싸는 사각형이다. 예를 들어 `0, 0, 0.5, 0.889`와 `0.5, 0, 0.5, 0.889`이면 아래 HUD 줄을 뺀 `0, 0, 1, 0.889`를 Primary 카메라가 쓴다. 갈라질 때 왼쪽에 있는 대상의 카메라가 왼쪽 절반을 맡는다. 좌우는 갈라지는 순간 정하고 다시 합칠 때까지 유지한다. 씬을 시작할 때 이미 멀리 있으면 전환 없이 갈라진 상태로 시작한다. Bounds, Half-life, Deadzone, Lead time, Zoom은 각 카메라 설정대로 계속 적용된다. 미니맵 등 쌍에 속하지 않은 카메라는 영향을 받지 않는다. 미니맵의 하늘색 시야 테두리는 갈라진 동안에만 그린다.
+
+합쳐진 동안 Extra 카메라는 그리지 않고, `TryGetView(extraId)`는 Primary 카메라와 같은 시야를 돌려준다. Primary 카메라를 시작 카메라로 두고, 두 카메라 모두 Follow(또는 Frame 그룹)를 지정한다. 이 설정을 쓴 씬은 schemaVersion 43으로 저장되어 이전 플레이어는 읽지 않는다.
+
+```yaml
+- type: camera2D
+  output: Primary
+  viewport: {x: 0, y: 0, width: 0.5, height: 0.8888889}
+  follow: 45c4c558-3fb3-5861-88e3-dfd8a5c5bae3        # 플레이어 1
+  halfLife: 0.16
+  splitWith: 44e4c6f9-a8d1-5d37-a753-a54a9fdb7a39     # Output: Extra인 두 번째 카메라
+  mergeDistance: 600
+  splitDistance: 700
+  blendSeconds: 0.25
+```
+
+CameraLab 복사본에서 두 플레이어가 가운데에서 엇갈릴 때 한 번 합쳐지고 다시 반대쪽으로 갈라지는 검증이 [CameraLab.SplitScreen](../../engine/tests/CameraLab.SplitScreen)이다. [Mac 세 실행 경로 기록](../../engine/tests/results/camera-split-fx/README.md)
+
 맵 전체를 표시하려면 Minimap의 Follow를 None으로 두고 Transform을 맵 중심에 놓는다. 예제의 1600×896 맵은 **Zoom 0.125**, **200×112 논리 픽셀**에서 정확히 들어맞는다. HUD는 모든 카메라가 그려진 뒤 게임 해상도 기준으로 한 번만 그린다. 샘플은 아래쪽 50px를 HUD 전용으로 비워 둔다.
 
 ## 스크립트에서 카메라 읽기
@@ -49,7 +75,7 @@ if (tick.Cameras.TryGetView(cameraId, out var view))
 }
 ```
 
-이 API는 마지막으로 완료한 시뮬레이션 상태를 반환한다. 렌더 보간이나 창의 레터박스는 논리 좌표에 포함하지 않는다. `TrySetActive(id)`로 Primary 사이를 전환할 수 있다. Extra와 Minimap은 자신의 오브젝트를 활성화·비활성화해 표시를 제어한다.
+이 API는 마지막으로 완료한 시뮬레이션 상태를 반환한다. 렌더 보간이나 창의 레터박스는 논리 좌표에 포함하지 않는다. `view.Viewport`는 분할 화면이 합쳐지거나 갈라지는 동안 바뀐 영역이다. `TrySetActive(id)`로 Primary 사이를 전환할 수 있다. Extra와 Minimap은 자신의 오브젝트를 활성화·비활성화해 표시를 제어한다. 분할 쌍의 Extra 카메라를 비활성화하면 Primary 카메라가 Blend 동안 합친 영역 전체로 넓어져 자기 대상을 따라가고, 다시 활성화하면 거리 규칙대로 갈라진다.
 
 [Mac 실행 화면과 측정 기록](../../engine/tests/results/cameras/README.md)
 
@@ -69,6 +95,27 @@ CameraLab을 Play하고 **1**(패드 West)을 누르면 두 화면이 흔들리�
 | `Clear()` / `Current` | 모든 효과를 끈다. / 마지막 게임 틱의 값(흔들림 오프셋, 배율, 덮개·플래시·보정 색)을 반환한다. |
 
 흔들림과 줌은 Primary와 Extra 화면에만 적용되고 미니맵은 그대로다. 그리는 위치만 바뀌므로 `TryGetView`와 충돌·추적 결과는 달라지지 않는다. 효과는 게임 시간으로 진행해 일시정지하면 멈추고, 흔들림 위상은 고정 시드에서 정해진다. 같은 틱에 같은 호출을 하면 입력 재생과 세 실행 경로에서 같은 프레임이 그려진다.
+
+### 카메라 하나에만 거는 효과
+
+`tick.Session.Screen.For(cameraId)`는 그 카메라 하나의 효과를 돌려준다. 위 표의 메서드를 그대로 쓴다. 같은 카메라에는 늘 같은 객체가 돌아오므로 필드에 담아 두어도 된다.
+
+```csharp
+var p1 = tick.Session.Screen.For(Player1Camera);
+p1.Shake(6, .3);                                  // 1P 화면만 흔들린다
+tick.Session.Screen.For(Player2Camera).Flash(Color.Red, .25);   // 2P 화면만 빨갛게
+p1.Adjust(Color.FromArgb(160, 160, 255), -.2f, .5);            // 1P 화면만 파랗고 어둡게
+p1.Adjust(Color.White, 0);                        // 끄기
+```
+
+| | `Session.Screen` | `Session.Screen.For(id)` |
+| --- | --- | --- |
+| 흔들림·줌 펀치 | Primary·Extra 화면 전체(미니맵 제외) | 그 카메라 화면만(미니맵 카메라도 가능) |
+| 섬광·페이드 | 게임 화면 전체, HUD 포함 | 그 카메라 viewport 안만, HUD 제외 |
+| 색 보정 | 모든 카메라 화면 | 그 카메라 viewport 안만 |
+| `Clear()` | 화면 전체 효과만 끈다 | 그 카메라 효과만 끈다 |
+
+둘을 함께 쓰면 합성된다. 흔들림은 더해지고, 색 보정은 카메라 것을 먼저 적용한 뒤 화면 전체 것을 곱한다. 접근성 `ShakeScale`·`FlashScale`도 똑같이 곱한다. 흔들림 위상은 카메라 ID에서 정해지므로 같은 씬·같은 입력이면 세 실행 경로에서 같은 프레임이 그려진다. 합쳐진 분할 화면에서는 Extra 카메라를 그리지 않으므로 그 카메라의 효과도 보이지 않는다. 플레이어는 카메라 viewport 위에 곱하기·더하기 채우기를 한 번씩 더 그리고(렌더 타깃 없음), 프레임마다 할당하지 않는다. `For`는 `Session.Screen`에서만 부른다.
 
 색 보정은 HUD를 제외한 카메라 화면에, 페이드와 플래시는 HUD까지 덮는다. 플레이어와 Scene Play는 월드를 창 픽셀 크기의 SDL3 렌더 타깃에 그린 뒤 곱하기·더하기 블렌드로 보정하고 창에 합성한다. 보정이 꺼져 있으면 렌더 타깃을 거치지 않는다. Windows 에디터의 Avalonia 미리보기는 같은 계산을 블렌드 채우기로 그린다.
 

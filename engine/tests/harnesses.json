@@ -950,6 +950,93 @@
    ]
   },
   {
+   "id": "CameraLab.SplitScreen",
+   "samples": [
+    "CameraLab"
+   ],
+   "modes": [
+    "scene-play",
+    "release",
+    "native-aot"
+   ],
+   "needs": [
+    "editor",
+    "gui",
+    "templates"
+   ],
+   "probe": "SplitScreenProbe",
+   "baselines": [],
+   "watch": [
+    "engine/src/Engine.Core/Camera2D.cs",
+    "engine/src/Engine.Core/SceneCameras.cs",
+    "engine/src/Engine.Core/ScreenEffects.cs",
+    "engine/src/Engine.Desktop/SdlCanvas.cs",
+    "engine/src/Engine.Editor/Inspector/MainWindow.Cameras.cs"
+   ],
+   "steps": [
+    {
+     "kind": "probe",
+     "modes": [
+      "scene-play"
+     ],
+     "run": "dotnet build \"$qa\" -c Release -m:1 -p:UsedAvaloniaProducts="
+    },
+    {
+     "kind": "prepare",
+     "run": "python3 \"$qa/verify.py\" prepare samples/CameraLab \"$work/CameraLab\""
+    },
+    {
+     "kind": "build",
+     "modes": [
+      "release"
+     ],
+     "run": "./monoon build \"$work/CameraLab\" release --profile distribution --output \"$work/builds\""
+    },
+    {
+     "kind": "build",
+     "modes": [
+      "native-aot"
+     ],
+     "run": "./monoon build \"$work/CameraLab\" native-aot --profile distribution --output \"$work/builds\""
+    },
+    {
+     "kind": "play",
+     "modes": [
+      "release"
+     ],
+     "run": "python3 \"$qa/verify.py\" play \"$work/builds/CameraLab.app/Contents/MacOS/MoNoonPlayer\" \"$work/release\""
+    },
+    {
+     "kind": "play",
+     "modes": [
+      "native-aot"
+     ],
+     "run": "python3 \"$qa/verify.py\" play \"$work/builds/NativeAOT/CameraLab.app/Contents/MacOS/MoNoonPlayer\" \"$work/aot\""
+    },
+    {
+     "kind": "prepare",
+     "run": "python3 \"$qa/verify.py\" prepare samples/CameraLab \"$work/play/CameraLab\""
+    },
+    {
+     "kind": "editor",
+     "modes": [
+      "scene-play"
+     ],
+     "gui": true,
+     "run": "$lock python3 \"$qa/editor.py\" $app \"$work/play/CameraLab\" $bin/SplitScreenProbe/release/SplitScreenProbe.dll \"$work/scene-play\""
+    },
+    {
+     "kind": "compare",
+     "modes": [
+      "scene-play",
+      "release",
+      "native-aot"
+     ],
+     "run": "python3 \"$qa/verify.py\" check \"$work/scene-play\" \"$work/release\" \"$work/aot\""
+    }
+   ]
+  },
+  {
    "id": "CollisionLab.EditorPerf",
    "samples": [
     "CollisionLab"
