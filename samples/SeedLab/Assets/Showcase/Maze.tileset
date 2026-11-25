@@ -1,0 +1,21 @@
+image: a7336b29-9f30-553b-bd22-560e0fc50168
+tileSize: {width: 32, height: 32}
+margin: 0
+spacing: 0
+nextId: 6
+tiles:
+- id: 1
+  source: {x: 0, y: 0, width: 32, height: 32}
+  solid: true
+- id: 2
+  source: {x: 32, y: 0, width: 32, height: 32}
+  solid: false
+- id: 3
+  source: {x: 64, y: 0, width: 32, height: 32}
+  solid: false
+- id: 4
+  source: {x: 96, y: 0, width: 32, height: 32}
+  solid: false
+- id: 5
+  source: {x: 128, y: 0, width: 32, height: 32}
+  solid: false

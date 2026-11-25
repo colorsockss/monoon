@@ -1,0 +1,13 @@
+duration: 28
+prewarm: true
+rate: 6
+maxParticles: 512
+shape: Box
+width: 4
+height: 450
+direction: 180
+spread: 0
+speed: {min: 30, max: 30}
+lifetime: {min: 27.33, max: 27.33}
+size: {min: 2, max: 2}
+color: {min: "#8C7CC0"}

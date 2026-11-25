@@ -1,0 +1,699 @@
+schemaVersion: 42
+objects:
+- id: 28ae72e3-83b8-57b8-b45a-2f8c1096e196
+  name: Runner
+  x: 78
+  y: 300
+  width: 22
+  height: 30
+  components:
+  - type: boxCollider2D
+    layer: 1
+  - type: rigidbody2D
+    freezeRotation: true
+  - type: particleEmitter2D
+    particles: 414d124e-1584-5d99-bcd2-00f409d6d342
+    trigger: Landing
+    offsetY: 14
+  - type: characterMotor2D
+  - type: script
+    script: "Runner"
+    values: {"Crossing": "aa3341d7-e660-5897-97d2-c381f7781199", "Ramp": "e70cebb0-0ef8-5472-a5b9-cd3aacff666c", "Ferry": "4c68af1e-0aea-503c-aed8-67b2efab19e6", "Anchor": "e6b334ea-53a4-5e4c-ae16-6f31b4edcb6f", "Bob": "804e8e8e-8467-56ed-bc5b-681fa97abb27", "Readout": "cd0e1182-9f8c-5665-b23e-714179e29a09", "Result": "a8ddbb2a-a5e2-5077-9e47-6b49daf16479"}
+  - type: script
+    script: BeatFlags
+    values: {"Ledge": "62b3835e-d06d-590f-8cb1-4607513352f7", "Ramp": "e70cebb0-0ef8-5472-a5b9-cd3aacff666c", "Ferry": "4c68af1e-0aea-503c-aed8-67b2efab19e6", "Lookout": "a848c454-5f39-5b5a-bc81-b0a09597025b"}
+- id: a581858d-3676-5ea4-82cc-76515e4703c6
+  parentId: 28ae72e3-83b8-57b8-b45a-2f8c1096e196
+  name: Hero
+  x: 0
+  y: 0
+  width: 21
+  height: 30
+  components:
+  - type: spriteRenderer
+    assetId: ec945f79-bbec-501d-ac7b-a846e8a0e9fe
+    asset: Assets/Showcase/HeroIdleE.png
+    order: 4
+  - type: spriteAnimator
+    controller: 8c7eb4b0-8e81-5967-a2b9-62ebffed7ef6
+    playOnStart: true
+  - type: script
+    script: MotionFacing
+    values: {}
+- id: e70cebb0-0ef8-5472-a5b9-cd3aacff666c
+  name: Incline
+  x: 180
+  y: 240
+  width: 190
+  height: 90
+  components:
+  - type: tilemap2D
+    tileset: 86f7b777-6e33-54f8-b77b-351b084f006e
+    cellSize: {width: 38, height: 90}
+    order: 2
+    chunks:
+    - x: 0
+      y: 0
+      cells: [{index: 0, tile: 1}, {index: 1, tile: 2}, {index: 2, tile: 3}, {index: 3, tile: 4}, {index: 4, tile: 5}]
+- id: 62b3835e-d06d-590f-8cb1-4607513352f7
+  name: Jump-through ledge
+  x: 54
+  y: 288
+  width: 16
+  height: 6
+  components:
+  - type: tilemap2D
+    tileset: 201ea6df-3b7c-5a93-b376-6a684a238aab
+    cellSize: {width: 16, height: 6}
+    order: 2
+    chunks:
+    - x: 0
+      y: 0
+      cells: [{index: 0, tile: 1}, {index: 1, tile: 1}, {index: 2, tile: 1}, {index: 3, tile: 1}]
+- id: a47abf09-2318-5ec3-90ff-aebb7cb9b23b
+  name: Upper deck
+  x: 370
+  y: 240
+  width: 100
+  height: 18
+  components:
+  - type: boxCollider2D
+- id: bd487268-85e0-550f-bf59-6fbeeebc84b2
+  parentId: a47abf09-2318-5ec3-90ff-aebb7cb9b23b
+  name: Deck planks
+  x: 0
+  y: 0
+  width: 100
+  height: 10
+  components:
+  - type: spriteRenderer
+    assetId: d72c3b8c-1b7f-5087-871f-46c9ae587566
+    asset: Assets/Showcase/Deck.png
+    order: 1
+- id: 5497d9f2-0bfc-5139-b91a-77947207cab5
+  parentId: a47abf09-2318-5ec3-90ff-aebb7cb9b23b
+  name: Deck leg 1
+  x: 6
+  y: 10
+  width: 6
+  height: 80
+  components:
+  - type: spriteRenderer
+    assetId: 5371a88c-8977-5b54-803c-7cc143964f8f
+    asset: Assets/Showcase/DeckLeg.png
+    order: -2
+- id: 103f8dd5-3963-5e41-898e-ea95856146a4
+  parentId: a47abf09-2318-5ec3-90ff-aebb7cb9b23b
+  name: Deck leg 2
+  x: 88
+  y: 10
+  width: 6
+  height: 80
+  components:
+  - type: spriteRenderer
+    assetId: 5371a88c-8977-5b54-803c-7cc143964f8f
+    asset: Assets/Showcase/DeckLeg.png
+    order: -2
+- id: 4c68af1e-0aea-503c-aed8-67b2efab19e6
+  name: Shuttle
+  x: 470
+  y: 243
+  width: 118
+  height: 17
+  components:
+  - type: spriteRenderer
+    assetId: ccd15f68-9911-55b2-97a2-ef0d734a31d6
+    asset: Assets/Showcase/Raft.png
+    order: 1
+  - type: boxCollider2D
+  - type: rigidbody2D
+    bodyType: "Kinematic"
+  - type: positionTween2D
+    offsetX: 134
+    offsetY: 0
+    duration: 2
+    ease: EaseInOut
+    repeat: PingPong
+    playOnStart: false
+- id: 7e523989-adce-5482-b4af-27629b664077
+  name: Landing
+  x: 722
+  y: 240
+  width: 65
+  height: 18
+  components:
+  - type: boxCollider2D
+- id: c50bbeed-cb99-5a77-85bc-a63b7171cb3a
+  parentId: 7e523989-adce-5482-b4af-27629b664077
+  name: Pillar
+  x: 0
+  y: 0
+  width: 66
+  height: 180
+  components:
+  - type: spriteRenderer
+    assetId: 1f05ce45-611e-5ebc-a38d-4e035baf9cdd
+    asset: Assets/Showcase/Pillar.png
+    order: -1
+- id: 296a2f07-41aa-522a-abe8-cd5045fd0f1e
+  parentId: 7e523989-adce-5482-b4af-27629b664077
+  name: Pennant
+  x: 30
+  y: -30
+  width: 20
+  height: 29
+  components:
+  - type: spriteRenderer
+    assetId: 34e622de-b909-54c3-aeee-270fb33c457d
+    asset: Assets/Showcase/Pennant.png
+    order: 1
+- id: e6b334ea-53a4-5e4c-ae16-6f31b4edcb6f
+  name: Anchor
+  x: 675
+  y: 95
+  width: 8
+  height: 8
+  components:
+  - type: rigidbody2D
+    bodyType: "Static"
+- id: 804e8e8e-8467-56ed-bc5b-681fa97abb27
+  name: Pendulum
+  x: 668
+  y: 152
+  width: 22
+  height: 22
+  components:
+  - type: spriteRenderer
+    assetId: 68aee20b-37c0-5b1d-ab41-e03571fa6e0e
+    asset: Assets/Showcase/Ball.png
+    order: 2
+  - type: boxCollider2D
+  - type: rigidbody2D
+    mass: 1
+    freezeRotation: true
+  - type: distanceJoint2D
+    connected: "e6b334ea-53a4-5e4c-ae16-6f31b4edcb6f"
+    length: 64
+- id: 1a65f358-ce66-577c-815b-b7455d9dd961
+  name: Beam
+  x: 660
+  y: 87
+  width: 116
+  height: 8
+  components:
+  - type: spriteRenderer
+    assetId: d94c6f9c-b4e8-5ce0-bf0e-741d8b74e984
+    asset: Assets/Showcase/Beam.png
+    order: -1
+- id: 2823122e-8daf-5010-9b87-51d8bb7af69a
+  name: Beam post
+  x: 766
+  y: 90
+  width: 6
+  height: 150
+  components:
+  - type: spriteRenderer
+    assetId: a0cf65bf-0302-5a62-a54c-f11016751623
+    asset: Assets/Showcase/BeamPost.png
+    order: -2
+- id: aaa652a8-1042-55b6-8499-66ba35f89410
+  name: Chain link 1
+  x: 675
+  y: 100
+  width: 8
+  height: 10
+  components:
+  - type: spriteRenderer
+    assetId: 3948d5a8-19e2-5d53-8703-50d46611982f
+    asset: Assets/Showcase/ChainLink.png
+    order: 1
+- id: 585bffd5-9da8-5f6c-b4c7-8321fb0e67a4
+  name: Chain link 2
+  x: 675
+  y: 108
+  width: 8
+  height: 10
+  components:
+  - type: spriteRenderer
+    assetId: 3948d5a8-19e2-5d53-8703-50d46611982f
+    asset: Assets/Showcase/ChainLink.png
+    order: 1
+- id: b3cf8d5e-0c63-573b-aecc-2bea0231e5b6
+  name: Chain link 3
+  x: 675
+  y: 116
+  width: 8
+  height: 10
+  components:
+  - type: spriteRenderer
+    assetId: 3948d5a8-19e2-5d53-8703-50d46611982f
+    asset: Assets/Showcase/ChainLink.png
+    order: 1
+- id: 2c230b39-e9ae-5e45-b2bc-80b6770f7b9a
+  name: Chain link 4
+  x: 675
+  y: 124
+  width: 8
+  height: 10
+  components:
+  - type: spriteRenderer
+    assetId: 3948d5a8-19e2-5d53-8703-50d46611982f
+    asset: Assets/Showcase/ChainLink.png
+    order: 1
+- id: 2d43b8f4-8dbc-55f2-9736-f5f40817908a
+  name: Chain link 5
+  x: 675
+  y: 132
+  width: 8
+  height: 10
+  components:
+  - type: spriteRenderer
+    assetId: 3948d5a8-19e2-5d53-8703-50d46611982f
+    asset: Assets/Showcase/ChainLink.png
+    order: 1
+- id: e84ceecc-bbd7-5f59-b421-19e936ec686d
+  name: Chain link 6
+  x: 675
+  y: 140
+  width: 8
+  height: 10
+  components:
+  - type: spriteRenderer
+    assetId: 3948d5a8-19e2-5d53-8703-50d46611982f
+    asset: Assets/Showcase/ChainLink.png
+    order: 1
+- id: 9d90727d-577a-50c8-a782-f5272b3a7ea9
+  name: Chain link 7
+  x: 675
+  y: 148
+  width: 8
+  height: 10
+  components:
+  - type: spriteRenderer
+    assetId: 3948d5a8-19e2-5d53-8703-50d46611982f
+    asset: Assets/Showcase/ChainLink.png
+    order: 1
+- id: bbbf6bb6-bd12-5a2a-aa68-7b389a1d07e7
+  name: Chain
+  x: 0
+  y: 0
+  width: 1
+  height: 1
+  components:
+  - type: script
+    script: ChainLinks
+    values: {"Anchor": "e6b334ea-53a4-5e4c-ae16-6f31b4edcb6f", "Bob": "804e8e8e-8467-56ed-bc5b-681fa97abb27", "LinkSize": {"x": 8, "y": 10}, "Links": ["aaa652a8-1042-55b6-8499-66ba35f89410", "585bffd5-9da8-5f6c-b4c7-8321fb0e67a4", "b3cf8d5e-0c63-573b-aecc-2bea0231e5b6", "2c230b39-e9ae-5e45-b2bc-80b6770f7b9a", "2d43b8f4-8dbc-55f2-9736-f5f40817908a", "e84ceecc-bbd7-5f59-b421-19e936ec686d", "9d90727d-577a-50c8-a782-f5272b3a7ea9"]}
+- id: e679498d-c024-5bac-a3aa-e9d1b60db059
+  name: Torch 1
+  x: 140
+  y: 314
+  width: 23
+  height: 16
+  components:
+  - type: spriteRenderer
+    assetId: d4fa7bab-3365-5f53-9746-a04fe71fba80
+    asset: Assets/Showcase/TorchPost.png
+    order: -3
+  - type: pointLight2D
+    radius: 96
+    intensity: 0.85
+    flicker: 0.1
+    frequency: 1.2
+    color: "#FFA34C"
+- id: 24de8c94-87e4-5cb1-989e-29f6698d4d19
+  parentId: e679498d-c024-5bac-a3aa-e9d1b60db059
+  name: Torch 1 flame
+  x: 3
+  y: -13
+  width: 16
+  height: 16
+  components:
+  - type: spriteRenderer
+    assetId: 234ab015-2c3e-5146-a5bd-a2f0b007ad05
+    asset: Assets/Showcase/TorchFlame1.png
+    order: -2
+  - type: spriteAnimator
+    clip: dc384a34-c9e9-5370-bed0-9fed43cbaf8d
+    playOnStart: true
+- id: e50b4cb2-02df-574b-b12b-07bcb6d42ea2
+  name: Torch 2
+  x: 724
+  y: 224
+  width: 23
+  height: 16
+  components:
+  - type: spriteRenderer
+    assetId: d4fa7bab-3365-5f53-9746-a04fe71fba80
+    asset: Assets/Showcase/TorchPost.png
+    order: -3
+  - type: pointLight2D
+    radius: 96
+    intensity: 0.85
+    flicker: 0.1
+    frequency: 1.2
+    color: "#FFA34C"
+- id: 13d76a25-71b4-5f99-8e28-2d6dfd3185f8
+  parentId: e50b4cb2-02df-574b-b12b-07bcb6d42ea2
+  name: Torch 2 flame
+  x: 3
+  y: -13
+  width: 16
+  height: 16
+  components:
+  - type: spriteRenderer
+    assetId: 234ab015-2c3e-5146-a5bd-a2f0b007ad05
+    asset: Assets/Showcase/TorchFlame1.png
+    order: -2
+  - type: spriteAnimator
+    clip: dc384a34-c9e9-5370-bed0-9fed43cbaf8d
+    playOnStart: true
+- id: 0c65cac5-6336-5f22-befc-25ee4fc2e9dc
+  name: Camera
+  x: 89
+  y: 285
+  width: 1
+  height: 1
+  components:
+  - type: camera2D
+    zoom: 3
+    follow: 28ae72e3-83b8-57b8-b45a-2f8c1096e196
+    halfLife: 0.25
+    bounds: {x: -96, y: 40, width: 896, height: 320}
+- id: aa3341d7-e660-5897-97d2-c381f7781199
+  name: Far landing shot
+  x: 731
+  y: 218
+  width: 1
+  height: 1
+  components:
+  - type: camera2D
+    zoom: 2.5
+  - type: cutsceneDirector
+    sequence: ebf4406e-ed91-4742-91db-bf456d90f54d
+- id: db737dcd-1bf8-549e-b1f4-770b43f1db4a
+  name: Walk region
+  x: -96
+  y: 170
+  width: 896
+  height: 205
+  components:
+  - type: navigationRegion2D
+    spacing: 12
+    agentWidth: 16
+    agentHeight: 24
+    terrainMask: 9
+- id: a848c454-5f39-5b5a-bc81-b0a09597025b
+  name: Lookout
+  x: 384
+  y: 216
+  width: 16
+  height: 24
+  components:
+  - type: boxCollider2D
+    layer: 2
+    mask: 9
+  - type: rigidbody2D
+    freezeRotation: true
+  - type: characterMotor2D
+  - type: script
+    script: Lookout
+    values: {"Player": "28ae72e3-83b8-57b8-b45a-2f8c1096e196", "Region": "db737dcd-1bf8-549e-b1f4-770b43f1db4a", "Deck": "a47abf09-2318-5ec3-90ff-aebb7cb9b23b", "Incline": "e70cebb0-0ef8-5472-a5b9-cd3aacff666c", "Readout": "d6467227-7c79-5b5c-ab98-c8d5597f4c75"}
+- id: 0d6efeae-f487-54b4-b2ba-8f50a6a6d7f4
+  parentId: a848c454-5f39-5b5a-bc81-b0a09597025b
+  name: Guard
+  x: -3
+  y: -11
+  width: 21
+  height: 35
+  components:
+  - type: spriteRenderer
+    assetId: 473cf6fc-07ab-5985-8dda-c1dd0099b613
+    asset: Assets/Showcase/Guard1.png
+    order: 3
+  - type: spriteAnimator
+    controller: eff41be3-7de1-5f1e-8256-57c83f302db5
+    playOnStart: true
+  - type: script
+    script: MotionFacing
+    values: {}
+- id: c42961d5-5be2-5bfc-b983-e0d8feb62cc7
+  name: Ground
+  x: -112
+  y: 330
+  width: 16
+  height: 16
+  components:
+  - type: tilemap2D
+    tileset: 2807f98a-c01b-512b-a69a-bf98cab338bf
+    cellSize: {width: 16, height: 16}
+    collisionLayer: 3
+    order: -1
+    chunks:
+    - x: 0
+      y: 0
+      cells: [{index: 0, tile: 1}, {index: 32, tile: 1}, {index: 64, tile: 1}, {index: 96, tile: 1}, {index: 1, tile: 1}, {index: 33, tile: 1}, {index: 65, tile: 1}, {index: 97, tile: 1}, {index: 2, tile: 1}, {index: 34, tile: 1}, {index: 66, tile: 1}, {index: 98, tile: 1}, {index: 3, tile: 1}, {index: 35, tile: 1}, {index: 67, tile: 1}, {index: 99, tile: 1}, {index: 4, tile: 1}, {index: 36, tile: 1}, {index: 68, tile: 1}, {index: 100, tile: 1}, {index: 5, tile: 1}, {index: 37, tile: 1}, {index: 69, tile: 1}, {index: 101, tile: 1}, {index: 6, tile: 1}, {index: 38, tile: 1}, {index: 70, tile: 1}, {index: 102, tile: 1}, {index: 7, tile: 1}, {index: 39, tile: 1}, {index: 71, tile: 1}, {index: 103, tile: 1}, {index: 8, tile: 1}, {index: 40, tile: 1}, {index: 72, tile: 1}, {index: 104, tile: 1}, {index: 9, tile: 1}, {index: 41, tile: 1}, {index: 73, tile: 1}, {index: 105, tile: 1}, {index: 10, tile: 1}, {index: 42, tile: 1}, {index: 74, tile: 1}, {index: 106, tile: 1}, {index: 11, tile: 1}, {index: 43, tile: 1}, {index: 75, tile: 1}, {index: 107, tile: 1}, {index: 12, tile: 1}, {index: 44, tile: 1}, {index: 76, tile: 1}, {index: 108, tile: 1}, {index: 13, tile: 1}, {index: 45, tile: 1}, {index: 77, tile: 1}, {index: 109, tile: 1}, {index: 14, tile: 1}, {index: 46, tile: 1}, {index: 78, tile: 1}, {index: 110, tile: 1}, {index: 15, tile: 1}, {index: 47, tile: 1}, {index: 79, tile: 1}, {index: 111, tile: 1}, {index: 16, tile: 1}, {index: 48, tile: 1}, {index: 80, tile: 1}, {index: 112, tile: 1}, {index: 17, tile: 1}, {index: 49, tile: 1}, {index: 81, tile: 1}, {index: 113, tile: 1}, {index: 18, tile: 1}, {index: 50, tile: 1}, {index: 82, tile: 1}, {index: 114, tile: 1}, {index: 19, tile: 1}, {index: 51, tile: 1}, {index: 83, tile: 1}, {index: 115, tile: 1}, {index: 20, tile: 1}, {index: 52, tile: 1}, {index: 84, tile: 1}, {index: 116, tile: 1}, {index: 21, tile: 1}, {index: 53, tile: 1}, {index: 85, tile: 1}, {index: 117, tile: 1}, {index: 22, tile: 1}, {index: 54, tile: 1}, {index: 86, tile: 1}, {index: 118, tile: 1}, {index: 23, tile: 1}, {index: 55, tile: 1}, {index: 87, tile: 1}, {index: 119, tile: 1}, {index: 24, tile: 1}, {index: 56, tile: 1}, {index: 88, tile: 1}, {index: 120, tile: 1}, {index: 25, tile: 1}, {index: 57, tile: 1}, {index: 89, tile: 1}, {index: 121, tile: 1}, {index: 26, tile: 1}, {index: 58, tile: 1}, {index: 90, tile: 1}, {index: 122, tile: 1}, {index: 27, tile: 1}, {index: 59, tile: 1}, {index: 91, tile: 1}, {index: 123, tile: 1}, {index: 28, tile: 1}, {index: 60, tile: 1}, {index: 92, tile: 1}, {index: 124, tile: 1}, {index: 29, tile: 1}, {index: 61, tile: 1}, {index: 93, tile: 1}, {index: 125, tile: 1}, {index: 30, tile: 1}, {index: 62, tile: 1}, {index: 94, tile: 1}, {index: 126, tile: 1}, {index: 31, tile: 1}, {index: 63, tile: 1}, {index: 95, tile: 1}, {index: 127, tile: 1}]
+    - x: 1
+      y: 0
+      cells: [{index: 0, tile: 1}, {index: 32, tile: 1}, {index: 64, tile: 1}, {index: 96, tile: 1}, {index: 1, tile: 1}, {index: 33, tile: 1}, {index: 65, tile: 1}, {index: 97, tile: 1}, {index: 2, tile: 1}, {index: 34, tile: 1}, {index: 66, tile: 1}, {index: 98, tile: 1}, {index: 3, tile: 1}, {index: 35, tile: 1}, {index: 67, tile: 1}, {index: 99, tile: 1}, {index: 4, tile: 1}, {index: 36, tile: 1}, {index: 68, tile: 1}, {index: 100, tile: 1}, {index: 20, tile: 1}, {index: 52, tile: 1}, {index: 84, tile: 1}, {index: 116, tile: 1}, {index: 21, tile: 1}, {index: 53, tile: 1}, {index: 85, tile: 1}, {index: 117, tile: 1}, {index: 22, tile: 1}, {index: 54, tile: 1}, {index: 86, tile: 1}, {index: 118, tile: 1}, {index: 23, tile: 1}, {index: 55, tile: 1}, {index: 87, tile: 1}, {index: 119, tile: 1}, {index: 24, tile: 1}, {index: 56, tile: 1}, {index: 88, tile: 1}, {index: 120, tile: 1}, {index: 25, tile: 1}, {index: 57, tile: 1}, {index: 89, tile: 1}, {index: 121, tile: 1}]
+- id: 0301c141-eaa8-513c-816c-23ccfc414912
+  name: Sign
+  x: 8
+  y: 304
+  width: 23
+  height: 26
+  components:
+  - type: spriteRenderer
+    assetId: df974b6c-7920-5189-92be-ee63bbe6a454
+    asset: Assets/Showcase/Sign.png
+    order: -1
+- id: ef52ed9f-ac24-512e-a801-07f1300066bf
+  name: Sky backing
+  x: -400
+  y: -200
+  width: 1600
+  height: 800
+  components:
+  - type: spriteRenderer
+    sortingLayer: -31
+    squareColor: "#3E2C7C"
+  - type: parallax2D
+    scrollX: 0
+    scrollY: 0
+- id: ca6b8c74-29ec-5600-ac9a-cb34543caf9c
+  name: Moon
+  x: 170
+  y: 222
+  width: 18
+  height: 18
+  components:
+  - type: spriteRenderer
+    assetId: 07237847-ccea-5b53-947f-11e89f3ac360
+    asset: Assets/Showcase/Moon.png
+    sortingLayer: -29
+  - type: parallax2D
+    scrollX: 0.05
+    scrollY: 0
+- id: df22866b-1d6c-5589-ba9c-45eed23dcb5e
+  name: Sky
+  x: -120
+  y: 117
+  width: 456
+  height: 228
+  components:
+  - type: spriteRenderer
+    assetId: dd698e3c-24ed-5c0a-b76a-06ff5a4c4ad2
+    asset: Assets/Showcase/Sky.png
+    sortingLayer: -30
+  - type: parallax2D
+    scrollX: 0.15
+    scrollY: 0
+    repeatX: true
+- id: dc1560db-722d-5991-984f-c9104d5f837e
+  name: Canvas
+  x: 0
+  y: 0
+  width: 1
+  height: 1
+  components:
+  - type: uiCanvas
+- id: 501c0f21-e248-5e45-a4db-0a323e5b70f8
+  parentId: dc1560db-722d-5991-984f-c9104d5f837e
+  name: Caption
+  x: 12
+  y: -12
+  width: 563
+  height: 44
+  components:
+  - type: uiRect
+    anchor: BottomLeft
+  - type: uiImage
+    sprite: bf477ce7-700b-4462-ba37-ecad01ce5ee2
+    borders: {left: 4, top: 4, right: 4, bottom: 4}
+- id: d41a962c-c913-5d3c-b6c7-0d6f61d70349
+  parentId: 501c0f21-e248-5e45-a4db-0a323e5b70f8
+  name: Caption title
+  x: 12
+  y: 5
+  width: 445
+  height: 20
+  components:
+  - type: uiRect
+  - type: uiText
+    richText: true
+    text: "<b>PlatformerLab</b>   Slopes, a moving deck, a guard and a cutscene"
+    size: 15
+- id: e066d5c3-86c7-54ab-a75c-40a7379982a5
+  parentId: 501c0f21-e248-5e45-a4db-0a323e5b70f8
+  name: Caption controls
+  x: 12
+  y: 25
+  width: 445
+  height: 16
+  components:
+  - type: uiRect
+  - type: uiText
+    text: "Move  ← →      Jump  Space      Talk  Enter"
+    size: 12
+    color: "#BFD0DC"
+- id: a8ddbb2a-a5e2-5077-9e47-6b49daf16479
+  name: Result
+  x: 447
+  y: 6
+  width: 108
+  height: 20
+  parentId: 501c0f21-e248-5e45-a4db-0a323e5b70f8
+  components:
+  - type: uiRect
+  - type: uiText
+    size: 14
+    color: "#FFD84A"
+    text: "Ready"
+- id: cd0e1182-9f8c-5665-b23e-714179e29a09
+  name: Readout
+  active: false
+  x: 0
+  y: 6
+  width: 108
+  height: 20
+  parentId: 501c0f21-e248-5e45-a4db-0a323e5b70f8
+  components:
+  - type: uiRect
+  - type: uiText
+    size: 14
+    color: "#FFD84A"
+    text: "Walk up the incline and stop on the shuttle."
+- id: d6467227-7c79-5b5c-ab98-c8d5597f4c75
+  name: AI readout
+  active: false
+  x: 0
+  y: 6
+  width: 108
+  height: 20
+  parentId: 501c0f21-e248-5e45-a4db-0a323e5b70f8
+  components:
+  - type: uiRect
+  - type: uiText
+    size: 14
+    color: "#FFD84A"
+    text: "Lookout   Patrol"
+- id: dfb69b64-7c19-572a-968a-84bf3d6c8f5f
+  parentId: dc1560db-722d-5991-984f-c9104d5f837e
+  name: Tag 1
+  x: 12
+  y: 12
+  width: 252
+  height: 24
+  components:
+  - type: uiRect
+    anchor: TopLeft
+    showIf: ledge
+  - type: uiImage
+    sprite: bf477ce7-700b-4462-ba37-ecad01ce5ee2
+    borders: {left: 4, top: 4, right: 4, bottom: 4}
+  - type: uiText
+    richText: true
+    text: "<b>One-way tile</b>   <color=#BFD0DC>Jump up through the ledge</color>"
+    size: 12
+    insetX: 10
+    insetY: 4
+- id: d88c32a4-8747-5c5d-b7a5-b5e62d6dcb6c
+  parentId: dc1560db-722d-5991-984f-c9104d5f837e
+  name: Tag 2
+  x: 12
+  y: 40
+  width: 252
+  height: 24
+  components:
+  - type: uiRect
+    anchor: TopLeft
+    showIf: slope
+  - type: uiImage
+    sprite: bf477ce7-700b-4462-ba37-ecad01ce5ee2
+    borders: {left: 4, top: 4, right: 4, bottom: 4}
+  - type: uiText
+    richText: true
+    text: "<b>Tile collision</b>   <color=#BFD0DC>Each slope tile is a polygon</color>"
+    size: 12
+    insetX: 10
+    insetY: 4
+- id: 3c0cda56-4cf4-557c-a6e4-f36ebe86348c
+  parentId: dc1560db-722d-5991-984f-c9104d5f837e
+  name: Tag 3
+  x: 12
+  y: 68
+  width: 252
+  height: 24
+  components:
+  - type: uiRect
+    anchor: TopLeft
+    showIf: seen
+  - type: uiImage
+    sprite: bf477ce7-700b-4462-ba37-ecad01ce5ee2
+    borders: {left: 4, top: 4, right: 4, bottom: 4}
+  - type: uiText
+    richText: true
+    text: "<b>Navigation 2D</b>   <color=#BFD0DC>The guard paths after you</color>"
+    size: 12
+    insetX: 10
+    insetY: 4
+- id: db24e0b2-c0e6-5c60-8b2a-b3037802291c
+  parentId: dc1560db-722d-5991-984f-c9104d5f837e
+  name: Tag 4
+  x: 12
+  y: 96
+  width: 252
+  height: 24
+  components:
+  - type: uiRect
+    anchor: TopLeft
+    showIf: talk
+  - type: uiImage
+    sprite: bf477ce7-700b-4462-ba37-ecad01ce5ee2
+    borders: {left: 4, top: 4, right: 4, bottom: 4}
+  - type: uiText
+    richText: true
+    text: "<b>Cutscene</b>   <color=#BFD0DC>Camera cut and dialogue</color>"
+    size: 12
+    insetX: 10
+    insetY: 4
+- id: 97827afe-bde7-51c1-9d5a-5a7bc24d23fb
+  parentId: dc1560db-722d-5991-984f-c9104d5f837e
+  name: Tag 5
+  x: 12
+  y: 124
+  width: 252
+  height: 24
+  components:
+  - type: uiRect
+    anchor: TopLeft
+    showIf: ride
+  - type: uiImage
+    sprite: bf477ce7-700b-4462-ba37-ecad01ce5ee2
+    borders: {left: 4, top: 4, right: 4, bottom: 4}
+  - type: uiText
+    richText: true
+    text: "<b>Kinematic deck</b>   <color=#BFD0DC>Carries its rider</color>"
+    size: 12
+    insetX: 10
+    insetY: 4
+defaultCameraId: 0c65cac5-6336-5f22-befc-25ee4fc2e9dc

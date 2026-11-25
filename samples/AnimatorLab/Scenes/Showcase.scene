@@ -1,0 +1,959 @@
+schemaVersion: 42
+objects:
+- id: 252878fd-5fba-5470-a486-83a0210beb69
+  name: Grass
+  x: 0
+  y: 0
+  width: 533
+  height: 300
+  components:
+  - type: spriteRenderer
+    assetId: 513da939-1c4a-5db8-86ae-d15582380b7f
+    asset: Assets/Showcase/Grass.png
+    drawMode: Tiled
+    order: -20
+- id: 388b2e53-05ff-53a0-b3cf-ab3d78328653
+  name: Fence 1
+  x: -10
+  y: 32
+  width: 68
+  height: 34
+  components:
+  - type: sortingGroup2D
+    sortByY: true
+  - type: spriteRenderer
+    assetId: 4a2a5872-9c6c-5801-bc7f-30e235ddf530
+    asset: Assets/Showcase/Fence.png
+- id: 592316fc-faa9-5aab-84fb-62bb8c19cdb7
+  parentId: 388b2e53-05ff-53a0-b3cf-ab3d78328653
+  name: Fence 1 shadow
+  x: 18
+  y: 28
+  width: 32
+  height: 10
+  components:
+  - type: spriteRenderer
+    assetId: dd34accb-5f17-510b-a888-fff353174ab4
+    asset: Assets/Showcase/ShadowM.png
+    order: -1
+- id: 6b93998f-93cf-5dea-901e-2600fd0ebae9
+  name: Fence 2
+  x: 58
+  y: 32
+  width: 68
+  height: 34
+  components:
+  - type: sortingGroup2D
+    sortByY: true
+  - type: spriteRenderer
+    assetId: 4a2a5872-9c6c-5801-bc7f-30e235ddf530
+    asset: Assets/Showcase/Fence.png
+- id: d976175f-14ab-563d-9fab-2f23165075cb
+  parentId: 6b93998f-93cf-5dea-901e-2600fd0ebae9
+  name: Fence 2 shadow
+  x: 18
+  y: 28
+  width: 32
+  height: 10
+  components:
+  - type: spriteRenderer
+    assetId: dd34accb-5f17-510b-a888-fff353174ab4
+    asset: Assets/Showcase/ShadowM.png
+    order: -1
+- id: f1255368-5f20-51a6-af6a-670acf922326
+  name: Fence 3
+  x: 126
+  y: 32
+  width: 68
+  height: 34
+  components:
+  - type: sortingGroup2D
+    sortByY: true
+  - type: spriteRenderer
+    assetId: 4a2a5872-9c6c-5801-bc7f-30e235ddf530
+    asset: Assets/Showcase/Fence.png
+- id: 145810ef-cf8a-52d0-b03c-959aa61e2bec
+  parentId: f1255368-5f20-51a6-af6a-670acf922326
+  name: Fence 3 shadow
+  x: 18
+  y: 28
+  width: 32
+  height: 10
+  components:
+  - type: spriteRenderer
+    assetId: dd34accb-5f17-510b-a888-fff353174ab4
+    asset: Assets/Showcase/ShadowM.png
+    order: -1
+- id: 54ebb02a-0bd3-5442-85dd-14033b1b7ba9
+  name: Fence 4
+  x: 194
+  y: 32
+  width: 68
+  height: 34
+  components:
+  - type: sortingGroup2D
+    sortByY: true
+  - type: spriteRenderer
+    assetId: 4a2a5872-9c6c-5801-bc7f-30e235ddf530
+    asset: Assets/Showcase/Fence.png
+- id: 28753ef2-aeb8-5328-8724-02499005608f
+  parentId: 54ebb02a-0bd3-5442-85dd-14033b1b7ba9
+  name: Fence 4 shadow
+  x: 18
+  y: 28
+  width: 32
+  height: 10
+  components:
+  - type: spriteRenderer
+    assetId: dd34accb-5f17-510b-a888-fff353174ab4
+    asset: Assets/Showcase/ShadowM.png
+    order: -1
+- id: 8d4f8b35-4c61-5901-9d28-463a8e1bf5cd
+  name: Fence 5
+  x: 262
+  y: 32
+  width: 68
+  height: 34
+  components:
+  - type: sortingGroup2D
+    sortByY: true
+  - type: spriteRenderer
+    assetId: 4a2a5872-9c6c-5801-bc7f-30e235ddf530
+    asset: Assets/Showcase/Fence.png
+- id: 50842e0c-1a7f-530c-aaf4-e8fa39273a8c
+  parentId: 8d4f8b35-4c61-5901-9d28-463a8e1bf5cd
+  name: Fence 5 shadow
+  x: 18
+  y: 28
+  width: 32
+  height: 10
+  components:
+  - type: spriteRenderer
+    assetId: dd34accb-5f17-510b-a888-fff353174ab4
+    asset: Assets/Showcase/ShadowM.png
+    order: -1
+- id: 0e510949-a88a-5561-8626-2b86d2e22e94
+  name: Fence 6
+  x: 330
+  y: 32
+  width: 68
+  height: 34
+  components:
+  - type: sortingGroup2D
+    sortByY: true
+  - type: spriteRenderer
+    assetId: 4a2a5872-9c6c-5801-bc7f-30e235ddf530
+    asset: Assets/Showcase/Fence.png
+- id: 0ca15774-e5bd-528d-92b2-1f8382c8fe63
+  parentId: 0e510949-a88a-5561-8626-2b86d2e22e94
+  name: Fence 6 shadow
+  x: 18
+  y: 28
+  width: 32
+  height: 10
+  components:
+  - type: spriteRenderer
+    assetId: dd34accb-5f17-510b-a888-fff353174ab4
+    asset: Assets/Showcase/ShadowM.png
+    order: -1
+- id: 9446395e-9d87-5882-9aa7-5fcb33c6bb03
+  name: Fence 7
+  x: 398
+  y: 32
+  width: 68
+  height: 34
+  components:
+  - type: sortingGroup2D
+    sortByY: true
+  - type: spriteRenderer
+    assetId: 4a2a5872-9c6c-5801-bc7f-30e235ddf530
+    asset: Assets/Showcase/Fence.png
+- id: c8674aa6-bf29-5d2e-9e1b-557a054e97a2
+  parentId: 9446395e-9d87-5882-9aa7-5fcb33c6bb03
+  name: Fence 7 shadow
+  x: 18
+  y: 28
+  width: 32
+  height: 10
+  components:
+  - type: spriteRenderer
+    assetId: dd34accb-5f17-510b-a888-fff353174ab4
+    asset: Assets/Showcase/ShadowM.png
+    order: -1
+- id: cec09b33-c868-52b4-81cf-688ae3dbc484
+  name: Fence 8
+  x: 466
+  y: 32
+  width: 68
+  height: 34
+  components:
+  - type: sortingGroup2D
+    sortByY: true
+  - type: spriteRenderer
+    assetId: 4a2a5872-9c6c-5801-bc7f-30e235ddf530
+    asset: Assets/Showcase/Fence.png
+- id: 566299d0-ae92-5729-a4e8-9043ab6c7cf8
+  parentId: cec09b33-c868-52b4-81cf-688ae3dbc484
+  name: Fence 8 shadow
+  x: 18
+  y: 28
+  width: 32
+  height: 10
+  components:
+  - type: spriteRenderer
+    assetId: dd34accb-5f17-510b-a888-fff353174ab4
+    asset: Assets/Showcase/ShadowM.png
+    order: -1
+- id: fd247dc8-640c-512f-8ce7-fe7f6159f60b
+  name: Fence 9
+  x: 534
+  y: 32
+  width: 68
+  height: 34
+  components:
+  - type: sortingGroup2D
+    sortByY: true
+  - type: spriteRenderer
+    assetId: 4a2a5872-9c6c-5801-bc7f-30e235ddf530
+    asset: Assets/Showcase/Fence.png
+- id: 0287719a-993e-5963-82f6-ed73320ade71
+  parentId: fd247dc8-640c-512f-8ce7-fe7f6159f60b
+  name: Fence 9 shadow
+  x: 18
+  y: 28
+  width: 32
+  height: 10
+  components:
+  - type: spriteRenderer
+    assetId: dd34accb-5f17-510b-a888-fff353174ab4
+    asset: Assets/Showcase/ShadowM.png
+    order: -1
+- id: f444dd2c-5e30-5344-936f-f9391919eea0
+  name: Barrel 10
+  x: 483
+  y: 78
+  width: 34
+  height: 42
+  components:
+  - type: sortingGroup2D
+    sortByY: true
+  - type: spriteRenderer
+    assetId: a3a85dcf-9981-53b4-8243-f3322e6df278
+    asset: Assets/Showcase/Barrel.png
+- id: d1d676cc-0318-5f72-8bba-bb511fc607e5
+  parentId: f444dd2c-5e30-5344-936f-f9391919eea0
+  name: Barrel 10 shadow
+  x: -5
+  y: 34.8
+  width: 44
+  height: 12
+  components:
+  - type: spriteRenderer
+    assetId: 4a414a49-8921-5bc7-8612-981e43b19082
+    asset: Assets/Showcase/ShadowL.png
+    order: -1
+- id: 6943471d-a555-520e-a430-83962e42c775
+  name: Crate 11
+  x: 452
+  y: 74
+  width: 36
+  height: 38
+  components:
+  - type: sortingGroup2D
+    sortByY: true
+  - type: spriteRenderer
+    assetId: c3b13bf4-dc97-510e-b586-408e2a3bca88
+    asset: Assets/Showcase/Crate.png
+- id: 44c7f076-33fa-5e39-b17e-c23cb3725166
+  parentId: 6943471d-a555-520e-a430-83962e42c775
+  name: Crate 11 shadow
+  x: -4
+  y: 30.8
+  width: 44
+  height: 12
+  components:
+  - type: spriteRenderer
+    assetId: 4a414a49-8921-5bc7-8612-981e43b19082
+    asset: Assets/Showcase/ShadowL.png
+    order: -1
+- id: 248a6c72-e046-51eb-b140-9d0a8eaad84b
+  name: Bush 12
+  x: 5
+  y: 78
+  width: 50
+  height: 42
+  components:
+  - type: sortingGroup2D
+    sortByY: true
+  - type: spriteRenderer
+    assetId: dcd8c716-dbef-5893-809d-acddb640eabf
+    asset: Assets/Showcase/Bush.png
+- id: 52e598ab-3ad2-5882-906c-5f58d06bd2ad
+  parentId: 248a6c72-e046-51eb-b140-9d0a8eaad84b
+  name: Bush 12 shadow
+  x: 3
+  y: 34.8
+  width: 44
+  height: 12
+  components:
+  - type: spriteRenderer
+    assetId: 4a414a49-8921-5bc7-8612-981e43b19082
+    asset: Assets/Showcase/ShadowL.png
+    order: -1
+- id: 24e5dfba-d550-588b-91a2-09689c667f54
+  name: Bush 13
+  x: 485
+  y: 248
+  width: 50
+  height: 42
+  components:
+  - type: sortingGroup2D
+    sortByY: true
+  - type: spriteRenderer
+    assetId: dcd8c716-dbef-5893-809d-acddb640eabf
+    asset: Assets/Showcase/Bush.png
+- id: 4a8ca482-df04-512d-ac24-1aa10c714801
+  parentId: 24e5dfba-d550-588b-91a2-09689c667f54
+  name: Bush 13 shadow
+  x: 3
+  y: 34.8
+  width: 44
+  height: 12
+  components:
+  - type: spriteRenderer
+    assetId: 4a414a49-8921-5bc7-8612-981e43b19082
+    asset: Assets/Showcase/ShadowL.png
+    order: -1
+- id: 34d85bf4-8118-5d49-8217-7fef93d4b721
+  name: Well 14
+  x: 217
+  y: 30
+  width: 66
+  height: 80
+  components:
+  - type: sortingGroup2D
+    sortByY: true
+  - type: spriteRenderer
+    assetId: 833bf2d2-2f49-5049-9eb4-31d906b0fdf8
+    asset: Assets/Showcase/Well.png
+- id: 575e9749-004a-5ce0-b9c7-334445076bc8
+  parentId: 34d85bf4-8118-5d49-8217-7fef93d4b721
+  name: Well 14 shadow
+  x: 11
+  y: 72.8
+  width: 44
+  height: 12
+  components:
+  - type: spriteRenderer
+    assetId: 4a414a49-8921-5bc7-8612-981e43b19082
+    asset: Assets/Showcase/ShadowL.png
+    order: -1
+- id: 59342bf0-3241-5a67-9d28-eda92b1d0044
+  name: Flowers 15
+  x: 33
+  y: 248
+  width: 54
+  height: 32
+  components:
+  - type: sortingGroup2D
+    sortByY: true
+  - type: spriteRenderer
+    assetId: c3584900-15a1-501d-9f35-f07f38cc4715
+    asset: Assets/Showcase/Flowers.png
+- id: 737fcfc5-e6ba-51f9-ac2f-03bdd2485aaa
+  name: Herb1 16
+  x: 182
+  y: 258
+  width: 36
+  height: 32
+  components:
+  - type: sortingGroup2D
+    sortByY: true
+  - type: spriteRenderer
+    assetId: 9a113cab-905e-5f38-8cfe-9493df00f203
+    asset: Assets/Showcase/Herb1.png
+- id: 1aa04357-6448-5c58-9ca9-77ae0efd8258
+  name: Flowers 17
+  x: 413
+  y: 248
+  width: 54
+  height: 32
+  components:
+  - type: sortingGroup2D
+    sortByY: true
+  - type: spriteRenderer
+    assetId: c3584900-15a1-501d-9f35-f07f38cc4715
+    asset: Assets/Showcase/Flowers.png
+- id: 7117de50-5f5e-545d-97a1-33f7807e879c
+  name: Herb2 18
+  x: 313
+  y: 86
+  width: 34
+  height: 34
+  components:
+  - type: sortingGroup2D
+    sortByY: true
+  - type: spriteRenderer
+    assetId: 459387ee-b7bb-5382-b98b-4d8dd3551f84
+    asset: Assets/Showcase/Herb2.png
+- id: 5bd2b812-7e77-5408-b3cd-a783bbd61f40
+  name: Flowers 19
+  x: 123
+  y: 88
+  width: 54
+  height: 32
+  components:
+  - type: sortingGroup2D
+    sortByY: true
+  - type: spriteRenderer
+    assetId: c3584900-15a1-501d-9f35-f07f38cc4715
+    asset: Assets/Showcase/Flowers.png
+- id: fea4182a-7a48-5879-8dac-89f6dd502c47
+  name: Scout
+  x: 110
+  y: 200
+  width: 22
+  height: 12
+  components:
+  - type: sortingGroup2D
+    sortByY: true
+  - type: script
+    script: Showcase/ScoutWalker
+    values: {"Picture": "c50c0ea1-7d3c-56c0-b169-23b32b8f33c1", "Facing": "19920def-f676-5caf-8d73-4a52b1c5ecca"}
+- id: 0acc4876-7944-5644-9667-62111b6a8d4b
+  parentId: fea4182a-7a48-5879-8dac-89f6dd502c47
+  name: Scout shadow
+  x: -5
+  y: 5
+  width: 32
+  height: 10
+  components:
+  - type: spriteRenderer
+    assetId: dd34accb-5f17-510b-a888-fff353174ab4
+    asset: Assets/Showcase/ShadowM.png
+    order: -1
+- id: c50c0ea1-7d3c-56c0-b169-23b32b8f33c1
+  parentId: fea4182a-7a48-5879-8dac-89f6dd502c47
+  name: Scout picture
+  x: -10
+  y: -46
+  width: 42
+  height: 60
+  components:
+  - type: spriteRenderer
+    assetId: b16c9d62-377c-55e4-842f-aef841ccdd00
+    asset: Assets/Showcase/HeroIdleS.png
+  - type: spriteAnimator
+    controller: c1ea8b98-47e9-5742-bdf9-b5f0de53c17f
+    playOnStart: true
+- id: 2d8a5179-eceb-5649-a958-699d8710f651
+  name: Dummy
+  x: 373
+  y: 146
+  width: 54
+  height: 68
+  components:
+  - type: sortingGroup2D
+    sortByY: true
+  - type: spriteRenderer
+    assetId: 8d42d785-f1f9-552b-8046-ee2f1a93fd31
+    asset: Assets/Showcase/DummyUp.png
+- id: 9cc38e18-5fb3-5b9e-a970-f34cd3c2d8a0
+  parentId: 2d8a5179-eceb-5649-a958-699d8710f651
+  name: Dummy shadow
+  x: 5
+  y: 60.8
+  width: 44
+  height: 12
+  components:
+  - type: spriteRenderer
+    assetId: 4a414a49-8921-5bc7-8612-981e43b19082
+    asset: Assets/Showcase/ShadowL.png
+    order: -1
+- id: 92ddb319-5e6d-54e8-b881-11596b374037
+  parentId: 2d8a5179-eceb-5649-a958-699d8710f651
+  name: Chips
+  x: 27
+  y: 30.6
+  width: 1
+  height: 1
+  components:
+  - type: particleEmitter2D
+    particles: 3d1f50bf-c2c8-5592-8ad3-8d9846808787
+    trigger: Manual
+    order: 3
+- id: 0b0abe7c-079d-5094-920f-80890aa62e7b
+  name: Guard
+  x: 278
+  y: 146
+  width: 80
+  height: 68
+  components:
+  - type: sortingGroup2D
+    sortByY: true
+  - type: spriteRenderer
+    assetId: a6e9cbae-1d24-5255-9ae0-8bd80d7a1a9f
+    asset: Assets/Showcase/GuardIdle.png
+  - type: spriteAnimator
+    controller: 8763f79a-8437-590e-8d4f-c90b18c42390
+    playOnStart: true
+  - type: script
+    script: Showcase/GuardTrainer
+    values: {"Dummy": "2d8a5179-eceb-5649-a958-699d8710f651", "Chips": "92ddb319-5e6d-54e8-b881-11596b374037", "DummyUp": {"Id": "8d42d785-f1f9-552b-8046-ee2f1a93fd31"}, "DummyBack": {"Id": "e01a1532-aca6-5e40-9b94-9319b8e78878"}, "DummyForward": {"Id": "914039e1-4faf-52d6-b025-0b1e181c7849"}}
+- id: 8576c714-9052-579d-94f3-2242402473cd
+  parentId: 0b0abe7c-079d-5094-920f-80890aa62e7b
+  name: Guard shadow
+  x: 18
+  y: 60.8
+  width: 44
+  height: 12
+  components:
+  - type: spriteRenderer
+    assetId: 4a414a49-8921-5bc7-8612-981e43b19082
+    asset: Assets/Showcase/ShadowL.png
+    order: -1
+- id: 7995ddd2-cf34-550c-9760-e62119e8886a
+  name: Camera
+  x: 266.5
+  y: 150
+  width: 1
+  height: 1
+  components:
+  - type: camera2D
+    zoom: 1.5
+- id: 6f78845c-55b8-561d-8cca-b310444a79e6
+  name: Canvas
+  x: 0
+  y: 0
+  width: 1
+  height: 1
+  components:
+  - type: uiCanvas
+- id: dc5ec609-065f-5bcc-8b08-c59f9cc69b09
+  parentId: 6f78845c-55b8-561d-8cca-b310444a79e6
+  name: Caption
+  x: 12
+  y: -12
+  width: 391.2
+  height: 44
+  components:
+  - type: uiRect
+    anchor: BottomLeft
+  - type: uiImage
+    sprite: 83705588-ea5e-566a-8db8-d3d9268b6a87
+    borders: {left: 4, top: 4, right: 4, bottom: 4}
+- id: 84e92431-2403-535f-a70e-b7bcfa79560e
+  parentId: dc5ec609-065f-5bcc-8b08-c59f9cc69b09
+  name: Caption title
+  x: 12
+  y: 5
+  width: 367.2
+  height: 20
+  components:
+  - type: uiRect
+  - type: uiText
+    richText: true
+    text: "<b>AnimatorLab</b>   Direction sets, combos and clip events"
+    size: 15
+    color: "#F4F6F4"
+- id: 90805704-5007-5d53-ac46-11faaecf73b6
+  parentId: dc5ec609-065f-5bcc-8b08-c59f9cc69b09
+  name: Caption controls
+  x: 12
+  y: 25
+  width: 367.2
+  height: 16
+  components:
+  - type: uiRect
+  - type: uiText
+    richText: true
+    text: "Walk  ← → ↑ ↓      Attack  Space"
+    size: 12
+    color: "#BFD0DC"
+- id: 9cb141ea-ea96-5886-b365-4758b8f69d47
+  parentId: 6f78845c-55b8-561d-8cca-b310444a79e6
+  name: Facing
+  x: 12
+  y: -62
+  width: 200
+  height: 24
+  components:
+  - type: uiRect
+    anchor: BottomLeft
+  - type: uiImage
+    sprite: 83705588-ea5e-566a-8db8-d3d9268b6a87
+    borders: {left: 4, top: 4, right: 4, bottom: 4}
+- id: 19920def-f676-5caf-8d73-4a52b1c5ecca
+  parentId: 9cb141ea-ea96-5886-b365-4758b8f69d47
+  name: Facing text
+  x: 10
+  y: 4
+  width: 186
+  height: 16
+  components:
+  - type: uiRect
+  - type: uiText
+    richText: true
+    text: "<b>Scout</b>   Idle  ·  S"
+    size: 12
+    color: "#F4F6F4"
+- id: ccbe9d94-097e-5888-80d5-de9061ab6038
+  parentId: 6f78845c-55b8-561d-8cca-b310444a79e6
+  name: Graph
+  x: 470
+  y: 12
+  width: 318
+  height: 168
+  components:
+  - type: uiRect
+  - type: uiImage
+    sprite: 83705588-ea5e-566a-8db8-d3d9268b6a87
+    borders: {left: 4, top: 4, right: 4, bottom: 4}
+- id: 96f550c0-a5db-5910-86c7-5a86c93f12dc
+  parentId: ccbe9d94-097e-5888-80d5-de9061ab6038
+  name: Graph title
+  x: 12
+  y: 6
+  width: 200
+  height: 16
+  components:
+  - type: uiRect
+  - type: uiText
+    richText: true
+    text: "<b>Guard animator</b>"
+    size: 12
+    color: "#F4F6F4"
+- id: 33f1008e-c652-5619-bc5e-2f86a1ed6f11
+  parentId: ccbe9d94-097e-5888-80d5-de9061ab6038
+  name: State Hurt
+  x: 124
+  y: 30
+  width: 72
+  height: 24
+  components:
+  - type: uiRect
+  - type: uiImage
+    sprite: 83705588-ea5e-566a-8db8-d3d9268b6a87
+    borders: {left: 4, top: 4, right: 4, bottom: 4}
+  - type: uiText
+    text: "Hurt"
+    size: 12
+    insetX: 10
+    insetY: 4
+- id: 33fbed23-138a-5b42-b568-f26e2eb33d4e
+  parentId: ccbe9d94-097e-5888-80d5-de9061ab6038
+  name: State Idle
+  x: 12
+  y: 78
+  width: 72
+  height: 24
+  components:
+  - type: uiRect
+  - type: uiImage
+    sprite: 83705588-ea5e-566a-8db8-d3d9268b6a87
+    borders: {left: 4, top: 4, right: 4, bottom: 4}
+  - type: uiText
+    text: "Idle"
+    size: 12
+    insetX: 10
+    insetY: 4
+- id: be191086-6af2-590f-85f6-fdee3beefb27
+  parentId: ccbe9d94-097e-5888-80d5-de9061ab6038
+  name: State Attack
+  x: 124
+  y: 78
+  width: 72
+  height: 24
+  components:
+  - type: uiRect
+  - type: uiImage
+    sprite: 83705588-ea5e-566a-8db8-d3d9268b6a87
+    borders: {left: 4, top: 4, right: 4, bottom: 4}
+  - type: uiText
+    text: "Attack"
+    size: 12
+    insetX: 10
+    insetY: 4
+- id: 1d80b6b4-971f-5b7a-82c8-529aafd23a75
+  parentId: ccbe9d94-097e-5888-80d5-de9061ab6038
+  name: State Recover
+  x: 234
+  y: 78
+  width: 72
+  height: 24
+  components:
+  - type: uiRect
+  - type: uiImage
+    sprite: 83705588-ea5e-566a-8db8-d3d9268b6a87
+    borders: {left: 4, top: 4, right: 4, bottom: 4}
+  - type: uiText
+    text: "Recover"
+    size: 12
+    insetX: 10
+    insetY: 4
+- id: 0f5193fd-669e-556e-897d-d245b9ffaf99
+  parentId: ccbe9d94-097e-5888-80d5-de9061ab6038
+  name: State Walk
+  x: 12
+  y: 124
+  width: 72
+  height: 24
+  components:
+  - type: uiRect
+  - type: uiImage
+    sprite: 83705588-ea5e-566a-8db8-d3d9268b6a87
+    borders: {left: 4, top: 4, right: 4, bottom: 4}
+  - type: uiText
+    text: "Walk"
+    size: 12
+    insetX: 10
+    insetY: 4
+- id: 3bd323f7-5aee-5c59-b9d4-e45d014e44b2
+  parentId: ccbe9d94-097e-5888-80d5-de9061ab6038
+  name: Graph note 1
+  x: 12
+  y: 34
+  width: 110
+  height: 14
+  components:
+  - type: uiRect
+  - type: uiText
+    richText: true
+    text: "Any State  →"
+    size: 10
+    color: "#BFD0DC"
+- id: acce763c-2bde-52e3-bd0a-505b068250ea
+  parentId: ccbe9d94-097e-5888-80d5-de9061ab6038
+  name: Graph note 2
+  x: 95
+  y: 82
+  width: 110
+  height: 14
+  components:
+  - type: uiRect
+  - type: uiText
+    richText: true
+    text: "→"
+    size: 10
+    color: "#BFD0DC"
+- id: 6a26c098-2cf7-524a-8717-7e800042dacc
+  parentId: ccbe9d94-097e-5888-80d5-de9061ab6038
+  name: Graph note 3
+  x: 86
+  y: 64
+  width: 110
+  height: 14
+  components:
+  - type: uiRect
+  - type: uiText
+    richText: true
+    text: "Attack"
+    size: 10
+    color: "#BFD0DC"
+- id: 83fa7dca-5d03-57c7-b4af-ad32ca84583b
+  parentId: ccbe9d94-097e-5888-80d5-de9061ab6038
+  name: Graph note 4
+  x: 206
+  y: 82
+  width: 110
+  height: 14
+  components:
+  - type: uiRect
+  - type: uiText
+    richText: true
+    text: "→"
+    size: 10
+    color: "#BFD0DC"
+- id: 7b89dcf1-60aa-52ad-af38-80dffe1c9642
+  parentId: ccbe9d94-097e-5888-80d5-de9061ab6038
+  name: Graph note 5
+  x: 204
+  y: 64
+  width: 110
+  height: 14
+  components:
+  - type: uiRect
+  - type: uiText
+    richText: true
+    text: "exit"
+    size: 10
+    color: "#BFD0DC"
+- id: 326b30ea-b74d-5d6c-952e-d10389b55722
+  parentId: ccbe9d94-097e-5888-80d5-de9061ab6038
+  name: Graph note 6
+  x: 40
+  y: 104
+  width: 110
+  height: 14
+  components:
+  - type: uiRect
+  - type: uiText
+    richText: true
+    text: "↕ Speed"
+    size: 10
+    color: "#BFD0DC"
+- id: 3f5061d8-d280-58a0-ac47-6b52c02ccbcb
+  parentId: ccbe9d94-097e-5888-80d5-de9061ab6038
+  name: Graph note 7
+  x: 234
+  y: 104
+  width: 110
+  height: 14
+  components:
+  - type: uiRect
+  - type: uiText
+    richText: true
+    text: "exit → Idle"
+    size: 10
+    color: "#BFD0DC"
+- id: 54dd4fbe-6850-5cec-b091-0af3a5fffdf9
+  parentId: ccbe9d94-097e-5888-80d5-de9061ab6038
+  name: Graph note 8
+  x: 200
+  y: 34
+  width: 110
+  height: 14
+  components:
+  - type: uiRect
+  - type: uiText
+    richText: true
+    text: "on Hit"
+    size: 10
+    color: "#BFD0DC"
+- id: 3eda5aa8-9752-5472-8221-c2807af31f7c
+  parentId: ccbe9d94-097e-5888-80d5-de9061ab6038
+  name: Graph params
+  x: 124
+  y: 128
+  width: 186
+  height: 16
+  components:
+  - type: uiRect
+  - type: uiText
+    richText: true
+    text: "State <b>Idle</b>"
+    size: 11
+    color: "#F4F6F4"
+- id: f896ee10-bd77-51ac-a001-f1c5cedc19f4
+  parentId: ccbe9d94-097e-5888-80d5-de9061ab6038
+  name: Highlight
+  x: 10
+  y: 76
+  width: 76
+  height: 28
+  components:
+  - type: uiRect
+  - type: uiImage
+    sprite: 50582456-272b-5593-a805-04a9487f93d8
+    borders: {left: 4, top: 4, right: 4, bottom: 4}
+- id: 55754322-6dd3-5285-96e9-a42871057620
+  name: Graph driver
+  x: 0
+  y: 0
+  width: 1
+  height: 1
+  components:
+  - type: script
+    script: Showcase/StateGraph
+    values: {"Animated": "0b0abe7c-079d-5094-920f-80890aa62e7b", "Highlight": "f896ee10-bd77-51ac-a001-f1c5cedc19f4", "Params": "3eda5aa8-9752-5472-8221-c2807af31f7c", "StateBoxes": ["33f1008e-c652-5619-bc5e-2f86a1ed6f11", "33fbed23-138a-5b42-b568-f26e2eb33d4e", "be191086-6af2-590f-85f6-fdee3beefb27", "1d80b6b4-971f-5b7a-82c8-529aafd23a75", "0f5193fd-669e-556e-897d-d245b9ffaf99"], "StateNames": "Hurt,Idle,Attack,Recover,Walk"}
+- id: a5f43a1f-ef4f-58cd-a581-a27a07207f91
+  parentId: 6f78845c-55b8-561d-8cca-b310444a79e6
+  name: Tag 1
+  x: 12
+  y: 12
+  width: 352.6
+  height: 24
+  components:
+  - type: uiRect
+    anchor: TopLeft
+    showIf: walk8
+  - type: uiImage
+    sprite: 83705588-ea5e-566a-8db8-d3d9268b6a87
+    borders: {left: 4, top: 4, right: 4, bottom: 4}
+  - type: uiText
+    richText: true
+    text: "<b>Direction sets</b>   <color=#BFD0DC>Walk picks one of 8 clips from Move</color>"
+    size: 12
+    insetX: 10
+    insetY: 4
+- id: df404ba1-9c1f-538f-b52a-dc2f25d5ddcf
+  parentId: 6f78845c-55b8-561d-8cca-b310444a79e6
+  name: Tag 2
+  x: 12
+  y: 40
+  width: 352.6
+  height: 24
+  components:
+  - type: uiRect
+    anchor: TopLeft
+    showIf: combo
+  - type: uiImage
+    sprite: 83705588-ea5e-566a-8db8-d3d9268b6a87
+    borders: {left: 4, top: 4, right: 4, bottom: 4}
+  - type: uiText
+    richText: true
+    text: "<b>Conditions</b>   <color=#BFD0DC>Attack fires only while Combo is under 3</color>"
+    size: 12
+    insetX: 10
+    insetY: 4
+- id: a8040f14-1615-5dbc-b71c-631cf6a14d4d
+  parentId: 6f78845c-55b8-561d-8cca-b310444a79e6
+  name: Tag 3
+  x: 12
+  y: 68
+  width: 352.6
+  height: 24
+  components:
+  - type: uiRect
+    anchor: TopLeft
+    showIf: event
+  - type: uiImage
+    sprite: 83705588-ea5e-566a-8db8-d3d9268b6a87
+    borders: {left: 4, top: 4, right: 4, bottom: 4}
+  - type: uiText
+    richText: true
+    text: "<b>Clip events</b>   <color=#BFD0DC>The Swing frame knocks the dummy</color>"
+    size: 12
+    insetX: 10
+    insetY: 4
+- id: 6c75e023-bd4f-5334-a73a-b7a2413105df
+  parentId: 6f78845c-55b8-561d-8cca-b310444a79e6
+  name: Tag 4
+  x: 12
+  y: 96
+  width: 352.6
+  height: 24
+  components:
+  - type: uiRect
+    anchor: TopLeft
+    showIf: exit
+  - type: uiImage
+    sprite: 83705588-ea5e-566a-8db8-d3d9268b6a87
+    borders: {left: 4, top: 4, right: 4, bottom: 4}
+  - type: uiText
+    richText: true
+    text: "<b>Exit time</b>   <color=#BFD0DC>Attack → Recover → Idle as clips end</color>"
+    size: 12
+    insetX: 10
+    insetY: 4
+- id: 53c63664-c352-552b-b6b2-e43ac9550c7c
+  parentId: 6f78845c-55b8-561d-8cca-b310444a79e6
+  name: Tag 5
+  x: 12
+  y: 124
+  width: 352.6
+  height: 24
+  components:
+  - type: uiRect
+    anchor: TopLeft
+    showIf: hurt
+  - type: uiImage
+    sprite: 83705588-ea5e-566a-8db8-d3d9268b6a87
+    borders: {left: 4, top: 4, right: 4, bottom: 4}
+  - type: uiText
+    richText: true
+    text: "<b>Any State</b>   <color=#BFD0DC>Hit interrupts whatever is playing</color>"
+    size: 12
+    insetX: 10
+    insetY: 4
+defaultCameraId: 7995ddd2-cf34-550c-9760-e62119e8886a

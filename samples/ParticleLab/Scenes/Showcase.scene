@@ -1,0 +1,551 @@
+schemaVersion: 42
+objects:
+- id: 105660ac-0dfc-5e91-9f14-c8c466f2b621
+  name: Sky backing
+  x: -400
+  y: -200
+  width: 1800
+  height: 800
+  components:
+  - type: spriteRenderer
+    sortingLayer: -31
+    squareColor: "#3E2C7C"
+  - type: parallax2D
+    scrollX: 0
+    scrollY: 0
+- id: 7441dc72-873c-5a59-aa47-6e5ff767258b
+  name: Moon
+  x: 280
+  y: 150
+  width: 18
+  height: 18
+  components:
+  - type: spriteRenderer
+    assetId: cadab1fe-25ee-5594-ae31-2184fb851e6d
+    asset: Assets/Showcase/Moon.png
+    sortingLayer: -29
+  - type: parallax2D
+    scrollX: 0.05
+    scrollY: 0
+- id: c6c07dcc-652d-53ce-90f8-903c6a8672e3
+  name: Sky
+  x: -120
+  y: 132
+  width: 456
+  height: 228
+  components:
+  - type: spriteRenderer
+    assetId: bcacaba6-7723-5c3a-8a6c-be956e621f05
+    asset: Assets/Showcase/Sky.png
+    sortingLayer: -30
+  - type: parallax2D
+    scrollX: 0.15
+    scrollY: 0
+    repeatX: true
+- id: fce764d0-ddc9-5892-a477-cc4bef5ee025
+  name: Ground
+  x: -48
+  y: 328
+  width: 16
+  height: 16
+  components:
+  - type: tilemap2D
+    tileset: fe93c110-1d57-5e24-82a4-4e8067ee00d5
+    cellSize: {width: 16, height: 16}
+    order: -1
+    chunks:
+    - x: 0
+      y: 0
+      cells: [{index: 0, tile: 1}, {index: 32, tile: 1}, {index: 1, tile: 1}, {index: 33, tile: 1}, {index: 2, tile: 1}, {index: 34, tile: 1}, {index: 3, tile: 1}, {index: 35, tile: 1}, {index: 4, tile: 1}, {index: 36, tile: 1}, {index: 5, tile: 1}, {index: 37, tile: 1}, {index: 6, tile: 1}, {index: 38, tile: 1}, {index: 7, tile: 1}, {index: 39, tile: 1}, {index: 8, tile: 1}, {index: 40, tile: 1}, {index: 9, tile: 1}, {index: 41, tile: 1}, {index: 10, tile: 1}, {index: 42, tile: 1}, {index: 11, tile: 1}, {index: 43, tile: 1}, {index: 12, tile: 1}, {index: 44, tile: 1}, {index: 13, tile: 1}, {index: 45, tile: 1}, {index: 14, tile: 1}, {index: 46, tile: 1}, {index: 15, tile: 1}, {index: 47, tile: 1}, {index: 16, tile: 1}, {index: 48, tile: 1}, {index: 17, tile: 1}, {index: 49, tile: 1}, {index: 18, tile: 1}, {index: 50, tile: 1}, {index: 19, tile: 1}, {index: 51, tile: 1}, {index: 20, tile: 1}, {index: 52, tile: 1}, {index: 21, tile: 1}, {index: 53, tile: 1}, {index: 22, tile: 1}, {index: 54, tile: 1}, {index: 23, tile: 1}, {index: 55, tile: 1}, {index: 24, tile: 1}, {index: 56, tile: 1}, {index: 25, tile: 1}, {index: 57, tile: 1}, {index: 26, tile: 1}, {index: 58, tile: 1}, {index: 27, tile: 1}, {index: 59, tile: 1}, {index: 28, tile: 1}, {index: 60, tile: 1}, {index: 29, tile: 1}, {index: 61, tile: 1}, {index: 30, tile: 1}, {index: 62, tile: 1}, {index: 31, tile: 1}, {index: 63, tile: 1}]
+    - x: 1
+      y: 0
+      cells: [{index: 0, tile: 1}, {index: 32, tile: 1}, {index: 1, tile: 1}, {index: 33, tile: 1}, {index: 2, tile: 1}, {index: 34, tile: 1}, {index: 3, tile: 1}, {index: 35, tile: 1}, {index: 4, tile: 1}, {index: 36, tile: 1}, {index: 5, tile: 1}, {index: 37, tile: 1}, {index: 6, tile: 1}, {index: 38, tile: 1}, {index: 7, tile: 1}, {index: 39, tile: 1}, {index: 8, tile: 1}, {index: 40, tile: 1}, {index: 9, tile: 1}, {index: 41, tile: 1}, {index: 10, tile: 1}, {index: 42, tile: 1}, {index: 11, tile: 1}, {index: 43, tile: 1}, {index: 12, tile: 1}, {index: 44, tile: 1}, {index: 13, tile: 1}, {index: 45, tile: 1}, {index: 14, tile: 1}, {index: 46, tile: 1}, {index: 15, tile: 1}, {index: 47, tile: 1}, {index: 16, tile: 1}, {index: 48, tile: 1}, {index: 17, tile: 1}, {index: 49, tile: 1}, {index: 18, tile: 1}, {index: 50, tile: 1}, {index: 19, tile: 1}, {index: 51, tile: 1}, {index: 20, tile: 1}, {index: 52, tile: 1}, {index: 21, tile: 1}, {index: 53, tile: 1}, {index: 22, tile: 1}, {index: 54, tile: 1}, {index: 23, tile: 1}, {index: 55, tile: 1}, {index: 24, tile: 1}, {index: 56, tile: 1}, {index: 25, tile: 1}, {index: 57, tile: 1}, {index: 26, tile: 1}, {index: 58, tile: 1}, {index: 27, tile: 1}, {index: 59, tile: 1}, {index: 28, tile: 1}, {index: 60, tile: 1}, {index: 29, tile: 1}, {index: 61, tile: 1}, {index: 30, tile: 1}, {index: 62, tile: 1}, {index: 31, tile: 1}, {index: 63, tile: 1}]
+    - x: 2
+      y: 0
+      cells: [{index: 0, tile: 1}, {index: 32, tile: 1}, {index: 1, tile: 1}, {index: 33, tile: 1}]
+- id: c0c34d2a-7bd6-5bae-b974-34aa339b45ae
+  name: Tent
+  x: 8
+  y: 284
+  width: 64
+  height: 44
+  components:
+  - type: spriteRenderer
+    assetId: d6a5712f-8b2c-5abf-b724-6f62cb64cfa0
+    asset: Assets/Showcase/Tent.png
+    order: -3
+- id: 9f54d098-ee6f-5acf-bf6e-8081d3c75fed
+  name: Lantern 1
+  x: 91
+  y: 303
+  width: 18
+  height: 25
+  components:
+  - type: spriteRenderer
+    assetId: 802060de-1f7c-55c4-bbab-4997d0526b08
+    asset: Assets/Showcase/Lantern.png
+    order: -2
+  - type: pointLight2D
+    radius: 56
+    intensity: 0.6
+    flicker: 0.1
+    frequency: 1.2
+    color: "#FFC46B"
+- id: 0b30f99e-242e-5885-8f41-0c64c5ab748d
+  name: Campfire
+  x: 178
+  y: 312
+  width: 25
+  height: 16
+  components:
+  - type: spriteRenderer
+    assetId: 0490269e-f1ae-5108-be3a-19437649a840
+    asset: Assets/Showcase/Campfire.png
+    order: -1
+  - type: pointLight2D
+    radius: 80
+    intensity: 0.85
+    flicker: 0.1
+    frequency: 1.2
+    color: "#FFA34C"
+- id: c69616cb-5bdd-548c-a275-88787fb53540
+  parentId: 0b30f99e-242e-5885-8f41-0c64c5ab748d
+  name: Camp smoke
+  tag: Particles
+  x: 12
+  y: 4
+  width: 1
+  height: 1
+  components:
+  - type: particleEmitter2D
+    particles: 1c55f3e2-24a8-5cb4-b11c-40f2202ec083
+    trigger: Start
+    order: -2
+- id: 711c2383-8f0c-5ff2-a5c4-69243af0a5dc
+  parentId: 0b30f99e-242e-5885-8f41-0c64c5ab748d
+  name: Camp flame
+  tag: Particles
+  x: 12
+  y: 8
+  width: 1
+  height: 1
+  components:
+  - type: particleEmitter2D
+    particles: 955ed144-35dc-5891-8680-0891b49980bf
+    trigger: Start
+    order: 2
+- id: 740bd257-92a5-5c29-8709-5fb14ab6bc85
+  parentId: 0b30f99e-242e-5885-8f41-0c64c5ab748d
+  name: Camp sparks
+  tag: Particles
+  x: 12
+  y: 6
+  width: 1
+  height: 1
+  components:
+  - type: particleEmitter2D
+    particles: 44374824-cb19-5d62-9542-1e7a35bd7db5
+    trigger: Start
+    order: 3
+- id: 925e9c89-3c41-5430-a782-9f7056e92b1b
+  name: Bench
+  x: 230
+  y: 309
+  width: 31
+  height: 19
+  components:
+  - type: spriteRenderer
+    assetId: 97d45d14-a1e0-5b2d-9e9d-a1fbf5bf46f7
+    asset: Assets/Showcase/Bench.png
+    order: -3
+- id: 8a5a3822-37c9-5a4a-b1e3-0128c5faf447
+  name: Pine 1
+  x: 290
+  y: 302
+  width: 21
+  height: 26
+  components:
+  - type: spriteRenderer
+    assetId: 3d89c9db-b5ee-5d33-9015-72f1f37515a7
+    asset: Assets/Showcase/Pine.png
+    order: -3
+- id: e586d617-9faf-59fc-8a6d-404783852a8a
+  name: Cloud
+  x: 332
+  y: 200
+  width: 56
+  height: 30
+  components:
+  - type: spriteRenderer
+    assetId: 0b0e6fe5-ec27-5917-b672-240dc1b5e81b
+    asset: Assets/Showcase/Cloud.png
+    order: 6
+- id: 8010ed58-3be2-537e-b904-e223dc8205fe
+  parentId: e586d617-9faf-59fc-8a6d-404783852a8a
+  name: Rain
+  tag: Particles
+  x: 28
+  y: 22
+  width: 1
+  height: 1
+  components:
+  - type: particleEmitter2D
+    particles: 97065ece-3a48-52ba-9218-f79f53760a88
+    trigger: Start
+    order: 5
+- id: 4011ef5c-43aa-5887-92b2-e099dcce74b8
+  parentId: 8010ed58-3be2-537e-b904-e223dc8205fe
+  name: Splash
+  tag: Particles
+  x: 0
+  y: 0
+  width: 1
+  height: 1
+  components:
+  - type: particleEmitter2D
+    particles: a2b4b682-4533-4f09-bb1b-9f5ac04d7002
+    trigger: Manual
+    order: 5
+- id: bcf4c1aa-7562-5cb0-9b14-b72fdf6b444f
+  name: Pine 2
+  x: 410
+  y: 302
+  width: 21
+  height: 26
+  components:
+  - type: spriteRenderer
+    assetId: 3d89c9db-b5ee-5d33-9015-72f1f37515a7
+    asset: Assets/Showcase/Pine.png
+    order: -3
+- id: 701a5e39-578d-5bc5-a73c-418174042162
+  name: Fireflies 1
+  tag: Particles
+  x: 300
+  y: 288
+  width: 1
+  height: 1
+  components:
+  - type: particleEmitter2D
+    particles: abf32a94-b6df-5211-9830-f33fa1730639
+    trigger: Start
+    order: 4
+- id: 23e26180-840d-5e96-8c92-20124cee6962
+  name: Fireflies 2
+  tag: Particles
+  x: 600
+  y: 283
+  width: 1
+  height: 1
+  components:
+  - type: particleEmitter2D
+    particles: abf32a94-b6df-5211-9830-f33fa1730639
+    trigger: Start
+    order: 4
+- id: 137acdf7-4495-50b4-953b-1a655e9f109a
+  name: Fountain
+  x: 520
+  y: 305
+  width: 31
+  height: 23
+  components:
+  - type: spriteRenderer
+    assetId: e75fcd22-8f09-5dd1-97f7-ecc76e0670ad
+    asset: Assets/Showcase/Fountain.png
+    order: -2
+- id: 73190265-149c-5757-a1fd-d54af30f6f5f
+  parentId: 137acdf7-4495-50b4-953b-1a655e9f109a
+  name: Jet
+  tag: Particles
+  x: 15
+  y: 3
+  width: 1
+  height: 1
+  components:
+  - type: particleEmitter2D
+    particles: c8f09289-7441-5abc-8736-1d07a7526ad8
+    trigger: Start
+    order: 1
+- id: 7dcb38ce-778c-50f0-af20-b9948b6565d9
+  name: Lantern 2
+  x: 601
+  y: 303
+  width: 18
+  height: 25
+  components:
+  - type: spriteRenderer
+    assetId: 802060de-1f7c-55c4-bbab-4997d0526b08
+    asset: Assets/Showcase/Lantern.png
+    order: -2
+  - type: pointLight2D
+    radius: 56
+    intensity: 0.6
+    flicker: 0.1
+    frequency: 1.2
+    color: "#FFC46B"
+- id: 2f1d43a2-4d53-5ff8-bbe0-ef77793dc3c8
+  name: Launcher
+  x: 689
+  y: 304
+  width: 23
+  height: 24
+  components:
+  - type: spriteRenderer
+    assetId: 51ddc76d-ee08-5910-9ac3-d9ea936236bd
+    asset: Assets/Showcase/Launcher.png
+    order: -2
+- id: e779595e-bdc3-50db-add8-081fc0fa8e34
+  parentId: 2f1d43a2-4d53-5ff8-bbe0-ef77793dc3c8
+  name: Rockets
+  tag: Particles
+  groups:
+  - Burst
+  x: 11
+  y: 2
+  width: 1
+  height: 1
+  components:
+  - type: particleEmitter2D
+    particles: 5b9f62ea-2071-560e-a588-7ddf7e3a82e7
+    trigger: Manual
+    order: 3
+- id: ff39f957-cd6e-5d13-b510-38ac98d511e0
+  parentId: e779595e-bdc3-50db-add8-081fc0fa8e34
+  name: Burst
+  tag: Particles
+  x: 0
+  y: 0
+  width: 1
+  height: 1
+  components:
+  - type: particleEmitter2D
+    particles: b6aaa729-aaf8-4712-99e8-e8c64f54bb89
+    trigger: Manual
+    order: 3
+- id: eb8c4406-62a8-501e-a6b7-cb23f1ea4f86
+  name: Portal
+  x: 868
+  y: 268
+  width: 65
+  height: 60
+  components:
+  - type: spriteRenderer
+    assetId: 173ba917-1443-5dfd-ade8-a9c6ea159706
+    asset: Assets/Showcase/Portal.png
+    order: -2
+  - type: pointLight2D
+    radius: 110
+    intensity: 0.7
+    flicker: 0.1
+    frequency: 1.2
+    color: "#B98CFF"
+- id: a62e4a63-30c8-5da7-9f26-7cf102073d81
+  parentId: eb8c4406-62a8-501e-a6b7-cb23f1ea4f86
+  name: Storm
+  tag: Particles
+  x: 32
+  y: 30
+  width: 1
+  height: 1
+  components:
+  - type: particleEmitter2D
+    particles: c5af043f-7647-51a0-81e6-b58c9cf47200
+    trigger: Manual
+    order: 6
+- id: 841444f9-48d0-5e15-9384-b2fa33fc1b92
+  name: Hero
+  x: 60
+  y: 298
+  width: 22
+  height: 30
+  components:
+  - type: boxCollider2D
+  - type: rigidbody2D
+    freezeRotation: true
+  - type: characterMotor2D
+  - type: script
+    script: Walker
+    values: {}
+  - type: script
+    script: StationTags
+    values: {"StormEmitter": "a62e4a63-30c8-5da7-9f26-7cf102073d81"}
+- id: 2339d6c7-9f5b-5a4f-9ab0-4408f1dba877
+  parentId: 841444f9-48d0-5e15-9384-b2fa33fc1b92
+  name: Hero sprite
+  x: 0
+  y: 0
+  width: 21
+  height: 30
+  components:
+  - type: spriteRenderer
+    assetId: 9e3e5993-f9d0-5ee3-a6ef-5b2f679925cc
+    asset: Assets/Showcase/HeroIdleE.png
+    order: 4
+  - type: spriteAnimator
+    controller: d72504a3-c37f-5a32-9cf6-063e733104c4
+    playOnStart: true
+  - type: script
+    script: MotionFacing
+    values: {}
+- id: c07ff1a4-0415-57ee-9ad5-115cc4d18ef9
+  name: Camera
+  x: 160
+  y: 247.5
+  width: 1
+  height: 1
+  components:
+  - type: camera2D
+    zoom: 2
+    follow: 841444f9-48d0-5e15-9384-b2fa33fc1b92
+    halfLife: 0.3
+    bounds: {x: -40, y: 135, width: 1040, height: 225}
+  - type: script
+    script: LabControls
+    values: {"Next": {"Id": "b702dcb2-01f9-5904-ad61-e62f4a348991"}}
+- id: 61ea77cf-88ab-588f-a19b-715a8d9239e1
+  name: Canvas
+  x: 0
+  y: 0
+  width: 1
+  height: 1
+  components:
+  - type: uiCanvas
+- id: 31f166de-e71c-5aac-b6ef-0802ac725ab6
+  parentId: 61ea77cf-88ab-588f-a19b-715a8d9239e1
+  name: Caption
+  x: 12
+  y: -12
+  width: 494.8
+  height: 44
+  components:
+  - type: uiRect
+    anchor: BottomLeft
+  - type: uiImage
+    sprite: a23c4c54-e694-5386-acdb-48de69a1c5a5
+    borders: {left: 4, top: 4, right: 4, bottom: 4}
+- id: a257d040-ec74-54c7-b5ad-0ffac8cd60d8
+  parentId: 31f166de-e71c-5aac-b6ef-0802ac725ab6
+  name: Caption title
+  x: 12
+  y: 5
+  width: 470.8
+  height: 20
+  components:
+  - type: uiRect
+  - type: uiText
+    richText: true
+    text: "<b>ParticleLab</b>   Fire, rain, water and fireworks from particle assets"
+    size: 15
+- id: 155d465d-40d3-597e-8da2-6fae67d9fa6f
+  parentId: 31f166de-e71c-5aac-b6ef-0802ac725ab6
+  name: Caption controls
+  x: 12
+  y: 25
+  width: 470.8
+  height: 16
+  components:
+  - type: uiRect
+  - type: uiText
+    text: "Walk  ← →      Fireworks  Space"
+    size: 12
+    color: "#BFD0DC"
+- id: c1012974-79d4-5c80-ba45-a2d9574b3065
+  parentId: 61ea77cf-88ab-588f-a19b-715a8d9239e1
+  name: Tag 1
+  x: 12
+  y: 12
+  width: 387
+  height: 24
+  components:
+  - type: uiRect
+    anchor: TopLeft
+    showIf: fire
+  - type: uiImage
+    sprite: a23c4c54-e694-5386-acdb-48de69a1c5a5
+    borders: {left: 4, top: 4, right: 4, bottom: 4}
+  - type: uiText
+    richText: true
+    text: "<b>Curves + additive</b>   <color=#BFD0DC>Flame colour and size over its life</color>"
+    size: 12
+    insetX: 10
+    insetY: 4
+- id: eac04cb6-dc3c-5312-a30a-854b4a6cc4ea
+  parentId: 61ea77cf-88ab-588f-a19b-715a8d9239e1
+  name: Tag 2
+  x: 12
+  y: 40
+  width: 387
+  height: 24
+  components:
+  - type: uiRect
+    anchor: TopLeft
+    showIf: rain
+  - type: uiImage
+    sprite: a23c4c54-e694-5386-acdb-48de69a1c5a5
+    borders: {left: 4, top: 4, right: 4, bottom: 4}
+  - type: uiText
+    richText: true
+    text: "<b>Tile collision</b>   <color=#BFD0DC>Drops splash where they hit the ground</color>"
+    size: 12
+    insetX: 10
+    insetY: 4
+- id: 5131329f-f319-5bb3-a9aa-2f1816768f39
+  parentId: 61ea77cf-88ab-588f-a19b-715a8d9239e1
+  name: Tag 3
+  x: 12
+  y: 68
+  width: 387
+  height: 24
+  components:
+  - type: uiRect
+    anchor: TopLeft
+    showIf: water
+  - type: uiImage
+    sprite: a23c4c54-e694-5386-acdb-48de69a1c5a5
+    borders: {left: 4, top: 4, right: 4, bottom: 4}
+  - type: uiText
+    richText: true
+    text: "<b>Cone + gravity</b>   <color=#BFD0DC>A fountain jet from one emitter</color>"
+    size: 12
+    insetX: 10
+    insetY: 4
+- id: 6c1fd9b8-4a2d-53f1-8e8d-aa0403dc8665
+  parentId: 61ea77cf-88ab-588f-a19b-715a8d9239e1
+  name: Tag 4
+  x: 12
+  y: 96
+  width: 387
+  height: 24
+  components:
+  - type: uiRect
+    anchor: TopLeft
+    showIf: rockets
+  - type: uiImage
+    sprite: a23c4c54-e694-5386-acdb-48de69a1c5a5
+    borders: {left: 4, top: 4, right: 4, bottom: 4}
+  - type: uiText
+    richText: true
+    text: "<b>Sub-emitters</b>   <color=#BFD0DC>Each rocket bursts where it dies</color>"
+    size: 12
+    insetX: 10
+    insetY: 4
+- id: 32861bd0-41f1-56e1-977a-05f174e582ce
+  parentId: 61ea77cf-88ab-588f-a19b-715a8d9239e1
+  name: Tag 5
+  x: 12
+  y: 124
+  width: 387
+  height: 24
+  components:
+  - type: uiRect
+    anchor: TopLeft
+    showIf: storm
+  - type: uiImage
+    sprite: a23c4c54-e694-5386-acdb-48de69a1c5a5
+    borders: {left: 4, top: 4, right: 4, bottom: 4}
+  - type: uiText
+    richText: true
+    text: "<b>10,240 particles</b>   <color=#BFD0DC>No allocation per frame</color>"
+    size: 12
+    insetX: 10
+    insetY: 4
+defaultCameraId: c07ff1a4-0415-57ee-9ad5-115cc4d18ef9

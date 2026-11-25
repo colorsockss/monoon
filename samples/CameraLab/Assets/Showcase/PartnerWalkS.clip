@@ -1,0 +1,10 @@
+frames:
+- sprite: 4a5c2296-1636-5c29-a567-8e3815c2549b
+  seconds: 0.13
+- sprite: 09d592d6-5ed2-51f9-a9a2-e8229fba6a4e
+  seconds: 0.13
+- sprite: ccf291c8-3dad-50f7-83fe-3b68c6459143
+  seconds: 0.13
+- sprite: db8a6556-8955-5605-9657-00ec98c44855
+  seconds: 0.13
+loop: true

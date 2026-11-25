@@ -1,0 +1,342 @@
+schemaVersion: 42
+objects:
+- id: 728f277b-8f15-5782-b603-591f3b55bfa2
+  name: Night grass
+  x: 0
+  y: 0
+  width: 800
+  height: 450
+  components:
+  - type: spriteRenderer
+    assetId: 7ac619dd-3bc8-509b-afa8-d23252401691
+    asset: Assets/Showcase/NightGrass.png
+    drawMode: Tiled
+    order: -20
+- id: 05f577b0-973c-502d-8b44-213b32f7c1a9
+  name: Lantern
+  x: 360
+  y: 185
+  width: 80
+  height: 80
+  components:
+  - type: spriteRenderer
+    assetId: 8f516392-0819-591c-a87e-0ba5a4417685
+    asset: Assets/Showcase/Lantern.png
+    order: 50
+- id: 01ddfba8-5dee-5312-8ea4-b53678f6a9ff
+  name: Camera
+  x: 400
+  y: 225
+  width: 1
+  height: 1
+  components:
+  - type: camera2D
+- id: 62f754cc-734e-518d-bd93-bb55fa00c23e
+  name: Canvas
+  x: 0
+  y: 0
+  width: 1
+  height: 1
+  components:
+  - type: uiCanvas
+- id: 3d2e28b5-4a30-5fc4-a329-763b9925b388
+  parentId: 62f754cc-734e-518d-bd93-bb55fa00c23e
+  name: Query panel
+  x: -12
+  y: 12
+  width: 286
+  height: 118
+  components:
+  - type: uiRect
+    anchor: TopRight
+  - type: uiImage
+    sprite: 9a537ccd-f083-5c9e-8d2d-d1f76dbecd32
+    borders: {left: 4, top: 4, right: 4, bottom: 4}
+- id: 11cc7c26-ff5a-5195-b04b-4a3f9ab578a3
+  parentId: 3d2e28b5-4a30-5fc4-a329-763b9925b388
+  name: Query title
+  x: 12
+  y: 8
+  width: 262
+  height: 16
+  components:
+  - type: uiRect
+  - type: uiText
+    richText: true
+    text: "ONE OVERLAP QUERY PER FRAME"
+    size: 11
+    color: "#BFD0DC"
+- id: e4ea8d5c-b78c-595e-ac78-f132d60ed983
+  parentId: 3d2e28b5-4a30-5fc4-a329-763b9925b388
+  name: Hits
+  x: 12
+  y: 24
+  width: 262
+  height: 22
+  components:
+  - type: uiRect
+  - type: uiText
+    richText: true
+    text: "Press L to load the field"
+    size: 15
+    color: "#FFD84A"
+- id: de16ce67-edc8-591c-9e1d-f921e70619c2
+  parentId: 3d2e28b5-4a30-5fc4-a329-763b9925b388
+  name: Grid name
+  x: 12
+  y: 52
+  width: 96
+  height: 16
+  components:
+  - type: uiRect
+  - type: uiText
+    richText: true
+    text: "Spatial grid"
+    size: 12
+    color: "#BFD0DC"
+- id: 00cfc92b-6329-511d-95e1-f525506ba600
+  parentId: 3d2e28b5-4a30-5fc4-a329-763b9925b388
+  name: Grid checked
+  x: 108
+  y: 52
+  width: 100
+  height: 16
+  components:
+  - type: uiRect
+  - type: uiText
+    richText: true
+    text: "-"
+    size: 12
+    color: "#F4F6F4"
+- id: fb8e9597-0a7f-5393-b0de-eaa23a67ee0a
+  parentId: 3d2e28b5-4a30-5fc4-a329-763b9925b388
+  name: Grid time
+  x: 208
+  y: 52
+  width: 66
+  height: 16
+  components:
+  - type: uiRect
+  - type: uiText
+    richText: true
+    text: "-"
+    size: 12
+    color: "#F4F6F4"
+- id: d681d880-6cdc-514a-ae77-e2b454e850e6
+  parentId: 3d2e28b5-4a30-5fc4-a329-763b9925b388
+  name: Scan name
+  x: 12
+  y: 72
+  width: 96
+  height: 16
+  components:
+  - type: uiRect
+  - type: uiText
+    richText: true
+    text: "Full scan"
+    size: 12
+    color: "#BFD0DC"
+- id: 0d9cbce4-a630-507e-b4d0-aeb959557e43
+  parentId: 3d2e28b5-4a30-5fc4-a329-763b9925b388
+  name: Scan checked
+  x: 108
+  y: 72
+  width: 100
+  height: 16
+  components:
+  - type: uiRect
+  - type: uiText
+    richText: true
+    text: "-"
+    size: 12
+    color: "#F4F6F4"
+- id: f8c1c8da-8970-531a-b418-4f0d17a65513
+  parentId: 3d2e28b5-4a30-5fc4-a329-763b9925b388
+  name: Scan time
+  x: 208
+  y: 72
+  width: 66
+  height: 16
+  components:
+  - type: uiRect
+  - type: uiText
+    richText: true
+    text: "-"
+    size: 12
+    color: "#F4F6F4"
+- id: 482849b3-ccf6-503a-b7ba-5635e2ed4d5f
+  parentId: 3d2e28b5-4a30-5fc4-a329-763b9925b388
+  name: Verdict
+  x: 12
+  y: 94
+  width: 262
+  height: 16
+  components:
+  - type: uiRect
+  - type: uiText
+    richText: true
+    text: ""
+    size: 12
+    color: "#9FE6A0"
+- id: e44db4f5-98d4-5f25-a7e5-e2e2b0a5d067
+  parentId: 62f754cc-734e-518d-bd93-bb55fa00c23e
+  name: Load panel
+  x: 0
+  y: 0
+  width: 360
+  height: 62
+  components:
+  - type: uiRect
+    anchor: Center
+  - type: uiImage
+    sprite: 9a537ccd-f083-5c9e-8d2d-d1f76dbecd32
+    borders: {left: 4, top: 4, right: 4, bottom: 4}
+- id: b0ba97ad-7218-5d24-bb6a-d29f8ea38d4b
+  parentId: e44db4f5-98d4-5f25-a7e5-e2e2b0a5d067
+  name: Load text
+  x: 14
+  y: 10
+  width: 332
+  height: 18
+  components:
+  - type: uiRect
+  - type: uiText
+    richText: true
+    text: "10,000 colliders are ready to load.   L"
+    size: 13
+    color: "#F4F6F4"
+- id: 8575652b-c5ee-502a-b79f-e339ab448376
+  parentId: e44db4f5-98d4-5f25-a7e5-e2e2b0a5d067
+  name: Load bar
+  x: 14
+  y: 34
+  width: 332
+  height: 16
+  components:
+  - type: uiRect
+  - type: uiImage
+    sprite: 9a537ccd-f083-5c9e-8d2d-d1f76dbecd32
+    borders: {left: 4, top: 4, right: 4, bottom: 4}
+- id: 98cd03c2-5109-5255-ae10-1694e19aec38
+  parentId: 8575652b-c5ee-502a-b79f-e339ab448376
+  name: Load fill
+  x: 3
+  y: 3
+  width: 1
+  height: 10
+  components:
+  - type: uiRect
+  - type: uiImage
+    sprite: 3ea30364-c3bb-5fa5-b393-0f7d60fa61e8
+- id: 2c8f56dd-dea8-531f-9e6f-044b8cd77c52
+  parentId: 62f754cc-734e-518d-bd93-bb55fa00c23e
+  name: Tag 1
+  x: 12
+  y: 12
+  width: 396
+  height: 24
+  components:
+  - type: uiRect
+    anchor: TopLeft
+    showIf: loaded
+  - type: uiImage
+    sprite: 9a537ccd-f083-5c9e-8d2d-d1f76dbecd32
+    borders: {left: 4, top: 4, right: 4, bottom: 4}
+  - type: uiText
+    richText: true
+    text: "<b>Split loading</b>   <color=#BFD0DC>10,000 colliders stream in, 0.5 ms per frame</color>"
+    size: 12
+    insetX: 10
+    insetY: 4
+- id: f9d79294-99ad-57dc-a94b-54103262d740
+  parentId: 62f754cc-734e-518d-bd93-bb55fa00c23e
+  name: Tag 2
+  x: 12
+  y: 40
+  width: 396
+  height: 24
+  components:
+  - type: uiRect
+    anchor: TopLeft
+    showIf: grid
+  - type: uiImage
+    sprite: 9a537ccd-f083-5c9e-8d2d-d1f76dbecd32
+    borders: {left: 4, top: 4, right: 4, bottom: 4}
+  - type: uiText
+    richText: true
+    text: "<b>Spatial grid</b>   <color=#BFD0DC>A query checks only nearby cells</color>"
+    size: 12
+    insetX: 10
+    insetY: 4
+- id: 81135d59-ef12-5d30-a90b-601f092913d1
+  parentId: 62f754cc-734e-518d-bd93-bb55fa00c23e
+  name: Tag 3
+  x: 12
+  y: 68
+  width: 396
+  height: 24
+  components:
+  - type: uiRect
+    anchor: TopLeft
+    showIf: match
+  - type: uiImage
+    sprite: 9a537ccd-f083-5c9e-8d2d-d1f76dbecd32
+    borders: {left: 4, top: 4, right: 4, bottom: 4}
+  - type: uiText
+    richText: true
+    text: "<b>Same answers</b>   <color=#BFD0DC>Grid and full scan agree every frame</color>"
+    size: 12
+    insetX: 10
+    insetY: 4
+- id: 3beed153-326e-5064-9838-3bc168f1a197
+  parentId: 62f754cc-734e-518d-bd93-bb55fa00c23e
+  name: Caption
+  x: 12
+  y: -12
+  width: 391.2
+  height: 44
+  components:
+  - type: uiRect
+    anchor: BottomLeft
+  - type: uiImage
+    sprite: 9a537ccd-f083-5c9e-8d2d-d1f76dbecd32
+    borders: {left: 4, top: 4, right: 4, bottom: 4}
+- id: 1b875db2-e4bf-56b6-b563-bd9c526e5302
+  parentId: 3beed153-326e-5064-9838-3bc168f1a197
+  name: Caption title
+  x: 12
+  y: 5
+  width: 367.2
+  height: 20
+  components:
+  - type: uiRect
+  - type: uiText
+    richText: true
+    text: "<b>CollisionLab</b>   10,000 colliders, one query each frame"
+    size: 15
+    color: "#F4F6F4"
+- id: 458cd2bf-54a0-5a11-a4e2-33233756e5cd
+  parentId: 3beed153-326e-5064-9838-3bc168f1a197
+  name: Caption controls
+  x: 12
+  y: 25
+  width: 367.2
+  height: 16
+  components:
+  - type: uiRect
+  - type: uiText
+    richText: true
+    text: "Load the field  L"
+    size: 12
+    color: "#BFD0DC"
+- id: 85e87a6a-1215-519d-8091-7f39b540471d
+  name: Field
+  x: 0
+  y: 0
+  width: 1
+  height: 1
+  components:
+  - type: script
+    script: Showcase/LanternQuery
+    values: {"Stones": {"Id": "b106e1fc-81c6-55c1-a642-173f1735d86a"}, "Lantern": "05f577b0-973c-502d-8b44-213b32f7c1a9", "Hits": "e4ea8d5c-b78c-595e-ac78-f132d60ed983", "GridChecked": "00cfc92b-6329-511d-95e1-f525506ba600", "GridTime": "fb8e9597-0a7f-5393-b0de-eaa23a67ee0a", "ScanChecked": "0d9cbce4-a630-507e-b4d0-aeb959557e43", "ScanTime": "f8c1c8da-8970-531a-b418-4f0d17a65513", "Verdict": "482849b3-ccf6-503a-b7ba-5635e2ed4d5f", "LoadPanel": "e44db4f5-98d4-5f25-a7e5-e2e2b0a5d067", "LoadText": "b0ba97ad-7218-5d24-bb6a-d29f8ea38d4b", "LoadFill": "98cd03c2-5109-5255-ae10-1694e19aec38", "Pebble": {"Id": "e280a9fb-4002-5ce6-a1b7-a6419631dcd3"}, "PebbleLit": {"Id": "9bd92d3d-8e64-5d5f-beea-dbd8ef6b614e"}, "Block": {"Id": "781191a6-8795-5bf3-838f-450d48d481ef"}, "BlockLit": {"Id": "c63eba00-2093-5e44-bd9d-a9da8cbbfe1d"}, "Shard": {"Id": "749c82af-ecf9-5f32-a269-7a1aed262cf8"}, "ShardLit": {"Id": "64502853-deb4-54d7-810d-31e177c5bac9"}}
+defaultCameraId: 01ddfba8-5dee-5312-8ea4-b53678f6a9ff

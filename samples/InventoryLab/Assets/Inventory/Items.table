@@ -6,8 +6,8 @@ columns:
   type: Number
 rows:
 - key: herb
-  cells: ["약초", 3]
+  cells: ["Herb", 3]
 - key: gem
-  cells: ["수정", 2]
+  cells: ["Crystal", 2]
 - key: key
-  cells: ["열쇠", 1]
+  cells: ["Key", 1]

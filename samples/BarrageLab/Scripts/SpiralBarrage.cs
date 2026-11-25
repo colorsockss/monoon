@@ -66,7 +66,7 @@ public sealed class SpiralBarrage : GameBehaviour
     private void Show(IGameUi ui)
     {
         var stats = pool.Stats;
-        ui.SetText(Counters, $"활성 {stats.Active:N0}    회수 {stats.Returned:N0}    재사용 {stats.Reused:N0}");
-        ui.SetText(Mode, (pool.Batched ? "묶음 제출" : "개별 제출") + (firing ? "   /   발사 중" : "   /   발사 중지"));
+        ui.SetText(Counters, $"Active {stats.Active:N0}    Returned {stats.Returned:N0}    Reused {stats.Reused:N0}");
+        ui.SetText(Mode, (pool.Batched ? "Batched submit" : "Per-sprite submit") + (firing ? "   /   Firing" : "   /   Stopped"));
     }
 }

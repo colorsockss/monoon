@@ -2,8 +2,9 @@ projectId: f308a024-f67d-5f58-a81c-f501e0b42828
 gameTitle: SeedLab
 width: 800
 height: 450
-startScene: 0cfbf6ac-2359-53aa-abc6-f603bdf4dbee
-includedScenes: [0cfbf6ac-2359-53aa-abc6-f603bdf4dbee, fecb609a-9302-5710-a253-9ccc6e859b64, ec43fb3c-96cf-5ba3-9a32-cb3a85c67e40, 620cbdb0-f61b-59bf-beed-2647e824c624]
+integerScale: true
+startScene: cdfa4adc-9fd0-58dc-bdff-271497eca1f0
+includedScenes: [cdfa4adc-9fd0-58dc-bdff-271497eca1f0, 578c4bc5-e685-5420-b1ac-42e255eb5bea, 0cfbf6ac-2359-53aa-abc6-f603bdf4dbee, fecb609a-9302-5710-a253-9ccc6e859b64, ec43fb3c-96cf-5ba3-9a32-cb3a85c67e40, 620cbdb0-f61b-59bf-beed-2647e824c624]
 input:
   actions:
   - name: MoveLeft
@@ -14,6 +15,8 @@ input:
     controls: ["W", "Up"]
   - name: MoveDown
     controls: ["S", "Down"]
+  - name: Solve
+    controls: ["Return"]
   - name: NextSeed
     controls: ["N"]
   - name: PreviousSeed

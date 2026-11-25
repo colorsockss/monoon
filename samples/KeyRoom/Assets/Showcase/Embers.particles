@@ -1,0 +1,11 @@
+rate: 7
+shape: Box
+width: 8
+height: 2
+spread: 30
+speed: {min: 10, max: 26}
+lifetime: {min: 0.7, max: 1.4}
+size: {min: 2, max: 2}
+color: {min: "#FF9A3C", max: "#FFE08A"}
+gravity: -14
+blend: Additive

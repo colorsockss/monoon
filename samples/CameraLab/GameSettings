@@ -1,9 +1,11 @@
 width: 800
 height: 450
+integerScale: true
 projectId: cf624488-489b-5951-a279-fffa22d99f7a
 gameTitle: CameraLab
-startScene: cf624488-489b-5951-a279-fffa22d99f7a
+startScene: 2c9a883e-aeee-5d4a-a6a3-66257b497a77
 includedScenes:
+- 2c9a883e-aeee-5d4a-a6a3-66257b497a77
 - cf624488-489b-5951-a279-fffa22d99f7a
 input:
   actions:

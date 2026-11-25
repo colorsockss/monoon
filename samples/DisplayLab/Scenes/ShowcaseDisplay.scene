@@ -1,0 +1,489 @@
+schemaVersion: 42
+objects:
+- id: 8e149141-0af0-5b0b-acf8-32b03366490b
+  name: Backdrop
+  x: 0
+  y: 0
+  width: 800
+  height: 450
+  components:
+  - type: spriteRenderer
+    squareColor: "#15121C"
+    order: -40
+- id: 39973f5f-f320-5b6e-9045-2ce8fa673902
+  name: Floor
+  x: 0
+  y: 96
+  width: 520
+  height: 354
+  components:
+  - type: spriteRenderer
+    assetId: 7f6e9c9a-3ceb-5910-b61c-213ddbfa5db9
+    asset: Assets/Showcase/Floor.png
+    drawMode: Tiled
+    order: -30
+- id: ca07cb4f-41b5-5165-b92f-4ac78bbdf938
+  name: Wall face
+  x: 0
+  y: 32
+  width: 520
+  height: 64
+  components:
+  - type: spriteRenderer
+    assetId: 93978f12-99b6-54dd-8a01-1cbe2cd57821
+    asset: Assets/Showcase/WallFace.png
+    drawMode: Tiled
+    order: -25
+- id: a90ce9eb-e3a2-52f2-9178-c4224dd25374
+  name: Wall cap
+  x: 0
+  y: 0
+  width: 520
+  height: 32
+  components:
+  - type: spriteRenderer
+    assetId: 515cc207-6873-5020-84e8-b28c51cf1fb4
+    asset: Assets/Showcase/WallCap.png
+    drawMode: Tiled
+    order: -24
+- id: de10cfd4-0a89-58cc-b12b-97ce1c473383
+  name: Sconce 1
+  x: 372
+  y: 52
+  width: 32
+  height: 22
+  components:
+  - type: spriteRenderer
+    assetId: 6388e4e1-6829-5b26-9a22-d087a9714c00
+    asset: Assets/Showcase/TorchSconce.png
+    order: -20
+- id: c9283454-091d-54db-a70c-1011b019889e
+  name: Flame 1
+  x: 372
+  y: 26
+  width: 32
+  height: 32
+  components:
+  - type: spriteRenderer
+    assetId: d9ba0e1f-c3a2-517d-888f-2a5eb4411138
+    asset: Assets/Showcase/TorchFlame1.png
+    order: -19
+- id: ae4e089d-388d-583f-8779-7fa6ebdcbe4e
+  name: Sconce 2
+  x: 468
+  y: 52
+  width: 32
+  height: 22
+  components:
+  - type: spriteRenderer
+    assetId: 6388e4e1-6829-5b26-9a22-d087a9714c00
+    asset: Assets/Showcase/TorchSconce.png
+    order: -20
+- id: e679aea4-b729-5319-8347-9c4f0e0ecba3
+  name: Flame 2
+  x: 468
+  y: 26
+  width: 32
+  height: 32
+  components:
+  - type: spriteRenderer
+    assetId: d9ba0e1f-c3a2-517d-888f-2a5eb4411138
+    asset: Assets/Showcase/TorchFlame1.png
+    order: -19
+- id: 75b61681-f76c-5357-bb38-3c13b4464466
+  name: Rug
+  x: 236
+  y: 250
+  width: 112
+  height: 68
+  components:
+  - type: spriteRenderer
+    assetId: 1579855c-f904-5352-afdc-f41245eb3227
+    asset: Assets/Showcase/Rug.png
+    order: -15
+- id: bfe04eb9-453c-5d30-84c9-19a790237b46
+  name: Chest
+  x: 440
+  y: 140
+  width: 40
+  height: 34
+  components:
+  - type: spriteRenderer
+    assetId: 8b710ade-57c5-5fb3-97db-61d3e004cf00
+    asset: Assets/Showcase/Chest.png
+    order: 174
+- id: aa8f0943-f942-5ae3-b116-b003f3d3a056
+  name: Barrel
+  x: 30
+  y: 120
+  width: 34
+  height: 42
+  components:
+  - type: spriteRenderer
+    assetId: 972b19f4-0a46-59e1-8b8c-4691413d048b
+    asset: Assets/Showcase/Barrel.png
+    order: 162
+- id: 1f77c9a8-c826-5001-9adf-cec6ac37deeb
+  name: Pot
+  x: 74
+  y: 128
+  width: 34
+  height: 40
+  components:
+  - type: spriteRenderer
+    assetId: f5cf9147-efc6-5b61-98d2-9eaf4b888d65
+    asset: Assets/Showcase/Pot.png
+    order: 168
+- id: 88cef196-17b8-5980-8874-ff303103e31a
+  name: Crate
+  x: 460
+  y: 360
+  width: 36
+  height: 38
+  components:
+  - type: spriteRenderer
+    assetId: 15575559-6093-5742-a2cf-54c4881fcd81
+    asset: Assets/Showcase/Crate.png
+    order: 398
+- id: d7f6ef8b-2078-53e9-ad1b-ab89424d9c82
+  name: Hero shadow
+  x: 84
+  y: 374
+  width: 32
+  height: 10
+  components:
+  - type: spriteRenderer
+    assetId: 7bb7643a-1084-5166-8d34-7d6fc6bf4e08
+    asset: Assets/Showcase/ShadowM.png
+    order: 380
+- id: ff48363b-ecbd-50dd-a53f-e0be76bbdc49
+  name: Hero
+  x: 79
+  y: 320
+  width: 42
+  height: 60
+  components:
+  - type: spriteRenderer
+    assetId: b805b9b1-852f-574a-8ae6-3f1e02c43843
+    asset: Assets/Showcase/HeroWalkE1.png
+    order: 381
+- id: 16a54b54-8587-54d8-8e64-79446e3ce0af
+  name: Camera
+  x: 400
+  y: 225
+  width: 1
+  height: 1
+  components:
+  - type: camera2D
+- id: f6203fbf-f656-56c3-b4b3-dce034895f2e
+  name: Canvas
+  x: 0
+  y: 0
+  width: 1
+  height: 1
+  components:
+  - type: uiCanvas
+- id: a7b9b29a-e1f4-567e-85fa-d3a7c71b3b5a
+  parentId: f6203fbf-f656-56c3-b4b3-dce034895f2e
+  name: Display panel
+  x: 532
+  y: 12
+  width: 256
+  height: 426
+  components:
+  - type: uiRect
+  - type: uiImage
+    sprite: 9471132f-1e5f-58fa-ab02-c08ab348eb33
+    borders: {left: 4, top: 4, right: 4, bottom: 4}
+- id: a39a28a5-1a33-5eb2-9002-00759f2d6c39
+  parentId: a7b9b29a-e1f4-567e-85fa-d3a7c71b3b5a
+  name: Panel title
+  x: 14
+  y: 10
+  width: 200
+  height: 24
+  components:
+  - type: uiRect
+  - type: uiText
+    richText: true
+    text: "<b>Display</b>"
+    size: 20
+    color: "#F4F6F4"
+- id: ffc38789-2134-58bd-9e72-d3cdd68e09f3
+  parentId: a7b9b29a-e1f4-567e-85fa-d3a7c71b3b5a
+  name: Badge
+  x: 218
+  y: 14
+  width: 24
+  height: 24
+  components:
+  - type: uiRect
+  - type: uiImage
+    sprite: 98e16811-8451-5cf9-93dc-6cd272a5f85f
+- id: c33d0207-38e5-57fd-ba71-62b0b065cc05
+  parentId: a7b9b29a-e1f4-567e-85fa-d3a7c71b3b5a
+  name: Badge note
+  x: 14
+  y: 36
+  width: 228
+  height: 16
+  components:
+  - type: uiRect
+  - type: uiText
+    richText: true
+    text: "12 × 12 badge: sharp at any scale"
+    size: 11
+    color: "#BFD0DC"
+- id: d083f807-a06d-588a-ab06-ca807434e8d6
+  parentId: a7b9b29a-e1f4-567e-85fa-d3a7c71b3b5a
+  name: Fullscreen label
+  x: 14
+  y: 70
+  width: 160
+  height: 20
+  components:
+  - type: uiRect
+  - type: uiText
+    richText: true
+    text: "Borderless fullscreen"
+    size: 13
+    color: "#F4F6F4"
+- id: 53f929a1-d038-5f7e-b6e9-9dd3708de403
+  parentId: a7b9b29a-e1f4-567e-85fa-d3a7c71b3b5a
+  name: Fullscreen
+  x: 202
+  y: 66
+  width: 40
+  height: 26
+  components:
+  - type: uiRect
+  - type: uiToggle
+  - type: script
+    script: DisplayOption
+    values: {"ControlsVSync": false, "Hint": "2327135e-deff-58b3-8b88-7810d7eea54b"}
+- id: e6e6b097-c113-50ef-8c1c-992e8f3af4cc
+  parentId: a7b9b29a-e1f4-567e-85fa-d3a7c71b3b5a
+  name: VSync label
+  x: 14
+  y: 106
+  width: 160
+  height: 20
+  components:
+  - type: uiRect
+  - type: uiText
+    richText: true
+    text: "Vertical sync"
+    size: 13
+    color: "#F4F6F4"
+- id: db719fdb-ff21-5640-8797-658a30be4db9
+  parentId: a7b9b29a-e1f4-567e-85fa-d3a7c71b3b5a
+  name: VSync
+  x: 202
+  y: 102
+  width: 40
+  height: 26
+  components:
+  - type: uiRect
+  - type: uiToggle
+  - type: script
+    script: DisplayOption
+    values: {"ControlsVSync": true, "Hint": "2327135e-deff-58b3-8b88-7810d7eea54b"}
+- id: 03c4605b-dae1-52f9-9dc7-d4045962de20
+  parentId: a7b9b29a-e1f4-567e-85fa-d3a7c71b3b5a
+  name: Rate title
+  x: 14
+  y: 146
+  width: 200
+  height: 16
+  components:
+  - type: uiRect
+  - type: uiText
+    richText: true
+    text: "FRAMES PER SECOND"
+    size: 11
+    color: "#BFD0DC"
+- id: 9a88816c-3ed9-5716-96a3-ee5def07579a
+  parentId: a7b9b29a-e1f4-567e-85fa-d3a7c71b3b5a
+  name: Rate
+  x: 14
+  y: 162
+  width: 228
+  height: 40
+  components:
+  - type: uiRect
+  - type: uiText
+    richText: true
+    text: "60"
+    size: 34
+    color: "#FFD84A"
+- id: aee90bfe-cf57-59a8-bd04-9283ffc3b17d
+  parentId: a7b9b29a-e1f4-567e-85fa-d3a7c71b3b5a
+  name: Rate detail
+  x: 14
+  y: 204
+  width: 228
+  height: 16
+  components:
+  - type: uiRect
+  - type: uiText
+    richText: true
+    text: "16.7 ms a frame"
+    size: 12
+    color: "#BFD0DC"
+- id: cb12d2ef-5018-5f03-92c9-7d3597f16dba
+  parentId: a7b9b29a-e1f4-567e-85fa-d3a7c71b3b5a
+  name: Click title
+  x: 14
+  y: 240
+  width: 200
+  height: 16
+  components:
+  - type: uiRect
+  - type: uiText
+    richText: true
+    text: "CLICK INSIDE THE BUTTON"
+    size: 11
+    color: "#BFD0DC"
+- id: bfca3dd4-c128-5706-bfdf-7659636c0d24
+  parentId: a7b9b29a-e1f4-567e-85fa-d3a7c71b3b5a
+  name: Click counter
+  x: 14
+  y: 258
+  width: 228
+  height: 34
+  components:
+  - type: uiRect
+  - type: uiButton
+  - type: uiText
+    text: "Clicks: 0"
+    size: 16
+    insetX: 12
+    insetY: 6
+  - type: script
+    script: ClickCounter
+    values: {}
+- id: 2327135e-deff-58b3-8b88-7810d7eea54b
+  parentId: a7b9b29a-e1f4-567e-85fa-d3a7c71b3b5a
+  name: Hint
+  x: 14
+  y: 300
+  width: 228
+  height: 36
+  components:
+  - type: uiRect
+  - type: uiText
+    richText: true
+    text: "Use Save & Run to change desktop settings."
+    size: 12
+    color: "#FF9F8A"
+    wrap: true
+- id: d1143a3c-c7ea-5061-9614-ea8deff34849
+  parentId: a7b9b29a-e1f4-567e-85fa-d3a7c71b3b5a
+  name: Window note
+  x: 14
+  y: 346
+  width: 228
+  height: 70
+  components:
+  - type: uiRect
+  - type: uiText
+    richText: true
+    text: "The game keeps its 800 × 450 picture: a bigger window scales it by whole pixels and fills the rest with bars."
+    size: 12
+    color: "#BFD0DC"
+    wrap: true
+- id: 37f67e51-761d-5b36-a647-468856ba1271
+  parentId: f6203fbf-f656-56c3-b4b3-dce034895f2e
+  name: Tag 1
+  x: 12
+  y: 8
+  width: 315.4
+  height: 24
+  components:
+  - type: uiRect
+    showIf: window
+  - type: uiImage
+    sprite: 9471132f-1e5f-58fa-ab02-c08ab348eb33
+    borders: {left: 4, top: 4, right: 4, bottom: 4}
+  - type: uiText
+    richText: true
+    text: "<b>Any window size</b>   <color=#BFD0DC>Whole-pixel scale, bars</color>"
+    size: 12
+    insetX: 10
+    insetY: 4
+- id: 6e79a565-69e3-5479-8772-dfcf59440b41
+  parentId: f6203fbf-f656-56c3-b4b3-dce034895f2e
+  name: Tag 2
+  x: 12
+  y: 36
+  width: 315.4
+  height: 24
+  components:
+  - type: uiRect
+    showIf: fullscreen
+  - type: uiImage
+    sprite: 9471132f-1e5f-58fa-ab02-c08ab348eb33
+    borders: {left: 4, top: 4, right: 4, bottom: 4}
+  - type: uiText
+    richText: true
+    text: "<b>Borderless fullscreen</b>   <color=#BFD0DC>Back to the same window</color>"
+    size: 12
+    insetX: 10
+    insetY: 4
+- id: b6e18f4d-3613-5c7d-bbf1-d10df23d1077
+  parentId: f6203fbf-f656-56c3-b4b3-dce034895f2e
+  name: Tag 3
+  x: 12
+  y: 64
+  width: 315.4
+  height: 24
+  components:
+  - type: uiRect
+    showIf: vsync
+  - type: uiImage
+    sprite: 9471132f-1e5f-58fa-ab02-c08ab348eb33
+    borders: {left: 4, top: 4, right: 4, bottom: 4}
+  - type: uiText
+    richText: true
+    text: "<b>VSync</b>   <color=#BFD0DC>Display rate or uncapped</color>"
+    size: 12
+    insetX: 10
+    insetY: 4
+- id: 29cd1754-74fc-5a39-8c9b-70bcc1ff5721
+  parentId: f6203fbf-f656-56c3-b4b3-dce034895f2e
+  name: Caption
+  x: 12
+  y: -12
+  width: 300
+  height: 26
+  components:
+  - type: uiRect
+    anchor: BottomLeft
+  - type: uiImage
+    sprite: 9471132f-1e5f-58fa-ab02-c08ab348eb33
+    borders: {left: 4, top: 4, right: 4, bottom: 4}
+- id: 10b3f686-c200-584f-b66e-75fc025d46df
+  parentId: 29cd1754-74fc-5a39-8c9b-70bcc1ff5721
+  name: Caption text
+  x: 12
+  y: 4
+  width: 280
+  height: 18
+  components:
+  - type: uiRect
+  - type: uiText
+    richText: true
+    text: "<b>DisplayLab</b>   Desktop window settings"
+    size: 13
+    color: "#F4F6F4"
+- id: 7bd05c11-9e9e-57cd-908d-d849e3944d43
+  name: Meter
+  x: 0
+  y: 0
+  width: 1
+  height: 1
+  components:
+  - type: script
+    script: Showcase/FrameMeter
+    values: {"Hero": "ff48363b-ecbd-50dd-a53f-e0be76bbdc49", "Shadow": "d7f6ef8b-2078-53e9-ad1b-ab89424d9c82", "Rate": "9a88816c-3ed9-5716-96a3-ee5def07579a", "Detail": "aee90bfe-cf57-59a8-bd04-9283ffc3b17d", "Flames": ["c9283454-091d-54db-a70c-1011b019889e", "e679aea4-b729-5319-8347-9c4f0e0ecba3"], "WalkE1": {"Id": "b805b9b1-852f-574a-8ae6-3f1e02c43843"}, "WalkE2": {"Id": "a70fd9b6-a72d-5963-8828-cf3a9f873c8b"}, "WalkE3": {"Id": "41076d61-039d-5dc8-9b94-26f53bcdcfae"}, "WalkE4": {"Id": "41822a00-9e91-5b60-97a1-dbb073bd6050"}, "WalkW1": {"Id": "a7df0d3a-98c3-5d06-b2a7-f6f031e6d4e8"}, "WalkW2": {"Id": "00b5a64e-1dd9-56d5-9528-ca7abc91e6f8"}, "WalkW3": {"Id": "851e2459-9e8a-5297-bdbd-fa71d6738c81"}, "WalkW4": {"Id": "6dba6738-804a-585a-8c6f-f157f4cad700"}, "Flame1": {"Id": "d9ba0e1f-c3a2-517d-888f-2a5eb4411138"}, "Flame2": {"Id": "7e214d44-5b04-5558-b831-e55993785a4a"}, "Flame3": {"Id": "5ffd6edb-78f6-5eed-a1a3-28a694fe3031"}}
+defaultCameraId: 16a54b54-8587-54d8-8e64-79446e3ce0af

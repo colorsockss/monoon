@@ -1,0 +1,479 @@
+schemaVersion: 42
+objects:
+- id: 9476ae0d-2fbd-53c7-b227-0be81769e280
+  name: Space
+  x: 0
+  y: 0
+  width: 800
+  height: 450
+  components:
+  - type: spriteRenderer
+    assetId: a0598a80-eaa5-5994-8bb0-76cf43df8bb7
+    asset: Assets/Showcase/Space.png
+    sortingLayer: -30
+- id: 21f98c1f-556a-5d7e-a44f-0df5b1f15354
+  name: Far stars
+  tag: Particles
+  x: 802
+  y: 0
+  width: 1
+  height: 1
+  components:
+  - type: particleEmitter2D
+    particles: 6e0507c8-67b8-56e4-87d7-1617bc32b8d0
+    trigger: Start
+    order: -20
+- id: c4ac85a0-a3bb-5e0b-b213-fb8ff469824e
+  name: Near stars
+  tag: Particles
+  x: 802
+  y: 0
+  width: 1
+  height: 1
+  components:
+  - type: particleEmitter2D
+    particles: 5d5a1212-96b1-53f7-b147-b86c223210a4
+    trigger: Start
+    order: -19
+- id: cb69b436-4ea8-5e0b-a168-366f12f5a6fc
+  name: Asteroid
+  x: 230
+  y: 318
+  width: 52
+  height: 48
+  components:
+  - type: spriteRenderer
+    assetId: 2adc3d96-4292-5f0e-830d-de1702773ae9
+    asset: Assets/Showcase/Asteroid.png
+    order: -5
+- id: 058ec82d-94ae-5844-9f57-269247de9a94
+  name: Battleship
+  x: 548
+  y: 178
+  width: 238
+  height: 84
+  components:
+  - type: spriteRenderer
+    assetId: e08bc9c7-04f5-579f-8096-65bbcab81b03
+    asset: Assets/Showcase/Boss.png
+    order: 0
+- id: 3b1dea80-9a60-5bac-8b16-d6a05f0e7227
+  name: Laser
+  x: 0
+  y: 0
+  width: 1
+  height: 1
+  components:
+  - type: line2D
+    points:
+    - {x: 0, y: 0}
+    - {x: 1, y: 0}
+    width: 6
+    startColor: "#FFF6C8"
+    endColor: "#FF3D8B"
+    order: 3
+- id: be9e7db7-23ad-5dc0-9e59-2e7350db5f5d
+  name: Laser emitter
+  x: 671
+  y: 225
+  width: 8
+  height: 8
+  components:
+  - type: script
+    script: BossLaser
+    values: {"Laser": "3b1dea80-9a60-5bac-8b16-d6a05f0e7227", "Comet": {"Id": "d994d3ef-42dc-40d8-8f3c-700a4cf14a1a"}}
+- id: 30613476-d694-5842-9982-2776e4c1fbbb
+  name: Spiral emitter
+  x: 671
+  y: 225
+  width: 8
+  height: 8
+  components:
+  - type: spriteRenderer
+    assetId: b91c0e1d-cd5a-5c70-b36a-f34e0cb6a467
+    asset: Assets/Showcase/Pellet.png
+    order: 1
+  - type: script
+    script: SpiralBarrage
+    values: {"Mode": "9d3a960f-2d19-56ff-97ee-0d970b054a0f", "Counters": "aa295842-04b3-5c63-a326-6e341f912755", "Bullets": {"Id": "12940974-2dc8-472e-af74-dca5b29fdac6"}}
+- id: 5ab196f7-7bb5-54a1-9dae-9b8a50b2a2b6
+  name: Ship
+  x: 80
+  y: 204
+  width: 68
+  height: 42
+  components:
+  - type: spriteRenderer
+    assetId: 88cdd5af-893a-5b83-a083-c440114d49f9
+    asset: Assets/Showcase/Ship.png
+    order: 3
+  - type: script
+    script: ShipPilot
+    values: {"Bolt": {"Id": "bc4c3987-7478-5add-ae02-39a15c2cdb83"}, "BoltInfo": "917afb0e-3dbe-5310-ac92-01e6b769aead", "Muzzle": {"x": 62, "y": 18}}
+- id: 2802a450-28f5-5c32-85e3-eb287dd432d4
+  parentId: 5ab196f7-7bb5-54a1-9dae-9b8a50b2a2b6
+  name: Engine flame
+  tag: Particles
+  x: 2
+  y: 21
+  width: 1
+  height: 1
+  components:
+  - type: particleEmitter2D
+    particles: 9bd822ad-c074-5cd3-8f31-4d242f651b70
+    trigger: Start
+    order: 2
+- id: 38d7c137-0022-5929-979e-d7c8509fe751
+  name: Drone 1
+  x: 330
+  y: 150
+  width: 52
+  height: 42
+  components:
+  - type: spriteRenderer
+    assetId: 3f9f87d5-260c-5d38-8d92-43029656c795
+    asset: Assets/Showcase/DroneA.png
+    order: 2
+  - type: boxCollider2D
+    isTrigger: true
+    layer: 2
+    mask: 2
+  - type: script
+    script: Drone
+    values: {"Amplitude": 70, "Period": 200, "Flash": "77839275-dd66-5744-bee8-d3d019a77a5e", "Burst": "8411f8e7-a371-5df8-86b0-d38f8b527c53"}
+- id: 77839275-dd66-5744-bee8-d3d019a77a5e
+  parentId: 38d7c137-0022-5929-979e-d7c8509fe751
+  name: Drone 1 flash
+  active: false
+  x: 0
+  y: 0
+  width: 52
+  height: 42
+  components:
+  - type: spriteRenderer
+    assetId: 3e5b0399-3436-5fa9-9dae-3d059bdbbab2
+    asset: Assets/Showcase/DroneAFlash.png
+    order: 3
+- id: 8411f8e7-a371-5df8-86b0-d38f8b527c53
+  parentId: 38d7c137-0022-5929-979e-d7c8509fe751
+  name: Drone 1 burst
+  tag: Particles
+  x: 26
+  y: 21
+  width: 1
+  height: 1
+  components:
+  - type: particleEmitter2D
+    particles: 173f1213-82b6-54b4-b12a-9f927ab5575f
+    trigger: Manual
+    order: 5
+- id: 65f42eb3-9ac3-5be6-95bb-75d5ed433f31
+  name: Drone 2
+  x: 420
+  y: 250
+  width: 52
+  height: 52
+  components:
+  - type: spriteRenderer
+    assetId: ade23dc7-c9f2-5e99-ac79-00dc989e3bc5
+    asset: Assets/Showcase/DroneB.png
+    order: 2
+  - type: boxCollider2D
+    isTrigger: true
+    layer: 2
+    mask: 2
+  - type: script
+    script: Drone
+    values: {"Amplitude": 90, "Period": 150, "Flash": "e04a0402-78b7-54a4-8abf-8f0e820739b0", "Burst": "82a0981d-1ace-5adf-80dc-51f407c2a8b6"}
+- id: e04a0402-78b7-54a4-8abf-8f0e820739b0
+  parentId: 65f42eb3-9ac3-5be6-95bb-75d5ed433f31
+  name: Drone 2 flash
+  active: false
+  x: 0
+  y: 0
+  width: 52
+  height: 52
+  components:
+  - type: spriteRenderer
+    assetId: 2485905a-066b-5d32-a4dc-75b8b0dda72e
+    asset: Assets/Showcase/DroneBFlash.png
+    order: 3
+- id: 82a0981d-1ace-5adf-80dc-51f407c2a8b6
+  parentId: 65f42eb3-9ac3-5be6-95bb-75d5ed433f31
+  name: Drone 2 burst
+  tag: Particles
+  x: 26
+  y: 26
+  width: 1
+  height: 1
+  components:
+  - type: particleEmitter2D
+    particles: 173f1213-82b6-54b4-b12a-9f927ab5575f
+    trigger: Manual
+    order: 5
+- id: 35685b63-a6e4-5249-b121-ee8c498144a3
+  name: Drone 3
+  x: 500
+  y: 120
+  width: 52
+  height: 42
+  components:
+  - type: spriteRenderer
+    assetId: 3f9f87d5-260c-5d38-8d92-43029656c795
+    asset: Assets/Showcase/DroneA.png
+    order: 2
+  - type: boxCollider2D
+    isTrigger: true
+    layer: 2
+    mask: 2
+  - type: script
+    script: Drone
+    values: {"Amplitude": 50, "Period": 260, "Flash": "616bbff2-7491-5b7a-a123-bb5e93e71ecb", "Burst": "cadaab13-60b5-5480-b0e0-2651ad21b1dd"}
+- id: 616bbff2-7491-5b7a-a123-bb5e93e71ecb
+  parentId: 35685b63-a6e4-5249-b121-ee8c498144a3
+  name: Drone 3 flash
+  active: false
+  x: 0
+  y: 0
+  width: 52
+  height: 42
+  components:
+  - type: spriteRenderer
+    assetId: 3e5b0399-3436-5fa9-9dae-3d059bdbbab2
+    asset: Assets/Showcase/DroneAFlash.png
+    order: 3
+- id: cadaab13-60b5-5480-b0e0-2651ad21b1dd
+  parentId: 35685b63-a6e4-5249-b121-ee8c498144a3
+  name: Drone 3 burst
+  tag: Particles
+  x: 26
+  y: 21
+  width: 1
+  height: 1
+  components:
+  - type: particleEmitter2D
+    particles: 173f1213-82b6-54b4-b12a-9f927ab5575f
+    trigger: Manual
+    order: 5
+- id: b78a46ca-f106-562d-a51c-0a3520118c69
+  name: Camera
+  x: 400
+  y: 225
+  width: 1
+  height: 1
+  components:
+  - type: camera2D
+- id: 71ff0b4e-a152-5d9c-8da6-07d7358f8f14
+  name: Canvas
+  x: 0
+  y: 0
+  width: 1
+  height: 1
+  components:
+  - type: uiCanvas
+- id: 83659ee3-6e15-5dac-b486-eb67433897e2
+  parentId: 71ff0b4e-a152-5d9c-8da6-07d7358f8f14
+  name: Caption
+  x: 12
+  y: -12
+  width: 480
+  height: 44
+  components:
+  - type: uiRect
+    anchor: BottomLeft
+  - type: uiImage
+    sprite: 3baba806-0a96-580d-8c9e-fb7320b0f982
+    borders: {left: 4, top: 4, right: 4, bottom: 4}
+- id: 0f30fce4-a29c-5e45-bc62-fc094e666a5a
+  parentId: 83659ee3-6e15-5dac-b486-eb67433897e2
+  name: Caption title
+  x: 12
+  y: 5
+  width: 456
+  height: 20
+  components:
+  - type: uiRect
+  - type: uiText
+    richText: true
+    text: "<b>BarrageLab</b>   Bullet hell from one sprite pool and a prefab pool"
+    size: 15
+- id: d7cb4111-2162-5dd7-9fcb-05b2a6f5a973
+  parentId: 83659ee3-6e15-5dac-b486-eb67433897e2
+  name: Caption controls
+  x: 12
+  y: 25
+  width: 456
+  height: 16
+  components:
+  - type: uiRect
+  - type: uiText
+    text: "Move  ↑ ↓ ← →      Batching  B      Laser  Space      Pool  P"
+    size: 12
+    color: "#BFD0DC"
+- id: 8fdfc8b5-3591-5f71-a6e9-59d8193422c0
+  parentId: 71ff0b4e-a152-5d9c-8da6-07d7358f8f14
+  name: Barrage panel
+  x: -12
+  y: -12
+  width: 290
+  height: 44
+  components:
+  - type: uiRect
+    anchor: BottomRight
+  - type: uiImage
+    sprite: 3baba806-0a96-580d-8c9e-fb7320b0f982
+    borders: {left: 4, top: 4, right: 4, bottom: 4}
+- id: f1067cb1-428c-5533-b0e7-f5593f4cd52c
+  parentId: 71ff0b4e-a152-5d9c-8da6-07d7358f8f14
+  name: Bolt panel
+  x: -12
+  y: -60
+  width: 290
+  height: 24
+  components:
+  - type: uiRect
+    anchor: BottomRight
+  - type: uiImage
+    sprite: 3baba806-0a96-580d-8c9e-fb7320b0f982
+    borders: {left: 4, top: 4, right: 4, bottom: 4}
+- id: 917afb0e-3dbe-5310-ac92-01e6b769aead
+  parentId: f1067cb1-428c-5533-b0e7-f5593f4cd52c
+  name: Bolt info
+  x: 10
+  y: 4
+  width: 274
+  height: 16
+  components:
+  - type: uiRect
+  - type: uiText
+    richText: true
+    text: "<b>Bolts</b>   Rent / Return"
+    size: 12
+    color: "#F4F6F4"
+- id: 9d3a960f-2d19-56ff-97ee-0d970b054a0f
+  parentId: 8fdfc8b5-3591-5f71-a6e9-59d8193422c0
+  name: Mode
+  x: 12
+  y: 5
+  width: 266
+  height: 20
+  components:
+  - type: uiRect
+  - type: uiText
+    text: "Batched submit"
+    size: 14
+    color: "#FFD84A"
+- id: aa295842-04b3-5c63-a326-6e341f912755
+  parentId: 8fdfc8b5-3591-5f71-a6e9-59d8193422c0
+  name: Counters
+  x: 12
+  y: 25
+  width: 266
+  height: 16
+  components:
+  - type: uiRect
+  - type: uiText
+    text: "Active 0"
+    size: 12
+    color: "#BFD0DC"
+- id: f2cd7a80-62af-5f1f-bfda-d53a9abaed0f
+  parentId: 71ff0b4e-a152-5d9c-8da6-07d7358f8f14
+  name: Tag 1
+  x: 12
+  y: 12
+  width: 466.2
+  height: 24
+  components:
+  - type: uiRect
+    anchor: TopLeft
+    showIf: barrage
+  - type: uiImage
+    sprite: 3baba806-0a96-580d-8c9e-fb7320b0f982
+    borders: {left: 4, top: 4, right: 4, bottom: 4}
+  - type: uiText
+    richText: true
+    text: "<b>Sprite Pool 2D</b>   <color=#BFD0DC>Thousands of bullets, one batched draw</color>"
+    size: 12
+    insetX: 10
+    insetY: 4
+- id: 665f3c4f-5300-557f-acb9-09d2268204db
+  parentId: 71ff0b4e-a152-5d9c-8da6-07d7358f8f14
+  name: Tag 2
+  x: 12
+  y: 40
+  width: 466.2
+  height: 24
+  components:
+  - type: uiRect
+    anchor: TopLeft
+    showIf: bolts
+  - type: uiImage
+    sprite: 3baba806-0a96-580d-8c9e-fb7320b0f982
+    borders: {left: 4, top: 4, right: 4, bottom: 4}
+  - type: uiText
+    richText: true
+    text: "<b>Prefab pool</b>   <color=#BFD0DC>Bolts are rented and returned, not allocated</color>"
+    size: 12
+    insetX: 10
+    insetY: 4
+- id: 1fa83ae3-4e2e-575d-b8cb-b722869149e6
+  parentId: 71ff0b4e-a152-5d9c-8da6-07d7358f8f14
+  name: Tag 3
+  x: 12
+  y: 68
+  width: 466.2
+  height: 24
+  components:
+  - type: uiRect
+    anchor: TopLeft
+    showIf: burst
+  - type: uiImage
+    sprite: 3baba806-0a96-580d-8c9e-fb7320b0f982
+    borders: {left: 4, top: 4, right: 4, bottom: 4}
+  - type: uiText
+    richText: true
+    text: "<b>Particles</b>   <color=#BFD0DC>Drones flash and burst when hit</color>"
+    size: 12
+    insetX: 10
+    insetY: 4
+- id: c7758fc7-ab2d-57b6-bff5-c5e1c78e8efd
+  parentId: 71ff0b4e-a152-5d9c-8da6-07d7358f8f14
+  name: Tag 4
+  x: 12
+  y: 96
+  width: 466.2
+  height: 24
+  components:
+  - type: uiRect
+    anchor: TopLeft
+    showIf: compare
+  - type: uiImage
+    sprite: 3baba806-0a96-580d-8c9e-fb7320b0f982
+    borders: {left: 4, top: 4, right: 4, bottom: 4}
+  - type: uiText
+    richText: true
+    text: "<b>Per-sprite submit</b>   <color=#BFD0DC>B switches batching: watch the draw count</color>"
+    size: 12
+    insetX: 10
+    insetY: 4
+- id: 996bc458-17d7-55da-b0e9-59669795815a
+  parentId: 71ff0b4e-a152-5d9c-8da6-07d7358f8f14
+  name: Tag 5
+  x: 12
+  y: 124
+  width: 466.2
+  height: 24
+  components:
+  - type: uiRect
+    anchor: TopLeft
+    showIf: laser
+  - type: uiImage
+    sprite: 3baba806-0a96-580d-8c9e-fb7320b0f982
+    borders: {left: 4, top: 4, right: 4, bottom: 4}
+  - type: uiText
+    richText: true
+    text: "<b>Line 2D + Trail 2D</b>   <color=#BFD0DC>A reflecting laser launches comets with trails</color>"
+    size: 12
+    insetX: 10
+    insetY: 4
+defaultCameraId: b78a46ca-f106-562d-a51c-0a3520118c69

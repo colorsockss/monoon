@@ -1,0 +1,2506 @@
+schemaVersion: 43
+objects:
+- id: 7dd5805d-3a57-5f79-a965-e537544cfe18
+  name: Grass
+  x: 0
+  y: 0
+  width: 1600
+  height: 896
+  components:
+  - type: spriteRenderer
+    assetId: 9e715985-78a8-5ba1-87d1-1a6efe1fe099
+    asset: Assets/Showcase/Grass.png
+    drawMode: Tiled
+    order: -20
+- id: 64c962c1-72b5-5c7b-9633-a3db6658d013
+  name: Plaza
+  x: 0
+  y: 0
+  width: 32
+  height: 32
+  components:
+  - type: tilemap2D
+    tileset: 38ed3d36-d9ba-5cfe-9a9a-2c4876002f7f
+    cellSize:
+      width: 32
+      height: 32
+    order: -10
+    chunks:
+    - x: 0
+      y: 0
+      cells:
+      - index: 307
+        tile: 26
+      - index: 308
+        tile: 46
+      - index: 309
+        tile: 7
+      - index: 310
+        tile: 46
+      - index: 311
+        tile: 22
+      - index: 312
+        tile: 15
+      - index: 313
+        tile: 6
+      - index: 314
+        tile: 26
+      - index: 315
+        tile: 60
+      - index: 316
+        tile: 22
+      - index: 317
+        tile: 39
+      - index: 318
+        tile: 26
+      - index: 319
+        tile: 64
+      - index: 339
+        tile: 12
+      - index: 340
+        tile: 4
+      - index: 341
+        tile: 43
+      - index: 342
+        tile: 4
+      - index: 343
+        tile: 32
+      - index: 344
+        tile: 8
+      - index: 345
+        tile: 44
+      - index: 346
+        tile: 37
+      - index: 347
+        tile: 19
+      - index: 348
+        tile: 47
+      - index: 349
+        tile: 32
+      - index: 350
+        tile: 27
+      - index: 351
+        tile: 7
+      - index: 371
+        tile: 31
+      - index: 372
+        tile: 40
+      - index: 373
+        tile: 33
+      - index: 374
+        tile: 44
+      - index: 375
+        tile: 12
+      - index: 376
+        tile: 46
+      - index: 377
+        tile: 4
+      - index: 378
+        tile: 46
+      - index: 379
+        tile: 7
+      - index: 380
+        tile: 6
+      - index: 381
+        tile: 3
+      - index: 382
+        tile: 55
+      - index: 383
+        tile: 21
+      - index: 403
+        tile: 50
+      - index: 404
+        tile: 17
+      - index: 405
+        tile: 4
+      - index: 406
+        tile: 46
+      - index: 407
+        tile: 42
+      - index: 408
+        tile: 44
+      - index: 409
+        tile: 48
+      - index: 410
+        tile: 37
+      - index: 411
+        tile: 44
+      - index: 412
+        tile: 9
+      - index: 413
+        tile: 52
+      - index: 414
+        tile: 28
+      - index: 415
+        tile: 38
+      - index: 435
+        tile: 4
+      - index: 436
+        tile: 3
+      - index: 437
+        tile: 63
+      - index: 438
+        tile: 31
+      - index: 439
+        tile: 9
+      - index: 440
+        tile: 49
+      - index: 441
+        tile: 17
+      - index: 442
+        tile: 29
+      - index: 443
+        tile: 23
+      - index: 444
+        tile: 40
+      - index: 445
+        tile: 6
+      - index: 446
+        tile: 47
+      - index: 447
+        tile: 55
+      - index: 467
+        tile: 6
+      - index: 468
+        tile: 7
+      - index: 469
+        tile: 44
+      - index: 470
+        tile: 4
+      - index: 471
+        tile: 44
+      - index: 472
+        tile: 16
+      - index: 473
+        tile: 39
+      - index: 474
+        tile: 23
+      - index: 475
+        tile: 41
+      - index: 476
+        tile: 32
+      - index: 477
+        tile: 59
+      - index: 478
+        tile: 39
+      - index: 479
+        tile: 52
+      - index: 499
+        tile: 63
+      - index: 500
+        tile: 33
+      - index: 501
+        tile: 9
+      - index: 502
+        tile: 18
+      - index: 503
+        tile: 23
+      - index: 504
+        tile: 29
+      - index: 505
+        tile: 53
+      - index: 506
+        tile: 19
+      - index: 507
+        tile: 39
+      - index: 508
+        tile: 13
+      - index: 509
+        tile: 43
+      - index: 510
+        tile: 46
+      - index: 511
+        tile: 6
+      - index: 531
+        tile: 42
+      - index: 532
+        tile: 32
+      - index: 533
+        tile: 18
+      - index: 534
+        tile: 3
+      - index: 535
+        tile: 43
+      - index: 536
+        tile: 8
+      - index: 537
+        tile: 42
+      - index: 538
+        tile: 61
+      - index: 539
+        tile: 27
+      - index: 540
+        tile: 59
+      - index: 541
+        tile: 44
+      - index: 542
+        tile: 62
+      - index: 543
+        tile: 4
+      - index: 563
+        tile: 8
+      - index: 564
+        tile: 6
+      - index: 565
+        tile: 49
+      - index: 566
+        tile: 43
+      - index: 567
+        tile: 63
+      - index: 568
+        tile: 43
+      - index: 569
+        tile: 33
+      - index: 570
+        tile: 15
+      - index: 571
+        tile: 57
+      - index: 572
+        tile: 27
+      - index: 573
+        tile: 61
+      - index: 574
+        tile: 37
+      - index: 575
+        tile: 57
+      - index: 595
+        tile: 29
+      - index: 596
+        tile: 19
+      - index: 597
+        tile: 49
+      - index: 598
+        tile: 11
+      - index: 599
+        tile: 53
+      - index: 600
+        tile: 56
+      - index: 601
+        tile: 60
+      - index: 602
+        tile: 55
+      - index: 603
+        tile: 35
+      - index: 604
+        tile: 12
+      - index: 605
+        tile: 63
+      - index: 606
+        tile: 6
+      - index: 607
+        tile: 55
+- id: 85c393dc-aa77-527c-b2ae-d9be80ceba0f
+  name: Fence 1
+  x: 6
+  y: 36
+  width: 68
+  height: 34
+  components:
+  - type: sortingGroup2D
+    sortByY: true
+  - type: spriteRenderer
+    assetId: cd4496a3-2a44-506c-9624-d5f5cc520a89
+    asset: Assets/Showcase/Fence.png
+- id: a3256b99-eddb-5511-836a-995f1ceb9bf3
+  parentId: 85c393dc-aa77-527c-b2ae-d9be80ceba0f
+  name: Fence 1 shadow
+  x: 18
+  y: 28
+  width: 32
+  height: 10
+  components:
+  - type: spriteRenderer
+    assetId: 6f620ee1-7fbc-55aa-81f1-a142cb765421
+    asset: Assets/Showcase/ShadowM.png
+    order: -1
+- id: 877455d0-a65a-5b37-8158-9004da412396
+  name: Fence 2
+  x: 74
+  y: 36
+  width: 68
+  height: 34
+  components:
+  - type: sortingGroup2D
+    sortByY: true
+  - type: spriteRenderer
+    assetId: cd4496a3-2a44-506c-9624-d5f5cc520a89
+    asset: Assets/Showcase/Fence.png
+- id: 3a1e7915-95d2-57c6-9e7d-71a78d643e95
+  parentId: 877455d0-a65a-5b37-8158-9004da412396
+  name: Fence 2 shadow
+  x: 18
+  y: 28
+  width: 32
+  height: 10
+  components:
+  - type: spriteRenderer
+    assetId: 6f620ee1-7fbc-55aa-81f1-a142cb765421
+    asset: Assets/Showcase/ShadowM.png
+    order: -1
+- id: 76874067-99fc-59dc-9b57-f6c5dc27bc10
+  name: Fence 3
+  x: 142
+  y: 36
+  width: 68
+  height: 34
+  components:
+  - type: sortingGroup2D
+    sortByY: true
+  - type: spriteRenderer
+    assetId: cd4496a3-2a44-506c-9624-d5f5cc520a89
+    asset: Assets/Showcase/Fence.png
+- id: 70fe15c2-c83d-5b4f-a460-7ce1f0936b70
+  parentId: 76874067-99fc-59dc-9b57-f6c5dc27bc10
+  name: Fence 3 shadow
+  x: 18
+  y: 28
+  width: 32
+  height: 10
+  components:
+  - type: spriteRenderer
+    assetId: 6f620ee1-7fbc-55aa-81f1-a142cb765421
+    asset: Assets/Showcase/ShadowM.png
+    order: -1
+- id: 91b9f4b8-c7f7-5536-ac26-7c68026cdade
+  name: Fence 4
+  x: 210
+  y: 36
+  width: 68
+  height: 34
+  components:
+  - type: sortingGroup2D
+    sortByY: true
+  - type: spriteRenderer
+    assetId: cd4496a3-2a44-506c-9624-d5f5cc520a89
+    asset: Assets/Showcase/Fence.png
+- id: 82d1c797-8a8c-504d-b70a-a4f5c46019fa
+  parentId: 91b9f4b8-c7f7-5536-ac26-7c68026cdade
+  name: Fence 4 shadow
+  x: 18
+  y: 28
+  width: 32
+  height: 10
+  components:
+  - type: spriteRenderer
+    assetId: 6f620ee1-7fbc-55aa-81f1-a142cb765421
+    asset: Assets/Showcase/ShadowM.png
+    order: -1
+- id: 68c7de80-5fc6-5b16-968b-cde81cedf964
+  name: Fence 5
+  x: 278
+  y: 36
+  width: 68
+  height: 34
+  components:
+  - type: sortingGroup2D
+    sortByY: true
+  - type: spriteRenderer
+    assetId: cd4496a3-2a44-506c-9624-d5f5cc520a89
+    asset: Assets/Showcase/Fence.png
+- id: b4fe28ac-128a-5fae-b1db-0e310fe27265
+  parentId: 68c7de80-5fc6-5b16-968b-cde81cedf964
+  name: Fence 5 shadow
+  x: 18
+  y: 28
+  width: 32
+  height: 10
+  components:
+  - type: spriteRenderer
+    assetId: 6f620ee1-7fbc-55aa-81f1-a142cb765421
+    asset: Assets/Showcase/ShadowM.png
+    order: -1
+- id: 070be81d-1d6b-53b9-89eb-b48f07540534
+  name: Fence 6
+  x: 346
+  y: 36
+  width: 68
+  height: 34
+  components:
+  - type: sortingGroup2D
+    sortByY: true
+  - type: spriteRenderer
+    assetId: cd4496a3-2a44-506c-9624-d5f5cc520a89
+    asset: Assets/Showcase/Fence.png
+- id: af2bd60e-e916-5a50-9656-739b62921d39
+  parentId: 070be81d-1d6b-53b9-89eb-b48f07540534
+  name: Fence 6 shadow
+  x: 18
+  y: 28
+  width: 32
+  height: 10
+  components:
+  - type: spriteRenderer
+    assetId: 6f620ee1-7fbc-55aa-81f1-a142cb765421
+    asset: Assets/Showcase/ShadowM.png
+    order: -1
+- id: e2f6e9b0-49be-52c4-bbde-5a489f080c33
+  name: Fence 7
+  x: 414
+  y: 36
+  width: 68
+  height: 34
+  components:
+  - type: sortingGroup2D
+    sortByY: true
+  - type: spriteRenderer
+    assetId: cd4496a3-2a44-506c-9624-d5f5cc520a89
+    asset: Assets/Showcase/Fence.png
+- id: b54eaa4f-9164-5c81-9c77-7814102c64f0
+  parentId: e2f6e9b0-49be-52c4-bbde-5a489f080c33
+  name: Fence 7 shadow
+  x: 18
+  y: 28
+  width: 32
+  height: 10
+  components:
+  - type: spriteRenderer
+    assetId: 6f620ee1-7fbc-55aa-81f1-a142cb765421
+    asset: Assets/Showcase/ShadowM.png
+    order: -1
+- id: 6c4890f9-a166-532f-840d-f268172b44a6
+  name: Fence 8
+  x: 482
+  y: 36
+  width: 68
+  height: 34
+  components:
+  - type: sortingGroup2D
+    sortByY: true
+  - type: spriteRenderer
+    assetId: cd4496a3-2a44-506c-9624-d5f5cc520a89
+    asset: Assets/Showcase/Fence.png
+- id: 40b93983-c276-5fae-80f9-6900ae768af4
+  parentId: 6c4890f9-a166-532f-840d-f268172b44a6
+  name: Fence 8 shadow
+  x: 18
+  y: 28
+  width: 32
+  height: 10
+  components:
+  - type: spriteRenderer
+    assetId: 6f620ee1-7fbc-55aa-81f1-a142cb765421
+    asset: Assets/Showcase/ShadowM.png
+    order: -1
+- id: 522df6d1-b12b-5863-8da5-e2f3ea50c64b
+  name: Fence 9
+  x: 550
+  y: 36
+  width: 68
+  height: 34
+  components:
+  - type: sortingGroup2D
+    sortByY: true
+  - type: spriteRenderer
+    assetId: cd4496a3-2a44-506c-9624-d5f5cc520a89
+    asset: Assets/Showcase/Fence.png
+- id: 2345c34c-301c-5dfd-a5bf-d17d44007a3d
+  parentId: 522df6d1-b12b-5863-8da5-e2f3ea50c64b
+  name: Fence 9 shadow
+  x: 18
+  y: 28
+  width: 32
+  height: 10
+  components:
+  - type: spriteRenderer
+    assetId: 6f620ee1-7fbc-55aa-81f1-a142cb765421
+    asset: Assets/Showcase/ShadowM.png
+    order: -1
+- id: 3d9bd7a0-d1ba-5359-bf21-6ec2693c235a
+  name: Fence 10
+  x: 618
+  y: 36
+  width: 68
+  height: 34
+  components:
+  - type: sortingGroup2D
+    sortByY: true
+  - type: spriteRenderer
+    assetId: cd4496a3-2a44-506c-9624-d5f5cc520a89
+    asset: Assets/Showcase/Fence.png
+- id: 47e6a3b6-0926-571a-a849-64e877477fb7
+  parentId: 3d9bd7a0-d1ba-5359-bf21-6ec2693c235a
+  name: Fence 10 shadow
+  x: 18
+  y: 28
+  width: 32
+  height: 10
+  components:
+  - type: spriteRenderer
+    assetId: 6f620ee1-7fbc-55aa-81f1-a142cb765421
+    asset: Assets/Showcase/ShadowM.png
+    order: -1
+- id: 56581c06-9816-5074-8e59-c84ebfad4590
+  name: Fence 11
+  x: 686
+  y: 36
+  width: 68
+  height: 34
+  components:
+  - type: sortingGroup2D
+    sortByY: true
+  - type: spriteRenderer
+    assetId: cd4496a3-2a44-506c-9624-d5f5cc520a89
+    asset: Assets/Showcase/Fence.png
+- id: 387ba042-32b6-59dc-9364-72e685a70d50
+  parentId: 56581c06-9816-5074-8e59-c84ebfad4590
+  name: Fence 11 shadow
+  x: 18
+  y: 28
+  width: 32
+  height: 10
+  components:
+  - type: spriteRenderer
+    assetId: 6f620ee1-7fbc-55aa-81f1-a142cb765421
+    asset: Assets/Showcase/ShadowM.png
+    order: -1
+- id: a205badf-baf6-5564-9073-75ac29310b53
+  name: Fence 12
+  x: 754
+  y: 36
+  width: 68
+  height: 34
+  components:
+  - type: sortingGroup2D
+    sortByY: true
+  - type: spriteRenderer
+    assetId: cd4496a3-2a44-506c-9624-d5f5cc520a89
+    asset: Assets/Showcase/Fence.png
+- id: a6648e29-5a10-52d4-af65-9213fa08533d
+  parentId: a205badf-baf6-5564-9073-75ac29310b53
+  name: Fence 12 shadow
+  x: 18
+  y: 28
+  width: 32
+  height: 10
+  components:
+  - type: spriteRenderer
+    assetId: 6f620ee1-7fbc-55aa-81f1-a142cb765421
+    asset: Assets/Showcase/ShadowM.png
+    order: -1
+- id: febbdac9-2175-544d-818c-9d31c3210721
+  name: Fence 13
+  x: 822
+  y: 36
+  width: 68
+  height: 34
+  components:
+  - type: sortingGroup2D
+    sortByY: true
+  - type: spriteRenderer
+    assetId: cd4496a3-2a44-506c-9624-d5f5cc520a89
+    asset: Assets/Showcase/Fence.png
+- id: 1fd31eaa-33bb-539a-9dda-ff3dba3aa1d2
+  parentId: febbdac9-2175-544d-818c-9d31c3210721
+  name: Fence 13 shadow
+  x: 18
+  y: 28
+  width: 32
+  height: 10
+  components:
+  - type: spriteRenderer
+    assetId: 6f620ee1-7fbc-55aa-81f1-a142cb765421
+    asset: Assets/Showcase/ShadowM.png
+    order: -1
+- id: 41c399cd-d8cf-515f-bf38-692b767fc637
+  name: Fence 14
+  x: 890
+  y: 36
+  width: 68
+  height: 34
+  components:
+  - type: sortingGroup2D
+    sortByY: true
+  - type: spriteRenderer
+    assetId: cd4496a3-2a44-506c-9624-d5f5cc520a89
+    asset: Assets/Showcase/Fence.png
+- id: fe4a970a-fc8e-5d13-b73f-cbd0ce1a8275
+  parentId: 41c399cd-d8cf-515f-bf38-692b767fc637
+  name: Fence 14 shadow
+  x: 18
+  y: 28
+  width: 32
+  height: 10
+  components:
+  - type: spriteRenderer
+    assetId: 6f620ee1-7fbc-55aa-81f1-a142cb765421
+    asset: Assets/Showcase/ShadowM.png
+    order: -1
+- id: 99e258b6-3f52-5bef-99f7-2226bedf87bb
+  name: Fence 15
+  x: 958
+  y: 36
+  width: 68
+  height: 34
+  components:
+  - type: sortingGroup2D
+    sortByY: true
+  - type: spriteRenderer
+    assetId: cd4496a3-2a44-506c-9624-d5f5cc520a89
+    asset: Assets/Showcase/Fence.png
+- id: 34816363-36e6-5618-9211-2b884f40a5da
+  parentId: 99e258b6-3f52-5bef-99f7-2226bedf87bb
+  name: Fence 15 shadow
+  x: 18
+  y: 28
+  width: 32
+  height: 10
+  components:
+  - type: spriteRenderer
+    assetId: 6f620ee1-7fbc-55aa-81f1-a142cb765421
+    asset: Assets/Showcase/ShadowM.png
+    order: -1
+- id: 5253cfc2-d2bf-5bcb-b843-e3a3698696c4
+  name: Fence 16
+  x: 1026
+  y: 36
+  width: 68
+  height: 34
+  components:
+  - type: sortingGroup2D
+    sortByY: true
+  - type: spriteRenderer
+    assetId: cd4496a3-2a44-506c-9624-d5f5cc520a89
+    asset: Assets/Showcase/Fence.png
+- id: 1ec20a44-56b6-5b6a-a771-0b6f87c93cc7
+  parentId: 5253cfc2-d2bf-5bcb-b843-e3a3698696c4
+  name: Fence 16 shadow
+  x: 18
+  y: 28
+  width: 32
+  height: 10
+  components:
+  - type: spriteRenderer
+    assetId: 6f620ee1-7fbc-55aa-81f1-a142cb765421
+    asset: Assets/Showcase/ShadowM.png
+    order: -1
+- id: 777e7367-c026-5e24-948a-9fdf72ede0bc
+  name: Fence 17
+  x: 1094
+  y: 36
+  width: 68
+  height: 34
+  components:
+  - type: sortingGroup2D
+    sortByY: true
+  - type: spriteRenderer
+    assetId: cd4496a3-2a44-506c-9624-d5f5cc520a89
+    asset: Assets/Showcase/Fence.png
+- id: 1e349db2-4a9a-5ee0-a9d8-6d3cb72475d6
+  parentId: 777e7367-c026-5e24-948a-9fdf72ede0bc
+  name: Fence 17 shadow
+  x: 18
+  y: 28
+  width: 32
+  height: 10
+  components:
+  - type: spriteRenderer
+    assetId: 6f620ee1-7fbc-55aa-81f1-a142cb765421
+    asset: Assets/Showcase/ShadowM.png
+    order: -1
+- id: a0814c92-b318-543c-adce-47d643ebcbb1
+  name: Fence 18
+  x: 1162
+  y: 36
+  width: 68
+  height: 34
+  components:
+  - type: sortingGroup2D
+    sortByY: true
+  - type: spriteRenderer
+    assetId: cd4496a3-2a44-506c-9624-d5f5cc520a89
+    asset: Assets/Showcase/Fence.png
+- id: fde9c060-ba2a-5b8a-b182-1b35cb970ecb
+  parentId: a0814c92-b318-543c-adce-47d643ebcbb1
+  name: Fence 18 shadow
+  x: 18
+  y: 28
+  width: 32
+  height: 10
+  components:
+  - type: spriteRenderer
+    assetId: 6f620ee1-7fbc-55aa-81f1-a142cb765421
+    asset: Assets/Showcase/ShadowM.png
+    order: -1
+- id: a98b1884-7c25-5930-816b-6162f1d06bb5
+  name: Fence 19
+  x: 1230
+  y: 36
+  width: 68
+  height: 34
+  components:
+  - type: sortingGroup2D
+    sortByY: true
+  - type: spriteRenderer
+    assetId: cd4496a3-2a44-506c-9624-d5f5cc520a89
+    asset: Assets/Showcase/Fence.png
+- id: 1af53811-1f48-52e8-b1df-e75d82f447ca
+  parentId: a98b1884-7c25-5930-816b-6162f1d06bb5
+  name: Fence 19 shadow
+  x: 18
+  y: 28
+  width: 32
+  height: 10
+  components:
+  - type: spriteRenderer
+    assetId: 6f620ee1-7fbc-55aa-81f1-a142cb765421
+    asset: Assets/Showcase/ShadowM.png
+    order: -1
+- id: bb6cb505-c9cb-5c20-879b-a5bfe31a8815
+  name: Fence 20
+  x: 1298
+  y: 36
+  width: 68
+  height: 34
+  components:
+  - type: sortingGroup2D
+    sortByY: true
+  - type: spriteRenderer
+    assetId: cd4496a3-2a44-506c-9624-d5f5cc520a89
+    asset: Assets/Showcase/Fence.png
+- id: 072f1f2c-6166-5d6c-813e-2e879145776c
+  parentId: bb6cb505-c9cb-5c20-879b-a5bfe31a8815
+  name: Fence 20 shadow
+  x: 18
+  y: 28
+  width: 32
+  height: 10
+  components:
+  - type: spriteRenderer
+    assetId: 6f620ee1-7fbc-55aa-81f1-a142cb765421
+    asset: Assets/Showcase/ShadowM.png
+    order: -1
+- id: 867fb217-9ede-51c5-92f0-2b962ef1bb58
+  name: Fence 21
+  x: 1366
+  y: 36
+  width: 68
+  height: 34
+  components:
+  - type: sortingGroup2D
+    sortByY: true
+  - type: spriteRenderer
+    assetId: cd4496a3-2a44-506c-9624-d5f5cc520a89
+    asset: Assets/Showcase/Fence.png
+- id: 7753b883-fd8e-5606-9ae7-bf4cce30fb55
+  parentId: 867fb217-9ede-51c5-92f0-2b962ef1bb58
+  name: Fence 21 shadow
+  x: 18
+  y: 28
+  width: 32
+  height: 10
+  components:
+  - type: spriteRenderer
+    assetId: 6f620ee1-7fbc-55aa-81f1-a142cb765421
+    asset: Assets/Showcase/ShadowM.png
+    order: -1
+- id: 29ede18b-6dfb-5d85-ae80-a574eedf3dc2
+  name: Fence 22
+  x: 1434
+  y: 36
+  width: 68
+  height: 34
+  components:
+  - type: sortingGroup2D
+    sortByY: true
+  - type: spriteRenderer
+    assetId: cd4496a3-2a44-506c-9624-d5f5cc520a89
+    asset: Assets/Showcase/Fence.png
+- id: 8c25136c-2358-5a7f-b1e9-ab4b1c5318fb
+  parentId: 29ede18b-6dfb-5d85-ae80-a574eedf3dc2
+  name: Fence 22 shadow
+  x: 18
+  y: 28
+  width: 32
+  height: 10
+  components:
+  - type: spriteRenderer
+    assetId: 6f620ee1-7fbc-55aa-81f1-a142cb765421
+    asset: Assets/Showcase/ShadowM.png
+    order: -1
+- id: a21bbad1-28df-55db-96bc-54772a924ed2
+  name: Fence 23
+  x: 1502
+  y: 36
+  width: 68
+  height: 34
+  components:
+  - type: sortingGroup2D
+    sortByY: true
+  - type: spriteRenderer
+    assetId: cd4496a3-2a44-506c-9624-d5f5cc520a89
+    asset: Assets/Showcase/Fence.png
+- id: b2a1952b-861b-59b7-9003-e9cda69b5f68
+  parentId: a21bbad1-28df-55db-96bc-54772a924ed2
+  name: Fence 23 shadow
+  x: 18
+  y: 28
+  width: 32
+  height: 10
+  components:
+  - type: spriteRenderer
+    assetId: 6f620ee1-7fbc-55aa-81f1-a142cb765421
+    asset: Assets/Showcase/ShadowM.png
+    order: -1
+- id: 658d179e-1b2a-5d88-992c-6fbb46e1926f
+  name: Pine 24
+  x: 39
+  y: 198
+  width: 42
+  height: 52
+  components:
+  - type: sortingGroup2D
+    sortByY: true
+  - type: spriteRenderer
+    assetId: 170a1fc9-1464-597e-9962-894c9c9b9215
+    asset: Assets/Showcase/Pine.png
+- id: b5aad262-b198-5bb0-b7ee-eaa933a509b6
+  parentId: 658d179e-1b2a-5d88-992c-6fbb46e1926f
+  name: Pine 24 shadow
+  x: -1
+  y: 44.8
+  width: 44
+  height: 12
+  components:
+  - type: spriteRenderer
+    assetId: 426680e6-daf6-555c-9ac6-c7e6e8eb9f9f
+    asset: Assets/Showcase/ShadowL.png
+    order: -1
+- id: d8e2990c-4812-5386-b6fc-542b87776fef
+  name: Pine 25
+  x: 69
+  y: 808
+  width: 42
+  height: 52
+  components:
+  - type: sortingGroup2D
+    sortByY: true
+  - type: spriteRenderer
+    assetId: 170a1fc9-1464-597e-9962-894c9c9b9215
+    asset: Assets/Showcase/Pine.png
+- id: 0f6f4c1c-465d-5041-bd49-b579305987dc
+  parentId: d8e2990c-4812-5386-b6fc-542b87776fef
+  name: Pine 25 shadow
+  x: -1
+  y: 44.8
+  width: 44
+  height: 12
+  components:
+  - type: spriteRenderer
+    assetId: 426680e6-daf6-555c-9ac6-c7e6e8eb9f9f
+    asset: Assets/Showcase/ShadowL.png
+    order: -1
+- id: e8c8af10-1224-5f7b-90c4-5e806cca71d0
+  name: Pine 26
+  x: 279
+  y: 808
+  width: 42
+  height: 52
+  components:
+  - type: sortingGroup2D
+    sortByY: true
+  - type: spriteRenderer
+    assetId: 170a1fc9-1464-597e-9962-894c9c9b9215
+    asset: Assets/Showcase/Pine.png
+- id: 66f2174c-b38c-5628-b746-57a2e6530a66
+  parentId: e8c8af10-1224-5f7b-90c4-5e806cca71d0
+  name: Pine 26 shadow
+  x: -1
+  y: 44.8
+  width: 44
+  height: 12
+  components:
+  - type: spriteRenderer
+    assetId: 426680e6-daf6-555c-9ac6-c7e6e8eb9f9f
+    asset: Assets/Showcase/ShadowL.png
+    order: -1
+- id: 1c0926ea-6bf1-57ce-8548-68fc905905e7
+  name: Pine 27
+  x: 1509
+  y: 808
+  width: 42
+  height: 52
+  components:
+  - type: sortingGroup2D
+    sortByY: true
+  - type: spriteRenderer
+    assetId: 170a1fc9-1464-597e-9962-894c9c9b9215
+    asset: Assets/Showcase/Pine.png
+- id: 656280e2-bcc8-53fd-869e-a347b8873a67
+  parentId: 1c0926ea-6bf1-57ce-8548-68fc905905e7
+  name: Pine 27 shadow
+  x: -1
+  y: 44.8
+  width: 44
+  height: 12
+  components:
+  - type: spriteRenderer
+    assetId: 426680e6-daf6-555c-9ac6-c7e6e8eb9f9f
+    asset: Assets/Showcase/ShadowL.png
+    order: -1
+- id: 454382f6-63ec-5c3f-a2da-b55d2782c23e
+  name: Pine 28
+  x: 1539
+  y: 278
+  width: 42
+  height: 52
+  components:
+  - type: sortingGroup2D
+    sortByY: true
+  - type: spriteRenderer
+    assetId: 170a1fc9-1464-597e-9962-894c9c9b9215
+    asset: Assets/Showcase/Pine.png
+- id: 2d159e19-5350-5e15-bd76-71394c851aa1
+  parentId: 454382f6-63ec-5c3f-a2da-b55d2782c23e
+  name: Pine 28 shadow
+  x: -1
+  y: 44.8
+  width: 44
+  height: 12
+  components:
+  - type: spriteRenderer
+    assetId: 426680e6-daf6-555c-9ac6-c7e6e8eb9f9f
+    asset: Assets/Showcase/ShadowL.png
+    order: -1
+- id: 7ce7e63d-62fd-5785-84f1-92b9026e1b04
+  name: Pine 29
+  x: 449
+  y: 88
+  width: 42
+  height: 52
+  components:
+  - type: sortingGroup2D
+    sortByY: true
+  - type: spriteRenderer
+    assetId: 170a1fc9-1464-597e-9962-894c9c9b9215
+    asset: Assets/Showcase/Pine.png
+- id: 7ac2a9bc-366f-543d-a006-91523f706d8a
+  parentId: 7ce7e63d-62fd-5785-84f1-92b9026e1b04
+  name: Pine 29 shadow
+  x: -1
+  y: 44.8
+  width: 44
+  height: 12
+  components:
+  - type: spriteRenderer
+    assetId: 426680e6-daf6-555c-9ac6-c7e6e8eb9f9f
+    asset: Assets/Showcase/ShadowL.png
+    order: -1
+- id: f7ca62f1-9927-57dc-b28a-5eb184b39078
+  name: Pine 30
+  x: 1129
+  y: 98
+  width: 42
+  height: 52
+  components:
+  - type: sortingGroup2D
+    sortByY: true
+  - type: spriteRenderer
+    assetId: 170a1fc9-1464-597e-9962-894c9c9b9215
+    asset: Assets/Showcase/Pine.png
+- id: 878ca958-65a4-5ff9-871e-21cb07b26f31
+  parentId: f7ca62f1-9927-57dc-b28a-5eb184b39078
+  name: Pine 30 shadow
+  x: -1
+  y: 44.8
+  width: 44
+  height: 12
+  components:
+  - type: spriteRenderer
+    assetId: 426680e6-daf6-555c-9ac6-c7e6e8eb9f9f
+    asset: Assets/Showcase/ShadowL.png
+    order: -1
+- id: 2287edcc-4e96-5517-a72a-6ab399ef8a89
+  name: Tent 31
+  x: 106
+  y: 242
+  width: 128
+  height: 88
+  components:
+  - type: sortingGroup2D
+    sortByY: true
+  - type: spriteRenderer
+    assetId: 415ea266-5a7a-5f99-af7d-a6cb3ffc2eab
+    asset: Assets/Showcase/Tent.png
+- id: e16736db-81c3-58ba-9fca-7d3f3bf5987a
+  parentId: 2287edcc-4e96-5517-a72a-6ab399ef8a89
+  name: Tent 31 shadow
+  x: 42
+  y: 80.8
+  width: 44
+  height: 12
+  components:
+  - type: spriteRenderer
+    assetId: 426680e6-daf6-555c-9ac6-c7e6e8eb9f9f
+    asset: Assets/Showcase/ShadowL.png
+    order: -1
+- id: 76d87a52-a250-5165-ba8d-7ad320e7df57
+  name: Campfire
+  x: 275
+  y: 388
+  width: 50
+  height: 32
+  components:
+  - type: sortingGroup2D
+    sortByY: true
+  - type: spriteRenderer
+    assetId: e88ad638-8e9d-550b-b730-c0eb139e2d2b
+    asset: Assets/Showcase/Campfire.png
+  - type: pointLight2D
+    radius: 120
+    intensity: 0.8
+    flicker: 0.1
+    frequency: 1.2
+    color: "#FFA34C"
+- id: 260f1155-e4c4-5a97-8108-26e0ab736857
+  parentId: 76d87a52-a250-5165-ba8d-7ad320e7df57
+  name: Campfire shadow
+  x: 3
+  y: 24.8
+  width: 44
+  height: 12
+  components:
+  - type: spriteRenderer
+    assetId: 426680e6-daf6-555c-9ac6-c7e6e8eb9f9f
+    asset: Assets/Showcase/ShadowL.png
+    order: -1
+- id: 6f10f9c5-4104-5ae5-ab25-92ae844cd21a
+  parentId: 76d87a52-a250-5165-ba8d-7ad320e7df57
+  name: Camp smoke
+  x: 25
+  y: 4
+  width: 1
+  height: 1
+  components:
+  - type: particleEmitter2D
+    particles: 49092fa6-3b5b-52a9-9126-960d7bf82bff
+    trigger: Start
+    order: -2
+- id: 287f8404-d070-5e43-8564-4f33ae28d449
+  parentId: 76d87a52-a250-5165-ba8d-7ad320e7df57
+  name: Camp flame
+  x: 25
+  y: 8
+  width: 1
+  height: 1
+  components:
+  - type: particleEmitter2D
+    particles: 5ef2d2ad-cd0d-59bf-bea8-c81ca4af3b3f
+    trigger: Start
+    order: 2
+- id: 0afbaafb-92f2-5726-b079-74f49f02cd1b
+  name: Bench 33
+  x: 349
+  y: 432
+  width: 62
+  height: 38
+  components:
+  - type: sortingGroup2D
+    sortByY: true
+  - type: spriteRenderer
+    assetId: 64bc5acb-72cd-5e11-8806-568b9862e454
+    asset: Assets/Showcase/Bench.png
+- id: 49f5b5ad-a0e1-5a5d-8085-d26b287d6994
+  parentId: 0afbaafb-92f2-5726-b079-74f49f02cd1b
+  name: Bench 33 shadow
+  x: 9
+  y: 30.8
+  width: 44
+  height: 12
+  components:
+  - type: spriteRenderer
+    assetId: 426680e6-daf6-555c-9ac6-c7e6e8eb9f9f
+    asset: Assets/Showcase/ShadowL.png
+    order: -1
+- id: 14939104-ecc5-5f7e-b9a7-f469acbeb2dc
+  name: Well 34
+  x: 783
+  y: 390
+  width: 66
+  height: 80
+  components:
+  - type: sortingGroup2D
+    sortByY: true
+  - type: spriteRenderer
+    assetId: 1cdc220c-1596-58bf-97f2-ab1953ebc8c7
+    asset: Assets/Showcase/Well.png
+- id: 32d5fee5-8a7a-5d62-9b57-8c107f8a20fe
+  parentId: 14939104-ecc5-5f7e-b9a7-f469acbeb2dc
+  name: Well 34 shadow
+  x: 11
+  y: 72.8
+  width: 44
+  height: 12
+  components:
+  - type: spriteRenderer
+    assetId: 426680e6-daf6-555c-9ac6-c7e6e8eb9f9f
+    asset: Assets/Showcase/ShadowL.png
+    order: -1
+- id: 468426ad-d7f2-5eeb-b24e-4336e6be98d2
+  name: Stall 35
+  x: 646
+  y: 228
+  width: 108
+  height: 102
+  components:
+  - type: sortingGroup2D
+    sortByY: true
+  - type: spriteRenderer
+    assetId: 8268fd04-c644-549f-83ae-d577b0809d85
+    asset: Assets/Showcase/Stall.png
+- id: 4488b43c-93a1-5f0a-948f-83cfbeb3cc82
+  parentId: 468426ad-d7f2-5eeb-b24e-4336e6be98d2
+  name: Stall 35 shadow
+  x: 32
+  y: 94.8
+  width: 44
+  height: 12
+  components:
+  - type: spriteRenderer
+    assetId: 426680e6-daf6-555c-9ac6-c7e6e8eb9f9f
+    asset: Assets/Showcase/ShadowL.png
+    order: -1
+- id: a62fb7c0-ae27-5c0f-a548-4003bd631997
+  name: Stall 36
+  x: 886
+  y: 228
+  width: 108
+  height: 102
+  components:
+  - type: sortingGroup2D
+    sortByY: true
+  - type: spriteRenderer
+    assetId: 8268fd04-c644-549f-83ae-d577b0809d85
+    asset: Assets/Showcase/Stall.png
+- id: a6d08e16-b6eb-5521-bea3-f0c9d0eaeff2
+  parentId: a62fb7c0-ae27-5c0f-a548-4003bd631997
+  name: Stall 36 shadow
+  x: 32
+  y: 94.8
+  width: 44
+  height: 12
+  components:
+  - type: spriteRenderer
+    assetId: 426680e6-daf6-555c-9ac6-c7e6e8eb9f9f
+    asset: Assets/Showcase/ShadowL.png
+    order: -1
+- id: 00bb93af-cbb1-5403-8314-a7aec7ec1e57
+  name: Crate 37
+  x: 602
+  y: 322
+  width: 36
+  height: 38
+  components:
+  - type: sortingGroup2D
+    sortByY: true
+  - type: spriteRenderer
+    assetId: 4b153d2f-2baf-5d81-a1dc-83c9f66e2f59
+    asset: Assets/Showcase/Crate.png
+- id: 15d82a32-cfc3-5659-814b-3f447c645d38
+  parentId: 00bb93af-cbb1-5403-8314-a7aec7ec1e57
+  name: Crate 37 shadow
+  x: -4
+  y: 30.8
+  width: 44
+  height: 12
+  components:
+  - type: spriteRenderer
+    assetId: 426680e6-daf6-555c-9ac6-c7e6e8eb9f9f
+    asset: Assets/Showcase/ShadowL.png
+    order: -1
+- id: ca9be2af-dc0a-5cc8-b7e8-30c6a22deb4b
+  name: Barrel 38
+  x: 1013
+  y: 318
+  width: 34
+  height: 42
+  components:
+  - type: sortingGroup2D
+    sortByY: true
+  - type: spriteRenderer
+    assetId: 2bab1aa7-972d-5a7d-9fb9-f4712288e04e
+    asset: Assets/Showcase/Barrel.png
+- id: 759ed8b9-1e2d-541b-a1bf-19e528c17b75
+  parentId: ca9be2af-dc0a-5cc8-b7e8-30c6a22deb4b
+  name: Barrel 38 shadow
+  x: -5
+  y: 34.8
+  width: 44
+  height: 12
+  components:
+  - type: spriteRenderer
+    assetId: 426680e6-daf6-555c-9ac6-c7e6e8eb9f9f
+    asset: Assets/Showcase/ShadowL.png
+    order: -1
+- id: 1d5d48e7-ab0e-59a0-92b1-456dbc01a57a
+  name: Crate 39
+  x: 1042
+  y: 332
+  width: 36
+  height: 38
+  components:
+  - type: sortingGroup2D
+    sortByY: true
+  - type: spriteRenderer
+    assetId: 4b153d2f-2baf-5d81-a1dc-83c9f66e2f59
+    asset: Assets/Showcase/Crate.png
+- id: 75d44420-fe1b-58cb-9747-26a8a36be1a8
+  parentId: 1d5d48e7-ab0e-59a0-92b1-456dbc01a57a
+  name: Crate 39 shadow
+  x: -4
+  y: 30.8
+  width: 44
+  height: 12
+  components:
+  - type: spriteRenderer
+    assetId: 426680e6-daf6-555c-9ac6-c7e6e8eb9f9f
+    asset: Assets/Showcase/ShadowL.png
+    order: -1
+- id: 6606990a-c1f9-5b2f-bb26-9d3df87722bc
+  name: Chest 40
+  x: 640
+  y: 566
+  width: 40
+  height: 34
+  components:
+  - type: sortingGroup2D
+    sortByY: true
+  - type: spriteRenderer
+    assetId: eb2c96ea-4f87-52c5-930b-68b6c32ffe11
+    asset: Assets/Showcase/Chest.png
+- id: 4c61780c-ac5b-5f49-bd01-26ba83131ce5
+  parentId: 6606990a-c1f9-5b2f-bb26-9d3df87722bc
+  name: Chest 40 shadow
+  x: -2
+  y: 26.8
+  width: 44
+  height: 12
+  components:
+  - type: spriteRenderer
+    assetId: 426680e6-daf6-555c-9ac6-c7e6e8eb9f9f
+    asset: Assets/Showcase/ShadowL.png
+    order: -1
+- id: f79d2342-7391-58a2-bf26-33fb6582162d
+  name: Powder barrel
+  x: 523
+  y: 598
+  width: 34
+  height: 42
+  components:
+  - type: sortingGroup2D
+    sortByY: true
+  - type: spriteRenderer
+    assetId: 2bab1aa7-972d-5a7d-9fb9-f4712288e04e
+    asset: Assets/Showcase/Barrel.png
+- id: daf55417-9c4a-5520-bba8-9caf4782e0b8
+  parentId: f79d2342-7391-58a2-bf26-33fb6582162d
+  name: Powder barrel shadow
+  x: -5
+  y: 34.8
+  width: 44
+  height: 12
+  components:
+  - type: spriteRenderer
+    assetId: 426680e6-daf6-555c-9ac6-c7e6e8eb9f9f
+    asset: Assets/Showcase/ShadowL.png
+    order: -1
+- id: 2cfdb90d-5895-5b12-b3f4-cb7cb9c34cb3
+  parentId: f79d2342-7391-58a2-bf26-33fb6582162d
+  name: Powder blast
+  x: 17
+  y: 21
+  width: 1
+  height: 1
+  components:
+  - type: particleEmitter2D
+    particles: 9480e544-c9e8-5e0c-96a6-d0f77ad96ee3
+    trigger: Manual
+    order: 6
+- id: 9efce932-79ba-5008-9279-aeab153ed381
+  name: Lantern 42
+  x: 1212
+  y: 250
+  width: 36
+  height: 50
+  components:
+  - type: sortingGroup2D
+    sortByY: true
+  - type: spriteRenderer
+    assetId: 31f8a50b-f085-5c75-8f0e-289c8eb7fddf
+    asset: Assets/Showcase/Lantern.png
+  - type: pointLight2D
+    radius: 110
+    intensity: 0.6
+    flicker: 0.1
+    frequency: 1.2
+    color: "#FFC46B"
+- id: 50480c99-3dee-5e64-9e44-ac763666557c
+  parentId: 9efce932-79ba-5008-9279-aeab153ed381
+  name: Lantern 42 shadow
+  x: 2
+  y: 44
+  width: 32
+  height: 10
+  components:
+  - type: spriteRenderer
+    assetId: 6f620ee1-7fbc-55aa-81f1-a142cb765421
+    asset: Assets/Showcase/ShadowM.png
+    order: -1
+- id: 3d9272a0-2f18-5a1d-9a67-07e1da9401c6
+  name: Lantern 43
+  x: 1452
+  y: 250
+  width: 36
+  height: 50
+  components:
+  - type: sortingGroup2D
+    sortByY: true
+  - type: spriteRenderer
+    assetId: 31f8a50b-f085-5c75-8f0e-289c8eb7fddf
+    asset: Assets/Showcase/Lantern.png
+  - type: pointLight2D
+    radius: 110
+    intensity: 0.6
+    flicker: 0.1
+    frequency: 1.2
+    color: "#FFC46B"
+- id: e58d6254-d4e3-5050-9454-f12fd7b966e9
+  parentId: 3d9272a0-2f18-5a1d-9a67-07e1da9401c6
+  name: Lantern 43 shadow
+  x: 2
+  y: 44
+  width: 32
+  height: 10
+  components:
+  - type: spriteRenderer
+    assetId: 6f620ee1-7fbc-55aa-81f1-a142cb765421
+    asset: Assets/Showcase/ShadowM.png
+    order: -1
+- id: 1db4bf97-23e8-55c9-9714-bc4493d3121f
+  name: Lantern 44
+  x: 1212
+  y: 590
+  width: 36
+  height: 50
+  components:
+  - type: sortingGroup2D
+    sortByY: true
+  - type: spriteRenderer
+    assetId: 31f8a50b-f085-5c75-8f0e-289c8eb7fddf
+    asset: Assets/Showcase/Lantern.png
+  - type: pointLight2D
+    radius: 110
+    intensity: 0.6
+    flicker: 0.1
+    frequency: 1.2
+    color: "#FFC46B"
+- id: c00f5f7b-ae1e-5946-ad1c-da84f959907b
+  parentId: 1db4bf97-23e8-55c9-9714-bc4493d3121f
+  name: Lantern 44 shadow
+  x: 2
+  y: 44
+  width: 32
+  height: 10
+  components:
+  - type: spriteRenderer
+    assetId: 6f620ee1-7fbc-55aa-81f1-a142cb765421
+    asset: Assets/Showcase/ShadowM.png
+    order: -1
+- id: d232fa85-0eaf-51a9-8658-d68071bb2f63
+  name: Lantern 45
+  x: 1452
+  y: 590
+  width: 36
+  height: 50
+  components:
+  - type: sortingGroup2D
+    sortByY: true
+  - type: spriteRenderer
+    assetId: 31f8a50b-f085-5c75-8f0e-289c8eb7fddf
+    asset: Assets/Showcase/Lantern.png
+  - type: pointLight2D
+    radius: 110
+    intensity: 0.6
+    flicker: 0.1
+    frequency: 1.2
+    color: "#FFC46B"
+- id: c387efa3-be23-5578-b6f6-94c1d0e17ff4
+  parentId: d232fa85-0eaf-51a9-8658-d68071bb2f63
+  name: Lantern 45 shadow
+  x: 2
+  y: 44
+  width: 32
+  height: 10
+  components:
+  - type: spriteRenderer
+    assetId: 6f620ee1-7fbc-55aa-81f1-a142cb765421
+    asset: Assets/Showcase/ShadowM.png
+    order: -1
+- id: 93c5558a-6332-5c2f-8995-7f6c8ff071e4
+  name: Bench 46
+  x: 1319
+  y: 292
+  width: 62
+  height: 38
+  components:
+  - type: sortingGroup2D
+    sortByY: true
+  - type: spriteRenderer
+    assetId: 64bc5acb-72cd-5e11-8806-568b9862e454
+    asset: Assets/Showcase/Bench.png
+- id: eb0496dd-5e6a-52f3-b0fe-67788e3eb13a
+  parentId: 93c5558a-6332-5c2f-8995-7f6c8ff071e4
+  name: Bench 46 shadow
+  x: 9
+  y: 30.8
+  width: 44
+  height: 12
+  components:
+  - type: spriteRenderer
+    assetId: 426680e6-daf6-555c-9ac6-c7e6e8eb9f9f
+    asset: Assets/Showcase/ShadowL.png
+    order: -1
+- id: 00f85f63-3f0b-5c0e-895b-a82f001d3225
+  name: Flowers 47
+  x: 1273
+  y: 438
+  width: 54
+  height: 32
+  components:
+  - type: sortingGroup2D
+    sortByY: true
+  - type: spriteRenderer
+    assetId: c626b8fc-78ed-5476-925a-88a6951cc7a2
+    asset: Assets/Showcase/Flowers.png
+- id: d18a1d54-0aa5-595e-93af-155d784457f7
+  name: Flowers 48
+  x: 1393
+  y: 488
+  width: 54
+  height: 32
+  components:
+  - type: sortingGroup2D
+    sortByY: true
+  - type: spriteRenderer
+    assetId: c626b8fc-78ed-5476-925a-88a6951cc7a2
+    asset: Assets/Showcase/Flowers.png
+- id: dbf9e3a9-ca91-5e94-ab5b-7f588eaff5b2
+  name: Flowers 49
+  x: 1313
+  y: 568
+  width: 54
+  height: 32
+  components:
+  - type: sortingGroup2D
+    sortByY: true
+  - type: spriteRenderer
+    assetId: c626b8fc-78ed-5476-925a-88a6951cc7a2
+    asset: Assets/Showcase/Flowers.png
+- id: a3c6c56e-71a7-517d-894e-52d675949777
+  name: Flowers 50
+  x: 433
+  y: 728
+  width: 54
+  height: 32
+  components:
+  - type: sortingGroup2D
+    sortByY: true
+  - type: spriteRenderer
+    assetId: c626b8fc-78ed-5476-925a-88a6951cc7a2
+    asset: Assets/Showcase/Flowers.png
+- id: 4a82bd57-0f13-5cc0-bfd3-0cacb913aae2
+  name: Flowers 51
+  x: 873
+  y: 728
+  width: 54
+  height: 32
+  components:
+  - type: sortingGroup2D
+    sortByY: true
+  - type: spriteRenderer
+    assetId: c626b8fc-78ed-5476-925a-88a6951cc7a2
+    asset: Assets/Showcase/Flowers.png
+- id: 9d0ec83a-0501-55d5-ab66-a710ac8573f8
+  name: Flowers 52
+  x: 1073
+  y: 188
+  width: 54
+  height: 32
+  components:
+  - type: sortingGroup2D
+    sortByY: true
+  - type: spriteRenderer
+    assetId: c626b8fc-78ed-5476-925a-88a6951cc7a2
+    asset: Assets/Showcase/Flowers.png
+- id: b659f63d-de45-5587-aeff-0b215c7f41bb
+  name: Flowers 53
+  x: 213
+  y: 568
+  width: 54
+  height: 32
+  components:
+  - type: sortingGroup2D
+    sortByY: true
+  - type: spriteRenderer
+    assetId: c626b8fc-78ed-5476-925a-88a6951cc7a2
+    asset: Assets/Showcase/Flowers.png
+- id: d3b48c9d-1637-5493-ae2d-91068415c441
+  name: Herb1 54
+  x: 362
+  y: 668
+  width: 36
+  height: 32
+  components:
+  - type: sortingGroup2D
+    sortByY: true
+  - type: spriteRenderer
+    assetId: dbb0f5c3-ceb4-588e-a94a-bb45044e4ba3
+    asset: Assets/Showcase/Herb1.png
+- id: 5ab51060-1302-5972-9a0f-d85b2123f2f8
+  name: Herb2 55
+  x: 743
+  y: 686
+  width: 34
+  height: 34
+  components:
+  - type: sortingGroup2D
+    sortByY: true
+  - type: spriteRenderer
+    assetId: 6569d9c2-d383-5f66-9fac-a67afd87777e
+    asset: Assets/Showcase/Herb2.png
+- id: 2db83097-f841-532b-ad2c-4502107dcc73
+  name: Herb3 56
+  x: 1166
+  y: 724
+  width: 28
+  height: 36
+  components:
+  - type: sortingGroup2D
+    sortByY: true
+  - type: spriteRenderer
+    assetId: 8b3fa01a-f79e-50bd-b1c2-b61b7ade9ae8
+    asset: Assets/Showcase/Herb3.png
+- id: 90f3e549-9a15-5584-b60f-7ed1185653a1
+  name: Herb2 57
+  x: 503
+  y: 196
+  width: 34
+  height: 34
+  components:
+  - type: sortingGroup2D
+    sortByY: true
+  - type: spriteRenderer
+    assetId: 6569d9c2-d383-5f66-9fac-a67afd87777e
+    asset: Assets/Showcase/Herb2.png
+- id: f50d9e50-8142-5f67-b712-1081dc4d996b
+  name: Bush 58
+  x: 1075
+  y: 778
+  width: 50
+  height: 42
+  components:
+  - type: sortingGroup2D
+    sortByY: true
+  - type: spriteRenderer
+    assetId: 0048d8fb-9977-52ca-a965-6b4007cd1e35
+    asset: Assets/Showcase/Bush.png
+- id: 6565a24d-b7f1-5ead-baec-bb8cce05599b
+  parentId: f50d9e50-8142-5f67-b712-1081dc4d996b
+  name: Bush 58 shadow
+  x: 3
+  y: 34.8
+  width: 44
+  height: 12
+  components:
+  - type: spriteRenderer
+    assetId: 426680e6-daf6-555c-9ac6-c7e6e8eb9f9f
+    asset: Assets/Showcase/ShadowL.png
+    order: -1
+- id: 5163d4fc-5859-55b6-bec6-9981ea6ba774
+  name: Bush 59
+  x: 155
+  y: 518
+  width: 50
+  height: 42
+  components:
+  - type: sortingGroup2D
+    sortByY: true
+  - type: spriteRenderer
+    assetId: 0048d8fb-9977-52ca-a965-6b4007cd1e35
+    asset: Assets/Showcase/Bush.png
+- id: c60ab396-d84b-5626-aa1e-8fd987c62666
+  parentId: 5163d4fc-5859-55b6-bec6-9981ea6ba774
+  name: Bush 59 shadow
+  x: 3
+  y: 34.8
+  width: 44
+  height: 12
+  components:
+  - type: spriteRenderer
+    assetId: 426680e6-daf6-555c-9ac6-c7e6e8eb9f9f
+    asset: Assets/Showcase/ShadowL.png
+    order: -1
+- id: 09dfd0da-69a9-5075-b537-3ad48904a141
+  name: Herbalist 60
+  x: 1330
+  y: 402
+  width: 40
+  height: 68
+  components:
+  - type: sortingGroup2D
+    sortByY: true
+  - type: spriteRenderer
+    assetId: bd39f8c6-fd3f-562d-a8d9-36cf14c243e5
+    asset: Assets/Showcase/Herbalist.png
+- id: e8e8fc91-c0aa-5857-bf1f-fd28def3c4ec
+  parentId: 09dfd0da-69a9-5075-b537-3ad48904a141
+  name: Herbalist 60 shadow
+  x: 4
+  y: 62
+  width: 32
+  height: 10
+  components:
+  - type: spriteRenderer
+    assetId: 6f620ee1-7fbc-55aa-81f1-a142cb765421
+    asset: Assets/Showcase/ShadowM.png
+    order: -1
+- id: 8082cfa6-80bf-53fe-a725-c408825a3870
+  name: Herb2 61
+  x: 493.603
+  y: 788.623
+  width: 34
+  height: 34
+  components:
+  - type: sortingGroup2D
+    sortByY: true
+  - type: spriteRenderer
+    assetId: 6569d9c2-d383-5f66-9fac-a67afd87777e
+    asset: Assets/Showcase/Herb2.png
+- id: afa99d36-b4f7-5074-be28-e101c87d41e3
+  name: Herb2 62
+  x: 1112.27
+  y: 728.461
+  width: 34
+  height: 34
+  components:
+  - type: sortingGroup2D
+    sortByY: true
+  - type: spriteRenderer
+    assetId: 6569d9c2-d383-5f66-9fac-a67afd87777e
+    asset: Assets/Showcase/Herb2.png
+- id: a718f299-49f0-54a3-87ed-c54b31a69bc2
+  name: Herb1 63
+  x: 277.434
+  y: 678.612
+  width: 36
+  height: 32
+  components:
+  - type: sortingGroup2D
+    sortByY: true
+  - type: spriteRenderer
+    assetId: dbb0f5c3-ceb4-588e-a94a-bb45044e4ba3
+    asset: Assets/Showcase/Herb1.png
+- id: 4191ab6d-e911-54e1-904e-4ea61ca73781
+  name: Flowers 64
+  x: 1135.31
+  y: 833.027
+  width: 54
+  height: 32
+  components:
+  - type: sortingGroup2D
+    sortByY: true
+  - type: spriteRenderer
+    assetId: c626b8fc-78ed-5476-925a-88a6951cc7a2
+    asset: Assets/Showcase/Flowers.png
+- id: d5aa6dd0-2dbf-598a-8a6e-4f379900d0ab
+  name: Herb3 65
+  x: 278.877
+  y: 232.526
+  width: 28
+  height: 36
+  components:
+  - type: sortingGroup2D
+    sortByY: true
+  - type: spriteRenderer
+    assetId: 8b3fa01a-f79e-50bd-b1c2-b61b7ade9ae8
+    asset: Assets/Showcase/Herb3.png
+- id: 3234838d-5f4e-56e6-99e1-a1b0b1548798
+  name: Flowers 66
+  x: 1326.26
+  y: 742.753
+  width: 54
+  height: 32
+  components:
+  - type: sortingGroup2D
+    sortByY: true
+  - type: spriteRenderer
+    assetId: c626b8fc-78ed-5476-925a-88a6951cc7a2
+    asset: Assets/Showcase/Flowers.png
+- id: 94e1e161-d1d2-5c24-8f5e-9891eeb7f11a
+  name: Herb1 67
+  x: 1365.97
+  y: 414.474
+  width: 36
+  height: 32
+  components:
+  - type: sortingGroup2D
+    sortByY: true
+  - type: spriteRenderer
+    assetId: dbb0f5c3-ceb4-588e-a94a-bb45044e4ba3
+    asset: Assets/Showcase/Herb1.png
+- id: 51b29fc1-da8b-55f2-bdb2-8882b10ae936
+  name: Herb2 68
+  x: 375.574
+  y: 180.668
+  width: 34
+  height: 34
+  components:
+  - type: sortingGroup2D
+    sortByY: true
+  - type: spriteRenderer
+    assetId: 6569d9c2-d383-5f66-9fac-a67afd87777e
+    asset: Assets/Showcase/Herb2.png
+- id: f0c762f8-1fee-581f-93d3-9d32557e607b
+  name: Herb1 69
+  x: 450.535
+  y: 764.226
+  width: 36
+  height: 32
+  components:
+  - type: sortingGroup2D
+    sortByY: true
+  - type: spriteRenderer
+    assetId: dbb0f5c3-ceb4-588e-a94a-bb45044e4ba3
+    asset: Assets/Showcase/Herb1.png
+- id: 44a673ad-b2d9-5ffe-9735-2b251757dcfb
+  name: Herb3 70
+  x: 1075.55
+  y: 268.957
+  width: 28
+  height: 36
+  components:
+  - type: sortingGroup2D
+    sortByY: true
+  - type: spriteRenderer
+    assetId: 8b3fa01a-f79e-50bd-b1c2-b61b7ade9ae8
+    asset: Assets/Showcase/Herb3.png
+- id: dd858c7d-7e3b-5907-a90e-a7f0ce131280
+  name: Herb3 71
+  x: 1393.29
+  y: 821.412
+  width: 28
+  height: 36
+  components:
+  - type: sortingGroup2D
+    sortByY: true
+  - type: spriteRenderer
+    assetId: 8b3fa01a-f79e-50bd-b1c2-b61b7ade9ae8
+    asset: Assets/Showcase/Herb3.png
+- id: 2c0148eb-2548-508c-92bd-7daf25f59f8a
+  name: Herb2 72
+  x: 312.726
+  y: 421.094
+  width: 34
+  height: 34
+  components:
+  - type: sortingGroup2D
+    sortByY: true
+  - type: spriteRenderer
+    assetId: 6569d9c2-d383-5f66-9fac-a67afd87777e
+    asset: Assets/Showcase/Herb2.png
+- id: 9c3dda20-90e8-5676-a818-e7bcf68b8945
+  name: Bush 73
+  x: 1457.4
+  y: 294.396
+  width: 50
+  height: 42
+  components:
+  - type: sortingGroup2D
+    sortByY: true
+  - type: spriteRenderer
+    assetId: 0048d8fb-9977-52ca-a965-6b4007cd1e35
+    asset: Assets/Showcase/Bush.png
+- id: fbfc74a0-7590-50bc-bab0-218eea574868
+  name: Herb3 74
+  x: 597.869
+  y: 835.984
+  width: 28
+  height: 36
+  components:
+  - type: sortingGroup2D
+    sortByY: true
+  - type: spriteRenderer
+    assetId: 8b3fa01a-f79e-50bd-b1c2-b61b7ade9ae8
+    asset: Assets/Showcase/Herb3.png
+- id: 0b4aa0ec-5ea7-5d0a-a5ee-751be3f43147
+  name: Herb3 75
+  x: 212.72
+  y: 842.758
+  width: 28
+  height: 36
+  components:
+  - type: sortingGroup2D
+    sortByY: true
+  - type: spriteRenderer
+    assetId: 8b3fa01a-f79e-50bd-b1c2-b61b7ade9ae8
+    asset: Assets/Showcase/Herb3.png
+- id: 5c2fc00f-5362-52f8-af3f-2593b2eb861b
+  name: Flowers 76
+  x: 748.429
+  y: 686.394
+  width: 54
+  height: 32
+  components:
+  - type: sortingGroup2D
+    sortByY: true
+  - type: spriteRenderer
+    assetId: c626b8fc-78ed-5476-925a-88a6951cc7a2
+    asset: Assets/Showcase/Flowers.png
+- id: 223826c5-861c-5f0d-8f53-0e341983b476
+  name: Herb1 77
+  x: 424.43
+  y: 373.234
+  width: 36
+  height: 32
+  components:
+  - type: sortingGroup2D
+    sortByY: true
+  - type: spriteRenderer
+    assetId: dbb0f5c3-ceb4-588e-a94a-bb45044e4ba3
+    asset: Assets/Showcase/Herb1.png
+- id: 70574a20-eca7-5d12-a223-c5a49c472dcb
+  name: Bush 78
+  x: 1460.5
+  y: 267.042
+  width: 50
+  height: 42
+  components:
+  - type: sortingGroup2D
+    sortByY: true
+  - type: spriteRenderer
+    assetId: 0048d8fb-9977-52ca-a965-6b4007cd1e35
+    asset: Assets/Showcase/Bush.png
+- id: 89740dbe-6cef-565e-8ffc-93697aaf40e2
+  name: Bush 79
+  x: 468.096
+  y: 674.382
+  width: 50
+  height: 42
+  components:
+  - type: sortingGroup2D
+    sortByY: true
+  - type: spriteRenderer
+    assetId: 0048d8fb-9977-52ca-a965-6b4007cd1e35
+    asset: Assets/Showcase/Bush.png
+- id: 04dfdf54-13e9-5523-a43b-9d8ce75e16e3
+  name: Flowers 80
+  x: 570.384
+  y: 806.949
+  width: 54
+  height: 32
+  components:
+  - type: sortingGroup2D
+    sortByY: true
+  - type: spriteRenderer
+    assetId: c626b8fc-78ed-5476-925a-88a6951cc7a2
+    asset: Assets/Showcase/Flowers.png
+- id: 816da238-04a5-5ede-8187-56b7e02b8ca1
+  name: Herb1 81
+  x: 361.023
+  y: 367.684
+  width: 36
+  height: 32
+  components:
+  - type: sortingGroup2D
+    sortByY: true
+  - type: spriteRenderer
+    assetId: dbb0f5c3-ceb4-588e-a94a-bb45044e4ba3
+    asset: Assets/Showcase/Herb1.png
+- id: b9c64b0f-932a-5388-a7c6-5abaa830b381
+  name: Herb2 82
+  x: 1266.87
+  y: 706.813
+  width: 34
+  height: 34
+  components:
+  - type: sortingGroup2D
+    sortByY: true
+  - type: spriteRenderer
+    assetId: 6569d9c2-d383-5f66-9fac-a67afd87777e
+    asset: Assets/Showcase/Herb2.png
+- id: d3fca53b-90f6-5178-9407-c83bf2c77f32
+  name: Herb2 83
+  x: 1134.13
+  y: 808.221
+  width: 34
+  height: 34
+  components:
+  - type: sortingGroup2D
+    sortByY: true
+  - type: spriteRenderer
+    assetId: 6569d9c2-d383-5f66-9fac-a67afd87777e
+    asset: Assets/Showcase/Herb2.png
+- id: c3e4eea5-d0dc-54f1-9cad-a365a16c278b
+  name: Herb2 84
+  x: 317.34
+  y: 727.971
+  width: 34
+  height: 34
+  components:
+  - type: sortingGroup2D
+    sortByY: true
+  - type: spriteRenderer
+    assetId: 6569d9c2-d383-5f66-9fac-a67afd87777e
+    asset: Assets/Showcase/Herb2.png
+- id: 31edcbf0-8472-5a01-9c9d-063df8c404f5
+  name: Herb1 85
+  x: 144.418
+  y: 752.614
+  width: 36
+  height: 32
+  components:
+  - type: sortingGroup2D
+    sortByY: true
+  - type: spriteRenderer
+    assetId: dbb0f5c3-ceb4-588e-a94a-bb45044e4ba3
+    asset: Assets/Showcase/Herb1.png
+- id: 37ea096a-8f45-5b16-a00a-5d2471633df2
+  name: Herb3 86
+  x: 1294.67
+  y: 142.369
+  width: 28
+  height: 36
+  components:
+  - type: sortingGroup2D
+    sortByY: true
+  - type: spriteRenderer
+    assetId: 8b3fa01a-f79e-50bd-b1c2-b61b7ade9ae8
+    asset: Assets/Showcase/Herb3.png
+- id: 90c21831-94f0-5edc-b6d5-068466040eb2
+  name: Flowers 87
+  x: 1364.3
+  y: 246.856
+  width: 54
+  height: 32
+  components:
+  - type: sortingGroup2D
+    sortByY: true
+  - type: spriteRenderer
+    assetId: c626b8fc-78ed-5476-925a-88a6951cc7a2
+    asset: Assets/Showcase/Flowers.png
+- id: b90b32d4-f178-511f-ad8c-bfe0d5d4e534
+  name: Flowers 88
+  x: 271.406
+  y: 695.207
+  width: 54
+  height: 32
+  components:
+  - type: sortingGroup2D
+    sortByY: true
+  - type: spriteRenderer
+    assetId: c626b8fc-78ed-5476-925a-88a6951cc7a2
+    asset: Assets/Showcase/Flowers.png
+- id: 64661729-673f-5d29-bb53-3ac228e64f05
+  name: Herb1 89
+  x: 244.185
+  y: 844.455
+  width: 36
+  height: 32
+  components:
+  - type: sortingGroup2D
+    sortByY: true
+  - type: spriteRenderer
+    assetId: dbb0f5c3-ceb4-588e-a94a-bb45044e4ba3
+    asset: Assets/Showcase/Herb1.png
+- id: e9ee4a28-967e-5a86-877a-e274e99b880b
+  name: Bush 90
+  x: 1270.76
+  y: 703.33
+  width: 50
+  height: 42
+  components:
+  - type: sortingGroup2D
+    sortByY: true
+  - type: spriteRenderer
+    assetId: 0048d8fb-9977-52ca-a965-6b4007cd1e35
+    asset: Assets/Showcase/Bush.png
+- id: 75864bf4-0f45-5758-a4c1-b7dcebe91b24
+  name: Herb1 91
+  x: 387.62
+  y: 714.686
+  width: 36
+  height: 32
+  components:
+  - type: sortingGroup2D
+    sortByY: true
+  - type: spriteRenderer
+    assetId: dbb0f5c3-ceb4-588e-a94a-bb45044e4ba3
+    asset: Assets/Showcase/Herb1.png
+- id: 4a6600c4-4d24-5ca9-ad0d-880c8fa2e143
+  name: Bush 92
+  x: 107.575
+  y: 819.587
+  width: 50
+  height: 42
+  components:
+  - type: sortingGroup2D
+    sortByY: true
+  - type: spriteRenderer
+    assetId: 0048d8fb-9977-52ca-a965-6b4007cd1e35
+    asset: Assets/Showcase/Bush.png
+- id: 5c61384f-686e-5d78-98f0-c10de0016fc0
+  name: Herb1 93
+  x: 220.76
+  y: 759.898
+  width: 36
+  height: 32
+  components:
+  - type: sortingGroup2D
+    sortByY: true
+  - type: spriteRenderer
+    assetId: dbb0f5c3-ceb4-588e-a94a-bb45044e4ba3
+    asset: Assets/Showcase/Herb1.png
+- id: 68e83297-8c3b-5697-bc95-8cb310d9b05a
+  name: Flowers 94
+  x: 732.709
+  y: 768.166
+  width: 54
+  height: 32
+  components:
+  - type: sortingGroup2D
+    sortByY: true
+  - type: spriteRenderer
+    assetId: c626b8fc-78ed-5476-925a-88a6951cc7a2
+    asset: Assets/Showcase/Flowers.png
+- id: 3e0fa7b0-8874-5407-9a88-a4e23b1e5c51
+  name: Flowers 95
+  x: 1355.51
+  y: 126.183
+  width: 54
+  height: 32
+  components:
+  - type: sortingGroup2D
+    sortByY: true
+  - type: spriteRenderer
+    assetId: c626b8fc-78ed-5476-925a-88a6951cc7a2
+    asset: Assets/Showcase/Flowers.png
+- id: f4c851f5-01e3-51a2-82d2-ea6a6422e1df
+  name: Player
+  x: 420
+  y: 520
+  width: 22
+  height: 12
+  components:
+  - type: sortingGroup2D
+    sortByY: true
+  - type: script
+    script: Showcase/FieldWalker
+    values: {}
+  - type: boxCollider2D
+- id: 78c2b902-7837-56c3-89b0-c24a603e56a3
+  parentId: f4c851f5-01e3-51a2-82d2-ea6a6422e1df
+  name: Player shadow
+  x: -5
+  y: 5
+  width: 32
+  height: 10
+  components:
+  - type: spriteRenderer
+    assetId: 6f620ee1-7fbc-55aa-81f1-a142cb765421
+    asset: Assets/Showcase/ShadowM.png
+    order: -1
+- id: ffa416b4-304c-5f5b-a737-124221966d1a
+  parentId: f4c851f5-01e3-51a2-82d2-ea6a6422e1df
+  name: Player picture
+  x: -10
+  y: -46
+  width: 42
+  height: 60
+  components:
+  - type: spriteRenderer
+    assetId: 570dd741-0b5b-5ef5-93a6-db10c214cb35
+    asset: Assets/Showcase/HeroIdleS.png
+  - type: spriteAnimator
+    controller: e9f12051-cc32-5d2b-8524-2d7baf5e4e64
+    playOnStart: true
+  - type: script
+    script: Showcase/HeroAnimation
+    values: {}
+- id: 0714d37c-f6ba-50b0-a07f-c24fef990614
+  name: Patrol 1
+  x: 1060
+  y: 560
+  width: 1
+  height: 1
+  components: []
+- id: 8e525bf8-9cf6-5a5e-8960-3571648405fa
+  name: Patrol 2
+  x: 1190
+  y: 640
+  width: 1
+  height: 1
+  components: []
+- id: d91192d4-38b6-56bb-8f53-e9804d2c1f47
+  name: Patrol 3
+  x: 1060
+  y: 710
+  width: 1
+  height: 1
+  components: []
+- id: 45d15908-7a25-5177-88ea-45f55d03a7e8
+  name: Patrol 4
+  x: 950
+  y: 640
+  width: 1
+  height: 1
+  components: []
+- id: f47deacd-1674-577d-93ad-b3c718d0cdec
+  name: Partner
+  x: 1060
+  y: 560
+  width: 22
+  height: 12
+  components:
+  - type: sortingGroup2D
+    sortByY: true
+  - type: script
+    script: Showcase/PatrolWalker
+    values: {"Waypoints": ["0714d37c-f6ba-50b0-a07f-c24fef990614", "8e525bf8-9cf6-5a5e-8960-3571648405fa", "d91192d4-38b6-56bb-8f53-e9804d2c1f47", "45d15908-7a25-5177-88ea-45f55d03a7e8"], "Picture": "f3ba9e59-a9e1-51d7-99df-227402faab3a"}
+  - type: boxCollider2D
+- id: d07be96c-9e78-5b4a-acdb-281edc2b1427
+  parentId: f47deacd-1674-577d-93ad-b3c718d0cdec
+  name: Partner shadow
+  x: -5
+  y: 5
+  width: 32
+  height: 10
+  components:
+  - type: spriteRenderer
+    assetId: 6f620ee1-7fbc-55aa-81f1-a142cb765421
+    asset: Assets/Showcase/ShadowM.png
+    order: -1
+- id: f3ba9e59-a9e1-51d7-99df-227402faab3a
+  parentId: f47deacd-1674-577d-93ad-b3c718d0cdec
+  name: Partner picture
+  x: -10
+  y: -46
+  width: 42
+  height: 60
+  components:
+  - type: spriteRenderer
+    assetId: 66b2647e-fadc-507c-a85c-7353b76c47dd
+    asset: Assets/Showcase/PartnerIdleS.png
+  - type: spriteAnimator
+    controller: 328a925e-5e2b-5440-b59e-6270f4857168
+    playOnStart: true
+- id: 682aab93-2144-5005-be90-a005e8e6e89c
+  name: Powder zone
+  x: 510
+  y: 600
+  width: 60
+  height: 50
+  components:
+  - type: boxCollider2D
+    isTrigger: true
+  - type: script
+    script: Showcase/FxZone
+    values: {"Player": "f4c851f5-01e3-51a2-82d2-ea6a6422e1df", "Hide": "f79d2342-7391-58a2-bf26-33fb6582162d", "Burst": "2cfdb90d-5895-5b12-b3f4-cb7cb9c34cb3", "Kind": "Impact", "Camera": "97855cfb-1bbb-5abb-bfbc-7fe72a526533"}
+- id: d85115d4-cdd0-56cd-ba1c-b5e77aef4619
+  name: Evening zone
+  x: 1180
+  y: 250
+  width: 360
+  height: 420
+  components:
+  - type: boxCollider2D
+    isTrigger: true
+  - type: script
+    script: Showcase/FxZone
+    values: {"Player": "f4c851f5-01e3-51a2-82d2-ea6a6422e1df", "Kind": "Grade", "Camera": "97855cfb-1bbb-5abb-bfbc-7fe72a526533"}
+- id: 97855cfb-1bbb-5abb-bfbc-7fe72a526533
+  name: Player Camera
+  x: 431
+  y: 526
+  width: 1
+  height: 1
+  components:
+  - type: camera2D
+    output: Primary
+    zoom: 1.5
+    bounds: {x: 0, y: 0, width: 1600, height: 896}
+    viewport: {x: 0, y: 0, width: 0.5, height: 1}
+    follow: f4c851f5-01e3-51a2-82d2-ea6a6422e1df
+    halfLife: 0.16
+    splitWith: eb3e7c06-85c9-5d76-8730-cf584988e361
+    mergeDistance: 260
+    splitDistance: 340
+    blendSeconds: 0.6
+- id: eb3e7c06-85c9-5d76-8730-cf584988e361
+  name: Partner Camera
+  x: 1071
+  y: 566
+  width: 1
+  height: 1
+  components:
+  - type: camera2D
+    output: Extra
+    zoom: 1.5
+    bounds: {x: 0, y: 0, width: 1600, height: 896}
+    viewport: {x: 0.5, y: 0, width: 0.5, height: 1}
+    follow: f47deacd-1674-577d-93ad-b3c718d0cdec
+    halfLife: 0.16
+- id: 4a4ecad1-b435-5810-8d11-cf459b2c0ca9
+  name: Map Camera
+  x: 800
+  y: 448
+  width: 1
+  height: 1
+  components:
+  - type: camera2D
+    output: Minimap
+    zoom: 0.11
+    bounds: {x: 0, y: 0, width: 1600, height: 896}
+    viewport: {x: 0.76, y: 0.0355556, width: 0.22, height: 0.219022}
+- id: 1cb0ca6f-8567-5960-80dd-21a9620d3e66
+  name: Canvas
+  x: 0
+  y: 0
+  width: 1
+  height: 1
+  components:
+  - type: uiCanvas
+- id: 722386fa-56ea-5e72-bcf7-9e7e2b94c387
+  parentId: 1cb0ca6f-8567-5960-80dd-21a9620d3e66
+  name: Seam
+  x: 398
+  y: 0
+  width: 4
+  height: 450
+  components:
+  - type: uiRect
+  - type: uiImage
+    color: "#171429"
+- id: 5bd97d50-11b9-541b-9691-0c24a4333223
+  parentId: 1cb0ca6f-8567-5960-80dd-21a9620d3e66
+  name: Minimap edge 1
+  x: 605
+  y: 13
+  width: 182
+  height: 3
+  components:
+  - type: uiRect
+  - type: uiImage
+    color: "#E8D9A0"
+- id: b104e935-2387-57b2-91eb-6919d7a84942
+  parentId: 1cb0ca6f-8567-5960-80dd-21a9620d3e66
+  name: Minimap edge 2
+  x: 605
+  y: 114.56
+  width: 182
+  height: 3
+  components:
+  - type: uiRect
+  - type: uiImage
+    color: "#E8D9A0"
+- id: 64de6ab5-2694-5766-a79f-9b74f733082d
+  parentId: 1cb0ca6f-8567-5960-80dd-21a9620d3e66
+  name: Minimap edge 3
+  x: 605
+  y: 16
+  width: 3
+  height: 98.56
+  components:
+  - type: uiRect
+  - type: uiImage
+    color: "#E8D9A0"
+- id: 35670a1e-80a6-5ef0-8891-41337d4423f7
+  parentId: 1cb0ca6f-8567-5960-80dd-21a9620d3e66
+  name: Minimap edge 4
+  x: 784
+  y: 16
+  width: 3
+  height: 98.56
+  components:
+  - type: uiRect
+  - type: uiImage
+    color: "#E8D9A0"
+- id: d19291c3-d861-5298-8c08-f727a63222b5
+  parentId: 1cb0ca6f-8567-5960-80dd-21a9620d3e66
+  name: Minimap label
+  x: 608
+  y: 120.56
+  width: 176
+  height: 16
+  components:
+  - type: uiRect
+  - type: uiText
+    text: "Map camera"
+    size: 11
+    color: "#F4F6F4"
+- id: 3d46cc06-4f0d-5ab3-be19-d082cb5ca3ba
+  parentId: 1cb0ca6f-8567-5960-80dd-21a9620d3e66
+  name: Partner label
+  x: 412
+  y: 12
+  width: 120
+  height: 22
+  components:
+  - type: uiRect
+  - type: uiImage
+    sprite: 2739c0db-ab1d-58b2-a7bd-b6c3a6e7adbe
+    borders: {left: 4, top: 4, right: 4, bottom: 4}
+  - type: uiText
+    richText: true
+    text: "<b>Partner</b>"
+    size: 12
+    insetX: 10
+    insetY: 4
+- id: df0db678-19d8-53d8-a777-587bc4ed7f27
+  parentId: 1cb0ca6f-8567-5960-80dd-21a9620d3e66
+  name: Caption
+  x: 12
+  y: -12
+  width: 383.8
+  height: 44
+  components:
+  - type: uiRect
+    anchor: BottomLeft
+  - type: uiImage
+    sprite: 2739c0db-ab1d-58b2-a7bd-b6c3a6e7adbe
+    borders: {left: 4, top: 4, right: 4, bottom: 4}
+- id: 29fd54cd-3387-5394-a0d8-c7a90c86ec47
+  parentId: df0db678-19d8-53d8-a777-587bc4ed7f27
+  name: Caption title
+  x: 12
+  y: 5
+  width: 359.8
+  height: 20
+  components:
+  - type: uiRect
+  - type: uiText
+    richText: true
+    text: "<b>CameraLab</b>   Split screen, minimap, screen effects"
+    size: 15
+- id: 74ba5e38-e9e0-5709-996a-528f8ad3f50c
+  parentId: df0db678-19d8-53d8-a777-587bc4ed7f27
+  name: Caption controls
+  x: 12
+  y: 25
+  width: 359.8
+  height: 16
+  components:
+  - type: uiRect
+  - type: uiText
+    text: "Move  ← → ↑ ↓"
+    size: 12
+    color: "#BFD0DC"
+- id: 359be085-4d03-56f2-96e0-727353a8d01b
+  parentId: 1cb0ca6f-8567-5960-80dd-21a9620d3e66
+  name: Tag 1
+  x: 12
+  y: 12
+  width: 358.8
+  height: 24
+  components:
+  - type: uiRect
+    anchor: TopLeft
+    showIf: split
+  - type: uiImage
+    sprite: 2739c0db-ab1d-58b2-a7bd-b6c3a6e7adbe
+    borders: {left: 4, top: 4, right: 4, bottom: 4}
+  - type: uiText
+    richText: true
+    text: "<b>Split screen</b>   <color=#BFD0DC>Two cameras, one per player</color>"
+    size: 12
+    insetX: 10
+    insetY: 4
+- id: 7e89a17c-6508-5d25-bfbe-b35fe12b4178
+  parentId: 1cb0ca6f-8567-5960-80dd-21a9620d3e66
+  name: Tag 2
+  x: 12
+  y: 40
+  width: 358.8
+  height: 24
+  components:
+  - type: uiRect
+    anchor: TopLeft
+    showIf: map
+  - type: uiImage
+    sprite: 2739c0db-ab1d-58b2-a7bd-b6c3a6e7adbe
+    borders: {left: 4, top: 4, right: 4, bottom: 4}
+  - type: uiText
+    richText: true
+    text: "<b>Minimap</b>   <color=#BFD0DC>A third camera draws the whole map</color>"
+    size: 12
+    insetX: 10
+    insetY: 4
+- id: 92725480-77a9-5b03-a520-c07111499ede
+  parentId: 1cb0ca6f-8567-5960-80dd-21a9620d3e66
+  name: Tag 3
+  x: 12
+  y: 68
+  width: 358.8
+  height: 24
+  components:
+  - type: uiRect
+    anchor: TopLeft
+    showIf: edge
+  - type: uiImage
+    sprite: 2739c0db-ab1d-58b2-a7bd-b6c3a6e7adbe
+    borders: {left: 4, top: 4, right: 4, bottom: 4}
+  - type: uiText
+    richText: true
+    text: "<b>Camera bounds</b>   <color=#BFD0DC>The view stops at the map edge</color>"
+    size: 12
+    insetX: 10
+    insetY: 4
+- id: 06f920e6-fe0d-594d-8605-bcaf3481343c
+  parentId: 1cb0ca6f-8567-5960-80dd-21a9620d3e66
+  name: Tag 4
+  x: 12
+  y: 96
+  width: 358.8
+  height: 24
+  components:
+  - type: uiRect
+    anchor: TopLeft
+    showIf: fx
+  - type: uiImage
+    sprite: 2739c0db-ab1d-58b2-a7bd-b6c3a6e7adbe
+    borders: {left: 4, top: 4, right: 4, bottom: 4}
+  - type: uiText
+    richText: true
+    text: "<b>Per-camera effects</b>   <color=#BFD0DC>Shake and flash hit one view only</color>"
+    size: 12
+    insetX: 10
+    insetY: 4
+- id: 7a691e2a-7b6c-50f2-8bb4-f44d7a81fbae
+  parentId: 1cb0ca6f-8567-5960-80dd-21a9620d3e66
+  name: Tag 5
+  x: 12
+  y: 124
+  width: 358.8
+  height: 24
+  components:
+  - type: uiRect
+    anchor: TopLeft
+    showIf: merge
+  - type: uiImage
+    sprite: 2739c0db-ab1d-58b2-a7bd-b6c3a6e7adbe
+    borders: {left: 4, top: 4, right: 4, bottom: 4}
+  - type: uiText
+    richText: true
+    text: "<b>Merging split</b>   <color=#BFD0DC>Close together, the views join</color>"
+    size: 12
+    insetX: 10
+    insetY: 4
+- id: 3f95ffc7-5e59-5a7a-ae31-54f4dfb2f576
+  name: Split HUD
+  x: 0
+  y: 0
+  width: 1
+  height: 1
+  components:
+  - type: script
+    script: Showcase/SplitHud
+    values: {"Main": "97855cfb-1bbb-5abb-bfbc-7fe72a526533", "Partner": "eb3e7c06-85c9-5d76-8730-cf584988e361", "Seam": "722386fa-56ea-5e72-bcf7-9e7e2b94c387", "Label": "3d46cc06-4f0d-5ab3-be19-d082cb5ca3ba"}
+defaultCameraId: 97855cfb-1bbb-5abb-bfbc-7fe72a526533

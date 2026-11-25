@@ -2,5 +2,6 @@ width: 800
 height: 450
 projectId: 4f859b0d-8c5d-5ec4-a090-05dfeeb20078
 gameTitle: DisplayLab
-startScene: 4f859b0d-8c5d-5ec4-a090-05dfeeb20078
-includedScenes: [4f859b0d-8c5d-5ec4-a090-05dfeeb20078]
+startScene: 980b8156-e83c-521d-9bdf-3cf713ad5c37
+integerScale: true
+includedScenes: [980b8156-e83c-521d-9bdf-3cf713ad5c37, 4f859b0d-8c5d-5ec4-a090-05dfeeb20078]

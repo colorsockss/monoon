@@ -1,0 +1,15 @@
+maxParticles: 256
+rate: 70
+shape: Edge
+width: 44
+direction: 95
+speed: {min: 120, max: 150}
+lifetime: {min: 1.2, max: 1.2}
+size: {min: 1, max: 1.4}
+aspect: 4
+rotation: {min: 5, max: 5}
+color: {min: "#9FC8FFC0"}
+endAlpha: 1
+gravity: 300
+collision: {mode: Tiles, bounce: 0.3, dampen: 0.3, lifetimeLoss: 0.8}
+subEmitters: [{when: Collision, particles: a2b4b682-4533-4f09-bb1b-9f5ac04d7002, count: 2, inheritVelocity: 0.2}]

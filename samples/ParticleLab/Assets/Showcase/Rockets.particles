@@ -1,0 +1,17 @@
+duration: 1.2
+looping: false
+rate: 0
+bursts: [{time: 0, count: 1}, {time: 0.25, count: 1}, {time: 0.5, count: 1}]
+maxParticles: 16
+shape: Edge
+width: 6
+direction: -90
+spread: 16
+speed: {min: 150, max: 170}
+lifetime: {min: 0.85, max: 0.95}
+size: {min: 2, max: 2.5}
+color: {min: "#FFD36B", max: "#6BD3FF"}
+endAlpha: 1
+gravity: 180
+blend: Additive
+subEmitters: [{when: Death, particles: b6aaa729-aaf8-4712-99e8-e8c64f54bb89, count: 48, inheritVelocity: 0.15, inheritColor: true}]

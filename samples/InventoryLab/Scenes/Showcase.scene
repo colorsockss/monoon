@@ -1,0 +1,1032 @@
+schemaVersion: 42
+objects:
+- id: e17a45ac-6f5f-5917-a985-23a80aa25fc3
+  name: Grass
+  x: 0
+  y: 0
+  width: 533
+  height: 300
+  components:
+  - type: spriteRenderer
+    assetId: 6653b625-0433-5c44-8676-22adda830639
+    asset: Assets/Showcase/Grass.png
+    drawMode: Tiled
+    order: -20
+- id: cb39c512-545d-5467-a919-afaec444d6cb
+  name: Fence 1
+  x: 24
+  y: 18
+  width: 68
+  height: 34
+  components:
+  - type: sortingGroup2D
+    sortByY: true
+  - type: spriteRenderer
+    assetId: cdadf176-fd74-57ab-bd32-3b7326aa5895
+    asset: Assets/Showcase/Fence.png
+- id: 91b1d97e-e836-5ba8-aea4-035ef3b0b45c
+  parentId: cb39c512-545d-5467-a919-afaec444d6cb
+  name: Fence 1 shadow
+  x: 18
+  y: 28
+  width: 32
+  height: 10
+  components:
+  - type: spriteRenderer
+    assetId: adc8aa73-c8b4-505d-ae11-206843187b82
+    asset: Assets/Showcase/ShadowM.png
+    order: -1
+- id: 31ee33cd-b388-5f55-aa9a-76408e7167a9
+  parentId: cb39c512-545d-5467-a919-afaec444d6cb
+  name: Fence 1 base
+  x: 4
+  y: 20
+  width: 60
+  height: 12
+  components:
+  - type: boxCollider2D
+- id: 92df1cf5-4fcb-50f2-939c-8eba55241b02
+  name: Fence 2
+  x: 92
+  y: 18
+  width: 68
+  height: 34
+  components:
+  - type: sortingGroup2D
+    sortByY: true
+  - type: spriteRenderer
+    assetId: cdadf176-fd74-57ab-bd32-3b7326aa5895
+    asset: Assets/Showcase/Fence.png
+- id: 790292a9-6c88-548f-afda-700333754291
+  parentId: 92df1cf5-4fcb-50f2-939c-8eba55241b02
+  name: Fence 2 shadow
+  x: 18
+  y: 28
+  width: 32
+  height: 10
+  components:
+  - type: spriteRenderer
+    assetId: adc8aa73-c8b4-505d-ae11-206843187b82
+    asset: Assets/Showcase/ShadowM.png
+    order: -1
+- id: 0dcbed7e-0424-518b-8d68-bb59a2907a20
+  parentId: 92df1cf5-4fcb-50f2-939c-8eba55241b02
+  name: Fence 2 base
+  x: 4
+  y: 20
+  width: 60
+  height: 12
+  components:
+  - type: boxCollider2D
+- id: fca334f4-9c8e-5e9f-983d-4b3b4237a080
+  name: Fence 3
+  x: 160
+  y: 18
+  width: 68
+  height: 34
+  components:
+  - type: sortingGroup2D
+    sortByY: true
+  - type: spriteRenderer
+    assetId: cdadf176-fd74-57ab-bd32-3b7326aa5895
+    asset: Assets/Showcase/Fence.png
+- id: f03db3c1-0db8-502d-b6b5-8f3843457fce
+  parentId: fca334f4-9c8e-5e9f-983d-4b3b4237a080
+  name: Fence 3 shadow
+  x: 18
+  y: 28
+  width: 32
+  height: 10
+  components:
+  - type: spriteRenderer
+    assetId: adc8aa73-c8b4-505d-ae11-206843187b82
+    asset: Assets/Showcase/ShadowM.png
+    order: -1
+- id: 72e5b566-a401-5ffd-a735-7bd66ffc1a10
+  parentId: fca334f4-9c8e-5e9f-983d-4b3b4237a080
+  name: Fence 3 base
+  x: 4
+  y: 20
+  width: 60
+  height: 12
+  components:
+  - type: boxCollider2D
+- id: 8595548c-65a8-5583-8b64-26fcb6d43a2a
+  name: Fence 4
+  x: 324
+  y: 18
+  width: 68
+  height: 34
+  components:
+  - type: sortingGroup2D
+    sortByY: true
+  - type: spriteRenderer
+    assetId: cdadf176-fd74-57ab-bd32-3b7326aa5895
+    asset: Assets/Showcase/Fence.png
+- id: 40a3ff8d-04fe-5336-b874-1ee77c4ae4f7
+  parentId: 8595548c-65a8-5583-8b64-26fcb6d43a2a
+  name: Fence 4 shadow
+  x: 18
+  y: 28
+  width: 32
+  height: 10
+  components:
+  - type: spriteRenderer
+    assetId: adc8aa73-c8b4-505d-ae11-206843187b82
+    asset: Assets/Showcase/ShadowM.png
+    order: -1
+- id: cc2da513-6a2e-5baf-8eda-76bc9c5ad89b
+  parentId: 8595548c-65a8-5583-8b64-26fcb6d43a2a
+  name: Fence 4 base
+  x: 4
+  y: 20
+  width: 60
+  height: 12
+  components:
+  - type: boxCollider2D
+- id: bbc1e538-c551-5864-a9b2-7b8ea9e41252
+  name: Fence 5
+  x: 392
+  y: 18
+  width: 68
+  height: 34
+  components:
+  - type: sortingGroup2D
+    sortByY: true
+  - type: spriteRenderer
+    assetId: cdadf176-fd74-57ab-bd32-3b7326aa5895
+    asset: Assets/Showcase/Fence.png
+- id: 5ae2e3fb-8653-5d19-8d30-d52deefb8228
+  parentId: bbc1e538-c551-5864-a9b2-7b8ea9e41252
+  name: Fence 5 shadow
+  x: 18
+  y: 28
+  width: 32
+  height: 10
+  components:
+  - type: spriteRenderer
+    assetId: adc8aa73-c8b4-505d-ae11-206843187b82
+    asset: Assets/Showcase/ShadowM.png
+    order: -1
+- id: 9c04cd52-6626-5f4f-9689-c8bb8e1c8c47
+  parentId: bbc1e538-c551-5864-a9b2-7b8ea9e41252
+  name: Fence 5 base
+  x: 4
+  y: 20
+  width: 60
+  height: 12
+  components:
+  - type: boxCollider2D
+- id: 3b883735-759f-5a32-a8ef-965d8b55023f
+  name: Fence 6
+  x: 460
+  y: 18
+  width: 68
+  height: 34
+  components:
+  - type: sortingGroup2D
+    sortByY: true
+  - type: spriteRenderer
+    assetId: cdadf176-fd74-57ab-bd32-3b7326aa5895
+    asset: Assets/Showcase/Fence.png
+- id: 04e1b8d9-0f14-537d-8428-2a0974498f09
+  parentId: 3b883735-759f-5a32-a8ef-965d8b55023f
+  name: Fence 6 shadow
+  x: 18
+  y: 28
+  width: 32
+  height: 10
+  components:
+  - type: spriteRenderer
+    assetId: adc8aa73-c8b4-505d-ae11-206843187b82
+    asset: Assets/Showcase/ShadowM.png
+    order: -1
+- id: 26811f25-afad-5720-989d-f1c825613ccb
+  parentId: 3b883735-759f-5a32-a8ef-965d8b55023f
+  name: Fence 6 base
+  x: 4
+  y: 20
+  width: 60
+  height: 12
+  components:
+  - type: boxCollider2D
+- id: 78fa1f6e-44ea-5179-9d6e-1e5cb6435efe
+  name: Stall
+  x: 238
+  y: 26
+  width: 108
+  height: 102
+  components:
+  - type: sortingGroup2D
+    sortByY: true
+  - type: spriteRenderer
+    assetId: 472cd12c-31a4-5dbe-93b4-a7593c216bc6
+    asset: Assets/Showcase/Stall.png
+- id: 78a89037-4d23-5113-875a-54fe6ed98a14
+  parentId: 78fa1f6e-44ea-5179-9d6e-1e5cb6435efe
+  name: Stall shadow
+  x: 32
+  y: 94.8
+  width: 44
+  height: 12
+  components:
+  - type: spriteRenderer
+    assetId: e3c56878-5267-5d9d-a1e6-c34f83519f48
+    asset: Assets/Showcase/ShadowL.png
+    order: -1
+- id: 6ccb6c60-78e9-56d8-8b3f-a56c8ddc670d
+  parentId: 78fa1f6e-44ea-5179-9d6e-1e5cb6435efe
+  name: Stall base
+  x: 4
+  y: 88
+  width: 100
+  height: 12
+  components:
+  - type: boxCollider2D
+- id: 84cbf671-255e-53ce-8c0d-343bca72478c
+  name: Well
+  x: 41
+  y: 70
+  width: 66
+  height: 80
+  components:
+  - type: sortingGroup2D
+    sortByY: true
+  - type: spriteRenderer
+    assetId: 03a7f4c0-604f-55e5-9686-e90e189da783
+    asset: Assets/Showcase/Well.png
+- id: 5fd5ae7b-b534-50e7-9bc8-4078b36c9720
+  parentId: 84cbf671-255e-53ce-8c0d-343bca72478c
+  name: Well shadow
+  x: 11
+  y: 72.8
+  width: 44
+  height: 12
+  components:
+  - type: spriteRenderer
+    assetId: e3c56878-5267-5d9d-a1e6-c34f83519f48
+    asset: Assets/Showcase/ShadowL.png
+    order: -1
+- id: 1f79ea77-900a-5f31-98d8-92cda3bc85ef
+  parentId: 84cbf671-255e-53ce-8c0d-343bca72478c
+  name: Well base
+  x: 4
+  y: 66
+  width: 58
+  height: 12
+  components:
+  - type: boxCollider2D
+- id: 2ba31582-8166-5426-a99d-dead205d8db1
+  name: Bush
+  x: 453
+  y: 86
+  width: 50
+  height: 42
+  components:
+  - type: sortingGroup2D
+    sortByY: true
+  - type: spriteRenderer
+    assetId: 08bfdfe3-2506-5b6c-aa7e-f301782306bb
+    asset: Assets/Showcase/Bush.png
+- id: 97fb6a78-a3ab-5854-a5b3-af03dfbf3c34
+  parentId: 2ba31582-8166-5426-a99d-dead205d8db1
+  name: Bush shadow
+  x: 3
+  y: 34.8
+  width: 44
+  height: 12
+  components:
+  - type: spriteRenderer
+    assetId: e3c56878-5267-5d9d-a1e6-c34f83519f48
+    asset: Assets/Showcase/ShadowL.png
+    order: -1
+- id: 98e6c95d-1fc2-5a25-9d4e-86cc43c2bf0c
+  parentId: 2ba31582-8166-5426-a99d-dead205d8db1
+  name: Bush base
+  x: 4
+  y: 28
+  width: 42
+  height: 12
+  components:
+  - type: boxCollider2D
+- id: c0f10f9f-7309-59e9-858e-e2b8707d53f0
+  name: Flowers 1
+  x: 133
+  y: 164
+  width: 54
+  height: 32
+  components:
+  - type: sortingGroup2D
+    sortByY: true
+  - type: spriteRenderer
+    assetId: 81ff5ad9-c479-5946-88d9-46e6cfb8a873
+    asset: Assets/Showcase/Flowers.png
+- id: 11c73bc4-4164-5428-8600-535fd34ffa95
+  parentId: c0f10f9f-7309-59e9-858e-e2b8707d53f0
+  name: Flowers 1 shadow
+  x: 11
+  y: 26
+  width: 32
+  height: 10
+  components:
+  - type: spriteRenderer
+    assetId: adc8aa73-c8b4-505d-ae11-206843187b82
+    asset: Assets/Showcase/ShadowM.png
+    order: -1
+- id: ba3c9450-a51c-5298-8bd3-10e54016b092
+  name: Flowers 2
+  x: 355
+  y: 230
+  width: 54
+  height: 32
+  components:
+  - type: sortingGroup2D
+    sortByY: true
+  - type: spriteRenderer
+    assetId: 81ff5ad9-c479-5946-88d9-46e6cfb8a873
+    asset: Assets/Showcase/Flowers.png
+- id: e838cce4-dae7-5a0f-a689-a94b97d793af
+  parentId: ba3c9450-a51c-5298-8bd3-10e54016b092
+  name: Flowers 2 shadow
+  x: 11
+  y: 26
+  width: 32
+  height: 10
+  components:
+  - type: spriteRenderer
+    assetId: adc8aa73-c8b4-505d-ae11-206843187b82
+    asset: Assets/Showcase/ShadowM.png
+    order: -1
+- id: 0e46eb65-8526-5d43-b30f-c48fbec4cdd7
+  name: Flowers 3
+  x: 13
+  y: 230
+  width: 54
+  height: 32
+  components:
+  - type: sortingGroup2D
+    sortByY: true
+  - type: spriteRenderer
+    assetId: 81ff5ad9-c479-5946-88d9-46e6cfb8a873
+    asset: Assets/Showcase/Flowers.png
+- id: 5f3ace06-e415-5f80-80be-35538aeee92c
+  parentId: 0e46eb65-8526-5d43-b30f-c48fbec4cdd7
+  name: Flowers 3 shadow
+  x: 11
+  y: 26
+  width: 32
+  height: 10
+  components:
+  - type: spriteRenderer
+    assetId: adc8aa73-c8b4-505d-ae11-206843187b82
+    asset: Assets/Showcase/ShadowM.png
+    order: -1
+- id: 6d5a536b-68a2-5410-9eb4-7a911d66dcc1
+  name: Flowers 4
+  x: 469
+  y: 182
+  width: 54
+  height: 32
+  components:
+  - type: sortingGroup2D
+    sortByY: true
+  - type: spriteRenderer
+    assetId: 81ff5ad9-c479-5946-88d9-46e6cfb8a873
+    asset: Assets/Showcase/Flowers.png
+- id: 32b320c2-a753-585c-87dc-9348c30939c3
+  parentId: 6d5a536b-68a2-5410-9eb4-7a911d66dcc1
+  name: Flowers 4 shadow
+  x: 11
+  y: 26
+  width: 32
+  height: 10
+  components:
+  - type: spriteRenderer
+    assetId: adc8aa73-c8b4-505d-ae11-206843187b82
+    asset: Assets/Showcase/ShadowM.png
+    order: -1
+- id: acb23dfd-086b-57ca-9dab-491986e13eb9
+  name: Herbalist
+  x: 244
+  y: 92
+  width: 40
+  height: 68
+  components:
+  - type: sortingGroup2D
+    sortByY: true
+  - type: spriteRenderer
+    assetId: 30887372-1a18-57a6-b07e-6a40b1a5e29a
+    asset: Assets/Showcase/Herbalist.png
+- id: f95c523a-0cba-58fd-ac97-5fbe9270cb91
+  parentId: acb23dfd-086b-57ca-9dab-491986e13eb9
+  name: Herbalist shadow
+  x: 4
+  y: 61
+  width: 32
+  height: 10
+  components:
+  - type: spriteRenderer
+    assetId: adc8aa73-c8b4-505d-ae11-206843187b82
+    asset: Assets/Showcase/ShadowM.png
+    order: -1
+- id: 76917469-0f8e-58a3-8407-38368bbca888
+  parentId: acb23dfd-086b-57ca-9dab-491986e13eb9
+  name: Herbalist base
+  x: 6
+  y: 56
+  width: 28
+  height: 10
+  components:
+  - type: boxCollider2D
+- id: 9f58fc23-5146-579f-9cdf-e05acca3954c
+  name: Player
+  x: 256
+  y: 236
+  width: 22
+  height: 12
+  components:
+  - type: sortingGroup2D
+    sortByY: true
+  - type: script
+    script: Showcase/YardWalker
+    values: {}
+  - type: boxCollider2D
+- id: 16c078ad-83fd-52e7-87a3-16d11c0d3fdf
+  parentId: 9f58fc23-5146-579f-9cdf-e05acca3954c
+  name: Hero shadow
+  x: -5
+  y: 5
+  width: 32
+  height: 10
+  components:
+  - type: spriteRenderer
+    assetId: adc8aa73-c8b4-505d-ae11-206843187b82
+    asset: Assets/Showcase/ShadowM.png
+    order: -1
+- id: fc595e4d-7f92-57c2-9036-a2163b53ce97
+  parentId: 9f58fc23-5146-579f-9cdf-e05acca3954c
+  name: Hero
+  x: -10
+  y: -46
+  width: 42
+  height: 60
+  components:
+  - type: spriteRenderer
+    assetId: 2df08b55-8ade-5ebe-a423-8ca4361f2c1b
+    asset: Assets/Showcase/HeroIdleS.png
+  - type: spriteAnimator
+    controller: 9a8335d5-1175-5771-b7c3-ac76ef872e0f
+    playOnStart: true
+  - type: script
+    script: Showcase/HeroAnimation
+    values: {}
+- id: a83383e7-147d-5843-985d-132623c8bbb9
+  name: Herb 1
+  x: 406
+  y: 164
+  width: 36
+  height: 32
+  components:
+  - type: sortingGroup2D
+    sortByY: true
+  - type: spriteRenderer
+    assetId: 47f2e3e7-4022-5079-94c9-2e8438b9799b
+    asset: Assets/Showcase/Herb1.png
+  - type: boxCollider2D
+    isTrigger: true
+  - type: script
+    script: Showcase/HerbPickup
+    values: {"Yard": "143d4955-3296-5f01-af4f-9bf8d372ce27", "Player": "9f58fc23-5146-579f-9cdf-e05acca3954c", "Leaves": "607d172a-9f46-52a8-90ec-70e14f63bb16"}
+- id: 607d172a-9f46-52a8-90ec-70e14f63bb16
+  parentId: a83383e7-147d-5843-985d-132623c8bbb9
+  name: Herb 1 leaves
+  x: 18
+  y: 16
+  width: 1
+  height: 1
+  components:
+  - type: particleEmitter2D
+    particles: 7724c05a-2412-5b5e-a6ff-a8f7b1719e26
+    trigger: Manual
+    order: 5
+- id: 5112159f-12e9-5d5d-9853-94fb36b1844b
+  name: Herb 2
+  x: 453
+  y: 216
+  width: 34
+  height: 34
+  components:
+  - type: sortingGroup2D
+    sortByY: true
+  - type: spriteRenderer
+    assetId: aedb8cab-4edd-580d-a5f4-61084f39dc97
+    asset: Assets/Showcase/Herb2.png
+  - type: boxCollider2D
+    isTrigger: true
+  - type: script
+    script: Showcase/HerbPickup
+    values: {"Yard": "143d4955-3296-5f01-af4f-9bf8d372ce27", "Player": "9f58fc23-5146-579f-9cdf-e05acca3954c", "Leaves": "43efd1a3-83ce-5360-a849-c7105201a1ee"}
+- id: 43efd1a3-83ce-5360-a849-c7105201a1ee
+  parentId: 5112159f-12e9-5d5d-9853-94fb36b1844b
+  name: Herb 2 leaves
+  x: 17
+  y: 17
+  width: 1
+  height: 1
+  components:
+  - type: particleEmitter2D
+    particles: 7724c05a-2412-5b5e-a6ff-a8f7b1719e26
+    trigger: Manual
+    order: 5
+- id: 370fe08f-71cf-5f47-9f93-fb950a6329e2
+  name: Herb 3
+  x: 90
+  y: 200
+  width: 36
+  height: 32
+  components:
+  - type: sortingGroup2D
+    sortByY: true
+  - type: spriteRenderer
+    assetId: 47f2e3e7-4022-5079-94c9-2e8438b9799b
+    asset: Assets/Showcase/Herb1.png
+  - type: boxCollider2D
+    isTrigger: true
+  - type: script
+    script: Showcase/HerbPickup
+    values: {"Yard": "143d4955-3296-5f01-af4f-9bf8d372ce27", "Player": "9f58fc23-5146-579f-9cdf-e05acca3954c", "Leaves": "40d3061e-4954-5f7e-89db-a4e4c988e8b3"}
+- id: 40d3061e-4954-5f7e-89db-a4e4c988e8b3
+  parentId: 370fe08f-71cf-5f47-9f93-fb950a6329e2
+  name: Herb 3 leaves
+  x: 18
+  y: 16
+  width: 1
+  height: 1
+  components:
+  - type: particleEmitter2D
+    particles: 7724c05a-2412-5b5e-a6ff-a8f7b1719e26
+    trigger: Manual
+    order: 5
+- id: 60ab9528-243c-542a-9054-0a54e1151296
+  name: Herb 4
+  x: 161
+  y: 144
+  width: 28
+  height: 36
+  components:
+  - type: sortingGroup2D
+    sortByY: true
+  - type: spriteRenderer
+    assetId: aac009e3-831e-5e8d-939c-ed144b9fe2f7
+    asset: Assets/Showcase/Herb3.png
+  - type: boxCollider2D
+    isTrigger: true
+  - type: script
+    script: Showcase/HerbPickup
+    values: {"Yard": "143d4955-3296-5f01-af4f-9bf8d372ce27", "Player": "9f58fc23-5146-579f-9cdf-e05acca3954c", "Leaves": "ef7e4fe2-efa4-56b7-ad28-f4669c50ad64"}
+- id: ef7e4fe2-efa4-56b7-ad28-f4669c50ad64
+  parentId: 60ab9528-243c-542a-9054-0a54e1151296
+  name: Herb 4 leaves
+  x: 14
+  y: 18
+  width: 1
+  height: 1
+  components:
+  - type: particleEmitter2D
+    particles: 7724c05a-2412-5b5e-a6ff-a8f7b1719e26
+    trigger: Manual
+    order: 5
+- id: 2c7cc7b2-7c5b-57ec-b4dd-88e450e0cb83
+  name: Camera
+  x: 266.5
+  y: 150
+  width: 1
+  height: 1
+  components:
+  - type: camera2D
+    zoom: 1.5
+- id: c7241d45-1969-5b15-a5ac-addf2c732536
+  name: Canvas
+  x: 0
+  y: 0
+  width: 1
+  height: 1
+  components:
+  - type: uiCanvas
+- id: 0a50c662-b1d0-5ffd-9039-9983683607e8
+  parentId: c7241d45-1969-5b15-a5ac-addf2c732536
+  name: Caption
+  x: 12
+  y: -12
+  width: 480
+  height: 44
+  components:
+  - type: uiRect
+    anchor: BottomLeft
+  - type: uiImage
+    sprite: 10aa8fe1-f416-5971-839d-3944dee38e3c
+    borders: {left: 4, top: 4, right: 4, bottom: 4}
+- id: 556e848b-31c5-5593-8d6a-b3a03834a1fc
+  parentId: 0a50c662-b1d0-5ffd-9039-9983683607e8
+  name: Caption title
+  x: 12
+  y: 5
+  width: 456
+  height: 20
+  components:
+  - type: uiRect
+  - type: uiText
+    text: "<b>InventoryLab</b>   A quest, a stacking bag and crash-safe saves"
+    size: 15
+    color: "#F4F6F4"
+    richText: true
+    icons: {herb: 5c1a7e2e-3b0d-4f53-9a51-6e0b7c11a503, gem: 589328e1-9fc6-4acb-ac05-ac55da897e12, key: 8b767fbb-02ce-44a7-b503-e1c2cdcaafb1}
+- id: 5aef9561-5967-5624-877f-e40cd9c63213
+  parentId: 0a50c662-b1d0-5ffd-9039-9983683607e8
+  name: Caption controls
+  x: 12
+  y: 25
+  width: 456
+  height: 16
+  components:
+  - type: uiRect
+  - type: uiText
+    text: "Move  ← → ↑ ↓      Talk  Return      Answer  1–4      Save  F5      Load  F9"
+    size: 12
+    color: "#BFD0DC"
+    richText: true
+    icons: {herb: 5c1a7e2e-3b0d-4f53-9a51-6e0b7c11a503, gem: 589328e1-9fc6-4acb-ac05-ac55da897e12, key: 8b767fbb-02ce-44a7-b503-e1c2cdcaafb1}
+- id: c03ff271-6284-54f6-a1df-acf8d3a0e16e
+  parentId: c7241d45-1969-5b15-a5ac-addf2c732536
+  name: Bag
+  x: -12
+  y: -12
+  width: 178
+  height: 66
+  components:
+  - type: uiRect
+    anchor: BottomRight
+  - type: uiImage
+    sprite: 10aa8fe1-f416-5971-839d-3944dee38e3c
+    borders: {left: 4, top: 4, right: 4, bottom: 4}
+- id: 322e27b7-0b6b-5137-827e-138ea7d740a1
+  parentId: c03ff271-6284-54f6-a1df-acf8d3a0e16e
+  name: Slot 1
+  x: 8
+  y: 8
+  width: 50
+  height: 50
+  components:
+  - type: uiRect
+  - type: uiImage
+    sprite: ff9ed6f0-ab54-46ec-ac7f-113d05db0e78
+    borders: {left: 4, top: 4, right: 4, bottom: 4}
+  - type: uiText
+    text: ""
+    size: 13
+    color: "#FFFFFF"
+    richText: true
+    icons: {herb: 5c1a7e2e-3b0d-4f53-9a51-6e0b7c11a503, gem: 589328e1-9fc6-4acb-ac05-ac55da897e12, key: 8b767fbb-02ce-44a7-b503-e1c2cdcaafb1}
+    insetX: 5
+    insetY: 10
+- id: a479f232-6e96-5258-bb1e-30aadb76b1cd
+  parentId: c03ff271-6284-54f6-a1df-acf8d3a0e16e
+  name: Slot 2
+  x: 64
+  y: 8
+  width: 50
+  height: 50
+  components:
+  - type: uiRect
+  - type: uiImage
+    sprite: ff9ed6f0-ab54-46ec-ac7f-113d05db0e78
+    borders: {left: 4, top: 4, right: 4, bottom: 4}
+  - type: uiText
+    text: ""
+    size: 13
+    color: "#FFFFFF"
+    richText: true
+    icons: {herb: 5c1a7e2e-3b0d-4f53-9a51-6e0b7c11a503, gem: 589328e1-9fc6-4acb-ac05-ac55da897e12, key: 8b767fbb-02ce-44a7-b503-e1c2cdcaafb1}
+    insetX: 5
+    insetY: 10
+- id: b371235f-fb49-586d-a4d8-645a4fa241ca
+  parentId: c03ff271-6284-54f6-a1df-acf8d3a0e16e
+  name: Slot 3
+  x: 120
+  y: 8
+  width: 50
+  height: 50
+  components:
+  - type: uiRect
+  - type: uiImage
+    sprite: ff9ed6f0-ab54-46ec-ac7f-113d05db0e78
+    borders: {left: 4, top: 4, right: 4, bottom: 4}
+  - type: uiText
+    text: ""
+    size: 13
+    color: "#FFFFFF"
+    richText: true
+    icons: {herb: 5c1a7e2e-3b0d-4f53-9a51-6e0b7c11a503, gem: 589328e1-9fc6-4acb-ac05-ac55da897e12, key: 8b767fbb-02ce-44a7-b503-e1c2cdcaafb1}
+    insetX: 5
+    insetY: 10
+- id: 94618fe4-e769-5a95-bf22-36a1fb7160ca
+  parentId: c7241d45-1969-5b15-a5ac-addf2c732536
+  name: Tracker
+  x: -12
+  y: 12
+  width: 260
+  height: 50
+  components:
+  - type: uiRect
+    anchor: TopRight
+  - type: uiImage
+    sprite: 10aa8fe1-f416-5971-839d-3944dee38e3c
+    borders: {left: 4, top: 4, right: 4, bottom: 4}
+- id: cd0fd583-12ef-5799-986a-4fad1c754c4b
+  parentId: 94618fe4-e769-5a95-bf22-36a1fb7160ca
+  name: Tracker title
+  x: 10
+  y: 6
+  width: 240
+  height: 18
+  components:
+  - type: uiRect
+  - type: uiText
+    text: ""
+    size: 13
+    color: "#F4F6F4"
+    richText: true
+    icons: {herb: 5c1a7e2e-3b0d-4f53-9a51-6e0b7c11a503, gem: 589328e1-9fc6-4acb-ac05-ac55da897e12, key: 8b767fbb-02ce-44a7-b503-e1c2cdcaafb1}
+- id: 3be81d31-4338-5cac-9b7a-23d2f0923259
+  parentId: 94618fe4-e769-5a95-bf22-36a1fb7160ca
+  name: Tracker progress
+  x: 10
+  y: 26
+  width: 240
+  height: 18
+  components:
+  - type: uiRect
+  - type: uiText
+    text: ""
+    size: 12
+    color: "#BFD0DC"
+    richText: true
+    icons: {herb: 5c1a7e2e-3b0d-4f53-9a51-6e0b7c11a503, gem: 589328e1-9fc6-4acb-ac05-ac55da897e12, key: 8b767fbb-02ce-44a7-b503-e1c2cdcaafb1}
+- id: 21707128-404a-5c13-87d0-3c331e6d8e4e
+  parentId: c7241d45-1969-5b15-a5ac-addf2c732536
+  name: Status
+  x: -12
+  y: 66
+  width: 260
+  height: 24
+  components:
+  - type: uiRect
+    anchor: TopRight
+  - type: uiImage
+    sprite: 10aa8fe1-f416-5971-839d-3944dee38e3c
+    borders: {left: 4, top: 4, right: 4, bottom: 4}
+  - type: uiText
+    text: ""
+    size: 12
+    color: "#FFD84A"
+    richText: true
+    icons: {herb: 5c1a7e2e-3b0d-4f53-9a51-6e0b7c11a503, gem: 589328e1-9fc6-4acb-ac05-ac55da897e12, key: 8b767fbb-02ce-44a7-b503-e1c2cdcaafb1}
+    insetX: 10
+    insetY: 4
+- id: f24d56a1-e4d2-5796-9b0b-338d2a6ed4a4
+  parentId: c7241d45-1969-5b15-a5ac-addf2c732536
+  name: Talk prompt
+  active: true
+  x: 354
+  y: 92
+  width: 104
+  height: 22
+  components:
+  - type: uiRect
+  - type: uiImage
+    sprite: 10aa8fe1-f416-5971-839d-3944dee38e3c
+    borders: {left: 4, top: 4, right: 4, bottom: 4}
+  - type: uiText
+    text: "<b>Return</b>  Talk"
+    size: 12
+    color: "#F4F6F4"
+    richText: true
+    insetX: 10
+    insetY: 3
+    icons: {herb: 5c1a7e2e-3b0d-4f53-9a51-6e0b7c11a503, gem: 589328e1-9fc6-4acb-ac05-ac55da897e12, key: 8b767fbb-02ce-44a7-b503-e1c2cdcaafb1}
+- id: 2f73d459-3038-5cdc-8bc8-fed65168a00f
+  parentId: c7241d45-1969-5b15-a5ac-addf2c732536
+  name: Dialogue
+  x: 0
+  y: -64
+  width: 640
+  height: 156
+  components:
+  - type: uiRect
+    anchor: BottomCenter
+  - type: uiImage
+    sprite: 10aa8fe1-f416-5971-839d-3944dee38e3c
+    borders: {left: 4, top: 4, right: 4, bottom: 4}
+- id: e35ba991-a391-588a-b66d-ed3a0ad9dac9
+  parentId: 2f73d459-3038-5cdc-8bc8-fed65168a00f
+  name: Portrait
+  x: 10
+  y: 21
+  width: 114
+  height: 114
+  components:
+  - type: uiRect
+  - type: uiImage
+    sprite: dea7fce2-aeb2-5d85-a20b-158605565ea2
+- id: d3815710-e9cb-55ff-8d96-e9ff7d0c17a4
+  parentId: 2f73d459-3038-5cdc-8bc8-fed65168a00f
+  name: Speaker
+  x: 136
+  y: 8
+  width: 300
+  height: 20
+  components:
+  - type: uiRect
+  - type: uiText
+    text: "<b>Herbalist</b>"
+    size: 15
+    color: "#9BE27A"
+    richText: true
+    icons: {herb: 5c1a7e2e-3b0d-4f53-9a51-6e0b7c11a503, gem: 589328e1-9fc6-4acb-ac05-ac55da897e12, key: 8b767fbb-02ce-44a7-b503-e1c2cdcaafb1}
+- id: 383f4bbc-fb27-5b52-8ea8-a7c78adb5923
+  parentId: 2f73d459-3038-5cdc-8bc8-fed65168a00f
+  name: Line
+  x: 136
+  y: 30
+  width: 494
+  height: 54
+  components:
+  - type: uiRect
+  - type: uiText
+    text: ""
+    size: 14
+    color: "#F4F6F4"
+    richText: true
+    icons: {herb: 5c1a7e2e-3b0d-4f53-9a51-6e0b7c11a503, gem: 589328e1-9fc6-4acb-ac05-ac55da897e12, key: 8b767fbb-02ce-44a7-b503-e1c2cdcaafb1}
+    wrap: true
+    revealRate: 45
+- id: 39d23850-4e6d-54a0-a115-3af29e5dd42d
+  parentId: 2f73d459-3038-5cdc-8bc8-fed65168a00f
+  name: Answer 1
+  x: 136
+  y: 86
+  width: 494
+  height: 17
+  components:
+  - type: uiRect
+  - type: uiText
+    text: ""
+    size: 13
+    color: "#BFD0DC"
+    richText: true
+    icons: {herb: 5c1a7e2e-3b0d-4f53-9a51-6e0b7c11a503, gem: 589328e1-9fc6-4acb-ac05-ac55da897e12, key: 8b767fbb-02ce-44a7-b503-e1c2cdcaafb1}
+- id: 9ba65efe-f97b-5034-9a06-5f761b1efbf1
+  parentId: 2f73d459-3038-5cdc-8bc8-fed65168a00f
+  name: Answer 2
+  x: 136
+  y: 103
+  width: 494
+  height: 17
+  components:
+  - type: uiRect
+  - type: uiText
+    text: ""
+    size: 13
+    color: "#BFD0DC"
+    richText: true
+    icons: {herb: 5c1a7e2e-3b0d-4f53-9a51-6e0b7c11a503, gem: 589328e1-9fc6-4acb-ac05-ac55da897e12, key: 8b767fbb-02ce-44a7-b503-e1c2cdcaafb1}
+- id: f1e3766e-7622-59c9-84ef-8ee6f4c8047a
+  parentId: 2f73d459-3038-5cdc-8bc8-fed65168a00f
+  name: Answer 3
+  x: 136
+  y: 120
+  width: 494
+  height: 17
+  components:
+  - type: uiRect
+  - type: uiText
+    text: ""
+    size: 13
+    color: "#BFD0DC"
+    richText: true
+    icons: {herb: 5c1a7e2e-3b0d-4f53-9a51-6e0b7c11a503, gem: 589328e1-9fc6-4acb-ac05-ac55da897e12, key: 8b767fbb-02ce-44a7-b503-e1c2cdcaafb1}
+- id: ded9440e-246f-5556-96cd-5e1e4827980e
+  parentId: 2f73d459-3038-5cdc-8bc8-fed65168a00f
+  name: Answer 4
+  x: 136
+  y: 137
+  width: 494
+  height: 17
+  components:
+  - type: uiRect
+  - type: uiText
+    text: ""
+    size: 13
+    color: "#BFD0DC"
+    richText: true
+    icons: {herb: 5c1a7e2e-3b0d-4f53-9a51-6e0b7c11a503, gem: 589328e1-9fc6-4acb-ac05-ac55da897e12, key: 8b767fbb-02ce-44a7-b503-e1c2cdcaafb1}
+- id: 556d98a8-30b0-5a88-bc3b-6a1f50cdd21f
+  parentId: c7241d45-1969-5b15-a5ac-addf2c732536
+  name: Tag 1
+  x: 12
+  y: 12
+  width: 426.6
+  height: 24
+  components:
+  - type: uiRect
+    anchor: TopLeft
+    showIf: talk
+  - type: uiImage
+    sprite: 10aa8fe1-f416-5971-839d-3944dee38e3c
+    borders: {left: 4, top: 4, right: 4, bottom: 4}
+  - type: uiText
+    richText: true
+    text: "<b>Dialogue graph</b>   <color=#BFD0DC>Branching lines from a data asset</color>"
+    size: 12
+    insetX: 10
+    insetY: 4
+- id: 5bb080a3-6b42-528f-b26c-1cff95721520
+  parentId: c7241d45-1969-5b15-a5ac-addf2c732536
+  name: Tag 2
+  x: 12
+  y: 40
+  width: 426.6
+  height: 24
+  components:
+  - type: uiRect
+    anchor: TopLeft
+    showIf: quest
+  - type: uiImage
+    sprite: 10aa8fe1-f416-5971-839d-3944dee38e3c
+    borders: {left: 4, top: 4, right: 4, bottom: 4}
+  - type: uiText
+    richText: true
+    text: "<b>Quest journal</b>   <color=#BFD0DC>Counts herbs as you pick them</color>"
+    size: 12
+    insetX: 10
+    insetY: 4
+- id: 0918397c-b61d-5cf3-941e-4657073b4188
+  parentId: c7241d45-1969-5b15-a5ac-addf2c732536
+  name: Tag 3
+  x: 12
+  y: 68
+  width: 426.6
+  height: 24
+  components:
+  - type: uiRect
+    anchor: TopLeft
+    showIf: bag
+  - type: uiImage
+    sprite: 10aa8fe1-f416-5971-839d-3944dee38e3c
+    borders: {left: 4, top: 4, right: 4, bottom: 4}
+  - type: uiText
+    richText: true
+    text: "<b>Stacking bag</b>   <color=#BFD0DC>Herbs stack up to 3 in one slot</color>"
+    size: 12
+    insetX: 10
+    insetY: 4
+- id: fc84a229-1aa4-5fa5-8708-7d9bbc2f4768
+  parentId: c7241d45-1969-5b15-a5ac-addf2c732536
+  name: Tag 4
+  x: 12
+  y: 96
+  width: 426.6
+  height: 24
+  components:
+  - type: uiRect
+    anchor: TopLeft
+    showIf: recovered
+  - type: uiImage
+    sprite: 10aa8fe1-f416-5971-839d-3944dee38e3c
+    borders: {left: 4, top: 4, right: 4, bottom: 4}
+  - type: uiText
+    richText: true
+    text: "<b>Crash-safe save</b>   <color=#BFD0DC>A cut save falls back to the last good copy</color>"
+    size: 12
+    insetX: 10
+    insetY: 4
+- id: 143d4955-3296-5f01-af4f-9bf8d372ce27
+  name: Yard
+  x: 0
+  y: 0
+  width: 16
+  height: 16
+  components:
+  - type: script
+    script: Inventory/InventoryContainer
+    values: {"Catalog": {"Id": "27e8e87b-8eac-5142-a8ca-7cf02581b103"}, "Slots": 3}
+  - type: script
+    script: Quests/QuestLog
+    values: {"Catalog": {"Id": "7daa83ca-0ee2-4e06-959b-681c1b7180d5"}}
+  - type: script
+    script: Dialogue/DialoguePlayer
+    values: {"Story": {"Id": "be65fc7d-c374-5aa1-8a6b-4f548c4bcd03"}}
+  - type: script
+    script: Showcase/HerbYard
+    values: {"Container": "143d4955-3296-5f01-af4f-9bf8d372ce27", "Quests": "143d4955-3296-5f01-af4f-9bf8d372ce27", "Merchant": "143d4955-3296-5f01-af4f-9bf8d372ce27", "Player": "9f58fc23-5146-579f-9cdf-e05acca3954c", "Herbalist": "acb23dfd-086b-57ca-9dab-491986e13eb9", "TalkRange": 130, "Dialogue": "2f73d459-3038-5cdc-8bc8-fed65168a00f", "Line": "383f4bbc-fb27-5b52-8ea8-a7c78adb5923", "Prompt": "f24d56a1-e4d2-5796-9b0b-338d2a6ed4a4", "Tracker": "94618fe4-e769-5a95-bf22-36a1fb7160ca", "TrackerTitle": "cd0fd583-12ef-5799-986a-4fad1c754c4b", "TrackerProgress": "3be81d31-4338-5cac-9b7a-23d2f0923259", "Status": "21707128-404a-5c13-87d0-3c331e6d8e4e", "Choices": ["39d23850-4e6d-54a0-a115-3af29e5dd42d", "9ba65efe-f97b-5034-9a06-5f761b1efbf1", "f1e3766e-7622-59c9-84ef-8ee6f4c8047a", "ded9440e-246f-5556-96cd-5e1e4827980e"], "Slots": ["322e27b7-0b6b-5137-827e-138ea7d740a1", "a479f232-6e96-5258-bb1e-30aadb76b1cd", "b371235f-fb49-586d-a4d8-645a4fa241ca"], "ProjectId": "ade09cc3-a769-56d7-9832-a2bea14c7e71"}
+defaultCameraId: 2c7cc7b2-7c5b-57ec-b4dd-88e450e0cb83

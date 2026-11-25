@@ -1,0 +1,21 @@
+version: 1
+columns:
+- name: label
+  type: Text
+- name: copies
+  type: Number
+- name: steps
+  type: Number
+rows:
+- key: herb
+  cells: ["Forage", 1, 1]
+- key: bread
+  cells: ["Rest stop", 1, 1]
+- key: lantern
+  cells: ["Night walk", 1, 2]
+- key: compass
+  cells: ["Bearing", 1, 2]
+- key: map
+  cells: ["Shortcut", 1, 3]
+- key: rope
+  cells: ["Climb", 1, 3]

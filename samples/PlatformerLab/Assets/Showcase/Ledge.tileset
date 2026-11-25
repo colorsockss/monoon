@@ -1,0 +1,12 @@
+image: 186a51dc-078c-5732-a799-7ec6ce453325
+tileSize: {width: 32, height: 12}
+margin: 0
+spacing: 0
+nextId: 2
+tiles:
+- id: 1
+  source: {x: 0, y: 0, width: 32, height: 12}
+  solid: true
+  collision:
+    oneWay: true
+    vertices: [{x: 0, y: 0}, {x: 1, y: 0}]

@@ -1,0 +1,12 @@
+duration: 0.5
+looping: false
+rate: 0
+bursts: [{time: 0, count: 14}]
+spread: 360
+speed: {min: 25, max: 70}
+lifetime: {min: 0.3, max: 0.6}
+size: {min: 3, max: 5}
+color: {min: "#9BE27A", max: "#4E9A3C"}
+endSize: 0.3
+gravity: 60
+space: World

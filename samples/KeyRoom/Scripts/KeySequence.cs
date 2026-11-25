@@ -10,6 +10,8 @@ public sealed class KeySequence : GameBehaviour
     public DoorFrame RestFrame = DoorFrame.Last;
     public Vector2 Offset;
     public Guid Collector, KeyImage, DoorCamera, PlayerCamera;
+    /// <summary>How long the door camera stays on after the key is picked up.</summary>
+    public float HoldSeconds = 1;
     public event Action KeyAcquired;
     private GameTimer returnToPlayer;
 
@@ -27,7 +29,7 @@ public sealed class KeySequence : GameBehaviour
         contact.Session.Log("Key acquired.");
         KeyAcquired?.Invoke();
         contact.Cameras.TrySetActive(DoorCamera);
-        returnToPlayer = contact.Session.Time.StartTimer(1);
+        returnToPlayer = contact.Session.Time.StartTimer(HoldSeconds);
     }
 
     public override void FixedUpdate(ScriptTick tick)

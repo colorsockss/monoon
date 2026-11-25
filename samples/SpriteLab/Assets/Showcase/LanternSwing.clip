@@ -1,0 +1,13 @@
+frames:
+- seconds: 2
+  useRenderer: true
+loop: true
+tracks:
+- property: Rotation
+  keys:
+  - time: 0
+    value: "-14"
+  - time: 1
+    value: "14"
+  - time: 2
+    value: "-14"

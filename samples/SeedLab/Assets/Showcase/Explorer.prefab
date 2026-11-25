@@ -1,0 +1,34 @@
+schemaVersion: 42
+objects:
+- id: 5c1ac62f-2bcd-584f-ad66-61869e383d24
+  name: Explorer
+  width: 20
+  height: 20
+  components:
+  - type: boxCollider2D
+- id: 8cb374bb-0859-5576-82e3-fad1205be07a
+  parentId: 5c1ac62f-2bcd-584f-ad66-61869e383d24
+  name: Shadow
+  x: -6
+  y: 13
+  width: 32
+  height: 10
+  components:
+  - type: spriteRenderer
+    assetId: b70af06e-1f73-5951-9f5b-fed56d408ab5
+    asset: Assets/Showcase/ShadowM.png
+    order: 3
+- id: e41f01bd-a7f4-53ae-9851-6a7461f6fb13
+  parentId: 5c1ac62f-2bcd-584f-ad66-61869e383d24
+  name: Picture
+  groups:
+  - Explorer picture
+  x: -11
+  y: -38
+  width: 42
+  height: 60
+  components:
+  - type: spriteRenderer
+    assetId: f565263f-45a2-53e7-a5ed-3fdca6e15a2c
+    asset: Assets/Showcase/HeroIdleS.png
+    order: 5

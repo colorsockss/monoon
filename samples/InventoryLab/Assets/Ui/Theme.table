@@ -1,0 +1,10 @@
+version: 1
+columns:
+- {name: fill, type: Text}
+- {name: text, type: Text}
+rows:
+- {key: button.normal,   cells: ["#33566A", "#FAF5DE"]}
+- {key: button.hover,    cells: ["#437879", "#FFFFFF"]}
+- {key: button.focused,  cells: ["#365F86", "#FFFFFF"]}
+- {key: button.pressed,  cells: ["#1E414B", "#FFE39B"]}
+- {key: button.disabled, cells: ["#343F49", "#B5BFC4"]}

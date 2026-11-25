@@ -2,10 +2,19 @@ projectId: 6c5dd0cd-638e-5a00-9d80-744596f3a647
 gameTitle: BarrageLab
 width: 800
 height: 450
-startScene: 719a1aa5-015b-503e-85ad-0722931cc1c0
-includedScenes: [719a1aa5-015b-503e-85ad-0722931cc1c0, 12940974-2dc8-472e-af74-dca5b29fdac6, 189ac1ae-7fca-4bfd-b5ac-51bcd1090e5f]
+integerScale: true
+startScene: cc792dff-cd8d-5479-8759-60a69bcd4910
+includedScenes: [cc792dff-cd8d-5479-8759-60a69bcd4910, 719a1aa5-015b-503e-85ad-0722931cc1c0, 12940974-2dc8-472e-af74-dca5b29fdac6, 189ac1ae-7fca-4bfd-b5ac-51bcd1090e5f]
 input:
   actions:
+  - name: MoveLeft
+    controls: ["Left", "A", "Pad.DpadLeft"]
+  - name: MoveRight
+    controls: ["Right", "D", "Pad.DpadRight"]
+  - name: MoveUp
+    controls: ["Up", "W", "Pad.DpadUp"]
+  - name: MoveDown
+    controls: ["Down", "S", "Pad.DpadDown"]
   - name: Fire
     controls: ["Space"]
   - name: Compare

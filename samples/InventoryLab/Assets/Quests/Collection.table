@@ -12,4 +12,4 @@ columns:
   type: Number
 rows:
 - key: herbalist
-  cells: ["약초 수집 의뢰", "herb", 3, "gem", 1]
+  cells: ["Herb Gathering Request", "herb", 3, "gem", 1]

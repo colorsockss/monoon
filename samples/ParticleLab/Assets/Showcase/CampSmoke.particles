@@ -1,0 +1,11 @@
+duration: 2
+prewarm: true
+rate: 7
+spread: 18
+speed: {min: 8, max: 14}
+lifetime: {min: 1.8, max: 2.4}
+size: {min: 4, max: 6}
+endSize: 2.6
+color: {min: "#6E6878A0"}
+endAlpha: 0
+gravity: -6

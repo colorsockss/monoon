@@ -1,0 +1,309 @@
+schemaVersion: 42
+objects:
+- id: d8f0d306-c323-5d15-83f7-0e701d2d4395
+  name: Grass
+  x: 0
+  y: 0
+  width: 800
+  height: 450
+  components:
+  - type: spriteRenderer
+    assetId: 077a7606-fb56-51ef-bce6-429de9bb4c02
+    asset: Assets/Showcase/Grass.png
+    drawMode: Tiled
+    order: -20
+- id: a40aff96-d333-5fb1-bb9f-cd17e7e686c5
+  name: Start zone
+  x: 36
+  y: 146
+  width: 108
+  height: 208
+  components:
+  - type: spriteRenderer
+    assetId: f21584fa-2c3d-5926-9ef4-5d6e9ff24ecb
+    asset: Assets/Showcase/FloorTile.png
+    drawMode: Tiled
+    order: -2
+- id: 96d46dda-8fa7-5d8d-96ff-424c57cfb7af
+  name: Goal zone
+  x: 656
+  y: 146
+  width: 108
+  height: 208
+  components:
+  - type: spriteRenderer
+    assetId: f21584fa-2c3d-5926-9ef4-5d6e9ff24ecb
+    asset: Assets/Showcase/FloorTile.png
+    drawMode: Tiled
+    order: -2
+- id: 1f393a4b-8903-5a1d-a237-fc25b2d0b6f2
+  name: Yard
+  x: 24
+  y: 72
+  width: 752
+  height: 344
+  components:
+  - {type: navigationRegion2D, spacing: 8, agentWidth: 8}
+  - type: script
+    script: CrowdRun
+    values: {"Units": "d5b4d86a-e645-5d5f-909a-03468f308be5", "Gate": "0ff04910-f68e-5143-9c0b-ddc710996f5b", "Status": "ec5a7aab-ac95-59e7-8533-94ac2d16e59b"}
+  - type: script
+    script: Showcase/CrowdTags
+    values: {}
+- id: f8cb0cfe-dd2a-5af3-927b-2ab290f769db
+  name: Wall A north
+  x: 232
+  y: 120
+  width: 24
+  height: 130
+  components:
+  - type: spriteRenderer
+    assetId: 72f3fb60-169d-5a32-a10b-faeef9392c9f
+    asset: Assets/Showcase/WallTile.png
+    drawMode: Tiled
+    order: 1
+  - {type: boxCollider2D}
+- id: 6a250d35-3e5d-5277-abba-ae40d2f879c9
+  name: Wall A south
+  x: 232
+  y: 300
+  width: 24
+  height: 116
+  components:
+  - type: spriteRenderer
+    assetId: 72f3fb60-169d-5a32-a10b-faeef9392c9f
+    asset: Assets/Showcase/WallTile.png
+    drawMode: Tiled
+    order: 1
+  - {type: boxCollider2D}
+- id: 746dd97f-29e3-5420-ad9f-96cf56c0ea92
+  name: Wall B
+  x: 432
+  y: 72
+  width: 24
+  height: 258
+  components:
+  - type: spriteRenderer
+    assetId: 72f3fb60-169d-5a32-a10b-faeef9392c9f
+    asset: Assets/Showcase/WallTile.png
+    drawMode: Tiled
+    order: 1
+  - {type: boxCollider2D}
+- id: 62be16a9-6fc2-5e11-b9e1-d6d4cfbe7408
+  name: Pillar north
+  x: 540
+  y: 110
+  width: 40
+  height: 40
+  components:
+  - type: spriteRenderer
+    assetId: 72f3fb60-169d-5a32-a10b-faeef9392c9f
+    asset: Assets/Showcase/WallTile.png
+    drawMode: Tiled
+    order: 1
+  - {type: boxCollider2D}
+- id: 849f73ca-0f94-5d8c-a26f-a4f439339f56
+  name: Pillar south
+  x: 540
+  y: 230
+  width: 40
+  height: 40
+  components:
+  - type: spriteRenderer
+    assetId: 72f3fb60-169d-5a32-a10b-faeef9392c9f
+    asset: Assets/Showcase/WallTile.png
+    drawMode: Tiled
+    order: 1
+  - {type: boxCollider2D}
+- id: 0ff04910-f68e-5143-9c0b-ddc710996f5b
+  name: Gate
+  x: 232
+  y: 250
+  width: 24
+  height: 50
+  components:
+  - type: spriteRenderer
+    assetId: 92399633-5392-5c22-98a9-30a174b2e227
+    asset: Assets/Showcase/Plank.png
+    drawMode: Tiled
+    order: 1
+- id: a251dc58-e647-596f-b051-6a991d8f901c
+  name: Flowers 1
+  x: 303
+  y: 108
+  width: 54
+  height: 32
+  components:
+  - type: spriteRenderer
+    assetId: 7b24e73b-ef21-5daa-a6b9-b19be14905d0
+    asset: Assets/Showcase/Flowers.png
+    order: 0
+- id: e72887b6-d331-544d-9dfa-2fe83046cb96
+  name: Flowers 2
+  x: 583
+  y: 378
+  width: 54
+  height: 32
+  components:
+  - type: spriteRenderer
+    assetId: 7b24e73b-ef21-5daa-a6b9-b19be14905d0
+    asset: Assets/Showcase/Flowers.png
+    order: 0
+- id: ebbd5a29-26da-5cbf-b316-f4364fc3b69d
+  name: Flowers 3
+  x: 133
+  y: 88
+  width: 54
+  height: 32
+  components:
+  - type: spriteRenderer
+    assetId: 7b24e73b-ef21-5daa-a6b9-b19be14905d0
+    asset: Assets/Showcase/Flowers.png
+    order: 0
+- id: 302296bf-e573-551e-9ecf-ae21171c768f
+  name: Flowers 4
+  x: 493
+  y: 368
+  width: 54
+  height: 32
+  components:
+  - type: spriteRenderer
+    assetId: 7b24e73b-ef21-5daa-a6b9-b19be14905d0
+    asset: Assets/Showcase/Flowers.png
+    order: 0
+- id: d5b4d86a-e645-5d5f-909a-03468f308be5
+  name: Couriers
+  x: 0
+  y: 0
+  width: 10
+  height: 14
+  components:
+  - type: spriteRenderer
+    assetId: 6a547cd9-7892-531b-9949-dce73f61e600
+    asset: Assets/Showcase/Villager.png
+    order: 3
+- id: ee1bffc7-4c62-5de7-b072-33cb28cdb7aa
+  name: Camera
+  x: 400
+  y: 225
+  width: 1
+  height: 1
+  components:
+  - type: camera2D
+- id: 6629f04c-700f-5f92-99b5-bb76538b76de
+  name: Canvas
+  x: 0
+  y: 0
+  width: 1
+  height: 1
+  components:
+  - type: uiCanvas
+- id: 34ae6db3-9d31-5982-954d-dc4ff42053e7
+  parentId: 6629f04c-700f-5f92-99b5-bb76538b76de
+  name: Arrivals panel
+  x: -12
+  y: 12
+  width: 300
+  height: 26
+  components:
+  - type: uiRect
+    anchor: TopRight
+  - type: uiImage
+    sprite: c4676a68-dc53-5954-889c-f56daa8276e4
+    borders: {left: 4, top: 4, right: 4, bottom: 4}
+- id: ec5a7aab-ac95-59e7-8533-94ac2d16e59b
+  parentId: 34ae6db3-9d31-5982-954d-dc4ff42053e7
+  name: Arrivals
+  x: 10
+  y: 5
+  width: 284
+  height: 16
+  components:
+  - type: uiRect
+  - type: uiText
+    richText: true
+    text: "Arrived 0 / 200    Gate closed    0.0 s"
+    size: 12
+    color: "#FFD84A"
+- id: 2a6243c7-f2ab-5f25-a591-3d6de269fad5
+  parentId: 6629f04c-700f-5f92-99b5-bb76538b76de
+  name: Tag 1
+  x: 12
+  y: 12
+  width: 352.6
+  height: 24
+  components:
+  - type: uiRect
+    anchor: TopLeft
+    showIf: crowd
+  - type: uiImage
+    sprite: c4676a68-dc53-5954-889c-f56daa8276e4
+    borders: {left: 4, top: 4, right: 4, bottom: 4}
+  - type: uiText
+    richText: true
+    text: "<b>Crowd navigation</b>   <color=#BFD0DC>200 couriers share one baked area</color>"
+    size: 12
+    insetX: 10
+    insetY: 4
+- id: 92d28730-2622-5cfc-bd29-7fcbcca9aa83
+  parentId: 6629f04c-700f-5f92-99b5-bb76538b76de
+  name: Tag 2
+  x: 12
+  y: 40
+  width: 352.6
+  height: 24
+  components:
+  - type: uiRect
+    anchor: TopLeft
+    showIf: gate
+  - type: uiImage
+    sprite: c4676a68-dc53-5954-889c-f56daa8276e4
+    borders: {left: 4, top: 4, right: 4, bottom: 4}
+  - type: uiText
+    richText: true
+    text: "<b>Dynamic obstacle</b>   <color=#BFD0DC>Opening the gate re-plans everyone</color>"
+    size: 12
+    insetX: 10
+    insetY: 4
+- id: 6899fda5-2349-57c6-ac75-d3a855e8311c
+  parentId: 6629f04c-700f-5f92-99b5-bb76538b76de
+  name: Caption
+  x: 12
+  y: -12
+  width: 354.2
+  height: 44
+  components:
+  - type: uiRect
+    anchor: BottomLeft
+  - type: uiImage
+    sprite: c4676a68-dc53-5954-889c-f56daa8276e4
+    borders: {left: 4, top: 4, right: 4, bottom: 4}
+- id: 9a0283c3-4d0f-511f-9b30-d41612a7066e
+  parentId: 6899fda5-2349-57c6-ac75-d3a855e8311c
+  name: Caption title
+  x: 12
+  y: 5
+  width: 330.2
+  height: 20
+  components:
+  - type: uiRect
+  - type: uiText
+    richText: true
+    text: "<b>SeedLab</b>   A 200-courier crowd finds its way"
+    size: 15
+    color: "#F4F6F4"
+- id: 4097ec83-82ad-5224-9f95-adfa275237f6
+  parentId: 6899fda5-2349-57c6-ac75-d3a855e8311c
+  name: Caption controls
+  x: 12
+  y: 25
+  width: 330.2
+  height: 16
+  components:
+  - type: uiRect
+  - type: uiText
+    richText: true
+    text: "Open or close the gate  O"
+    size: 12
+    color: "#BFD0DC"
+defaultCameraId: ee1bffc7-4c62-5de7-b072-33cb28cdb7aa

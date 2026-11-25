@@ -1,0 +1,77 @@
+entry: Idle
+states:
+- name: Idle
+  clip: d507cadd-de06-5b44-8c11-c707d3708c3d
+- name: Walk
+  clip: b4ddf5c7-04c6-5139-959a-41ed1e14e895
+- name: Attack
+  clip: 654f2dc8-a554-5154-b975-dae2df9b6812
+- name: Recover
+  clip: e022344b-227e-57a4-8a91-98cedee5a1f1
+- name: Hurt
+  clip: 28828897-91dc-5c97-be5f-16fe965bdcfa
+parameters:
+- name: Speed
+  kind: Float
+  default: 0
+- name: Grounded
+  kind: Bool
+  default: 1
+- name: Combo
+  kind: Int
+  default: 0
+- name: Attack
+  kind: Trigger
+  default: 0
+- name: Hit
+  kind: Trigger
+  default: 0
+transitions:
+- from: Any State
+  to: Hurt
+  parameter: Hit
+  test: Triggered
+- from: Idle
+  to: Walk
+  parameter: Speed
+  test: Greater
+  value: 0.1
+  and:
+  - parameter: Grounded
+    test: "True"
+- from: Walk
+  to: Idle
+  parameter: Speed
+  test: AtMost
+  value: 0.1
+- from: Idle
+  to: Attack
+  parameter: Attack
+  test: Triggered
+  and:
+  - parameter: Combo
+    test: Less
+    value: 3
+- from: Walk
+  to: Attack
+  parameter: Attack
+  test: Triggered
+  and:
+  - parameter: Combo
+    test: Less
+    value: 3
+- from: Attack
+  to: Recover
+  parameter: ""
+  test: ""
+  exitTime: 1
+- from: Recover
+  to: Idle
+  parameter: ""
+  test: ""
+  exitTime: 1
+- from: Hurt
+  to: Idle
+  parameter: Grounded
+  test: "True"
+  exitTime: 1

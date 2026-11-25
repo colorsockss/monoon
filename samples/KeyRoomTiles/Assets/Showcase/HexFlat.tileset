@@ -1,0 +1,221 @@
+image: 409bcb55-e372-52c4-8f0e-19f08bb24104
+tileSize: {width: 42, height: 36}
+margin: 0
+spacing: 0
+nextId: 71
+tiles:
+- id: 1
+  source: {x: 0, y: 0, width: 42, height: 36}
+  solid: false
+  randomTiles: 3
+  randomSeed: 11
+- id: 2
+  source: {x: 42, y: 0, width: 42, height: 36}
+  solid: false
+- id: 3
+  source: {x: 84, y: 0, width: 42, height: 36}
+  solid: false
+- id: 4
+  source: {x: 126, y: 0, width: 42, height: 36}
+  solid: true
+  frames: 3
+  fps: 3
+- id: 5
+  source: {x: 168, y: 0, width: 42, height: 36}
+  solid: true
+- id: 6
+  source: {x: 210, y: 0, width: 42, height: 36}
+  solid: true
+- id: 7
+  source: {x: 252, y: 0, width: 42, height: 36}
+  solid: false
+  autoEdges: 6
+- id: 8
+  source: {x: 294, y: 0, width: 42, height: 36}
+  solid: false
+- id: 9
+  source: {x: 0, y: 36, width: 42, height: 36}
+  solid: false
+- id: 10
+  source: {x: 42, y: 36, width: 42, height: 36}
+  solid: false
+- id: 11
+  source: {x: 84, y: 36, width: 42, height: 36}
+  solid: false
+- id: 12
+  source: {x: 126, y: 36, width: 42, height: 36}
+  solid: false
+- id: 13
+  source: {x: 168, y: 36, width: 42, height: 36}
+  solid: false
+- id: 14
+  source: {x: 210, y: 36, width: 42, height: 36}
+  solid: false
+- id: 15
+  source: {x: 252, y: 36, width: 42, height: 36}
+  solid: false
+- id: 16
+  source: {x: 294, y: 36, width: 42, height: 36}
+  solid: false
+- id: 17
+  source: {x: 0, y: 72, width: 42, height: 36}
+  solid: false
+- id: 18
+  source: {x: 42, y: 72, width: 42, height: 36}
+  solid: false
+- id: 19
+  source: {x: 84, y: 72, width: 42, height: 36}
+  solid: false
+- id: 20
+  source: {x: 126, y: 72, width: 42, height: 36}
+  solid: false
+- id: 21
+  source: {x: 168, y: 72, width: 42, height: 36}
+  solid: false
+- id: 22
+  source: {x: 210, y: 72, width: 42, height: 36}
+  solid: false
+- id: 23
+  source: {x: 252, y: 72, width: 42, height: 36}
+  solid: false
+- id: 24
+  source: {x: 294, y: 72, width: 42, height: 36}
+  solid: false
+- id: 25
+  source: {x: 0, y: 108, width: 42, height: 36}
+  solid: false
+- id: 26
+  source: {x: 42, y: 108, width: 42, height: 36}
+  solid: false
+- id: 27
+  source: {x: 84, y: 108, width: 42, height: 36}
+  solid: false
+- id: 28
+  source: {x: 126, y: 108, width: 42, height: 36}
+  solid: false
+- id: 29
+  source: {x: 168, y: 108, width: 42, height: 36}
+  solid: false
+- id: 30
+  source: {x: 210, y: 108, width: 42, height: 36}
+  solid: false
+- id: 31
+  source: {x: 252, y: 108, width: 42, height: 36}
+  solid: false
+- id: 32
+  source: {x: 294, y: 108, width: 42, height: 36}
+  solid: false
+- id: 33
+  source: {x: 0, y: 144, width: 42, height: 36}
+  solid: false
+- id: 34
+  source: {x: 42, y: 144, width: 42, height: 36}
+  solid: false
+- id: 35
+  source: {x: 84, y: 144, width: 42, height: 36}
+  solid: false
+- id: 36
+  source: {x: 126, y: 144, width: 42, height: 36}
+  solid: false
+- id: 37
+  source: {x: 168, y: 144, width: 42, height: 36}
+  solid: false
+- id: 38
+  source: {x: 210, y: 144, width: 42, height: 36}
+  solid: false
+- id: 39
+  source: {x: 252, y: 144, width: 42, height: 36}
+  solid: false
+- id: 40
+  source: {x: 294, y: 144, width: 42, height: 36}
+  solid: false
+- id: 41
+  source: {x: 0, y: 180, width: 42, height: 36}
+  solid: false
+- id: 42
+  source: {x: 42, y: 180, width: 42, height: 36}
+  solid: false
+- id: 43
+  source: {x: 84, y: 180, width: 42, height: 36}
+  solid: false
+- id: 44
+  source: {x: 126, y: 180, width: 42, height: 36}
+  solid: false
+- id: 45
+  source: {x: 168, y: 180, width: 42, height: 36}
+  solid: false
+- id: 46
+  source: {x: 210, y: 180, width: 42, height: 36}
+  solid: false
+- id: 47
+  source: {x: 252, y: 180, width: 42, height: 36}
+  solid: false
+- id: 48
+  source: {x: 294, y: 180, width: 42, height: 36}
+  solid: false
+- id: 49
+  source: {x: 0, y: 216, width: 42, height: 36}
+  solid: false
+- id: 50
+  source: {x: 42, y: 216, width: 42, height: 36}
+  solid: false
+- id: 51
+  source: {x: 84, y: 216, width: 42, height: 36}
+  solid: false
+- id: 52
+  source: {x: 126, y: 216, width: 42, height: 36}
+  solid: false
+- id: 53
+  source: {x: 168, y: 216, width: 42, height: 36}
+  solid: false
+- id: 54
+  source: {x: 210, y: 216, width: 42, height: 36}
+  solid: false
+- id: 55
+  source: {x: 252, y: 216, width: 42, height: 36}
+  solid: false
+- id: 56
+  source: {x: 294, y: 216, width: 42, height: 36}
+  solid: false
+- id: 57
+  source: {x: 0, y: 252, width: 42, height: 36}
+  solid: false
+- id: 58
+  source: {x: 42, y: 252, width: 42, height: 36}
+  solid: false
+- id: 59
+  source: {x: 84, y: 252, width: 42, height: 36}
+  solid: false
+- id: 60
+  source: {x: 126, y: 252, width: 42, height: 36}
+  solid: false
+- id: 61
+  source: {x: 168, y: 252, width: 42, height: 36}
+  solid: false
+- id: 62
+  source: {x: 210, y: 252, width: 42, height: 36}
+  solid: false
+- id: 63
+  source: {x: 252, y: 252, width: 42, height: 36}
+  solid: false
+- id: 64
+  source: {x: 294, y: 252, width: 42, height: 36}
+  solid: false
+- id: 65
+  source: {x: 0, y: 288, width: 42, height: 36}
+  solid: false
+- id: 66
+  source: {x: 42, y: 288, width: 42, height: 36}
+  solid: false
+- id: 67
+  source: {x: 84, y: 288, width: 42, height: 36}
+  solid: false
+- id: 68
+  source: {x: 126, y: 288, width: 42, height: 36}
+  solid: false
+- id: 69
+  source: {x: 168, y: 288, width: 42, height: 36}
+  solid: false
+- id: 70
+  source: {x: 210, y: 288, width: 42, height: 36}
+  solid: false

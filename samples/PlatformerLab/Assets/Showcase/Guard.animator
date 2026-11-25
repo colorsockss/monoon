@@ -1,0 +1,18 @@
+entry: Walk
+states:
+- name: Walk
+  clip: e0f5dbe4-eacd-569c-82ea-893bd1444871
+  directions:
+  - e0f5dbe4-eacd-569c-82ea-893bd1444871
+  - e0f5dbe4-eacd-569c-82ea-893bd1444871
+  - e0f5dbe4-eacd-569c-82ea-893bd1444871
+  - 5ec0324a-9adb-566a-a498-335f624cb58e
+  direction: Move
+parameters:
+- name: Move
+  kind: Vector2
+  default: 0
+- name: Speed
+  kind: Float
+  default: 0
+transitions: []

@@ -1,0 +1,1232 @@
+schemaVersion: 42
+objects:
+- id: bdeb9513-31e4-5299-a666-6b0fec2d6a38
+  name: Floor
+  x: 0
+  y: 0
+  width: 32
+  height: 32
+  components:
+  - type: tilemap2D
+    tileset: 45985f0e-7847-55c1-bce6-2b65bbf9f3a2
+    cellSize:
+      width: 32
+      height: 32
+    sortingLayer: 0
+    order: -10
+    chunks:
+    - x: 0
+      y: 0
+      cells:
+      - index: 97
+        tile: 12
+      - index: 98
+        tile: 6
+      - index: 99
+        tile: 4
+      - index: 100
+        tile: 8
+      - index: 101
+        tile: 60
+      - index: 102
+        tile: 39
+      - index: 103
+        tile: 32
+      - index: 104
+        tile: 37
+      - index: 105
+        tile: 63
+      - index: 106
+        tile: 22
+      - index: 107
+        tile: 43
+      - index: 108
+        tile: 39
+      - index: 109
+        tile: 40
+      - index: 110
+        tile: 31
+      - index: 111
+        tile: 44
+      - index: 112
+        tile: 38
+      - index: 129
+        tile: 4
+      - index: 130
+        tile: 43
+      - index: 131
+        tile: 3
+      - index: 132
+        tile: 49
+      - index: 133
+        tile: 46
+      - index: 134
+        tile: 57
+      - index: 135
+        tile: 51
+      - index: 136
+        tile: 7
+      - index: 137
+        tile: 56
+      - index: 138
+        tile: 19
+      - index: 139
+        tile: 32
+      - index: 140
+        tile: 15
+      - index: 141
+        tile: 50
+      - index: 142
+        tile: 49
+      - index: 143
+        tile: 8
+      - index: 144
+        tile: 39
+      - index: 161
+        tile: 42
+      - index: 162
+        tile: 63
+      - index: 163
+        tile: 11
+      - index: 164
+        tile: 8
+      - index: 165
+        tile: 29
+      - index: 166
+        tile: 47
+      - index: 167
+        tile: 43
+      - index: 168
+        tile: 38
+      - index: 169
+        tile: 52
+      - index: 170
+        tile: 39
+      - index: 171
+        tile: 53
+      - index: 172
+        tile: 1
+      - index: 173
+        tile: 4
+      - index: 174
+        tile: 16
+      - index: 175
+        tile: 48
+      - index: 176
+        tile: 37
+      - index: 193
+        tile: 46
+      - index: 194
+        tile: 18
+      - index: 195
+        tile: 12
+      - index: 196
+        tile: 6
+      - index: 197
+        tile: 61
+      - index: 198
+        tile: 9
+      - index: 199
+        tile: 63
+      - index: 200
+        tile: 6
+      - index: 201
+        tile: 37
+      - index: 202
+        tile: 35
+      - index: 203
+        tile: 18
+      - index: 204
+        tile: 42
+      - index: 205
+        tile: 60
+      - index: 206
+        tile: 17
+      - index: 207
+        tile: 10
+      - index: 208
+        tile: 23
+      - index: 225
+        tile: 40
+      - index: 226
+        tile: 46
+      - index: 227
+        tile: 44
+      - index: 228
+        tile: 48
+      - index: 229
+        tile: 60
+      - index: 230
+        tile: 13
+      - index: 231
+        tile: 55
+      - index: 232
+        tile: 55
+      - index: 233
+        tile: 48
+      - index: 234
+        tile: 21
+      - index: 235
+        tile: 15
+      - index: 236
+        tile: 44
+      - index: 237
+        tile: 53
+      - index: 238
+        tile: 9
+      - index: 239
+        tile: 12
+      - index: 240
+        tile: 8
+      - index: 257
+        tile: 7
+      - index: 258
+        tile: 44
+      - index: 259
+        tile: 63
+      - index: 260
+        tile: 53
+      - index: 261
+        tile: 44
+      - index: 262
+        tile: 12
+      - index: 263
+        tile: 39
+      - index: 264
+        tile: 44
+      - index: 265
+        tile: 4
+      - index: 266
+        tile: 63
+      - index: 267
+        tile: 52
+      - index: 268
+        tile: 11
+      - index: 269
+        tile: 31
+      - index: 270
+        tile: 4
+      - index: 271
+        tile: 28
+      - index: 272
+        tile: 58
+- id: 6c7d9d67-6036-51fa-b789-3f7be9a02b9b
+  name: Wall face
+  x: 0
+  y: 0
+  width: 32
+  height: 32
+  components:
+  - type: tilemap2D
+    tileset: 5d8c2a16-d9f5-5ef9-86e9-cbba74ad99e4
+    cellSize:
+      width: 32
+      height: 32
+    sortingLayer: 0
+    order: -9
+    chunks:
+    - x: 0
+      y: 0
+      cells:
+      - index: 33
+        tile: 1
+      - index: 34
+        tile: 2
+      - index: 35
+        tile: 3
+      - index: 36
+        tile: 4
+      - index: 37
+        tile: 5
+      - index: 38
+        tile: 6
+      - index: 39
+        tile: 1
+      - index: 42
+        tile: 4
+      - index: 43
+        tile: 5
+      - index: 44
+        tile: 6
+      - index: 45
+        tile: 1
+      - index: 46
+        tile: 2
+      - index: 47
+        tile: 3
+      - index: 48
+        tile: 4
+      - index: 65
+        tile: 7
+      - index: 66
+        tile: 8
+      - index: 67
+        tile: 9
+      - index: 68
+        tile: 10
+      - index: 69
+        tile: 11
+      - index: 70
+        tile: 12
+      - index: 71
+        tile: 7
+      - index: 74
+        tile: 10
+      - index: 75
+        tile: 11
+      - index: 76
+        tile: 12
+      - index: 77
+        tile: 7
+      - index: 78
+        tile: 8
+      - index: 79
+        tile: 9
+      - index: 80
+        tile: 10
+- id: b44a3410-456f-56d7-86b9-04c0d093d8e0
+  name: Wall face behind door
+  x: 0
+  y: 0
+  width: 32
+  height: 32
+  components:
+  - type: tilemap2D
+    tileset: 7ce365ed-238b-51a1-9ba5-86ad6e2d2386
+    cellSize:
+      width: 32
+      height: 32
+    sortingLayer: 0
+    order: -9
+    chunks:
+    - x: 0
+      y: 0
+      cells:
+      - index: 40
+        tile: 2
+      - index: 41
+        tile: 3
+      - index: 72
+        tile: 8
+      - index: 73
+        tile: 9
+- id: 6190ac2b-4149-5177-9cc1-b2f73fb77a6d
+  name: Wall cap
+  x: 0
+  y: 0
+  width: 32
+  height: 32
+  components:
+  - type: tilemap2D
+    tileset: df2f2674-3f35-5110-bdf3-dce7307d16fd
+    cellSize:
+      width: 32
+      height: 32
+    sortingLayer: 0
+    order: -8
+    chunks:
+    - x: 0
+      y: 0
+      cells:
+      - index: 0
+        tile: 3
+      - index: 1
+        tile: 3
+      - index: 2
+        tile: 2
+      - index: 3
+        tile: 2
+      - index: 4
+        tile: 2
+      - index: 5
+        tile: 2
+      - index: 6
+        tile: 2
+      - index: 7
+        tile: 4
+      - index: 8
+        tile: 1
+      - index: 9
+        tile: 3
+      - index: 10
+        tile: 3
+      - index: 11
+        tile: 3
+      - index: 12
+        tile: 3
+      - index: 13
+        tile: 1
+      - index: 14
+        tile: 1
+      - index: 15
+        tile: 4
+      - index: 16
+        tile: 3
+      - index: 17
+        tile: 4
+      - index: 32
+        tile: 4
+      - index: 49
+        tile: 1
+      - index: 64
+        tile: 2
+      - index: 81
+        tile: 4
+      - index: 96
+        tile: 1
+      - index: 113
+        tile: 3
+      - index: 128
+        tile: 2
+      - index: 145
+        tile: 1
+      - index: 160
+        tile: 3
+      - index: 177
+        tile: 1
+      - index: 192
+        tile: 2
+      - index: 209
+        tile: 4
+      - index: 224
+        tile: 1
+      - index: 241
+        tile: 2
+      - index: 256
+        tile: 3
+      - index: 273
+        tile: 4
+      - index: 288
+        tile: 1
+      - index: 289
+        tile: 3
+      - index: 290
+        tile: 3
+      - index: 291
+        tile: 3
+      - index: 292
+        tile: 2
+      - index: 293
+        tile: 4
+      - index: 294
+        tile: 2
+      - index: 295
+        tile: 3
+      - index: 296
+        tile: 1
+      - index: 297
+        tile: 4
+      - index: 298
+        tile: 2
+      - index: 299
+        tile: 4
+      - index: 300
+        tile: 3
+      - index: 301
+        tile: 2
+      - index: 302
+        tile: 2
+      - index: 303
+        tile: 2
+      - index: 304
+        tile: 2
+      - index: 305
+        tile: 2
+- id: 1f4a92bf-c67a-54b1-bbf4-a63fc76914de
+  name: Torch 1
+  x: 144
+  y: 66
+  width: 32
+  height: 22
+  components:
+  - type: spriteRenderer
+    assetId: c0ef83ca-f5f7-5337-8c09-65b900b4fdbd
+    asset: Assets/Showcase/TorchSconce.png
+    sortingLayer: 5
+  - type: pointLight2D
+    radius: 150
+    intensity: 0.75
+    flicker: 0.1
+    frequency: 1.1
+    color: "#FF7418"
+- id: aab73988-e9a3-556c-be0c-7fdbc33285f0
+  parentId: 1f4a92bf-c67a-54b1-bbf4-a63fc76914de
+  name: Torch 1 flame
+  x: 0
+  y: -32
+  width: 32
+  height: 32
+  components:
+  - type: spriteRenderer
+    assetId: 3338d3a8-8fbd-5345-844e-f955d0d6be78
+    asset: Assets/Showcase/TorchFlame1.png
+    sortingLayer: 5
+    order: 1
+  - type: spriteAnimator
+    clip: 72c9fe86-9f20-5585-91d3-491e894cd0a1
+    playOnStart: true
+- id: dc7a8dd6-8052-5346-90a8-247513e36869
+  parentId: 1f4a92bf-c67a-54b1-bbf4-a63fc76914de
+  name: Torch 1 embers
+  x: 16
+  y: -24
+  width: 1
+  height: 1
+  components:
+  - type: particleEmitter2D
+    particles: 51f6c5f7-80ed-5e18-b411-ddb6f759102b
+    trigger: start
+    seed: 0
+    offsetX: 0
+    offsetY: 0
+    sortingLayer: 5
+    order: 3
+- id: 020c8fd5-8b27-55a0-a11a-6b8d4a5ef8da
+  name: Torch 2
+  x: 400
+  y: 66
+  width: 32
+  height: 22
+  components:
+  - type: spriteRenderer
+    assetId: c0ef83ca-f5f7-5337-8c09-65b900b4fdbd
+    asset: Assets/Showcase/TorchSconce.png
+    sortingLayer: 5
+  - type: pointLight2D
+    radius: 150
+    intensity: 0.75
+    flicker: 0.1
+    frequency: 1.4
+    color: "#FF7418"
+- id: 6abe6db7-454d-59e9-bba0-d678f72a834c
+  parentId: 020c8fd5-8b27-55a0-a11a-6b8d4a5ef8da
+  name: Torch 2 flame
+  x: 0
+  y: -32
+  width: 32
+  height: 32
+  components:
+  - type: spriteRenderer
+    assetId: 3338d3a8-8fbd-5345-844e-f955d0d6be78
+    asset: Assets/Showcase/TorchFlame1.png
+    sortingLayer: 5
+    order: 1
+  - type: spriteAnimator
+    clip: 72c9fe86-9f20-5585-91d3-491e894cd0a1
+    playOnStart: true
+- id: 9a3dba7b-9817-5b14-8541-1340e40314e7
+  parentId: 020c8fd5-8b27-55a0-a11a-6b8d4a5ef8da
+  name: Torch 2 embers
+  x: 16
+  y: -24
+  width: 1
+  height: 1
+  components:
+  - type: particleEmitter2D
+    particles: 51f6c5f7-80ed-5e18-b411-ddb6f759102b
+    trigger: start
+    seed: 0
+    offsetX: 0
+    offsetY: 0
+    sortingLayer: 5
+    order: 3
+- id: 51913a2f-456d-52c6-8e7e-cf2fb18e5ece
+  name: Rug
+  x: 388
+  y: 222
+  width: 56
+  height: 34
+  components:
+  - type: spriteRenderer
+    assetId: b7358420-f068-5c4d-a3d9-c5b7157fa6f0
+    asset: Assets/Showcase/Rug.png
+    order: -6
+- id: 2263c077-b4c1-5f7f-a84f-ba8166671fca
+  name: Door
+  x: 255
+  y: 30
+  width: 66
+  height: 66
+  components:
+  - type: script
+    script: DoorLock
+    values: {}
+  - type: boxCollider2D
+  - type: spriteRenderer
+    assetId: e904ff61-acf4-5baa-8fd9-e0f9a8ee3b54
+    asset: Assets/Showcase/Door.png
+    order: -5
+  - type: spriteAnimator
+    clip: b7902d54-867a-5d27-8aad-b8c880b25c71
+    playOnStart: false
+  - type: audioSource
+    sound: 9741ea19-cad2-5668-ae72-fadf43b42ca2
+- id: af946aa4-da8f-5e8f-a254-3aa0dda897c3
+  name: Door back wall
+  x: 256
+  y: 32
+  width: 64
+  height: 32
+  components:
+  - type: boxCollider2D
+- id: 9d876ee9-97e1-5b8c-804c-57b25b7f2b3f
+  name: Exit
+  x: 260
+  y: 80
+  width: 56
+  height: 12
+  components:
+  - type: boxCollider2D
+    isTrigger: true
+  - type: script
+    script: RoomExit
+    values:
+      Player: "28257eb9-be3d-5c9a-9044-ed519d6d63fa"
+      Destination:
+        Id: "eeac16ae-6a5c-58ce-995a-0e1c0f636572"
+  - type: script
+    script: DoorwayFade
+    values:
+      Player: "28257eb9-be3d-5c9a-9044-ed519d6d63fa"
+      Hide: "aeafab5b-ab6e-5868-82b0-43f4602c5b5d"
+      FadeOut: false
+- id: 1402eeac-e439-543b-8e00-101bcb99f388
+  name: Barrel 1 shadow
+  x: 37
+  y: 116.8
+  width: 44
+  height: 12
+  components:
+  - type: spriteRenderer
+    assetId: d6044226-b525-5845-8e0d-68450f82712e
+    asset: Assets/Showcase/ShadowL.png
+    order: -4
+- id: b44ef8e3-820b-5015-904a-583da8fa8801
+  name: Barrel 1
+  x: 42
+  y: 82
+  width: 34
+  height: 42
+  components:
+  - type: spriteRenderer
+    assetId: 91a215ea-3468-560c-aa55-7d190c129ffa
+    asset: Assets/Showcase/Barrel.png
+    sortByY: true
+- id: 5cf4ee64-1063-5d8d-8464-ad7e84511564
+  parentId: b44ef8e3-820b-5015-904a-583da8fa8801
+  name: Barrel 1 base
+  x: 2
+  y: 28
+  width: 30
+  height: 12
+  components:
+  - type: boxCollider2D
+- id: ad821758-9ed7-5aa7-bbdf-78a2f95a2b82
+  name: Barrel 2 shadow
+  x: 73
+  y: 124.8
+  width: 44
+  height: 12
+  components:
+  - type: spriteRenderer
+    assetId: d6044226-b525-5845-8e0d-68450f82712e
+    asset: Assets/Showcase/ShadowL.png
+    order: -4
+- id: 9fcd4232-e396-5da1-a5f2-21155b4372d7
+  name: Barrel 2
+  x: 78
+  y: 90
+  width: 34
+  height: 42
+  components:
+  - type: spriteRenderer
+    assetId: 91a215ea-3468-560c-aa55-7d190c129ffa
+    asset: Assets/Showcase/Barrel.png
+    sortByY: true
+- id: d3d68cbf-5d30-5f66-9ee2-8d0f423ed46b
+  parentId: 9fcd4232-e396-5da1-a5f2-21155b4372d7
+  name: Barrel 2 base
+  x: 2
+  y: 28
+  width: 30
+  height: 12
+  components:
+  - type: boxCollider2D
+- id: 45cd9f2e-4998-5643-99cd-7065a12a5185
+  name: Crate shadow
+  x: 440
+  y: 118.8
+  width: 44
+  height: 12
+  components:
+  - type: spriteRenderer
+    assetId: d6044226-b525-5845-8e0d-68450f82712e
+    asset: Assets/Showcase/ShadowL.png
+    order: -4
+- id: a0056442-de01-50dd-a9ef-7765daa0f342
+  name: Crate
+  x: 444
+  y: 88
+  width: 36
+  height: 38
+  components:
+  - type: spriteRenderer
+    assetId: d4232051-4a3c-5ebf-8f6b-d49d3b258a82
+    asset: Assets/Showcase/Crate.png
+    sortByY: true
+- id: 1a48bf8c-978c-58f3-9887-3ecc01f7fd62
+  parentId: a0056442-de01-50dd-a9ef-7765daa0f342
+  name: Crate base
+  x: 2
+  y: 24
+  width: 32
+  height: 12
+  components:
+  - type: boxCollider2D
+- id: 70f64a83-1452-57fa-8c38-2f69bf881f3b
+  name: Pot 1 shadow
+  x: 477
+  y: 128.8
+  width: 44
+  height: 12
+  components:
+  - type: spriteRenderer
+    assetId: d6044226-b525-5845-8e0d-68450f82712e
+    asset: Assets/Showcase/ShadowL.png
+    order: -4
+- id: 50f66a11-2608-5837-b6b4-3fa295a7f8c8
+  name: Pot 1
+  x: 482
+  y: 96
+  width: 34
+  height: 40
+  components:
+  - type: spriteRenderer
+    assetId: bb9f9bfb-35b7-547a-bf8b-5eea9a4e5c53
+    asset: Assets/Showcase/Pot.png
+    sortByY: true
+- id: d30c27c1-664a-5749-8666-95338d8c4351
+  parentId: 50f66a11-2608-5837-b6b4-3fa295a7f8c8
+  name: Pot 1 base
+  x: 2
+  y: 26
+  width: 30
+  height: 12
+  components:
+  - type: boxCollider2D
+- id: 67992ac1-5318-5cbb-97e2-57b7b599954b
+  name: Pot 2 shadow
+  x: 39
+  y: 242.8
+  width: 44
+  height: 12
+  components:
+  - type: spriteRenderer
+    assetId: d6044226-b525-5845-8e0d-68450f82712e
+    asset: Assets/Showcase/ShadowL.png
+    order: -4
+- id: 54b4b04f-28ec-5a7b-9159-cce98f1a06da
+  name: Pot 2
+  x: 44
+  y: 210
+  width: 34
+  height: 40
+  components:
+  - type: spriteRenderer
+    assetId: bb9f9bfb-35b7-547a-bf8b-5eea9a4e5c53
+    asset: Assets/Showcase/Pot.png
+    sortByY: true
+- id: ec175d27-0e58-53a4-9db1-7a74ea7a16ec
+  parentId: 54b4b04f-28ec-5a7b-9159-cce98f1a06da
+  name: Pot 2 base
+  x: 2
+  y: 26
+  width: 30
+  height: 12
+  components:
+  - type: boxCollider2D
+- id: d8f74d1c-1df3-5e0c-8b3b-c8a39eda9819
+  name: Pot 3 shadow
+  x: 80
+  y: 252
+  width: 32
+  height: 10
+  components:
+  - type: spriteRenderer
+    assetId: 5d73fe99-b84a-5664-b667-b9f554cdb749
+    asset: Assets/Showcase/ShadowM.png
+    order: -4
+- id: 077de3d3-985e-550c-82df-c0a479d955cd
+  name: Pot 3
+  x: 84
+  y: 228
+  width: 24
+  height: 30
+  components:
+  - type: spriteRenderer
+    assetId: ab522357-e08f-5cf3-a7f7-430b2b530a1e
+    asset: Assets/Showcase/PotSmall.png
+    sortByY: true
+- id: 948c93eb-417d-5570-9661-3b03f0cbb957
+  parentId: 077de3d3-985e-550c-82df-c0a479d955cd
+  name: Pot 3 base
+  x: 2
+  y: 16
+  width: 20
+  height: 12
+  components:
+  - type: boxCollider2D
+- id: a2ff4be3-53ba-53dd-95ab-eb41dd5c491f
+  name: Crate 2 shadow
+  x: 448
+  y: 278.8
+  width: 44
+  height: 12
+  components:
+  - type: spriteRenderer
+    assetId: d6044226-b525-5845-8e0d-68450f82712e
+    asset: Assets/Showcase/ShadowL.png
+    order: -4
+- id: d74a4912-d492-515b-a799-ded64454e5f3
+  name: Crate 2
+  x: 452
+  y: 248
+  width: 36
+  height: 38
+  components:
+  - type: spriteRenderer
+    assetId: d4232051-4a3c-5ebf-8f6b-d49d3b258a82
+    asset: Assets/Showcase/Crate.png
+    sortByY: true
+- id: e59b2925-fe79-5f9d-9e0f-646325962cfa
+  parentId: d74a4912-d492-515b-a799-ded64454e5f3
+  name: Crate 2 base
+  x: 2
+  y: 24
+  width: 32
+  height: 12
+  components:
+  - type: boxCollider2D
+- id: 4219c0a1-03e4-5059-a1b6-db75246074b3
+  name: Barrel 3 shadow
+  x: 489
+  y: 280.8
+  width: 44
+  height: 12
+  components:
+  - type: spriteRenderer
+    assetId: d6044226-b525-5845-8e0d-68450f82712e
+    asset: Assets/Showcase/ShadowL.png
+    order: -4
+- id: 5594aa08-57bf-50f7-b117-5d3b7741087b
+  name: Barrel 3
+  x: 494
+  y: 246
+  width: 34
+  height: 42
+  components:
+  - type: spriteRenderer
+    assetId: 91a215ea-3468-560c-aa55-7d190c129ffa
+    asset: Assets/Showcase/Barrel.png
+    sortByY: true
+- id: 48f1dced-bd28-53ea-b5da-25a71aee59d7
+  parentId: 5594aa08-57bf-50f7-b117-5d3b7741087b
+  name: Barrel 3 base
+  x: 2
+  y: 28
+  width: 30
+  height: 12
+  components:
+  - type: boxCollider2D
+- id: 7122906d-611f-5cc2-953b-938007b86f51
+  name: Chest shadow
+  x: 362
+  y: 206.8
+  width: 44
+  height: 12
+  components:
+  - type: spriteRenderer
+    assetId: d6044226-b525-5845-8e0d-68450f82712e
+    asset: Assets/Showcase/ShadowL.png
+    order: -4
+- id: dfcc76b6-2cf9-53fa-9a2e-8c9c8c59ac43
+  name: Chest
+  x: 364
+  y: 172
+  width: 40
+  height: 42
+  components:
+  - type: sortingGroup2D
+    sortByY: true
+  - type: script
+    script: OpenChest
+    values:
+      Player: "28257eb9-be3d-5c9a-9044-ed519d6d63fa"
+      Lid: "289e4c51-d2b3-5790-b330-82d434e1548a"
+      Rules:
+        Id: "8fe7265d-b167-4261-91e8-c388d8a4fc16"
+      SaveProgress: true
+      Loot:
+        Id: "f1788efe-8407-5800-bcb7-030b9e45baf3"
+- id: 289e4c51-d2b3-5790-b330-82d434e1548a
+  parentId: dfcc76b6-2cf9-53fa-9a2e-8c9c8c59ac43
+  name: Chest Lid
+  x: 0
+  y: 8
+  width: 40
+  height: 34
+  components:
+  - type: spriteRenderer
+    assetId: 479a6383-a387-56ca-984a-20623253e139
+    asset: Assets/Showcase/Chest.png
+    order: 1
+- id: eda43089-e0d4-5f37-b962-4127484cc950
+  parentId: dfcc76b6-2cf9-53fa-9a2e-8c9c8c59ac43
+  name: Chest open
+  active: false
+  x: 2
+  y: 0
+  width: 36
+  height: 42
+  components:
+  - type: spriteRenderer
+    assetId: 238f3b53-7735-5087-b739-8d703c5fc0f1
+    asset: Assets/Showcase/ChestOpen.png
+    order: 1
+- id: 2d670cc9-aac2-5166-ba9c-a0345e7c8ef3
+  parentId: dfcc76b6-2cf9-53fa-9a2e-8c9c8c59ac43
+  name: Chest base
+  x: 2
+  y: 28
+  width: 36
+  height: 12
+  components:
+  - type: boxCollider2D
+- id: 9cbc4d7c-b1fe-59d7-bb7f-29604fee4cfb
+  parentId: dfcc76b6-2cf9-53fa-9a2e-8c9c8c59ac43
+  name: Chest sparkle
+  x: 20
+  y: 21
+  width: 1
+  height: 1
+  components:
+  - type: particleEmitter2D
+    particles: a54d0bcb-0ec9-539f-b2b8-0c5f3fed2bcf
+    trigger: manual
+    seed: 0
+    offsetX: 0
+    offsetY: 0
+    sortingLayer: 5
+    order: 3
+- id: c73ec514-78dc-5899-8044-a045d52dc0d2
+  name: Key
+  x: 168
+  y: 186
+  width: 30
+  height: 18
+  components:
+  - type: boxCollider2D
+    isTrigger: true
+  - type: script
+    script: KeySequence
+    eventLinks:
+    - event: KeyAcquired
+      target: 2263c077-b4c1-5f7f-a84f-ba8166671fca
+      script: DoorLock
+      method: Unlock
+    values:
+      Collector: "28257eb9-be3d-5c9a-9044-ed519d6d63fa"
+      KeyImage: "2fda7ad4-e416-5090-84ee-ed0999750d60"
+      Frames:
+      - "6c829528-2a4d-5e87-bcb8-8c53aaa739be"
+      DoorCamera: "94babcab-726b-5e65-89ab-f08d5e276393"
+      PlayerCamera: "ce171431-9744-52c4-b68b-dc4375b02817"
+      HoldSeconds: 1.4
+- id: 2fda7ad4-e416-5090-84ee-ed0999750d60
+  parentId: c73ec514-78dc-5899-8044-a045d52dc0d2
+  name: Key Image
+  x: 0
+  y: 0
+  width: 30
+  height: 18
+  components:
+  - type: spriteRenderer
+    assetId: 875948d6-2de7-530e-8e85-b9b197747518
+    asset: Assets/Showcase/Key.png
+    sortByY: true
+  - type: pointLight2D
+    radius: 44
+    intensity: 0.5
+    flicker: 0.35
+    frequency: 1.1
+    color: "#FFE27A"
+- id: f6cc6ed8-0ad1-57ab-93f5-d61a6fcee663
+  parentId: 2fda7ad4-e416-5090-84ee-ed0999750d60
+  name: Key shade
+  x: -1
+  y: 14
+  width: 32
+  height: 10
+  components:
+  - type: spriteRenderer
+    assetId: 5d73fe99-b84a-5664-b667-b9f554cdb749
+    asset: Assets/Showcase/ShadowM.png
+    order: -4
+- id: 28257eb9-be3d-5c9a-9044-ed519d6d63fa
+  name: Player
+  x: 277
+  y: 196
+  width: 22
+  height: 12
+  components:
+  - type: sortingGroup2D
+    sortByY: true
+  - type: script
+    script: PlayerMovement
+    values: {}
+  - type: boxCollider2D
+- id: aeafab5b-ab6e-5868-82b0-43f4602c5b5d
+  parentId: 28257eb9-be3d-5c9a-9044-ed519d6d63fa
+  name: Hero body
+  x: 0
+  y: 0
+  width: 22
+  height: 12
+  components: []
+- id: d06b09d7-7612-556e-914f-35b8a8a051c8
+  parentId: aeafab5b-ab6e-5868-82b0-43f4602c5b5d
+  name: Hero shadow
+  x: -5
+  y: 5
+  width: 32
+  height: 10
+  components:
+  - type: spriteRenderer
+    assetId: 5d73fe99-b84a-5664-b667-b9f554cdb749
+    asset: Assets/Showcase/ShadowM.png
+    order: -1
+- id: a4692bba-9e29-5644-84a8-dcf9e30300fa
+  parentId: aeafab5b-ab6e-5868-82b0-43f4602c5b5d
+  name: Hero
+  x: -10
+  y: -46
+  width: 42
+  height: 60
+  components:
+  - type: spriteRenderer
+    assetId: 6ba1dbcf-dcf0-5fe0-8eb5-e127a9e982c1
+    asset: Assets/Showcase/HeroIdleS.png
+    order: 0
+  - type: spriteAnimator
+    controller: 2b7f16a6-877a-5ee1-8e96-3ccb2e227291
+    playOnStart: true
+  - type: script
+    script: HeroAnimation
+    values: {}
+- id: ce171431-9744-52c4-b68b-dc4375b02817
+  name: Main Camera
+  x: 288
+  y: 160
+  width: 40
+  height: 40
+  components:
+  - type: camera2D
+    zoom: 1.5
+- id: 94babcab-726b-5e65-89ab-f08d5e276393
+  name: Door Camera
+  x: 288
+  y: 83.2
+  width: 40
+  height: 40
+  components:
+  - type: camera2D
+    zoom: 3
+- id: 3aaefc38-45a1-56a9-ac0e-ec5e30c59c8b
+  name: Door dust
+  x: 288
+  y: 90
+  width: 1
+  height: 1
+  components:
+  - type: particleEmitter2D
+    particles: b27ab742-6455-5744-9011-d65a4d7449bb
+    trigger: manual
+    seed: 0
+    offsetX: 0
+    offsetY: 0
+    sortingLayer: 5
+    order: 3
+- id: 1ab15acd-e72f-5e99-a7d9-6f2d8e9e6a7a
+  name: Door feedback
+  x: 0
+  y: 0
+  width: 1
+  height: 1
+  components:
+  - type: script
+    script: FlagFx
+    values:
+      Flag: "key"
+      Emitter: "3aaefc38-45a1-56a9-ac0e-ec5e30c59c8b"
+      Shake: 3
+      Punch: 0
+      Delay: 0.5
+- id: cf9b075c-98bb-557b-8ff2-c471186ed1ac
+  name: Chest feedback
+  x: 0
+  y: 0
+  width: 1
+  height: 1
+  components:
+  - type: script
+    script: FlagFx
+    values:
+      Flag: "chest"
+      Emitter: "9cbc4d7c-b1fe-59d7-bb7f-29604fee4cfb"
+      Show: "eda43089-e0d4-5f37-b962-4127484cc950"
+      Shake: 0
+      Punch: 0.05
+      Delay: 0
+- id: d93c0603-aada-5d27-b72a-798ac8bf5d19
+  name: Interface
+  components:
+  - type: uiCanvas
+- id: 471d77be-d5ae-520a-b07b-de1cdf72883a
+  parentId: d93c0603-aada-5d27-b72a-798ac8bf5d19
+  name: Caption
+  x: 12
+  y: -12
+  width: 443.6
+  height: 44
+  components:
+  - type: uiRect
+    anchor: BottomLeft
+  - type: uiImage
+    sprite: 8417743f-7aed-49af-becf-fce814d4d466
+    borders: {left: 8, top: 8, right: 8, bottom: 8}
+- id: beaee7bd-ecb6-55d0-bf2f-846e8f42fe55
+  parentId: 471d77be-d5ae-520a-b07b-de1cdf72883a
+  name: Caption title
+  x: 12
+  y: 5
+  width: 325.6
+  height: 20
+  components:
+  - type: uiRect
+  - type: uiText
+    richText: true
+    text: "<b>KeyRoom</b>   A small game in a handful of scripts"
+    size: 15
+- id: ea7b029a-e370-575f-9cb1-fc97f46bc0ee
+  parentId: 471d77be-d5ae-520a-b07b-de1cdf72883a
+  name: Controls
+  x: 12
+  y: 25
+  width: 325.6
+  height: 16
+  components:
+  - type: uiRect
+  - type: uiText
+    text: "Move  WASD / arrows      Open  E      Save  F5"
+    size: 12
+    color: "#BFD0DC"
+- id: 876b7f6f-52e9-5f36-985e-457305a15f74
+  parentId: d93c0603-aada-5d27-b72a-798ac8bf5d19
+  name: Key icon
+  x: 14
+  y: 12
+  width: 45
+  height: 27
+  components:
+  - type: uiRect
+    showIf: key
+  - type: uiImage
+    sprite: 875948d6-2de7-530e-8e85-b9b197747518
+- id: 25784a6f-bcf2-5a92-96a0-544bcaba3579
+  parentId: d93c0603-aada-5d27-b72a-798ac8bf5d19
+  name: Coin icon
+  x: 68
+  y: 15
+  width: 21
+  height: 21
+  components:
+  - type: uiRect
+    showIf: coin
+  - type: uiImage
+    sprite: 687b5216-5886-5d01-a874-9089c67ecb7b
+- id: fbbe6ee3-fc46-595b-8da0-43678a1d26b0
+  parentId: d93c0603-aada-5d27-b72a-798ac8bf5d19
+  name: Tag 1
+  x: -12
+  y: 12
+  width: 236
+  height: 24
+  components:
+  - type: uiRect
+    anchor: TopRight
+    showIf: key
+  - type: uiImage
+    sprite: 8417743f-7aed-49af-becf-fce814d4d466
+    borders: {left: 8, top: 8, right: 8, bottom: 8}
+  - type: uiText
+    richText: true
+    text: "<b>Event link</b>   <color=#BFD0DC>Key → Door.Unlock</color>"
+    size: 12
+    insetX: 10
+    insetY: 4
+- id: bb7c785d-1074-551f-a130-9116fb040538
+  parentId: d93c0603-aada-5d27-b72a-798ac8bf5d19
+  name: Tag 2
+  x: -12
+  y: 40
+  width: 236
+  height: 24
+  components:
+  - type: uiRect
+    anchor: TopRight
+    showIf: chest
+  - type: uiImage
+    sprite: 8417743f-7aed-49af-becf-fce814d4d466
+    borders: {left: 8, top: 8, right: 8, bottom: 8}
+  - type: uiText
+    richText: true
+    text: "<b>Prefab spawn</b>   <color=#BFD0DC>Chest → Coins</color>"
+    size: 12
+    insetX: 10
+    insetY: 4
+- id: e7b3aef4-e385-57d7-a56a-67b3384554b9
+  parentId: d93c0603-aada-5d27-b72a-798ac8bf5d19
+  name: Tag 3
+  x: -12
+  y: 68
+  width: 236
+  height: 24
+  components:
+  - type: uiRect
+    anchor: TopRight
+    showIf: coin
+  - type: uiImage
+    sprite: 8417743f-7aed-49af-becf-fce814d4d466
+    borders: {left: 8, top: 8, right: 8, bottom: 8}
+  - type: uiText
+    richText: true
+    text: "<b>Trigger pickup</b>   <color=#BFD0DC>Coin → HUD</color>"
+    size: 12
+    insetX: 10
+    insetY: 4
+- id: e3419d02-be2b-56f3-8462-ac9f86dc344b
+  parentId: 471d77be-d5ae-520a-b07b-de1cdf72883a
+  name: Save status
+  x: 343.6
+  y: 13
+  width: 92
+  height: 20
+  components:
+  - type: uiRect
+  - type: uiText
+    text: ""
+    size: 13
+    color: "#FFD84A"
+  - type: script
+    script: Checkpoint
+    values: {}

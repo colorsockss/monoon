@@ -1,0 +1,554 @@
+schemaVersion: 42
+objects:
+- id: 4bed180e-c9a0-5be4-839a-ac5523542fd1
+  name: Sky
+  x: 0
+  y: 0
+  width: 800
+  height: 300
+  components:
+  - type: spriteRenderer
+    squareColor: "#141C38"
+    order: -30
+- id: 7f8790bf-ed49-5923-994e-0fd91b9d9ffe
+  name: Sky low
+  x: 0
+  y: 190
+  width: 800
+  height: 60
+  components:
+  - type: spriteRenderer
+    squareColor: "#172040"
+    order: -29
+- id: 7ccea5c1-c7d0-52c1-823e-f677d329073e
+  name: Sky horizon
+  x: 0
+  y: 250
+  width: 800
+  height: 50
+  components:
+  - type: spriteRenderer
+    squareColor: "#1B2547"
+    order: -29
+- id: 3d3d9c46-773e-5ada-9b2b-842244733f7f
+  name: Stars
+  x: 0
+  y: 0
+  width: 800
+  height: 220
+  components:
+  - type: spriteRenderer
+    assetId: 60f46088-f064-5cdc-94a2-c0044677f7b2
+    asset: Assets/Showcase/Stars.png
+    drawMode: Tiled
+    order: -28
+- id: be7150bc-7e57-5757-bee4-a700b2a6dd72
+  name: Ground
+  x: 0
+  y: 300
+  width: 800
+  height: 150
+  components:
+  - type: spriteRenderer
+    assetId: f13116ff-9e77-5205-a45b-0b58acbc028a
+    asset: Assets/Showcase/Grass.png
+    drawMode: Tiled
+    order: -20
+    tint: "#5C7488"
+- id: c21bc217-5526-523d-b834-9cc129470d85
+  name: Launcher 1
+  x: 150
+  y: 282
+  width: 46
+  height: 48
+  components:
+  - type: spriteRenderer
+    assetId: 2c095ac2-e5a5-52b2-bbe5-6d8f56911c09
+    asset: Assets/Showcase/Launcher.png
+    order: 2
+- id: c67dcfc1-42db-59e2-af9d-f90b91440bf2
+  name: Rockets 1
+  x: 173
+  y: 286
+  width: 1
+  height: 1
+  components:
+  - type: particleEmitter2D
+    particles: 846524a1-6ef7-5264-af9c-5aa943f3e532
+    trigger: Manual
+    order: 3
+- id: c1543f8c-838a-59cc-bab1-83adf0f62d83
+  parentId: c67dcfc1-42db-59e2-af9d-f90b91440bf2
+  name: Burst 1
+  x: 0
+  y: 0
+  width: 1
+  height: 1
+  components:
+  - type: particleEmitter2D
+    particles: b6aaa729-aaf8-4712-99e8-e8c64f54bb89
+    trigger: Manual
+    order: 3
+- id: d768f989-d8c6-56c8-ab5a-db9412073f8a
+  name: Launcher 2
+  x: 300
+  y: 282
+  width: 46
+  height: 48
+  components:
+  - type: spriteRenderer
+    assetId: 2c095ac2-e5a5-52b2-bbe5-6d8f56911c09
+    asset: Assets/Showcase/Launcher.png
+    order: 2
+- id: 60176b81-cd65-5bd2-b172-4dd7fff9158f
+  name: Rockets 2
+  x: 323
+  y: 286
+  width: 1
+  height: 1
+  components:
+  - type: particleEmitter2D
+    particles: 846524a1-6ef7-5264-af9c-5aa943f3e532
+    trigger: Manual
+    order: 3
+- id: 832b4e86-c457-5c22-8f9d-849274c113ff
+  parentId: 60176b81-cd65-5bd2-b172-4dd7fff9158f
+  name: Burst 2
+  x: 0
+  y: 0
+  width: 1
+  height: 1
+  components:
+  - type: particleEmitter2D
+    particles: b6aaa729-aaf8-4712-99e8-e8c64f54bb89
+    trigger: Manual
+    order: 3
+- id: 91202360-a598-506e-b65c-4d69cbc0f416
+  name: Hero
+  x: 52
+  y: 312
+  width: 42
+  height: 60
+  components:
+  - type: spriteRenderer
+    assetId: f17525d3-626b-5e91-b800-15c299ac5007
+    asset: Assets/Showcase/HeroIdleE.png
+    order: 10
+- id: 05d0d285-ac1b-5d9c-a246-4ae4a95d4719
+  name: Herbalist
+  x: 380
+  y: 304
+  width: 40
+  height: 68
+  components:
+  - type: spriteRenderer
+    assetId: bf10c6ca-e7d7-5ecf-8154-2491f225777d
+    asset: Assets/Showcase/Herbalist.png
+    order: 10
+    flipX: true
+- id: a41fba39-c278-526a-8ca8-dfab723940c2
+  name: Camera
+  x: 400
+  y: 225
+  width: 1
+  height: 1
+  components:
+  - type: camera2D
+- id: 2c1739c6-1174-5b57-a6ef-19e9e03e7302
+  name: Canvas
+  x: 0
+  y: 0
+  width: 1
+  height: 1
+  components:
+  - type: uiCanvas
+- id: 8e06e2a2-8973-5f04-9481-8db50afba32d
+  parentId: 2c1739c6-1174-5b57-a6ef-19e9e03e7302
+  name: Speech
+  x: 20
+  y: 250
+  width: 200
+  height: 34
+  components:
+  - type: uiRect
+    scaleHorizontalWithText: true
+  - type: uiImage
+    sprite: 4b014d02-5654-5c94-aa0e-c00089b7d7b9
+    borders: {left: 4, top: 4, right: 4, bottom: 4}
+- id: f54ca75b-ef57-5dfd-a43b-cf6558cc4fc7
+  parentId: 8e06e2a2-8973-5f04-9481-8db50afba32d
+  name: Speech text
+  x: 10
+  y: 4
+  width: 180
+  height: 26
+  components:
+  - type: uiRect
+    scaleHorizontalWithText: true
+  - type: uiText
+    text: "The festival fireworks!"
+    translations: {"ko": "축제 불꽃놀이예요!", "ja": "お祭りの花火ですよ！"}
+    size: 14
+    color: "#F4F6F4"
+    wrap: true
+- id: 5a9a28c3-514c-5a92-9d1c-7a03d7ecd439
+  parentId: 2c1739c6-1174-5b57-a6ef-19e9e03e7302
+  name: Settings
+  x: -12
+  y: 12
+  width: 300
+  height: 426
+  components:
+  - type: uiRect
+    anchor: TopRight
+  - type: uiImage
+    sprite: 4b014d02-5654-5c94-aa0e-c00089b7d7b9
+    borders: {left: 4, top: 4, right: 4, bottom: 4}
+  - type: uiLayout
+    axis: Vertical
+    gap: 4
+    padding: 12
+    stretch: true
+  - type: uiScroll
+- id: 9c690a78-909d-5eb7-9420-d1ef9258bcef
+  parentId: 5a9a28c3-514c-5a92-9d1c-7a03d7ecd439
+  name: 01 Title
+  x: 0
+  y: 0
+  width: 276
+  height: 30
+  components:
+  - type: uiRect
+  - type: uiText
+    text: "Player settings"
+    translations: {"ko": "플레이어 설정", "ja": "プレイヤー設定"}
+    size: 20
+    color: "#F4F6F4"
+    wrap: true
+- id: 59f0aa68-16de-5f1c-a6b2-e0a62c46f82b
+  parentId: 5a9a28c3-514c-5a92-9d1c-7a03d7ecd439
+  name: 02 Name
+  x: 0
+  y: 0
+  width: 276
+  height: 18
+  components:
+  - type: uiRect
+  - type: uiText
+    text: "Name"
+    translations: {"ko": "이름", "ja": "名前"}
+    size: 12
+    color: "#BFD0DC"
+    wrap: true
+- id: ad1f0b20-17c3-5304-ad5a-4388c5b0d394
+  parentId: 5a9a28c3-514c-5a92-9d1c-7a03d7ecd439
+  name: 03 Name field
+  x: 0
+  y: 0
+  width: 276
+  height: 28
+  components:
+  - type: uiRect
+  - type: uiTextField
+    maxLength: 24
+  - type: uiText
+    text: "Type a name"
+    translations: {"ko": "이름을 입력하세요", "ja": "名前を入力"}
+    size: 14
+    color: "#E4ECF2"
+    insetX: 8
+    insetY: 3
+- id: 84b3e140-6abe-5522-b95e-b756a16145c3
+  parentId: 5a9a28c3-514c-5a92-9d1c-7a03d7ecd439
+  name: 04 Language
+  x: 0
+  y: 0
+  width: 276
+  height: 18
+  components:
+  - type: uiRect
+  - type: uiText
+    text: "Language"
+    translations: {"ko": "언어", "ja": "言語"}
+    size: 12
+    color: "#BFD0DC"
+    wrap: true
+- id: 1df284bb-a49b-5284-99c7-fa20c7975970
+  parentId: 5a9a28c3-514c-5a92-9d1c-7a03d7ecd439
+  name: 05 Language list
+  x: 0
+  y: 0
+  width: 276
+  height: 28
+  components:
+  - type: uiRect
+  - type: uiDropdown
+    options: ["한국어", "日本語", "English"]
+    initial: 2
+  - type: script
+    script: Showcase/OptionSetting
+    values: {"Action": 1}
+- id: 35841fcd-143d-5669-a168-89a0217235b1
+  parentId: 5a9a28c3-514c-5a92-9d1c-7a03d7ecd439
+  name: 06 Text size
+  x: 0
+  y: 0
+  width: 276
+  height: 18
+  components:
+  - type: uiRect
+  - type: uiText
+    text: "Text size"
+    translations: {"ko": "글자 크기", "ja": "文字サイズ"}
+    size: 12
+    color: "#BFD0DC"
+    wrap: true
+- id: 0c1c9360-184c-5417-8823-a0fba0847942
+  parentId: 5a9a28c3-514c-5a92-9d1c-7a03d7ecd439
+  name: 07 Text size slider
+  x: 0
+  y: 0
+  width: 276
+  height: 26
+  components:
+  - type: uiRect
+  - type: uiSlider
+    minimum: 75
+    maximum: 200
+    step: 25
+    initial: 100
+  - type: script
+    script: Showcase/OptionSetting
+    values: {"Action": 2}
+- id: e1ca67cc-ec2f-5207-bb2f-e119293b0f6b
+  parentId: 5a9a28c3-514c-5a92-9d1c-7a03d7ecd439
+  name: 08 High contrast
+  x: 0
+  y: 0
+  width: 276
+  height: 18
+  components:
+  - type: uiRect
+  - type: uiText
+    text: "High contrast"
+    translations: {"ko": "고대비", "ja": "ハイコントラスト"}
+    size: 12
+    color: "#BFD0DC"
+    wrap: true
+- id: 063441ec-fb98-56bf-be39-8803d224f8f8
+  parentId: 5a9a28c3-514c-5a92-9d1c-7a03d7ecd439
+  name: 09 Contrast toggle
+  x: 0
+  y: 0
+  width: 276
+  height: 26
+  components:
+  - type: uiRect
+  - type: uiToggle
+    initial: false
+  - type: script
+    script: Showcase/OptionSetting
+    values: {"Action": 3}
+- id: 1d2a1784-f3cf-55c7-a33d-b4721baf8f38
+  parentId: 5a9a28c3-514c-5a92-9d1c-7a03d7ecd439
+  name: 10 Screen shake
+  x: 0
+  y: 0
+  width: 276
+  height: 18
+  components:
+  - type: uiRect
+  - type: uiText
+    text: "Screen shake"
+    translations: {"ko": "화면 흔들림", "ja": "画面の揺れ"}
+    size: 12
+    color: "#BFD0DC"
+    wrap: true
+- id: 9e0fdffd-f23e-5404-a409-fb44f68ff6a1
+  parentId: 5a9a28c3-514c-5a92-9d1c-7a03d7ecd439
+  name: 11 Shake slider
+  x: 0
+  y: 0
+  width: 276
+  height: 26
+  components:
+  - type: uiRect
+  - type: uiSlider
+    minimum: 0
+    maximum: 100
+    step: 25
+    initial: 100
+  - type: script
+    script: Showcase/OptionSetting
+    values: {"Action": 4}
+- id: 6768c333-de95-559b-bc60-bea21f64268e
+  parentId: 5a9a28c3-514c-5a92-9d1c-7a03d7ecd439
+  name: 12 Flashes
+  x: 0
+  y: 0
+  width: 276
+  height: 18
+  components:
+  - type: uiRect
+  - type: uiText
+    text: "Flashes"
+    translations: {"ko": "번쩍임", "ja": "フラッシュ"}
+    size: 12
+    color: "#BFD0DC"
+    wrap: true
+- id: 12047b0a-cc84-54f0-8443-e7eafc353593
+  parentId: 5a9a28c3-514c-5a92-9d1c-7a03d7ecd439
+  name: 13 Flash slider
+  x: 0
+  y: 0
+  width: 276
+  height: 26
+  components:
+  - type: uiRect
+  - type: uiSlider
+    minimum: 0
+    maximum: 100
+    step: 25
+    initial: 100
+  - type: script
+    script: Showcase/OptionSetting
+    values: {"Action": 5}
+- id: 15c3ac98-2133-53f3-a945-9a2b65e24d94
+  parentId: 5a9a28c3-514c-5a92-9d1c-7a03d7ecd439
+  name: 14 Save
+  x: 0
+  y: 0
+  width: 276
+  height: 30
+  components:
+  - type: uiRect
+  - type: uiButton
+  - type: uiText
+    text: "Save settings"
+    translations: {"ko": "설정 저장", "ja": "設定を保存"}
+    size: 14
+    color: "#F4F6F4"
+    insetX: 10
+    insetY: 4
+  - type: script
+    script: Showcase/OptionSetting
+    values: {"Action": 6, "NameField": "ad1f0b20-17c3-5304-ad5a-4388c5b0d394", "Language": "1df284bb-a49b-5284-99c7-fa20c7975970", "Receipt": "15c3ac98-2133-53f3-a945-9a2b65e24d94"}
+- id: feb6e55f-2f03-521f-a3a4-a7d74eee078b
+  parentId: 2c1739c6-1174-5b57-a6ef-19e9e03e7302
+  name: Tag 1
+  x: 12
+  y: 12
+  width: 228.6
+  height: 24
+  components:
+  - type: uiRect
+    showIf: lang
+    scaleHorizontalWithText: true
+  - type: uiImage
+    sprite: 4b014d02-5654-5c94-aa0e-c00089b7d7b9
+    borders: {left: 4, top: 4, right: 4, bottom: 4}
+  - type: uiText
+    richText: true
+    text: "<b>Three languages</b>   <color=#BFD0DC>ko · ja · en</color>"
+    size: 12
+    insetX: 10
+    insetY: 4
+- id: 5507c949-8463-5579-8e39-fa7b86920a9e
+  parentId: 2c1739c6-1174-5b57-a6ef-19e9e03e7302
+  name: Tag 2
+  x: 12
+  y: 40
+  width: 228.6
+  height: 24
+  components:
+  - type: uiRect
+    showIf: scale
+    scaleHorizontalWithText: true
+  - type: uiImage
+    sprite: 4b014d02-5654-5c94-aa0e-c00089b7d7b9
+    borders: {left: 4, top: 4, right: 4, bottom: 4}
+  - type: uiText
+    richText: true
+    text: "<b>Text scale</b>   <color=#BFD0DC>75-200%</color>"
+    size: 12
+    insetX: 10
+    insetY: 4
+- id: e569c5f1-37e9-5307-ba2e-1c4b2855a6ce
+  parentId: 2c1739c6-1174-5b57-a6ef-19e9e03e7302
+  name: Tag 3
+  x: 12
+  y: 68
+  width: 228.6
+  height: 24
+  components:
+  - type: uiRect
+    showIf: contrast
+    scaleHorizontalWithText: true
+  - type: uiImage
+    sprite: 4b014d02-5654-5c94-aa0e-c00089b7d7b9
+    borders: {left: 4, top: 4, right: 4, bottom: 4}
+  - type: uiText
+    richText: true
+    text: "<b>High contrast</b>   <color=#BFD0DC>focus ring</color>"
+    size: 12
+    insetX: 10
+    insetY: 4
+- id: 28c2e90d-722e-5d44-b25b-971aacc44ced
+  parentId: 2c1739c6-1174-5b57-a6ef-19e9e03e7302
+  name: Tag 4
+  x: 12
+  y: 96
+  width: 228.6
+  height: 24
+  components:
+  - type: uiRect
+    showIf: calm
+    scaleHorizontalWithText: true
+  - type: uiImage
+    sprite: 4b014d02-5654-5c94-aa0e-c00089b7d7b9
+    borders: {left: 4, top: 4, right: 4, bottom: 4}
+  - type: uiText
+    richText: true
+    text: "<b>Calmer screen</b>   <color=#BFD0DC>less shake, flash</color>"
+    size: 12
+    insetX: 10
+    insetY: 4
+- id: 23375e41-93dd-5f13-abee-a7c0b50fc1e1
+  parentId: 2c1739c6-1174-5b57-a6ef-19e9e03e7302
+  name: Caption
+  x: 12
+  y: -8
+  width: 226
+  height: 26
+  components:
+  - type: uiRect
+    anchor: BottomLeft
+    scaleHorizontalWithText: true
+  - type: uiImage
+    sprite: 4b014d02-5654-5c94-aa0e-c00089b7d7b9
+    borders: {left: 4, top: 4, right: 4, bottom: 4}
+- id: 08dc7faa-2160-5b85-b71b-1db18d4544af
+  parentId: 23375e41-93dd-5f13-abee-a7c0b50fc1e1
+  name: Caption text
+  x: 12
+  y: 4
+  width: 210
+  height: 18
+  components:
+  - type: uiRect
+    scaleHorizontalWithText: true
+  - type: uiText
+    richText: true
+    text: "<b>AccessLab</b>   Player settings"
+    size: 13
+- id: d0b4e199-a678-58b2-a1ae-d3d19693765e
+  name: Show
+  x: 0
+  y: 0
+  width: 1
+  height: 1
+  components:
+  - type: script
+    script: Showcase/FireworkShow
+    values: {"Rockets": ["c67dcfc1-42db-59e2-af9d-f90b91440bf2", "60176b81-cd65-5bd2-b172-4dd7fff9158f"]}
+defaultCameraId: a41fba39-c278-526a-8ca8-dfab723940c2

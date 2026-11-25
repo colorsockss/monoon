@@ -1,0 +1,14 @@
+rate: 60
+shape: Cone
+radius: 6
+spread: 26
+speed: {min: 22, max: 40}
+lifetime: {min: 0.5, max: 0.75}
+size: {min: 5, max: 9}
+color: {min: "#FFFFFF"}
+gravity: -30
+blend: Additive
+sizeOverLifetime: {keys: [{time: 0, value: 0.6}, {time: 0.2, value: 1}, {time: 1, value: 0.2}]}
+colorOverLifetime:
+  colors: [{time: 0, color: "#FFF3B0"}, {time: 0.35, color: "#FF9A3C"}, {time: 1, color: "#7A1A10"}]
+  alphas: [{time: 0, alpha: 0}, {time: 0.1, alpha: 1}, {time: 0.5, alpha: 0.8}, {time: 1, alpha: 0}]

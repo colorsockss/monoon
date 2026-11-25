@@ -4,42 +4,42 @@ values:
   start: "greeting"
   nodes:
   - id: "greeting"
-    speaker: "약초상"
-    text: "<b>약초상</b>입니다. 어서 오세요. 무슨 일로 오셨나요?"
+    speaker: "Herbalist"
+    text: "I'm the <b>Herbalist</b>. Welcome. What brings you here?"
     choices:
-    - {text: "의뢰를 알아본다", next: "offer", action: ""}
-    - {text: "보상을 문의한다", next: "reward", action: ""}
-    - {text: "나중에 온다", next: "farewell", action: ""}
-    - {text: "약초가 자라는 곳을 묻는다", next: "meadow", action: ""}
+    - {text: "Ask about the request", next: "offer", action: ""}
+    - {text: "Ask about the reward", next: "reward", action: ""}
+    - {text: "Come back later", next: "farewell", action: ""}
+    - {text: "Ask where the herbs grow", next: "meadow", action: ""}
   - id: "meadow"
-    speaker: "약초상"
+    speaker: "Herbalist"
     text: "herbalist.meadow"
     choices:
-    - {text: "처음으로 돌아간다", next: "greeting", action: ""}
+    - {text: "Back to the start", next: "greeting", action: ""}
   - id: "offer"
-    speaker: "약초상"
-    text: "<icon=herb> <color=#9BE27A>새 잎이 돋은 약초</color> <size=24><b>세 포기</b></size>가 필요해요. 모아 주시겠어요?"
+    speaker: "Herbalist"
+    text: "<icon=herb> I need <size=24><b>three bundles</b></size> of <color=#9BE27A>fresh-leafed herbs</color>. Would you gather them for me?"
     choices:
-    - {text: "의뢰를 받는다", next: "accepted", action: "accept"}
-    - {text: "이번에는 사양한다", next: "farewell", action: ""}
+    - {text: "Accept the request", next: "accepted", action: "accept"}
+    - {text: "Decline for now", next: "farewell", action: ""}
   - id: "accepted"
-    speaker: "약초상"
-    text: "고마워요. 약초를 모은 뒤 다시 말을 걸어 주세요."
+    speaker: "Herbalist"
+    text: "Thank you. Talk to me again once you have the herbs."
     choices:
-    - {text: "약초를 찾으러 간다", next: "", action: ""}
+    - {text: "Go look for herbs", next: "", action: ""}
   - id: "reward"
-    speaker: "약초상"
-    text: "의뢰를 마쳤다면 수정 한 개를 드릴게요."
+    speaker: "Herbalist"
+    text: "Finish the request and I'll give you one crystal."
     choices:
-    - {text: "보상을 받는다", next: "paid", action: "claim"}
-    - {text: "처음으로 돌아간다", next: "greeting", action: ""}
+    - {text: "Claim the reward", next: "paid", action: "claim"}
+    - {text: "Back to the start", next: "greeting", action: ""}
   - id: "paid"
-    speaker: "약초상"
-    text: "여기 약속한 <color=#C9A0FF><b>수정</b></color>이에요. 덕분에 약을 지을 수 있겠어요."
+    speaker: "Herbalist"
+    text: "Here is the <color=#C9A0FF><b>crystal</b></color> I promised. Now I can prepare the medicine, thanks to you."
     choices:
-    - {text: "대화를 마친다", next: "", action: ""}
+    - {text: "End the conversation", next: "", action: ""}
   - id: "farewell"
-    speaker: "약초상"
-    text: "필요한 일이 생기면 또 들르세요."
+    speaker: "Herbalist"
+    text: "Stop by again whenever you need something."
     choices:
-    - {text: "대화를 마친다", next: "", action: ""}
+    - {text: "End the conversation", next: "", action: ""}

@@ -1,0 +1,590 @@
+schemaVersion: 42
+objects:
+- id: 7ff9a20f-b471-502b-ba80-ffbfc8493b9b
+  name: Backdrop
+  x: 0
+  y: 0
+  width: 800
+  height: 450
+  components:
+  - type: spriteRenderer
+    squareColor: "#1D2A33"
+    order: -30
+- id: 959916fd-1ecb-538e-9352-ed8a93c9b8cb
+  name: Square map
+  x: 24
+  y: 62
+  width: 32
+  height: 32
+  components:
+  - type: tilemap2D
+    layout: Orthogonal
+    tileset: 26f7f349-36b5-55b3-bb4a-54faa3793fb1
+    cellSize: {width: 32, height: 32}
+    order: -10
+    chunks:
+    - x: 0
+      y: 0
+      cells:
+      - {index: 0, tile: 4}
+      - {index: 1, tile: 4}
+      - {index: 2, tile: 4}
+      - {index: 3, tile: 4}
+      - {index: 4, tile: 4}
+      - {index: 5, tile: 4}
+      - {index: 6, tile: 4}
+      - {index: 7, tile: 4}
+      - {index: 8, tile: 4}
+      - {index: 9, tile: 4}
+      - {index: 10, tile: 4}
+      - {index: 32, tile: 4}
+      - {index: 33, tile: 1}
+      - {index: 34, tile: 1}
+      - {index: 35, tile: 1}
+      - {index: 36, tile: 1}
+      - {index: 37, tile: 1}
+      - {index: 38, tile: 1}
+      - {index: 39, tile: 1}
+      - {index: 40, tile: 1}
+      - {index: 41, tile: 1}
+      - {index: 42, tile: 4}
+      - {index: 64, tile: 4}
+      - {index: 65, tile: 1}
+      - {index: 66, tile: 1}
+      - {index: 67, tile: 1}
+      - {index: 68, tile: 1}
+      - {index: 69, tile: 1}
+      - {index: 70, tile: 1}
+      - {index: 71, tile: 1}
+      - {index: 72, tile: 1}
+      - {index: 73, tile: 1}
+      - {index: 74, tile: 4}
+      - {index: 96, tile: 4}
+      - {index: 97, tile: 1}
+      - {index: 98, tile: 1}
+      - {index: 99, tile: 1}
+      - {index: 100, tile: 1}
+      - {index: 101, tile: 1}
+      - {index: 102, tile: 1}
+      - {index: 103, tile: 1}
+      - {index: 104, tile: 1}
+      - {index: 105, tile: 1}
+      - {index: 106, tile: 4}
+      - {index: 128, tile: 4}
+      - {index: 129, tile: 4}
+      - {index: 130, tile: 4}
+      - {index: 131, tile: 4}
+      - {index: 132, tile: 4}
+      - {index: 133, tile: 4}
+      - {index: 134, tile: 4}
+      - {index: 135, tile: 4}
+      - {index: 136, tile: 4}
+      - {index: 137, tile: 4}
+      - {index: 138, tile: 4}
+- id: 652661e3-9c97-5bea-87f2-5505f24f5e6c
+  name: Square cursor
+  x: 56
+  y: 126
+  width: 32
+  height: 32
+  components:
+  - type: spriteRenderer
+    assetId: 5d648e50-f9e9-586e-8b59-b1aae39ef1d4
+    asset: Assets/Showcase/CursorSquare.png
+    order: 5
+- id: e5a84b09-ddeb-5c13-ae5b-241d33ce3ece
+  name: Square walker
+  x: 62
+  y: 118
+  width: 20
+  height: 28
+  components:
+  - type: spriteRenderer
+    assetId: 667c940f-b434-5d6b-99fb-1ec3042ee94f
+    asset: Assets/Showcase/Villager.png
+    order: 8
+    tint: "#FFD58A"
+- id: 3ced0527-00cf-56f9-8096-4f86a364a788
+  name: Isometric map
+  x: 576
+  y: 70
+  width: 48
+  height: 24
+  components:
+  - type: tilemap2D
+    layout: Isometric
+    tileset: d3b9b69f-dbea-5433-9007-5bf85859c457
+    cellSize: {width: 48, height: 24}
+    order: -10
+    chunks:
+    - x: 0
+      y: 0
+      cells:
+      - {index: 0, tile: 4}
+      - {index: 1, tile: 4}
+      - {index: 2, tile: 4}
+      - {index: 3, tile: 4}
+      - {index: 4, tile: 4}
+      - {index: 5, tile: 4}
+      - {index: 32, tile: 4}
+      - {index: 33, tile: 1}
+      - {index: 34, tile: 1}
+      - {index: 35, tile: 1}
+      - {index: 36, tile: 1}
+      - {index: 37, tile: 4}
+      - {index: 64, tile: 4}
+      - {index: 65, tile: 1}
+      - {index: 66, tile: 1}
+      - {index: 67, tile: 1}
+      - {index: 68, tile: 1}
+      - {index: 69, tile: 4}
+      - {index: 96, tile: 4}
+      - {index: 97, tile: 1}
+      - {index: 98, tile: 1}
+      - {index: 99, tile: 1}
+      - {index: 100, tile: 1}
+      - {index: 101, tile: 4}
+      - {index: 128, tile: 4}
+      - {index: 129, tile: 1}
+      - {index: 130, tile: 1}
+      - {index: 131, tile: 1}
+      - {index: 132, tile: 1}
+      - {index: 133, tile: 4}
+      - {index: 160, tile: 4}
+      - {index: 161, tile: 4}
+      - {index: 162, tile: 4}
+      - {index: 163, tile: 4}
+      - {index: 164, tile: 4}
+      - {index: 165, tile: 4}
+- id: 7d90d889-b7c8-5fbd-89ee-8f1c2ab2ece3
+  name: Isometric cursor
+  x: 552
+  y: 106
+  width: 48
+  height: 24
+  components:
+  - type: spriteRenderer
+    assetId: 4a803c50-c2bb-5f54-8d25-708112f6adc4
+    asset: Assets/Showcase/CursorIso.png
+    order: 5
+- id: 97e8eaaf-cecc-5203-bf47-46b683f9fdbf
+  name: Isometric walker
+  x: 566
+  y: 94
+  width: 20
+  height: 28
+  components:
+  - type: spriteRenderer
+    assetId: 667c940f-b434-5d6b-99fb-1ec3042ee94f
+    asset: Assets/Showcase/Villager.png
+    order: 8
+    tint: "#FFD58A"
+- id: 0a802d14-cbe6-5454-ab27-9ccf5619f05b
+  name: Hex, pointy map
+  x: -7
+  y: 267
+  width: 36
+  height: 42
+  components:
+  - type: tilemap2D
+    layout: HexPointy
+    tileset: 893538db-6f77-5779-a396-82c412a3b580
+    cellSize: {width: 36, height: 42}
+    order: -10
+    chunks:
+    - x: 0
+      y: 0
+      cells:
+      - {index: 2, tile: 4}
+      - {index: 3, tile: 4}
+      - {index: 4, tile: 4}
+      - {index: 5, tile: 4}
+      - {index: 6, tile: 4}
+      - {index: 7, tile: 4}
+      - {index: 8, tile: 4}
+      - {index: 34, tile: 4}
+      - {index: 35, tile: 1}
+      - {index: 36, tile: 1}
+      - {index: 37, tile: 1}
+      - {index: 38, tile: 1}
+      - {index: 39, tile: 1}
+      - {index: 40, tile: 4}
+      - {index: 65, tile: 4}
+      - {index: 66, tile: 1}
+      - {index: 67, tile: 1}
+      - {index: 68, tile: 1}
+      - {index: 69, tile: 1}
+      - {index: 70, tile: 1}
+      - {index: 71, tile: 4}
+      - {index: 97, tile: 4}
+      - {index: 98, tile: 4}
+      - {index: 99, tile: 4}
+      - {index: 100, tile: 4}
+      - {index: 101, tile: 4}
+      - {index: 102, tile: 4}
+      - {index: 103, tile: 4}
+- id: 25551e8a-16a4-51c7-a064-a20e42d741fc
+  name: Hex, pointy cursor
+  x: 101
+  y: 330
+  width: 36
+  height: 42
+  components:
+  - type: spriteRenderer
+    assetId: 822f1775-db89-5d26-8c3a-3796c6b02454
+    asset: Assets/Showcase/CursorHexPointy.png
+    order: 5
+- id: 3264b73c-c465-5e39-8189-8fa6bcc9e6cb
+  name: Hex, pointy walker
+  x: 109
+  y: 327
+  width: 20
+  height: 28
+  components:
+  - type: spriteRenderer
+    assetId: 667c940f-b434-5d6b-99fb-1ec3042ee94f
+    asset: Assets/Showcase/Villager.png
+    order: 8
+    tint: "#FFD58A"
+- id: a5d91aa4-2a8d-5132-bf86-082729f86fe6
+  name: Hex, flat map
+  x: 469
+  y: 110
+  width: 42
+  height: 36
+  components:
+  - type: tilemap2D
+    layout: HexFlat
+    tileset: 3d3b294e-c898-5e9d-9762-bcd5abb3c72c
+    cellSize: {width: 42, height: 36}
+    order: -10
+    chunks:
+    - x: 0
+      y: 0
+      cells:
+      - {index: 38, tile: 4}
+      - {index: 39, tile: 4}
+      - {index: 68, tile: 4}
+      - {index: 69, tile: 4}
+      - {index: 70, tile: 1}
+      - {index: 71, tile: 4}
+      - {index: 98, tile: 4}
+      - {index: 99, tile: 4}
+      - {index: 100, tile: 1}
+      - {index: 101, tile: 1}
+      - {index: 102, tile: 1}
+      - {index: 103, tile: 4}
+      - {index: 128, tile: 4}
+      - {index: 129, tile: 4}
+      - {index: 130, tile: 1}
+      - {index: 131, tile: 1}
+      - {index: 132, tile: 1}
+      - {index: 133, tile: 1}
+      - {index: 134, tile: 4}
+      - {index: 135, tile: 4}
+      - {index: 160, tile: 4}
+      - {index: 161, tile: 1}
+      - {index: 162, tile: 1}
+      - {index: 163, tile: 1}
+      - {index: 164, tile: 4}
+      - {index: 165, tile: 4}
+      - {index: 192, tile: 4}
+      - {index: 193, tile: 1}
+      - {index: 194, tile: 4}
+      - {index: 195, tile: 4}
+      - {index: 224, tile: 4}
+      - {index: 225, tile: 4}
+- id: d4b5ade6-019b-5e79-9d64-95dc78f9db4a
+  name: Hex, flat cursor
+  x: 500.5
+  y: 308
+  width: 42
+  height: 36
+  components:
+  - type: spriteRenderer
+    assetId: 2b12f61c-f584-562e-a9ab-1a34fcc5a1ed
+    asset: Assets/Showcase/CursorHexFlat.png
+    order: 5
+- id: 01e997a5-c25a-5dc7-8ade-3f7b42ffebfc
+  name: Hex, flat walker
+  x: 512
+  y: 302
+  width: 20
+  height: 28
+  components:
+  - type: spriteRenderer
+    assetId: 667c940f-b434-5d6b-99fb-1ec3042ee94f
+    asset: Assets/Showcase/Villager.png
+    order: 8
+    tint: "#FFD58A"
+- id: debbf40e-efeb-535b-ba30-c245a7c96167
+  name: Camera
+  x: 400
+  y: 225
+  width: 1
+  height: 1
+  components:
+  - type: camera2D
+- id: f468e681-ac7c-5c75-a24b-a4d5248654d0
+  name: Canvas
+  x: 0
+  y: 0
+  width: 1
+  height: 1
+  components:
+  - type: uiCanvas
+- id: 961497fa-96ed-54fe-bf92-3cfce0e4faaf
+  parentId: f468e681-ac7c-5c75-a24b-a4d5248654d0
+  name: Square label
+  x: 12
+  y: 38
+  width: 300
+  height: 22
+  components:
+  - type: uiRect
+  - type: uiImage
+    sprite: a7c547c1-8766-5d88-9c49-caf4dd6442b3
+    borders: {left: 4, top: 4, right: 4, bottom: 4}
+- id: bc49e152-17ee-5df6-90dd-c2f7e4c032fa
+  parentId: 961497fa-96ed-54fe-bf92-3cfce0e4faaf
+  name: Square name
+  x: 10
+  y: 3
+  width: 120
+  height: 16
+  components:
+  - type: uiRect
+  - type: uiText
+    richText: true
+    text: "<b>Square</b>  <color=#BFD0DC>32 × 32</color>"
+    size: 12
+    color: "#F4F6F4"
+- id: 15917d3e-19e6-5fbf-857d-c1de33ad58cf
+  parentId: 961497fa-96ed-54fe-bf92-3cfce0e4faaf
+  name: Square call
+  x: 140
+  y: 3
+  width: 152
+  height: 16
+  components:
+  - type: uiRect
+  - type: uiText
+    richText: true
+    text: ""
+    size: 12
+    color: "#FFD84A"
+- id: 0627d35e-3082-504b-baf7-eb624cd7348a
+  parentId: f468e681-ac7c-5c75-a24b-a4d5248654d0
+  name: Isometric label
+  x: 412
+  y: 38
+  width: 300
+  height: 22
+  components:
+  - type: uiRect
+  - type: uiImage
+    sprite: a7c547c1-8766-5d88-9c49-caf4dd6442b3
+    borders: {left: 4, top: 4, right: 4, bottom: 4}
+- id: 2cbaf300-1daf-5b0f-ba68-8213d8b4cb37
+  parentId: 0627d35e-3082-504b-baf7-eb624cd7348a
+  name: Isometric name
+  x: 10
+  y: 3
+  width: 120
+  height: 16
+  components:
+  - type: uiRect
+  - type: uiText
+    richText: true
+    text: "<b>Isometric</b>  <color=#BFD0DC>48 × 24</color>"
+    size: 12
+    color: "#F4F6F4"
+- id: bb1b608a-88a8-5e4b-ba79-bc65183dec52
+  parentId: 0627d35e-3082-504b-baf7-eb624cd7348a
+  name: Isometric call
+  x: 140
+  y: 3
+  width: 152
+  height: 16
+  components:
+  - type: uiRect
+  - type: uiText
+    richText: true
+    text: ""
+    size: 12
+    color: "#FFD84A"
+- id: f770647b-89b7-55b0-9cd4-4ad10add0bb8
+  parentId: f468e681-ac7c-5c75-a24b-a4d5248654d0
+  name: Hex, pointy label
+  x: 12
+  y: 228
+  width: 300
+  height: 22
+  components:
+  - type: uiRect
+  - type: uiImage
+    sprite: a7c547c1-8766-5d88-9c49-caf4dd6442b3
+    borders: {left: 4, top: 4, right: 4, bottom: 4}
+- id: d29351d5-e605-5b25-a021-d10c883b1d92
+  parentId: f770647b-89b7-55b0-9cd4-4ad10add0bb8
+  name: Hex, pointy name
+  x: 10
+  y: 3
+  width: 120
+  height: 16
+  components:
+  - type: uiRect
+  - type: uiText
+    richText: true
+    text: "<b>Hex, pointy</b>  <color=#BFD0DC>36 × 42</color>"
+    size: 12
+    color: "#F4F6F4"
+- id: 80ebb85f-79ec-596a-9d92-0191bb0afd0e
+  parentId: f770647b-89b7-55b0-9cd4-4ad10add0bb8
+  name: Hex, pointy call
+  x: 140
+  y: 3
+  width: 152
+  height: 16
+  components:
+  - type: uiRect
+  - type: uiText
+    richText: true
+    text: ""
+    size: 12
+    color: "#FFD84A"
+- id: 2a0abcee-1e70-5a2b-8492-8291b2c59532
+  parentId: f468e681-ac7c-5c75-a24b-a4d5248654d0
+  name: Hex, flat label
+  x: 412
+  y: 228
+  width: 300
+  height: 22
+  components:
+  - type: uiRect
+  - type: uiImage
+    sprite: a7c547c1-8766-5d88-9c49-caf4dd6442b3
+    borders: {left: 4, top: 4, right: 4, bottom: 4}
+- id: 4099ad07-5ee7-588f-87e2-15f128f7abdb
+  parentId: 2a0abcee-1e70-5a2b-8492-8291b2c59532
+  name: Hex, flat name
+  x: 10
+  y: 3
+  width: 120
+  height: 16
+  components:
+  - type: uiRect
+  - type: uiText
+    richText: true
+    text: "<b>Hex, flat</b>  <color=#BFD0DC>42 × 36</color>"
+    size: 12
+    color: "#F4F6F4"
+- id: 39d63723-6902-5616-b66c-6a14f17ff3d9
+  parentId: 2a0abcee-1e70-5a2b-8492-8291b2c59532
+  name: Hex, flat call
+  x: 140
+  y: 3
+  width: 152
+  height: 16
+  components:
+  - type: uiRect
+  - type: uiText
+    richText: true
+    text: ""
+    size: 12
+    color: "#FFD84A"
+- id: d2bd6ee5-320f-5a5b-a363-cc25a89aa890
+  parentId: f468e681-ac7c-5c75-a24b-a4d5248654d0
+  name: Tag 1
+  x: 12
+  y: 8
+  width: 191.4
+  height: 22
+  components:
+  - type: uiRect
+    showIf: layouts
+  - type: uiImage
+    sprite: a7c547c1-8766-5d88-9c49-caf4dd6442b3
+    borders: {left: 4, top: 4, right: 4, bottom: 4}
+  - type: uiText
+    richText: true
+    text: "<b>Four grids</b>   <color=#BFD0DC>One Tilemap 2D</color>"
+    size: 12
+    insetX: 10
+    insetY: 3
+- id: 769d3851-e81f-5f24-a3c3-d7d8bfd27681
+  parentId: f468e681-ac7c-5c75-a24b-a4d5248654d0
+  name: Tag 2
+  x: 211.4
+  y: 8
+  width: 247.2
+  height: 22
+  components:
+  - type: uiRect
+    showIf: water
+  - type: uiImage
+    sprite: a7c547c1-8766-5d88-9c49-caf4dd6442b3
+    borders: {left: 4, top: 4, right: 4, bottom: 4}
+  - type: uiText
+    richText: true
+    text: "<b>Animated water</b>   <color=#BFD0DC>3 frames, one clock</color>"
+    size: 12
+    insetX: 10
+    insetY: 3
+- id: e9a221c2-f8e8-5a38-b58b-151faa4a44fb
+  parentId: f468e681-ac7c-5c75-a24b-a4d5248654d0
+  name: Tag 3
+  x: 466.6
+  y: 8
+  width: 259.6
+  height: 22
+  components:
+  - type: uiRect
+    showIf: paint
+  - type: uiImage
+    sprite: a7c547c1-8766-5d88-9c49-caf4dd6442b3
+    borders: {left: 4, top: 4, right: 4, bottom: 4}
+  - type: uiText
+    richText: true
+    text: "<b>Runtime SetTile</b>   <color=#BFD0DC>Neighbours reconnect</color>"
+    size: 12
+    insetX: 10
+    insetY: 3
+- id: 3bed74ad-5a32-5565-b5b5-7d4d5baecea3
+  parentId: f468e681-ac7c-5c75-a24b-a4d5248654d0
+  name: Caption
+  x: 12
+  y: -6
+  width: 330
+  height: 24
+  components:
+  - type: uiRect
+    anchor: BottomLeft
+  - type: uiImage
+    sprite: a7c547c1-8766-5d88-9c49-caf4dd6442b3
+    borders: {left: 4, top: 4, right: 4, bottom: 4}
+- id: 2fff8320-25a4-5537-a833-dba96aca723b
+  parentId: 3bed74ad-5a32-5565-b5b5-7d4d5baecea3
+  name: Caption text
+  x: 12
+  y: 3
+  width: 310
+  height: 18
+  components:
+  - type: uiRect
+  - type: uiText
+    richText: true
+    text: "<b>KeyRoomTiles</b>   One tilemap, four grid layouts"
+    size: 13
+    color: "#F4F6F4"
+- id: 1671629e-71f2-5fef-b462-39702a922b4f
+  name: Painter
+  x: 0
+  y: 0
+  width: 1
+  height: 1
+  components:
+  - type: script
+    script: Showcase/GridPainter
+    values: {"Boards": ["959916fd-1ecb-538e-9352-ed8a93c9b8cb", "3ced0527-00cf-56f9-8096-4f86a364a788", "0a802d14-cbe6-5454-ab27-9ccf5619f05b", "a5d91aa4-2a8d-5132-bf86-082729f86fe6"], "Cursors": ["652661e3-9c97-5bea-87f2-5505f24f5e6c", "7d90d889-b7c8-5fbd-89ee-8f1c2ab2ece3", "25551e8a-16a4-51c7-a064-a20e42d741fc", "d4b5ade6-019b-5e79-9d64-95dc78f9db4a"], "Walkers": ["e5a84b09-ddeb-5c13-ae5b-241d33ce3ece", "97e8eaaf-cecc-5203-bf47-46b683f9fdbf", "3264b73c-c465-5e39-8189-8fa6bcc9e6cb", "01e997a5-c25a-5dc7-8ade-3f7b42ffebfc"], "Calls": ["15917d3e-19e6-5fbf-857d-c1de33ad58cf", "bb1b608a-88a8-5e4b-ba79-bc65183dec52", "80ebb85f-79ec-596a-9d92-0191bb0afd0e", "39d63723-6902-5616-b66c-6a14f17ff3d9"], "Kinds": [0, 1, 2, 3], "Sizes": [32, 32, 48, 24, 36, 42, 42, 36], "Path0": [1, 2, 2, 2, 3, 2, 4, 2, 5, 2, 6, 2, 7, 2, 8, 2, 9, 2], "Path1": [1, 2, 2, 2, 3, 2, 4, 2], "Path2": [2, 2, 3, 2, 4, 2, 5, 2, 6, 2], "Path3": [1, 5, 2, 5, 3, 5, 4, 4, 5, 4, 6, 3], "Branch0": [5, 1], "Branch1": [2, 3, 2, 4], "Branch2": [4, 1], "Branch3": [4, 3]}
+defaultCameraId: debbf40e-efeb-535b-ba30-c245a7c96167

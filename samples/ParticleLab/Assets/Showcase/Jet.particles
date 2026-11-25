@@ -1,0 +1,10 @@
+rate: 140
+shape: Cone
+radius: 2
+spread: 20
+speed: {min: 165, max: 180}
+lifetime: {min: 0.8, max: 0.85}
+size: {min: 2, max: 3}
+color: {min: "#8FE4FF", max: "#3F8BFF"}
+endSize: 0.6
+gravity: 420

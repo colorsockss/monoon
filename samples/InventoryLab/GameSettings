@@ -3,10 +3,19 @@ gameTitle: InventoryLab
 contentBundles: [Assets/Dialogue, Assets/Quests, Assets/Market]
 width: 800
 height: 450
-startScene: 6a7b735e-336d-5674-b2e7-a136db5a7771
-includedScenes: [6a7b735e-336d-5674-b2e7-a136db5a7771, 0be06500-1fa4-410c-b0a6-91bb9a9759c7, b7e9e2ee-5ef5-46f1-a97b-9852d3514980, ad4b5c3f-4da9-4a09-8465-831ae9a4377b]
+integerScale: true
+startScene: 0b0b8126-2ff1-5bbb-a7f0-5ef0af802bf8
+includedScenes: [0b0b8126-2ff1-5bbb-a7f0-5ef0af802bf8, 09ca087e-0f44-5886-9546-1553180b2fba, 6a7b735e-336d-5674-b2e7-a136db5a7771, 0be06500-1fa4-410c-b0a6-91bb9a9759c7, b7e9e2ee-5ef5-46f1-a97b-9852d3514980, ad4b5c3f-4da9-4a09-8465-831ae9a4377b]
 input:
   actions:
+  - name: MoveLeft
+    controls: ["Left"]
+  - name: MoveRight
+    controls: ["Right"]
+  - name: MoveUp
+    controls: ["Up"]
+  - name: MoveDown
+    controls: ["Down"]
   - name: AddHerb
     controls: ["1"]
   - name: AddGem
@@ -22,13 +31,15 @@ input:
   - name: Use
     controls: ["U"]
   - name: Save
-    controls: ["S"]
+    controls: ["S", "F5"]
   - name: Load
-    controls: ["L"]
+    controls: ["L", "F9"]
+  - name: Crash
+    controls: ["F7"]
   - name: Quest
     controls: ["J"]
   - name: Talk
-    controls: ["T"]
+    controls: ["T", "Return"]
   - name: Catalog
     controls: ["C"]
   - name: Sort
@@ -37,8 +48,9 @@ input:
     controls: ["B", "Pad.Back"]
   - name: Skip
     controls: ["Space"]
+uiTheme: 77a3b702-f4c1-4ed9-b7de-32750e6a16c7
 localization:
   table: 5c1a7e2e-3b0d-4f53-9a51-6e0b7c11a502
-  fallbackLocale: ko
+  fallbackLocale: en
   defaultFont: 5c1a7e2e-3b0d-4f53-9a51-6e0b7c11a501
-accessibility: {locale: ko-KR, textScale: 1, highContrast: false}
+accessibility: {locale: en-US, textScale: 1, highContrast: false}

@@ -1,0 +1,36 @@
+entry: Idle
+states:
+- name: Idle
+  clip: 210bbb4a-f295-5603-835a-0aedf4e13a2e
+  directions:
+  - 210bbb4a-f295-5603-835a-0aedf4e13a2e
+  - 210bbb4a-f295-5603-835a-0aedf4e13a2e
+  - 210bbb4a-f295-5603-835a-0aedf4e13a2e
+  - ea80ebe4-8e89-5f6e-a9e9-206c5a3be97a
+  direction: Move
+- name: Walk
+  clip: 758e7598-d29a-5688-ac17-78d4bf6b027f
+  directions:
+  - 758e7598-d29a-5688-ac17-78d4bf6b027f
+  - 758e7598-d29a-5688-ac17-78d4bf6b027f
+  - 758e7598-d29a-5688-ac17-78d4bf6b027f
+  - 40e4d708-f4e9-5ff2-b35d-1473c427202d
+  direction: Move
+parameters:
+- name: Move
+  kind: Vector2
+  default: 0
+- name: Speed
+  kind: Float
+  default: 0
+transitions:
+- from: Idle
+  to: Walk
+  parameter: Speed
+  test: Greater
+  value: 0.1
+- from: Walk
+  to: Idle
+  parameter: Speed
+  test: AtMost
+  value: 0.1

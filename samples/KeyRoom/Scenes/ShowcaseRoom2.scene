@@ -1,0 +1,935 @@
+schemaVersion: 42
+objects:
+- id: 2e2b7c88-9756-55de-bce2-c7dfa80a0bb5
+  name: Floor
+  x: 0
+  y: 0
+  width: 32
+  height: 32
+  components:
+  - type: tilemap2D
+    tileset: 45985f0e-7847-55c1-bce6-2b65bbf9f3a2
+    cellSize:
+      width: 32
+      height: 32
+    sortingLayer: 0
+    order: -10
+    chunks:
+    - x: 0
+      y: 0
+      cells:
+      - index: 97
+        tile: 43
+      - index: 98
+        tile: 8
+      - index: 99
+        tile: 50
+      - index: 100
+        tile: 46
+      - index: 101
+        tile: 64
+      - index: 102
+        tile: 30
+      - index: 103
+        tile: 16
+      - index: 104
+        tile: 4
+      - index: 105
+        tile: 9
+      - index: 106
+        tile: 8
+      - index: 107
+        tile: 46
+      - index: 108
+        tile: 15
+      - index: 109
+        tile: 30
+      - index: 110
+        tile: 32
+      - index: 111
+        tile: 48
+      - index: 112
+        tile: 29
+      - index: 129
+        tile: 60
+      - index: 130
+        tile: 12
+      - index: 131
+        tile: 1
+      - index: 132
+        tile: 41
+      - index: 133
+        tile: 20
+      - index: 134
+        tile: 2
+      - index: 135
+        tile: 21
+      - index: 136
+        tile: 39
+      - index: 137
+        tile: 17
+      - index: 138
+        tile: 10
+      - index: 139
+        tile: 1
+      - index: 140
+        tile: 23
+      - index: 141
+        tile: 47
+      - index: 142
+        tile: 47
+      - index: 143
+        tile: 21
+      - index: 144
+        tile: 11
+      - index: 161
+        tile: 40
+      - index: 162
+        tile: 62
+      - index: 163
+        tile: 6
+      - index: 164
+        tile: 22
+      - index: 165
+        tile: 18
+      - index: 166
+        tile: 1
+      - index: 167
+        tile: 23
+      - index: 168
+        tile: 43
+      - index: 169
+        tile: 45
+      - index: 170
+        tile: 20
+      - index: 171
+        tile: 29
+      - index: 172
+        tile: 63
+      - index: 173
+        tile: 4
+      - index: 174
+        tile: 41
+      - index: 175
+        tile: 17
+      - index: 176
+        tile: 11
+      - index: 193
+        tile: 16
+      - index: 194
+        tile: 49
+      - index: 195
+        tile: 16
+      - index: 196
+        tile: 52
+      - index: 197
+        tile: 2
+      - index: 198
+        tile: 4
+      - index: 199
+        tile: 32
+      - index: 200
+        tile: 40
+      - index: 201
+        tile: 2
+      - index: 202
+        tile: 45
+      - index: 203
+        tile: 11
+      - index: 204
+        tile: 57
+      - index: 205
+        tile: 3
+      - index: 206
+        tile: 57
+      - index: 207
+        tile: 6
+      - index: 208
+        tile: 27
+      - index: 225
+        tile: 40
+      - index: 226
+        tile: 34
+      - index: 227
+        tile: 47
+      - index: 228
+        tile: 50
+      - index: 229
+        tile: 60
+      - index: 230
+        tile: 56
+      - index: 231
+        tile: 9
+      - index: 232
+        tile: 57
+      - index: 233
+        tile: 31
+      - index: 234
+        tile: 22
+      - index: 235
+        tile: 38
+      - index: 236
+        tile: 58
+      - index: 237
+        tile: 20
+      - index: 238
+        tile: 11
+      - index: 239
+        tile: 35
+      - index: 240
+        tile: 55
+      - index: 257
+        tile: 48
+      - index: 258
+        tile: 50
+      - index: 259
+        tile: 34
+      - index: 260
+        tile: 43
+      - index: 261
+        tile: 8
+      - index: 262
+        tile: 6
+      - index: 263
+        tile: 56
+      - index: 264
+        tile: 32
+      - index: 265
+        tile: 47
+      - index: 266
+        tile: 6
+      - index: 267
+        tile: 11
+      - index: 268
+        tile: 43
+      - index: 269
+        tile: 56
+      - index: 270
+        tile: 43
+      - index: 271
+        tile: 3
+      - index: 272
+        tile: 11
+- id: da52450d-4b9b-5038-8dbc-ab49073ff102
+  name: Wall face
+  x: 0
+  y: 0
+  width: 32
+  height: 32
+  components:
+  - type: tilemap2D
+    tileset: 5d8c2a16-d9f5-5ef9-86e9-cbba74ad99e4
+    cellSize:
+      width: 32
+      height: 32
+    sortingLayer: 0
+    order: -9
+    chunks:
+    - x: 0
+      y: 0
+      cells:
+      - index: 33
+        tile: 1
+      - index: 34
+        tile: 2
+      - index: 35
+        tile: 3
+      - index: 36
+        tile: 4
+      - index: 37
+        tile: 5
+      - index: 38
+        tile: 6
+      - index: 39
+        tile: 1
+      - index: 42
+        tile: 4
+      - index: 43
+        tile: 5
+      - index: 44
+        tile: 6
+      - index: 45
+        tile: 1
+      - index: 46
+        tile: 2
+      - index: 47
+        tile: 3
+      - index: 48
+        tile: 4
+      - index: 65
+        tile: 7
+      - index: 66
+        tile: 8
+      - index: 67
+        tile: 9
+      - index: 68
+        tile: 10
+      - index: 69
+        tile: 11
+      - index: 70
+        tile: 12
+      - index: 71
+        tile: 7
+      - index: 74
+        tile: 10
+      - index: 75
+        tile: 11
+      - index: 76
+        tile: 12
+      - index: 77
+        tile: 7
+      - index: 78
+        tile: 8
+      - index: 79
+        tile: 9
+      - index: 80
+        tile: 10
+- id: 80db021b-8a79-59d7-85d5-4d84fadff27c
+  name: Wall face behind door
+  x: 0
+  y: 0
+  width: 32
+  height: 32
+  components:
+  - type: tilemap2D
+    tileset: 7ce365ed-238b-51a1-9ba5-86ad6e2d2386
+    cellSize:
+      width: 32
+      height: 32
+    sortingLayer: 0
+    order: -9
+    chunks:
+    - x: 0
+      y: 0
+      cells:
+      - index: 40
+        tile: 2
+      - index: 41
+        tile: 3
+      - index: 72
+        tile: 8
+      - index: 73
+        tile: 9
+- id: 8db08a26-003c-57d2-925f-32f3033a7fc6
+  name: Wall cap
+  x: 0
+  y: 0
+  width: 32
+  height: 32
+  components:
+  - type: tilemap2D
+    tileset: df2f2674-3f35-5110-bdf3-dce7307d16fd
+    cellSize:
+      width: 32
+      height: 32
+    sortingLayer: 0
+    order: -8
+    chunks:
+    - x: 0
+      y: 0
+      cells:
+      - index: 0
+        tile: 1
+      - index: 1
+        tile: 3
+      - index: 2
+        tile: 2
+      - index: 3
+        tile: 1
+      - index: 4
+        tile: 3
+      - index: 5
+        tile: 2
+      - index: 6
+        tile: 3
+      - index: 7
+        tile: 4
+      - index: 8
+        tile: 4
+      - index: 9
+        tile: 4
+      - index: 10
+        tile: 4
+      - index: 11
+        tile: 1
+      - index: 12
+        tile: 1
+      - index: 13
+        tile: 1
+      - index: 14
+        tile: 4
+      - index: 15
+        tile: 4
+      - index: 16
+        tile: 4
+      - index: 17
+        tile: 1
+      - index: 32
+        tile: 1
+      - index: 49
+        tile: 1
+      - index: 64
+        tile: 4
+      - index: 81
+        tile: 3
+      - index: 96
+        tile: 3
+      - index: 113
+        tile: 1
+      - index: 128
+        tile: 3
+      - index: 145
+        tile: 4
+      - index: 160
+        tile: 1
+      - index: 177
+        tile: 1
+      - index: 192
+        tile: 1
+      - index: 209
+        tile: 2
+      - index: 224
+        tile: 1
+      - index: 241
+        tile: 1
+      - index: 256
+        tile: 4
+      - index: 273
+        tile: 4
+      - index: 288
+        tile: 1
+      - index: 289
+        tile: 3
+      - index: 290
+        tile: 1
+      - index: 291
+        tile: 4
+      - index: 292
+        tile: 1
+      - index: 293
+        tile: 3
+      - index: 294
+        tile: 1
+      - index: 295
+        tile: 1
+      - index: 296
+        tile: 1
+      - index: 297
+        tile: 1
+      - index: 298
+        tile: 4
+      - index: 299
+        tile: 1
+      - index: 300
+        tile: 1
+      - index: 301
+        tile: 3
+      - index: 302
+        tile: 3
+      - index: 303
+        tile: 4
+      - index: 304
+        tile: 4
+      - index: 305
+        tile: 4
+- id: 1fd4940e-2ad5-5bb5-aa5f-e1a97c70c7c9
+  name: Torch 1
+  x: 144
+  y: 66
+  width: 32
+  height: 22
+  components:
+  - type: spriteRenderer
+    assetId: c0ef83ca-f5f7-5337-8c09-65b900b4fdbd
+    asset: Assets/Showcase/TorchSconce.png
+    sortingLayer: 5
+  - type: pointLight2D
+    radius: 150
+    intensity: 0.75
+    flicker: 0.1
+    frequency: 1.1
+    color: "#FF7418"
+- id: 926369f0-18f9-54e8-91eb-26eddeb1779d
+  parentId: 1fd4940e-2ad5-5bb5-aa5f-e1a97c70c7c9
+  name: Torch 1 flame
+  x: 0
+  y: -32
+  width: 32
+  height: 32
+  components:
+  - type: spriteRenderer
+    assetId: 3338d3a8-8fbd-5345-844e-f955d0d6be78
+    asset: Assets/Showcase/TorchFlame1.png
+    sortingLayer: 5
+    order: 1
+  - type: spriteAnimator
+    clip: 72c9fe86-9f20-5585-91d3-491e894cd0a1
+    playOnStart: true
+- id: 086f4b71-efd2-5962-a940-d1f583d420a7
+  parentId: 1fd4940e-2ad5-5bb5-aa5f-e1a97c70c7c9
+  name: Torch 1 embers
+  x: 16
+  y: -24
+  width: 1
+  height: 1
+  components:
+  - type: particleEmitter2D
+    particles: 51f6c5f7-80ed-5e18-b411-ddb6f759102b
+    trigger: start
+    seed: 0
+    offsetX: 0
+    offsetY: 0
+    sortingLayer: 5
+    order: 3
+- id: 1f78427c-d92c-55be-8bd6-74d12c721599
+  name: Torch 2
+  x: 400
+  y: 66
+  width: 32
+  height: 22
+  components:
+  - type: spriteRenderer
+    assetId: c0ef83ca-f5f7-5337-8c09-65b900b4fdbd
+    asset: Assets/Showcase/TorchSconce.png
+    sortingLayer: 5
+  - type: pointLight2D
+    radius: 150
+    intensity: 0.75
+    flicker: 0.1
+    frequency: 1.4
+    color: "#FF7418"
+- id: 8d0da024-15c8-5182-8b06-a17efe9aab77
+  parentId: 1f78427c-d92c-55be-8bd6-74d12c721599
+  name: Torch 2 flame
+  x: 0
+  y: -32
+  width: 32
+  height: 32
+  components:
+  - type: spriteRenderer
+    assetId: 3338d3a8-8fbd-5345-844e-f955d0d6be78
+    asset: Assets/Showcase/TorchFlame1.png
+    sortingLayer: 5
+    order: 1
+  - type: spriteAnimator
+    clip: 72c9fe86-9f20-5585-91d3-491e894cd0a1
+    playOnStart: true
+- id: ea9ea14c-a544-542f-803e-8e9ad5184c3d
+  parentId: 1f78427c-d92c-55be-8bd6-74d12c721599
+  name: Torch 2 embers
+  x: 16
+  y: -24
+  width: 1
+  height: 1
+  components:
+  - type: particleEmitter2D
+    particles: 51f6c5f7-80ed-5e18-b411-ddb6f759102b
+    trigger: start
+    seed: 0
+    offsetX: 0
+    offsetY: 0
+    sortingLayer: 5
+    order: 3
+- id: f65f7f99-df77-5d39-a676-5c8f51ccf427
+  name: Pressure Door
+  x: 255
+  y: 30
+  width: 66
+  height: 66
+  components:
+  - type: boxCollider2D
+  - type: spriteRenderer
+    assetId: e904ff61-acf4-5baa-8fd9-e0f9a8ee3b54
+    asset: Assets/Showcase/Door.png
+    order: -5
+- id: ce3e7780-d5e2-50e2-9be6-2a6a787b55f4
+  name: Pressure Door back wall
+  x: 256
+  y: 32
+  width: 64
+  height: 32
+  components:
+  - type: boxCollider2D
+- id: 4015e1de-0ad2-52a3-8185-1c4855ea22b4
+  name: Pressure Plate
+  x: 296
+  y: 176
+  width: 104
+  height: 26
+  components:
+  - type: spriteRenderer
+    assetId: 1d68e18e-5006-5a73-812f-856f5179d82a
+    asset: Assets/Showcase/Plate.png
+    order: -6
+    drawMode: Sliced
+    slice: {left: 10, top: 8, right: 10, bottom: 8}
+  - type: boxCollider2D
+    isTrigger: true
+  - type: script
+    script: PressurePlate
+    values:
+      Player: "278e0292-3862-597e-820d-b779edffb057"
+      Crate: "846de439-1d4b-5190-b847-47c58b74c3f1"
+      Door: "f65f7f99-df77-5d39-a676-5c8f51ccf427"
+      Label: "88e6aad9-ae43-5e48-92d1-7e46f4521fd0"
+      ClosedSprite:
+        Id: "e904ff61-acf4-5baa-8fd9-e0f9a8ee3b54"
+      OpenSprite:
+        Id: "6c829528-2a4d-5e87-bcb8-8c53aaa739be"
+- id: 846de439-1d4b-5190-b847-47c58b74c3f1
+  name: Push Crate
+  x: 206
+  y: 181
+  width: 36
+  height: 16
+  components:
+  - type: sortingGroup2D
+    sortByY: true
+  - type: boxCollider2D
+  - type: script
+    script: PushCrate
+    values:
+      Player: "278e0292-3862-597e-820d-b779edffb057"
+- id: 946266d2-912f-57b9-915c-0e21d384e82c
+  parentId: 846de439-1d4b-5190-b847-47c58b74c3f1
+  name: Push Crate picture
+  x: 0
+  y: -22
+  width: 36
+  height: 38
+  components:
+  - type: spriteRenderer
+    assetId: 2de88412-f2d6-55c7-8c2c-3a41976efab7
+    asset: Assets/Showcase/PushCrate.png
+- id: f3bc38a6-5205-5dd5-8812-c1474031c3ef
+  parentId: 846de439-1d4b-5190-b847-47c58b74c3f1
+  name: Push Crate shade
+  x: -4
+  y: 8.8
+  width: 44
+  height: 12
+  components:
+  - type: spriteRenderer
+    assetId: d6044226-b525-5845-8e0d-68450f82712e
+    asset: Assets/Showcase/ShadowL.png
+    order: -1
+- id: 958830bf-09c3-5199-89e4-ce1c2675f4d8
+  name: Barrel shadow
+  x: 467
+  y: 120.8
+  width: 44
+  height: 12
+  components:
+  - type: spriteRenderer
+    assetId: d6044226-b525-5845-8e0d-68450f82712e
+    asset: Assets/Showcase/ShadowL.png
+    order: -4
+- id: 8d1b8dd6-8779-562f-8d33-a7610e9688b7
+  name: Barrel
+  x: 472
+  y: 86
+  width: 34
+  height: 42
+  components:
+  - type: spriteRenderer
+    assetId: 91a215ea-3468-560c-aa55-7d190c129ffa
+    asset: Assets/Showcase/Barrel.png
+    sortByY: true
+- id: 663b00a2-8527-589b-b53a-378279df245a
+  parentId: 8d1b8dd6-8779-562f-8d33-a7610e9688b7
+  name: Barrel base
+  x: 2
+  y: 28
+  width: 30
+  height: 12
+  components:
+  - type: boxCollider2D
+- id: d953ad1e-bb3d-53e1-9f30-3b86fd8c5fec
+  name: Pot 1 shadow
+  x: 39
+  y: 118.8
+  width: 44
+  height: 12
+  components:
+  - type: spriteRenderer
+    assetId: d6044226-b525-5845-8e0d-68450f82712e
+    asset: Assets/Showcase/ShadowL.png
+    order: -4
+- id: 629e4953-3018-5f11-af61-cec29be2d365
+  name: Pot 1
+  x: 44
+  y: 86
+  width: 34
+  height: 40
+  components:
+  - type: spriteRenderer
+    assetId: bb9f9bfb-35b7-547a-bf8b-5eea9a4e5c53
+    asset: Assets/Showcase/Pot.png
+    sortByY: true
+- id: dcf061ad-fbf3-51da-bd31-429dd2970d26
+  parentId: 629e4953-3018-5f11-af61-cec29be2d365
+  name: Pot 1 base
+  x: 2
+  y: 26
+  width: 30
+  height: 12
+  components:
+  - type: boxCollider2D
+- id: 8be88ae2-7dd1-5c76-8e95-cdab5f97035a
+  name: Pot 2 shadow
+  x: 76
+  y: 126
+  width: 32
+  height: 10
+  components:
+  - type: spriteRenderer
+    assetId: 5d73fe99-b84a-5664-b667-b9f554cdb749
+    asset: Assets/Showcase/ShadowM.png
+    order: -4
+- id: 1d9d12c8-e10b-55fb-a976-cdf331f4f53a
+  name: Pot 2
+  x: 80
+  y: 102
+  width: 24
+  height: 30
+  components:
+  - type: spriteRenderer
+    assetId: ab522357-e08f-5cf3-a7f7-430b2b530a1e
+    asset: Assets/Showcase/PotSmall.png
+    sortByY: true
+- id: c70a7229-51f8-536b-9326-42247643e36e
+  parentId: 1d9d12c8-e10b-55fb-a976-cdf331f4f53a
+  name: Pot 2 base
+  x: 2
+  y: 16
+  width: 20
+  height: 12
+  components:
+  - type: boxCollider2D
+- id: 5dde7975-5f15-5950-89d1-66b345e6d2f6
+  name: Crate shadow
+  x: 472
+  y: 268.8
+  width: 44
+  height: 12
+  components:
+  - type: spriteRenderer
+    assetId: d6044226-b525-5845-8e0d-68450f82712e
+    asset: Assets/Showcase/ShadowL.png
+    order: -4
+- id: ac884c17-da9a-5a83-9c87-1106ccb067df
+  name: Crate
+  x: 476
+  y: 238
+  width: 36
+  height: 38
+  components:
+  - type: spriteRenderer
+    assetId: d4232051-4a3c-5ebf-8f6b-d49d3b258a82
+    asset: Assets/Showcase/Crate.png
+    sortByY: true
+- id: 962eb605-c58a-5a61-966f-3c13813798e4
+  parentId: ac884c17-da9a-5a83-9c87-1106ccb067df
+  name: Crate base
+  x: 2
+  y: 24
+  width: 32
+  height: 12
+  components:
+  - type: boxCollider2D
+- id: 278e0292-3862-597e-820d-b779edffb057
+  name: Player
+  x: 136
+  y: 183
+  width: 22
+  height: 12
+  components:
+  - type: sortingGroup2D
+    sortByY: true
+  - type: script
+    script: PlayerMovement
+    values: {}
+  - type: boxCollider2D
+- id: f0a60e83-6968-518e-8777-24f0d39f30ae
+  parentId: 278e0292-3862-597e-820d-b779edffb057
+  name: Hero body
+  x: 0
+  y: 0
+  width: 22
+  height: 12
+  components: []
+- id: b127256f-75dd-566d-ba33-8d44b7013e03
+  parentId: f0a60e83-6968-518e-8777-24f0d39f30ae
+  name: Hero shadow
+  x: -5
+  y: 5
+  width: 32
+  height: 10
+  components:
+  - type: spriteRenderer
+    assetId: 5d73fe99-b84a-5664-b667-b9f554cdb749
+    asset: Assets/Showcase/ShadowM.png
+    order: -1
+- id: ed05a7d0-49b5-5992-a3b8-3cb6fa0d573b
+  parentId: f0a60e83-6968-518e-8777-24f0d39f30ae
+  name: Hero
+  x: -10
+  y: -46
+  width: 42
+  height: 60
+  components:
+  - type: spriteRenderer
+    assetId: 6ba1dbcf-dcf0-5fe0-8eb5-e127a9e982c1
+    asset: Assets/Showcase/HeroIdleS.png
+    order: 0
+  - type: spriteAnimator
+    controller: 2b7f16a6-877a-5ee1-8e96-3ccb2e227291
+    playOnStart: true
+  - type: script
+    script: HeroAnimation
+    values: {}
+- id: 85eabe8e-991a-5154-8274-06647179931d
+  name: Doorway
+  x: 260
+  y: 80
+  width: 56
+  height: 12
+  components:
+  - type: boxCollider2D
+    isTrigger: true
+  - type: script
+    script: DoorwayFade
+    values:
+      Player: "278e0292-3862-597e-820d-b779edffb057"
+      Hide: "f0a60e83-6968-518e-8777-24f0d39f30ae"
+      FadeOut: true
+- id: b79fbe16-8bb7-5487-ad2d-c2d38ecca6f0
+  name: Main Camera
+  x: 288
+  y: 160
+  width: 40
+  height: 40
+  components:
+  - type: camera2D
+    zoom: 1.5
+- id: eeb03ab5-911c-5d1a-a0d7-3853596f5388
+  name: Interface
+  components:
+  - type: uiCanvas
+- id: b68037e0-a824-517c-9075-3ae72d082181
+  parentId: eeb03ab5-911c-5d1a-a0d7-3853596f5388
+  name: Caption
+  x: 12
+  y: -12
+  width: 536
+  height: 44
+  components:
+  - type: uiRect
+    anchor: BottomLeft
+  - type: uiImage
+    sprite: 8417743f-7aed-49af-becf-fce814d4d466
+    borders: {left: 8, top: 8, right: 8, bottom: 8}
+- id: 2957fc1b-f4a7-568f-b404-cd11f65f5346
+  parentId: b68037e0-a824-517c-9075-3ae72d082181
+  name: Caption title
+  x: 12
+  y: 5
+  width: 418
+  height: 20
+  components:
+  - type: uiRect
+  - type: uiText
+    richText: true
+    text: "<b>KeyRoom</b>   Push the crate onto the plate, then step on it too"
+    size: 15
+- id: 88e6aad9-ae43-5e48-92d1-7e46f4521fd0
+  parentId: b68037e0-a824-517c-9075-3ae72d082181
+  name: Plate status
+  x: 12
+  y: 25
+  width: 418
+  height: 16
+  components:
+  - type: uiRect
+  - type: uiText
+    text: "Plate 0/2  Empty  |  Door CLOSED"
+    size: 12
+    color: "#BFD0DC"
+- id: db514734-9468-5ef1-9f2c-ffec21d3ce77
+  parentId: eeb03ab5-911c-5d1a-a0d7-3853596f5388
+  name: Key icon
+  x: 14
+  y: 12
+  width: 45
+  height: 27
+  components:
+  - type: uiRect
+    showIf: key
+  - type: uiImage
+    sprite: 875948d6-2de7-530e-8e85-b9b197747518
+- id: deea704a-c043-5f88-8c7c-9ff2111a6f7b
+  parentId: eeb03ab5-911c-5d1a-a0d7-3853596f5388
+  name: Coin icon
+  x: 68
+  y: 15
+  width: 21
+  height: 21
+  components:
+  - type: uiRect
+    showIf: coin
+  - type: uiImage
+    sprite: 687b5216-5886-5d01-a874-9089c67ecb7b
+- id: b931abfa-fd6f-569f-9093-c1897c2afbf6
+  parentId: eeb03ab5-911c-5d1a-a0d7-3853596f5388
+  name: Tag 1
+  x: -12
+  y: 12
+  width: 236
+  height: 24
+  components:
+  - type: uiRect
+    anchor: TopRight
+  - type: uiImage
+    sprite: 8417743f-7aed-49af-becf-fce814d4d466
+    borders: {left: 8, top: 8, right: 8, bottom: 8}
+  - type: uiText
+    richText: true
+    text: "<b>Scene load</b>   <color=#BFD0DC>Room 1 → Room 2</color>"
+    size: 12
+    insetX: 10
+    insetY: 4
+- id: 48c5785c-2311-5f27-a202-8f195353dbe1
+  parentId: eeb03ab5-911c-5d1a-a0d7-3853596f5388
+  name: Tag 2
+  x: -12
+  y: 40
+  width: 236
+  height: 24
+  components:
+  - type: uiRect
+    anchor: TopRight
+  - type: uiImage
+    sprite: 8417743f-7aed-49af-becf-fce814d4d466
+    borders: {left: 8, top: 8, right: 8, bottom: 8}
+  - type: uiText
+    richText: true
+    text: "<b>Physics push</b>   <color=#BFD0DC>Crate + trigger plate</color>"
+    size: 12
+    insetX: 10
+    insetY: 4
+- id: 4c245b18-6230-5aa3-b31a-06d235e08baf
+  parentId: b68037e0-a824-517c-9075-3ae72d082181
+  name: Save status
+  x: 436
+  y: 13
+  width: 92
+  height: 20
+  components:
+  - type: uiRect
+  - type: uiText
+    text: ""
+    size: 13
+    color: "#FFD84A"
+  - type: script
+    script: Checkpoint
+    values: {}

@@ -1,0 +1,225 @@
+schemaVersion: 42
+objects:
+- id: f216c870-7242-58fd-88b5-bc433c69d829
+  name: Backdrop
+  x: 0
+  y: 0
+  width: 800
+  height: 450
+  components:
+  - type: spriteRenderer
+    squareColor: "#1B1626"
+    order: -30
+- id: 93f83f59-ee6e-5429-bfda-ca3851efd07e
+  name: Chest
+  x: 0
+  y: 0
+  width: 32
+  height: 32
+  components:
+  - type: spriteRenderer
+    assetId: 9dbfcfaa-1f74-52c3-95e0-d21d83a0b952
+    asset: Assets/Showcase/Chest.png
+    order: 4
+- id: a4a747cb-db53-5ac7-8e37-2525e8adbf9e
+  name: Board
+  x: 16
+  y: 16
+  width: 32
+  height: 32
+  components:
+  - type: tilemap2D
+    tileset: 6ebe1f5c-8441-5ae6-b033-20cee3d280b1
+    cellSize: {width: 32, height: 32}
+    order: -10
+    chunks: []
+  - type: script
+    script: Showcase/DungeonMaze
+    values: {"Pawn": {"Id": "cd9e6e0c-1196-5fe7-9f01-feecf0ba41fd"}, "Chest": "93f83f59-ee6e-5429-bfda-ca3851efd07e", "Readout": "3bb854cb-fefe-5171-bb1e-355eb90559db", "Status": "4c0a366b-b046-5634-bad9-4f4d5e4c93af", "FaceN": {"Id": "d7a8d7af-d379-5fe0-a509-e4610b0cfe3f"}, "FaceE": {"Id": "d19985ab-e0f5-5cc9-affd-6666613af7c8"}, "FaceS": {"Id": "f565263f-45a2-53e7-a5ed-3fdca6e15a2c"}, "FaceW": {"Id": "f1af22c3-aa43-54b8-802a-3656cd55cc41"}}
+- id: d64f390e-7c0c-57b8-8ff1-be006c49e34b
+  name: Camera
+  x: 400
+  y: 225
+  width: 1
+  height: 1
+  components:
+  - type: camera2D
+- id: 52419ced-d49f-517b-aa53-e595437bdfbf
+  name: Canvas
+  x: 0
+  y: 0
+  width: 1
+  height: 1
+  components:
+  - type: uiCanvas
+- id: 429e81e8-4b98-5317-ab02-ee69fae57601
+  parentId: 52419ced-d49f-517b-aa53-e595437bdfbf
+  name: Seed panel
+  x: 576
+  y: 16
+  width: 212
+  height: 96
+  components:
+  - type: uiRect
+  - type: uiImage
+    sprite: c4676a68-dc53-5954-889c-f56daa8276e4
+    borders: {left: 4, top: 4, right: 4, bottom: 4}
+- id: 28e1e7bf-ad14-5e9d-959b-f3115cd19df0
+  parentId: 429e81e8-4b98-5317-ab02-ee69fae57601
+  name: Seed label
+  x: 14
+  y: 10
+  width: 184
+  height: 16
+  components:
+  - type: uiRect
+  - type: uiText
+    richText: true
+    text: "SEED"
+    size: 12
+    color: "#BFD0DC"
+- id: 3bb854cb-fefe-5171-bb1e-355eb90559db
+  parentId: 429e81e8-4b98-5317-ab02-ee69fae57601
+  name: Seed number
+  x: 14
+  y: 28
+  width: 184
+  height: 34
+  components:
+  - type: uiRect
+  - type: uiText
+    richText: true
+    text: "104 729"
+    size: 28
+    color: "#FFD84A"
+- id: 091b46a7-a0d4-562e-9a97-907235a02588
+  parentId: 429e81e8-4b98-5317-ab02-ee69fae57601
+  name: Seed hint
+  x: 14
+  y: 68
+  width: 184
+  height: 16
+  components:
+  - type: uiRect
+  - type: uiText
+    richText: true
+    text: "N / P   next / previous seed"
+    size: 11
+    color: "#BFD0DC"
+- id: 4c0a366b-b046-5634-bad9-4f4d5e4c93af
+  parentId: 52419ced-d49f-517b-aa53-e595437bdfbf
+  name: Status
+  x: 580
+  y: 120
+  width: 204
+  height: 36
+  components:
+  - type: uiRect
+  - type: uiText
+    richText: true
+    text: "Turn 0     Find the chest."
+    size: 12
+    color: "#F4F6F4"
+    wrap: true
+- id: 9ec4d071-aec4-51db-8c73-fb590cec3e3e
+  parentId: 52419ced-d49f-517b-aa53-e595437bdfbf
+  name: Tag 1
+  x: 576
+  y: 168
+  width: 212
+  height: 44
+  components:
+  - type: uiRect
+    showIf: seed
+  - type: uiImage
+    sprite: c4676a68-dc53-5954-889c-f56daa8276e4
+    borders: {left: 4, top: 4, right: 4, bottom: 4}
+  - type: uiText
+    richText: true
+    wrap: true
+    text: "<b>Seeded generation</b>\n<color=#BFD0DC>Same seed, same dungeon</color>"
+    size: 12
+    insetX: 10
+    insetY: 5
+- id: 98c63388-6678-599e-ac88-1173cedc82d2
+  parentId: 52419ced-d49f-517b-aa53-e595437bdfbf
+  name: Tag 2
+  x: 576
+  y: 218
+  width: 212
+  height: 44
+  components:
+  - type: uiRect
+    showIf: turns
+  - type: uiImage
+    sprite: c4676a68-dc53-5954-889c-f56daa8276e4
+    borders: {left: 4, top: 4, right: 4, bottom: 4}
+  - type: uiText
+    richText: true
+    wrap: true
+    text: "<b>Turn-based grid</b>\n<color=#BFD0DC>One step per turn, walls block</color>"
+    size: 12
+    insetX: 10
+    insetY: 5
+- id: cc9173b2-f750-54a0-8ab1-4c3be533fce0
+  parentId: 52419ced-d49f-517b-aa53-e595437bdfbf
+  name: Tag 3
+  x: 576
+  y: 268
+  width: 212
+  height: 44
+  components:
+  - type: uiRect
+    showIf: replay
+  - type: uiImage
+    sprite: c4676a68-dc53-5954-889c-f56daa8276e4
+    borders: {left: 4, top: 4, right: 4, bottom: 4}
+  - type: uiText
+    richText: true
+    wrap: true
+    text: "<b>Replay</b>\n<color=#BFD0DC>Saved turns play back exactly</color>"
+    size: 12
+    insetX: 10
+    insetY: 5
+- id: f48f90b6-f0a0-5b9f-8ff5-af1bb92105ea
+  parentId: 52419ced-d49f-517b-aa53-e595437bdfbf
+  name: Caption
+  x: 12
+  y: -12
+  width: 560
+  height: 44
+  components:
+  - type: uiRect
+    anchor: BottomLeft
+  - type: uiImage
+    sprite: c4676a68-dc53-5954-889c-f56daa8276e4
+    borders: {left: 4, top: 4, right: 4, bottom: 4}
+- id: f6f8b832-99fe-55fb-ba60-982b6f9d7e10
+  parentId: f48f90b6-f0a0-5b9f-8ff5-af1bb92105ea
+  name: Caption title
+  x: 12
+  y: 5
+  width: 536
+  height: 20
+  components:
+  - type: uiRect
+  - type: uiText
+    richText: true
+    text: "<b>SeedLab</b>   Seeded dungeons and turn replays"
+    size: 15
+    color: "#F4F6F4"
+- id: 0d035bcb-cf44-5a5a-bd66-377ef1014fe1
+  parentId: f48f90b6-f0a0-5b9f-8ff5-af1bb92105ea
+  name: Caption controls
+  x: 12
+  y: 25
+  width: 536
+  height: 16
+  components:
+  - type: uiRect
+  - type: uiText
+    richText: true
+    text: "Move  ← → ↑ ↓      Walk to chest  Return      Save  K      Replay  T"
+    size: 12
+    color: "#BFD0DC"
+defaultCameraId: d64f390e-7c0c-57b8-8ff1-be006c49e34b

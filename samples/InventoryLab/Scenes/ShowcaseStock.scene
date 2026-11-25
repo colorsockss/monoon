@@ -1,0 +1,946 @@
+schemaVersion: 42
+objects:
+- id: 7056b92a-4ae9-51a6-a418-06452e194d39
+  name: Grass
+  x: 0
+  y: 0
+  width: 533
+  height: 300
+  components:
+  - type: spriteRenderer
+    assetId: 6653b625-0433-5c44-8676-22adda830639
+    asset: Assets/Showcase/Grass.png
+    drawMode: Tiled
+    order: -20
+- id: 167ea527-26ef-5e37-91ad-f34209c32ed3
+  name: Fence 1
+  x: 24
+  y: 18
+  width: 68
+  height: 34
+  components:
+  - type: spriteRenderer
+    assetId: cdadf176-fd74-57ab-bd32-3b7326aa5895
+    asset: Assets/Showcase/Fence.png
+    order: 52
+- id: 8270e5f6-8412-5ac8-b9a5-cce6c407522d
+  name: Fence 2
+  x: 92
+  y: 18
+  width: 68
+  height: 34
+  components:
+  - type: spriteRenderer
+    assetId: cdadf176-fd74-57ab-bd32-3b7326aa5895
+    asset: Assets/Showcase/Fence.png
+    order: 52
+- id: af022b35-8203-5161-8270-7efa02c46f54
+  name: Fence 3
+  x: 160
+  y: 18
+  width: 68
+  height: 34
+  components:
+  - type: spriteRenderer
+    assetId: cdadf176-fd74-57ab-bd32-3b7326aa5895
+    asset: Assets/Showcase/Fence.png
+    order: 52
+- id: 4ea2185e-ebfb-5ac3-88c7-ce67a9d3009f
+  name: Fence 4
+  x: 324
+  y: 18
+  width: 68
+  height: 34
+  components:
+  - type: spriteRenderer
+    assetId: cdadf176-fd74-57ab-bd32-3b7326aa5895
+    asset: Assets/Showcase/Fence.png
+    order: 52
+- id: f738a073-e733-5edf-820d-965ebfa79d6d
+  name: Fence 5
+  x: 392
+  y: 18
+  width: 68
+  height: 34
+  components:
+  - type: spriteRenderer
+    assetId: cdadf176-fd74-57ab-bd32-3b7326aa5895
+    asset: Assets/Showcase/Fence.png
+    order: 52
+- id: c4fa6787-923b-5c41-85fc-13cb293bcbc6
+  name: Fence 6
+  x: 460
+  y: 18
+  width: 68
+  height: 34
+  components:
+  - type: spriteRenderer
+    assetId: cdadf176-fd74-57ab-bd32-3b7326aa5895
+    asset: Assets/Showcase/Fence.png
+    order: 52
+- id: cedac59a-e30c-578c-bcb0-4efb3a5ec9ba
+  name: Stall
+  x: 238
+  y: 26
+  width: 108
+  height: 102
+  components:
+  - type: spriteRenderer
+    assetId: 472cd12c-31a4-5dbe-93b4-a7593c216bc6
+    asset: Assets/Showcase/Stall.png
+    order: 128
+- id: 4cd1c84f-b788-5750-913a-cb89d89d3e2b
+  name: Well
+  x: 41
+  y: 70
+  width: 66
+  height: 80
+  components:
+  - type: spriteRenderer
+    assetId: 03a7f4c0-604f-55e5-9686-e90e189da783
+    asset: Assets/Showcase/Well.png
+    order: 150
+- id: aa9aff3d-8849-5bf5-b15f-d8b9e012e6c7
+  name: Bush
+  x: 453
+  y: 86
+  width: 50
+  height: 42
+  components:
+  - type: spriteRenderer
+    assetId: 08bfdfe3-2506-5b6c-aa7e-f301782306bb
+    asset: Assets/Showcase/Bush.png
+    order: 128
+- id: ee6378b9-8ba8-5185-b2b8-744369296f53
+  name: Herbalist
+  x: 244
+  y: 92
+  width: 40
+  height: 68
+  components:
+  - type: spriteRenderer
+    assetId: 30887372-1a18-57a6-b07e-6a40b1a5e29a
+    asset: Assets/Showcase/Herbalist.png
+    order: 160
+- id: 8a5b0f32-b5ed-52d8-96d6-a5d4cb274736
+  name: Flowers 1
+  x: 133
+  y: 164
+  width: 54
+  height: 32
+  components:
+  - type: spriteRenderer
+    assetId: 81ff5ad9-c479-5946-88d9-46e6cfb8a873
+    asset: Assets/Showcase/Flowers.png
+    order: 196
+- id: 3a8399b6-5e6c-5e29-89ed-c364eb862aac
+  name: Flowers 2
+  x: 355
+  y: 230
+  width: 54
+  height: 32
+  components:
+  - type: spriteRenderer
+    assetId: 81ff5ad9-c479-5946-88d9-46e6cfb8a873
+    asset: Assets/Showcase/Flowers.png
+    order: 262
+- id: b7a6e679-f2c9-5ae0-a68f-841aa45e1a11
+  name: Flowers 3
+  x: 13
+  y: 230
+  width: 54
+  height: 32
+  components:
+  - type: spriteRenderer
+    assetId: 81ff5ad9-c479-5946-88d9-46e6cfb8a873
+    asset: Assets/Showcase/Flowers.png
+    order: 262
+- id: 8d91541a-d5a0-5cb1-8695-308305be76a7
+  name: Flowers 4
+  x: 469
+  y: 182
+  width: 54
+  height: 32
+  components:
+  - type: spriteRenderer
+    assetId: 81ff5ad9-c479-5946-88d9-46e6cfb8a873
+    asset: Assets/Showcase/Flowers.png
+    order: 214
+- id: b47c5fa7-2cf6-5d35-b77b-c45d281f4d45
+  name: Camera
+  x: 266.5
+  y: 150
+  width: 1
+  height: 1
+  components:
+  - type: camera2D
+    zoom: 1.5
+- id: dd345c9a-846a-538c-85d7-fe02e5a336c6
+  name: Canvas
+  x: 0
+  y: 0
+  width: 1
+  height: 1
+  components:
+  - type: uiCanvas
+- id: b3a082aa-2af8-5c08-b6c5-92a98fc7facf
+  parentId: dd345c9a-846a-538c-85d7-fe02e5a336c6
+  name: Dim
+  x: 0
+  y: 0
+  width: 800
+  height: 450
+  components:
+  - type: uiRect
+  - type: uiImage
+    sprite: 10aa8fe1-f416-5971-839d-3944dee38e3c
+    borders: {left: 4, top: 4, right: 4, bottom: 4}
+- id: df752c8e-b0db-532c-b3e0-3d20883d5cef
+  parentId: dd345c9a-846a-538c-85d7-fe02e5a336c6
+  name: Bag panel
+  x: 24
+  y: 20
+  width: 264
+  height: 368
+  components:
+  - type: uiRect
+  - type: uiImage
+    sprite: 10aa8fe1-f416-5971-839d-3944dee38e3c
+    borders: {left: 4, top: 4, right: 4, bottom: 4}
+- id: 8a27d411-c40f-5e92-90d7-837fc56ca630
+  parentId: df752c8e-b0db-532c-b3e0-3d20883d5cef
+  name: Bag title
+  x: 16
+  y: 12
+  width: 232
+  height: 20
+  components:
+  - type: uiRect
+  - type: uiText
+    text: "<b>Bag</b>"
+    size: 16
+    color: "#F4F6F4"
+    richText: true
+    icons: {herb: 5c1a7e2e-3b0d-4f53-9a51-6e0b7c11a503, crystal: 589328e1-9fc6-4acb-ac05-ac55da897e12, key: 8b767fbb-02ce-44a7-b503-e1c2cdcaafb1, rope: 76d6c4b8-9a70-4e63-bd75-6b35a78ba93f, lantern: 12aed755-8f41-4ce5-ac8c-8a074db75d38, map: 2ba01449-6f41-475c-86d7-23b8106e2b6a, flask: bf3e8702-0199-49a0-8336-6afdd8fba14d, bandage: 101c3dd5-450b-466a-b7ac-b3c3d3322d0a, arrow: 8dd9051c-717a-4396-8d92-fb9e3e304364, shield: 685066b2-faa0-44e0-af92-6526001f201c, compass: 82a2e9a8-988a-4f84-a9a7-ad355aecfac4, bread: 4a6cd46e-b3f6-4f76-a9b7-cacd817013ca}
+- id: 9c12e318-1bbd-5c81-9aaf-ce780ef5db78
+  parentId: df752c8e-b0db-532c-b3e0-3d20883d5cef
+  name: Bag hint
+  x: 16
+  y: 34
+  width: 232
+  height: 16
+  components:
+  - type: uiRect
+  - type: uiText
+    text: "Drag an item onto another slot"
+    size: 12
+    color: "#BFD0DC"
+    richText: true
+    icons: {herb: 5c1a7e2e-3b0d-4f53-9a51-6e0b7c11a503, crystal: 589328e1-9fc6-4acb-ac05-ac55da897e12, key: 8b767fbb-02ce-44a7-b503-e1c2cdcaafb1, rope: 76d6c4b8-9a70-4e63-bd75-6b35a78ba93f, lantern: 12aed755-8f41-4ce5-ac8c-8a074db75d38, map: 2ba01449-6f41-475c-86d7-23b8106e2b6a, flask: bf3e8702-0199-49a0-8336-6afdd8fba14d, bandage: 101c3dd5-450b-466a-b7ac-b3c3d3322d0a, arrow: 8dd9051c-717a-4396-8d92-fb9e3e304364, shield: 685066b2-faa0-44e0-af92-6526001f201c, compass: 82a2e9a8-988a-4f84-a9a7-ad355aecfac4, bread: 4a6cd46e-b3f6-4f76-a9b7-cacd817013ca}
+- id: a914d719-362f-5871-9dd3-8bfea366e017
+  parentId: df752c8e-b0db-532c-b3e0-3d20883d5cef
+  name: Bag grid
+  x: 16
+  y: 60
+  width: 232
+  height: 292
+  components:
+  - type: uiRect
+  - type: uiLayout
+    axis: Grid
+    columns: 4
+    gap: 8
+    padding: 0
+  - type: script
+    script: Showcase/BagSlots
+    values: {"Ghost": "3c032083-855a-549e-b13a-7cadf7d1a8c8", "GhostBack": "1c5fa097-59ea-54b0-af7e-46612bffda73"}
+- id: d9da877f-ae84-5591-b485-bb188bb3f7c6
+  parentId: a914d719-362f-5871-9dd3-8bfea366e017
+  name: Bag slot 1
+  x: 0
+  y: 0
+  width: 52
+  height: 52
+  components:
+  - type: uiRect
+  - type: uiImage
+    sprite: ff9ed6f0-ab54-46ec-ac7f-113d05db0e78
+    borders: {left: 4, top: 4, right: 4, bottom: 4}
+  - type: uiButton
+    draggable: true
+  - type: uiText
+    text: "<size=30><icon=herb></size>"
+    size: 13
+    color: "#FFFFFF"
+    richText: true
+    icons: {herb: 5c1a7e2e-3b0d-4f53-9a51-6e0b7c11a503, crystal: 589328e1-9fc6-4acb-ac05-ac55da897e12, key: 8b767fbb-02ce-44a7-b503-e1c2cdcaafb1, rope: 76d6c4b8-9a70-4e63-bd75-6b35a78ba93f, lantern: 12aed755-8f41-4ce5-ac8c-8a074db75d38, map: 2ba01449-6f41-475c-86d7-23b8106e2b6a, flask: bf3e8702-0199-49a0-8336-6afdd8fba14d, bandage: 101c3dd5-450b-466a-b7ac-b3c3d3322d0a, arrow: 8dd9051c-717a-4396-8d92-fb9e3e304364, shield: 685066b2-faa0-44e0-af92-6526001f201c, compass: 82a2e9a8-988a-4f84-a9a7-ad355aecfac4, bread: 4a6cd46e-b3f6-4f76-a9b7-cacd817013ca}
+    insetX: 11
+    insetY: 8
+- id: f9082165-8860-5b07-a57f-65dc611602e0
+  parentId: a914d719-362f-5871-9dd3-8bfea366e017
+  name: Bag slot 2
+  x: 0
+  y: 0
+  width: 52
+  height: 52
+  components:
+  - type: uiRect
+  - type: uiImage
+    sprite: ff9ed6f0-ab54-46ec-ac7f-113d05db0e78
+    borders: {left: 4, top: 4, right: 4, bottom: 4}
+  - type: uiButton
+    draggable: true
+  - type: uiText
+    text: "<size=30><icon=crystal></size>"
+    size: 13
+    color: "#FFFFFF"
+    richText: true
+    icons: {herb: 5c1a7e2e-3b0d-4f53-9a51-6e0b7c11a503, crystal: 589328e1-9fc6-4acb-ac05-ac55da897e12, key: 8b767fbb-02ce-44a7-b503-e1c2cdcaafb1, rope: 76d6c4b8-9a70-4e63-bd75-6b35a78ba93f, lantern: 12aed755-8f41-4ce5-ac8c-8a074db75d38, map: 2ba01449-6f41-475c-86d7-23b8106e2b6a, flask: bf3e8702-0199-49a0-8336-6afdd8fba14d, bandage: 101c3dd5-450b-466a-b7ac-b3c3d3322d0a, arrow: 8dd9051c-717a-4396-8d92-fb9e3e304364, shield: 685066b2-faa0-44e0-af92-6526001f201c, compass: 82a2e9a8-988a-4f84-a9a7-ad355aecfac4, bread: 4a6cd46e-b3f6-4f76-a9b7-cacd817013ca}
+    insetX: 11
+    insetY: 8
+- id: 9dc3560e-d115-5beb-8d85-79cf971fde06
+  parentId: a914d719-362f-5871-9dd3-8bfea366e017
+  name: Bag slot 3
+  x: 0
+  y: 0
+  width: 52
+  height: 52
+  components:
+  - type: uiRect
+  - type: uiImage
+    sprite: ff9ed6f0-ab54-46ec-ac7f-113d05db0e78
+    borders: {left: 4, top: 4, right: 4, bottom: 4}
+  - type: uiButton
+    draggable: true
+  - type: uiText
+    text: "<size=30><icon=key></size>"
+    size: 13
+    color: "#FFFFFF"
+    richText: true
+    icons: {herb: 5c1a7e2e-3b0d-4f53-9a51-6e0b7c11a503, crystal: 589328e1-9fc6-4acb-ac05-ac55da897e12, key: 8b767fbb-02ce-44a7-b503-e1c2cdcaafb1, rope: 76d6c4b8-9a70-4e63-bd75-6b35a78ba93f, lantern: 12aed755-8f41-4ce5-ac8c-8a074db75d38, map: 2ba01449-6f41-475c-86d7-23b8106e2b6a, flask: bf3e8702-0199-49a0-8336-6afdd8fba14d, bandage: 101c3dd5-450b-466a-b7ac-b3c3d3322d0a, arrow: 8dd9051c-717a-4396-8d92-fb9e3e304364, shield: 685066b2-faa0-44e0-af92-6526001f201c, compass: 82a2e9a8-988a-4f84-a9a7-ad355aecfac4, bread: 4a6cd46e-b3f6-4f76-a9b7-cacd817013ca}
+    insetX: 11
+    insetY: 8
+- id: 8173e010-e28f-5445-9776-38e63dc54a57
+  parentId: a914d719-362f-5871-9dd3-8bfea366e017
+  name: Bag slot 4
+  x: 0
+  y: 0
+  width: 52
+  height: 52
+  components:
+  - type: uiRect
+  - type: uiImage
+    sprite: ff9ed6f0-ab54-46ec-ac7f-113d05db0e78
+    borders: {left: 4, top: 4, right: 4, bottom: 4}
+  - type: uiButton
+    draggable: true
+  - type: uiText
+    text: ""
+    size: 13
+    color: "#FFFFFF"
+    richText: true
+    icons: {herb: 5c1a7e2e-3b0d-4f53-9a51-6e0b7c11a503, crystal: 589328e1-9fc6-4acb-ac05-ac55da897e12, key: 8b767fbb-02ce-44a7-b503-e1c2cdcaafb1, rope: 76d6c4b8-9a70-4e63-bd75-6b35a78ba93f, lantern: 12aed755-8f41-4ce5-ac8c-8a074db75d38, map: 2ba01449-6f41-475c-86d7-23b8106e2b6a, flask: bf3e8702-0199-49a0-8336-6afdd8fba14d, bandage: 101c3dd5-450b-466a-b7ac-b3c3d3322d0a, arrow: 8dd9051c-717a-4396-8d92-fb9e3e304364, shield: 685066b2-faa0-44e0-af92-6526001f201c, compass: 82a2e9a8-988a-4f84-a9a7-ad355aecfac4, bread: 4a6cd46e-b3f6-4f76-a9b7-cacd817013ca}
+    insetX: 11
+    insetY: 8
+- id: 6ce3711c-9e47-569e-8057-f459fba29944
+  parentId: a914d719-362f-5871-9dd3-8bfea366e017
+  name: Bag slot 5
+  x: 0
+  y: 0
+  width: 52
+  height: 52
+  components:
+  - type: uiRect
+  - type: uiImage
+    sprite: ff9ed6f0-ab54-46ec-ac7f-113d05db0e78
+    borders: {left: 4, top: 4, right: 4, bottom: 4}
+  - type: uiButton
+    draggable: true
+  - type: uiText
+    text: "<size=30><icon=compass></size>"
+    size: 13
+    color: "#FFFFFF"
+    richText: true
+    icons: {herb: 5c1a7e2e-3b0d-4f53-9a51-6e0b7c11a503, crystal: 589328e1-9fc6-4acb-ac05-ac55da897e12, key: 8b767fbb-02ce-44a7-b503-e1c2cdcaafb1, rope: 76d6c4b8-9a70-4e63-bd75-6b35a78ba93f, lantern: 12aed755-8f41-4ce5-ac8c-8a074db75d38, map: 2ba01449-6f41-475c-86d7-23b8106e2b6a, flask: bf3e8702-0199-49a0-8336-6afdd8fba14d, bandage: 101c3dd5-450b-466a-b7ac-b3c3d3322d0a, arrow: 8dd9051c-717a-4396-8d92-fb9e3e304364, shield: 685066b2-faa0-44e0-af92-6526001f201c, compass: 82a2e9a8-988a-4f84-a9a7-ad355aecfac4, bread: 4a6cd46e-b3f6-4f76-a9b7-cacd817013ca}
+    insetX: 11
+    insetY: 8
+- id: ab4b4a9f-d875-5a42-b707-5d070001797f
+  parentId: a914d719-362f-5871-9dd3-8bfea366e017
+  name: Bag slot 6
+  x: 0
+  y: 0
+  width: 52
+  height: 52
+  components:
+  - type: uiRect
+  - type: uiImage
+    sprite: ff9ed6f0-ab54-46ec-ac7f-113d05db0e78
+    borders: {left: 4, top: 4, right: 4, bottom: 4}
+  - type: uiButton
+    draggable: true
+  - type: uiText
+    text: ""
+    size: 13
+    color: "#FFFFFF"
+    richText: true
+    icons: {herb: 5c1a7e2e-3b0d-4f53-9a51-6e0b7c11a503, crystal: 589328e1-9fc6-4acb-ac05-ac55da897e12, key: 8b767fbb-02ce-44a7-b503-e1c2cdcaafb1, rope: 76d6c4b8-9a70-4e63-bd75-6b35a78ba93f, lantern: 12aed755-8f41-4ce5-ac8c-8a074db75d38, map: 2ba01449-6f41-475c-86d7-23b8106e2b6a, flask: bf3e8702-0199-49a0-8336-6afdd8fba14d, bandage: 101c3dd5-450b-466a-b7ac-b3c3d3322d0a, arrow: 8dd9051c-717a-4396-8d92-fb9e3e304364, shield: 685066b2-faa0-44e0-af92-6526001f201c, compass: 82a2e9a8-988a-4f84-a9a7-ad355aecfac4, bread: 4a6cd46e-b3f6-4f76-a9b7-cacd817013ca}
+    insetX: 11
+    insetY: 8
+- id: 7ed00739-68df-53e0-a42e-b79cb838052f
+  parentId: a914d719-362f-5871-9dd3-8bfea366e017
+  name: Bag slot 7
+  x: 0
+  y: 0
+  width: 52
+  height: 52
+  components:
+  - type: uiRect
+  - type: uiImage
+    sprite: ff9ed6f0-ab54-46ec-ac7f-113d05db0e78
+    borders: {left: 4, top: 4, right: 4, bottom: 4}
+  - type: uiButton
+    draggable: true
+  - type: uiText
+    text: "<size=30><icon=bread></size>"
+    size: 13
+    color: "#FFFFFF"
+    richText: true
+    icons: {herb: 5c1a7e2e-3b0d-4f53-9a51-6e0b7c11a503, crystal: 589328e1-9fc6-4acb-ac05-ac55da897e12, key: 8b767fbb-02ce-44a7-b503-e1c2cdcaafb1, rope: 76d6c4b8-9a70-4e63-bd75-6b35a78ba93f, lantern: 12aed755-8f41-4ce5-ac8c-8a074db75d38, map: 2ba01449-6f41-475c-86d7-23b8106e2b6a, flask: bf3e8702-0199-49a0-8336-6afdd8fba14d, bandage: 101c3dd5-450b-466a-b7ac-b3c3d3322d0a, arrow: 8dd9051c-717a-4396-8d92-fb9e3e304364, shield: 685066b2-faa0-44e0-af92-6526001f201c, compass: 82a2e9a8-988a-4f84-a9a7-ad355aecfac4, bread: 4a6cd46e-b3f6-4f76-a9b7-cacd817013ca}
+    insetX: 11
+    insetY: 8
+- id: cda0a0b5-e013-549e-b122-8918c680189e
+  parentId: a914d719-362f-5871-9dd3-8bfea366e017
+  name: Bag slot 8
+  x: 0
+  y: 0
+  width: 52
+  height: 52
+  components:
+  - type: uiRect
+  - type: uiImage
+    sprite: ff9ed6f0-ab54-46ec-ac7f-113d05db0e78
+    borders: {left: 4, top: 4, right: 4, bottom: 4}
+  - type: uiButton
+    draggable: true
+  - type: uiText
+    text: "<size=30><icon=rope></size>"
+    size: 13
+    color: "#FFFFFF"
+    richText: true
+    icons: {herb: 5c1a7e2e-3b0d-4f53-9a51-6e0b7c11a503, crystal: 589328e1-9fc6-4acb-ac05-ac55da897e12, key: 8b767fbb-02ce-44a7-b503-e1c2cdcaafb1, rope: 76d6c4b8-9a70-4e63-bd75-6b35a78ba93f, lantern: 12aed755-8f41-4ce5-ac8c-8a074db75d38, map: 2ba01449-6f41-475c-86d7-23b8106e2b6a, flask: bf3e8702-0199-49a0-8336-6afdd8fba14d, bandage: 101c3dd5-450b-466a-b7ac-b3c3d3322d0a, arrow: 8dd9051c-717a-4396-8d92-fb9e3e304364, shield: 685066b2-faa0-44e0-af92-6526001f201c, compass: 82a2e9a8-988a-4f84-a9a7-ad355aecfac4, bread: 4a6cd46e-b3f6-4f76-a9b7-cacd817013ca}
+    insetX: 11
+    insetY: 8
+- id: daca2f4c-f758-55f9-a4f1-8bb40eab19b1
+  parentId: a914d719-362f-5871-9dd3-8bfea366e017
+  name: Bag slot 9
+  x: 0
+  y: 0
+  width: 52
+  height: 52
+  components:
+  - type: uiRect
+  - type: uiImage
+    sprite: ff9ed6f0-ab54-46ec-ac7f-113d05db0e78
+    borders: {left: 4, top: 4, right: 4, bottom: 4}
+  - type: uiButton
+    draggable: true
+  - type: uiText
+    text: ""
+    size: 13
+    color: "#FFFFFF"
+    richText: true
+    icons: {herb: 5c1a7e2e-3b0d-4f53-9a51-6e0b7c11a503, crystal: 589328e1-9fc6-4acb-ac05-ac55da897e12, key: 8b767fbb-02ce-44a7-b503-e1c2cdcaafb1, rope: 76d6c4b8-9a70-4e63-bd75-6b35a78ba93f, lantern: 12aed755-8f41-4ce5-ac8c-8a074db75d38, map: 2ba01449-6f41-475c-86d7-23b8106e2b6a, flask: bf3e8702-0199-49a0-8336-6afdd8fba14d, bandage: 101c3dd5-450b-466a-b7ac-b3c3d3322d0a, arrow: 8dd9051c-717a-4396-8d92-fb9e3e304364, shield: 685066b2-faa0-44e0-af92-6526001f201c, compass: 82a2e9a8-988a-4f84-a9a7-ad355aecfac4, bread: 4a6cd46e-b3f6-4f76-a9b7-cacd817013ca}
+    insetX: 11
+    insetY: 8
+- id: 321ea33b-7ddc-5530-ba6a-1ac0cab76938
+  parentId: a914d719-362f-5871-9dd3-8bfea366e017
+  name: Bag slot 10
+  x: 0
+  y: 0
+  width: 52
+  height: 52
+  components:
+  - type: uiRect
+  - type: uiImage
+    sprite: ff9ed6f0-ab54-46ec-ac7f-113d05db0e78
+    borders: {left: 4, top: 4, right: 4, bottom: 4}
+  - type: uiButton
+    draggable: true
+  - type: uiText
+    text: "<size=30><icon=lantern></size>"
+    size: 13
+    color: "#FFFFFF"
+    richText: true
+    icons: {herb: 5c1a7e2e-3b0d-4f53-9a51-6e0b7c11a503, crystal: 589328e1-9fc6-4acb-ac05-ac55da897e12, key: 8b767fbb-02ce-44a7-b503-e1c2cdcaafb1, rope: 76d6c4b8-9a70-4e63-bd75-6b35a78ba93f, lantern: 12aed755-8f41-4ce5-ac8c-8a074db75d38, map: 2ba01449-6f41-475c-86d7-23b8106e2b6a, flask: bf3e8702-0199-49a0-8336-6afdd8fba14d, bandage: 101c3dd5-450b-466a-b7ac-b3c3d3322d0a, arrow: 8dd9051c-717a-4396-8d92-fb9e3e304364, shield: 685066b2-faa0-44e0-af92-6526001f201c, compass: 82a2e9a8-988a-4f84-a9a7-ad355aecfac4, bread: 4a6cd46e-b3f6-4f76-a9b7-cacd817013ca}
+    insetX: 11
+    insetY: 8
+- id: f24fd96e-31c0-5382-8401-daa972b912e2
+  parentId: a914d719-362f-5871-9dd3-8bfea366e017
+  name: Bag slot 11
+  x: 0
+  y: 0
+  width: 52
+  height: 52
+  components:
+  - type: uiRect
+  - type: uiImage
+    sprite: ff9ed6f0-ab54-46ec-ac7f-113d05db0e78
+    borders: {left: 4, top: 4, right: 4, bottom: 4}
+  - type: uiButton
+    draggable: true
+  - type: uiText
+    text: ""
+    size: 13
+    color: "#FFFFFF"
+    richText: true
+    icons: {herb: 5c1a7e2e-3b0d-4f53-9a51-6e0b7c11a503, crystal: 589328e1-9fc6-4acb-ac05-ac55da897e12, key: 8b767fbb-02ce-44a7-b503-e1c2cdcaafb1, rope: 76d6c4b8-9a70-4e63-bd75-6b35a78ba93f, lantern: 12aed755-8f41-4ce5-ac8c-8a074db75d38, map: 2ba01449-6f41-475c-86d7-23b8106e2b6a, flask: bf3e8702-0199-49a0-8336-6afdd8fba14d, bandage: 101c3dd5-450b-466a-b7ac-b3c3d3322d0a, arrow: 8dd9051c-717a-4396-8d92-fb9e3e304364, shield: 685066b2-faa0-44e0-af92-6526001f201c, compass: 82a2e9a8-988a-4f84-a9a7-ad355aecfac4, bread: 4a6cd46e-b3f6-4f76-a9b7-cacd817013ca}
+    insetX: 11
+    insetY: 8
+- id: 26dd749d-b0e2-5b5b-b879-78cc2d7dc1ec
+  parentId: a914d719-362f-5871-9dd3-8bfea366e017
+  name: Bag slot 12
+  x: 0
+  y: 0
+  width: 52
+  height: 52
+  components:
+  - type: uiRect
+  - type: uiImage
+    sprite: ff9ed6f0-ab54-46ec-ac7f-113d05db0e78
+    borders: {left: 4, top: 4, right: 4, bottom: 4}
+  - type: uiButton
+    draggable: true
+  - type: uiText
+    text: "<size=30><icon=map></size>"
+    size: 13
+    color: "#FFFFFF"
+    richText: true
+    icons: {herb: 5c1a7e2e-3b0d-4f53-9a51-6e0b7c11a503, crystal: 589328e1-9fc6-4acb-ac05-ac55da897e12, key: 8b767fbb-02ce-44a7-b503-e1c2cdcaafb1, rope: 76d6c4b8-9a70-4e63-bd75-6b35a78ba93f, lantern: 12aed755-8f41-4ce5-ac8c-8a074db75d38, map: 2ba01449-6f41-475c-86d7-23b8106e2b6a, flask: bf3e8702-0199-49a0-8336-6afdd8fba14d, bandage: 101c3dd5-450b-466a-b7ac-b3c3d3322d0a, arrow: 8dd9051c-717a-4396-8d92-fb9e3e304364, shield: 685066b2-faa0-44e0-af92-6526001f201c, compass: 82a2e9a8-988a-4f84-a9a7-ad355aecfac4, bread: 4a6cd46e-b3f6-4f76-a9b7-cacd817013ca}
+    insetX: 11
+    insetY: 8
+- id: d50e2ea0-62bf-567d-ae12-46d1d3d285f3
+  parentId: a914d719-362f-5871-9dd3-8bfea366e017
+  name: Bag slot 13
+  x: 0
+  y: 0
+  width: 52
+  height: 52
+  components:
+  - type: uiRect
+  - type: uiImage
+    sprite: ff9ed6f0-ab54-46ec-ac7f-113d05db0e78
+    borders: {left: 4, top: 4, right: 4, bottom: 4}
+  - type: uiButton
+    draggable: true
+  - type: uiText
+    text: "<size=30><icon=flask></size>"
+    size: 13
+    color: "#FFFFFF"
+    richText: true
+    icons: {herb: 5c1a7e2e-3b0d-4f53-9a51-6e0b7c11a503, crystal: 589328e1-9fc6-4acb-ac05-ac55da897e12, key: 8b767fbb-02ce-44a7-b503-e1c2cdcaafb1, rope: 76d6c4b8-9a70-4e63-bd75-6b35a78ba93f, lantern: 12aed755-8f41-4ce5-ac8c-8a074db75d38, map: 2ba01449-6f41-475c-86d7-23b8106e2b6a, flask: bf3e8702-0199-49a0-8336-6afdd8fba14d, bandage: 101c3dd5-450b-466a-b7ac-b3c3d3322d0a, arrow: 8dd9051c-717a-4396-8d92-fb9e3e304364, shield: 685066b2-faa0-44e0-af92-6526001f201c, compass: 82a2e9a8-988a-4f84-a9a7-ad355aecfac4, bread: 4a6cd46e-b3f6-4f76-a9b7-cacd817013ca}
+    insetX: 11
+    insetY: 8
+- id: 3ab60b8d-0f09-52b8-a48c-9b1957079af1
+  parentId: a914d719-362f-5871-9dd3-8bfea366e017
+  name: Bag slot 14
+  x: 0
+  y: 0
+  width: 52
+  height: 52
+  components:
+  - type: uiRect
+  - type: uiImage
+    sprite: ff9ed6f0-ab54-46ec-ac7f-113d05db0e78
+    borders: {left: 4, top: 4, right: 4, bottom: 4}
+  - type: uiButton
+    draggable: true
+  - type: uiText
+    text: ""
+    size: 13
+    color: "#FFFFFF"
+    richText: true
+    icons: {herb: 5c1a7e2e-3b0d-4f53-9a51-6e0b7c11a503, crystal: 589328e1-9fc6-4acb-ac05-ac55da897e12, key: 8b767fbb-02ce-44a7-b503-e1c2cdcaafb1, rope: 76d6c4b8-9a70-4e63-bd75-6b35a78ba93f, lantern: 12aed755-8f41-4ce5-ac8c-8a074db75d38, map: 2ba01449-6f41-475c-86d7-23b8106e2b6a, flask: bf3e8702-0199-49a0-8336-6afdd8fba14d, bandage: 101c3dd5-450b-466a-b7ac-b3c3d3322d0a, arrow: 8dd9051c-717a-4396-8d92-fb9e3e304364, shield: 685066b2-faa0-44e0-af92-6526001f201c, compass: 82a2e9a8-988a-4f84-a9a7-ad355aecfac4, bread: 4a6cd46e-b3f6-4f76-a9b7-cacd817013ca}
+    insetX: 11
+    insetY: 8
+- id: 56509c75-1291-5ba8-9216-41bb2ed9a399
+  parentId: a914d719-362f-5871-9dd3-8bfea366e017
+  name: Bag slot 15
+  x: 0
+  y: 0
+  width: 52
+  height: 52
+  components:
+  - type: uiRect
+  - type: uiImage
+    sprite: ff9ed6f0-ab54-46ec-ac7f-113d05db0e78
+    borders: {left: 4, top: 4, right: 4, bottom: 4}
+  - type: uiButton
+    draggable: true
+  - type: uiText
+    text: ""
+    size: 13
+    color: "#FFFFFF"
+    richText: true
+    icons: {herb: 5c1a7e2e-3b0d-4f53-9a51-6e0b7c11a503, crystal: 589328e1-9fc6-4acb-ac05-ac55da897e12, key: 8b767fbb-02ce-44a7-b503-e1c2cdcaafb1, rope: 76d6c4b8-9a70-4e63-bd75-6b35a78ba93f, lantern: 12aed755-8f41-4ce5-ac8c-8a074db75d38, map: 2ba01449-6f41-475c-86d7-23b8106e2b6a, flask: bf3e8702-0199-49a0-8336-6afdd8fba14d, bandage: 101c3dd5-450b-466a-b7ac-b3c3d3322d0a, arrow: 8dd9051c-717a-4396-8d92-fb9e3e304364, shield: 685066b2-faa0-44e0-af92-6526001f201c, compass: 82a2e9a8-988a-4f84-a9a7-ad355aecfac4, bread: 4a6cd46e-b3f6-4f76-a9b7-cacd817013ca}
+    insetX: 11
+    insetY: 8
+- id: 9d83dbad-bb2d-5ab8-ad7d-0b65b5faff82
+  parentId: a914d719-362f-5871-9dd3-8bfea366e017
+  name: Bag slot 16
+  x: 0
+  y: 0
+  width: 52
+  height: 52
+  components:
+  - type: uiRect
+  - type: uiImage
+    sprite: ff9ed6f0-ab54-46ec-ac7f-113d05db0e78
+    borders: {left: 4, top: 4, right: 4, bottom: 4}
+  - type: uiButton
+    draggable: true
+  - type: uiText
+    text: "<size=30><icon=shield></size>"
+    size: 13
+    color: "#FFFFFF"
+    richText: true
+    icons: {herb: 5c1a7e2e-3b0d-4f53-9a51-6e0b7c11a503, crystal: 589328e1-9fc6-4acb-ac05-ac55da897e12, key: 8b767fbb-02ce-44a7-b503-e1c2cdcaafb1, rope: 76d6c4b8-9a70-4e63-bd75-6b35a78ba93f, lantern: 12aed755-8f41-4ce5-ac8c-8a074db75d38, map: 2ba01449-6f41-475c-86d7-23b8106e2b6a, flask: bf3e8702-0199-49a0-8336-6afdd8fba14d, bandage: 101c3dd5-450b-466a-b7ac-b3c3d3322d0a, arrow: 8dd9051c-717a-4396-8d92-fb9e3e304364, shield: 685066b2-faa0-44e0-af92-6526001f201c, compass: 82a2e9a8-988a-4f84-a9a7-ad355aecfac4, bread: 4a6cd46e-b3f6-4f76-a9b7-cacd817013ca}
+    insetX: 11
+    insetY: 8
+- id: 17d45a5b-64c5-5b5e-9e1b-c42dbd3a4207
+  parentId: a914d719-362f-5871-9dd3-8bfea366e017
+  name: Bag slot 17
+  x: 0
+  y: 0
+  width: 52
+  height: 52
+  components:
+  - type: uiRect
+  - type: uiImage
+    sprite: ff9ed6f0-ab54-46ec-ac7f-113d05db0e78
+    borders: {left: 4, top: 4, right: 4, bottom: 4}
+  - type: uiButton
+    draggable: true
+  - type: uiText
+    text: ""
+    size: 13
+    color: "#FFFFFF"
+    richText: true
+    icons: {herb: 5c1a7e2e-3b0d-4f53-9a51-6e0b7c11a503, crystal: 589328e1-9fc6-4acb-ac05-ac55da897e12, key: 8b767fbb-02ce-44a7-b503-e1c2cdcaafb1, rope: 76d6c4b8-9a70-4e63-bd75-6b35a78ba93f, lantern: 12aed755-8f41-4ce5-ac8c-8a074db75d38, map: 2ba01449-6f41-475c-86d7-23b8106e2b6a, flask: bf3e8702-0199-49a0-8336-6afdd8fba14d, bandage: 101c3dd5-450b-466a-b7ac-b3c3d3322d0a, arrow: 8dd9051c-717a-4396-8d92-fb9e3e304364, shield: 685066b2-faa0-44e0-af92-6526001f201c, compass: 82a2e9a8-988a-4f84-a9a7-ad355aecfac4, bread: 4a6cd46e-b3f6-4f76-a9b7-cacd817013ca}
+    insetX: 11
+    insetY: 8
+- id: 8cc99bbe-08de-5487-ab90-fa251faf48d7
+  parentId: a914d719-362f-5871-9dd3-8bfea366e017
+  name: Bag slot 18
+  x: 0
+  y: 0
+  width: 52
+  height: 52
+  components:
+  - type: uiRect
+  - type: uiImage
+    sprite: ff9ed6f0-ab54-46ec-ac7f-113d05db0e78
+    borders: {left: 4, top: 4, right: 4, bottom: 4}
+  - type: uiButton
+    draggable: true
+  - type: uiText
+    text: ""
+    size: 13
+    color: "#FFFFFF"
+    richText: true
+    icons: {herb: 5c1a7e2e-3b0d-4f53-9a51-6e0b7c11a503, crystal: 589328e1-9fc6-4acb-ac05-ac55da897e12, key: 8b767fbb-02ce-44a7-b503-e1c2cdcaafb1, rope: 76d6c4b8-9a70-4e63-bd75-6b35a78ba93f, lantern: 12aed755-8f41-4ce5-ac8c-8a074db75d38, map: 2ba01449-6f41-475c-86d7-23b8106e2b6a, flask: bf3e8702-0199-49a0-8336-6afdd8fba14d, bandage: 101c3dd5-450b-466a-b7ac-b3c3d3322d0a, arrow: 8dd9051c-717a-4396-8d92-fb9e3e304364, shield: 685066b2-faa0-44e0-af92-6526001f201c, compass: 82a2e9a8-988a-4f84-a9a7-ad355aecfac4, bread: 4a6cd46e-b3f6-4f76-a9b7-cacd817013ca}
+    insetX: 11
+    insetY: 8
+- id: f0016d3f-f972-5a2e-a350-a04cad8f0256
+  parentId: a914d719-362f-5871-9dd3-8bfea366e017
+  name: Bag slot 19
+  x: 0
+  y: 0
+  width: 52
+  height: 52
+  components:
+  - type: uiRect
+  - type: uiImage
+    sprite: ff9ed6f0-ab54-46ec-ac7f-113d05db0e78
+    borders: {left: 4, top: 4, right: 4, bottom: 4}
+  - type: uiButton
+    draggable: true
+  - type: uiText
+    text: ""
+    size: 13
+    color: "#FFFFFF"
+    richText: true
+    icons: {herb: 5c1a7e2e-3b0d-4f53-9a51-6e0b7c11a503, crystal: 589328e1-9fc6-4acb-ac05-ac55da897e12, key: 8b767fbb-02ce-44a7-b503-e1c2cdcaafb1, rope: 76d6c4b8-9a70-4e63-bd75-6b35a78ba93f, lantern: 12aed755-8f41-4ce5-ac8c-8a074db75d38, map: 2ba01449-6f41-475c-86d7-23b8106e2b6a, flask: bf3e8702-0199-49a0-8336-6afdd8fba14d, bandage: 101c3dd5-450b-466a-b7ac-b3c3d3322d0a, arrow: 8dd9051c-717a-4396-8d92-fb9e3e304364, shield: 685066b2-faa0-44e0-af92-6526001f201c, compass: 82a2e9a8-988a-4f84-a9a7-ad355aecfac4, bread: 4a6cd46e-b3f6-4f76-a9b7-cacd817013ca}
+    insetX: 11
+    insetY: 8
+- id: 780a0335-c5f9-58de-8206-f196718e8a9b
+  parentId: a914d719-362f-5871-9dd3-8bfea366e017
+  name: Bag slot 20
+  x: 0
+  y: 0
+  width: 52
+  height: 52
+  components:
+  - type: uiRect
+  - type: uiImage
+    sprite: ff9ed6f0-ab54-46ec-ac7f-113d05db0e78
+    borders: {left: 4, top: 4, right: 4, bottom: 4}
+  - type: uiButton
+    draggable: true
+  - type: uiText
+    text: ""
+    size: 13
+    color: "#FFFFFF"
+    richText: true
+    icons: {herb: 5c1a7e2e-3b0d-4f53-9a51-6e0b7c11a503, crystal: 589328e1-9fc6-4acb-ac05-ac55da897e12, key: 8b767fbb-02ce-44a7-b503-e1c2cdcaafb1, rope: 76d6c4b8-9a70-4e63-bd75-6b35a78ba93f, lantern: 12aed755-8f41-4ce5-ac8c-8a074db75d38, map: 2ba01449-6f41-475c-86d7-23b8106e2b6a, flask: bf3e8702-0199-49a0-8336-6afdd8fba14d, bandage: 101c3dd5-450b-466a-b7ac-b3c3d3322d0a, arrow: 8dd9051c-717a-4396-8d92-fb9e3e304364, shield: 685066b2-faa0-44e0-af92-6526001f201c, compass: 82a2e9a8-988a-4f84-a9a7-ad355aecfac4, bread: 4a6cd46e-b3f6-4f76-a9b7-cacd817013ca}
+    insetX: 11
+    insetY: 8
+- id: eb99832b-acd8-5686-9e53-694965b92bab
+  parentId: dd345c9a-846a-538c-85d7-fe02e5a336c6
+  name: Ledger panel
+  x: 304
+  y: 20
+  width: 472
+  height: 368
+  components:
+  - type: uiRect
+  - type: uiImage
+    sprite: 10aa8fe1-f416-5971-839d-3944dee38e3c
+    borders: {left: 4, top: 4, right: 4, bottom: 4}
+- id: a13c21fd-5cff-5332-9a9f-656b4ef73628
+  parentId: eb99832b-acd8-5686-9e53-694965b92bab
+  name: Ledger title
+  x: 16
+  y: 12
+  width: 440
+  height: 20
+  components:
+  - type: uiRect
+  - type: uiText
+    text: "<b>Herbalist's stock ledger</b>"
+    size: 16
+    color: "#F4F6F4"
+    richText: true
+    icons: {herb: 5c1a7e2e-3b0d-4f53-9a51-6e0b7c11a503, crystal: 589328e1-9fc6-4acb-ac05-ac55da897e12, key: 8b767fbb-02ce-44a7-b503-e1c2cdcaafb1, rope: 76d6c4b8-9a70-4e63-bd75-6b35a78ba93f, lantern: 12aed755-8f41-4ce5-ac8c-8a074db75d38, map: 2ba01449-6f41-475c-86d7-23b8106e2b6a, flask: bf3e8702-0199-49a0-8336-6afdd8fba14d, bandage: 101c3dd5-450b-466a-b7ac-b3c3d3322d0a, arrow: 8dd9051c-717a-4396-8d92-fb9e3e304364, shield: 685066b2-faa0-44e0-af92-6526001f201c, compass: 82a2e9a8-988a-4f84-a9a7-ad355aecfac4, bread: 4a6cd46e-b3f6-4f76-a9b7-cacd817013ca}
+- id: caf727d2-c594-58c9-8420-a1b023517aa6
+  parentId: eb99832b-acd8-5686-9e53-694965b92bab
+  name: Ledger range
+  x: 16
+  y: 34
+  width: 440
+  height: 16
+  components:
+  - type: uiRect
+  - type: uiText
+    text: "Rows 1–7 of 1,000"
+    size: 12
+    color: "#BFD0DC"
+    richText: true
+    icons: {herb: 5c1a7e2e-3b0d-4f53-9a51-6e0b7c11a503, crystal: 589328e1-9fc6-4acb-ac05-ac55da897e12, key: 8b767fbb-02ce-44a7-b503-e1c2cdcaafb1, rope: 76d6c4b8-9a70-4e63-bd75-6b35a78ba93f, lantern: 12aed755-8f41-4ce5-ac8c-8a074db75d38, map: 2ba01449-6f41-475c-86d7-23b8106e2b6a, flask: bf3e8702-0199-49a0-8336-6afdd8fba14d, bandage: 101c3dd5-450b-466a-b7ac-b3c3d3322d0a, arrow: 8dd9051c-717a-4396-8d92-fb9e3e304364, shield: 685066b2-faa0-44e0-af92-6526001f201c, compass: 82a2e9a8-988a-4f84-a9a7-ad355aecfac4, bread: 4a6cd46e-b3f6-4f76-a9b7-cacd817013ca}
+- id: e0cbee9d-6f80-533e-860e-9612e2aeb241
+  parentId: eb99832b-acd8-5686-9e53-694965b92bab
+  name: Tab number
+  x: 282
+  y: 60
+  width: 80
+  height: 16
+  components:
+  - type: uiRect
+  - type: uiText
+    text: "No."
+    size: 12
+    color: "#BFD0DC"
+    richText: true
+    icons: {herb: 5c1a7e2e-3b0d-4f53-9a51-6e0b7c11a503, crystal: 589328e1-9fc6-4acb-ac05-ac55da897e12, key: 8b767fbb-02ce-44a7-b503-e1c2cdcaafb1, rope: 76d6c4b8-9a70-4e63-bd75-6b35a78ba93f, lantern: 12aed755-8f41-4ce5-ac8c-8a074db75d38, map: 2ba01449-6f41-475c-86d7-23b8106e2b6a, flask: bf3e8702-0199-49a0-8336-6afdd8fba14d, bandage: 101c3dd5-450b-466a-b7ac-b3c3d3322d0a, arrow: 8dd9051c-717a-4396-8d92-fb9e3e304364, shield: 685066b2-faa0-44e0-af92-6526001f201c, compass: 82a2e9a8-988a-4f84-a9a7-ad355aecfac4, bread: 4a6cd46e-b3f6-4f76-a9b7-cacd817013ca}
+- id: 607dfd65-5e05-53f6-9bb5-5aef05942223
+  parentId: eb99832b-acd8-5686-9e53-694965b92bab
+  name: Tab name
+  x: 54
+  y: 60
+  width: 120
+  height: 16
+  components:
+  - type: uiRect
+  - type: uiText
+    text: "Name"
+    size: 12
+    color: "#BFD0DC"
+    richText: true
+    icons: {herb: 5c1a7e2e-3b0d-4f53-9a51-6e0b7c11a503, crystal: 589328e1-9fc6-4acb-ac05-ac55da897e12, key: 8b767fbb-02ce-44a7-b503-e1c2cdcaafb1, rope: 76d6c4b8-9a70-4e63-bd75-6b35a78ba93f, lantern: 12aed755-8f41-4ce5-ac8c-8a074db75d38, map: 2ba01449-6f41-475c-86d7-23b8106e2b6a, flask: bf3e8702-0199-49a0-8336-6afdd8fba14d, bandage: 101c3dd5-450b-466a-b7ac-b3c3d3322d0a, arrow: 8dd9051c-717a-4396-8d92-fb9e3e304364, shield: 685066b2-faa0-44e0-af92-6526001f201c, compass: 82a2e9a8-988a-4f84-a9a7-ad355aecfac4, bread: 4a6cd46e-b3f6-4f76-a9b7-cacd817013ca}
+- id: 392ac2b7-88a4-52e2-ac39-ad7f282a8e89
+  parentId: eb99832b-acd8-5686-9e53-694965b92bab
+  name: Tab count
+  x: 382
+  y: 60
+  width: 60
+  height: 16
+  components:
+  - type: uiRect
+  - type: uiText
+    text: "Count"
+    size: 12
+    color: "#BFD0DC"
+    richText: true
+    icons: {herb: 5c1a7e2e-3b0d-4f53-9a51-6e0b7c11a503, crystal: 589328e1-9fc6-4acb-ac05-ac55da897e12, key: 8b767fbb-02ce-44a7-b503-e1c2cdcaafb1, rope: 76d6c4b8-9a70-4e63-bd75-6b35a78ba93f, lantern: 12aed755-8f41-4ce5-ac8c-8a074db75d38, map: 2ba01449-6f41-475c-86d7-23b8106e2b6a, flask: bf3e8702-0199-49a0-8336-6afdd8fba14d, bandage: 101c3dd5-450b-466a-b7ac-b3c3d3322d0a, arrow: 8dd9051c-717a-4396-8d92-fb9e3e304364, shield: 685066b2-faa0-44e0-af92-6526001f201c, compass: 82a2e9a8-988a-4f84-a9a7-ad355aecfac4, bread: 4a6cd46e-b3f6-4f76-a9b7-cacd817013ca}
+- id: 85284ec5-af92-5956-a1ac-2889bb2e58e4
+  parentId: eb99832b-acd8-5686-9e53-694965b92bab
+  name: Ledger list
+  x: 16
+  y: 82
+  width: 440
+  height: 270
+  components:
+  - type: uiRect
+  - type: uiLayout
+    gap: 4
+    padding: 4
+  - type: uiScroll
+  - type: script
+    script: Showcase/LedgerList
+    values: {"Range": "caf727d2-c594-58c9-8420-a1b023517aa6", "Tabs": ["e0cbee9d-6f80-533e-860e-9612e2aeb241", "607dfd65-5e05-53f6-9bb5-5aef05942223", "392ac2b7-88a4-52e2-ac39-ad7f282a8e89"], "RowStep": 34}
+- id: fbbb045f-bbc9-556d-94da-cbfa76549657
+  parentId: 85284ec5-af92-5956-a1ac-2889bb2e58e4
+  name: Ledger row
+  x: 0
+  y: 0
+  width: 432
+  height: 30
+  components:
+  - type: uiRect
+  - type: uiImage
+    sprite: a05499da-30c6-4b7a-913a-d7f5b8b8aeef
+    borders: {left: 4, top: 4, right: 4, bottom: 4}
+  - type: uiButton
+  - type: uiText
+    text: "<icon={icon}>"
+    size: 14
+    color: "#F2F7F5"
+    richText: true
+    icons: {herb: 5c1a7e2e-3b0d-4f53-9a51-6e0b7c11a503, crystal: 589328e1-9fc6-4acb-ac05-ac55da897e12, key: 8b767fbb-02ce-44a7-b503-e1c2cdcaafb1, rope: 76d6c4b8-9a70-4e63-bd75-6b35a78ba93f, lantern: 12aed755-8f41-4ce5-ac8c-8a074db75d38, map: 2ba01449-6f41-475c-86d7-23b8106e2b6a, flask: bf3e8702-0199-49a0-8336-6afdd8fba14d, bandage: 101c3dd5-450b-466a-b7ac-b3c3d3322d0a, arrow: 8dd9051c-717a-4396-8d92-fb9e3e304364, shield: 685066b2-faa0-44e0-af92-6526001f201c, compass: 82a2e9a8-988a-4f84-a9a7-ad355aecfac4, bread: 4a6cd46e-b3f6-4f76-a9b7-cacd817013ca}
+    insetX: 10
+    insetY: 5
+- id: 00fbe066-d454-5fde-b4c9-671d8f05bb2c
+  parentId: fbbb045f-bbc9-556d-94da-cbfa76549657
+  name: Row name
+  x: 34
+  y: 0
+  width: 200
+  height: 30
+  components:
+  - type: uiRect
+  - type: uiText
+    text: "{name}"
+    size: 14
+    color: "#F2F7F5"
+    richText: true
+    icons: {herb: 5c1a7e2e-3b0d-4f53-9a51-6e0b7c11a503, crystal: 589328e1-9fc6-4acb-ac05-ac55da897e12, key: 8b767fbb-02ce-44a7-b503-e1c2cdcaafb1, rope: 76d6c4b8-9a70-4e63-bd75-6b35a78ba93f, lantern: 12aed755-8f41-4ce5-ac8c-8a074db75d38, map: 2ba01449-6f41-475c-86d7-23b8106e2b6a, flask: bf3e8702-0199-49a0-8336-6afdd8fba14d, bandage: 101c3dd5-450b-466a-b7ac-b3c3d3322d0a, arrow: 8dd9051c-717a-4396-8d92-fb9e3e304364, shield: 685066b2-faa0-44e0-af92-6526001f201c, compass: 82a2e9a8-988a-4f84-a9a7-ad355aecfac4, bread: 4a6cd46e-b3f6-4f76-a9b7-cacd817013ca}
+    insetY: 6
+- id: 3cd66c17-8b4c-549e-bcfa-44aee53a567b
+  parentId: fbbb045f-bbc9-556d-94da-cbfa76549657
+  name: Row number
+  x: 262
+  y: 0
+  width: 80
+  height: 30
+  components:
+  - type: uiRect
+  - type: uiText
+    text: "{number}"
+    size: 13
+    color: "#95D8BE"
+    richText: true
+    icons: {herb: 5c1a7e2e-3b0d-4f53-9a51-6e0b7c11a503, crystal: 589328e1-9fc6-4acb-ac05-ac55da897e12, key: 8b767fbb-02ce-44a7-b503-e1c2cdcaafb1, rope: 76d6c4b8-9a70-4e63-bd75-6b35a78ba93f, lantern: 12aed755-8f41-4ce5-ac8c-8a074db75d38, map: 2ba01449-6f41-475c-86d7-23b8106e2b6a, flask: bf3e8702-0199-49a0-8336-6afdd8fba14d, bandage: 101c3dd5-450b-466a-b7ac-b3c3d3322d0a, arrow: 8dd9051c-717a-4396-8d92-fb9e3e304364, shield: 685066b2-faa0-44e0-af92-6526001f201c, compass: 82a2e9a8-988a-4f84-a9a7-ad355aecfac4, bread: 4a6cd46e-b3f6-4f76-a9b7-cacd817013ca}
+    insetY: 7
+- id: 072655c2-b0d6-565b-ad81-02eea3a94914
+  parentId: fbbb045f-bbc9-556d-94da-cbfa76549657
+  name: Row count
+  x: 362
+  y: 0
+  width: 60
+  height: 30
+  components:
+  - type: uiRect
+  - type: uiText
+    text: "× {count}"
+    size: 13
+    color: "#95D8BE"
+    richText: true
+    icons: {herb: 5c1a7e2e-3b0d-4f53-9a51-6e0b7c11a503, crystal: 589328e1-9fc6-4acb-ac05-ac55da897e12, key: 8b767fbb-02ce-44a7-b503-e1c2cdcaafb1, rope: 76d6c4b8-9a70-4e63-bd75-6b35a78ba93f, lantern: 12aed755-8f41-4ce5-ac8c-8a074db75d38, map: 2ba01449-6f41-475c-86d7-23b8106e2b6a, flask: bf3e8702-0199-49a0-8336-6afdd8fba14d, bandage: 101c3dd5-450b-466a-b7ac-b3c3d3322d0a, arrow: 8dd9051c-717a-4396-8d92-fb9e3e304364, shield: 685066b2-faa0-44e0-af92-6526001f201c, compass: 82a2e9a8-988a-4f84-a9a7-ad355aecfac4, bread: 4a6cd46e-b3f6-4f76-a9b7-cacd817013ca}
+    insetY: 7
+- id: 418944b4-8f9f-5b72-adbe-c788aa6355a0
+  parentId: dd345c9a-846a-538c-85d7-fe02e5a336c6
+  name: Caption
+  x: 12
+  y: -12
+  width: 384.6
+  height: 44
+  components:
+  - type: uiRect
+    anchor: BottomLeft
+  - type: uiImage
+    sprite: 10aa8fe1-f416-5971-839d-3944dee38e3c
+    borders: {left: 4, top: 4, right: 4, bottom: 4}
+- id: 093efb42-9023-59e4-a2ef-943421d8f94e
+  parentId: 418944b4-8f9f-5b72-adbe-c788aa6355a0
+  name: Caption title
+  x: 12
+  y: 5
+  width: 360.6
+  height: 20
+  components:
+  - type: uiRect
+  - type: uiText
+    text: "<b>InventoryLab</b>   A bag and a 1,000-item ledger"
+    size: 15
+    color: "#F4F6F4"
+    richText: true
+    icons: {herb: 5c1a7e2e-3b0d-4f53-9a51-6e0b7c11a503, crystal: 589328e1-9fc6-4acb-ac05-ac55da897e12, key: 8b767fbb-02ce-44a7-b503-e1c2cdcaafb1, rope: 76d6c4b8-9a70-4e63-bd75-6b35a78ba93f, lantern: 12aed755-8f41-4ce5-ac8c-8a074db75d38, map: 2ba01449-6f41-475c-86d7-23b8106e2b6a, flask: bf3e8702-0199-49a0-8336-6afdd8fba14d, bandage: 101c3dd5-450b-466a-b7ac-b3c3d3322d0a, arrow: 8dd9051c-717a-4396-8d92-fb9e3e304364, shield: 685066b2-faa0-44e0-af92-6526001f201c, compass: 82a2e9a8-988a-4f84-a9a7-ad355aecfac4, bread: 4a6cd46e-b3f6-4f76-a9b7-cacd817013ca}
+- id: 78f2f3e2-f461-56b7-8ad0-54e7203d9e6a
+  parentId: 418944b4-8f9f-5b72-adbe-c788aa6355a0
+  name: Caption controls
+  x: 12
+  y: 25
+  width: 360.6
+  height: 16
+  components:
+  - type: uiRect
+  - type: uiText
+    text: "Drag  mouse      Scroll  wheel      Sort  R"
+    size: 12
+    color: "#BFD0DC"
+    richText: true
+    icons: {herb: 5c1a7e2e-3b0d-4f53-9a51-6e0b7c11a503, crystal: 589328e1-9fc6-4acb-ac05-ac55da897e12, key: 8b767fbb-02ce-44a7-b503-e1c2cdcaafb1, rope: 76d6c4b8-9a70-4e63-bd75-6b35a78ba93f, lantern: 12aed755-8f41-4ce5-ac8c-8a074db75d38, map: 2ba01449-6f41-475c-86d7-23b8106e2b6a, flask: bf3e8702-0199-49a0-8336-6afdd8fba14d, bandage: 101c3dd5-450b-466a-b7ac-b3c3d3322d0a, arrow: 8dd9051c-717a-4396-8d92-fb9e3e304364, shield: 685066b2-faa0-44e0-af92-6526001f201c, compass: 82a2e9a8-988a-4f84-a9a7-ad355aecfac4, bread: 4a6cd46e-b3f6-4f76-a9b7-cacd817013ca}
+- id: 3c032083-855a-549e-b13a-7cadf7d1a8c8
+  parentId: dd345c9a-846a-538c-85d7-fe02e5a336c6
+  name: Ghost
+  x: 0
+  y: 0
+  width: 52
+  height: 52
+  components:
+  - type: uiRect
+  - type: uiText
+    text: ""
+    size: 13
+    color: "#FFFFFF"
+    richText: true
+    icons: {herb: 5c1a7e2e-3b0d-4f53-9a51-6e0b7c11a503, crystal: 589328e1-9fc6-4acb-ac05-ac55da897e12, key: 8b767fbb-02ce-44a7-b503-e1c2cdcaafb1, rope: 76d6c4b8-9a70-4e63-bd75-6b35a78ba93f, lantern: 12aed755-8f41-4ce5-ac8c-8a074db75d38, map: 2ba01449-6f41-475c-86d7-23b8106e2b6a, flask: bf3e8702-0199-49a0-8336-6afdd8fba14d, bandage: 101c3dd5-450b-466a-b7ac-b3c3d3322d0a, arrow: 8dd9051c-717a-4396-8d92-fb9e3e304364, shield: 685066b2-faa0-44e0-af92-6526001f201c, compass: 82a2e9a8-988a-4f84-a9a7-ad355aecfac4, bread: 4a6cd46e-b3f6-4f76-a9b7-cacd817013ca}
+    insetX: 11
+    insetY: 8
+- id: 1c5fa097-59ea-54b0-af7e-46612bffda73
+  parentId: dd345c9a-846a-538c-85d7-fe02e5a336c6
+  name: Ghost back
+  x: 0
+  y: 0
+  width: 52
+  height: 52
+  components:
+  - type: uiRect
+  - type: uiText
+    text: ""
+    size: 13
+    color: "#FFFFFF"
+    richText: true
+    icons: {herb: 5c1a7e2e-3b0d-4f53-9a51-6e0b7c11a503, crystal: 589328e1-9fc6-4acb-ac05-ac55da897e12, key: 8b767fbb-02ce-44a7-b503-e1c2cdcaafb1, rope: 76d6c4b8-9a70-4e63-bd75-6b35a78ba93f, lantern: 12aed755-8f41-4ce5-ac8c-8a074db75d38, map: 2ba01449-6f41-475c-86d7-23b8106e2b6a, flask: bf3e8702-0199-49a0-8336-6afdd8fba14d, bandage: 101c3dd5-450b-466a-b7ac-b3c3d3322d0a, arrow: 8dd9051c-717a-4396-8d92-fb9e3e304364, shield: 685066b2-faa0-44e0-af92-6526001f201c, compass: 82a2e9a8-988a-4f84-a9a7-ad355aecfac4, bread: 4a6cd46e-b3f6-4f76-a9b7-cacd817013ca}
+    insetX: 11
+    insetY: 8
+defaultCameraId: b47c5fa7-2cf6-5d35-b77b-c45d281f4d45
