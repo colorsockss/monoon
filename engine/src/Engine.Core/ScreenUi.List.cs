@@ -251,7 +251,8 @@ public sealed partial class ScreenUi
                     var template = tree[l.Template[k].Id];
                     var parent = k == 0 ? owner : made[Array.IndexOf(l.Rows[r], obj.Parent)];
                     var node = made[k] = new Node(obj, parent, parent.Order, template.Image)
-                        { Source = template.Object.Id, Palette = template.Palette, Slice = template.Slice, ControlValue = template.ControlValue };
+                        { Source = template.Object.Id, Palette = template.Palette, Slice = template.Slice, ControlValue = template.ControlValue,
+                          Icons = template.Icons }; // shared with the template: no dictionary per row
                     parent.Children.Add(node);
                     tree.Add(obj.Id, node);
                     ordered.Insert(at++, node);

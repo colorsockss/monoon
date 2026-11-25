@@ -105,13 +105,51 @@ internal static class DataListChecks
         Console.WriteLine("PASS data list: wheel, pointer use, filtering, script selection, leaving and re-entering keep item IDs");
     }
 
+    // Pooled rows resolve the <icon=name> tags of their template's UI Text (they used to draw the tag as text).
+    [Check(9310, "list-icons")] static void RegisteredIcons(CheckRun c) => RunIcons(c.Scratch);
+    internal static void RunIcons(string scratch)
+    {
+        void Check(bool ok, string label) { if (!ok) throw new Exception("Data list icons: " + label); }
+        var folder = Directory.CreateDirectory(Path.Combine(scratch, "DataListIcons")).FullName;
+        File.WriteAllBytes(Path.Combine(folder, "Rope.png"), []); // only its path is resolved; the probe canvas never decodes it
+        var assets = ProjectAssets.Scan(folder);
+        var scene = SceneDocument.Empty(new());
+        scene.ProjectDirectory = folder;
+        var canvas = scene.CreateUi("Canvas", null);
+        var list = scene.CreateUi("Scroll View", canvas);
+        list.Height = 200;
+        var row = scene.CreateUi("Button", list);
+        row.Height = 30;
+        var text = row.GetComponent<UiTextComponent>()!;
+        (text.Text, text.RichText, text.Icons) = ("<icon=rope>{name}", true, new() { ["rope"] = assets.IdFor("Rope.png")!.Value });
+        scene.Validate();
+        var ui = new ScreenUi(scene, assets);
+        Check(ui.BindList(list.Id, new Items(50)), "binds");
+        int rows = ui.ListRowCount(list.Id);
+        var probe = new Probe();
+        ui.Draw(probe);
+        Check(!probe.Labels.Any(l => l.Text.Contains('<')), "no row draws the tag as text");
+        Check(probe.Sprites.Count(s => s.Path.EndsWith("Rope.png")) is var icons && icons >= 1 && icons <= rows && icons == probe.Labels.Count,
+            $"each drawn row draws its icon ({icons} icons, {probe.Labels.Count} labels, {rows} rows)");
+        // The layout counts the icon: the name starts at or after the icon's right edge on the same row.
+        Check(probe.Sprites.All(s => s.Box.Width > 0 && probe.At.Any(l => l.X >= s.Box.Right && l.Y < s.Box.Bottom && l.Y + 30 > s.Box.Top)),
+            "the row text is placed after the icon's width");
+        ui.Rebuild(scene, assets);
+        probe = new Probe();
+        ui.Draw(probe);
+        Check(probe.Sprites.Count == icons, "a scene rebuild keeps the row icons");
+        Console.WriteLine($"PASS data list icons: {icons} pooled rows draw the template's <icon=rope> and place the text after it");
+    }
+
     private sealed class Probe : ICanvas2D, IDisposable
     {
-        internal readonly List<(string, float)> Labels = [];
+        internal readonly List<(string Text, float Y)> Labels = [];
+        internal readonly List<(string Path, RectangleF Box)> Sprites = [];
+        internal readonly List<PointF> At = [];
         public void Clear(Color color) { }
         public void FillRectangle(RectangleF r, Color color) { }
-        public bool DrawSprite(string path, RectangleF r) => true;
-        public void DrawText(string text, float x, float y, float size, Color color) => Labels.Add((text, y));
+        public bool DrawSprite(string path, RectangleF r) { Sprites.Add((path, r)); return true; }
+        public void DrawText(string text, float x, float y, float size, Color color) { Labels.Add((text, y)); At.Add(new(x, y)); }
         public IDisposable PushClip(RectangleF area) => this;
         public void Dispose() { }
     }

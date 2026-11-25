@@ -37,7 +37,7 @@ engine/scripts/bootstrap-worktree.sh
 
 | 종류 | 이름 |
 | --- | --- |
-| 그 묶음만 실행(템플릿 불필요) | `feature-switches`, `physics`, `nav-free`, `prefab-pool`, `particles`, `lighting`, `particle-budget`, `terrain`, `autotile`, `tile-animation`, `colliders`, `physics-alloc`, `audio-buses`, `camera-framing`, `screen-effects`, `lines`, `world-text`, `ui-grid`, `contacts`, `animator-conditions`, `animator-directions`, `script-debug`, `input-interactions`, `rebinding`, `engine-features-1`, `inspector-edit`, `history` |
+| 그 묶음만 실행(템플릿 불필요) | `feature-switches`, `physics`, `nav-free`, `prefab-pool`, `particles`, `lighting`, `particle-budget`, `terrain`, `autotile`, `tile-animation`, `colliders`, `physics-alloc`, `audio-buses`, `camera-framing`, `screen-effects`, `lines`, `world-text`, `ui-grid`, `contacts`, `animator-conditions`, `animator-directions`, `script-debug`, `input-interactions`, `rebinding`, `engine-features-1`, `inspector-edit`, `history`, `list-icons` |
 | 그 묶음만 실행(템플릿 필요) | `asset-report`(Release와, `--only`로만 도는 Native AOT 보고서), `build-size`(= `./monoon test size`) |
 | 앞의 검사를 모두 실행한 뒤 멈춤 | `names`, `features`, `determinism-scan`, `player-yaml`, `packages`, `build-settings`, `profiler`, `rich-text`, `deck`, `quest`, `inventory`, `pool`, `rhythm`, `turn`, `generation`, `cutscene`, `rig`, `effects`, `nav`, `world`, `platformer`, `split-loading` |
 
