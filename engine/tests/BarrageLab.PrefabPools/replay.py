@@ -1,4 +1,4 @@
-"""Replay BarrageLab's prefab bullets in pooled and Instantiate/Destroy mode in a built player."""
+"""Replay the BarrageLab showcase ship's prefab bolts in pooled and Instantiate/Destroy mode in a built player."""
 import argparse
 import csv
 import json
@@ -9,15 +9,15 @@ import re
 import subprocess
 
 PROJECT = "6c5dd0cd-638e-5a00-9d80-744596f3a647"
-START_SCENE = "719a1aa5-015b-503e-85ad-0722931cc1c0"
+START_SCENE = "cc792dff-cd8d-5479-8759-60a69bcd4910"  # Scenes/Showcase.scene
 FRAME = 166667  # 1/60 s in .NET ticks
-OPEN, BEGIN, TICKS, WARMUP = 2, 30, 1800, 600
+BEGIN, TICKS, WARMUP = 30, 1800, 600
 REPORT = re.compile(r"mode=(\w+) ticks=(\d+) fired=(\d+) hits=(\d+) exits=(\d+) active=(\d+) created=(\d+) reused=(\d+) returned=(\d+)")
 
 
 def recording(path, mode_key):
-    # N opens the bullet scene; R (pool) or P (instantiate) starts both runs on the same frame.
-    presses = [(OPEN, "N"), (BEGIN, mode_key), (BEGIN + TICKS, "R")]
+    # R (pool) or P (instantiate) restarts the ship's run on the same frame; R at the end logs the report.
+    presses = [(BEGIN, mode_key), (BEGIN + TICKS, "R")]
     lines = ["version: 1", f"project: {PROJECT}", f"startScene: {START_SCENE}", "frameTicks:"]
     lines += [f"- {FRAME}"] * (BEGIN + TICKS + 4)
     lines.append("events:")
@@ -70,7 +70,7 @@ def main():
     (args.output / "summary.json").write_text(json.dumps({"pool": pool, "instantiate": fresh}, ensure_ascii=False, indent=2) + "\n")
     if not same or pool["mode"] != "pool" or fresh["mode"] != "instantiate" or pool["ticks"] != TICKS or pool["hits"] != pool["exits"]:
         raise SystemExit("FAIL: pooled and Instantiate/Destroy runs differ")
-    print(f"PASS same {pool['hits']} hits from {pool['fired']} bullets; reused {pool['reused']} of {pool['fired']}", flush=True)
+    print(f"PASS same {pool['hits']} hits from {pool['fired']} bolts; reused {pool['reused']} of {pool['fired']}", flush=True)
 
 
 if __name__ == "__main__":

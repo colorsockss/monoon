@@ -93,6 +93,7 @@
 | 2026-11-26 | AnimatorLab | 기존 씬 셋 삭제. 컨트롤러 검사는 쇼케이스 Guard·Scout 컨트롤러로, Beacon 재료는 `engine/tests/fixtures/AnimatorBeacon`으로. Conditions·Directions 하네스는 복사본에 시험용 키 드라이버를 붙여 세 모드 통과(쇼케이스 화면은 그대로) |
 | 2026-11-26 | SeedLab | 기존 씬 넷 삭제. 미로 쇼케이스에 시드 입력·R·Space 기다리기·J 한 턴 리플레이 추가, Route 쇼케이스의 덤불을 47칸 울타리 타일맵으로 바꾸고 꽃·횃불·물결 장식 레이어와 태그 추가(둘 다 영상 재촬영 필요). Route 하네스 둘은 시험용 드라이버로 쇼케이스 지도에서. 하네스 넷 세 모드 통과 |
 | 2026-11-26 | KeyRoomTiles | 기존 씬 셋과 Room 타일셋·문·열쇠·스크립트 삭제(쓰는 검사가 없던 SecondRoom 포함). 타일 충돌 검사(TileChecks·CollisionChecks.Tiles·ContactChecks.Tiles)는 KeyRoom 쇼케이스의 벽 타일과 플레이어로, 투영 레이아웃 검사는 ShowcaseGrids로 다시 짬(사용자 결정). 화면 변경 없음 |
+| 2026-11-26 | BarrageLab | 기존 씬 셋과 포탑·표적·레이저 스크립트, Bullet 프리팹 삭제. 우주선에 R/P 재시작과 결과 기록, 드론에 명중·Exit 수와 재시작, 보스 레이저에 R 재시작을 넣음(화면 변경 없음). SpritePool·PrefabPool 검사, Lines·PrefabPools 하네스 통과. Paths 하네스 캡처 캔버스에 셰이더 미리보기 연결 |
 | 2026-11-26 | 공통 | FeatureChecks(쇼케이스에서 글자를 뺀 SpriteLab), FeatureSwitchChecks(카메라 없는 추가 로딩 씬 제외), AssetReportChecks(KeyRoom 쇼케이스 기준 이유·기능), Dialogue·Inventory·Quests 패키지를 바뀐 InventoryLab 데이터로 다시 만듦, EngineFeatures1의 정수 배율 예시를 AudioLab 설정으로 |
 
 ### `./monoon test`에 남은 실패 (2026-11-26, 단계별로 계속 실행해 모음)

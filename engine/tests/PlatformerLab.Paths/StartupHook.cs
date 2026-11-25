@@ -170,7 +170,8 @@ public static class StartupHook
         var size = game.LogicalSize;
         var surface = Sdl.PInvoke.CreateSurface(size.Width, size.Height, SdlPixelFormat.Rgba32);
         var renderer = Sdl.Render.CreateSoftwareRenderer(surface);
-        using (var canvas = new SdlCanvas(renderer)) // The player's canvas and text rasteriser
+        // The player's canvas and text rasteriser; shader-textured particles (BarrageLab's drone bursts) draw from the editor's preview.
+        using (var canvas = new SdlCanvas(renderer, previewShader: ShaderPixels.Preview))
         {
             InputReplay.Load(recording).Play(game, project, frame =>
             {

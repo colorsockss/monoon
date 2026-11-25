@@ -4,6 +4,7 @@ using Engine.Core;
 
 // Showcase: a drone that drifts on a sine path, flashes white on each hit (its Flash child, a white silhouette) and bursts
 // after a few (its Burst child emits particles in world space), then comes back after a pause. Raises the "burst" flag.
+// Hits and Exits count every bolt that enters and leaves it since the last Restart (ShipPilot's report).
 public sealed class Drone : GameBehaviour
 {
     public float Amplitude = 60, Period = 180, Respawn = 1.4f;
@@ -12,6 +13,17 @@ public sealed class Drone : GameBehaviour
     private Vector2 home;
     private int phase, hits, flash;
     private GameTimer? back;
+    public int Hits { get; private set; }
+    public int Exits { get; private set; }
+
+    // Back to the start of its path, whole and unhit (ShipPilot's R / P).
+    public void Restart(IGameObjects objects, Guid self)
+    {
+        (phase, hits, flash, back, Hits, Exits) = (0, 0, 0, null, 0, 0);
+        if (Flash != Guid.Empty) objects.SetActive(Flash, false);
+        objects.SetSpriteTint(self, null);
+        objects.SetColliderEnabled(self, true);
+    }
 
     public override void OnCreate(ScriptLife life)
     {
@@ -31,8 +43,11 @@ public sealed class Drone : GameBehaviour
         tick.Objects.SetColliderEnabled(tick.ObjectId, true);
     }
 
+    public override void OnTriggerExit(ScriptContact contact) => Exits++;
+
     public override void OnTriggerEnter(ScriptContact contact)
     {
+        Hits++;
         var objects = contact.Objects;
         if (++hits < Health)
         {

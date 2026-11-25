@@ -91,7 +91,7 @@ internal static class SpritePoolChecks
         long unpooledBytes = GC.GetAllocatedBytesForCurrentThread() - startBytes;
         Console.WriteLine($"Unpooled allocation probe: {unpooledBytes} bytes for 10,000 new bullet objects.");
         Check(unpooledBytes > bytes && live[0] == null, "allocation-per-spawn control retires each offscreen bullet");
-        var scene=SceneDocument.Load(Path.Combine(repo,"samples/BarrageLab/Scenes/Barrage.scene"));
+        var scene=SceneDocument.Load(Path.Combine(repo,"samples/BarrageLab/Scenes/Showcase.scene"));
         using var game=new GameSession(scene);
         void Tick() => game.FixedUpdate(game.Actions.Take(),1f/60);
         for (int i=0; i<480; i++) Tick();
@@ -99,9 +99,10 @@ internal static class SpritePoolChecks
         Check(a.Active > 2000 && a.Reused > a.Capacity && a.Dropped == 0 && a.Spawned-a.Returned==a.Active && mode==0,
             "sample exceeds 2,000 live sprites and recycles more slots than capacity");
         game.Actions.Press("Space"); Tick(); game.Actions.Release("Space");
-        for (int i=0; i<240; i++) Tick();
+        // The showcase boss fires from the right edge: the slowest arm (152 px/s) needs about 4.6 s to leave on the left.
+        for (int i=0; i<360; i++) Tick();
         var idle=game.Current.PoolStatistics(out _);
-        Check(idle.Active==0 && idle.Spawned==idle.Returned,"stopping fire drains every projectile");
+        Check(idle.Active==0 && idle.Spawned==idle.Returned,"stopping fire (Space, which also lights the boss laser) drains every projectile");
         game.Actions.Press("B");game.Actions.Press("R");Tick();game.Actions.Reset();
         for (int i=1; i<480; i++) Tick();
         Check(a==game.Current.PoolStatistics(out mode) && mode==1,"restart reproduces the same pattern and counts in individual mode");

@@ -95,7 +95,7 @@ objects:
     order: 1
   - type: script
     script: SpiralBarrage
-    values: {"Mode": "9d3a960f-2d19-56ff-97ee-0d970b054a0f", "Counters": "aa295842-04b3-5c63-a326-6e341f912755", "Bullets": {"Id": "12940974-2dc8-472e-af74-dca5b29fdac6"}}
+    values: {"Mode": "9d3a960f-2d19-56ff-97ee-0d970b054a0f", "Counters": "aa295842-04b3-5c63-a326-6e341f912755"}
 - id: 5ab196f7-7bb5-54a1-9dae-9b8a50b2a2b6
   name: Ship
   x: 80
@@ -125,6 +125,8 @@ objects:
     order: 2
 - id: 38d7c137-0022-5929-979e-d7c8509fe751
   name: Drone 1
+  groups:
+  - Drones
   x: 330
   y: 150
   width: 52
@@ -169,6 +171,8 @@ objects:
     order: 5
 - id: 65f42eb3-9ac3-5be6-95bb-75d5ed433f31
   name: Drone 2
+  groups:
+  - Drones
   x: 420
   y: 250
   width: 52
@@ -213,6 +217,8 @@ objects:
     order: 5
 - id: 35685b63-a6e4-5249-b121-ee8c498144a3
   name: Drone 3
+  groups:
+  - Drones
   x: 500
   y: 120
   width: 52

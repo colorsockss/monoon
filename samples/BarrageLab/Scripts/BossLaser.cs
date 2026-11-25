@@ -4,7 +4,8 @@ using Engine.Core;
 
 // Showcase: the battleship's second attack. Space (Fire) switches it on as the spiral (which also reads Fire) stops: a
 // laser that turns and reflects off the screen edges (Line 2D points set every tick, as LaserSweep does) and launches
-// pooled comets with Trail 2D. Space again switches back. Raises the "laser" HUD tag flag.
+// pooled comets with Trail 2D. Space again switches back; while it is off the beam keeps its angle. R returns every comet and
+// starts the sweep over. Raises the "laser" HUD tag flag.
 public sealed class BossLaser : GameBehaviour
 {
     public Guid Laser;
@@ -13,7 +14,8 @@ public sealed class BossLaser : GameBehaviour
     public int Launch = 18;
     // One turn in 600 ticks, by fixed rotation factors (no per-tick SinCos, as in LaserSweep).
     private const float Cos = .99994517f, Sin = .010471784f;
-    private Vector2 aim = Vector2.Normalize(new(-1, .35f));
+    private static readonly Vector2 Start = Vector2.Normalize(new(-1, .35f));
+    private Vector2 aim = Start;
     private bool sweeping;
     private int tickCount;
 
@@ -22,6 +24,12 @@ public sealed class BossLaser : GameBehaviour
     public override void FixedUpdate(ScriptTick tick)
     {
         var objects = tick.Objects;
+        if (tick.Input.Pressed("Restart"))
+        {
+            foreach (var id in objects.FindByGroup("혜성"))
+                if (!objects.Return(id)) objects.Destroy(id);
+            (aim, tickCount) = (Start, 0);
+        }
         if (tick.Input.Pressed("Fire"))
         {
             sweeping = !sweeping;

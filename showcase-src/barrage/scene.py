@@ -10,7 +10,6 @@ ROOT = pathlib.Path(__file__).resolve().parents[2] / "samples/BarrageLab"
 ART = ROOT / "Assets/Showcase"
 NS = uuid.UUID("0d4f6a52-2a8e-5b8b-9a43-6f3c2b7d1e90")
 uid = lambda name: str(uuid.uuid5(NS, "showcase/" + name))
-BULLETS_SCENE = "12940974-2dc8-472e-af74-dca5b29fdac6"   # Scenes/PooledBullets.scene (SpiralBarrage's N)
 
 
 def png_size(name):
@@ -150,7 +149,7 @@ canvas_ids = {n: uid("obj/" + n) for n in ("Mode", "Counters")}
 laser = obj("Laser", 0, 0, 1, 1, '  - type: line2D\n    points:\n    - {x: 0, y: 0}\n    - {x: 1, y: 0}\n    width: 6\n    startColor: "#FFF6C8"\n    endColor: "#FF3D8B"\n    order: 3\n')
 obj("Laser emitter", 548 + 123, 225, 8, 8, f'  - type: script\n    script: BossLaser\n    values: {{"Laser": "{laser}", "Comet": {{"Id": "d994d3ef-42dc-40d8-8f3c-700a4cf14a1a"}}}}\n')
 obj("Spiral emitter", 548 + 123, 225, 8, 8, sprite("Pellet.png", order=1)
-    + f"  - type: script\n    script: SpiralBarrage\n    values: {{\"Mode\": \"{canvas_ids['Mode']}\", \"Counters\": \"{canvas_ids['Counters']}\", \"Bullets\": {{\"Id\": \"{BULLETS_SCENE}\"}}}}\n")
+    + f"  - type: script\n    script: SpiralBarrage\n    values: {{\"Mode\": \"{canvas_ids['Mode']}\", \"Counters\": \"{canvas_ids['Counters']}\"}}\n")
 
 # Ship: arrow keys, auto-fire, an engine flame.
 sw, sh = png_size("Ship.png")
@@ -163,7 +162,7 @@ for i, (image, x, y, amp, period) in enumerate((("DroneA.png", 330, 150, 70, 200
     w, h = png_size(image)
     flash = uid(f"obj/Drone {i + 1} flash")
     burst = uid(f"obj/Drone {i + 1} burst")
-    drone = picture(f"Drone {i + 1}", image, x, y, order=2, comps="  - type: boxCollider2D\n    isTrigger: true\n    layer: 2\n    mask: 2\n"
+    drone = picture(f"Drone {i + 1}", image, x, y, order=2, extra="  groups:\n  - Drones\n", comps="  - type: boxCollider2D\n    isTrigger: true\n    layer: 2\n    mask: 2\n"
                     f"  - type: script\n    script: Drone\n    values: {{\"Amplitude\": {amp}, \"Period\": {period}, \"Flash\": \"{flash}\", \"Burst\": \"{burst}\"}}\n")
     picture(f"Drone {i + 1} flash", image.replace(".png", "Flash.png"), 0, 0, drone, extra="  active: false\n", order=3)
     emitter(f"Drone {i + 1} burst", explosion, w // 2, h // 2, drone, trigger="Manual", order=5)

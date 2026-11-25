@@ -164,7 +164,7 @@ internal static class PrefabPoolChecks
 
     private static Score RunBarrage(string repo, bool pooled)
     {
-        var scene = SceneDocument.Load(Path.Combine(repo, "samples/BarrageLab/Scenes/PooledBullets.scene"));
+        var scene = SceneDocument.Load(Path.Combine(repo, "samples/BarrageLab/Scenes/Showcase.scene"));
         using var game = new GameSession(scene);
         string? report = null;
         game.State.Logged += e => report = e.Message;
@@ -184,7 +184,7 @@ internal static class PrefabPoolChecks
         var m = Regex.Match(report!, @"mode=(\w+) ticks=(\d+) fired=(\d+) hits=(\d+) exits=(\d+) active=(\d+) created=(\d+) reused=(\d+)");
         int N(int g) => int.Parse(m.Groups[g].Value);
         var score = new Score(m.Groups[1].Value, N(2), N(3), N(4), N(5), N(6), N(7), N(8), bytes);
-        Console.WriteLine("BarrageLab prefab bullets: " + score);
+        Console.WriteLine("BarrageLab prefab bolts: " + score);
         return score;
     }
 
@@ -192,8 +192,9 @@ internal static class PrefabPoolChecks
     {
         var pooled = RunBarrage(repo, true);
         var fresh = RunBarrage(repo, false);
-        Check(pooled.Mode == "pool" && fresh.Mode == "instantiate" && pooled.Ticks == 900 && pooled.Fired == 3600 &&
-            pooled.Hits > 100 && pooled.Active > 300, "BarrageLab fires 3,600 pooled bullets at moving targets");
+        // The showcase ship fires one bolt every 7 ticks at three drifting drones.
+        Check(pooled.Mode == "pool" && fresh.Mode == "instantiate" && pooled.Ticks == 900 && pooled.Fired == 128 &&
+            pooled.Hits > 10 && pooled.Active > 5, "the BarrageLab ship fires 128 pooled bolts at moving drones");
         Check(pooled with { Mode = "", Created = 0, Reused = 0, Bytes = 0 } == fresh with { Mode = "", Created = 0, Reused = 0, Bytes = 0 } &&
             pooled.Hits == pooled.Exits, "reused bullets record the same hits, exits and live count as Instantiate/Destroy");
         Check(pooled.Reused > pooled.Created && fresh.Created == fresh.Fired && pooled.Created + pooled.Reused == pooled.Fired,

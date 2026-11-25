@@ -134,7 +134,7 @@ public override void OnAnimationEvent(ScriptAnimationEvent frame)
 
 ## 선과 궤적
 
-[BarrageLab](../../samples/BarrageLab)에서 Play 후 **N**을 두 번 누르면 레이저 씬이 열린다. 가운데에서 회전하는 레이저는 경기장 벽에서 최대 세 번 반사되고, 시작점의 연노랑에서 끝의 분홍으로 색이 바뀐다. 24틱마다 발사되는 혜성은 뒤에 푸른 궤적을 남긴다. **Space**는 회전 정지·재개, **R**은 처음부터 다시 시작한다. [레이저 씬](../../samples/BarrageLab/Scenes/Laser.scene) · [Mac 실행 검증](../../engine/tests/results/lines-paths/README.md)
+[BarrageLab](../../samples/BarrageLab)에서 Play 후 **Space**를 누르면 전함의 레이저가 켜진다. 돌아가는 레이저는 화면 가장자리에서 최대 세 번 반사되고, 시작점에서 끝으로 색이 바뀐다. 18틱마다 발사되는 혜성은 뒤에 궤적을 남긴다. **Space**를 다시 누르면 레이저가 꺼지고 각도는 그대로 남는다. **R**은 혜성을 거두고 처음 각도부터 다시 돌린다. [레이저 스크립트](../../samples/BarrageLab/Scripts/BossLaser.cs) · [Mac 실행 검증](../../engine/tests/results/lines-paths/README.md)
 
 | Add Component | Inspector에서 설정하는 값 |
 | --- | --- |
