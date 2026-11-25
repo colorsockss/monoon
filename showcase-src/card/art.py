@@ -9,7 +9,7 @@ SAMPLES = pathlib.Path(__file__).resolve().parents[2] / "samples"
 OUT = SAMPLES / "CardLab/Assets/Showcase"
 OUT.mkdir(parents=True, exist_ok=True)
 for name in ("Herb", "Bread", "Lantern", "Map", "Compass", "Rope"): shutil.copy(SAMPLES / f"InventoryLab/Assets/Icons/{name}.png", OUT / f"{name}.png")
-for name in ["Grass", "Bush", "Flowers", "Fence", "Barrel", "Well", "ShadowM", "HeroIdleE"] + [f"HeroWalkE{i}" for i in range(1, 5)]:
+for name in ["Grass", "Bush", "Flowers", "Fence", "Barrel", "ShadowM", "HeroIdleE"] + [f"HeroWalkE{i}" for i in range(1, 5)]:
     shutil.copy(SAMPLES / f"AnimatorLab/Assets/Showcase/{name}.png", OUT / f"{name}.png")
 shutil.copy(SAMPLES / "KeyRoom/Assets/Showcase/Chest.png", OUT / "Chest.png")
 shutil.copy(SAMPLES / "PlatformerLab/Assets/Ui/UiShade.png", OUT / "Panel.png")

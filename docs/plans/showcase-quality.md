@@ -298,6 +298,28 @@ KeyRoom-Moves 다시 만듦(2026-11-25, 사용자: 이번 영상들이 예전보
 
 사용자 지적(2026-11-25): SeedLab·길찾기처럼 이미 다른 영상에 나온 기능이 새 영상에 또 나오는 것 같다. 촬영이 모두 끝나면 전체 영상의 장면과 태그를 기능별로 모아 겹치는 것을 찾고, 영상마다 겹침을 줄이거나 합칠지 정한다. 그 전까지는 남은 영상 촬영을 먼저 끝낸다. 지금 알려진 후보: SeedLab 길찾기(`SeedLab.mp4` 미로·군중 길찾기, `SeedLab-Route.mp4` 지형 비용), KeyRoomTiles 격자 길찾기, PlatformerLab 관절(`PlatformerLab.mp4` 사슬, `PlatformerLab-Course.mp4` 흔들다리·도르래), 조명(KeyRoom 횃불, `PlatformerLab-Lights.mp4`).
 
+### 2026-11-26 조사 결과
+
+28개 쇼케이스 씬이 화면에 띄우는 기능 태그(`showIf` 패널의 굵은 이름)와 영상 21편(1차 합본 `MoNoon-showcase.mp4` 제외)을 기능별로 모았다. 같은 기능을 두 영상이 내세우는 것과, 이름만 같고 뜻이 다른 것을 나눴다. 결정은 사용자 몫이고, 태그를 바꾸면 그 영상은 다시 녹화해야 한다.
+
+| # | 겹침 | 영상 | 성격 | 제안 |
+| --- | --- | --- | --- | --- |
+| 1 | 같은 장면 두 편 | `CameraLab-Framing.mp4`, `CameraLab-DebugDraw.mp4` | 같은 약초 장면이고 DebugDraw 판은 G로 기즈모를 켤 뿐이다 | 하나만 남긴다. DebugDraw 판에 프레이밍 태그가 모두 있으므로 그것을 `CameraLab-Framing.mp4`로 쓴다 |
+| 2 | 미니맵 카메라 | `CameraLab.mp4`(Minimap), `PlatformerLab-Stream.mp4`(Minimap camera) | Stream에서는 청크를 보여 주는 도구일 뿐이다 | Stream의 태그를 "Tile reads: TryGetTile answers only for loaded chunks"처럼 스트리밍 쪽으로 바꾼다 |
+| 3 | Runtime SetTile | `KeyRoomTiles.mp4`(이웃이 다시 이어짐), `SeedLab-Route.mp4`(비 → 진흙) | API는 같고 보여 주는 결과가 다르다 | Route 태그를 "Re-plan: every tile change re-plans the route"로 바꾼다 |
+| 4 | 격자 길찾기 | `SeedLab.mp4` 미로(상자까지 경로 점), `SeedLab-Route.mp4`(비용 경로) | 같은 `GridNavigation`이다. Route는 지형 비용과 재계획이 새롭다 | 그대로 두거나, Route를 SeedLab 세 번째 장면으로 합치는 대신 미로의 경로 점 장면을 줄인다(SeedLab.mp4가 이미 44.8초) |
+| 5 | Trail 2D | `BarrageLab.mp4`(혜성 꼬리), `SpriteLab.mp4`(반딧불 길) | 같은 컴포넌트를 두 영상이 태그로 내세운다. KeyRoom-Moves의 대시 잔상은 태그 없음 | SpriteLab 태그를 빼고 Barrage에 남긴다 |
+| 6 | Particles | `ParticleLab.mp4`, `BarrageLab.mp4`("Particles: drones flash") | 입자는 ParticleLab의 주제다 | Barrage 태그를 "Hit flash: a burst on every drone hit" 같은 게임 반응으로 바꾸거나 뺀다 |
+| 7 | Character Motor 2D | `PlatformerLab.mp4`(달리기·점프 전체), `PlatformerLab-Course.mp4`(태그) | Course 태그가 본편의 기본 이동과 겹친다 | Course 태그를 "Capsule Collider 2D"로 바꾼다 |
+| 8 | 이름만 같음: Tile collision | `PlatformerLab.mp4`(경사 타일 다각형), `ParticleLab.mp4`(빗방울이 땅에서 튐) | 뜻이 다르다 | ParticleLab 쪽을 "Particle collision"으로 바꾼다 |
+| 9 | 시드 결정성 | `SeedLab.mp4`(같은 시드 같은 던전), `CardLab.mp4`(같은 시드 같은 셔플) | 개념이 같고 결과물이 다르다 | 그대로 둔다(던전 생성과 카드 덱) |
+| 10 | 저장 | `CardLab.mp4`(정확한 저장), `InventoryLab.mp4`(깨진 저장 복구), `SeedLab.mp4`(Save K, 리플레이) | 각자 다른 면이다 | 그대로 둔다 |
+| 11 | 조명 | KeyRoom·PlatformerLab 본편의 횃불 Point Light, `PlatformerLab-Lights.mp4` | 본편은 태그 없이 배경으로만 쓴다 | 그대로 둔다 |
+| 12 | 관절 | `PlatformerLab.mp4` 사슬(Distance Joint), `PlatformerLab-Course.mp4` 흔들다리·도르래(Revolute·Slider) | 다른 관절이다 | 그대로 둔다 |
+| 13 | 나눠 불러오기 | `CollisionLab.mp4`(Split loading, 객체 1만 개), `PlatformerLab-Stream.mp4`(타일 청크) | 다른 기능이다(오브젝트 vs 타일) | 그대로 둔다 |
+
+1–3과 5–8은 태그 글자나 영상 한 편을 고르는 일이라 손이 적게 든다. 4는 SeedLab 영상 구성을 다시 정할지에 달렸다.
+
 ## 촬영이 끝난 뒤 할 일: 데모 브랜치 정리
 
 사용자 결정(2026-11-25): 모든 샘플을 다 찍은 뒤, 데모 브랜치에서 1차 데모를 걷어내고 새 데모(Showcase 씬)만 남긴다.

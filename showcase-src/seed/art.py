@@ -11,7 +11,7 @@ OUT = SAMPLES / "SeedLab/Assets/Showcase"
 OUT.mkdir(parents=True, exist_ok=True)
 KR = SAMPLES / "KeyRoom/Assets/Showcase"
 for name in ["Chest.png", "ShadowM.png"] + [f"HeroIdle{d}.png" for d in "NESW"]: shutil.copy(KR / name, OUT / name)
-for name in ["Grass.png", "Flowers.png", "Bush.png", "Well.png"]: shutil.copy(SAMPLES / "InventoryLab/Assets/Showcase" / name, OUT / name)
+for name in ["Grass.png", "Flowers.png", "Bush.png"]: shutil.copy(SAMPLES / "InventoryLab/Assets/Showcase" / name, OUT / name)
 shutil.copy(SAMPLES / "PlatformerLab/Assets/Ui/UiShade.png", OUT / "Panel.png")
 
 

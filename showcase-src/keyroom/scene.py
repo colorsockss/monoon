@@ -170,7 +170,7 @@ def write(file):
 
 
 # ---- shared assets ------------------------------------------------------------------------------------------------
-for n, (w, h) in {"ShadowS.png": (12, 4), "ShadowM.png": (16, 5), "ShadowL.png": (22, 6)}.items(): shadow(n, w, h)
+for n, (w, h) in {"ShadowM.png": (16, 5), "ShadowL.png": (22, 6)}.items(): shadow(n, w, h)
 floor_ts, _ = tileset("Floor.tileset", "Floor.png", False)
 face_ts, face_cols = tileset("WallFace.tileset", "WallFace.png", True)
 face_back_ts, _ = tileset("WallFaceBack.tileset", "WallFace.png", False)

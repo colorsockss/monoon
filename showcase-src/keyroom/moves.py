@@ -12,7 +12,6 @@ import pathlib, re, shutil, struct, uuid
 SAMPLES = pathlib.Path(__file__).resolve().parents[2] / "samples"
 ROOT = SAMPLES / "KeyRoom"
 ART = ROOT / "Assets/Showcase"
-shutil.copy(SAMPLES / "PlatformerLab/Assets/Ui/UiShade.png", ART / "Panel.png")
 shutil.copy(SAMPLES / "AnimatorLab/Assets/Showcase/DummyForward.png", ART / "Dummy.png")
 NS = uuid.UUID("64fb4cd6-2469-5cec-ba6d-9a49e61f42e7")
 uid = lambda name: str(uuid.uuid5(NS, "showcase/" + name))
