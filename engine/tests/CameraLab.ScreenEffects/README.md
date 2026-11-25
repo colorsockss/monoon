@@ -1,6 +1,6 @@
 # CameraLab 화면 효과·진동·커서 GUI 검증
 
-[verify.py](verify.py)는 CameraLab 복사본을 에디터 Scene Play, Release, Native AOT 앱으로 차례로 열고 같은 입력을 보낸다. 입력은 OS 키 이벤트가 아니라 [rumble-pad.c](rumble-pad.c)가 붙이는 SDL 가상 게임패드로 보낸다. 이 픽스처는 `DYLD_INSERT_LIBRARIES`로 검증 프로세스에만 로드되며, SDL이 패드에 보내는 진동(`SDL_RumbleGamepad`가 도달한 저주파·고주파 세기와 SDL이 멈출 때의 `0 0`)을 시각과 함께 기록한다. 에디터 Play는 [시작 훅](StartupHook.cs)이 Play 버튼을 눌러 시작한다. 실제 패드는 필요 없다.
+[verify.py](verify.py)는 CameraLab 복사본(시작 씬은 쇼케이스 `Showcase.scene`, 효과 패널의 키가 ScreenFxDemo로 간다)을 에디터 Scene Play, Release, Native AOT 앱으로 차례로 열고 같은 입력을 보낸다. 입력은 OS 키 이벤트가 아니라 [rumble-pad.c](rumble-pad.c)가 붙이는 SDL 가상 게임패드로 보낸다. 이 픽스처는 `DYLD_INSERT_LIBRARIES`로 검증 프로세스에만 로드되며, SDL이 패드에 보내는 진동(`SDL_RumbleGamepad`가 도달한 저주파·고주파 세기와 SDL이 멈출 때의 `0 0`)을 시각과 함께 기록한다. 에디터 Play는 [시작 훅](StartupHook.cs)이 Play 버튼을 눌러 시작한다. 실제 패드는 필요 없다.
 
 | 단계 | 패드 입력 | 확인하는 내용 |
 | --- | --- | --- |

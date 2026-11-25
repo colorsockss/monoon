@@ -9,7 +9,7 @@ internal static class ScreenEffectsChecks
 
     internal static void Run(string repository, string scratch)
     {
-        var scene = SceneDocument.Load(Path.Combine(repository, "samples", "CameraLab", "Scenes", "CameraLab.scene"));
+        var scene = SceneDocument.Load(Path.Combine(repository, "samples", "CameraLab", "Scenes", "Showcase.scene"));
         var profile = Directory.CreateDirectory(Path.Combine(scratch, "ScreenEffects")).FullName;
         GameSession Open() => new(scene, null, null, new PlayerStorage(profile));
         void Tap(GameSession game, string key)
@@ -40,8 +40,9 @@ internal static class ScreenEffectsChecks
             var offset = a.State.Screen.Current.Shake;
             a.State.Screen.Clear();
             var still = new DrawCapture(); a.Current.Draw(still, 1);
-            Check(offset != Vector2.Zero && Vector2.Distance(new(still.Green[0].X - shaken.Green[0].X, still.Green[0].Y - shaken.Green[0].Y), offset) < .01f &&
-                  still.Green[^1] == shaken.Green[^1], "views move by the shake offset; the minimap stays");
+            // The hero's picture: first in the Player Camera view, last in the minimap. The offset is in screen pixels.
+            Check(offset != Vector2.Zero && Vector2.Distance(new(still.Hero[0].X - shaken.Hero[0].X, still.Hero[0].Y - shaken.Hero[0].Y), offset) < .01f &&
+                  still.Hero[^1] == shaken.Hero[^1], $"views move by the shake offset; the minimap stays: {offset} {still.Hero[0]} {shaken.Hero[0]}");
 
             // Colour adjustment wraps the world; fade and flash cover the HUD.
             Tap(a, "4"); Tap(a, "3");
@@ -94,7 +95,7 @@ internal static class ScreenEffectsChecks
 
     private sealed class DrawCapture : ICanvas2D
     {
-        public List<RectangleF> Green = [];
+        public List<RectangleF> Green = [], Hero = [];
         public List<string> Log = [];
         public IDisposable PushClip(RectangleF r) => new Pop();
         private sealed class Pop : IDisposable { public void Dispose() { } }
@@ -106,7 +107,8 @@ internal static class ScreenEffectsChecks
             if ((color.ToArgb() & 0xffffff) == 0x52e4b5) Green.Add(rect);
             Log.Add($"fill {color.ToArgb():X8}");
         }
-        public bool DrawSprite(string path, RectangleF rect) => true;
+        public void DrawShader(ShaderClip shader, int frame, RectangleF local, Matrix3x2 matrix, Color tint, bool additive) { }
+        public bool DrawSprite(string path, RectangleF rect) { if (path.Contains("Showcase/Hero")) Hero.Add(rect); return true; }
         public void DrawText(string text, float x, float y, float size, Color color) => Log.Add("text");
     }
 }

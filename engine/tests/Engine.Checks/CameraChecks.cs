@@ -4,14 +4,15 @@ using Engine.Core;
 
 internal static class CameraChecks
 {
-    [Check(4500)] static void Registered(CheckRun c) => Run(c.Repository, c.Scratch);
+    [Check(4500, "camera")] static void Registered(CheckRun c) => Run(c.Repository, c.Scratch);
     private static void Check(bool value,string why) { if (!value) throw new Exception("Camera: "+why); }
     private static void Near(float a,float b,string why) => Check(Math.Abs(a-b)<.002f,$"{why}: {a} vs {b}");
     private static CameraView Read(SceneGame g,Guid id) => g.TryGetView(id,out var view)?view:throw new Exception("Missing camera view");
     internal static void Run(string repository,string scratch)
     {
         CheckRenderGrid();
-        var path=Path.Combine(repository,"samples","CameraLab","Scenes","CameraLab.scene");
+        // The CameraLab showcase: Player and Partner cameras split the screen (merging when close), a Map camera draws the minimap.
+        var path=Path.Combine(repository,"samples","CameraLab","Scenes","Showcase.scene");
         var scene=SceneDocument.Load(path);
         var main=scene.Camera!;var extra=scene.Objects.Single(o=>o.Name=="Partner Camera");var map=scene.Objects.Single(o=>o.Name=="Map Camera");
         var mainId=main.Id;
@@ -22,25 +23,35 @@ internal static class CameraChecks
         using (var session=new GameSession(scene))
         {
             var g=session.Current;
+            void Run(int ticks) { for (int i=0;i<ticks;i++) session.FixedUpdate(session.Actions.Take(),1/60f); }
             Check(g.ActiveCameraId==mainId && !g.TrySetActive(map.Id) && !g.TrySetActive(extra.Id),"extra output is not a primary cut");
-            session.Actions.Press("Space"); session.FixedUpdate(session.Actions.Take(),1/60f);
+            // The player's feet box (22 x 12 at 420, 520) is the camera's target: centre 431, 526. One tick of → walks 2.5 units.
+            session.Actions.Press("Right"); Run(1);
             var shot=Read(g,mainId);
             float alpha=(float)(1-Math.Pow(.5,1d/(60*.16)));
-            Near(shot.Center.X,200+14*alpha,"one tick of post-movement tracking");
-            Near(shot.Center.Y,200+8*alpha,"same-frame Y tracking");
-            var recorder=new DrawCapture();g.Draw(recorder,.5f);
-            Check(recorder.Clips.SequenceEqual(new[]{new RectangleF(0,0,400,400),new RectangleF(400,0,400,400),new RectangleF(584,18,200,112)}),"split, second, minimap order");
-            Near(recorder.Green[0].X,184+7-7*alpha,"render interpolates camera and player at the same fraction");
+            // The view centre lands on whole screen pixels: steps of 1/1.5 units at zoom 1.5.
+            Near(shot.Center.X,MathF.Round((431+2.5f*alpha)*1.5f)/1.5f,"one tick of post-movement tracking");
+            Near(shot.Center.Y,526,"same-frame Y tracking");
+            // Viewports are whole pixels: the two halves, then the minimap (0.76, 0.0356, 0.22 x 0.219 of 800 x 450).
+            var expected=new[]{new RectangleF(0,0,400,450),new RectangleF(400,0,400,450),(RectangleF)Read(g,map.Id).Viewport};
+            var frames=new[]{0f,.5f,1f}.Select(f=>{var r=new DrawCapture();g.Draw(r,f);return r;}).ToArray();
+            var recorder=frames[1];
+            Check(recorder.Clips.Count==3 && recorder.Clips.SequenceEqual(expected) && expected[2]==new RectangleF(608,16,176,99),
+                $"split, second, minimap order: {string.Join(" ",recorder.Clips)}");
+            float x0=frames[0].Hero[0].X,x5=frames[1].Hero[0].X,x1=frames[2].Hero[0].X;
+            Near(x5,(x0+x1)/2,"render interpolates camera and player at the same fraction");
+            Check(x1>x0,$"the walking player moves right in its view: {x0} -> {x1}");
             Check(recorder.TextOutside>0 && recorder.TextInside==0 && recorder.Current==null,"HUD drawn once after clip restoration");
             g.SetActive(extra.Id,false);recorder=new();g.Draw(recorder,1);
             Check(recorder.Clips.Count==2 && !g.TryGetView(extra.Id,out _),"inactive camera hidden");
             g.SetActive(extra.Id,true);
-            for (int i=0;i<151;i++) session.FixedUpdate(session.Actions.Take(),1/60f);
-            Check(session.State.Storage.LoadSlot(1,1)?.GetBool("pass")==true,"tracked to bottom/right limits");
-            session.Actions.Release("Space");session.FixedUpdate(session.Actions.Take(),1/60f);
-            session.Actions.Press("Space");
-            for (int i=0;i<152;i++) session.FixedUpdate(session.Actions.Take(),1/60f);
-            Check(session.State.Storage.LoadSlot(2,1)?.GetBool("pass")==true,"returned to top/left limits");
+            // Bounds: each half shows 400/1.5 x 450/1.5 units of the 1600 x 896 map, so its centre stops that far from the edges.
+            session.Actions.Press("Down"); Run(700);
+            Check(Read(g,mainId).Viewport==new Rectangle(400,0,400,450),$"split at the south-east corner, the Player east of the partner takes the right half: {Read(g,mainId)}");
+            Near(Read(g,mainId).Center.X,1600-400/3f,"tracked to the right limit");Near(Read(g,mainId).Center.Y,896-150,"tracked to the bottom limit");
+            session.Actions.Release("Right");session.Actions.Release("Down");session.Actions.Press("Left");session.Actions.Press("Up"); Run(900);
+            Check(Read(g,mainId).Viewport==new Rectangle(0,0,400,450),$"back in the north-west, the Player takes the left half: {Read(g,mainId)}");
+            Near(Read(g,mainId).Center.X,400/3f,"returned to the left limit");Near(Read(g,mainId).Center.Y,150,"returned to the top limit");
         }
         var bounded=new Camera2DComponent { Bounds=new(-100,-20,60,45),Zoom=.25f };
         var small=bounded.View(new(801,451),new(999,-999));
@@ -133,14 +144,16 @@ internal static class CameraChecks
 
     private sealed class DrawCapture : ICanvas2D
     {
-        public List<RectangleF> Clips=[], Green=[];
+        public List<RectangleF> Clips=[], Green=[], Hero=[];
         public RectangleF? Current;
         public int TextInside,TextOutside;
         public IDisposable PushClip(RectangleF r) { Check(Current==null,"unbalanced scope");Clips.Add(r);Current=r;return new Pop(this); }
         private sealed class Pop(DrawCapture capture): IDisposable { public void Dispose()=>capture.Current=null; }
         public void Clear(Color color) {}
         public void FillRectangle(RectangleF rect,Color color) { if ((color.ToArgb()&0xffffff)==0x52e4b5) Green.Add(rect); }
-        public bool DrawSprite(string path,RectangleF rect)=>true;
+        // The hero's picture in the first (Player Camera) view.
+        public void DrawShader(ShaderClip shader,int frame,RectangleF local,Matrix3x2 matrix,Color tint,bool additive) {}
+        public bool DrawSprite(string path,RectangleF rect) { if (Clips.Count==1 && Current!=null && path.Contains("Showcase/Hero")) Hero.Add(rect); return true; }
         public void DrawText(string text,float x,float y,float size,Color color) { if (Current==null) TextOutside++;else TextInside++; }
     }
 }

@@ -7,7 +7,6 @@ startScene: 2c9a883e-aeee-5d4a-a6a3-66257b497a77
 includedScenes:
 - 7d2a7ef4-c64e-583e-a2b9-8c5f45b0aadf
 - 2c9a883e-aeee-5d4a-a6a3-66257b497a77
-- cf624488-489b-5951-a279-fffa22d99f7a
 input:
   actions:
   - name: MoveLeft

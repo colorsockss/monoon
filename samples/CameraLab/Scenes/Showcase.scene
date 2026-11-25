@@ -2493,6 +2493,113 @@ objects:
     size: 12
     insetX: 10
     insetY: 4
+- id: 0b7ad731-2c8e-54e7-b897-b57ccff54ad9
+  parentId: 1cb0ca6f-8567-5960-80dd-21a9620d3e66
+  name: Effects panel
+  x: -12
+  y: -12
+  width: 300
+  height: 104
+  components:
+  - type: uiRect
+    anchor: BottomRight
+  - type: uiImage
+    sprite: 2739c0db-ab1d-58b2-a7bd-b6c3a6e7adbe
+    borders: {left: 4, top: 4, right: 4, bottom: 4}
+- id: daf27053-903b-53fa-860d-65cea4490f0a
+  parentId: 0b7ad731-2c8e-54e7-b897-b57ccff54ad9
+  name: Effects keys 1
+  x: 10
+  y: 6
+  width: 280
+  height: 15
+  components:
+  - type: uiRect
+  - type: uiText
+    richText: true
+    text: "<b>Screen effects</b>   1 impact   2 flash   3 fade   4 grade"
+    size: 11
+    color: "#F4F6F4"
+- id: b14ce1d0-cc07-579e-98d1-f1ffefe0e5fd
+  parentId: 0b7ad731-2c8e-54e7-b897-b57ccff54ad9
+  name: Effects keys 2
+  x: 10
+  y: 21
+  width: 280
+  height: 15
+  components:
+  - type: uiRect
+  - type: uiText
+    richText: true
+    text: "6 rumble   7 cursor   F freeze   . step"
+    size: 11
+    color: "#BFD0DC"
+- id: 111fce6f-070e-56e1-bc03-19d473d13edb
+  parentId: 0b7ad731-2c8e-54e7-b897-b57ccff54ad9
+  name: Effects keys 3
+  x: 10
+  y: 36
+  width: 280
+  height: 15
+  components:
+  - type: uiRect
+  - type: uiText
+    richText: true
+    text: "5 reduced shake and flash   8 rumble on or off"
+    size: 11
+    color: "#BFD0DC"
+- id: f7adfa9e-f6fc-5abf-b588-5de97097d852
+  parentId: 0b7ad731-2c8e-54e7-b897-b57ccff54ad9
+  name: Comfort
+  x: 10
+  y: 54
+  width: 280
+  height: 15
+  components:
+  - type: uiRect
+  - type: uiText
+    richText: true
+    text: "Shake 100%   Flash 100%"
+    size: 11
+    color: "#F4F6F4"
+- id: dc7b7644-9776-51be-99dd-5e46373346b0
+  parentId: 0b7ad731-2c8e-54e7-b897-b57ccff54ad9
+  name: Output
+  x: 10
+  y: 69
+  width: 280
+  height: 15
+  components:
+  - type: uiRect
+  - type: uiText
+    richText: true
+    text: "Rumble on   Cursor system"
+    size: 11
+    color: "#F4F6F4"
+- id: 3ecdd91d-4acc-5695-b189-65867d5e9ab9
+  parentId: 0b7ad731-2c8e-54e7-b897-b57ccff54ad9
+  name: Clock
+  x: 10
+  y: 84
+  width: 280
+  height: 15
+  components:
+  - type: uiRect
+  - type: uiText
+    richText: true
+    text: "Running"
+    size: 11
+    color: "#F4F6F4"
+- id: 7f343ffe-02e4-5523-8a0f-8e5fadd3dd4e
+  name: Screen Effects
+  x: 0
+  y: 0
+  width: 1
+  height: 1
+  components:
+  - type: script
+    script: ScreenFxDemo
+    values: {"Comfort": "f7adfa9e-f6fc-5abf-b588-5de97097d852", "Output": "dc7b7644-9776-51be-99dd-5e46373346b0", "Clock": "3ecdd91d-4acc-5695-b189-65867d5e9ab9", "Cursor": {"Id": "b3af6d15-ef36-48a2-b844-4a4a923f07f6"}}
 - id: 3f95ffc7-5e59-5a7a-ae31-54f4dfb2f576
   name: Split HUD
   x: 0

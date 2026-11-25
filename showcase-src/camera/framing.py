@@ -18,7 +18,7 @@ body = body.split("defaultCameraId:")[0]
 blocks = ["- id: " + b for b in body.split("- id: ")[1:]]
 name_of = lambda b: re.search(r"\n  name: (.*)", b).group(1)
 id_of = lambda b: re.match(r"- id: (\S+)", b).group(1)
-drop = {"Patrol 1", "Patrol 2", "Patrol 3", "Patrol 4", "Powder zone", "Evening zone", "Player Camera", "Partner Camera", "Map Camera", "Canvas", "Split HUD"}
+drop = {"Patrol 1", "Patrol 2", "Patrol 3", "Patrol 4", "Powder zone", "Evening zone", "Player Camera", "Partner Camera", "Map Camera", "Canvas", "Split HUD", "Screen Effects"}
 gone = set()   # dropped objects and everything under them (blocks list parents first)
 for b in blocks:
     parent = re.search(r"\n  parentId: (\S+)", b)

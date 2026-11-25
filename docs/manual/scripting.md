@@ -202,7 +202,7 @@ KeyRoom의 기본 설정에서는 먼저 오른쪽 문에 부딪힌 뒤 왼쪽�
 #endif
 ```
 
-CameraLab을 Play하고 **G**를 누르면 플레이어 주위의 금색 원, 두 번째 카메라 중심까지의 하늘색 선, 좌표 텍스트가 켜진다. [FieldPlayer.cs](../../samples/CameraLab/Scripts/FieldPlayer.cs) · [세 경로와 배포본 비교 기록](../../engine/tests/results/engine-features-2/README.md#1614-스크립트-디버그-그리기)
+CameraLab의 프레이밍 쇼케이스(`ShowcaseFraming.scene`)를 Play하고 **G**를 누르면 주인공 발밑의 금색 원, 다음 정지 위치까지의 하늘색 선, 좌표 텍스트, 남은 약초와 데드존·프레이밍 상자가 켜진다. [FramingTour.cs](../../samples/CameraLab/Scripts/Showcase/FramingTour.cs) · [세 경로와 배포본 비교 기록](../../engine/tests/results/engine-features-2/README.md#1614-스크립트-디버그-그리기)
 
 ## 외부 IDE로 Scene Play 디버깅
 

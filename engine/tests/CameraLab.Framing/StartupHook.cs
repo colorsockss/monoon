@@ -6,7 +6,7 @@ using Avalonia.VisualTree;
 using Avalonia.Interactivity;
 using Engine.Core;
 
-// Loaded into the packaged editor with DOTNET_STARTUP_HOOKS: one Scene Play replays the CameraLab framing recording.
+// Loaded into the packaged editor with DOTNET_STARTUP_HOOKS: one Scene Play replays the CameraLab framing showcase.
 public static class StartupHook
 {
     public static void Initialize() => Start(Path.Combine(Environment.GetEnvironmentVariable("MONOON_FRAMING_OUT")!, "error.txt"), async life =>
@@ -19,7 +19,7 @@ public static class StartupHook
         // Inspector rows of the framing camera at three window widths: the new rows share the label and field columns.
         var doc = (SceneDocument)scene.GetValue(viewport)!;
         main.GetType().GetMethod("Select", BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public)!
-            .Invoke(main, [doc.Objects.Single(o => o.Name == "Player Camera")]);
+            .Invoke(main, [doc.Objects.Single(o => o.Name == "Follow Camera")]);
         var report = new List<string>();
         foreach (var width in new[] { 1280, 1600, 1920 })
         {

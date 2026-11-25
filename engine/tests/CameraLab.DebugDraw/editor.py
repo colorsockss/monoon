@@ -1,5 +1,6 @@
 """Scene Play half of the CameraLab debug drawing check: the packaged Mac editor replays without and with G."""
 import os
+import re
 from pathlib import Path
 import subprocess
 import sys
@@ -18,10 +19,10 @@ if (out / 'error.txt').exists(): raise RuntimeError((out / 'error.txt').read_tex
 plain, gizmos = (out / 'scene-play.txt').read_text(encoding='utf-8').splitlines()
 print(plain); print(gizmos)
 def parse(line):
-    """'<run> gold=<n> cyan=<n> text=<a;b>' -> (gold, cyan, debug texts); the HUD readout (with '|') is not a gizmo."""
+    """'<run> gold=<n> cyan=<n> text=<a;b>' -> (gold, cyan, debug texts); only "x, y" coordinates are gizmos (not HUD text)."""
     head, texts = line.split(' text=')
     fields = dict(f.split('=') for f in head.split()[1:])
-    return int(fields['gold']), int(fields['cyan']), [t for t in texts.split(';') if t and '|' not in t]
-ok = parse(plain) == (0, 0, []) and parse(gizmos)[0] > 0 and parse(gizmos)[1] > 0 and parse(gizmos)[2] == ['200, 200'] * parse(gizmos)[0]
+    return int(fields['gold']), int(fields['cyan']), [t for t in texts.split(';') if re.fullmatch(r'-?\d+, -?\d+', t)]
+ok = parse(plain) == (0, 0, []) and parse(gizmos)[0] > 0 and parse(gizmos)[1] > 0 and parse(gizmos)[2] == ['431, 526'] * parse(gizmos)[0]   # the hero's feet, waiting at the first stop
 print(('PASS' if ok else 'FAIL') + ' Scene Play draws the gizmos after G and nothing before', flush=True)
 if not ok: raise SystemExit(1)

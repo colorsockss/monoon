@@ -186,6 +186,19 @@ for i, (flag, feature, detail) in enumerate(tags):
     obj(f"Tag {i + 1}", 12, 12 + i * 28, tag_w, 24, f"  - type: uiRect\n    anchor: TopLeft\n    showIf: {flag}\n" + panel
         + f'  - type: uiText\n    richText: true\n    text: "<b>{feature}</b>   <color=#BFD0DC>{detail}</color>"\n    size: 12\n    insetX: 10\n    insetY: 4\n', parent="Canvas")
 
+# Screen effects on keys for the whole screen (ScreenFxDemo): shake and zoom punch with rumble, flash, fade, colour grade,
+# a buzz, a custom cursor, comfort settings saved to player.settings, and freezing game time to step it tick by tick.
+fx = obj("Effects panel", -12, -12, 300, 104, "  - type: uiRect\n    anchor: BottomRight\n" + panel, parent="Canvas")
+line = lambda name, y, text, color="#BFD0DC": obj(name, 10, y, 280, 15, f'  - type: uiRect\n  - type: uiText\n    richText: true\n    text: "{text}"\n    size: 11\n    color: "{color}"\n', parent="Effects panel")
+line("Effects keys 1", 6, "<b>Screen effects</b>   1 impact   2 flash   3 fade   4 grade", "#F4F6F4")
+line("Effects keys 2", 21, "6 rumble   7 cursor   F freeze   . step")
+line("Effects keys 3", 36, "5 reduced shake and flash   8 rumble on or off")
+line("Comfort", 54, "Shake 100%   Flash 100%", "#F4F6F4")
+line("Output", 69, "Rumble on   Cursor system", "#F4F6F4")
+line("Clock", 84, "Running", "#F4F6F4")
+cursor = (ROOT / "Assets/Cursor.png.meta").read_text().split()[1]
+obj("Screen Effects", 0, 0, 1, 1, script("ScreenFxDemo", f'{{"Comfort": "{oid("Comfort")}", "Output": "{oid("Output")}", "Clock": "{oid("Clock")}", "Cursor": {{"Id": "{cursor}"}}}}'))
+
 obj("Split HUD", 0, 0, 1, 1, script("Showcase/SplitHud", f'{{"Main": "{oid("Player Camera")}", "Partner": "{oid("Partner Camera")}", "Seam": "{oid("Seam")}", "Label": "{oid("Partner label")}"}}'))
 scene = "schemaVersion: 43\nobjects:\n" + "".join(out) + f"defaultCameraId: {oid('Player Camera')}\n"
 (ROOT / "Scenes/Showcase.scene").write_text(scene)

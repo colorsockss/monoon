@@ -15,7 +15,7 @@ public static class StartupHook
         var main = life.MainWindow!;
         var viewport = main.FindControl<Control>("Viewport")!;
         var scene = viewport.GetType().GetProperty("Scene")!;
-        await Until(() => ((SceneDocument)scene.GetValue(viewport)!).Objects.Any(o => o.Name == "Player"), "CameraLab scene");
+        await Until(() => ((SceneDocument)scene.GetValue(viewport)!).Objects.Any(o => o.Name == "Player"), "CameraLab framing showcase");
         var play = main.FindControl<Button>("PlayButton")!;
         var project = GameSettings.Load(Environment.GetEnvironmentVariable("MONOON_QA_PROJECT")!);
         var lines = new List<string>();
@@ -44,6 +44,7 @@ public static class StartupHook
         public bool DrawSprite(string path, RectangleF destination) => true;
         public IDisposable PushClip(RectangleF area) => new Scope();
         public void BeginColorAdjust() { }
+        public void DrawShader(ShaderClip shader, int frame, RectangleF local, Matrix3x2 matrix, Color tint, bool additive) { }
         public void FillStrip(ReadOnlySpan<Vector2> edges, ReadOnlySpan<Color> colors, Matrix3x2 matrix)
         {
             if (colors[0].ToArgb() == Color.Gold.ToArgb()) Gold++;

@@ -1,42 +1,42 @@
-"""CameraLab merging split screen and per-camera screen effects in a disposable copy.
+"""CameraLab's showcase split screen (merging) and per-camera screen effects in a disposable copy.
 
-prepare <sample> <dest>   copy CameraLab: Player Camera splits with Partner Camera (merge 600, split 700, blend 0.25 s);
-                          add TraceSplit, which starts per-camera effects on fixed ticks and traces both views
+prepare <sample> <dest>   copy CameraLab and add TraceSplit to the showcase (Scenes/Showcase.scene, the start scene) as it is:
+                          Player Camera splits with Partner Camera (merge 260, split 340, blend 0.6 s). TraceSplit starts
+                          per-camera effects on fixed ticks and traces both views
 play <MoNoonPlayer> <out> headless replay with SDL software-renderer snapshots; the trace has one line per game tick
 check <out>...            the traces are byte-identical, the merge/split behaviour holds, and the snapshots of every out
                           that has them keep each camera's effects inside its own viewport
 """
-import os, shutil, struct, subprocess, sys, zlib
+import os, re, shutil, struct, subprocess, sys, zlib
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 PROJECT = 'cf624488-489b-5951-a279-fffa22d99f7a'
-MAIN, SECOND = '9220cdc4-76fa-5e2b-9107-5f4aef99a67e', '44e4c6f9-a8d1-5d37-a753-a54a9fdb7a39'
-PLAYER = '45c4c558-3fb3-5861-88e3-dfd8a5c5bae3'
-FRAMES = 200
-# Space: both players travel to the opposite corners for 150 ticks and cross in the middle of the map.
-KEYS = [(5, 6, 'Space')]
-# Frame 22: main view black (its own Adjust), partner view red (its own Flash). Frame 55: merged, effects over.
-SNAPSHOTS = (22, 55)
-LEFT, RIGHT, MERGED = (0, 0, 400, 400), (400, 0, 400, 400), (0, 0, 800, 400)
-MINIMAP = (584, 18, 200, 112)
+SHOWCASE = '2c9a883e-aeee-5d4a-a6a3-66257b497a77'
+FRAMES = 480
+# The player walks right towards the partner (patrolling east of the plaza) until the views merge, then back west until
+# they split again. FieldWalker moves 150 units a second.
+KEYS = [(30, 230, 'Right'), (240, 440, 'Left')]
+# Frame 22: main view black (its own Adjust), partner view red (its own Flash). Frame 300: merged (ticks 257–356), effects over.
+SNAPSHOTS = (22, 300)
+LEFT, RIGHT, MERGED = (0, 0, 400, 450), (400, 0, 400, 450), (0, 0, 800, 450)
+# HUD drawn over the views (game pixels): feature tags, caption, seam; partner label, minimap and its label, effects panel.
+HUD_LEFT = [(12, 12, 360, 52), (12, 394, 400, 44), (396, 0, 8, 450)]
+HUD_RIGHT = [(396, 0, 8, 450), (412, 12, 120, 22), (604, 12, 184, 130), (488, 334, 300, 104)]
+CAPTION = (24, 400, 300, 30)
 
 
 def prepare(sample, destination):
-    shutil.copytree(sample, destination, ignore=shutil.ignore_patterns('.monoon', '.DS_Store', 'bin', 'obj'))
+    shutil.copytree(sample, destination, ignore=shutil.ignore_patterns('.monoon', '.monoon-compiled', '.DS_Store', 'bin', 'obj'))
     shutil.copyfile(HERE / 'TraceSplit.source', destination / 'Scripts/TraceSplit.cs')
-    scene = destination / 'Scenes/CameraLab.scene'
+    scene = destination / 'Scenes/Showcase.scene'
     text = scene.read_text(encoding='utf-8')
-    def swap(old, new):
-        nonlocal text
-        assert text.count(old) == 1, old
-        text = text.replace(old, new)
-    swap(f'    follow: {PLAYER}\n    halfLife: 0.16\n',
-         f'    follow: {PLAYER}\n    halfLife: 0.16\n    splitWith: {SECOND}\n    mergeDistance: 600\n    splitDistance: 700\n    blendSeconds: 0.25\n')
+    ids = {m.group(2): m.group(1) for m in re.finditer(r'(?m)^- id: (\S+)\n(?:  parentId: \S+\n)?  name: (.*)$', text)}
+    assert 'splitWith: ' + ids['Partner Camera'] in text
     trace = ('- id: 6b2f0d7e-5a41-4c8b-a3e9-2d7c1f04b8a6\n  name: Split trace\n  width: 1\n  height: 1\n  components:\n'
-             f'  - type: script\n    script: TraceSplit\n    values:\n      Main: "{MAIN}"\n      Second: "{SECOND}"\n')
-    swap('defaultCameraId:', trace + 'defaultCameraId:')
-    scene.write_text(text, encoding='utf-8')
+             f'  - type: script\n    script: TraceSplit\n    values:\n      Main: "{ids["Player Camera"]}"\n      Second: "{ids["Partner Camera"]}"\n')
+    assert text.count('defaultCameraId:') == 1
+    scene.write_text(text.replace('defaultCameraId:', trace + 'defaultCameraId:'), encoding='utf-8')
 
 
 def recording(path):
@@ -44,7 +44,7 @@ def recording(path):
     for down, up, key in KEYS:
         for frame, state in ((down, 'true'), (up, 'false')):
             lines.append((frame, f'- frame: {frame}\n  timeTicks: {frame * 166667}\n  input: {{kind: key, control: "{key}", down: {state}}}\n'))
-    path.write_text(f'version: 1\nproject: {PROJECT}\nstartScene: {PROJECT}\nframeTicks: [' + ', '.join(['166667'] * FRAMES) +
+    path.write_text(f'version: 1\nproject: {PROJECT}\nstartScene: {SHOWCASE}\nframeTicks: [' + ', '.join(['166667'] * FRAMES) +
                     ']\nevents:\n' + ''.join(l for _, l in sorted(lines, key=lambda x: x[0])), encoding='utf-8')
 
 
@@ -93,10 +93,10 @@ def pixels(png):
     return out
 
 
-def area(rows, rect, skip=None):
+def area(rows, rect, skip=()):
     x0, y0, w, h = rect
-    def inside(x, y, r): return r and r[0] <= x < r[0] + r[2] and r[1] <= y < r[1] + r[3]
-    return [rows[y][x] for y in range(y0, y0 + h) for x in range(x0, x0 + w) if not inside(x, y, skip)]
+    def inside(x, y, r): return r[0] <= x < r[0] + r[2] and r[1] <= y < r[1] + r[3]
+    return [rows[y][x] for y in range(y0, y0 + h) for x in range(x0, x0 + w) if not any(inside(x, y, r) for r in skip)]
 
 
 def red(p): return p[0] > p[1] + 80 and p[0] > p[2] + 80
@@ -127,17 +127,17 @@ def check(*outs):
     expect(t[ticks[0]][0] == LEFT and t[ticks[0]][2] == RIGHT, f'players far apart start split: Player left {t[ticks[0]][0]}, Partner right {t[ticks[0]][2]}')
     widths = [t[k][0][2] for k in ticks]
     merged = [k for k in ticks if t[k][0] == MERGED]
-    expect(len(merged) >= 10, f'merged for {len(merged)} ticks ({merged[0] if merged else "-"}–{merged[-1] if merged else "-"}) while the players cross')
+    expect(len(merged) >= 10, f'merged for {len(merged)} ticks ({merged[0] if merged else "-"}–{merged[-1] if merged else "-"}) while the players are close')
     expect(all(t[k][2:4] == t[k][0:2] for k in merged), 'a merged Partner Camera reports the shared view')
     steps = [abs(widths[i] - widths[i - 1]) for i in range(1, len(widths))]
-    expect(max(steps) <= 41, f'viewport width changes at most {max(steps)} px per tick (0.25 s smoothstep: 400 x 1.5 / 15 + 1)')
+    expect(max(steps) <= 18, f'viewport width changes at most {max(steps)} px per tick (0.6 s smoothstep: 400 x 1.5 / 36 + 1)')
     phases = []
     for w in widths:
         state = 'merged' if w == 800 else 'split' if w == 400 else 'blend'
         if not phases or phases[-1] != state: phases.append(state)
     expect(phases == ['split', 'blend', 'merged', 'blend', 'split'], f'one merge and one split, no flicker: {" > ".join(phases)}')
     last = t[ticks[-1]]
-    expect(last[0] == RIGHT and last[2] == LEFT, f'after crossing the Player is on the right: Player {last[0]}, Partner {last[2]}')
+    expect(last[0] == LEFT and last[2] == RIGHT, f'walked back west, the views split again with the Player on the left: Player {last[0]}, Partner {last[2]}')
     flash = [k for k in ticks if t[k][5][3] > 0]
     expect(flash and flash[0] in (20, 21) and all(t[k][4][3] == 0 and t[k][6][3] == 0 for k in ticks),
            f'partner flash from tick {flash[0] if flash else "-"}; main and screen-wide flash stay 0')
@@ -147,15 +147,16 @@ def check(*outs):
         shots = o / 'captures'
         if not shots.exists(): continue
         effect, clean = pixels(shots / f'{SNAPSHOTS[0]:04}.png'), pixels(shots / f'{SNAPSHOTS[1]:04}.png')
-        left, right, hud = area(effect, LEFT), area(effect, RIGHT, MINIMAP), area(effect, (0, 400, 800, 50))
+        left, right, hud = area(effect, LEFT, HUD_LEFT), area(effect, RIGHT, HUD_RIGHT), area(effect, CAPTION)
         reds = sum(map(red, right)) / len(right)
-        # HUD labels ("01 PLAYER") and the divider are drawn over the views, so whole areas are compared as fractions.
+        # The HUD panels and the seam are drawn over the views; they are left out, the rest is compared as fractions.
         black = sum(p == (0, 0, 0) for p in left) / len(left)
         expect(black > .9, f'{o.name} frame {SNAPSHOTS[0]}: the main camera\'s own Adjust(-1) blacks out its viewport ({black:.1%} black)')
         expect(reds > .9 and not any(map(red, left)), f'{o.name} frame {SNAPSHOTS[0]}: the partner flash fills its viewport ({reds:.1%} red) and nothing else')
         expect(not any(map(red, hud)) and any(p != (0, 0, 0) for p in hud), f'{o.name} frame {SNAPSHOTS[0]}: the HUD is outside both effects')
-        union = area(clean, MERGED, MINIMAP)
-        expect(not any(map(red, union)) and sum(p == (0, 0, 0) for p in union) < len(union) // 10,
+        union = area(clean, MERGED, HUD_LEFT + HUD_RIGHT)
+        # The art has a few red pixels of its own (hair, barrels): a leftover flash would tint the whole view.
+        expect(sum(map(red, union)) < len(union) // 100 and sum(p == (0, 0, 0) for p in union) < len(union) // 10,
                f'{o.name} frame {SNAPSHOTS[1]}: merged view without leftover effects')
 
 

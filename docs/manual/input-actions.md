@@ -107,7 +107,7 @@ KeyRoom 첫 방에서 **K** 또는 패드 **RightShoulder**를 누르면 조작�
 
 `tick.Session.SetCursor(sprite, hotX, hotY)`는 프로젝트 PNG(최대 256×256, 더 크면 `ArgumentException`)를 마우스 커서로 쓴다. 핫스폿은 클릭 위치가 되는 이미지 픽셀이며 이미지 밖이면 `ArgumentOutOfRangeException`이 발생한다. `ResetCursor()`로 시스템 커서를 복원하고, `Cursor`로 현재 상태를 읽는다. 스크립트 필드를 `SpriteReference`로 선언하면 빌드가 PNG를 배포본에 포함한다. 플레이어는 SDL 컬러 커서로 표시한다. Scene Play는 같은 픽셀로 Mac에서는 SDL Scene 패널의 `NSCursor`를, Windows 에디터에서는 Avalonia 커서를 만들어 Scene 패널 위에 표시하고, Play를 멈추면 원래 커서로 돌아간다.
 
-CameraLab에서 **6**(패드 North)은 `Rumble(.3, .9, .2)`, **1**은 흔들림과 함께 `Rumble(1, .5, .4)`를 요청한다. **8**(RightStick)은 진동 끄기, **7**(LeftStick)은 조준 커서 [Cursor.png](../../samples/CameraLab/Assets/Cursor.png)(핫스폿 8, 8)와 시스템 커서를 바꾼다.
+CameraLab 쇼케이스에서 **6**(패드 North)은 `Rumble(.3, .9, .2)`, **1**은 흔들림과 함께 `Rumble(1, .5, .4)`를 요청한다. **8**(RightStick)은 진동 끄기, **7**(LeftStick)은 조준 커서 [Cursor.png](../../samples/CameraLab/Assets/Cursor.png)(핫스폿 8, 8)와 시스템 커서를 바꾼다.
 
 `MONOON_FEEDBACK_LOG=<파일>`을 지정하면 플레이어와 Scene Play가 보낸 진동(기기 이름, 모터 세기 0–65535, 밀리초, 결과)과 커서(파일, 크기, 핫스폿, RGBA 해시)를 한 줄씩 기록한다. 패드 없이 확인할 때 쓴다. [Mac 기록과 비교](../../engine/tests/results/rumble-cursor/README.md)
 

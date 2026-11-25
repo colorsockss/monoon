@@ -96,6 +96,7 @@
 | 2026-11-26 | BarrageLab | 기존 씬 셋과 포탑·표적·레이저 스크립트, Bullet 프리팹 삭제. 우주선에 R/P 재시작과 결과 기록, 드론에 명중·Exit 수와 재시작, 보스 레이저에 R 재시작을 넣음(화면 변경 없음). SpritePool·PrefabPool 검사, Lines·PrefabPools 하네스 통과. Paths 하네스 캡처 캔버스에 셰이더 미리보기 연결 |
 | 2026-11-26 | ParticleLab | 두 번째 쇼케이스 `ShowcaseWorkshop.scene`(입자 공방, 거점 다섯: 형태·정렬·프리셋·곡선·노이즈와 충돌)을 만들고 기존 랩 씬 여섯과 쓰지 않는 에셋(Downpour, Rocket, 바닥) 삭제, Stress는 테스트 전용으로 남김(사용자 결정). 공방 영상을 새로 찍어야 함. Trace(야영지·공방·Curves·Stress), Editor, Reload 하네스와 파티클 엔진 검사 통과. KeyRoom.AssetFields의 curves 단계는 공방으로 옮겼지만 KeyRoom 묶음에서 함께 돌린다 |
 | 2026-11-26 | CollisionLab | 랩 씬을 두 번째 쇼케이스 `ShowcaseCasts.scene`(같은 씬 id·개체 id·충돌체, 밤 풀밭 그림)으로 바꾸고 레이 선과 스윕 정지 자리를 그림. Field1000·Field10000은 테스트 전용으로 빌드 씬 목록에서 뺌. 하네스는 [collision_lab.py](../../engine/tests/Shared/collision_lab.py) 복사본(시작 씬 ShowcaseCasts, 카메라에 FieldSelector, 필드 씬 포함)을 씀. Spatial·SplitLoading·FrameProfiler(Release·AOT·Scene Play), EditorPerf, InspectorEdits(후보 에디터 1회), AssetFields field 단계, physics·history 검사 통과. 캐스트 영상을 새로 찍어야 함 |
+| 2026-11-26 | CameraLab | 기존 CameraLab 씬과 FieldPlayer·MirrorPlayer 삭제. ScreenFxDemo(충격·섬광·페이드·색 보정, 진동, 사용자 커서, 편의 설정 저장, 정지·한 틱 진행)를 쇼케이스에 효과 패널과 함께 넣음(영상 다시 찍어야 함). 디버그 그리기는 프레이밍 쇼케이스의 FramingTour가 이미 보여 줌. 하네스는 시험용 드라이버 없이 쇼케이스를 그대로 기록: SplitScreen(쇼케이스, 방향키로 동료에게 다가갔다 돌아옴), Framing·DebugDraw(ShowcaseFraming 연출). CameraChecks·ScreenEffectsChecks를 쇼케이스로 다시 씀. CameraChecks의 201 vs 200.9752 실패는 카메라 중심이 화면 픽셀 단위로 맞춰지는 동작이어서 기대값에 반영. SplitScreen·Framing·DebugDraw 세 경로, ScreenEffects 헤드리스 재생(Release), camera·screen-effects 검사 통과. ScreenEffects GUI 단계(가상 패드)는 시험 창이 앞으로 오지 못해(window 도구 종료 7) 확인 못 함 |
 | 2026-11-26 | 공통 | FeatureChecks(쇼케이스에서 글자를 뺀 SpriteLab), FeatureSwitchChecks(카메라 없는 추가 로딩 씬 제외), AssetReportChecks(KeyRoom 쇼케이스 기준 이유·기능), Dialogue·Inventory·Quests 패키지를 바뀐 InventoryLab 데이터로 다시 만듦, EngineFeatures1의 정수 배율 예시를 AudioLab 설정으로 |
 
 ### `./monoon test`에 남은 실패 (2026-11-26, 단계별로 계속 실행해 모음)
@@ -103,7 +104,6 @@
 | 검사 | 첫 실패 | 처리할 묶음 |
 | --- | --- | --- |
 | RichTextChecks | InventoryLab `Inventory.scene`의 ko-KR 약초상 대사 | InventoryLab |
-| CameraChecks | 이동 후 추적 한 틱 201 vs 200.9752 | CameraLab |
 | InputInteractionChecks | KeyRoom 설정을 그대로 읽는지 | KeyRoom |
 | EngineFeatures1Checks | Parallax 씬의 Far hills 이동량(PlatformerLab이 정수 배율을 켬) | PlatformerLab |
 | ProjectCatalogChecks | 폴더를 넘는 형식 검색 | KeyRoom(확인 필요) |

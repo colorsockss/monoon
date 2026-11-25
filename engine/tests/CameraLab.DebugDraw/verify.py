@@ -1,12 +1,14 @@
 """CameraLab script debug drawing (roadmap 16.14) in exported players: G turns the gizmos on, a headless replay saves a frame.
 
-Usage: verify.py play <MoNoonPlayer> <out>                     one build (any profile): replays without and with G
+Usage: verify.py prepare <sample> <dest>                       copy CameraLab, starting in the framing showcase (FramingTour's gizmos)
+       verify.py play <MoNoonPlayer> <out>                     one build (any profile): replays without and with G
        verify.py check <development-out> <distribution-out>     development draws the gizmos, distribution draws nothing
 """
-import os, struct, subprocess, sys, zlib
+import os, re, shutil, struct, subprocess, sys, zlib
 from pathlib import Path
 
 PROJECT = 'cf624488-489b-5951-a279-fffa22d99f7a'
+FRAMING = '7d2a7ef4-c64e-583e-a2b9-8c5f45b0aadf'   # Scenes/ShowcaseFraming.scene
 FRAMES, SNAP = 40, 30
 GOLD, CYAN = (255, 215, 0), (0, 255, 255)
 
@@ -15,8 +17,14 @@ def recording(path, gizmos):
     events = [(5, True), (6, False)] if gizmos else []
     lines = ''.join(f'- frame: {f}\n  timeTicks: {f * 166667}\n  input: {{kind: key, control: "G", down: {str(d).lower()}}}\n'
                     for f, d in events)
-    path.write_text(f'version: 1\nproject: {PROJECT}\nstartScene: {PROJECT}\nframeTicks: [' + ', '.join(['166667'] * FRAMES) +
+    path.write_text(f'version: 1\nproject: {PROJECT}\nstartScene: {FRAMING}\nframeTicks: [' + ', '.join(['166667'] * FRAMES) +
                     ']\nevents:' + ('\n' + lines if lines else ' []\n'), encoding='utf-8')
+
+
+def prepare(sample, destination):
+    shutil.copytree(sample, destination, ignore=shutil.ignore_patterns('.monoon', '.monoon-compiled', '.DS_Store', 'bin', 'obj'))
+    settings = destination / 'GameSettings'
+    settings.write_text(re.sub(r'(?m)^startScene: .*$', f'startScene: {FRAMING}', settings.read_text(encoding='utf-8'), count=1), encoding='utf-8')
 
 
 def pixels(png):
@@ -88,4 +96,4 @@ def check(development, distribution):
 
 if __name__ == '__main__':
     command, *paths = sys.argv[1:]
-    {'play': play, 'check': check}[command](*(Path(p) for p in paths))
+    {'prepare': prepare, 'play': play, 'check': check}[command](*(Path(p) for p in paths))

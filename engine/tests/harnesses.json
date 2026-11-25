@@ -703,7 +703,7 @@
     },
     {
      "kind": "prepare",
-     "run": "cp -R samples/CameraLab \"$work/CameraLab\""
+     "run": "python3 \"$qa/verify.py\" prepare samples/CameraLab \"$work/CameraLab\""
     },
     {
      "kind": "build",

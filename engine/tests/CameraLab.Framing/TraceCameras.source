@@ -3,7 +3,8 @@ using System.Globalization;
 using System.IO;
 using Engine.Core;
 
-// Test-only observer copied into a disposable CameraLab. One line per game tick: both players and both cameras (centre, zoom).
+// Test-only observer copied into a disposable CameraLab. One line per game tick: both walkers' positions and each camera
+// (centre, zoom), "-" for a camera that is switched off (the framing showcase runs one of its two cameras at a time).
 public sealed class TraceCameras : GameBehaviour
 {
     public Guid Main, Second, Player, Partner;
@@ -11,9 +12,9 @@ public sealed class TraceCameras : GameBehaviour
     public override void FixedUpdate(ScriptTick tick)
     {
         if (Environment.GetEnvironmentVariable("MONOON_CAMERA_TRACE") is not { Length: > 0 } path) return;
-        if (!tick.Cameras.TryGetView(Main, out var a) || !tick.Cameras.TryGetView(Second, out var b) ||
-            !tick.Objects.TryGetPosition(Player, out var p) || !tick.Objects.TryGetPosition(Partner, out var q)) return;
+        if (!tick.Objects.TryGetPosition(Player, out var p) || !tick.Objects.TryGetPosition(Partner, out var q)) return;
         static string F(float v) => v.ToString("R", CultureInfo.InvariantCulture);
-        File.AppendAllText(path, $"{tick.Session.Time.TickCount}|{F(p.X)},{F(p.Y)}|{F(q.X)},{F(q.Y)}|{F(a.Center.X)},{F(a.Center.Y)},{F(a.Zoom)}|{F(b.Center.X)},{F(b.Center.Y)},{F(b.Zoom)}\n");
+        string View(Guid id) => tick.Cameras.TryGetView(id, out var v) ? $"{F(v.Center.X)},{F(v.Center.Y)},{F(v.Zoom)}" : "-";
+        File.AppendAllText(path, $"{tick.Session.Time.TickCount}|{F(p.X)},{F(p.Y)}|{F(q.X)},{F(q.Y)}|{View(Main)}|{View(Second)}\n");
     }
 }

@@ -11,6 +11,7 @@ import hashlib, json, os, subprocess, sys
 from pathlib import Path
 
 PROJECT = 'cf624488-489b-5951-a279-fffa22d99f7a'
+SHOWCASE = '2c9a883e-aeee-5d4a-a6a3-66257b497a77'   # Scenes/Showcase.scene: the fair, ScreenFxDemo on its keys
 KEYS = {'.': 'Period', 'F': 'F'}
 
 
@@ -40,7 +41,7 @@ def script(run):
 def recording(path, run):
     events, frames, snaps = script(run)
     lines = ''.join(f'- frame: {f}\n  timeTicks: {f * 166667}\n  input: {{kind: key, control: "{c}", down: {str(d).lower()}}}\n' for f, c, d in events)
-    path.write_text(f'version: 1\nproject: {PROJECT}\nstartScene: {PROJECT}\nframeTicks: [' + ', '.join(['166667'] * frames) +
+    path.write_text(f'version: 1\nproject: {PROJECT}\nstartScene: {SHOWCASE}\nframeTicks: [' + ', '.join(['166667'] * frames) +
                     ']\nevents:\n' + lines, encoding='utf-8')
     return snaps
 

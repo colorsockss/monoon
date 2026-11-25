@@ -1,6 +1,6 @@
 # Camera 2D: 추적, 분할 화면, 미니맵
 
-**Scene → Create Camera**로 카메라를 만들고 Inspector에서 설정한다. [CameraLab](../../samples/CameraLab)은 두 플레이어의 시점을 좌우로 나누고, 오른쪽 위에 전체 맵을 그리는 예제다. **방향키 / WASD**로 움직이거나 **Space**를 누르면 두 플레이어가 반대 모서리로 이동한다. Space를 다시 누르면 돌아온다.
+**Scene → Create Camera**로 카메라를 만들고 Inspector에서 설정한다. [CameraLab](../../samples/CameraLab)의 첫 쇼케이스(`Scenes/Showcase.scene`, 장터)는 주인공과 순찰하는 동료의 시점을 좌우로 나누고, 오른쪽 위에 전체 맵을 그린다. **방향키 / WASD**로 주인공을 움직인다. 두 번째 쇼케이스(`Scenes/ShowcaseFraming.scene`)는 데드존·앞보기·그룹 프레이밍을 연출로 보여 준다.
 
 ## 플레이어를 부드럽게 따라가기
 
@@ -23,7 +23,7 @@ Follow나 Frame(그룹)이 있는 카메라에서 Inspector의 다음 행을 쓴
 
 Half-life는 위치와 그룹 프레이밍 줌 모두에 적용된다. **Bounds**를 켜면 맵 바깥이 보이지 않도록 줌이 그보다 작아지지 않고, 맵 가장자리에서는 데드존과 앞보기보다 경계가 우선한다. 활성 멤버가 하나도 없으면 마지막 시점을 유지한다. 계산은 고정 틱에서 하고 렌더 프레임 사이에는 위치·줌을 보간한다. 이 설정을 쓴 씬은 schemaVersion 35로 저장되어 이전 플레이어는 읽지 않는다.
 
-CameraLab 복사본에서 주 카메라에 데드존 120×80과 앞보기 0.25초를, 두 번째 카메라에 두 플레이어의 그룹 `Players`(여백 48)를 지정한 검증이 [CameraLab.Framing](../../engine/tests/CameraLab.Framing)이다. 플레이어가 서로 멀어지면 오른쪽 화면이 경계가 허용하는 0.446배까지 줌아웃하고, 가운데에서 만나면 1배로 돌아온다. [Mac 세 실행 경로 기록](../../engine/tests/results/engine-features-2/README.md#1611-카메라-데드존앞보기다중-대상)
+CameraLab의 프레이밍 쇼케이스에서 Follow 카메라(데드존 120×80, 앞보기 0.25초)는 주인공이 모닥불 옆에서 약초를 따는 동안 움직이지 않고, 동쪽 길에서는 앞서 간다. 마지막 약초 뒤 Frame 카메라(그룹 `Party`, 여백 48)가 넘겨받아 멀리서 오는 동료까지 담도록 1.376배까지 줌아웃했다가 둘이 만나면 1.5배로 돌아온다. 이 연출을 그대로 기록해 확인하는 검증이 [CameraLab.Framing](../../engine/tests/CameraLab.Framing)이다. [Mac 세 실행 경로 기록](../../engine/tests/results/engine-features-2/README.md#1611-카메라-데드존앞보기다중-대상)
 
 ## 분할 화면과 미니맵 구성하기
 
@@ -59,7 +59,7 @@ CameraLab 복사본에서 주 카메라에 데드존 120×80과 앞보기 0.25�
   blendSeconds: 0.25
 ```
 
-CameraLab 복사본에서 두 플레이어가 가운데에서 엇갈릴 때 한 번 합쳐지고 다시 반대쪽으로 갈라지는 검증이 [CameraLab.SplitScreen](../../engine/tests/CameraLab.SplitScreen)이다. [Mac 세 실행 경로 기록](../../engine/tests/results/camera-split-fx/README.md)
+CameraLab 쇼케이스에서 주인공이 순찰하는 동료에게 다가가면 두 화면이 한 번 합쳐지고, 멀어지면 다시 갈라지는 검증이 [CameraLab.SplitScreen](../../engine/tests/CameraLab.SplitScreen)이다. [Mac 세 실행 경로 기록](../../engine/tests/results/camera-split-fx/README.md)
 
 맵 전체를 표시하려면 Minimap의 Follow를 None으로 두고 Transform을 맵 중심에 놓는다. 예제의 1600×896 맵은 **Zoom 0.125**, **200×112 논리 픽셀**에서 정확히 들어맞는다. HUD는 모든 카메라가 그려진 뒤 게임 해상도 기준으로 한 번만 그린다. 샘플은 아래쪽 50px를 HUD 전용으로 비워 둔다.
 
@@ -81,7 +81,7 @@ if (tick.Cameras.TryGetView(cameraId, out var view))
 
 ## 화면 흔들림, 줌 펀치, 페이드·플래시·색 보정
 
-CameraLab을 Play하고 **1**(패드 West)을 누르면 두 화면이 흔들리면서 순간 확대되고, **2**(East)는 흰색 플래시, **3**(LeftShoulder)은 검게 페이드 아웃·인, **4**(RightShoulder)는 따뜻하고 어두운 색 보정을 켜고 끈다. **F**(Start)로 게임 시간을 멈춘 뒤 **.**(오른쪽 트리거)를 누르면 한 틱씩 진행하며 효과를 살펴볼 수 있다. [ScreenFxDemo.cs](../../samples/CameraLab/Scripts/ScreenFxDemo.cs)
+CameraLab 쇼케이스를 Play하고 **1**(패드 West)을 누르면 두 화면이 흔들리면서 순간 확대되고, **2**(East)는 흰색 플래시, **3**(LeftShoulder)은 검게 페이드 아웃·인, **4**(RightShoulder)는 따뜻하고 어두운 색 보정을 켜고 끈다. **F**(Start)로 게임 시간을 멈춘 뒤 **.**(오른쪽 트리거)를 누르면 한 틱씩 진행하며 효과를 살펴볼 수 있다. [ScreenFxDemo.cs](../../samples/CameraLab/Scripts/ScreenFxDemo.cs)
 
 스크립트에서는 `tick.Session.Screen`을 사용한다. `UpdateUi`에서도 호출할 수 있고 씬을 바꿔도 세션 동안 유지된다.
 
