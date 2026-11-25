@@ -2,8 +2,10 @@ projectId: 64fb4cd6-2469-5cec-ba6d-9a49e61f42e7
 width: 800
 height: 450
 integerScale: true
-startScene: 64fb4cd6-2469-5cec-ba6d-9a49e61f42e7
+startScene: dd96f9dd-668b-5df5-8786-252e6eb77e9e
 includedScenes:
+- dd96f9dd-668b-5df5-8786-252e6eb77e9e
+- eeac16ae-6a5c-58ce-995a-0e1c0f636572
 - 64fb4cd6-2469-5cec-ba6d-9a49e61f42e7
 - 97ae2562-6e93-5e7a-be3b-45ec603896c6
 - 25fc2224-7695-4e19-a05c-d8524a2ffe50
