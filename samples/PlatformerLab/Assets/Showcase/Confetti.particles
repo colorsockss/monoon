@@ -1,0 +1,11 @@
+duration: 0.8
+looping: false
+rate: 0
+bursts: [{time: 0, count: 60}]
+spread: 70
+speed: {min: 120, max: 240}
+lifetime: {min: 0.8, max: 1.4}
+size: {min: 2, max: 4}
+color: {min: "#FFD84A", max: "#FF6FA8"}
+endSize: 0.6
+gravity: 260

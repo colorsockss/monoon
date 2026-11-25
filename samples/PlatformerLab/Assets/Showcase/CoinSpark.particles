@@ -1,0 +1,11 @@
+duration: 0.4
+looping: false
+rate: 0
+bursts: [{time: 0, count: 14}]
+spread: 360
+speed: {min: 30, max: 90}
+lifetime: {min: 0.25, max: 0.5}
+size: {min: 1.5, max: 3}
+color: {min: "#FFE08C", max: "#FFFFFF"}
+endSize: 0.3
+blend: Additive

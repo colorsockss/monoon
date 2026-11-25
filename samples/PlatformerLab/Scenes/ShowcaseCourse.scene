@@ -517,6 +517,437 @@ objects:
     assetId: 34e622de-b909-54c3-aeee-270fb33c457d
     asset: Assets/Showcase/Pennant.png
     order: 1
+- id: a3e34552-e61e-5ae8-9e2c-07130e8e4eeb
+  name: Confetti
+  x: 2300
+  y: 214
+  width: 1
+  height: 1
+  components:
+  - type: particleEmitter2D
+    particles: 05824b0a-47c3-51ce-af56-80cad5b84ac7
+    trigger: Manual
+    sortingLayer: 5
+- id: 826dd3ed-6ce7-55bb-8436-0daa81ca5c96
+  name: Start sign
+  x: 8
+  y: 248
+  width: 46
+  height: 52
+  components:
+  - type: spriteRenderer
+    assetId: df974b6c-7920-5189-92be-ee63bbe6a454
+    asset: Assets/Showcase/Sign.png
+    order: -4
+- id: 343cd98f-ff91-5c88-8a51-f89fdb522d27
+  name: Torch post 1
+  x: 153
+  y: 268
+  width: 46
+  height: 32
+  components:
+  - type: spriteRenderer
+    assetId: d4fa7bab-3365-5f53-9746-a04fe71fba80
+    asset: Assets/Showcase/TorchPost.png
+    order: -4
+- id: 987c5a4f-1a8c-500c-9e15-1b4f69dcb488
+  name: Torch flame 1
+  x: 164
+  y: 234
+  width: 24
+  height: 36
+  components:
+  - type: spriteShader2D
+    shader: 0fb966b8-d9b4-4ac6-8875-a5a0514fd681
+    order: -3
+- id: 8bb72d8b-1831-5352-aab2-a001181cb1dd
+  name: Torch light 1
+  x: 175
+  y: 250
+  width: 2
+  height: 2
+  components:
+  - type: pointLight2D
+    radius: 90
+    intensity: 0.8
+    flicker: 0.12
+    frequency: 1.4
+    color: "#FFA34C"
+- id: 75c94fc5-54f5-520c-a630-15abd087d1ab
+  name: Torch post 2
+  x: 2082
+  y: 228
+  width: 46
+  height: 32
+  components:
+  - type: spriteRenderer
+    assetId: d4fa7bab-3365-5f53-9746-a04fe71fba80
+    asset: Assets/Showcase/TorchPost.png
+    order: -4
+- id: 4a1319ce-402b-5e54-bf41-8b14294f2444
+  name: Torch flame 2
+  x: 2093
+  y: 194
+  width: 24
+  height: 36
+  components:
+  - type: spriteShader2D
+    shader: 0fb966b8-d9b4-4ac6-8875-a5a0514fd681
+    order: -3
+- id: 7376a64d-cb73-525a-92fe-5b5e90e0b8e1
+  name: Torch light 2
+  x: 2104
+  y: 210
+  width: 2
+  height: 2
+  components:
+  - type: pointLight2D
+    radius: 90
+    intensity: 0.8
+    flicker: 0.12
+    frequency: 1.4
+    color: "#FFA34C"
+- id: 4b94b977-db3b-5d85-a507-90d0c70da907
+  name: Bush 1
+  x: 84
+  y: 262
+  width: 50
+  height: 42
+  components:
+  - type: spriteRenderer
+    assetId: 5c9ae801-9063-520a-9bba-40cfc2d8f7b6
+    asset: Assets/Showcase/Bush.png
+    order: -4
+- id: 44b07a26-89f7-5a54-997e-8a59892a1ca7
+  name: Bush 2
+  x: 760
+  y: 262
+  width: 50
+  height: 42
+  components:
+  - type: spriteRenderer
+    assetId: 5c9ae801-9063-520a-9bba-40cfc2d8f7b6
+    asset: Assets/Showcase/Bush.png
+    order: -4
+- id: c5c9eb80-d931-5892-9d82-320833c21630
+  name: Bush 3
+  x: 930
+  y: 262
+  width: 50
+  height: 42
+  components:
+  - type: spriteRenderer
+    assetId: 5c9ae801-9063-520a-9bba-40cfc2d8f7b6
+    asset: Assets/Showcase/Bush.png
+    order: -4
+- id: 413e8609-e9a9-51c6-b281-e4b0162cc27e
+  name: Bush 4
+  x: 1440
+  y: 222
+  width: 50
+  height: 42
+  components:
+  - type: spriteRenderer
+    assetId: 5c9ae801-9063-520a-9bba-40cfc2d8f7b6
+    asset: Assets/Showcase/Bush.png
+    order: -4
+- id: aae31912-8bef-5dbf-9316-1bf053ea6b39
+  name: Bush 5
+  x: 2140
+  y: 222
+  width: 50
+  height: 42
+  components:
+  - type: spriteRenderer
+    assetId: 5c9ae801-9063-520a-9bba-40cfc2d8f7b6
+    asset: Assets/Showcase/Bush.png
+    order: -4
+- id: 5ebd10bb-0850-5e65-990b-05b1964a9124
+  name: Flowers 1
+  x: 40
+  y: 272
+  width: 54
+  height: 32
+  components:
+  - type: spriteRenderer
+    assetId: fc5a4f7c-3fe5-5d4a-9e83-19b9dfbd1113
+    asset: Assets/Showcase/Flowers.png
+    order: -4
+- id: 65333c3d-2a21-541a-a358-fe74e82d41b9
+  name: Flowers 2
+  x: 840
+  y: 272
+  width: 54
+  height: 32
+  components:
+  - type: spriteRenderer
+    assetId: fc5a4f7c-3fe5-5d4a-9e83-19b9dfbd1113
+    asset: Assets/Showcase/Flowers.png
+    order: -4
+- id: 2aa85031-c909-5127-8a19-cc3308f2c047
+  name: Flowers 3
+  x: 1520
+  y: 232
+  width: 54
+  height: 32
+  components:
+  - type: spriteRenderer
+    assetId: fc5a4f7c-3fe5-5d4a-9e83-19b9dfbd1113
+    asset: Assets/Showcase/Flowers.png
+    order: -4
+- id: 73cd2626-8036-5075-85dd-0969938026fb
+  name: Flowers 4
+  x: 2185
+  y: 232
+  width: 54
+  height: 32
+  components:
+  - type: spriteRenderer
+    assetId: fc5a4f7c-3fe5-5d4a-9e83-19b9dfbd1113
+    asset: Assets/Showcase/Flowers.png
+    order: -4
+- id: 91c5be49-c2b7-535a-90b7-d99cc8fa49aa
+  name: Coin 1
+  x: 123
+  y: 259
+  width: 14
+  height: 14
+  components:
+  - type: spriteRenderer
+    assetId: d52f21b3-e375-5779-b09f-9a958ac62bf7
+    asset: Assets/Showcase/Coin.png
+    order: 5
+- id: 7da2f948-a0e8-55bf-8f6d-9c9068dbf12a
+  name: Coin 2
+  x: 158
+  y: 259
+  width: 14
+  height: 14
+  components:
+  - type: spriteRenderer
+    assetId: d52f21b3-e375-5779-b09f-9a958ac62bf7
+    asset: Assets/Showcase/Coin.png
+    order: 5
+- id: 1f48b32d-8d46-5beb-9736-f3c3a71748d7
+  name: Coin 3
+  x: 243
+  y: 273
+  width: 14
+  height: 14
+  components:
+  - type: spriteRenderer
+    assetId: d52f21b3-e375-5779-b09f-9a958ac62bf7
+    asset: Assets/Showcase/Coin.png
+    order: 5
+- id: d7086c9f-e3b2-5885-8f58-cdb9a87e1e82
+  name: Coin 4
+  x: 288
+  y: 279
+  width: 14
+  height: 14
+  components:
+  - type: spriteRenderer
+    assetId: d52f21b3-e375-5779-b09f-9a958ac62bf7
+    asset: Assets/Showcase/Coin.png
+    order: 5
+- id: 7bf5d37e-c4cd-59cc-ba29-1ec34f6174d4
+  name: Coin 5
+  x: 333
+  y: 273
+  width: 14
+  height: 14
+  components:
+  - type: spriteRenderer
+    assetId: d52f21b3-e375-5779-b09f-9a958ac62bf7
+    asset: Assets/Showcase/Coin.png
+    order: 5
+- id: c092ae93-b5af-5e37-bc10-787dcd361530
+  name: Coin 6
+  x: 753
+  y: 259
+  width: 14
+  height: 14
+  components:
+  - type: spriteRenderer
+    assetId: d52f21b3-e375-5779-b09f-9a958ac62bf7
+    asset: Assets/Showcase/Coin.png
+    order: 5
+- id: 6922e3b2-f5cf-5399-97ac-ef1581600113
+  name: Coin 7
+  x: 813
+  y: 259
+  width: 14
+  height: 14
+  components:
+  - type: spriteRenderer
+    assetId: d52f21b3-e375-5779-b09f-9a958ac62bf7
+    asset: Assets/Showcase/Coin.png
+    order: 5
+- id: 6e8d5598-45b5-54e7-a435-b758f27def80
+  name: Coin 8
+  x: 873
+  y: 259
+  width: 14
+  height: 14
+  components:
+  - type: spriteRenderer
+    assetId: d52f21b3-e375-5779-b09f-9a958ac62bf7
+    asset: Assets/Showcase/Coin.png
+    order: 5
+- id: 2cb5e80e-0f60-5ed8-bc67-01894e54541c
+  name: Coin 9
+  x: 933
+  y: 259
+  width: 14
+  height: 14
+  components:
+  - type: spriteRenderer
+    assetId: d52f21b3-e375-5779-b09f-9a958ac62bf7
+    asset: Assets/Showcase/Coin.png
+    order: 5
+- id: 8a0d39a7-7037-55d6-9750-85ed7c665a9e
+  name: Coin 10
+  x: 1443
+  y: 219
+  width: 14
+  height: 14
+  components:
+  - type: spriteRenderer
+    assetId: d52f21b3-e375-5779-b09f-9a958ac62bf7
+    asset: Assets/Showcase/Coin.png
+    order: 5
+- id: 3b8a5ba5-495c-580b-a182-1e680c979aeb
+  name: Coin 11
+  x: 1503
+  y: 219
+  width: 14
+  height: 14
+  components:
+  - type: spriteRenderer
+    assetId: d52f21b3-e375-5779-b09f-9a958ac62bf7
+    asset: Assets/Showcase/Coin.png
+    order: 5
+- id: 3bd2d679-f34a-57f7-8b96-5b89b90bb252
+  name: Coin 12
+  x: 1563
+  y: 219
+  width: 14
+  height: 14
+  components:
+  - type: spriteRenderer
+    assetId: d52f21b3-e375-5779-b09f-9a958ac62bf7
+    asset: Assets/Showcase/Coin.png
+    order: 5
+- id: 6fd7c917-975f-5341-bb77-6e11aa612ad3
+  name: Coin 13
+  x: 1653
+  y: 202.181
+  width: 14
+  height: 14
+  components:
+  - type: spriteRenderer
+    assetId: d52f21b3-e375-5779-b09f-9a958ac62bf7
+    asset: Assets/Showcase/Coin.png
+    order: 5
+- id: 2a910364-fd2d-54ab-820e-b45674730a29
+  name: Coin 14
+  x: 1713
+  y: 188.433
+  width: 14
+  height: 14
+  components:
+  - type: spriteRenderer
+    assetId: d52f21b3-e375-5779-b09f-9a958ac62bf7
+    asset: Assets/Showcase/Coin.png
+    order: 5
+- id: 1507e91c-930a-5625-8293-3eee6298ac9d
+  name: Coin 15
+  x: 1773
+  y: 180.565
+  width: 14
+  height: 14
+  components:
+  - type: spriteRenderer
+    assetId: d52f21b3-e375-5779-b09f-9a958ac62bf7
+    asset: Assets/Showcase/Coin.png
+    order: 5
+- id: c361d5b8-42f1-527f-aaa1-a1585b7eed64
+  name: Coin 16
+  x: 1833
+  y: 178
+  width: 14
+  height: 14
+  components:
+  - type: spriteRenderer
+    assetId: d52f21b3-e375-5779-b09f-9a958ac62bf7
+    asset: Assets/Showcase/Coin.png
+    order: 5
+- id: abba38a8-54a6-5964-9b69-1c9ab1f72896
+  name: Coin 17
+  x: 1893
+  y: 180.565
+  width: 14
+  height: 14
+  components:
+  - type: spriteRenderer
+    assetId: d52f21b3-e375-5779-b09f-9a958ac62bf7
+    asset: Assets/Showcase/Coin.png
+    order: 5
+- id: 8493d7de-9fe7-5410-bec3-4e68f33a62b8
+  name: Coin 18
+  x: 1953
+  y: 188.433
+  width: 14
+  height: 14
+  components:
+  - type: spriteRenderer
+    assetId: d52f21b3-e375-5779-b09f-9a958ac62bf7
+    asset: Assets/Showcase/Coin.png
+    order: 5
+- id: bc7ff523-02f0-52a0-82c5-491164d11664
+  name: Coin 19
+  x: 2013
+  y: 202.181
+  width: 14
+  height: 14
+  components:
+  - type: spriteRenderer
+    assetId: d52f21b3-e375-5779-b09f-9a958ac62bf7
+    asset: Assets/Showcase/Coin.png
+    order: 5
+- id: 1d0de7c9-1ad2-5e5a-98b8-f58a78699550
+  name: Coin 20
+  x: 2113
+  y: 219
+  width: 14
+  height: 14
+  components:
+  - type: spriteRenderer
+    assetId: d52f21b3-e375-5779-b09f-9a958ac62bf7
+    asset: Assets/Showcase/Coin.png
+    order: 5
+- id: 5e640fcb-a5c0-5881-8b7e-a330320dc413
+  name: Coin 21
+  x: 2163
+  y: 219
+  width: 14
+  height: 14
+  components:
+  - type: spriteRenderer
+    assetId: d52f21b3-e375-5779-b09f-9a958ac62bf7
+    asset: Assets/Showcase/Coin.png
+    order: 5
+- id: 5182bbdc-1abd-5804-b53f-60495b5042e8
+  name: Coin spark
+  x: 0
+  y: 0
+  width: 1
+  height: 1
+  components:
+  - type: particleEmitter2D
+    particles: ea12b02d-6454-532d-9b85-f183cced7c2e
+    trigger: Manual
+    sortingLayer: 5
 - id: f373d37f-5d2d-53e4-8679-e33133f2c5b6
   name: Runner
   x: 60
@@ -535,7 +966,7 @@ objects:
   - type: characterMotor2D
   - type: script
     script: Showcase/CourseRunner
-    values: {"Lift": "61c77573-7037-59db-80d8-c0d2c3e6943e", "DeckA": "e5fdbd64-7c28-5ec0-8389-fbb479a36afd", "DeckB": "7b5e294a-f984-52e4-8863-92e33b961586", "RopeA": "e27664ac-8bd6-5036-9a14-e7224b82920a", "RopeB": "76537411-6fa6-5c1b-bf94-147882b6aa2b"}
+    values: {"Lift": "61c77573-7037-59db-80d8-c0d2c3e6943e", "DeckA": "e5fdbd64-7c28-5ec0-8389-fbb479a36afd", "DeckB": "7b5e294a-f984-52e4-8863-92e33b961586", "RopeA": "e27664ac-8bd6-5036-9a14-e7224b82920a", "RopeB": "76537411-6fa6-5c1b-bf94-147882b6aa2b", "Spark": "5182bbdc-1abd-5804-b53f-60495b5042e8", "Confetti": "a3e34552-e61e-5ae8-9e2c-07130e8e4eeb", "Counter": "f37c7dc5-646d-52a6-be82-e00d8e21ff8f", "Coins": ["91c5be49-c2b7-535a-90b7-d99cc8fa49aa", "7da2f948-a0e8-55bf-8f6d-9c9068dbf12a", "1f48b32d-8d46-5beb-9736-f3c3a71748d7", "d7086c9f-e3b2-5885-8f58-cdb9a87e1e82", "7bf5d37e-c4cd-59cc-ba29-1ec34f6174d4", "c092ae93-b5af-5e37-bc10-787dcd361530", "6922e3b2-f5cf-5399-97ac-ef1581600113", "6e8d5598-45b5-54e7-a435-b758f27def80", "2cb5e80e-0f60-5ed8-bc67-01894e54541c", "8a0d39a7-7037-55d6-9750-85ed7c665a9e", "3b8a5ba5-495c-580b-a182-1e680c979aeb", "3bd2d679-f34a-57f7-8b96-5b89b90bb252", "6fd7c917-975f-5341-bb77-6e11aa612ad3", "2a910364-fd2d-54ab-820e-b45674730a29", "1507e91c-930a-5625-8293-3eee6298ac9d", "c361d5b8-42f1-527f-aaa1-a1585b7eed64", "abba38a8-54a6-5964-9b69-1c9ab1f72896", "8493d7de-9fe7-5410-bec3-4e68f33a62b8", "bc7ff523-02f0-52a0-82c5-491164d11664", "1d0de7c9-1ad2-5e5a-98b8-f58a78699550", "5e640fcb-a5c0-5881-8b7e-a330320dc413"]}
 - id: bd19a9e5-7806-5380-9152-d8416cabb604
   parentId: f373d37f-5d2d-53e4-8679-e33133f2c5b6
   name: Hero
@@ -674,6 +1105,46 @@ objects:
     size: 12
     insetX: 10
     insetY: 4
+- id: 7b99d417-b542-56b8-892d-d7c6c53c3484
+  parentId: 1ee4d7b1-452b-5bd6-930b-75a02409deaa
+  name: Coin panel
+  x: -12
+  y: 12
+  width: 150
+  height: 56
+  components:
+  - type: uiRect
+    anchor: TopRight
+  - type: uiImage
+    sprite: bf477ce7-700b-4462-ba37-ecad01ce5ee2
+    borders: {left: 4, top: 4, right: 4, bottom: 4}
+- id: 4137c1c4-a8b3-5822-ab33-ed9ef7a55f51
+  parentId: 7b99d417-b542-56b8-892d-d7c6c53c3484
+  name: Coin label
+  x: 12
+  y: 8
+  width: 126
+  height: 14
+  components:
+  - type: uiRect
+  - type: uiText
+    text: "COINS"
+    size: 11
+    color: "#BFD0DC"
+- id: f37c7dc5-646d-52a6-be82-e00d8e21ff8f
+  parentId: 7b99d417-b542-56b8-892d-d7c6c53c3484
+  name: Coin count
+  x: 12
+  y: 22
+  width: 126
+  height: 30
+  components:
+  - type: uiRect
+  - type: uiText
+    richText: true
+    text: "0 / 21"
+    size: 24
+    color: "#FFD84A"
 - id: 609150c7-9323-52cb-a32e-115613cdac8c
   parentId: 1ee4d7b1-452b-5bd6-930b-75a02409deaa
   name: Caption

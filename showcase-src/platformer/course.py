@@ -7,10 +7,39 @@
 # made of an Edge Collider 2D chain under a smooth Line 2D.
 import math, pathlib, struct, sys, uuid
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
-import blocks
+import blocks, shutil
 
 ROOT = pathlib.Path(__file__).resolve().parents[2] / "samples/PlatformerLab"
 ART = ROOT / "Assets/Showcase"
+SAMPLES = ROOT.parent
+# Props from sibling samples in the same pixel style: KeyRoom's coin, SeedLab's bush and flowers.
+for src, name in (("KeyRoom/Assets/Showcase/Coin.png", "Coin.png"), ("SeedLab/Assets/Showcase/Bush.png", "Bush.png"),
+                  ("SeedLab/Assets/Showcase/Flowers.png", "Flowers.png")):
+    shutil.copy(SAMPLES / src, ART / name)
+(ART / "CoinSpark.particles").write_text("""duration: 0.4
+looping: false
+rate: 0
+bursts: [{time: 0, count: 14}]
+spread: 360
+speed: {min: 30, max: 90}
+lifetime: {min: 0.25, max: 0.5}
+size: {min: 1.5, max: 3}
+color: {min: "#FFE08C", max: "#FFFFFF"}
+endSize: 0.3
+blend: Additive
+""")
+(ART / "Confetti.particles").write_text("""duration: 0.8
+looping: false
+rate: 0
+bursts: [{time: 0, count: 60}]
+spread: 70
+speed: {min: 120, max: 240}
+lifetime: {min: 0.8, max: 1.4}
+size: {min: 2, max: 4}
+color: {min: "#FFD84A", max: "#FF6FA8"}
+endSize: 0.6
+gravity: 260
+""")
 NS = uuid.UUID("3b309c28-75ce-562e-92ac-f94ee48b18c7")
 uid = lambda name: str(uuid.uuid5(NS, "showcase/" + name))
 
@@ -98,13 +127,32 @@ s.obj("Hill ground", HX, HTOP + 40, HW, 450 - HTOP - 40, sprite(blocks.hill("Hil
 s.obj("Hill floor", HX, 430, HW, 20, "  - type: boxCollider2D\n")
 s.obj("End ledge", HX + HW, 260, 260, 190, ground(260, 190, left=False))
 s.obj("Goal pennant", HX + HW + 200, 260 - 58, 40, 58, sprite("Pennant.png", order=1))
+confetti = s.obj("Confetti", HX + HW + 220, 214, 1, 1, f"  - type: particleEmitter2D\n    particles: {asset('Confetti.particles')}\n    trigger: Manual\n    sortingLayer: 5\n")
+# ---- dressing: a sign at the start, torches at both ends, bushes and flowers on the ledges (behind the runner) ---------------
+s.obj("Start sign", 8, 300 - 52, 46, 52, sprite("Sign.png", order=-4))
+for i, (x, top) in enumerate(((176, 300), (HX + HW + 25, 260))):
+    s.obj(f"Torch post {i + 1}", x - 23, top - 32, 46, 32, sprite("TorchPost.png", order=-4))
+    s.obj(f"Torch flame {i + 1}", x - 12, top - 66, 24, 36, f"  - type: spriteShader2D\n    shader: {asset('Torch.shader', 'Assets')}\n    order: -3\n")
+    s.obj(f"Torch light {i + 1}", x - 1, top - 50, 2, 2, '  - type: pointLight2D\n    radius: 90\n    intensity: 0.8\n    flicker: 0.12\n    frequency: 1.4\n    color: "#FFA34C"\n')
+for i, (x, top) in enumerate(((84, 300), (760, 300), (930, 300), (OX + 640, 260), (HX + HW + 60, 260))):
+    s.obj(f"Bush {i + 1}", x, top - 38, 50, 42, sprite("Bush.png", order=-4))
+for i, (x, top) in enumerate(((40, 300), (840, 300), (OX + 720, 260), (HX + HW + 105, 260))):
+    s.obj(f"Flowers {i + 1}", x, top - 28, 54, 32, sprite("Flowers.png", order=-4))
+# ---- coins along the way, at the runner's middle (his feet on the surface, 28 below his centre) ---------------------------
+hill_top = lambda x: HTOP + 40 + surface(x - HX)
+coins = [(130, 266), (165, 266), (250, 280), (295, 286), (340, 280), (760, 266), (820, 266), (880, 266), (940, 266),
+         (OX + 650, 226), (OX + 710, 226), (OX + 770, 226)] + [(x, hill_top(x) - 30) for x in range(HX + 60, HX + HW - 40, 60)] \
+        + [(HX + HW + 40, 226), (HX + HW + 90, 226)]
+coin_ids = [s.obj(f"Coin {i + 1}", x - 7, y - 7, 14, 14, sprite("Coin.png", order=5)) for i, (x, y) in enumerate(coins)]
+spark = s.obj("Coin spark", 0, 0, 1, 1, f"  - type: particleEmitter2D\n    particles: {asset('CoinSpark.particles')}\n    trigger: Manual\n    sortingLayer: 5\n")
 # ---- runner --------------------------------------------------------------------------------------------------------
 # The body is a capsule; the picture is a child with the Showcase hero's animator, turned and stepped by MotionFacing.
 RW, RH = 24, 56
 runner = s.obj("Runner", 60, 300 - RH, RW, RH, "  - type: capsuleCollider2D\n    layer: 1\n  - type: rigidbody2D\n    freezeRotation: true\n"
                f"  - type: particleEmitter2D\n    particles: {asset('LandingDust.particles')}\n    trigger: Landing\n    offsetY: {RH // 2}\n  - type: characterMotor2D\n"
                f'  - type: script\n    script: Showcase/CourseRunner\n    values: {{"Lift": "{lift}", "DeckA": "{s.oid("Pulley deck A")}", "DeckB": "{deck_b}", '
-               f'"RopeA": "{s.oid("Rope A")}", "RopeB": "{s.oid("Rope B")}"}}\n')
+               f'"RopeA": "{s.oid("Rope A")}", "RopeB": "{s.oid("Rope B")}", "Spark": "{spark}", "Confetti": "{confetti}", "Counter": "{s.oid("Coin count")}", '
+               '"Coins": [' + ", ".join(f'"{c}"' for c in coin_ids) + "]}\n")
 s.obj("Hero", (RW - 42) / 2, RH - 60, 42, 60, sprite("HeroIdleE.png", order=4) + f"  - type: spriteAnimator\n    controller: {asset('Hero.animator')}\n    playOnStart: true\n"
       "  - type: script\n    script: MotionFacing\n    values: {}\n", parent="Runner")
 s.obj("Camera", 400, 225, 1, 1, f"  - type: camera2D\n    zoom: 1.5\n    follow: {runner}\n    halfLife: 0.3\n    bounds: {{x: 0, y: 40, width: {HX + HW + 260}, height: 410}}\n")
@@ -116,6 +164,9 @@ tw = 24 + 6.2 * max(len(f) + len(d) + 3 for _, f, d in tags)
 for i, (flag, feature, detail) in enumerate(tags):
     s.obj(f"Tag {i + 1}", 12, 12 + i * 28, tw, 24, f"  - type: uiRect\n    anchor: TopLeft\n    showIf: {flag}\n" + panel()
           + f'  - type: uiText\n    richText: true\n    text: "<b>{feature}</b>   <color=#BFD0DC>{detail}</color>"\n    size: 12\n    insetX: 10\n    insetY: 4\n', parent="Canvas")
+s.obj("Coin panel", -12, 12, 150, 56, "  - type: uiRect\n    anchor: TopRight\n" + panel(), parent="Canvas")
+s.obj("Coin label", 12, 8, 126, 14, '  - type: uiRect\n  - type: uiText\n    text: "COINS"\n    size: 11\n    color: "#BFD0DC"\n', parent="Coin panel")
+s.obj("Coin count", 12, 22, 126, 30, f'  - type: uiRect\n  - type: uiText\n    richText: true\n    text: "0 / {len(coins)}"\n    size: 24\n    color: "#FFD84A"\n', parent="Coin panel")
 s.obj("Caption", 12, -12, 400, 30, "  - type: uiRect\n    anchor: BottomLeft\n" + panel(), parent="Canvas")
 s.obj("Caption text", 12, 5, 380, 20, '  - type: uiRect\n  - type: uiText\n    richText: true\n    text: "<b>PlatformerLab</b>   Joints, curves and a moving lift"\n    size: 15\n', parent="Caption")
 (ROOT / "Scenes/ShowcaseCourse.scene").write_text("schemaVersion: 42\nobjects:\n" + "".join(s.out) + f"defaultCameraId: {s.oid('Camera')}\n")
