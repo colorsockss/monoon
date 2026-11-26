@@ -156,6 +156,12 @@ public static class StartupHook
             PixelPoint OnScreen(float x, float y)
             {
                 double scale = Math.Min(viewport.Bounds.Width/width, viewport.Bounds.Height/height);
+                // KeyRoom uses integer scale: whole device pixels per game pixel, at least one (the player's SDL presentation).
+                if (GameSettings.Load(project).IntegerScale == true)
+                {
+                    double pixels = main.RenderScaling;
+                    scale = Math.Max(1, Math.Floor(scale * pixels + 1e-9)) / pixels;
+                }
                 var at = new Point((viewport.Bounds.Width-width*scale)/2+x*scale, (viewport.Bounds.Height-height*scale)/2+y*scale);
                 return viewport.PointToScreen(at);
             }

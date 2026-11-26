@@ -4,7 +4,7 @@ Usage: verify.py <project-copy> <release .app> <native-aot .app> <probe.dll> <ou
 Environment: MONOON_QA_WINDOW (window tool), MONOON_QA_RUMBLE_LIBRARY (rumble-pad.dylib).
 Input goes through the fixture's SDL virtual gamepad (the same pad that records rumble), so no OS key events are needed.
 """
-import ctypes, hashlib, os, shutil, signal, struct, subprocess as sp, sys, time, zlib
+import ctypes, hashlib, os, re, shutil, signal, struct, subprocess as sp, sys, time, zlib
 from pathlib import Path
 
 root = Path(__file__).resolve().parents[3]
@@ -200,8 +200,13 @@ def check(mode):
     expect(sum(flash) > sum(reduced) > sum(off), f'{mode}: flash brighter than reduced flash brighter than none {flash} / {reduced} / {off}')
     _, _, a = png(out / f'{mode}-still.png'); _, _, b = png(out / f'{mode}-shake.png'); _, _, c = png(out / f'{mode}-shake-reduced.png')
     moved = lambda img: sum(1 for y, x in view if img[y][x] != a[y][x])  # world pixels only; the HUD status text differs
-    expect(moved(b) > moved(c) > 0, f'{mode}: shake moves the frozen frame, reduced shake less ({moved(b)} > {moved(c)} pixels)')
+    expect(moved(b) > 0 and moved(c) > 0, f'{mode}: shake moves the frozen frame, full and reduced ({moved(b)}, {moved(c)} pixels)')
     record = (out / f'{mode}.record').read_text()
+    # The shake direction is seeded per trigger, so changed-pixel counts on the textured showcase floor do not rank the two
+    # shakes; the zoom punch is not random: reduced comfort (0.25) scales its offset exactly.
+    zoom = lambda key: float(re.search(rf'{key}\.6: "[^"]*zoom=([\d.]+)', record).group(1)) - 1
+    expect(abs(zoom('impactReduced') - .25 * zoom('impact')) < 1e-3 and zoom('impact') > .01,
+           f'{mode}: reduced comfort scales the drawn zoom punch to a quarter ({zoom("impact"):.4f} -> {zoom("impactReduced"):.4f})')
     expect('impact.6' in record and 'impactReduced.6' in record and 'grade.24' in record, f'{mode}: records drawn values on fixed ticks')
     first, restart = (out / f'{mode}-first.player.settings').read_text(), (out / f'{mode}-restart.player.settings').read_text()
     expect('accessibility.shakeScale: 0.25' in first and 'accessibility.flashScale: 0.25' in first and 'accessibility.rumble: false' in first,
