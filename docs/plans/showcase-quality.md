@@ -278,30 +278,30 @@ KeyRoom-Moves 다시 만듦(2026-11-25, 사용자: 이번 영상들이 예전보
 
 2026-11-26부터 main 기준으로 입력 재생 촬영을 한다. 1차 녹화본(`showcase-video/*.mp4`, 에디터 창 녹화)은 데모 워크트리를 지울 때 함께 사라졌다. 아래 표와 이 문서의 1차 영상 설명은 그때 기록이다.
 
-- **촬영**: `python3 showcase-src/film.py showcase-src/shots/<영상>.json`. 샘플을 복사해 그 장면을 시작 씬으로 Release 빌드하고, 촬영 파일의 입력(키 누름·탭, 글자, 왼쪽·오른쪽 클릭, 끌기)을 창 없이 재생하며 매 프레임을 PNG로 저장한 뒤 `encode.swift`로 60fps mp4를 만든다. 게임 화면을 높이 1080 안에서 가장 큰 정수 배로 키운다(800×450은 1600×900). 화면 녹화·키 대신 누르기가 없어 결과가 매번 같고, main이 바뀌면 같은 명령으로 다시 찍는다.
-- **파일**: 영상은 저장소와 워크트리 밖 `~/Movies/MoNoon-showcase/<영상>.mp4`에 둔다. 저장소에는 촬영 파일과 도구만 넣는다. 영상마다 `engine/.artifacts/film/runs/<영상>/sheet.png`에 9장 시트가 생긴다.
+- **촬영**: `python3 showcase-src/film.py showcase-src/shots/<영상>.json`. 샘플을 복사해 그 장면을 시작 씬으로 Release 빌드하고, 촬영 파일의 입력(키 누름·탭, 글자, 왼쪽·오른쪽 클릭, 끌기)을 창 없이 재생하며 프레임을 PNG로 저장한 뒤 `encode.swift`로 mp4를 만든다. 영상은 GitHub README와 매뉴얼에 넣을 것이라(사용자 결정 2026-11-26) 기본값이 1280×720·30fps이고, GitHub 첨부 한도 10MB 아래로 비트레이트를 맞춘다(`--height`, `--fps`, `ENCODE_MAX_MB`). 게임은 출력 높이 이상으로 크게 그려(`MONOON_REPLAY_SNAPSHOT_SCALE`) 줄이므로 글자가 고해상도 창처럼 선명하다. 화면 녹화·키 대신 누르기가 없어 결과가 매번 같고, main이 바뀌면 같은 명령으로 다시 찍는다.
+- **파일**: 영상은 저장소와 워크트리 밖 `~/Movies/MoNoon-showcase/<영상>.mp4`에 둔다. 저장소에는 촬영 파일과 도구만 넣는다. README·매뉴얼에는 GitHub 웹 편집기에 올려 얻은 `user-attachments` 링크로 넣는다(저장소에 커밋한 mp4는 README에서 재생되지 않는다). 영상마다 `engine/.artifacts/film/runs/<영상>/sheet.png`에 9장 시트가 생긴다.
 - **한계**: SDL 소프트웨어 렌더러로 그린 게임 화면만 담긴다. 에디터 화면(Stats의 fps·draw call, Particle 패널 실시간 편집), 실제 창 기능(DisplayLab의 전체 화면·VSync·창 크기), OS 커서, 진동, 소리는 담기지 않는다. Debug draw는 part에 `"profile": "development"`를 주면 나온다.
 
-### 2026-11-26 촬영분 (main `58a93fb` + InventoryLab 저장 경로 수정)
+### 2026-11-26 촬영분 (prep/showcase-film, 1280×720·30fps, 모두 10MB 미만)
 
 | 영상 | 길이 | 비고 |
 | --- | --- | --- |
 | KeyRoom | 14.8초 | 첫 방 → 실제 문 → 두 번째 방, 태그 7개. 크레이트 끌기 포함 |
 | KeyRoom-Moves | 18.7초 | 홀드·탭·두 번 탭, K로 조작키 재설정(ShowcaseBindings) |
 | KeyRoomTiles | 12.4초 | 입력 없음 |
-| AccessLab | 22.5초 | 이름 칸만 클릭, 나머지 키보드 |
-| PlatformerLab | 11.4초 | 태그 6개. 셔틀이 착지대보다 3px 낮아 점프로 건넌다 |
+| AccessLab | 22.5초 | 이름 칸만 클릭, 나머지 키보드. 글자 200%에서 넘치던 태그·말풍선·캡션·패널을 고친 뒤 촬영 |
+| PlatformerLab | 11.4초 | 태그 5개. 리그 러너를 뺐고(사용자 결정) 뗏목을 걸어서 건넌다 |
 | PlatformerLab-Lights · -Course · -Stream | 16.5 · 18.8 · 23.7초 | 입력 없음 |
 | SpriteLab | 16.3초 | |
 | ParticleLab · ParticleLab-Workshop | 23.0 · 35.5초 | Workshop은 새 영상 |
 | BarrageLab | 24.0초 | draw call 숫자가 없어 B 전환의 차이가 화면에 안 보인다 |
-| CameraLab · CameraLab-Framing | 36.8 · 15.0초 | 커서·진동은 문구로만. Framing은 development 빌드로 Debug draw 포함 |
-| AnimatorLab | 14.5초 | |
+| CameraLab · CameraLab-Framing | 36.8 · 15.0초 | 커서·진동은 문구로만. Framing은 development 빌드로 Debug draw 포함, 줌아웃 이음매 수정 뒤 촬영 |
+| AnimatorLab | 12.2초 | 상태 그래프 선택 테두리 정렬 수정 뒤 촬영 |
 | InventoryLab · InventoryLab-BagLedger | 26.4 · 15.2초 | F7 손상 → F9 복구 포함 |
 | CardLab | 20.3초 | |
-| SeedLab · SeedLab-Route | 36.9 · 11.7초 | 미로 + 군중 |
-| CollisionLab | 13.2초 | 등불(분할 로딩 1만 개) + Casts |
-| 게임 샘플 LedgeRun · IsoBand · HexRealm | 53.1 · 56.5 · 50.0초 | 1920×1080 · 1920×1080 · 1520×860 |
+| SeedLab · SeedLab-Crowd · SeedLab-Route | 20.9 · 16.0 · 11.7초 | 군중은 따로 뺐다(사용자 결정) |
+| CollisionLab | 13.7초 | 아트 다시 만듦: 밤 들판·돌 9종 아틀라스, 횃불 복도 Casts, 탐사체가 굴러간다 |
+| 게임 샘플 LedgeRun · IsoBand · HexRealm | 53.1 · 56.5 · 50.1초 | 퀄리티업은 나중에(사용자 결정) |
 
 못 찍은 것: DisplayLab(헤드리스에서는 표시 설정을 바꿀 수 없음). 실제 창 녹화로 보충할 후보: DisplayLab, BarrageLab의 draw call, ParticleLab의 Play 중 편집.
 

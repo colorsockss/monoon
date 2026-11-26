@@ -6,7 +6,7 @@
 A shot file names the sample and one or more parts. Each part copies the sample, makes the part's scene the start scene,
 builds the Release player, writes an .inputreplay from the part's inputs and replays it headless while the player saves
 every frame as PNG (MONOON_REPLAY_SNAPSHOTS, SDL software renderer). The frames of all parts are joined into one
-1080-line 60 fps mp4 by encode.swift (frames are rendered at least 1080 lines tall, so text stays sharp), and frames.swift writes a contact sheet next to it for checking.
+mp4 of --height lines (720) at --fps (30), under GitHub's 10 MB attachment limit, by encode.swift; frames are rendered at least that tall, so text stays sharp, and frames.swift writes a contact sheet next to it for checking.
 
     {"sample": "KeyRoom", "parts": [{
         "scene": "Scenes/Showcase.scene",      # optional, default: the sample's start scene
@@ -100,7 +100,8 @@ def recording(part, settings):
             f'frameTicks: [{", ".join([str(TICK)] * frames)}]\nevents:{chr(10) + body if body else " []" + chr(10)}'), frames
 
 
-def film(shot_path, out_dir, keep_frames):
+def film(shot_path, out_dir, keep_frames, height=720, fps=30):
+    step = 60 // fps  # the game runs at 60 ticks; keep every step-th frame
     shot = json.loads(Path(shot_path).read_text(encoding='utf-8'))
     name = Path(shot_path).stem
     run = SCRATCH / 'runs' / name
@@ -116,20 +117,20 @@ def film(shot_path, out_dir, keep_frames):
         replay.write_text(text, encoding='utf-8'); frame_dir.mkdir()
         logical_height = int(field(settings.read_text(encoding='utf-8'), 'height'))
         env = dict(os.environ, MONOON_USER_DATA=str(profile), MONOON_FEEDBACK_LOG=str(run / f'feedback{i}.log'),
-                   MONOON_REPLAY_SNAPSHOT_SCALE=str(-(-1080 // logical_height)),  # render at least 1080 lines
-                   MONOON_REPLAY_SNAPSHOTS=f'{frame_dir};{",".join(map(str, range(frames)))}',
+                   MONOON_REPLAY_SNAPSHOT_SCALE=str(-(-height // logical_height)),  # render at least `height` lines
+                   MONOON_REPLAY_SNAPSHOTS=f'{frame_dir};{",".join(map(str, range(0, frames, step)))}',
                    SDL_VIDEO_DRIVER='monoon-no-video', SDL_AUDIO_DRIVER='monoon-no-audio')
         with (run / f'part{i}.log').open('wb') as log:
             subprocess.run(['sh', str(ROOT / 'engine/scripts/gui-lock.sh'), str(app / 'Contents/MacOS/MoNoonPlayer'),
                             '--replay-input', str(replay), str(profile)], env=env, stdout=log, stderr=log, check=True, timeout=1800)
         a, b = part.get('keep', [0, part['seconds']])
-        for n in range(round(a * 60), min(frames, round(b * 60))):
+        for n in range(round(a * 60) // step * step, min(frames, round(b * 60)), step):
             os.replace(frame_dir / f'{n:04}.png', joined / f'{count:05}.png'); count += 1
         if not keep_frames: shutil.rmtree(frame_dir)
     out_dir.mkdir(parents=True, exist_ok=True)
     mp4 = out_dir / f'{name}.mp4'
-    subprocess.run([str(tool('encode')), str(mp4), str(joined), '60'], check=True)
-    seconds = count / 60
+    subprocess.run([str(tool('encode')), str(mp4), str(joined), str(fps)], check=True, env=dict(os.environ, ENCODE_HEIGHT=str(height)))
+    seconds = count / fps
     marks = [round(seconds * k / 9, 2) for k in range(9)]
     subprocess.run([str(tool('frames')), str(mp4), str(run / 'sheet.png')] + [str(m) for m in marks], check=True, stdout=subprocess.DEVNULL)
     if not keep_frames: shutil.rmtree(joined)
@@ -140,6 +141,8 @@ if __name__ == '__main__':
     p = argparse.ArgumentParser()
     p.add_argument('shots', nargs='+')
     p.add_argument('--out', type=Path, default=Path.home() / 'Movies/MoNoon-showcase')
+    p.add_argument('--height', type=int, default=720, help='video lines (720 -> 1280x720 for 16:9 games)')
+    p.add_argument('--fps', type=int, choices=[30, 60], default=30)
     p.add_argument('--keep', action='store_true', help='keep the PNG frames under engine/.artifacts/film/runs')
     args = p.parse_args()
-    for s in args.shots: film(s, args.out.expanduser(), args.keep)
+    for s in args.shots: film(s, args.out.expanduser(), args.keep, args.height, args.fps)

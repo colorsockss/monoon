@@ -1,5 +1,5 @@
 // encode out.mp4 frames-dir [fps] : joins numbered PNG frames (0000.png, 0001.png, …) of a headless replay into an H.264 mp4.
-// Frames are fitted to ENCODE_HEIGHT lines (1080): nearest-neighbour when that is a whole multiple, otherwise a high-quality
+// Frames are fitted to ENCODE_HEIGHT lines (1080 unless film.py passes --height): nearest-neighbour when that is a whole multiple, otherwise a high-quality
 // downscale of frames rendered larger (film.py renders at ceil(1080 / height) times the game size). No ffmpeg.
 import AVFoundation; import CoreGraphics; import ImageIO
 
@@ -16,10 +16,14 @@ let first = load(files[0])
 let height = Int(ProcessInfo.processInfo.environment["ENCODE_HEIGHT"] ?? "") ?? 1080
 let width = (first.width * height / first.height + 1) / 2 * 2
 let exact = height % first.height == 0
+// ENCODE_MAX_MB (8.5; H.264 overshoots its average by up to ~10%): average bitrate that keeps the file under GitHub's 10 MB attachment limit, at most 4 Mbit/s.
+let seconds = Double(files.count) / Double(fps)
+let maxBytes = (Double(ProcessInfo.processInfo.environment["ENCODE_MAX_MB"] ?? "8.5") ?? 8.5) * 1_000_000
+let bitrate = Int(min(4_000_000, maxBytes * 8 * 0.95 / seconds))
 let out = URL(fileURLWithPath: a[1]); try? FileManager.default.removeItem(at: out)
 let writer = try AVAssetWriter(outputURL: out, fileType: .mp4)
 let input = AVAssetWriterInput(mediaType: .video, outputSettings: [AVVideoCodecKey: AVVideoCodecType.h264, AVVideoWidthKey: width,
-    AVVideoHeightKey: height, AVVideoCompressionPropertiesKey: [AVVideoAverageBitRateKey: 12_000_000]])
+    AVVideoHeightKey: height, AVVideoCompressionPropertiesKey: [AVVideoAverageBitRateKey: bitrate]])
 let adaptor = AVAssetWriterInputPixelBufferAdaptor(assetWriterInput: input, sourcePixelBufferAttributes: [
     kCVPixelBufferPixelFormatTypeKey as String: kCVPixelFormatType_32BGRA, kCVPixelBufferWidthKey as String: width, kCVPixelBufferHeightKey as String: height])
 writer.add(input); writer.startWriting(); writer.startSession(atSourceTime: .zero)
