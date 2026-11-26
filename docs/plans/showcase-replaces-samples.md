@@ -106,4 +106,5 @@
 
 | 검사 | 첫 실패 | 처리할 묶음 |
 | --- | --- | --- |
-| BuildSizeChecks | 빌드 용량 기준값 | 마지막 전체 회귀 때 다시 측정 |
+| CameraLab.ScreenEffects(하네스, 에디터만) | 에디터 Scene Play에서 7을 누르면 사용자 커서를 켜고 곧바로 다시 시스템 커서가 된다(HUD "Cursor system", 피드백에 `cursor system` 없음). Release·Native AOT는 통과, 옛 CameraLab 씬에서는 2026-11-24 에디터도 통과 | 에디터 버그로 따로 조사 |
+| KeyRoom.Desktop(하네스) | XCUITest가 "Timed out while enabling automation mode"로 시작하지 못함 | 이 Mac의 UI 테스트 자동화 허용(사용자 설정) |
