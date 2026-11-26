@@ -1,0 +1,17 @@
+projectId: ce247eed-9c61-50a8-bdaf-486165fbaccc
+gameTitle: LedgeRun
+width: 384
+height: 216
+integerScale: true
+startScene: 352b64f0-d4ce-56d0-a9e9-388dbbec0cb3
+includedScenes: [352b64f0-d4ce-56d0-a9e9-388dbbec0cb3, ee7a2969-5669-5c44-88aa-b7f31211a294, af98e96f-6ed1-593f-8235-7b5561c8482a, 3fd3f646-00e2-55f2-814f-61feb49d6621, bf7a9ed5-3bac-5ca3-9338-dfb73e94f028]
+input:
+  actions:
+  - {name: MoveLeft, controls: [Left, A, Pad.DpadLeft, Pad.LeftStickLeft]}
+  - {name: MoveRight, controls: [Right, D, Pad.DpadRight, Pad.LeftStickRight]}
+  - {name: Jump, controls: [Space, Pad.South], buffer: 6}
+  - {name: Dash, controls: [X, Pad.West]}
+  - {name: Proceed, controls: [Return, Pad.Start]}
+  - {name: Pause, controls: [P, Pad.Back]}
+  - {name: ChangeSlot, controls: [Tab, Pad.North]}
+  - {name: BackToTrailhead, controls: [Backspace, Pad.East]}

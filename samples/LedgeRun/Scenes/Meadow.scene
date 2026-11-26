@@ -1,0 +1,1116 @@
+schemaVersion: 31
+objects:
+- id: 061e5939-362e-5f70-881c-df79537a8fe7
+  name: "Distant landscape"
+  x: 0
+  y: 0
+  width: 640
+  height: 216
+  components:
+  - type: spriteRenderer
+    assetId: 7e222584-deeb-510b-89e5-af494216be5c
+    order: -20
+  - type: parallax2D
+    scrollX: 0.18
+    scrollY: 0
+    repeatX: true
+- id: 7bb215a0-1eb9-53f1-8e05-cb08de90cba1
+  name: "Trail terrain"
+  x: 0
+  y: 0
+  width: 16
+  height: 16
+  components:
+  - type: tilemap2D
+    tileset: 77049f99-9e6a-53a7-a9e6-3819d75cbaa0
+    cellSize: {width: 16, height: 16}
+    order: -1
+    chunks:
+    - x: 0
+      y: 0
+      cells:
+      - {index: 293, tile: 5}
+      - {index: 294, tile: 5}
+      - {index: 295, tile: 5}
+      - {index: 296, tile: 5}
+      - {index: 307, tile: 5}
+      - {index: 308, tile: 5}
+      - {index: 309, tile: 5}
+      - {index: 310, tile: 5}
+      - {index: 311, tile: 5}
+      - {index: 352, tile: 1}
+      - {index: 353, tile: 1}
+      - {index: 354, tile: 1}
+      - {index: 355, tile: 1}
+      - {index: 356, tile: 1}
+      - {index: 357, tile: 1}
+      - {index: 358, tile: 1}
+      - {index: 359, tile: 1}
+      - {index: 360, tile: 1}
+      - {index: 361, tile: 1}
+      - {index: 362, tile: 1}
+      - {index: 363, tile: 1}
+      - {index: 364, tile: 1}
+      - {index: 365, tile: 1}
+      - {index: 368, tile: 1}
+      - {index: 369, tile: 1}
+      - {index: 370, tile: 1}
+      - {index: 371, tile: 1}
+      - {index: 372, tile: 1}
+      - {index: 373, tile: 1}
+      - {index: 374, tile: 1}
+      - {index: 375, tile: 1}
+      - {index: 376, tile: 1}
+      - {index: 377, tile: 1}
+      - {index: 378, tile: 1}
+      - {index: 379, tile: 1}
+      - {index: 380, tile: 1}
+      - {index: 383, tile: 1}
+      - {index: 384, tile: 2}
+      - {index: 385, tile: 2}
+      - {index: 386, tile: 2}
+      - {index: 387, tile: 2}
+      - {index: 388, tile: 2}
+      - {index: 389, tile: 2}
+      - {index: 390, tile: 2}
+      - {index: 391, tile: 2}
+      - {index: 392, tile: 2}
+      - {index: 393, tile: 2}
+      - {index: 394, tile: 2}
+      - {index: 395, tile: 2}
+      - {index: 396, tile: 2}
+      - {index: 397, tile: 2}
+      - {index: 400, tile: 2}
+      - {index: 401, tile: 2}
+      - {index: 402, tile: 2}
+      - {index: 403, tile: 2}
+      - {index: 404, tile: 2}
+      - {index: 405, tile: 2}
+      - {index: 406, tile: 2}
+      - {index: 407, tile: 2}
+      - {index: 408, tile: 2}
+      - {index: 409, tile: 2}
+      - {index: 410, tile: 2}
+      - {index: 411, tile: 2}
+      - {index: 412, tile: 2}
+      - {index: 415, tile: 2}
+      - {index: 416, tile: 2}
+      - {index: 417, tile: 2}
+      - {index: 418, tile: 2}
+      - {index: 419, tile: 2}
+      - {index: 420, tile: 2}
+      - {index: 421, tile: 2}
+      - {index: 422, tile: 2}
+      - {index: 423, tile: 2}
+      - {index: 424, tile: 2}
+      - {index: 425, tile: 2}
+      - {index: 426, tile: 2}
+      - {index: 427, tile: 2}
+      - {index: 428, tile: 2}
+      - {index: 429, tile: 2}
+      - {index: 432, tile: 2}
+      - {index: 433, tile: 2}
+      - {index: 434, tile: 2}
+      - {index: 435, tile: 2}
+      - {index: 436, tile: 2}
+      - {index: 437, tile: 2}
+      - {index: 438, tile: 2}
+      - {index: 439, tile: 2}
+      - {index: 440, tile: 2}
+      - {index: 441, tile: 2}
+      - {index: 442, tile: 2}
+      - {index: 443, tile: 2}
+      - {index: 444, tile: 2}
+      - {index: 447, tile: 2}
+    - x: 1
+      y: 0
+      cells:
+      - {index: 273, tile: 5}
+      - {index: 274, tile: 5}
+      - {index: 275, tile: 5}
+      - {index: 276, tile: 5}
+      - {index: 289, tile: 5}
+      - {index: 290, tile: 5}
+      - {index: 291, tile: 5}
+      - {index: 292, tile: 5}
+      - {index: 293, tile: 5}
+      - {index: 334, tile: 1}
+      - {index: 335, tile: 1}
+      - {index: 336, tile: 1}
+      - {index: 337, tile: 1}
+      - {index: 338, tile: 1}
+      - {index: 339, tile: 1}
+      - {index: 340, tile: 1}
+      - {index: 341, tile: 1}
+      - {index: 342, tile: 1}
+      - {index: 343, tile: 1}
+      - {index: 344, tile: 1}
+      - {index: 345, tile: 1}
+      - {index: 346, tile: 1}
+      - {index: 347, tile: 1}
+      - {index: 348, tile: 1}
+      - {index: 352, tile: 1}
+      - {index: 353, tile: 1}
+      - {index: 354, tile: 1}
+      - {index: 355, tile: 1}
+      - {index: 356, tile: 1}
+      - {index: 357, tile: 1}
+      - {index: 358, tile: 1}
+      - {index: 359, tile: 1}
+      - {index: 360, tile: 1}
+      - {index: 361, tile: 1}
+      - {index: 362, tile: 1}
+      - {index: 363, tile: 1}
+      - {index: 366, tile: 2}
+      - {index: 367, tile: 2}
+      - {index: 368, tile: 2}
+      - {index: 369, tile: 2}
+      - {index: 370, tile: 2}
+      - {index: 371, tile: 2}
+      - {index: 372, tile: 2}
+      - {index: 373, tile: 2}
+      - {index: 374, tile: 2}
+      - {index: 375, tile: 2}
+      - {index: 376, tile: 2}
+      - {index: 377, tile: 2}
+      - {index: 378, tile: 2}
+      - {index: 379, tile: 2}
+      - {index: 380, tile: 2}
+      - {index: 383, tile: 1}
+      - {index: 384, tile: 2}
+      - {index: 385, tile: 2}
+      - {index: 386, tile: 2}
+      - {index: 387, tile: 2}
+      - {index: 388, tile: 2}
+      - {index: 389, tile: 2}
+      - {index: 390, tile: 2}
+      - {index: 391, tile: 2}
+      - {index: 392, tile: 2}
+      - {index: 393, tile: 2}
+      - {index: 394, tile: 2}
+      - {index: 395, tile: 2}
+      - {index: 398, tile: 2}
+      - {index: 399, tile: 2}
+      - {index: 400, tile: 2}
+      - {index: 401, tile: 2}
+      - {index: 402, tile: 2}
+      - {index: 403, tile: 2}
+      - {index: 404, tile: 2}
+      - {index: 405, tile: 2}
+      - {index: 406, tile: 2}
+      - {index: 407, tile: 2}
+      - {index: 408, tile: 2}
+      - {index: 409, tile: 2}
+      - {index: 410, tile: 2}
+      - {index: 411, tile: 2}
+      - {index: 412, tile: 2}
+      - {index: 415, tile: 2}
+      - {index: 416, tile: 2}
+      - {index: 417, tile: 2}
+      - {index: 418, tile: 2}
+      - {index: 419, tile: 2}
+      - {index: 420, tile: 2}
+      - {index: 421, tile: 2}
+      - {index: 422, tile: 2}
+      - {index: 423, tile: 2}
+      - {index: 424, tile: 2}
+      - {index: 425, tile: 2}
+      - {index: 426, tile: 2}
+      - {index: 427, tile: 2}
+      - {index: 447, tile: 2}
+    - x: 2
+      y: 0
+      cells:
+      - {index: 272, tile: 5}
+      - {index: 273, tile: 5}
+      - {index: 274, tile: 5}
+      - {index: 275, tile: 5}
+      - {index: 276, tile: 5}
+      - {index: 277, tile: 5}
+      - {index: 290, tile: 5}
+      - {index: 291, tile: 5}
+      - {index: 292, tile: 5}
+      - {index: 293, tile: 5}
+      - {index: 333, tile: 1}
+      - {index: 334, tile: 1}
+      - {index: 335, tile: 1}
+      - {index: 336, tile: 1}
+      - {index: 337, tile: 1}
+      - {index: 338, tile: 1}
+      - {index: 339, tile: 1}
+      - {index: 340, tile: 1}
+      - {index: 341, tile: 1}
+      - {index: 342, tile: 1}
+      - {index: 343, tile: 1}
+      - {index: 344, tile: 1}
+      - {index: 345, tile: 1}
+      - {index: 346, tile: 1}
+      - {index: 347, tile: 1}
+      - {index: 348, tile: 1}
+      - {index: 349, tile: 1}
+      - {index: 350, tile: 1}
+      - {index: 351, tile: 1}
+      - {index: 352, tile: 1}
+      - {index: 353, tile: 1}
+      - {index: 354, tile: 1}
+      - {index: 355, tile: 1}
+      - {index: 356, tile: 1}
+      - {index: 357, tile: 1}
+      - {index: 358, tile: 1}
+      - {index: 359, tile: 1}
+      - {index: 360, tile: 1}
+      - {index: 361, tile: 1}
+      - {index: 362, tile: 1}
+      - {index: 365, tile: 2}
+      - {index: 366, tile: 2}
+      - {index: 367, tile: 2}
+      - {index: 368, tile: 2}
+      - {index: 369, tile: 2}
+      - {index: 370, tile: 2}
+      - {index: 371, tile: 2}
+      - {index: 372, tile: 2}
+      - {index: 373, tile: 2}
+      - {index: 374, tile: 2}
+      - {index: 375, tile: 2}
+      - {index: 376, tile: 2}
+      - {index: 377, tile: 2}
+      - {index: 378, tile: 2}
+      - {index: 379, tile: 2}
+      - {index: 380, tile: 2}
+      - {index: 381, tile: 2}
+      - {index: 382, tile: 2}
+      - {index: 383, tile: 2}
+      - {index: 384, tile: 2}
+      - {index: 385, tile: 2}
+      - {index: 386, tile: 2}
+      - {index: 387, tile: 2}
+      - {index: 388, tile: 2}
+      - {index: 389, tile: 2}
+      - {index: 390, tile: 2}
+      - {index: 391, tile: 2}
+      - {index: 392, tile: 2}
+      - {index: 393, tile: 2}
+      - {index: 394, tile: 2}
+      - {index: 397, tile: 2}
+      - {index: 398, tile: 2}
+      - {index: 399, tile: 2}
+      - {index: 400, tile: 2}
+      - {index: 401, tile: 2}
+      - {index: 402, tile: 2}
+      - {index: 403, tile: 2}
+      - {index: 404, tile: 2}
+      - {index: 405, tile: 2}
+      - {index: 406, tile: 2}
+      - {index: 407, tile: 2}
+      - {index: 408, tile: 2}
+      - {index: 409, tile: 2}
+      - {index: 410, tile: 2}
+      - {index: 411, tile: 2}
+      - {index: 412, tile: 2}
+      - {index: 413, tile: 2}
+      - {index: 414, tile: 2}
+      - {index: 415, tile: 2}
+      - {index: 416, tile: 2}
+      - {index: 417, tile: 2}
+      - {index: 418, tile: 2}
+      - {index: 419, tile: 2}
+      - {index: 420, tile: 2}
+      - {index: 421, tile: 2}
+      - {index: 422, tile: 2}
+      - {index: 423, tile: 2}
+      - {index: 424, tile: 2}
+      - {index: 425, tile: 2}
+      - {index: 426, tile: 2}
+- id: 13ba9066-e7d4-51b3-a42b-c41b4ce07b45
+  name: "Courier"
+  x: 26
+  y: 152
+  width: 14
+  height: 20
+  components:
+  - type: capsuleCollider2D
+    layer: 1
+  - type: rigidbody2D
+    freezeRotation: true
+  - type: characterMotor2D
+  - type: particleEmitter2D
+    particles: ddeba15c-d264-50ee-bf85-2f87a72942ee
+    trigger: Landing
+    offsetY: 9
+  - type: script
+    script: TrailRunner
+    values: {"Status": "5ba97693-0dcb-596e-8b4d-bde7fd45bc5b", "Totals": "daa813f3-f41c-5fc6-a960-572412fec8b0", "Portrait": "bfe440f5-85a9-5392-bc50-eb393e1210ea", "Idle": {"Id": "6836d239-7548-58d2-878d-30d2cc8f31c0"}, "Running": {"Id": "20fe28c1-6b3f-5a68-a0cd-ea10dc53efdf"}, "Airborne": {"Id": "7717b8a9-cc86-52a9-951d-efff4b4872fa"}, "NextStage": {"Id": "af98e96f-6ed1-593f-8235-7b5561c8482a"}, "TrailheadScene": {"Id": "352b64f0-d4ce-56d0-a9e9-388dbbec0cb3"}, "Chime": "29216f2f-6c1f-5208-8836-dc7a8ce4c70d", "Hurt": "fc209975-8e77-530a-a049-d5cf3b269a12", "Clear": "6d394d3c-ec15-5017-b04c-12a90d8caffb", "Stage": 1, "FallY": 264}
+- id: 29216f2f-6c1f-5208-8836-dc7a8ce4c70d
+  name: "Chime sound"
+  x: 0
+  y: 0
+  width: 1
+  height: 1
+  components:
+  - type: audioSource
+    sound: dfc4cc33-24eb-5d3b-843b-c2b98a45f8a5
+    bus: Effects
+- id: fc209975-8e77-530a-a049-d5cf3b269a12
+  name: "Hurt sound"
+  x: 0
+  y: 0
+  width: 1
+  height: 1
+  components:
+  - type: audioSource
+    sound: 65574b41-42da-5d1a-b8a8-06bdc915c840
+    bus: Effects
+- id: 6d394d3c-ec15-5017-b04c-12a90d8caffb
+  name: "Clear sound"
+  x: 0
+  y: 0
+  width: 1
+  height: 1
+  components:
+  - type: audioSource
+    sound: 75cbfdaa-bad9-52a9-ade6-fbf188cdb699
+    bus: Effects
+- id: bfe440f5-85a9-5392-bc50-eb393e1210ea
+  name: "Courier sprite"
+  x: -4
+  y: -6
+  width: 22
+  height: 26
+  parentId: 13ba9066-e7d4-51b3-a42b-c41b4ce07b45
+  pivotX: 0.5
+  pivotY: 0.5
+  components:
+  - type: spriteRenderer
+    assetId: 6836d239-7548-58d2-878d-30d2cc8f31c0
+    order: 8
+- id: 99abe4fe-4d83-5cc3-b1ff-9ee93a710ed1
+  name: "Follow camera"
+  x: 192
+  y: 108
+  width: 1
+  height: 1
+  components:
+  - type: camera2D
+    follow: 13ba9066-e7d4-51b3-a42b-c41b4ce07b45
+    halfLife: 0.13
+    deadZoneWidth: 96
+    deadZoneHeight: 42
+    lookAhead: 0.11
+    bounds: {x: 0, y: 0, width: 1536, height: 216}
+- id: 8fd177c6-4257-5015-9500-b0a5eac2eeee
+  name: "Token 0-0"
+  x: 87
+  y: 131
+  width: 11
+  height: 11
+  components:
+  - type: spriteRenderer
+    assetId: 90d220e2-0a83-57d1-9ef2-e35632d96e51
+    order: 4
+  - type: boxCollider2D
+    isTrigger: true
+    layer: 2
+  - type: script
+    script: TrailMarker
+    values: {"Kind": "Token"}
+- id: 7bccd53e-03e1-519d-8392-13ab24f68d5b
+  name: "Token 0-1"
+  x: 102
+  y: 131
+  width: 11
+  height: 11
+  components:
+  - type: spriteRenderer
+    assetId: 90d220e2-0a83-57d1-9ef2-e35632d96e51
+    order: 4
+  - type: boxCollider2D
+    isTrigger: true
+    layer: 2
+  - type: script
+    script: TrailMarker
+    values: {"Kind": "Token"}
+- id: da65a236-991b-5560-9d8d-0cc1d19cf3a1
+  name: "Token 0-2"
+  x: 117
+  y: 131
+  width: 11
+  height: 11
+  components:
+  - type: spriteRenderer
+    assetId: 90d220e2-0a83-57d1-9ef2-e35632d96e51
+    order: 4
+  - type: boxCollider2D
+    isTrigger: true
+    layer: 2
+  - type: script
+    script: TrailMarker
+    values: {"Kind": "Token"}
+- id: 45401e13-fcf8-5df5-afa9-58358a748b03
+  name: "Token 1-0"
+  x: 311
+  y: 131
+  width: 11
+  height: 11
+  components:
+  - type: spriteRenderer
+    assetId: 90d220e2-0a83-57d1-9ef2-e35632d96e51
+    order: 4
+  - type: boxCollider2D
+    isTrigger: true
+    layer: 2
+  - type: script
+    script: TrailMarker
+    values: {"Kind": "Token"}
+- id: 0025dad9-48c5-5b85-93c6-e83ae4591d46
+  name: "Token 1-1"
+  x: 326
+  y: 131
+  width: 11
+  height: 11
+  components:
+  - type: spriteRenderer
+    assetId: 90d220e2-0a83-57d1-9ef2-e35632d96e51
+    order: 4
+  - type: boxCollider2D
+    isTrigger: true
+    layer: 2
+  - type: script
+    script: TrailMarker
+    values: {"Kind": "Token"}
+- id: b9393cb5-1f1b-5c30-8048-ec709b300a50
+  name: "Token 1-2"
+  x: 341
+  y: 131
+  width: 11
+  height: 11
+  components:
+  - type: spriteRenderer
+    assetId: 90d220e2-0a83-57d1-9ef2-e35632d96e51
+    order: 4
+  - type: boxCollider2D
+    isTrigger: true
+    layer: 2
+  - type: script
+    script: TrailMarker
+    values: {"Kind": "Token"}
+- id: 821d1fc6-d0f2-5a74-b432-c6dc2955d146
+  name: "Token 2-0"
+  x: 535
+  y: 131
+  width: 11
+  height: 11
+  components:
+  - type: spriteRenderer
+    assetId: 90d220e2-0a83-57d1-9ef2-e35632d96e51
+    order: 4
+  - type: boxCollider2D
+    isTrigger: true
+    layer: 2
+  - type: script
+    script: TrailMarker
+    values: {"Kind": "Token"}
+- id: 107b3b4a-1b20-58da-b839-20a69ec6a8c5
+  name: "Token 2-1"
+  x: 550
+  y: 131
+  width: 11
+  height: 11
+  components:
+  - type: spriteRenderer
+    assetId: 90d220e2-0a83-57d1-9ef2-e35632d96e51
+    order: 4
+  - type: boxCollider2D
+    isTrigger: true
+    layer: 2
+  - type: script
+    script: TrailMarker
+    values: {"Kind": "Token"}
+- id: ae406df0-5bc4-59f6-91d0-0b66cb5ca35f
+  name: "Token 2-2"
+  x: 565
+  y: 131
+  width: 11
+  height: 11
+  components:
+  - type: spriteRenderer
+    assetId: 90d220e2-0a83-57d1-9ef2-e35632d96e51
+    order: 4
+  - type: boxCollider2D
+    isTrigger: true
+    layer: 2
+  - type: script
+    script: TrailMarker
+    values: {"Kind": "Token"}
+- id: ef054951-517d-58b8-8438-f176c6cd3128
+  name: "Token 3-0"
+  x: 791
+  y: 115
+  width: 11
+  height: 11
+  components:
+  - type: spriteRenderer
+    assetId: 90d220e2-0a83-57d1-9ef2-e35632d96e51
+    order: 4
+  - type: boxCollider2D
+    isTrigger: true
+    layer: 2
+  - type: script
+    script: TrailMarker
+    values: {"Kind": "Token"}
+- id: 6e52f577-49cf-5f88-a225-5690b5c9f4cd
+  name: "Token 3-1"
+  x: 806
+  y: 115
+  width: 11
+  height: 11
+  components:
+  - type: spriteRenderer
+    assetId: 90d220e2-0a83-57d1-9ef2-e35632d96e51
+    order: 4
+  - type: boxCollider2D
+    isTrigger: true
+    layer: 2
+  - type: script
+    script: TrailMarker
+    values: {"Kind": "Token"}
+- id: 5fe3a6dd-4bb2-577e-b05b-35461dc3e038
+  name: "Token 3-2"
+  x: 821
+  y: 115
+  width: 11
+  height: 11
+  components:
+  - type: spriteRenderer
+    assetId: 90d220e2-0a83-57d1-9ef2-e35632d96e51
+    order: 4
+  - type: boxCollider2D
+    isTrigger: true
+    layer: 2
+  - type: script
+    script: TrailMarker
+    values: {"Kind": "Token"}
+- id: ed2830fb-d16b-5326-b8a3-c483b188ab88
+  name: "Token 4-0"
+  x: 1063
+  y: 131
+  width: 11
+  height: 11
+  components:
+  - type: spriteRenderer
+    assetId: 90d220e2-0a83-57d1-9ef2-e35632d96e51
+    order: 4
+  - type: boxCollider2D
+    isTrigger: true
+    layer: 2
+  - type: script
+    script: TrailMarker
+    values: {"Kind": "Token"}
+- id: f32ef7ed-dcb1-5246-9b16-cef4eb8b717b
+  name: "Token 4-1"
+  x: 1078
+  y: 131
+  width: 11
+  height: 11
+  components:
+  - type: spriteRenderer
+    assetId: 90d220e2-0a83-57d1-9ef2-e35632d96e51
+    order: 4
+  - type: boxCollider2D
+    isTrigger: true
+    layer: 2
+  - type: script
+    script: TrailMarker
+    values: {"Kind": "Token"}
+- id: 3ef8d3c7-5ba1-50c1-aa8a-a230bbcffa20
+  name: "Token 4-2"
+  x: 1093
+  y: 131
+  width: 11
+  height: 11
+  components:
+  - type: spriteRenderer
+    assetId: 90d220e2-0a83-57d1-9ef2-e35632d96e51
+    order: 4
+  - type: boxCollider2D
+    isTrigger: true
+    layer: 2
+  - type: script
+    script: TrailMarker
+    values: {"Kind": "Token"}
+- id: 72c543df-9547-5822-a54a-2094d0d8f037
+  name: "Token 5-0"
+  x: 1287
+  y: 115
+  width: 11
+  height: 11
+  components:
+  - type: spriteRenderer
+    assetId: 90d220e2-0a83-57d1-9ef2-e35632d96e51
+    order: 4
+  - type: boxCollider2D
+    isTrigger: true
+    layer: 2
+  - type: script
+    script: TrailMarker
+    values: {"Kind": "Token"}
+- id: 13bd5de0-0209-5e3e-8ce4-6c81d03af800
+  name: "Token 5-1"
+  x: 1302
+  y: 115
+  width: 11
+  height: 11
+  components:
+  - type: spriteRenderer
+    assetId: 90d220e2-0a83-57d1-9ef2-e35632d96e51
+    order: 4
+  - type: boxCollider2D
+    isTrigger: true
+    layer: 2
+  - type: script
+    script: TrailMarker
+    values: {"Kind": "Token"}
+- id: d12c74e7-ddc1-5f9e-bebb-0e4b7c0dd61d
+  name: "Token 5-2"
+  x: 1317
+  y: 115
+  width: 11
+  height: 11
+  components:
+  - type: spriteRenderer
+    assetId: 90d220e2-0a83-57d1-9ef2-e35632d96e51
+    order: 4
+  - type: boxCollider2D
+    isTrigger: true
+    layer: 2
+  - type: script
+    script: TrailMarker
+    values: {"Kind": "Token"}
+- id: 0c9c49bb-407e-5cfc-ba3a-331ac053f6f5
+  name: "Gem 1"
+  x: 371
+  y: 122
+  width: 10
+  height: 12
+  components:
+  - type: spriteRenderer
+    assetId: 79bb12ca-3bf1-5efa-8d17-7667174248f5
+    order: 4
+  - type: boxCollider2D
+    isTrigger: true
+    layer: 2
+  - type: script
+    script: TrailMarker
+    values: {"Kind": "Gem"}
+- id: e6554768-17a9-54ee-94e4-97c8432f2531
+  name: "Gem 2"
+  x: 835
+  y: 106
+  width: 10
+  height: 12
+  components:
+  - type: spriteRenderer
+    assetId: 79bb12ca-3bf1-5efa-8d17-7667174248f5
+    order: 4
+  - type: boxCollider2D
+    isTrigger: true
+    layer: 2
+  - type: script
+    script: TrailMarker
+    values: {"Kind": "Gem"}
+- id: 71fd6edb-db57-5758-8890-92c780104142
+  name: "Gem 3"
+  x: 1363
+  y: 106
+  width: 10
+  height: 12
+  components:
+  - type: spriteRenderer
+    assetId: 79bb12ca-3bf1-5efa-8d17-7667174248f5
+    order: 4
+  - type: boxCollider2D
+    isTrigger: true
+    layer: 2
+  - type: script
+    script: TrailMarker
+    values: {"Kind": "Gem"}
+- id: d16bd1a4-5ae4-505b-92c3-13eeed1771f8
+  name: "Token ground-0-0"
+  x: 32
+  y: 163
+  width: 11
+  height: 11
+  components:
+  - type: spriteRenderer
+    assetId: 90d220e2-0a83-57d1-9ef2-e35632d96e51
+    order: 4
+  - type: boxCollider2D
+    isTrigger: true
+    layer: 2
+  - type: script
+    script: TrailMarker
+    values: {"Kind": "Token"}
+- id: 6e4abda3-9310-5fb4-8b12-9690395ab086
+  name: "Token ground-0-1"
+  x: 46
+  y: 163
+  width: 11
+  height: 11
+  components:
+  - type: spriteRenderer
+    assetId: 90d220e2-0a83-57d1-9ef2-e35632d96e51
+    order: 4
+  - type: boxCollider2D
+    isTrigger: true
+    layer: 2
+  - type: script
+    script: TrailMarker
+    values: {"Kind": "Token"}
+- id: d5dd6921-a661-5cbd-a70e-84e6c4de9475
+  name: "Token ground-0-2"
+  x: 60
+  y: 163
+  width: 11
+  height: 11
+  components:
+  - type: spriteRenderer
+    assetId: 90d220e2-0a83-57d1-9ef2-e35632d96e51
+    order: 4
+  - type: boxCollider2D
+    isTrigger: true
+    layer: 2
+  - type: script
+    script: TrailMarker
+    values: {"Kind": "Token"}
+- id: b7d275cb-21b4-5aaa-a11c-4ad7ade201ad
+  name: "Token ground-1-0"
+  x: 288
+  y: 163
+  width: 11
+  height: 11
+  components:
+  - type: spriteRenderer
+    assetId: 90d220e2-0a83-57d1-9ef2-e35632d96e51
+    order: 4
+  - type: boxCollider2D
+    isTrigger: true
+    layer: 2
+  - type: script
+    script: TrailMarker
+    values: {"Kind": "Token"}
+- id: f7bead34-139b-5aee-9766-70a4ff0e30a7
+  name: "Token ground-1-1"
+  x: 302
+  y: 163
+  width: 11
+  height: 11
+  components:
+  - type: spriteRenderer
+    assetId: 90d220e2-0a83-57d1-9ef2-e35632d96e51
+    order: 4
+  - type: boxCollider2D
+    isTrigger: true
+    layer: 2
+  - type: script
+    script: TrailMarker
+    values: {"Kind": "Token"}
+- id: f9e31e40-a647-5cf7-9dd8-ab17f11d1b45
+  name: "Token ground-1-2"
+  x: 316
+  y: 163
+  width: 11
+  height: 11
+  components:
+  - type: spriteRenderer
+    assetId: 90d220e2-0a83-57d1-9ef2-e35632d96e51
+    order: 4
+  - type: boxCollider2D
+    isTrigger: true
+    layer: 2
+  - type: script
+    script: TrailMarker
+    values: {"Kind": "Token"}
+- id: 1b639c85-c7f6-520b-a17a-d7f2aedafc10
+  name: "Token ground-2-0"
+  x: 528
+  y: 163
+  width: 11
+  height: 11
+  components:
+  - type: spriteRenderer
+    assetId: 90d220e2-0a83-57d1-9ef2-e35632d96e51
+    order: 4
+  - type: boxCollider2D
+    isTrigger: true
+    layer: 2
+  - type: script
+    script: TrailMarker
+    values: {"Kind": "Token"}
+- id: b35a28df-948f-541c-b4b9-83651c79de2f
+  name: "Token ground-2-1"
+  x: 542
+  y: 163
+  width: 11
+  height: 11
+  components:
+  - type: spriteRenderer
+    assetId: 90d220e2-0a83-57d1-9ef2-e35632d96e51
+    order: 4
+  - type: boxCollider2D
+    isTrigger: true
+    layer: 2
+  - type: script
+    script: TrailMarker
+    values: {"Kind": "Token"}
+- id: d046b232-b976-5c99-b603-7b5b8650ef62
+  name: "Token ground-2-2"
+  x: 556
+  y: 163
+  width: 11
+  height: 11
+  components:
+  - type: spriteRenderer
+    assetId: 90d220e2-0a83-57d1-9ef2-e35632d96e51
+    order: 4
+  - type: boxCollider2D
+    isTrigger: true
+    layer: 2
+  - type: script
+    script: TrailMarker
+    values: {"Kind": "Token"}
+- id: faef39ac-1a9c-5d24-a616-b59773252871
+  name: "Token ground-3-0"
+  x: 768
+  y: 147
+  width: 11
+  height: 11
+  components:
+  - type: spriteRenderer
+    assetId: 90d220e2-0a83-57d1-9ef2-e35632d96e51
+    order: 4
+  - type: boxCollider2D
+    isTrigger: true
+    layer: 2
+  - type: script
+    script: TrailMarker
+    values: {"Kind": "Token"}
+- id: 6d2be205-0a66-59a0-84b5-aec64779fd4e
+  name: "Token ground-3-1"
+  x: 782
+  y: 147
+  width: 11
+  height: 11
+  components:
+  - type: spriteRenderer
+    assetId: 90d220e2-0a83-57d1-9ef2-e35632d96e51
+    order: 4
+  - type: boxCollider2D
+    isTrigger: true
+    layer: 2
+  - type: script
+    script: TrailMarker
+    values: {"Kind": "Token"}
+- id: 9bc7e213-5d11-5e83-b1ff-60d7add1eb38
+  name: "Token ground-3-2"
+  x: 796
+  y: 147
+  width: 11
+  height: 11
+  components:
+  - type: spriteRenderer
+    assetId: 90d220e2-0a83-57d1-9ef2-e35632d96e51
+    order: 4
+  - type: boxCollider2D
+    isTrigger: true
+    layer: 2
+  - type: script
+    script: TrailMarker
+    values: {"Kind": "Token"}
+- id: dc33ba78-4bf6-50ac-bd01-b744222e431c
+  name: "Token ground-4-0"
+  x: 1040
+  y: 163
+  width: 11
+  height: 11
+  components:
+  - type: spriteRenderer
+    assetId: 90d220e2-0a83-57d1-9ef2-e35632d96e51
+    order: 4
+  - type: boxCollider2D
+    isTrigger: true
+    layer: 2
+  - type: script
+    script: TrailMarker
+    values: {"Kind": "Token"}
+- id: 39da50f0-3067-546f-be90-084e07c8b004
+  name: "Token ground-4-1"
+  x: 1054
+  y: 163
+  width: 11
+  height: 11
+  components:
+  - type: spriteRenderer
+    assetId: 90d220e2-0a83-57d1-9ef2-e35632d96e51
+    order: 4
+  - type: boxCollider2D
+    isTrigger: true
+    layer: 2
+  - type: script
+    script: TrailMarker
+    values: {"Kind": "Token"}
+- id: 162447a1-9392-52d1-8244-e3b04dca6546
+  name: "Token ground-4-2"
+  x: 1068
+  y: 163
+  width: 11
+  height: 11
+  components:
+  - type: spriteRenderer
+    assetId: 90d220e2-0a83-57d1-9ef2-e35632d96e51
+    order: 4
+  - type: boxCollider2D
+    isTrigger: true
+    layer: 2
+  - type: script
+    script: TrailMarker
+    values: {"Kind": "Token"}
+- id: 5cca8b1a-805d-5cd2-b307-209db0820176
+  name: "Token ground-5-0"
+  x: 1264
+  y: 147
+  width: 11
+  height: 11
+  components:
+  - type: spriteRenderer
+    assetId: 90d220e2-0a83-57d1-9ef2-e35632d96e51
+    order: 4
+  - type: boxCollider2D
+    isTrigger: true
+    layer: 2
+  - type: script
+    script: TrailMarker
+    values: {"Kind": "Token"}
+- id: 5cd2efed-76aa-5828-8ad7-31047d082836
+  name: "Token ground-5-1"
+  x: 1278
+  y: 147
+  width: 11
+  height: 11
+  components:
+  - type: spriteRenderer
+    assetId: 90d220e2-0a83-57d1-9ef2-e35632d96e51
+    order: 4
+  - type: boxCollider2D
+    isTrigger: true
+    layer: 2
+  - type: script
+    script: TrailMarker
+    values: {"Kind": "Token"}
+- id: be44a2a8-f5c7-5dd2-b70a-d8dc721fac27
+  name: "Token ground-5-2"
+  x: 1292
+  y: 147
+  width: 11
+  height: 11
+  components:
+  - type: spriteRenderer
+    assetId: 90d220e2-0a83-57d1-9ef2-e35632d96e51
+    order: 4
+  - type: boxCollider2D
+    isTrigger: true
+    layer: 2
+  - type: script
+    script: TrailMarker
+    values: {"Kind": "Token"}
+- id: 42a9b040-4066-5d4f-b008-3f0bfe4dde10
+  name: "Checkpoint 1"
+  x: 816
+  y: 128
+  width: 26
+  height: 32
+  components:
+  - type: spriteRenderer
+    assetId: 824f6853-4ed5-5ce3-a67d-27a51c8f5a8b
+    order: 4
+  - type: boxCollider2D
+    isTrigger: true
+    layer: 2
+  - type: script
+    script: TrailMarker
+    values: {"Kind": "Checkpoint"}
+- id: 2c9c87cc-df66-5c27-b6a1-f1340f31f6c9
+  name: "Goal 1"
+  x: 1484
+  y: 128
+  width: 26
+  height: 32
+  components:
+  - type: spriteRenderer
+    assetId: 824f6853-4ed5-5ce3-a67d-27a51c8f5a8b
+    order: 4
+  - type: boxCollider2D
+    isTrigger: true
+    layer: 2
+  - type: script
+    script: TrailMarker
+    values: {"Kind": "Goal"}
+- id: 27c58bf8-9d0d-54a3-9b71-2041f5bcdf56
+  name: "HUD"
+  x: 0
+  y: 0
+  width: 1
+  height: 1
+  components:
+  - type: uiCanvas
+- id: 26f43c07-9781-5f0d-933a-c3cdce0510dd
+  name: "Stage"
+  x: 13
+  y: 8
+  width: 280
+  height: 22
+  parentId: 27c58bf8-9d0d-54a3-9b71-2041f5bcdf56
+  components:
+  - type: uiRect
+  - type: uiText
+    size: 15
+    color: "#192E3A"
+    text: "01  /  Windward Meadow"
+- id: daa813f3-f41c-5fc6-a960-572412fec8b0
+  name: "Totals"
+  x: 13
+  y: 31
+  width: 320
+  height: 14
+  parentId: 27c58bf8-9d0d-54a3-9b71-2041f5bcdf56
+  components:
+  - type: uiRect
+  - type: uiText
+    size: 10
+    color: "#192E3A"
+    text: "HEARTS  3       TOKENS  00       GEMS  0/3"
+- id: f06ce8fa-108e-517e-a678-413adbeff13f
+  name: "Instructions"
+  x: 13
+  y: 199
+  width: 360
+  height: 14
+  parentId: 27c58bf8-9d0d-54a3-9b71-2041f5bcdf56
+  components:
+  - type: uiRect
+  - type: uiText
+    size: 10
+    color: "#FAF4D4"
+    text: "ARROWS  Move     SPACE  Jump     X  Dash     P  Pause"
+- id: 5ba97693-0dcb-596e-8b4d-bde7fd45bc5b
+  name: "Status"
+  x: 13
+  y: 51
+  width: 360
+  height: 26
+  parentId: 27c58bf8-9d0d-54a3-9b71-2041f5bcdf56
+  components:
+  - type: uiRect
+  - type: uiText
+    size: 14
+    color: "#192E3A"
+    text: ""
+defaultCameraId: 99abe4fe-4d83-5cc3-b1ff-9ee93a710ed1

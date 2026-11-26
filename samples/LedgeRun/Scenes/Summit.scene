@@ -1,0 +1,404 @@
+schemaVersion: 31
+objects:
+- id: e892a70e-56c6-5022-bb90-d556250662ea
+  name: "Distant landscape"
+  x: 0
+  y: 0
+  width: 384
+  height: 216
+  components:
+  - type: spriteRenderer
+    squareColor: "#385574"
+    order: -20
+  - type: parallax2D
+    scrollX: 0.18
+    scrollY: 0
+    repeatX: true
+- id: 4038dcca-9ab6-5bdb-b264-7e0d893cd62a
+  name: "Pillar 12"
+  x: 12
+  y: 0
+  width: 9
+  height: 216
+  components:
+  - type: spriteRenderer
+    squareColor: "#293042"
+    order: -12
+- id: d9a71c98-5dc0-5aed-9361-57cef6b60f1e
+  name: "Pillar 76"
+  x: 76
+  y: 0
+  width: 9
+  height: 216
+  components:
+  - type: spriteRenderer
+    squareColor: "#293042"
+    order: -12
+- id: 7f7c2afe-e86f-5613-801e-d3d6d43b0c57
+  name: "Pillar 140"
+  x: 140
+  y: 0
+  width: 9
+  height: 216
+  components:
+  - type: spriteRenderer
+    squareColor: "#293042"
+    order: -12
+- id: 08cbfcfe-935d-5d55-a1f8-277c7a6bb3db
+  name: "Pillar 204"
+  x: 204
+  y: 0
+  width: 9
+  height: 216
+  components:
+  - type: spriteRenderer
+    squareColor: "#293042"
+    order: -12
+- id: 5bdde361-af6a-52b8-ab53-35dac4d2e4fd
+  name: "Pillar 268"
+  x: 268
+  y: 0
+  width: 9
+  height: 216
+  components:
+  - type: spriteRenderer
+    squareColor: "#293042"
+    order: -12
+- id: 12d12844-a243-5d58-9080-bb07fb01e7a1
+  name: "Pillar 332"
+  x: 332
+  y: 0
+  width: 9
+  height: 216
+  components:
+  - type: spriteRenderer
+    squareColor: "#293042"
+    order: -12
+- id: 05a9b92f-f8fe-5c17-b44d-b28124b0032b
+  name: "Pillar 396"
+  x: 396
+  y: 0
+  width: 9
+  height: 216
+  components:
+  - type: spriteRenderer
+    squareColor: "#293042"
+    order: -12
+- id: 18b8b88b-8335-5643-ac0a-1bdffe3cd679
+  name: "Pillar 460"
+  x: 460
+  y: 0
+  width: 9
+  height: 216
+  components:
+  - type: spriteRenderer
+    squareColor: "#293042"
+    order: -12
+- id: 5a76ca4e-6e7f-5edb-ba6c-4609335d92ec
+  name: "Trail terrain"
+  x: 0
+  y: 0
+  width: 16
+  height: 16
+  components:
+  - type: tilemap2D
+    tileset: 77049f99-9e6a-53a7-a9e6-3819d75cbaa0
+    cellSize: {width: 16, height: 16}
+    order: -1
+    chunks:
+    - x: 0
+      y: 0
+      cells:
+      - {index: 294, tile: 7}
+      - {index: 295, tile: 7}
+      - {index: 296, tile: 7}
+      - {index: 297, tile: 7}
+      - {index: 298, tile: 7}
+      - {index: 310, tile: 7}
+      - {index: 311, tile: 7}
+      - {index: 312, tile: 7}
+      - {index: 313, tile: 7}
+      - {index: 314, tile: 7}
+      - {index: 352, tile: 4}
+      - {index: 353, tile: 4}
+      - {index: 354, tile: 4}
+      - {index: 355, tile: 4}
+      - {index: 356, tile: 4}
+      - {index: 357, tile: 4}
+      - {index: 358, tile: 4}
+      - {index: 359, tile: 4}
+      - {index: 360, tile: 4}
+      - {index: 361, tile: 4}
+      - {index: 362, tile: 4}
+      - {index: 363, tile: 4}
+      - {index: 364, tile: 4}
+      - {index: 365, tile: 4}
+      - {index: 366, tile: 4}
+      - {index: 367, tile: 4}
+      - {index: 368, tile: 4}
+      - {index: 369, tile: 4}
+      - {index: 370, tile: 4}
+      - {index: 371, tile: 4}
+      - {index: 372, tile: 4}
+      - {index: 373, tile: 4}
+      - {index: 374, tile: 4}
+      - {index: 375, tile: 4}
+      - {index: 376, tile: 4}
+      - {index: 377, tile: 4}
+      - {index: 378, tile: 4}
+      - {index: 379, tile: 4}
+      - {index: 380, tile: 4}
+      - {index: 381, tile: 4}
+      - {index: 382, tile: 4}
+      - {index: 383, tile: 4}
+      - {index: 384, tile: 4}
+      - {index: 385, tile: 4}
+      - {index: 386, tile: 4}
+      - {index: 387, tile: 4}
+      - {index: 388, tile: 4}
+      - {index: 389, tile: 4}
+      - {index: 390, tile: 4}
+      - {index: 391, tile: 4}
+      - {index: 392, tile: 4}
+      - {index: 393, tile: 4}
+      - {index: 394, tile: 4}
+      - {index: 395, tile: 4}
+      - {index: 396, tile: 4}
+      - {index: 397, tile: 4}
+      - {index: 398, tile: 4}
+      - {index: 399, tile: 4}
+      - {index: 400, tile: 4}
+      - {index: 401, tile: 4}
+      - {index: 402, tile: 4}
+      - {index: 403, tile: 4}
+      - {index: 404, tile: 4}
+      - {index: 405, tile: 4}
+      - {index: 406, tile: 4}
+      - {index: 407, tile: 4}
+      - {index: 408, tile: 4}
+      - {index: 409, tile: 4}
+      - {index: 410, tile: 4}
+      - {index: 411, tile: 4}
+      - {index: 412, tile: 4}
+      - {index: 413, tile: 4}
+      - {index: 414, tile: 4}
+      - {index: 415, tile: 4}
+      - {index: 416, tile: 4}
+      - {index: 417, tile: 4}
+      - {index: 418, tile: 4}
+      - {index: 419, tile: 4}
+      - {index: 420, tile: 4}
+      - {index: 421, tile: 4}
+      - {index: 422, tile: 4}
+      - {index: 423, tile: 4}
+      - {index: 424, tile: 4}
+      - {index: 425, tile: 4}
+      - {index: 426, tile: 4}
+      - {index: 427, tile: 4}
+      - {index: 428, tile: 4}
+      - {index: 429, tile: 4}
+      - {index: 430, tile: 4}
+      - {index: 431, tile: 4}
+      - {index: 432, tile: 4}
+      - {index: 433, tile: 4}
+      - {index: 434, tile: 4}
+      - {index: 435, tile: 4}
+      - {index: 436, tile: 4}
+      - {index: 437, tile: 4}
+      - {index: 438, tile: 4}
+      - {index: 439, tile: 4}
+      - {index: 440, tile: 4}
+      - {index: 441, tile: 4}
+      - {index: 442, tile: 4}
+      - {index: 443, tile: 4}
+      - {index: 444, tile: 4}
+      - {index: 445, tile: 4}
+      - {index: 446, tile: 4}
+      - {index: 447, tile: 4}
+- id: 85dd8744-60ee-5f56-b71a-644315902f65
+  name: "Courier"
+  x: 26
+  y: 152
+  width: 14
+  height: 20
+  components:
+  - type: capsuleCollider2D
+    layer: 1
+  - type: rigidbody2D
+    freezeRotation: true
+  - type: characterMotor2D
+  - type: particleEmitter2D
+    particles: ddeba15c-d264-50ee-bf85-2f87a72942ee
+    trigger: Landing
+    offsetY: 9
+  - type: script
+    script: TrailRunner
+    values: {"Status": "7954dd6f-591e-5d51-abb1-960a9bb38b09", "Totals": "cbea3476-7e78-5f84-93d9-f731c462ca25", "Portrait": "18d95d14-105f-5ed6-bc31-2c53798b1c29", "Idle": {"Id": "6836d239-7548-58d2-878d-30d2cc8f31c0"}, "Running": {"Id": "20fe28c1-6b3f-5a68-a0cd-ea10dc53efdf"}, "Airborne": {"Id": "7717b8a9-cc86-52a9-951d-efff4b4872fa"}, "NextStage": {"Id": "00000000-0000-0000-0000-000000000000"}, "TrailheadScene": {"Id": "352b64f0-d4ce-56d0-a9e9-388dbbec0cb3"}, "Chime": "6b0964c5-bb9c-54e4-a7fa-6c9a7b499f0b", "Hurt": "d7052368-ceeb-55d0-9641-7e9ccb2627c2", "Clear": "ca229dd6-21f6-53d4-900b-520bf02fe72a", "Stage": 4, "FallY": 264}
+- id: 6b0964c5-bb9c-54e4-a7fa-6c9a7b499f0b
+  name: "Chime sound"
+  x: 0
+  y: 0
+  width: 1
+  height: 1
+  components:
+  - type: audioSource
+    sound: dfc4cc33-24eb-5d3b-843b-c2b98a45f8a5
+    bus: Effects
+- id: d7052368-ceeb-55d0-9641-7e9ccb2627c2
+  name: "Hurt sound"
+  x: 0
+  y: 0
+  width: 1
+  height: 1
+  components:
+  - type: audioSource
+    sound: 65574b41-42da-5d1a-b8a8-06bdc915c840
+    bus: Effects
+- id: ca229dd6-21f6-53d4-900b-520bf02fe72a
+  name: "Clear sound"
+  x: 0
+  y: 0
+  width: 1
+  height: 1
+  components:
+  - type: audioSource
+    sound: 75cbfdaa-bad9-52a9-ade6-fbf188cdb699
+    bus: Effects
+- id: 18d95d14-105f-5ed6-bc31-2c53798b1c29
+  name: "Courier sprite"
+  x: -4
+  y: -6
+  width: 22
+  height: 26
+  parentId: 85dd8744-60ee-5f56-b71a-644315902f65
+  pivotX: 0.5
+  pivotY: 0.5
+  components:
+  - type: spriteRenderer
+    assetId: 6836d239-7548-58d2-878d-30d2cc8f31c0
+    order: 8
+- id: 2411648d-9c31-57ce-a7e1-de04f5b86b67
+  name: "Follow camera"
+  x: 192
+  y: 108
+  width: 1
+  height: 1
+  components:
+  - type: camera2D
+    follow: 85dd8744-60ee-5f56-b71a-644315902f65
+    halfLife: 0.13
+    deadZoneWidth: 96
+    deadZoneHeight: 42
+    lookAhead: 0.11
+    bounds: {x: 0, y: 0, width: 512, height: 216}
+- id: 86a32464-5ce0-5d60-aa06-2b75ce5c8f28
+  name: "Goal 1"
+  x: 460
+  y: 144
+  width: 26
+  height: 32
+  active: false
+  components:
+  - type: spriteRenderer
+    assetId: 824f6853-4ed5-5ce3-a67d-27a51c8f5a8b
+    order: 4
+  - type: boxCollider2D
+    isTrigger: true
+    layer: 2
+  - type: script
+    script: TrailMarker
+    values: {"Kind": "Goal"}
+- id: e0a98501-1f45-5899-a77a-adedbce2ff4a
+  name: "Hazard Guardian"
+  x: 250
+  y: 176
+  width: 13
+  height: 10
+  active: false
+  components:
+  - type: spriteRenderer
+    assetId: c76d9d1b-ba76-5379-9308-89ad4f59f51c
+    order: 4
+  - type: boxCollider2D
+    isTrigger: true
+    layer: 2
+  - type: script
+    script: TrailMarker
+    values: {"Kind": "Hazard"}
+- id: 0f73e5b0-3a80-5701-92bd-be0de7a4dedb
+  name: "Guardian"
+  x: 250
+  y: 149
+  width: 38
+  height: 27
+  components:
+  - type: spriteRenderer
+    assetId: d6add7b7-79b2-5703-88b0-73d5cffd98c3
+    order: 6
+  - type: boxCollider2D
+    isTrigger: true
+    layer: 2
+  - type: script
+    script: TrailEnemy
+    values: {"Kind": "Guardian", "Player": "85dd8744-60ee-5f56-b71a-644315902f65", "PatrolWidth": 82, "Projectile": "e0a98501-1f45-5899-a77a-adedbce2ff4a", "Unlock": "86a32464-5ce0-5d60-aa06-2b75ce5c8f28", "Stomps": 3}
+- id: 0ebb9bf9-9ce4-5b8f-93b8-3fbd703dbb8e
+  name: "HUD"
+  x: 0
+  y: 0
+  width: 1
+  height: 1
+  components:
+  - type: uiCanvas
+- id: b6029728-ef6f-5a39-a92f-6e69bae8b01a
+  name: "Stage"
+  x: 13
+  y: 8
+  width: 280
+  height: 22
+  parentId: 0ebb9bf9-9ce4-5b8f-93b8-3fbd703dbb8e
+  components:
+  - type: uiRect
+  - type: uiText
+    size: 15
+    color: "#FAF4D4"
+    text: "04  /  Stormwatch Summit"
+- id: cbea3476-7e78-5f84-93d9-f731c462ca25
+  name: "Totals"
+  x: 13
+  y: 31
+  width: 320
+  height: 14
+  parentId: 0ebb9bf9-9ce4-5b8f-93b8-3fbd703dbb8e
+  components:
+  - type: uiRect
+  - type: uiText
+    size: 10
+    color: "#FAF4D4"
+    text: "HEARTS  3"
+- id: 5ada0b3f-3c36-57ef-b532-7fdc33f2176a
+  name: "Instructions"
+  x: 13
+  y: 199
+  width: 360
+  height: 14
+  parentId: 0ebb9bf9-9ce4-5b8f-93b8-3fbd703dbb8e
+  components:
+  - type: uiRect
+  - type: uiText
+    size: 10
+    color: "#FAF4D4"
+    text: "ARROWS  Move     SPACE  Jump     X  Dash     P  Pause"
+- id: 7954dd6f-591e-5d51-abb1-960a9bb38b09
+  name: "Status"
+  x: 13
+  y: 51
+  width: 360
+  height: 26
+  parentId: 0ebb9bf9-9ce4-5b8f-93b8-3fbd703dbb8e
+  components:
+  - type: uiRect
+  - type: uiText
+    size: 14
+    color: "#FAF4D4"
+    text: "Land three stomps to raise the summit flag."
+defaultCameraId: 2411648d-9c31-57ce-a7e1-de04f5b86b67

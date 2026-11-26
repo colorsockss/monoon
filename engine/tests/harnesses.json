@@ -1485,6 +1485,92 @@
    ]
   },
   {
+   "id": "HexRealm.Play",
+   "samples": [
+    "HexRealm"
+   ],
+   "modes": [
+    "scene-play",
+    "release",
+    "native-aot"
+   ],
+   "needs": [
+    "editor",
+    "gui",
+    "templates"
+   ],
+   "probe": "LedgeRunProbe",
+   "baselines": [],
+   "watch": [
+    "engine/src/Engine.Core/GridNavigation.cs",
+    "engine/src/Engine.Core/RuntimeTiles.cs",
+    "engine/src/Engine.Core/PlayerStorage*.cs",
+    "engine/tests/Shared/sample_route.py"
+   ],
+   "steps": [
+    {
+     "kind": "build",
+     "modes": [
+      "release"
+     ],
+     "run": "./monoon build samples/HexRealm release --profile distribution --output \"$work/builds\""
+    },
+    {
+     "kind": "play",
+     "modes": [
+      "release"
+     ],
+     "run": "PYTHONDONTWRITEBYTECODE=1 python3 \"$qa/verify.py\" play \"$work/builds/HexRealm.app/Contents/MacOS/MoNoonPlayer\" \"$work/release\""
+    },
+    {
+     "kind": "build",
+     "modes": [
+      "native-aot"
+     ],
+     "run": "./monoon build samples/HexRealm native-aot --profile distribution --output \"$work/builds\""
+    },
+    {
+     "kind": "play",
+     "modes": [
+      "native-aot"
+     ],
+     "run": "PYTHONDONTWRITEBYTECODE=1 python3 \"$qa/verify.py\" play \"$work/builds/NativeAOT/HexRealm.app/Contents/MacOS/MoNoonPlayer\" \"$work/aot\""
+    },
+    {
+     "kind": "probe",
+     "modes": [
+      "scene-play"
+     ],
+     "run": "dotnet build engine/tests/LedgeRun.Play -c Release -m:1 -p:UsedAvaloniaProducts="
+    },
+    {
+     "kind": "editor",
+     "modes": [
+      "scene-play"
+     ],
+     "gui": true,
+     "run": "PYTHONDONTWRITEBYTECODE=1 $lock python3 \"$qa/verify.py\" editor \"$app\" samples/HexRealm \"$probe_dll\" \"$work/scene-play\""
+    },
+    {
+     "kind": "compare",
+     "modes": [
+      "release",
+      "native-aot"
+     ],
+     "run": "PYTHONDONTWRITEBYTECODE=1 python3 \"$qa/verify.py\" compare \"$work/release\" \"$work/aot\""
+    },
+    {
+     "kind": "compare",
+     "modes": [
+      "scene-play",
+      "release",
+      "native-aot"
+     ],
+     "run": "PYTHONDONTWRITEBYTECODE=1 python3 \"$qa/verify.py\" compare \"$work/scene-play\" \"$work/release\" \"$work/aot\""
+    }
+   ]
+  },
+  {
    "id": "InventoryLab.BagGrid",
    "samples": [
     "InventoryLab"
@@ -2035,6 +2121,95 @@
       "native-aot"
      ],
      "run": "python3 \"$qa/verify.py\" compare \"$work/runs\""
+    }
+   ]
+  },
+  {
+   "id": "IsoBand.Play",
+   "samples": [
+    "IsoBand"
+   ],
+   "modes": [
+    "scene-play",
+    "release",
+    "native-aot"
+   ],
+   "needs": [
+    "editor",
+    "gui",
+    "templates"
+   ],
+   "probe": "LedgeRunProbe",
+   "baselines": [
+    "engine/tests/IsoBand.Play/route.tsv"
+   ],
+   "watch": [
+    "engine/src/Engine.Core/NavArea2D.cs",
+    "engine/src/Engine.Core/NavCrowd2D.cs",
+    "engine/src/Engine.Core/Navigation2D.cs",
+    "engine/src/Engine.Core/RuntimeTiles.cs",
+    "engine/tests/Shared/sample_route.py"
+   ],
+   "steps": [
+    {
+     "kind": "build",
+     "modes": [
+      "release"
+     ],
+     "run": "./monoon build samples/IsoBand release --profile distribution --output \"$work/builds\""
+    },
+    {
+     "kind": "play",
+     "modes": [
+      "release"
+     ],
+     "run": "PYTHONDONTWRITEBYTECODE=1 python3 \"$qa/verify.py\" play \"$work/builds/IsoBand.app/Contents/MacOS/MoNoonPlayer\" \"$work/release\""
+    },
+    {
+     "kind": "build",
+     "modes": [
+      "native-aot"
+     ],
+     "run": "./monoon build samples/IsoBand native-aot --profile distribution --output \"$work/builds\""
+    },
+    {
+     "kind": "play",
+     "modes": [
+      "native-aot"
+     ],
+     "run": "PYTHONDONTWRITEBYTECODE=1 python3 \"$qa/verify.py\" play \"$work/builds/NativeAOT/IsoBand.app/Contents/MacOS/MoNoonPlayer\" \"$work/aot\""
+    },
+    {
+     "kind": "probe",
+     "modes": [
+      "scene-play"
+     ],
+     "run": "dotnet build engine/tests/LedgeRun.Play -c Release -m:1 -p:UsedAvaloniaProducts="
+    },
+    {
+     "kind": "editor",
+     "modes": [
+      "scene-play"
+     ],
+     "gui": true,
+     "run": "PYTHONDONTWRITEBYTECODE=1 $lock python3 \"$qa/verify.py\" editor \"$app\" samples/IsoBand \"$probe_dll\" \"$work/scene-play\""
+    },
+    {
+     "kind": "compare",
+     "modes": [
+      "release",
+      "native-aot"
+     ],
+     "run": "PYTHONDONTWRITEBYTECODE=1 python3 \"$qa/verify.py\" compare \"$work/release\" \"$work/aot\""
+    },
+    {
+     "kind": "compare",
+     "modes": [
+      "scene-play",
+      "release",
+      "native-aot"
+     ],
+     "run": "PYTHONDONTWRITEBYTECODE=1 python3 \"$qa/verify.py\" compare \"$work/scene-play\" \"$work/release\" \"$work/aot\""
     }
    ]
   },
@@ -3435,6 +3610,97 @@
       "native-aot"
      ],
      "run": "python3 \"$qa/ci.py\" osx-arm64 \"$work/results\""
+    }
+   ]
+  },
+  {
+   "id": "LedgeRun.Play",
+   "samples": [
+    "LedgeRun"
+   ],
+   "modes": [
+    "scene-play",
+    "release",
+    "native-aot"
+   ],
+   "needs": [
+    "editor",
+    "gui",
+    "templates"
+   ],
+   "probe": "LedgeRunProbe",
+   "baselines": [
+    "engine/tests/LedgeRun.Play/route.tsv"
+   ],
+   "watch": [
+    "engine/src/Engine.Core/InputReplay.cs",
+    "engine/src/Engine.Core/Rigidbody2D.cs",
+    "engine/src/Engine.Core/TileWorld.cs",
+    "engine/src/Engine.Core/RuntimeTiles.cs",
+    "engine/src/Engine.Core/GameSession*.cs",
+    "engine/src/Engine.Core/PlayerStorage*.cs",
+    "engine/tests/Shared/sample_route.py"
+   ],
+   "steps": [
+    {
+     "kind": "build",
+     "modes": [
+      "release"
+     ],
+     "run": "./monoon build samples/LedgeRun release --profile distribution --output \"$work/builds\""
+    },
+    {
+     "kind": "build",
+     "modes": [
+      "native-aot"
+     ],
+     "run": "./monoon build samples/LedgeRun native-aot --profile distribution --output \"$work/builds\""
+    },
+    {
+     "kind": "play",
+     "modes": [
+      "release"
+     ],
+     "run": "python3 \"$qa/verify.py\" play \"$work/builds/LedgeRun.app/Contents/MacOS/MoNoonPlayer\" \"$work/release\""
+    },
+    {
+     "kind": "play",
+     "modes": [
+      "native-aot"
+     ],
+     "run": "python3 \"$qa/verify.py\" play \"$work/builds/NativeAOT/LedgeRun.app/Contents/MacOS/MoNoonPlayer\" \"$work/aot\""
+    },
+    {
+     "kind": "probe",
+     "modes": [
+      "scene-play"
+     ],
+     "run": "dotnet build \"$qa\" -c Release -m:1 -p:UsedAvaloniaProducts="
+    },
+    {
+     "kind": "editor",
+     "modes": [
+      "scene-play"
+     ],
+     "gui": true,
+     "run": "$lock python3 \"$qa/verify.py\" editor \"$app\" samples/LedgeRun \"$probe_dll\" \"$work/scene-play\""
+    },
+    {
+     "kind": "compare",
+     "modes": [
+      "release",
+      "native-aot"
+     ],
+     "run": "python3 \"$qa/verify.py\" compare \"$work/release\" \"$work/aot\""
+    },
+    {
+     "kind": "compare",
+     "modes": [
+      "scene-play",
+      "release",
+      "native-aot"
+     ],
+     "run": "python3 \"$qa/verify.py\" compare \"$work/scene-play\" \"$work/release\" \"$work/aot\""
     }
    ]
   },

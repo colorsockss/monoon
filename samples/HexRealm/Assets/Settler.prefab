@@ -1,0 +1,11 @@
+schemaVersion: 34
+objects:
+- id: 86f83348-3573-50b5-989d-5043f8795311
+  name: Settler
+  width: 24
+  height: 24
+  components:
+  - type: spriteRenderer
+    assetId: e0588248-f7cd-5ecf-b289-38bc4b38373c
+    order: 8
+    sortByY: true

@@ -1,0 +1,461 @@
+schemaVersion: 34
+objects:
+- id: d7caad68-ab60-5283-b1e9-9397d331eae6
+  name: "Backdrop"
+  x: 0
+  y: 0
+  width: 480
+  height: 270
+  components:
+  - type: spriteRenderer
+    squareColor: "#162333"
+    order: -20
+  - type: parallax2D
+    scrollX: 0
+    scrollY: 0
+- id: a3f535b1-7e3c-5ff0-add8-10709185e5a2
+  name: "Diamond terrain"
+  x: 373
+  y: 16
+  width: 64
+  height: 32
+  components:
+  - type: tilemap2D
+    layout: Isometric
+    cellSize: {width: 64, height: 32}
+    order: -2
+    tileset: af9d2264-383d-5ecd-a493-3a665904d8b3
+    chunks:
+    - x: 0
+      y: 0
+      cells:
+      - {index: 0, tile: 3}
+      - {index: 1, tile: 3}
+      - {index: 2, tile: 3}
+      - {index: 3, tile: 3}
+      - {index: 4, tile: 3}
+      - {index: 5, tile: 3}
+      - {index: 6, tile: 3}
+      - {index: 7, tile: 3}
+      - {index: 8, tile: 3}
+      - {index: 9, tile: 3}
+      - {index: 10, tile: 3}
+      - {index: 11, tile: 3}
+      - {index: 12, tile: 3}
+      - {index: 13, tile: 3}
+      - {index: 32, tile: 3}
+      - {index: 33, tile: 1}
+      - {index: 34, tile: 1}
+      - {index: 35, tile: 1}
+      - {index: 36, tile: 1}
+      - {index: 37, tile: 1}
+      - {index: 38, tile: 2}
+      - {index: 39, tile: 1}
+      - {index: 40, tile: 1}
+      - {index: 41, tile: 1}
+      - {index: 42, tile: 1}
+      - {index: 43, tile: 1}
+      - {index: 44, tile: 1}
+      - {index: 45, tile: 3}
+      - {index: 64, tile: 3}
+      - {index: 65, tile: 1}
+      - {index: 66, tile: 1}
+      - {index: 67, tile: 1}
+      - {index: 68, tile: 1}
+      - {index: 69, tile: 2}
+      - {index: 70, tile: 1}
+      - {index: 71, tile: 1}
+      - {index: 72, tile: 1}
+      - {index: 73, tile: 1}
+      - {index: 74, tile: 1}
+      - {index: 75, tile: 1}
+      - {index: 76, tile: 2}
+      - {index: 77, tile: 3}
+      - {index: 96, tile: 3}
+      - {index: 97, tile: 1}
+      - {index: 98, tile: 1}
+      - {index: 99, tile: 1}
+      - {index: 100, tile: 2}
+      - {index: 101, tile: 1}
+      - {index: 102, tile: 1}
+      - {index: 103, tile: 1}
+      - {index: 104, tile: 1}
+      - {index: 105, tile: 1}
+      - {index: 106, tile: 1}
+      - {index: 107, tile: 2}
+      - {index: 108, tile: 1}
+      - {index: 109, tile: 3}
+      - {index: 128, tile: 3}
+      - {index: 129, tile: 1}
+      - {index: 130, tile: 1}
+      - {index: 131, tile: 2}
+      - {index: 132, tile: 1}
+      - {index: 133, tile: 1}
+      - {index: 134, tile: 1}
+      - {index: 135, tile: 1}
+      - {index: 136, tile: 1}
+      - {index: 137, tile: 1}
+      - {index: 138, tile: 2}
+      - {index: 139, tile: 1}
+      - {index: 140, tile: 1}
+      - {index: 141, tile: 3}
+      - {index: 160, tile: 3}
+      - {index: 161, tile: 1}
+      - {index: 162, tile: 2}
+      - {index: 163, tile: 1}
+      - {index: 164, tile: 1}
+      - {index: 165, tile: 1}
+      - {index: 166, tile: 1}
+      - {index: 167, tile: 1}
+      - {index: 168, tile: 1}
+      - {index: 169, tile: 2}
+      - {index: 170, tile: 1}
+      - {index: 171, tile: 1}
+      - {index: 172, tile: 1}
+      - {index: 173, tile: 3}
+      - {index: 192, tile: 3}
+      - {index: 193, tile: 2}
+      - {index: 194, tile: 1}
+      - {index: 195, tile: 1}
+      - {index: 196, tile: 1}
+      - {index: 197, tile: 1}
+      - {index: 198, tile: 1}
+      - {index: 199, tile: 1}
+      - {index: 200, tile: 2}
+      - {index: 201, tile: 1}
+      - {index: 202, tile: 1}
+      - {index: 203, tile: 1}
+      - {index: 204, tile: 1}
+      - {index: 205, tile: 3}
+      - {index: 224, tile: 3}
+      - {index: 225, tile: 1}
+      - {index: 226, tile: 1}
+      - {index: 227, tile: 1}
+      - {index: 228, tile: 1}
+      - {index: 229, tile: 1}
+      - {index: 230, tile: 1}
+      - {index: 231, tile: 2}
+      - {index: 232, tile: 1}
+      - {index: 233, tile: 1}
+      - {index: 234, tile: 1}
+      - {index: 235, tile: 1}
+      - {index: 236, tile: 1}
+      - {index: 237, tile: 3}
+      - {index: 256, tile: 3}
+      - {index: 257, tile: 1}
+      - {index: 258, tile: 1}
+      - {index: 259, tile: 1}
+      - {index: 260, tile: 1}
+      - {index: 261, tile: 1}
+      - {index: 262, tile: 2}
+      - {index: 263, tile: 1}
+      - {index: 264, tile: 1}
+      - {index: 265, tile: 1}
+      - {index: 266, tile: 1}
+      - {index: 267, tile: 1}
+      - {index: 268, tile: 1}
+      - {index: 269, tile: 3}
+      - {index: 288, tile: 3}
+      - {index: 289, tile: 1}
+      - {index: 290, tile: 1}
+      - {index: 291, tile: 1}
+      - {index: 292, tile: 1}
+      - {index: 293, tile: 2}
+      - {index: 294, tile: 1}
+      - {index: 295, tile: 1}
+      - {index: 296, tile: 1}
+      - {index: 297, tile: 1}
+      - {index: 298, tile: 1}
+      - {index: 299, tile: 1}
+      - {index: 300, tile: 2}
+      - {index: 301, tile: 3}
+      - {index: 320, tile: 3}
+      - {index: 321, tile: 1}
+      - {index: 322, tile: 1}
+      - {index: 323, tile: 1}
+      - {index: 324, tile: 2}
+      - {index: 325, tile: 1}
+      - {index: 326, tile: 1}
+      - {index: 327, tile: 1}
+      - {index: 328, tile: 1}
+      - {index: 329, tile: 1}
+      - {index: 330, tile: 1}
+      - {index: 331, tile: 2}
+      - {index: 332, tile: 1}
+      - {index: 333, tile: 3}
+      - {index: 352, tile: 3}
+      - {index: 353, tile: 3}
+      - {index: 354, tile: 3}
+      - {index: 355, tile: 3}
+      - {index: 356, tile: 3}
+      - {index: 357, tile: 3}
+      - {index: 358, tile: 3}
+      - {index: 359, tile: 3}
+      - {index: 360, tile: 3}
+      - {index: 361, tile: 3}
+      - {index: 362, tile: 3}
+      - {index: 363, tile: 3}
+      - {index: 364, tile: 3}
+      - {index: 365, tile: 3}
+- id: f6fa8cac-c2a0-5d36-95bb-9b6d31fd2bfa
+  name: "Free navigation"
+  x: 11
+  y: 12
+  width: 822
+  height: 422
+  components:
+  - type: navigationRegion2D
+    spacing: 8
+    agentWidth: 11
+    terrainMask: 1
+- id: a1a79a08-e11a-5ce2-96db-c2efc8bbac8d
+  name: "Camp"
+  x: 427
+  y: 124
+  width: 20
+  height: 22
+  components:
+  - type: spriteRenderer
+    assetId: 92f3a45c-d149-504d-a167-3dab2aa002a3
+    sortByY: true
+- id: 1a936037-6805-5727-8575-9df12727307a
+  name: "Gate"
+  x: 453
+  y: 288
+  width: 32
+  height: 34
+  components:
+  - type: spriteRenderer
+    assetId: df293170-6ee7-54fd-b468-c23e7ec63e8a
+    sortByY: true
+- id: ec92f082-9530-5264-baea-6c631ba21ca8
+  name: "Pine 1"
+  x: 261
+  y: 88
+  width: 33
+  height: 42
+  components:
+  - type: spriteRenderer
+    assetId: 4ee23ca4-d0e3-5eea-ac3a-e0c57a48463d
+    sortByY: true
+- id: c82c26c9-2946-5dff-a3af-4892d92ed660
+  name: "Pine 2"
+  x: 197
+  y: 152
+  width: 33
+  height: 42
+  components:
+  - type: spriteRenderer
+    assetId: 4ee23ca4-d0e3-5eea-ac3a-e0c57a48463d
+    sortByY: true
+- id: ca7aa3bc-36f6-5ea5-99f5-052b4f2a13e0
+  name: "Pine 3"
+  x: 485
+  y: 104
+  width: 33
+  height: 42
+  components:
+  - type: spriteRenderer
+    assetId: 4ee23ca4-d0e3-5eea-ac3a-e0c57a48463d
+    sortByY: true
+- id: a7eb8536-9962-58fd-b447-8119eea29584
+  name: "Pine 4"
+  x: 613
+  y: 168
+  width: 33
+  height: 42
+  components:
+  - type: spriteRenderer
+    assetId: 4ee23ca4-d0e3-5eea-ac3a-e0c57a48463d
+    sortByY: true
+- id: e473853a-ac77-5c7b-aeb9-c56cc8d2500e
+  name: "Pine 5"
+  x: 389
+  y: 280
+  width: 33
+  height: 42
+  components:
+  - type: spriteRenderer
+    assetId: 4ee23ca4-d0e3-5eea-ac3a-e0c57a48463d
+    sortByY: true
+- id: ae608a1c-9c33-5360-b560-e2240ea32d6f
+  name: "Pine 6"
+  x: 581
+  y: 248
+  width: 33
+  height: 42
+  components:
+  - type: spriteRenderer
+    assetId: 4ee23ca4-d0e3-5eea-ac3a-e0c57a48463d
+    sortByY: true
+- id: ef26dd11-5a88-579c-9597-50356cafd7a8
+  name: "Pine 7"
+  x: 517
+  y: 312
+  width: 33
+  height: 42
+  components:
+  - type: spriteRenderer
+    assetId: 4ee23ca4-d0e3-5eea-ac3a-e0c57a48463d
+    sortByY: true
+- id: c06c5840-a5f7-5f05-8649-6d44d5861d8a
+  name: "Pine 8"
+  x: 261
+  y: 248
+  width: 33
+  height: 42
+  components:
+  - type: spriteRenderer
+    assetId: 4ee23ca4-d0e3-5eea-ac3a-e0c57a48463d
+    sortByY: true
+- id: 0f27afb9-2e5b-514b-94fa-513c2576e514
+  name: "Captain"
+  x: 361
+  y: 79
+  width: 24
+  height: 35
+  components:
+  - type: spriteRenderer
+    assetId: 55e1e528-c536-5df6-9f9e-5069b4f19abc
+    sortByY: true
+  - type: script
+    script: Expedition
+    values: {"Floor": "a3f535b1-7e3c-5ff0-add8-10709185e5a2", "Navigation": "f6fa8cac-c2a0-5d36-95bb-9b6d31fd2bfa", "Camera": "38eb746d-21c0-5e66-8ce5-5794488beeff", "Portal": "1a936037-6805-5727-8575-9df12727307a", "Campfire": "a1a79a08-e11a-5ce2-96db-c2efc8bbac8d", "Hud": "3a153277-c5c1-5074-ac75-79be43e11301", "Hint": "7a8849cf-5adb-588e-bf8b-15fdc19011cf", "Companions": ["ed4dbef5-a193-5b91-9351-4fb724690608", "94fb20c4-0e44-5934-84bf-138dd317680c", "8eb07652-7d33-5693-b8df-e8c8e3b7b65a", "c6863dfc-199c-5d2f-8894-c895cb7168de", "ac24b585-ab92-59f7-8d58-079e7ea77495"], "Enemies": [], "Haven": {"Id": "32ccf437-7ad0-53ae-962e-287d655678a6"}, "Routes": ["a1b92a57-febd-5582-87cc-8700e056ac09", "e211290a-8462-5d97-b7a9-b088aa816bbb", "fd96a88e-4577-5ef2-ac84-c67c9df6467d"], "Zone": 0}
+- id: ed4dbef5-a193-5b91-9351-4fb724690608
+  name: "Companion 1"
+  x: 343
+  y: 91
+  width: 26
+  height: 33
+  components:
+  - type: spriteRenderer
+    assetId: 2ba0fb87-0f9e-5a58-bb86-cdad1f63e889
+    sortByY: true
+- id: 94fb20c4-0e44-5934-84bf-138dd317680c
+  name: "Companion 2"
+  x: 377
+  y: 91
+  width: 26
+  height: 33
+  components:
+  - type: spriteRenderer
+    assetId: 4b80073d-3810-5234-8821-07d06f31dd09
+    sortByY: true
+- id: 8eb07652-7d33-5693-b8df-e8c8e3b7b65a
+  name: "Companion 3"
+  x: 360
+  y: 100
+  width: 26
+  height: 33
+  active: false
+  components:
+  - type: spriteRenderer
+    assetId: dafcd321-3bea-534c-ac3f-10691780481c
+    sortByY: true
+- id: c6863dfc-199c-5d2f-8894-c895cb7168de
+  name: "Companion 4"
+  x: 338
+  y: 101
+  width: 26
+  height: 33
+  active: false
+  components:
+  - type: spriteRenderer
+    assetId: 2ba0fb87-0f9e-5a58-bb86-cdad1f63e889
+    sortByY: true
+- id: ac24b585-ab92-59f7-8d58-079e7ea77495
+  name: "Companion 5"
+  x: 383
+  y: 102
+  width: 26
+  height: 33
+  active: false
+  components:
+  - type: spriteRenderer
+    assetId: 4b80073d-3810-5234-8821-07d06f31dd09
+    sortByY: true
+- id: 38eb746d-21c0-5e66-8ce5-5794488beeff
+  name: "Expedition camera"
+  x: 373
+  y: 146
+  width: 1
+  height: 1
+  components:
+  - type: camera2D
+    follow: 0f27afb9-2e5b-514b-94fa-513c2576e514
+    halfLife: 0.17
+    deadZoneWidth: 35
+    deadZoneHeight: 23
+    bounds: {x: 0, y: 0, width: 850, height: 430}
+- id: ded388f5-f738-5797-8afc-1bdeae4acd6e
+  name: "HUD"
+  x: 0
+  y: 0
+  width: 1
+  height: 1
+  components:
+  - type: uiCanvas
+- id: d1afb3f1-133c-5897-9fac-1260dd6fb2ee
+  name: "Title"
+  x: 15
+  y: 8
+  width: 445
+  height: 27
+  parentId: ded388f5-f738-5797-8afc-1bdeae4acd6e
+  components:
+  - type: uiRect
+  - type: uiText
+    size: 19
+    color: "#ABD7AA"
+    text: "ISOBAND  /  Haven"
+- id: 3a153277-c5c1-5074-ac75-79be43e11301
+  name: "HUD values"
+  x: 15
+  y: 37
+  width: 454
+  height: 18
+  parentId: ded388f5-f738-5797-8afc-1bdeae4acd6e
+  components:
+  - type: uiRect
+  - type: uiText
+    size: 11
+    color: "#FFFFFF"
+    text: ""
+- id: 77959845-67a0-4299-83ad-ca85c88c59c2
+  name: "Help background"
+  x: 8
+  y: 219
+  width: 464
+  height: 46
+  parentId: ded388f5-f738-5797-8afc-1bdeae4acd6e
+  components:
+  - type: uiRect
+  - type: uiImage
+    color: "#1C2A27"
+- id: 7a8849cf-5adb-588e-bf8b-15fdc19011cf
+  name: "Instructions"
+  x: 15
+  y: 224
+  width: 455
+  height: 18
+  parentId: ded388f5-f738-5797-8afc-1bdeae4acd6e
+  components:
+  - type: uiRect
+  - type: uiText
+    size: 12
+    color: "#FFF1B5"
+    text: "Camp  /  H Hire  U Upgrade       Gate  /  Enter"
+- id: 858abdde-3a59-5869-bdb9-592687907726
+  name: "Controls"
+  x: 15
+  y: 246
+  width: 453
+  height: 17
+  parentId: ded388f5-f738-5797-8afc-1bdeae4acd6e
+  components:
+  - type: uiRect
+  - type: uiText
+    size: 10
+    color: "#FFFFFF"
+    text: "WASD / CLICK  Move     SPACE  Pulse     R  Rest at camp"
+defaultCameraId: 38eb746d-21c0-5e66-8ce5-5794488beeff

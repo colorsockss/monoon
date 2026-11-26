@@ -1,0 +1,11 @@
+schemaVersion: 34
+objects:
+- id: ec2b94d5-bb30-5fc9-8936-3eae349c3c9a
+  name: Worker
+  width: 24
+  height: 24
+  components:
+  - type: spriteRenderer
+    assetId: 27c0894b-0a51-555e-8b91-2ab6a617f830
+    order: 8
+    sortByY: true

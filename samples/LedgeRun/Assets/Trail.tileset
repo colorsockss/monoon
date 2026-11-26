@@ -1,0 +1,36 @@
+image: a8a64b52-7be4-5364-b9d5-4f2963efaf52
+tileSize: {width: 16, height: 16}
+margin: 0
+spacing: 0
+nextId: 8
+tiles:
+- id: 1
+  source: {x: 0, y: 0, width: 16, height: 16}
+  solid: true
+- id: 2
+  source: {x: 16, y: 0, width: 16, height: 16}
+  solid: true
+- id: 3
+  source: {x: 32, y: 0, width: 16, height: 16}
+  solid: true
+- id: 4
+  source: {x: 48, y: 0, width: 16, height: 16}
+  solid: true
+- id: 5
+  source: {x: 0, y: 0, width: 16, height: 16}
+  solid: true
+  collision:
+    oneWay: true
+    vertices: [{x: 0, y: 0}, {x: 1, y: 0}]
+- id: 6
+  source: {x: 32, y: 0, width: 16, height: 16}
+  solid: true
+  collision:
+    oneWay: true
+    vertices: [{x: 0, y: 0}, {x: 1, y: 0}]
+- id: 7
+  source: {x: 48, y: 0, width: 16, height: 16}
+  solid: true
+  collision:
+    oneWay: true
+    vertices: [{x: 0, y: 0}, {x: 1, y: 0}]

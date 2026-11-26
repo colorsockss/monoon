@@ -1,0 +1,11 @@
+schemaVersion: 34
+objects:
+- id: eeeda272-894a-55b2-bf7c-42f22b69ed89
+  name: RivalArcher
+  width: 24
+  height: 24
+  components:
+  - type: spriteRenderer
+    assetId: 3f113218-8e50-5d9e-a5a8-cfbbcb88b2f8
+    order: 8
+    sortByY: true

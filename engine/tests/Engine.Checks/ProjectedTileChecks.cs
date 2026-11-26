@@ -5,6 +5,48 @@ using Engine.Editor;
 
 internal static class ProjectedTileChecks
 {
+    [Check(3550, "tile-coordinates")]
+    static void RuntimeCoordinates(CheckRun _)
+    {
+        var scene = SceneDocument.Empty(new GameSettings());
+        var parent = new SceneObject { Name = "Parent", X = 141, Y = -73, Rotation = -13 };
+        scene.Objects.Add(parent);
+        string[] layouts = [TileGrid.Orthogonal, TileGrid.Isometric, TileGrid.HexPointy, TileGrid.HexFlat];
+        Point[] cells = [new(-35, 63), new(-1, 0), new(17, -32), Point.Empty];
+        var layers = new SceneObject[layouts.Length];
+        for (int i = 0; i < layouts.Length; i++)
+        {
+            layers[i] = new SceneObject { Name = layouts[i], X = 110, Y = 210, Rotation = 29, ScaleX = 1.8f, ScaleY = .65f };
+            layers[i].AddComponent(new Tilemap2DComponent { Layout = layouts[i], CellSize = new(64, 32) });
+            scene.Objects.Add(layers[i]);
+            scene.Reparent(layers[i], parent, keepWorld: false);
+        }
+
+        using var game = new SceneGame(scene);
+        void Verify()
+        {
+            foreach (var layer in layers)
+            foreach (var cell in cells)
+            {
+                var map = layer.GetComponent<Tilemap2DComponent>()!;
+                var bounds = map.Bounds(Vector2.Zero, cell);
+                var expected = Affine2D.Transform(new(bounds.X + 32, bounds.Y + 16), layer.WorldMatrix);
+                if (game.TileCellCenter(layer.Id, cell) is not { } center || Vector2.Distance(expected, center) > .005f ||
+                    game.TileCellAt(layer.Id, expected) != cell)
+                    throw new Exception($"{layer.Name} did not round-trip world center of {cell}.");
+            }
+        }
+
+        Verify();
+        long bytes = GC.GetAllocatedBytesForCurrentThread();
+        for (int i = 0; i < 64; i++) Verify();
+        if (GC.GetAllocatedBytesForCurrentThread() != bytes) throw new Exception("Tile coordinate queries allocated.");
+        if (game.TileCellAt(parent.Id, Vector2.Zero) != null || game.TileCellCenter(Guid.Empty, Point.Empty) != null ||
+            game.TileCellAt(layers[0].Id, new(float.NaN, 0)) != null)
+            throw new Exception("Tile coordinates accepted invalid layers or non-finite positions.");
+        Console.WriteLine("PASS tile world/cell conversions for four transformed layouts, negative cells and zero allocation");
+    }
+
     // grids: a copy of KeyRoomTiles, whose showcase has one isometric and two hexagonal layers; root and tileset: a copy of KeyRoom
     // with its solid showcase wall tiles for the collision moves.
     internal static void Run(string grids, string root, Guid tileset)

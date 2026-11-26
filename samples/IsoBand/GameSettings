@@ -1,0 +1,20 @@
+projectId: 56a3a1e6-45d4-5055-90b4-d22196ec482f
+gameTitle: IsoBand
+width: 480
+height: 270
+integerScale: true
+startScene: 32ccf437-7ad0-53ae-962e-287d655678a6
+includedScenes: [32ccf437-7ad0-53ae-962e-287d655678a6, a1b92a57-febd-5582-87cc-8700e056ac09, e211290a-8462-5d97-b7a9-b088aa816bbb, fd96a88e-4577-5ef2-ac84-c67c9df6467d]
+input:
+  actions:
+  - {name: MoveLeft, controls: [Left, A, Pad.DpadLeft, Pad.LeftStickLeft]}
+  - {name: MoveRight, controls: [Right, D, Pad.DpadRight, Pad.LeftStickRight]}
+  - {name: MoveUp, controls: [Up, W, Pad.DpadUp, Pad.LeftStickUp]}
+  - {name: MoveDown, controls: [Down, S, Pad.DpadDown, Pad.LeftStickDown]}
+  - {name: ClickMove, controls: [Mouse.Left]}
+  - {name: Skill, controls: [Space, Pad.South]}
+  - {name: Travel, controls: [Return, Pad.Start]}
+  - {name: NewExpedition, controls: [N, Pad.Back]}
+  - {name: Rest, controls: [R, Pad.East]}
+  - {name: Hire, controls: [H, Pad.West]}
+  - {name: Gear, controls: [U, Pad.North]}

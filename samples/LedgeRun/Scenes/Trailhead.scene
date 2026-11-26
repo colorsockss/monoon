@@ -1,0 +1,117 @@
+schemaVersion: 31
+objects:
+- id: 8e3fae57-4f94-5531-8479-263b3f7a1a67
+  name: "Distant landscape"
+  x: 0
+  y: 0
+  width: 384
+  height: 216
+  components:
+  - type: spriteRenderer
+    assetId: 7e222584-deeb-510b-89e5-af494216be5c
+    order: -20
+- id: e0311a9e-ec0d-5308-8042-b99093efcd9b
+  name: "Trailhead camera"
+  x: 192
+  y: 108
+  width: 1
+  height: 1
+  components:
+  - type: camera2D
+- id: 3054450f-c67a-522d-b65c-cd8a7b637395
+  name: "Menu"
+  x: 0
+  y: 0
+  width: 1
+  height: 1
+  components:
+  - type: uiCanvas
+  - type: script
+    script: Trailhead
+    values: {"Selection": "9e70cc66-adb3-5270-96d4-cb277f70d6cc", "Record": "d82f46da-f1b1-5b77-9897-27e923e50632", "Stages": ["ee7a2969-5669-5c44-88aa-b7f31211a294", "af98e96f-6ed1-593f-8235-7b5561c8482a", "3fd3f646-00e2-55f2-814f-61feb49d6621", "bf7a9ed5-3bac-5ca3-9338-dfb73e94f028"]}
+- id: 7dac2d91-cca8-55db-b9a2-ce92e2409154
+  name: "Title"
+  x: 22
+  y: 16
+  width: 320
+  height: 40
+  parentId: 3054450f-c67a-522d-b65c-cd8a7b637395
+  components:
+  - type: uiRect
+  - type: uiText
+    size: 32
+    text: "LEDGERUN"
+    color: "#162D43"
+- id: 9e70cc66-adb3-5270-96d4-cb277f70d6cc
+  name: "Selection"
+  x: 24
+  y: 66
+  width: 336
+  height: 24
+  parentId: 3054450f-c67a-522d-b65c-cd8a7b637395
+  components:
+  - type: uiRect
+  - type: uiText
+    size: 15
+    text: "Slot 1     01  /  Windward Meadow"
+    color: "#162D43"
+- id: d82f46da-f1b1-5b77-9897-27e923e50632
+  name: "Record"
+  x: 24
+  y: 92
+  width: 320
+  height: 20
+  parentId: 3054450f-c67a-522d-b65c-cd8a7b637395
+  components:
+  - type: uiRect
+  - type: uiText
+    size: 12
+    text: "No clear recorded"
+    color: "#162D43"
+- id: 11756d83-8a63-5689-8150-c37620d65ccf
+  name: "Start"
+  x: 24
+  y: 122
+  width: 336
+  height: 18
+  parentId: 3054450f-c67a-522d-b65c-cd8a7b637395
+  components:
+  - type: uiRect
+  - type: uiText
+    size: 12
+    text: "ENTER  Begin stage     TAB  Change slot"
+    color: "#162D43"
+- id: c38fe8c0-a521-56bb-82aa-61710f47ccb2
+  name: "Select stage"
+  x: 24
+  y: 140
+  width: 336
+  height: 18
+  parentId: 3054450f-c67a-522d-b65c-cd8a7b637395
+  components:
+  - type: uiRect
+  - type: uiText
+    size: 11
+    text: "LEFT / RIGHT  Select an unlocked stage"
+    color: "#162D43"
+- id: a217ad25-071b-5ff4-81b4-e9625acc58cc
+  name: "Courier illustration"
+  x: 308
+  y: 148
+  width: 31
+  height: 47
+  components:
+  - type: spriteRenderer
+    assetId: 6836d239-7548-58d2-878d-30d2cc8f31c0
+    order: 5
+- id: 7d6cedd8-3d24-55a6-bee5-ff7b9ea1c035
+  name: "Summit flag"
+  x: 344
+  y: 146
+  width: 32
+  height: 39
+  components:
+  - type: spriteRenderer
+    assetId: 824f6853-4ed5-5ce3-a67d-27a51c8f5a8b
+    order: 5
+defaultCameraId: e0311a9e-ec0d-5308-8042-b99093efcd9b

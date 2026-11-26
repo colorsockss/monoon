@@ -1,0 +1,11 @@
+schemaVersion: 34
+objects:
+- id: 56e8535a-8b36-502f-8c6c-87a210eb8183
+  name: Scout
+  width: 24
+  height: 24
+  components:
+  - type: spriteRenderer
+    assetId: 5b9d9942-353a-5dea-8bb5-bfb9bd47c368
+    order: 8
+    sortByY: true

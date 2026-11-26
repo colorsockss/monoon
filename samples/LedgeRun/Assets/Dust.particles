@@ -1,0 +1,20 @@
+duration: 0.15
+looping: false
+maxParticles: 16
+rate: 0
+bursts:
+- time: 0
+  count: 6
+shape: point
+direction: -90
+spread: 148
+lifetime: {min: 0.14, max: 0.23}
+speed: {min: 13, max: 29}
+size: {min: 2, max: 4}
+aspect: 0.65
+color: {min: "#DCC093"}
+endSize: 0.4
+endAlpha: 0
+gravity: 55
+space: world
+blend: alpha

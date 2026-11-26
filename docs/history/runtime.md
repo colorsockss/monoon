@@ -128,3 +128,9 @@
 **월드와 런타임 프리팹 상태 [7.4].** [WorldCheckpoints.cs](../../engine/src/Engine.Core/WorldCheckpoints.cs). 스크립트가 `TrackForSave(id, 필드)`로 저장할 오브젝트와 속성(존재·Transform·활성·충돌체)을 등록하고, `SaveWorld`가 주 씬별로 기록한다. 복원은 교체할 씬의 첫 `OnCreate` 전에 끝나고 살아 있는 인스턴스는 같은 GUID를 되찾는다. 프리팹 멤버 하나를 등록하면 같은 원본의 하위 오브젝트까지 따라온다. 추가 씬은 대상이 아니다. macOS arm64·Windows x64·Linux x64의 Release·Native AOT에서 저장·복원을 확인했다. JSON 본문은 [WorldCheckpointJsonCodec.cs](../../engine/src/Engine.Core/WorldCheckpointJsonCodec.cs)가 `JsonSerializer`와 같은 바이트로 직접 쓴다([공통 원칙](#공통-원칙)). [매뉴얼](../manual/player-data.md#월드와-런타임-프리팹-저장) · [기록](../../engine/tests/results/world-checkpoints/README.md)
 
 **슬롯 복구 [8.5].** [PlayerStorage.Recovery.cs](../../engine/src/Engine.Core/PlayerStorage.Recovery.cs). 저장할 때 `slot-NNN.save`의 SHA-256을 `.sha256`에 쓰고 직전 정상본을 `.bak`로 남긴다. 체크섬 갱신 뒤에 게시가 멈춰도 건드리지 않은 파일은 검증을 통과하는 순서로 쓴다. 최신본이 없거나 체크섬이 다르면 `LoadSlot`이 직전 사본을 검사해 원래 바이트로 복원한다. 둘 다 손상되면 파일을 보존하고 오류를 낸다. [매뉴얼](../manual/player-data.md#직전-저장으로-복구하기) · [기록](../../engine/tests/results/slot-recovery/README.md)
+
+## 타일 셀 좌표와 육각 이동
+
+IsoBand와 HexRealm에 월드 점에서 셀을 찾는 `TileCellAt`과 셀 중심을 읽는 `TileCellCenter`를 추가했다. 에디터의 타일 선택·투영과 같은 계산을 쓰고 레이어의 월드 Transform을 적용한다. 자유 이동 굽기·시야·보행 길찾기의 기능 정보를 빌드 분석에 노출해, 해당 API만 호출하는 게임도 필요한 Box2D를 포함한다.
+
+`GridNavigation`은 기존 직교 호출 외에 축 좌표 육각 이웃과 예산 내 도달 칸을 지원한다. 기존 반환 객체가 필요한 호출과 호출자 버퍼를 쓰는 호출이 같은 탐색을 사용한다. 우선순위는 비용과 셀 인덱스로 고정하고, 작업 버퍼는 첫 검색에서 만든다. [타일 API](../manual/tilemaps.md) · [육각 길찾기](../manual/navigation.md#육각-타일의-이동-범위)

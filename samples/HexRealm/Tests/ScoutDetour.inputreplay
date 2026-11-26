@@ -1,0 +1,23 @@
+version: 1
+project: cbb32c55-fb51-581f-84c0-8c71d1f74721
+startScene: 00247366-a56a-5b55-9708-240396719f71
+frameTicks: [166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667, 166667]
+events:
+- frame: 2
+  timeTicks: 333334
+  input: {kind: pointer, x: 451, y: 218, control: Mouse.Left, down: true}
+- frame: 3
+  timeTicks: 500001
+  input: {kind: pointer, x: 451, y: 218, control: Mouse.Left, down: false}
+- frame: 7
+  timeTicks: 1166669
+  input: {kind: pointer, x: 347, y: 218, control: Mouse.Right, down: true}
+- frame: 8
+  timeTicks: 1333336
+  input: {kind: pointer, x: 347, y: 218, control: Mouse.Right, down: false}
+- frame: 11
+  timeTicks: 1833337
+  input: {kind: key, control: F5, down: true}
+- frame: 12
+  timeTicks: 2000004
+  input: {kind: key, control: F5, down: false}

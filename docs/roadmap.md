@@ -13,9 +13,9 @@
 | 5.2 | 모바일·웹 타깃 | **보류.** BRUTAL이 Android, iOS, 웹을 각각 공식 지원할 때 해당 타깃의 개발을 재개한다. 빌드 대상은 osx-arm64·win-x64·linux-x64뿐이다. |
 | 11.12 | 배포본 서명과 설치 파일 (남은 부분) | 서명·공증·tar.gz 단계는 구현했다([기록](history/build.md), [사용법](manual/build.md)). 남은 것: Windows 설치 프로그램 단계(지금은 ZIP + signtool만, 만드는 도구를 내려받아야 해서 보류), 앱 아이콘(.icns·exe), 실제 Developer ID 서명·공증과 signtool 확인(인증서 없음). |
 
-## 17. 게임 개발자용 AI 에이전트 도구
+## 17. 게임 개발자용 AI 에이전트 도구 (보류)
 
-2026-11-25 정리. [다음 작업 조사 6](plans/next-work/6-ai-game-dev.md)의 G1–G9와 [사용자 결정](plans/next-work/6-ai-game-dev.md#결정-2026-11-25-사용자-확정)을 옮겼다. MoNoon 에디터로 게임을 만드는 개발자가 Claude Code·Codex 같은 에이전트에게 편집·검사·실행을 맡길 수 있게 한다. 엔진 개발용 에이전트 도구(W)는 [조사 5](plans/next-work/5-ai-workflow.md)에 있다. 모든 항목은 에디터·빌드 도구 쪽(`Engine.Authoring`·`Engine.Cli`·`Engine.Editor`)에만 들어가고 배포 게임(Release·Native AOT)에는 0 B다. `Engine.Player`·`Engine.Core`·`Engine.Desktop`은 새 참조를 받지 않는다. JSON은 `JsonSerializerContext`로 만들고, 리플렉션은 도구 쪽에서만 쓴다. 에디터 패키지 크기와 명령 시작 시간을 측정해 남긴다. macOS arm64만 만들고 검증한다(결정 8). Windows는 장비 준비 후 검증한다.
+**보류(2026-11-25): 18장 샘플을 먼저 만든다.** 2026-11-25 정리. [다음 작업 조사 6](plans/next-work/6-ai-game-dev.md)의 G1–G9와 [사용자 결정](plans/next-work/6-ai-game-dev.md#결정-2026-11-25-사용자-확정)을 옮겼다. MoNoon 에디터로 게임을 만드는 개발자가 Claude Code·Codex 같은 에이전트에게 편집·검사·실행을 맡길 수 있게 한다. 엔진 개발용 에이전트 도구(W)는 [조사 5](plans/next-work/5-ai-workflow.md)에 있다. 모든 항목은 에디터·빌드 도구 쪽(`Engine.Authoring`·`Engine.Cli`·`Engine.Editor`)에만 들어가고 배포 게임(Release·Native AOT)에는 0 B다. `Engine.Player`·`Engine.Core`·`Engine.Desktop`은 새 참조를 받지 않는다. JSON은 `JsonSerializerContext`로 만들고, 리플렉션은 도구 쪽에서만 쓴다. 에디터 패키지 크기와 명령 시작 시간을 측정해 남긴다. macOS arm64만 만들고 검증한다(결정 8). Windows는 장비 준비 후 검증한다.
 
 | 순서 | 기능 | 범위와 완료 기준 |
 | --- | --- | --- |
@@ -30,3 +30,19 @@
 | 17.9 | 에디터 자동화 API (W6) | 17.10의 바탕. [조사 5의 W6](plans/next-work/5-ai-workflow.md#w6-안정된-에디터-자동화-api-리플렉션-제거--m-저장소)의 리플렉션 없는 에디터 자동화 API를 만든다. 기존 리플렉션 프로브 몇 개를 이 API로 옮겨 같은 결과를 확인한다. |
 | 17.10 | 에디터 라이브 브리지 (G8) | 에디터가 루프백에서 듣고 `.monoon/agent/<pid>.json`에 주소와 토큰을 쓰고, 17.8이 이 파일로 에디터를 찾는다. 선택 읽기·쓰기, Inspector 값 읽기, 필드 설정(`SetField`/`RecordEdit`, Undo 한 번), Play·Stop·Pause·Step, Console 읽기, Scene·Game 스크린샷, 씬 저장. 처음 연결할 때 에디터에서 승인받고 프로젝트에 기억한다. Undo로 기록되는 쓰기만 허용하고 저장·삭제·빌드는 destructive로 표시한다(결정 4). 호출은 UI 스레드에서 하나씩 실행한다. GUI 잠금 아래 KeyRoom에서 Player 선택 → 값 변경 → Undo → Play → Console 기록 → 스크린샷이 비지 않음을 확인한다. |
 | 17.11 | MoNoon용 Claude Code 플러그인 | 17.4의 문서, 17.8의 MCP 설정, 게임 개발 skill(편집 → 검사 → 테스트 → 실행, 빌드·패키지)과 에이전트 정의를 하나의 플러그인으로 묶는다(결정 6). 에디터 패키지와 함께 배포하고 버전을 맞춘다. 빈 KeyRoom 복사본에 설치해 skill 명령이 17.1–17.8 명령으로 끝까지 실행되는지 확인한다. |
+
+## 18. 타일맵 샘플 게임
+
+세 샘플의 첫 플레이 버전과 S1·S2를 구현했다. 실측과 연출·기능 확장 항목은 [샘플별 제작 기록](plans/samples/README.md#제작-상태)에 남긴다.
+
+2026-11-25 정리. [샘플 계획](plans/samples/README.md)과 그 결정을 옮겼다. 기능 실험실(…Lab)과 달리 처음부터 끝까지 플레이할 수 있는 작은 게임 세 개를 차례로 만든다. 장르 규칙은 샘플 스크립트에 두고, 여러 장르가 쓸 기능만 엔진에 넣는다(S1–S5). 그림은 Codex로 만든 샘플 전용 픽셀 아트다. 원작의 이름·캐릭터·그림·음악은 쓰지 않는다. 각 샘플은 macOS arm64에서 Scene Play·Release·Native AOT 입력 녹화 기록이 같고, Linux x64 게스트에서 Release·AOT를 재생한 결과가 같아야 한다. 완성 후 크기 게이트에 넣는다. Windows는 장비 준비 후 검증한다.
+
+| 순서 | 기능 | 범위와 완료 기준 |
+| --- | --- | --- |
+| 18.1 | LedgeRun: 직교 타일맵 플랫포머 | 스테이지 3개와 보스, 벽 점프·대시, 적 3종, 체크포인트·저장 슬롯, 동굴 조명, 탑 청크 스트리밍. 입력 녹화 3개의 trace·캡처가 세 경로에서 같다. [계획](plans/samples/1-platformer.md) |
+| 18.2 | S1 타일 칸 변환 API | `TileCellAt(layer, worldPoint)`, `TileCellCenter(layer, cell)`. 네 레이아웃과 레이어 Transform을 지원하고 할당 0. 직교·등각·육각 왕복 검사. |
+| 18.3 | S3·S4 등각 맵 확인 | 키 큰 물체를 Y sort 스프라이트로 두었을 때 수백 개의 프레임 비용을 재고, 등각 Solid 칸의 자유 이동 길찾기 굽기가 셀 모양과 맞는지 확인한다. 틀리면 고친다. |
+| 18.4 | IsoBand: 아이소메트릭 용병단 액션 RPG | 대장을 따르는 용병단(최대 6명) 자동 전투, 고용·레벨·장비, 필드 2곳·던전 웨이브·보스, 캠프. 적 300마리 장면의 프레임 비용·할당 기록. 고정 시드 웨이브 재생이 세 경로에서 같다. [계획](plans/samples/2-iso-rpg.md) |
+| 18.5 | S2 육각 길찾기와 이동 범위 | `GridDirections.Hex`(6방향, 육각 거리), `Reachable(start, budget)`, 육각 레이어의 `TileNavigation`. 독립 모델과 경로·비용이 같고 할당 0. |
+| 18.6 | HexRealm: 헥사고날 문명식 PC 턴제 전략 | 도시·칸 일구기·기술 트리·유닛 5종·칸 개량·전투·영토·안개(S5)·단순 AI·승리 조건. 고정 시드 + 명령 40턴 재생의 턴별 상태 해시가 세 경로·Linux에서 같고, AI 한 턴 50 ms 이하. [계획](plans/samples/3-hex-strategy.md) |
+| 18.7 | 크기 게이트와 문서 | 세 샘플 Release·AOT를 `engine/tests/results/build-size/baseline.tsv`에 넣고, 샘플 매뉴얼과 구현 기록을 쓴다. |

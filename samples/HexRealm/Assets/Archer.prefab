@@ -1,0 +1,11 @@
+schemaVersion: 34
+objects:
+- id: 524f0901-cb75-50e8-98db-a061866fec3c
+  name: Archer
+  width: 24
+  height: 24
+  components:
+  - type: spriteRenderer
+    assetId: fb4db6c1-b1bf-5963-a594-25394669e478
+    order: 8
+    sortByY: true
