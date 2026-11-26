@@ -54,9 +54,5 @@ input:
     controls: ["7", Pad.LeftStick]
   - name: RumbleSetting
     controls: ["8", Pad.RightStick]
-  - name: Freeze
-    controls: [F, Pad.Start]
-  - name: Step
-    controls: [Period, Pad.RightTrigger]
   - name: DebugDraw
     controls: [G]

@@ -5,7 +5,8 @@ The same key sequence as verify.py's first run and restart goes through each exp
 after each run and the frozen frames drawn by the player's SDL canvas. Rumble reaching a pad, the custom cursor and the
 editor's Scene Play are not covered here (no window, no pad); verify.py checks those on the Mac.
 
-Usage: replay.py prepare <sample> <dest>   copy CameraLab and attach the test-only TraceScreenFx (writes the slot 3 record)
+Usage: replay.py prepare <sample> <dest>   copy CameraLab, add the test-only Freeze/Step actions and attach TraceScreenFx
+                                           (freezes and steps game time, writes the slot 3 record)
        replay.py play <MoNoonPlayer> <out>      replay.py compare <out> <out> ...
 """
 import hashlib, json, os, shutil, subprocess, sys
@@ -50,6 +51,11 @@ def recording(path, run):
 def prepare(sample, dest):
     shutil.copytree(sample, dest, ignore=shutil.ignore_patterns('.monoon', '.monoon-compiled', '.DS_Store', 'bin', 'obj'))
     shutil.copyfile(Path(__file__).resolve().parent / 'TraceScreenFx.source', dest / 'Scripts/TraceScreenFx.cs')
+    settings = dest / 'GameSettings'
+    text = settings.read_text(encoding='utf-8')
+    anchor = '  - name: DebugDraw\n'
+    assert text.count(anchor) == 1 and 'name: Freeze' not in text
+    settings.write_text(text.replace(anchor, '  - name: Freeze\n    controls: [F, Pad.Start]\n  - name: Step\n    controls: [Period, Pad.RightTrigger]\n' + anchor), encoding='utf-8')
     scene = dest / 'Scenes/Showcase.scene'
     text = scene.read_text(encoding='utf-8')
     trace = ('- id: 5d0c7a3e-91b4-4f2e-8c61-3a7f0e9b2d48\n  name: Screen effects trace\n  width: 1\n  height: 1\n  components:\n'

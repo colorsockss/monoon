@@ -6,6 +6,8 @@ using Engine.Core;
 // same key presses and writes the drawn effect values on fixed game ticks 1, 6, 12 and 24 after it to save slot 3, so the
 // editor, Release and Native AOT runs can be compared exactly. The sample itself does no disk writes per effect: a crash-safe
 // slot save takes 10–30 ms and showed as a hitch on every effect.
+// It also owns the test-only Freeze (F) and Step (.) actions that replay.py prepare adds: the frozen captures stop game time and
+// advance it one tick per press, which looked like stutter in the showcase.
 public sealed class TraceScreenFx : GameBehaviour
 {
     private bool faded, graded;
@@ -23,6 +25,8 @@ public sealed class TraceScreenFx : GameBehaviour
         if (input.Pressed("Fade")) { faded = !faded; Start(faded ? "fadeOut" : "fadeIn"); }
         if (input.Pressed("Grade")) { graded = !graded; Start(graded ? "grade" : "ungrade"); }
         if (input.Pressed("Buzz")) Start("buzz");
+        if (input.Pressed("Freeze")) tick.Time.IsPaused = !tick.Time.IsPaused;
+        if (input.Pressed("Step")) tick.Time.StepOnce();
     }
 
     public override void FixedUpdate(ScriptTick tick)

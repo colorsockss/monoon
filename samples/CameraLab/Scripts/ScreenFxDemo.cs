@@ -3,10 +3,10 @@ using System.Drawing;
 using System.IO;
 using Engine.Core;
 
-// Screen effects, comfort settings, rumble and a custom cursor. Keys work while frozen (F), and "." advances one game tick.
+// Screen effects, comfort settings, rumble and a custom cursor.
 public sealed class ScreenFxDemo : GameBehaviour
 {
-    public Guid Comfort, Output, Clock;
+    public Guid Comfort, Output;
     public SpriteReference Cursor;
     private bool faded, graded;
 
@@ -36,11 +36,8 @@ public sealed class ScreenFxDemo : GameBehaviour
         if (input.Pressed("Comfort")) { options.ShakeScale = options.FlashScale = options.ShakeScale == 1 ? .25f : 1; changed = true; }
         if (input.Pressed("RumbleSetting")) { options.Rumble = !options.Rumble; changed = true; }
         if (changed) Save(tick.Session, options);
-        if (input.Pressed("Freeze")) tick.Time.IsPaused = !tick.Time.IsPaused;
-        if (input.Pressed("Step")) tick.Time.StepOnce();
         tick.Ui.SetText(Comfort, $"Shake {options.ShakeScale:P0}   Flash {options.FlashScale:P0}");
         tick.Ui.SetText(Output, $"Rumble {(options.Rumble ? "on" : "off")}   Cursor {(tick.Session.Cursor == null ? "system" : "custom")}");
-        tick.Ui.SetText(Clock, tick.Time.IsPaused ? "Frozen" : "Running");
     }
 
     private static void Save(SessionState session, UiPreferences options)

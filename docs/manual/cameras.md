@@ -81,7 +81,7 @@ if (tick.Cameras.TryGetView(cameraId, out var view))
 
 ## 화면 흔들림, 줌 펀치, 페이드·플래시·색 보정
 
-CameraLab 쇼케이스를 Play하고 **1**(패드 West)을 누르면 두 화면이 흔들리면서 순간 확대되고, **2**(East)는 흰색 플래시, **3**(LeftShoulder)은 검게 페이드 아웃·인, **4**(RightShoulder)는 따뜻하고 어두운 색 보정을 켜고 끈다. **F**(Start)로 게임 시간을 멈춘 뒤 **.**(오른쪽 트리거)를 누르면 한 틱씩 진행하며 효과를 살펴볼 수 있다. [ScreenFxDemo.cs](../../samples/CameraLab/Scripts/ScreenFxDemo.cs)
+CameraLab 쇼케이스를 Play하고 **1**(패드 West)을 누르면 두 화면이 흔들리면서 순간 확대되고, **2**(East)는 흰색 플래시, **3**(LeftShoulder)은 검게 페이드 아웃·인, **4**(RightShoulder)는 따뜻하고 어두운 색 보정을 켜고 끈다. 게임 시간을 멈추고 한 틱씩 진행하는 조작(`time.IsPaused`, `time.StepOnce()`, [시간](time.md))은 쇼케이스에서는 뺐고 [ScreenEffects 하네스](../../engine/tests/CameraLab.ScreenEffects/README.md)의 복사본에만 있다. [ScreenFxDemo.cs](../../samples/CameraLab/Scripts/ScreenFxDemo.cs)
 
 스크립트에서는 `tick.Session.Screen`을 사용한다. `UpdateUi`에서도 호출할 수 있고 씬을 바꿔도 세션 동안 유지된다.
 

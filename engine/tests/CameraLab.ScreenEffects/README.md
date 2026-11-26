@@ -10,7 +10,7 @@
 | 커서 | LeftStick 두 번 | `MONOON_FEEDBACK_LOG`의 커서 픽셀 해시·핫스폿, 커서를 포함한 화면 캡처 |
 | 다시 실행 | North → RightStick → North | 저장한 25%·진동 끄기 복원, 다시 켠 뒤 진동 |
 
-효과 값은 복사본에만 붙는 관찰 스크립트 [TraceScreenFx](TraceScreenFx.source)가 트리거 후 1·6·12·24번째 게임 틱에 슬롯 3에 기록하며, 세 실행 경로의 기록은 바이트 단위로 같아야 한다. `replay.py prepare`가 샘플을 복사하고 이 스크립트를 쇼케이스에 붙인다. 샘플의 [ScreenFxDemo](../../../samples/CameraLab/Scripts/ScreenFxDemo.cs)는 효과마다 저장하지 않는다(2026-11-26: 손상에 강한 슬롯 저장이 한 번에 10–30ms라 효과마다 네 번 끊겼다).
+효과 값은 복사본에만 붙는 관찰 스크립트 [TraceScreenFx](TraceScreenFx.source)가 트리거 후 1·6·12·24번째 게임 틱에 슬롯 3에 기록하며, 세 실행 경로의 기록은 바이트 단위로 같아야 한다. `replay.py prepare`가 샘플을 복사하고 이 스크립트를 쇼케이스에 붙이며, 정지 캡처에 쓰는 Freeze(F, 패드 Start)·Step(., 오른쪽 트리거) 액션을 복사본 설정에 더한다. 이 스크립트가 정지와 한 틱 진행도 맡는다(2026-11-26부터 쇼케이스에서 뺐다: 뚝뚝 끊겨 보였다). 샘플의 [ScreenFxDemo](../../../samples/CameraLab/Scripts/ScreenFxDemo.cs)는 효과마다 저장하지 않는다(2026-11-26: 손상에 강한 슬롯 저장이 한 번에 10–30ms라 효과마다 네 번 끊겼다).
 
 저장소 루트에서 실행한다. 창 도구 `engine/.artifacts/clip-qa/window`와 SDL 3.4.12 헤더 아카이브는 기존 GUI 검증과 같다. 도구나 드라이버는 설치하지 않는다.
 
