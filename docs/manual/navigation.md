@@ -25,7 +25,7 @@
 
 ## 탑다운 그리드 길찾기
 
-{{SeedLab-Route}}
+![SeedLab 경로 쇼케이스. 비가 와 길이 진흙이 되면 경로 비용이 바뀌고, 다리가 놓이면 더 짧은 길로 다시 계획한다.](../media/showcase/SeedLab-Route.webp)
 
 *SeedLab 경로 쇼케이스. 비가 와 길이 진흙이 되면 경로 비용이 바뀌고, 다리가 놓이면 더 짧은 길로 다시 계획한다.*
 
@@ -53,7 +53,7 @@ var shortcut = grid.FindPath(start, goal, GridDirections.Eight);
 
 ## 탑다운 자유 이동 길찾기
 
-{{SeedLab-Crowd}}
+![SeedLab 군중 쇼케이스. 200명이 하나의 구운 영역을 함께 쓰고, 문이 열리면 모두 그 자리에서 길을 다시 찾아 도착한다.](../media/showcase/SeedLab-Crowd.webp)
 
 *SeedLab 군중 쇼케이스. 200명이 하나의 구운 영역을 함께 쓰고, 문이 열리면 모두 그 자리에서 길을 다시 찾아 도착한다.*
 

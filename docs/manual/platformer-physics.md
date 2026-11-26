@@ -2,7 +2,7 @@
 
 [PlatformerLab](../../samples/PlatformerLab)을 열고 **Play**를 누른다. 쇼케이스(`Scenes/Showcase.scene`)에서 **→ / D**를 눌러 경사를 올라간 뒤 뗏목 발판을 밟는다. 발판과 캐릭터가 함께 움직이고, 건너편 카메라에서 [탑승 대화](cutscenes.md)가 시작된다. Enter로 대사를 넘기거나 X로 건너뛴다. **Space**로 발판에서 점프하고 **← / A**로 돌아갈 수 있다. 세 실행 방식에서 같은 경로를 비교하려면 처음부터 **R**을 누른다. 직접 조작할 때와 같은 캐릭터 이동 API를 사용한다.
 
-{{PlatformerLab}}
+![PlatformerLab 쇼케이스. 경사를 오르고, 단방향 발판에 뛰어오르고, 길을 찾아 쫓아오는 경비병을 지나, 움직이는 발판을 타는 동안 컷신 대사가 나온다.](../media/showcase/PlatformerLab.webp)
 
 *PlatformerLab 쇼케이스. 경사를 오르고, 단방향 발판에 뛰어오르고, 길을 찾아 쫓아오는 경비병을 지나, 움직이는 발판을 타는 동안 컷신 대사가 나온다.*
 
@@ -37,7 +37,7 @@ Character Motor는 Box2D가 플랫포머 캐릭터에 권하는 방식처럼 직
 
 ## 흔들다리와 도르래 발판
 
-{{PlatformerLab-Course}}
+![PlatformerLab 코스 쇼케이스. 캡슐 캐릭터가 회전 관절 흔들다리, 슬라이더 관절 도르래, 곡선 경로 승강대, Edge Collider 언덕을 지나며 동전 21개를 줍는다.](../media/showcase/PlatformerLab-Course.webp)
 
 *PlatformerLab 코스 쇼케이스. 캡슐 캐릭터가 회전 관절 흔들다리, 슬라이더 관절 도르래, 곡선 경로 승강대, Edge Collider 언덕을 지나며 동전 21개를 줍는다.*
 

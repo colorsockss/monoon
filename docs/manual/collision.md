@@ -37,7 +37,7 @@ Tilemap 2D의 **Physics / Mask**는 Solid 셀의 충돌 필터다. **Layer / Ord
 
 ## 스크립트에서 탐색하기
 
-{{CollisionLab-Casts}}
+![CollisionLab 캐스트 쇼케이스. 광선과 원 스윕이 벽에 닿는 거리를 재고, 굴러가는 탐사체가 센서를 지나며 이벤트를 내고, 레이어 마스크에 따라 문을 통과하거나 막힌다.](../media/showcase/CollisionLab-Casts.webp)
 
 *CollisionLab 캐스트 쇼케이스. 광선과 원 스윕이 벽에 닿는 거리를 재고, 굴러가는 탐사체가 센서를 지나며 이벤트를 내고, 레이어 마스크에 따라 문을 통과하거나 막힌다.*
 
@@ -73,7 +73,7 @@ Play 중 실제 도형과 질의를 보려면 [Scene 실행 진단](play-diagnos
 
 ## 대형 씬의 공간 인덱스
 
-{{CollisionLab}}
+![CollisionLab 쇼케이스. 충돌체 1만 개를 나눠 불러오는 동안 등불은 계속 움직이고, 매 스텝 등불 원 하나로 공간 격자와 전체 검사를 함께 돌려 같은 답을 내는지 비교한다.](../media/showcase/CollisionLab.webp)
 
 *CollisionLab 쇼케이스. 충돌체 1만 개를 나눠 불러오는 동안 등불은 계속 움직이고, 매 스텝 등불 원 하나로 공간 격자와 전체 검사를 함께 돌려 같은 답을 내는지 비교한다.*
 

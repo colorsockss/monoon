@@ -6,7 +6,7 @@ PlatformerLab 쇼케이스(`Scenes/Showcase.scene`)를 Play하고 Space를 누�
 
 ## Particle Emitter 2D
 
-{{ParticleLab}}
+![ParticleLab 쇼케이스. 모닥불, 비, 분수, 불꽃놀이(Space)를 지나 포털에서 입자 10,240개를 한 번에 그린다.](../media/showcase/ParticleLab.webp)
 
 *ParticleLab 쇼케이스. 모닥불, 비, 분수, 불꽃놀이(Space)를 지나 포털에서 입자 10,240개를 한 번에 그린다.*
 
@@ -24,7 +24,7 @@ PlatformerLab 쇼케이스(`Scenes/Showcase.scene`)를 Play하고 Space를 누�
 
 ### .particles 에셋
 
-{{ParticleLab-Workshop}}
+![ParticleLab 작업장 쇼케이스. 방출 형태, 정렬과 블렌딩, 프리셋, 수명 곡선과 그라데이션, 노이즈와 충돌을 정거장마다 하나씩 보여 준다.](../media/showcase/ParticleLab-Workshop.webp)
 
 *ParticleLab 작업장 쇼케이스. 방출 형태, 정렬과 블렌딩, 프리셋, 수명 곡선과 그라데이션, 노이즈와 충돌을 정거장마다 하나씩 보여 준다.*
 
@@ -234,7 +234,7 @@ Release·Native AOT 플레이어는 준비 단계에서 PNG를 SDL 텍스처로 
 
 ## Global Light 2D: 어둠과 그림자
 
-{{PlatformerLab-Lights}}
+![PlatformerLab 조명 쇼케이스. 밤이 오면 랜턴만 켜지고, 주인공이 횃불 셋에 차례로 불을 붙이며 그림자가 늘어난다.](../media/showcase/PlatformerLab-Lights.webp)
 
 *PlatformerLab 조명 쇼케이스. 밤이 오면 랜턴만 켜지고, 주인공이 횃불 셋에 차례로 불을 붙이며 그림자가 늘어난다.*
 

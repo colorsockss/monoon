@@ -2,7 +2,7 @@
 
 **Scene → Create Camera**로 카메라를 만들고 Inspector에서 설정한다. [CameraLab](../../samples/CameraLab)의 첫 쇼케이스(`Scenes/Showcase.scene`, 장터)는 주인공과 순찰하는 동료의 시점을 좌우로 나누고, 오른쪽 위에 전체 맵을 그린다. **방향키 / WASD**로 주인공을 움직인다. 두 번째 쇼케이스(`Scenes/ShowcaseFraming.scene`)는 데드존·앞보기·그룹 프레이밍을 연출로 보여 준다.
 
-{{CameraLab}}
+![CameraLab 쇼케이스. 두 사람이 멀어지면 화면이 갈라지고 가까워지면 합쳐진다. 흔들림·섬광·색 보정은 한 카메라 화면에만 걸리고, 미니맵에 두 카메라의 시야가 보인다.](../media/showcase/CameraLab.webp)
 
 *CameraLab 쇼케이스. 두 사람이 멀어지면 화면이 갈라지고 가까워지면 합쳐진다. 흔들림·섬광·색 보정은 한 카메라 화면에만 걸리고, 미니맵에 두 카메라의 시야가 보인다.*
 
@@ -16,7 +16,7 @@ Follow 대상이 비활성화되거나 제거되면 마지막 시점을 유지�
 
 ## 데드존, 앞보기, 여러 대상 담기
 
-{{CameraLab-Framing}}
+![CameraLab 프레이밍 쇼케이스. 데드존 안에서는 카메라가 멈춰 있고, 길에서는 앞서 가고, 일행이 모이면 줌아웃해 모두 담는다. G로 켠 디버그 그리기가 상자와 경로를 보여 준다.](../media/showcase/CameraLab-Framing.webp)
 
 *CameraLab 프레이밍 쇼케이스. 데드존 안에서는 카메라가 멈춰 있고, 길에서는 앞서 가고, 일행이 모이면 줌아웃해 모두 담는다. G로 켠 디버그 그리기가 상자와 경로를 보여 준다.*
 

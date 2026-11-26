@@ -4,7 +4,7 @@
 
 ## 세 가지 모양을 한 씬에서 열어 보기
 
-{{KeyRoomTiles}}
+![KeyRoomTiles 쇼케이스. 직교·등각·두 방향 육각 섬에 실행 중 `SetTile`로 길을 깔고, 가운데 칸을 되돌려 이웃 타일이 다시 이어지는 것을 보인 뒤 사람이 칸 중심을 따라 걷는다.](../media/showcase/KeyRoomTiles.webp)
 
 *KeyRoomTiles 쇼케이스. 직교·등각·두 방향 육각 섬에 실행 중 `SetTile`로 길을 깔고, 가운데 칸을 되돌려 이웃 타일이 다시 이어지는 것을 보인 뒤 사람이 칸 중심을 따라 걷는다.*
 
@@ -101,7 +101,7 @@ Play와 배포 게임은 씬을 불러올 때 모든 셀의 그림을 한 번 �
 
 ## 캐릭터 주변 청크만 실행하기
 
-{{PlatformerLab-Stream}}
+![PlatformerLab 청크 스트리밍 쇼케이스. 7청크 길이 능선에서 주인공 주변 청크만 올라오고, 미니맵에 지형이 앞에서 생기고 뒤에서 사라진다.](../media/showcase/PlatformerLab-Stream.webp)
 
 *PlatformerLab 청크 스트리밍 쇼케이스. 7청크 길이 능선에서 주인공 주변 청크만 올라오고, 미니맵에 지형이 앞에서 생기고 뒤에서 사라진다.*
 

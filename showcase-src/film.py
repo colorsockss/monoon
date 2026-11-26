@@ -140,6 +140,9 @@ def film(shot_path, out_dir, keep_frames, height=720, fps=30):
     png = run / 'poster.png'
     subprocess.run([str(tool('frames')), str(mp4), str(png), str(at)], check=True, stdout=subprocess.DEVNULL, env=dict(os.environ, FRAME_MAX='640'))
     subprocess.run(['sips', '-s', 'format', 'jpeg', '-s', 'formatOptions', '82', str(png), '--out', str(out_dir / f'{name}.jpg')], check=True, stdout=subprocess.DEVNULL)
+    # Animated preview for the manual (GitHub shows WebP inline, not mp4).
+    sys.path.insert(0, str(ROOT / 'showcase-src')); from preview import preview
+    preview(mp4, out_dir / f'{name}.webp')
     print(f'{mp4} {seconds:.1f}s  sheet {run / "sheet.png"} (at {", ".join(map(str, marks))} s)')
 
 
