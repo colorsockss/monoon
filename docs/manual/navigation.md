@@ -25,6 +25,10 @@
 
 ## 탑다운 그리드 길찾기
 
+{{SeedLab-Route}}
+
+*SeedLab 경로 쇼케이스. 비가 와 길이 진흙이 되면 경로 비용이 바뀌고, 다리가 놓이면 더 짧은 길로 다시 계획한다.*
+
 SeedLab의 `Scenes/ShowcaseRoute.scene`을 열고 Play한다. 주인공이 왼쪽 길에서 출발해 상자 옆 칸까지 걷고, 노란 선이 계획된 경로, 오른쪽 위 **ROUTE COST**가 그 비용이다. 길은 1, 풀은 3, 진흙은 8이고 물과 울타리는 지나갈 수 없다. 비가 북쪽 길을 진흙으로 바꾸면 현재 칸에서 다시 탐색해 풀로 돌아가고, 남쪽 여울에 다리가 놓이면 다시 탐색해 다리로 건넌다. 타일을 바꿀 때마다 그리드의 `Revision`이 바뀌는 것을 보고 다시 계산한다. 지형 비용과 충돌은 Field 타일셋에 저장되어 있다. [지형 비용과 실행 중 셀 바꾸기](tilemaps.md#지형-비용과-실행-중-셀-바꾸기)
 
 4방향과 8방향, 다리와 비를 키로 바꾸는 열세 가지 경우는 [SeedLab.GridNavigation](../../engine/tests/SeedLab.GridNavigation/README.md)과 [SeedLab.TileTerrain](../../engine/tests/SeedLab.TileTerrain/README.md) 하네스가 같은 지도에서 독립 다익스트라와 비교한다.
@@ -48,6 +52,10 @@ var shortcut = grid.FindPath(start, goal, GridDirections.Eight);
 `Cells`는 시작 칸부터 목표 칸까지 순서대로 담는다. 시작과 목표가 같은 통행 가능 칸이면 한 칸과 비용 0을 돌려준다. 경로가 없거나 양 끝이 막혔으면 빈 목록을 돌려준다. 지형이 바뀌면 `SetEntryCost`로 반영하고 NPC의 현재 칸에서 `FindPath`를 다시 호출한다. 타일맵에서 비용을 읽으려면 `tick.Objects.TileNavigation`으로 그리드를 만든다. 이 그리드는 `SetTile`로 바뀐 셀의 비용을 자동으로 반영한다. [SeedLab 스크립트](../../samples/SeedLab/Scripts/CourierRoute.cs) · [플랫폼별 검증](../../engine/tests/results/grid-navigation/README.md)
 
 ## 탑다운 자유 이동 길찾기
+
+{{SeedLab-Crowd}}
+
+*SeedLab 군중 쇼케이스. 200명이 하나의 구운 영역을 함께 쓰고, 문이 열리면 모두 그 자리에서 길을 다시 찾아 도착한다.*
 
 SeedLab의 `Scenes/ShowcaseCrowd.scene`을 열고 Play한다. 왼쪽의 배달원 200명이 벽과 기둥을 돌아 오른쪽 초록 구역의 자기 자리로 걸어간다. 격자 칸 단위가 아니라 픽셀 단위로 움직이고, 서로 겹치지 않게 비켜 간다.
 

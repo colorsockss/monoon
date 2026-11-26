@@ -48,6 +48,10 @@ Scene에서 위젯을 드래그하면 고정된 변의 여백도 갱신된다. *
 
 ## 가방 칸 끌어 놓기
 
+{{InventoryLab-BagLedger}}
+
+*InventoryLab 가방과 장부 쇼케이스. 가방 칸을 끌어 아이템을 옮기고 바꾸며, 오른쪽 장부는 1,000행을 행 오브젝트 몇 개로 그리면서 열 머리글로 정렬한다.*
+
 [InventoryLab](../../samples/InventoryLab/)의 **Scenes/ShowcaseStock.scene**을 열고 Play를 누른다(약초 마당에서 **C**로도 들어온다). 왼쪽 **Bag grid**는 Grid 4열 레이아웃이고 칸 20개는 **UI Button → Drag and drop slot**을 켠 버튼이다.
 
 | 조작 | 결과 |
@@ -160,6 +164,10 @@ objects.SetWorldText(id, "<b>+1</b>");   // 문자열 상수: 주울 때마다 �
 글자는 화면 텍스트와 같은 SDL_ttf 문구 캐시를 쓴다. 같은 문자열은 텍스처 하나를 공유하고, 문구가 그대로인 동안에는 그리기에서 메모리를 할당하지 않는다. `world-text` 엔진 검사에서 데미지 숫자 100개를 이 Mac의 소프트웨어 렌더러로 그릴 때 한 프레임(단계 + 그리기 + 표시) 중앙값은 약 0.25 ms였다. 캐시는 서로 다른 문자열 128개까지 보관하므로, 한 화면에 그보다 많은 다른 문구를 동시에 띄우면 매 프레임 다시 만든다. Text 2D가 하나라도 있는 씬은 schemaVersion 40 이상으로 저장되고, 빌드는 SDL_ttf를 포함한다. [검증 기록](../../engine/tests/results/engine-features-4/README.md)
 
 ## 플레이어 표시 설정과 탐색
+
+{{AccessLab}}
+
+*AccessLab 쇼케이스. 키보드만으로 이름을 입력하고, 언어를 영어·일본어·한국어로 바꾸고, 글자 크기 200%에서 패널이 다시 배치되는 것을 보인 뒤 고대비와 흔들림·번쩍임 줄이기를 켜고 저장한다.*
 
 **Project → UI Accessibility…**에서 언어 태그, 글자 크기 **75–200%**, 고대비를 설정한다. 편집 모드의 **Save defaults**는 프로젝트의 `GameSettings`에 저장하고, **Apply in Play**는 현재 세션만 바꾼다. 게임 안에서도 `click.Ui.Preferences.Locale`, `TextScale`, `HighContrast`를 바꾸면 화면에 반영되고 씬을 전환해도 세션 동안 유지된다. 사용자별로 다음 실행에 복원하려면 `Preferences.SaveTo(settings)`로 [플레이어 설정](player-data.md)에 쓰고 시작할 때 `LoadFrom(settings)`을 호출한다. 같은 객체의 `ShakeScale`, `FlashScale`, `Rumble`은 [화면 흔들림·깜빡임](cameras.md#흔들림과-깜빡임-줄이기)과 [게임패드 진동](input-actions.md#게임패드-진동과-마우스-커서)을 줄이거나 끈다.
 

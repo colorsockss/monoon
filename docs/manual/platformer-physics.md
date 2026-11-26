@@ -2,6 +2,10 @@
 
 [PlatformerLab](../../samples/PlatformerLab)을 열고 **Play**를 누른다. 쇼케이스(`Scenes/Showcase.scene`)에서 **→ / D**를 눌러 경사를 올라간 뒤 뗏목 발판을 밟는다. 발판과 캐릭터가 함께 움직이고, 건너편 카메라에서 [탑승 대화](cutscenes.md)가 시작된다. Enter로 대사를 넘기거나 X로 건너뛴다. **Space**로 발판에서 점프하고 **← / A**로 돌아갈 수 있다. 세 실행 방식에서 같은 경로를 비교하려면 처음부터 **R**을 누른다. 직접 조작할 때와 같은 캐릭터 이동 API를 사용한다.
 
+{{PlatformerLab}}
+
+*PlatformerLab 쇼케이스. 경사를 오르고, 단방향 발판에 뛰어오르고, 길을 찾아 쫓아오는 경비병을 지나, 움직이는 발판을 타는 동안 컷신 대사가 나온다.*
+
 흔들다리, 도르래 발판, 곡선 경로 발판, 캡슐 캐릭터와 체인 언덕은 코스 쇼케이스(`Scenes/ShowcaseCourse.scene`)에 있다. 에디터에서 열어 Play하면 주인공이 입력 없이 코스를 달리며 동전을 줍고 깃발에 닿는다.
 
 강체, 조인트, 마찰·반발은 BRUTAL의 [Box2D](../brutal.md#물리오디오네트워크) 3.1로 계산한다. 1px을 Box2D 길이 단위 1로 쓰고, 고정 틱마다 Box2D 월드를 한 번(서브스텝 4) 진행한다. 같은 입력을 넣으면 Scene Play, Release, Native AOT에서 위치가 같다.
@@ -32,6 +36,10 @@ Character Motor는 Box2D가 플랫포머 캐릭터에 권하는 방식처럼 직
 캐릭터의 키네마틱 Box2D 캡슐도 다각형처럼 발바닥에서 2px 위까지만 둔다. 같은 입력에서 Scene Play·Release·Native AOT의 캐릭터·캡슐 위치 기록이 같다. [Mac 실행 검증](../../engine/tests/results/colliders-capsule-chain/README.md)
 
 ## 흔들다리와 도르래 발판
+
+{{PlatformerLab-Course}}
+
+*PlatformerLab 코스 쇼케이스. 캡슐 캐릭터가 회전 관절 흔들다리, 슬라이더 관절 도르래, 곡선 경로 승강대, Edge Collider 언덕을 지나며 동전 21개를 줍는다.*
 
 코스 쇼케이스의 다리는 24×6px 판자 8개를 Revolute Joint 2D로 이은 것이다. 각 판자는 왼쪽 위 모서리(Anchor −12, −3)에서 앞 판자와 묶이고, 첫 판자는 Start ledge에, 마지막 판자는 Far ledge가 가진 조인트에 묶인다. 판자 사슬(192px)이 두 언덕 사이(190px)보다 조금 길어 처지고, 캐릭터의 무게로 더 휜다. 판자 위쪽 모서리가 회전축이므로 이웃 판자의 윗면이 이어진다.
 

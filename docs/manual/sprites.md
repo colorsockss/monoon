@@ -10,6 +10,10 @@
 
 ## 발 위치로 앞뒤 정렬하기
 
+{{SpriteLab}}
+
+*SpriteLab 쇼케이스. 주인공이 우물 뒤와 앞을 지나며 발 위치로 앞뒤가 바뀌고, 연못에 반사가 비치고, 반딧불이 궤적을 남긴다.*
+
 1. 나무처럼 한 장으로 그리는 오브젝트는 **Sprite Renderer → Y sort → Use foot Y**를 켠다. 기준점은 오브젝트 사각형의 아래쪽 가운데다. PNG 밑에 투명 여백이 2만큼 있으면 **Foot ΔY**를 `-2`로 맞춘다. 오프셋은 오브젝트의 로컬 단위이며 부모의 회전·스케일도 적용된다.
 2. 캐릭터처럼 여러 장으로 그리려면 몸통이나 공통 부모에 **Add Component → Sorting Group 2D**를 붙인다. **그룹의 Use foot Y**를 켜고 나무와 그룹의 **Layer / Order**를 같게 둔다. 장비는 그 아래에 배치한다. 그룹 안에서는 몸통의 Order를 0, 가방을 20, 버클을 22로 두면 버클이 가방 위에 그려진다. 자식에 다시 그룹을 두면 그 그룹도 내부 순서를 유지한다.
 3. **Play**에서 아래로 걸으면 발의 월드 Y가 커진다. 발이 나무 기준보다 아래로 내려가면 캐릭터 전체가 나무 앞에 그려진다. KeyRoom 첫 방에서는 왼쪽 아래 항아리(**Pot**) 옆을 **↓ / S**로 지나고 **↑ / W**로 되돌아가 볼 수 있다. 주인공의 가방(**Satchel**)은 그룹 안에서 Order 20으로 몸 위에 그려진다. [Mac 실행 화면](../../engine/tests/results/y-sorting/README.md)
@@ -85,6 +89,10 @@ Aseprite에서 같은 경로에 다시 저장하면 시트와 클립이 다시 �
 게임 오브젝트에 **Sprite Renderer**와 **Sprite Animator**를 붙이고 **Clip**을 고른다. **Play on start**로 자동 재생하거나, KeyRoom의 문처럼 트리거에서 `contact.PlayEffect(문 오브젝트 ID)`를 호출한다. 문이 열릴 때 함께 소리를 내려면 같은 오브젝트에 **Audio Source**를 붙이고 **Sound**에 WAV를 지정한다. WAV 파일은 프로젝트의 `Assets/`에 둔다. 클립 편집기의 미리보기와 게임은 같은 프레임 순서·시간·원본 영역을 읽는다.
 
 ## 파라미터로 애니메이션 전환하기
+
+{{AnimatorLab}}
+
+*AnimatorLab 쇼케이스. 정찰병이 여덟 방향으로 걷고, 경비병이 허수아비를 세 번 쳐서 클립 이벤트, 종료 시간, Any State 전환을 보인다. 오른쪽 위 그래프가 지금 상태를 따라간다.*
 
 1. 프로젝트에 사용할 클립을 만든 뒤 **Project → + → New Animator Controller…**를 연다. **States → Add…**에서 상태에 이름과 클립을 지정한다. **Set Entry**로 처음 재생할 상태를 선택한다.
 2. **Parameters**에서 Bool, Int, Float, Trigger, Vector2를 추가한다(Vector2는 [방향 세트](#48방향-클립-세트)용). Bool은 참·거짓, Int와 Float는 숫자 비교에 사용한다. Int의 기본값과 비교값은 정수다. Trigger는 한 번 켜지며, 그 Trigger를 조건으로 쓴 전환이 일어날 때 소비된다. 막힌 전환의 Trigger는 켜진 채 남는다.

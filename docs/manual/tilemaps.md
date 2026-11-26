@@ -4,6 +4,10 @@
 
 ## 세 가지 모양을 한 씬에서 열어 보기
 
+{{KeyRoomTiles}}
+
+*KeyRoomTiles 쇼케이스. 직교·등각·두 방향 육각 섬에 실행 중 `SetTile`로 길을 깔고, 가운데 칸을 되돌려 이웃 타일이 다시 이어지는 것을 보인 뒤 사람이 칸 중심을 따라 걷는다.*
+
 **File → Open Project…**로 [KeyRoomTiles](../../samples/KeyRoomTiles/) 폴더를 열고 **Play**를 누른다(`Scenes/ShowcaseGrids.scene`). 움직이는 물 위에 네 섬이 있고, 왼쪽부터 정사각형, 아이소메트릭, 꼭짓점이 위인 육각형, 평평한 면이 위인 육각형 레이어다. 스크립트가 섬마다 `SetTile`로 길을 한 칸씩 깔고(길 타일은 지형 브러시라 새 칸이 이웃과 다시 이어진다), 가운데 칸을 풀로 되돌렸다가 다시 깐 뒤 주민을 길을 따라 걷게 한다. [예제 씬](../../samples/KeyRoomTiles/Scenes/ShowcaseGrids.scene)
 
 ## 레이어와 격자 선택
@@ -96,6 +100,10 @@ Play와 배포 게임은 씬을 불러올 때 모든 셀의 그림을 한 번 �
 **SeedLab에서 시험하기.** `Scenes/ShowcaseRoute.scene`의 강물 위 물결(세 장, 4 FPS)과 횃불 두 개(네 장, 8 FPS)가 움직인다. 물결 열네 칸은 하나의 시계를 따라 늘 같은 장을 보여 준다. [Hedges.tileset](../../samples/SeedLab/Assets/Showcase/Hedges.tileset)에서 물결 첫 칸(**#61 · Animated**)을 선택해 **FPS**를 바꿔 본다.
 
 ## 캐릭터 주변 청크만 실행하기
+
+{{PlatformerLab-Stream}}
+
+*PlatformerLab 청크 스트리밍 쇼케이스. 7청크 길이 능선에서 주인공 주변 청크만 올라오고, 미니맵에 지형이 앞에서 생기고 뒤에서 사라진다.*
 
 **Tilemap 2D → Stream chunks**를 켜고 **Follow**에서 캐릭터 또는 **Active camera**를 선택한다. **Radius**는 셀 수가 아닌 청크 수(1–16)다. 청크 한 변은 32셀이다. 반경 1이면 중심을 포함해 3×3 범위에서 실제로 지형이 있는 청크만 올린다. 위치는 타일맵의 로컬 격자 기준이어서 음수 좌표와 변환된 레이어에도 적용된다. 레이어나 추적 대상이 비활성화되면 해당 레이어의 청크는 해제된다.
 

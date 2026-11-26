@@ -42,6 +42,10 @@
 
 ## 홀드·탭·더블탭과 입력 버퍼
 
+{{KeyRoom-Moves}}
+
+*KeyRoom 조작 쇼케이스. J를 길게 눌러 상자를 부수고, U를 짧게 눌러 동전을 튕기고, O를 두 번 눌러 대시한다. 너무 짧거나 느린 입력은 화면에 이유가 뜬다. 끝에서 K 메뉴로 대시 키를 F로 바꾼다.*
+
 액션에 `interaction`, `ticks`, `buffer`를 정하면 `tick.Input.Triggered("이름")`이 그 규칙으로 판정한다. 판정은 60Hz 게임 틱 단위라 입력 재생과 세 실행 경로에서 같은 틱에 나온다. Input Actions 패널의 Interaction·Ticks·Buffer 칸에서 정하며, 저장 결과는 아래처럼 `GameSettings`에 직접 적은 파일을 엔진이 저장한 것과 바이트 단위로 같다. [패널 검증](../../engine/tests/results/editor-input-audio/README.md)
 
 ```yaml

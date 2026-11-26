@@ -29,7 +29,7 @@ python3 engine/scripts/package-editor.py keyroom
 
 ## 네 패널에서 하는 일
 
-![MoNoon 에디터에서 KeyRoom의 Player를 선택한 화면](editor-workspace.png)
+![MoNoon 에디터에서 KeyRoom 쇼케이스의 Player를 선택한 화면](../media/editor.png)
 
 | 패널 | 조작 |
 | --- | --- |

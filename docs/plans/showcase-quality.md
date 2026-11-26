@@ -297,11 +297,11 @@ KeyRoom-Moves 다시 만듦(2026-11-25, 사용자: 이번 영상들이 예전보
 | BarrageLab | 24.0초 | draw call 숫자가 없어 B 전환의 차이가 화면에 안 보인다 |
 | CameraLab · CameraLab-Framing | 36.8 · 15.0초 | 커서·진동은 문구로만. Framing은 development 빌드로 Debug draw 포함, 줌아웃 이음매 수정 뒤 촬영 |
 | AnimatorLab | 12.2초 | 상태 그래프 선택 테두리 정렬 수정 뒤 촬영 |
-| InventoryLab · InventoryLab-BagLedger | 26.4 · 15.2초 | F7 손상 → F9 복구 포함 |
+| InventoryLab · InventoryLab-BagLedger | 26.4 · 20.4초 | F7 손상 → F9 복구 포함. 가방 아이콘을 칸 가운데에 맞추고, 장부 정렬 열·방향·캡션과 태그를 넣었다 |
 | CardLab | 20.3초 | |
 | SeedLab · SeedLab-Crowd · SeedLab-Route | 20.9 · 16.0 · 11.7초 | 군중은 따로 뺐다(사용자 결정) |
-| CollisionLab | 13.7초 | 아트 다시 만듦: 밤 들판·돌 9종 아틀라스, 횃불 복도 Casts, 탐사체가 굴러간다 |
-| 게임 샘플 LedgeRun · IsoBand · HexRealm | 53.1 · 56.5 · 50.1초 | 퀄리티업은 나중에(사용자 결정) |
+| CollisionLab · CollisionLab-Casts | 8.7 · 12.2초 | 아트 다시 만듦(밤 들판·돌 9종 아틀라스, 횃불 복도). Casts는 따로 뺐고(사용자 결정), 레이어 이름표와 마스크가 다른 레이 세 개로 문이 무엇을 보여 주는지 드러낸다 |
+| 게임 샘플 LedgeRun · IsoBand · HexRealm | 53.1 · 56.5 · 50.1초 | HexRealm 유닛이 경로를 따라 움직이고 공격 때 들이받는다. 나머지 퀄리티업은 나중에, README·매뉴얼에는 기능 샘플 영상만 넣는다(사용자 결정) |
 
 못 찍은 것: DisplayLab(헤드리스에서는 표시 설정을 바꿀 수 없음). 실제 창 녹화로 보충할 후보: DisplayLab, BarrageLab의 draw call, ParticleLab의 Play 중 편집.
 

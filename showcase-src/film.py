@@ -8,7 +8,8 @@ builds the Release player, writes an .inputreplay from the part's inputs and rep
 every frame as PNG (MONOON_REPLAY_SNAPSHOTS, SDL software renderer). The frames of all parts are joined into one
 mp4 of --height lines (720) at --fps (30), under GitHub's 10 MB attachment limit, by encode.swift; frames are rendered at least that tall, so text stays sharp, and frames.swift writes a contact sheet next to it for checking.
 
-    {"sample": "KeyRoom", "parts": [{
+    {"sample": "KeyRoom", "poster": 9.0,       # optional: second of the README poster (default 70 % in)
+     "parts": [{
         "scene": "Scenes/Showcase.scene",      # optional, default: the sample's start scene
         "seconds": 24,                         # replay length
         "profile": "development",              # optional build profile (debug draw); default distribution
@@ -134,6 +135,11 @@ def film(shot_path, out_dir, keep_frames, height=720, fps=30):
     marks = [round(seconds * k / 9, 2) for k in range(9)]
     subprocess.run([str(tool('frames')), str(mp4), str(run / 'sheet.png')] + [str(m) for m in marks], check=True, stdout=subprocess.DEVNULL)
     if not keep_frames: shutil.rmtree(joined)
+    # Poster for README galleries: shot "poster" seconds, else 70 % in, 640 px wide JPEG next to the video.
+    at = shot.get('poster', round(seconds * .7, 2))
+    png = run / 'poster.png'
+    subprocess.run([str(tool('frames')), str(mp4), str(png), str(at)], check=True, stdout=subprocess.DEVNULL, env=dict(os.environ, FRAME_MAX='640'))
+    subprocess.run(['sips', '-s', 'format', 'jpeg', '-s', 'formatOptions', '82', str(png), '--out', str(out_dir / f'{name}.jpg')], check=True, stdout=subprocess.DEVNULL)
     print(f'{mp4} {seconds:.1f}s  sheet {run / "sheet.png"} (at {", ".join(map(str, marks))} s)')
 
 

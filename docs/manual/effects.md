@@ -6,6 +6,10 @@ PlatformerLab 쇼케이스(`Scenes/Showcase.scene`)를 Play하고 Space를 누�
 
 ## Particle Emitter 2D
 
+{{ParticleLab}}
+
+*ParticleLab 쇼케이스. 모닥불, 비, 분수, 불꽃놀이(Space)를 지나 포털에서 입자 10,240개를 한 번에 그린다.*
+
 입자 설정은 `.particles` 에셋에 두고, 오브젝트의 **Particle Emitter 2D**는 그 에셋과 인스턴스 값만 가진다. 같은 에셋을 여러 오브젝트·프리팹이 함께 쓴다. Hierarchy에서 오브젝트를 선택하고 **Add Component → Particle Emitter 2D**를 붙인 뒤 **Particles**에서 에셋을 고른다. 에셋을 고르지 않으면 초당 10개의 흰 점을 내는 기본 효과가 된다.
 
 | Inspector | 단위와 용도 |
@@ -19,6 +23,10 @@ PlatformerLab 쇼케이스(`Scenes/Showcase.scene`)를 Play하고 Space를 누�
 입자는 다른 오브젝트와 같은 정렬 순서 안에서 그린다. 예전처럼 항상 모든 스프라이트 위에 그리지 않는다. 방출기 오브젝트가 화면 밖에 있어도 화면 안의 입자는 그린다. 오브젝트가 비활성화되거나 풀로 반환되면 입자를 지우고, 다시 활성화되면 Start 방출기는 처음부터 재생한다.
 
 ### .particles 에셋
+
+{{ParticleLab-Workshop}}
+
+*ParticleLab 작업장 쇼케이스. 방출 형태, 정렬과 블렌딩, 프리셋, 수명 곡선과 그라데이션, 노이즈와 충돌을 정거장마다 하나씩 보여 준다.*
 
 YAML 파일이며 `Assets`에 저장하거나 Project의 Import로 가져온다. 아래는 [Sparks.particles](../../samples/ParticleLab/Assets/Sparks.particles)를 바탕으로 모든 키를 적은 예다. 빠진 키는 기본값이 된다: `duration: 1`, `looping: true`, `maxParticles: 256`, `rate: 10`, `shape: Point`, `direction: -90`, `spread: 0`, `lifetime: 1`, `speed: 40`, `size: 8`, `aspect: 1`, `rotation: 0`, `color: "#FFFFFF"`, `endSize: 1`, `endAlpha: 0`, `gravity: 0`, `space: World`, `blend: Alpha`, 텍스처 없음(내장 점).
 
@@ -225,6 +233,10 @@ Release·Native AOT 플레이어는 준비 단계에서 PNG를 SDL 텍스처로 
 씬에 Global Light 2D가 없으면 조명은 카메라마다 월드 위에 가산 합성된다. 중심에서 멀어질수록 빛이 약해지고 반경 끝에서 0이 된다. 화면 UI는 그 이후에 그린다.
 
 ## Global Light 2D: 어둠과 그림자
+
+{{PlatformerLab-Lights}}
+
+*PlatformerLab 조명 쇼케이스. 밤이 오면 랜턴만 켜지고, 주인공이 횃불 셋에 차례로 불을 붙이며 그림자가 늘어난다.*
 
 PlatformerLab의 조명 쇼케이스(`Scenes/ShowcaseCave.scene`)에서는 날이 저물면 Global Light 2D가 켜져 폐허가 어두워지고, 주인공이 지나가며 횃불을 하나씩 켤 때마다 기둥·들보·상자의 그림자가 늘어난다. 좌우로 움직이는 상자의 그림자도 따라 움직이고, Unlit 레이어의 달은 어둡게 하지 않는다. [샘플 씬](../../samples/PlatformerLab/Scenes/ShowcaseCave.scene) · [검증과 측정](../../engine/tests/results/lighting/README.md)
 
