@@ -31,7 +31,8 @@ internal static class HistoryChecks
 
     private static void Check(string repository, string scratch, string sample, string sceneName, int seed, int steps, int fullEvery)
     {
-        var root = Path.Combine(scratch, "history-" + sample);
+        // The scratch root is the shared KeyRoom copy; a dot folder keeps this project out of its asset scan.
+        var root = Path.Combine(scratch, ".history-" + sample);
         TileChecks.Prepare(Path.Combine(repository, "samples", sample), root);
         var path = Path.Combine(root, "Scenes", sceneName + ".scene");
         var scene = SceneDocument.OpenForEditing(path);

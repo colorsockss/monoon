@@ -17,7 +17,8 @@ internal static class TileChecks
     {
         if (Directory.Exists(root) && Directory.EnumerateFileSystemEntries(root).Any()) throw new IOException($"Expected an empty fixture directory: {root}");
         Directory.CreateDirectory(root);
-        foreach (var folder in new[] { "Assets", "Scenes", "Scripts" })
+        // .monoon-atlas holds the packed sheets an .atlas under Assets points to.
+        foreach (var folder in new[] { "Assets", "Scenes", "Scripts", ".monoon-atlas" }.Where(f => f[0] != '.' || Directory.Exists(Path.Combine(original, f))))
             foreach (var from in Directory.EnumerateFiles(Path.Combine(original, folder), "*", SearchOption.AllDirectories))
             {
                 string to = Path.Combine(root, Path.GetRelativePath(original, from));
