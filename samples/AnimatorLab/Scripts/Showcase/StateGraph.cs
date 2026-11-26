@@ -24,7 +24,9 @@ public sealed class StateGraph : GameBehaviour
             home is { } box && ui.Bounds(StateBoxes[i]) is { } target)
         {
             state = animator.State;
-            tick.Objects.Tween(Highlight, TweenClock.Ui).UiRect(new(target.X - box.X, target.Y - box.Y, 0, 0), .12f, TweenEase.EaseOut);
+            // Centre on the box, so the frame keeps the margin it was laid out with around every box (not its top-left corner).
+            tick.Objects.Tween(Highlight, TweenClock.Ui).UiRect(new(target.X - box.X + (target.Width - box.Width) / 2,
+                target.Y - box.Y + (target.Height - box.Height) / 2, 0, 0), .12f, TweenEase.EaseOut);
         }
         string text = $"State <b><color=#FFD84A>{animator.State}</color></b>    frame {animator.Frame + 1}";
         if (text != shown) ui.SetText(Params, shown = text);

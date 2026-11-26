@@ -9,7 +9,9 @@ public sealed class ScoutWalker : GameBehaviour
 {
     public Guid Picture, Facing;
     public float Speed = 110;
-    public Vector2 Min = new(20, 120), Max = new(230, 270);
+    // Feet box range that keeps the whole scout (picture top 44 px above, shadow 15 px below) between the five tags at the top
+    // and the Facing/caption panels at the bottom of the 800×450 HUD (camera zoom 1.5).
+    public Vector2 Min = new(20, 146), Max = new(230, 224);
     private string shown = "";
 
     public override void FixedUpdate(ScriptTick tick)

@@ -56,13 +56,13 @@ scout_animator = text_asset("Scout.animator", f"entry: Idle\nstates:\n- name: Id
     "parameters:\n- name: Move\n  kind: Vector2\n  default: 0\n- name: Speed\n  kind: Float\n  default: 0\n"
     "transitions:\n- from: Idle\n  to: Walk\n  parameter: Speed\n  test: Greater\n  value: 0.1\n- from: Walk\n  to: Idle\n  parameter: Speed\n  test: AtMost\n  value: 0.1\n")
 
-# Guard: the sample's Guard.animator transitions with the new clips.
+# Guard: the transitions of the sample's old Guard.animator (removed; its showcase copy is now the source) with the new clips.
 g_idle = clip("GuardIdle.clip", [("GuardIdle.png", 1)])
 g_walk = clip("GuardWalk.clip", [("GuardWalk1.png", .2), ("GuardWalk2.png", .2)])
 g_attack = clip("GuardAttack.clip", [("GuardWindup.png", .16), ("GuardSwing.png", .12, "Swing"), ("GuardFollow.png", .24)], loop=False)
 g_recover = clip("GuardRecover.clip", [("GuardIdle.png", .3)], loop=False)
 g_hurt = clip("GuardHurt.clip", [("GuardHurt.png", .7, "Ouch")], loop=False)
-guard_src = (ROOT / "Assets/Guard.animator").read_text()
+guard_src = (ART / "Guard.animator").read_text()
 for state, new in (("Idle", g_idle), ("Walk", g_walk), ("Attack", g_attack), ("Recover", g_recover), ("Hurt", g_hurt)):
     guard_src = re.sub(rf"(- name: {state}\n  clip: )\S+", rf"\g<1>{new}", guard_src)
 guard_animator = text_asset("Guard.animator", guard_src)
@@ -108,7 +108,7 @@ for cx, b, img in ((60, 280, "Flowers.png"), (200, 290, "Herb1.png"), (440, 280,
 # Scout (left): feet box with the animated picture above it, as in KeyRoom.
 sw, sh = png_size("ShadowM.png")
 w, h = png_size("HeroIdleS.png")
-obj("Scout", 110, 200, 22, 12, GROUP + script("Showcase/ScoutWalker", f'{{"Picture": "{oid("Scout picture")}", "Facing": "{oid("Facing text")}"}}'))
+obj("Scout", 110, 185, 22, 12, GROUP + script("Showcase/ScoutWalker", f'{{"Picture": "{oid("Scout picture")}", "Facing": "{oid("Facing text")}"}}'))
 obj("Scout shadow", (22 - sw) / 2, 12 - sh * .7, sw, sh, sprite("ShadowM.png", order=-1), parent="Scout")
 obj("Scout picture", (22 - w) / 2, 14 - h, w, h, sprite("HeroIdleS.png") + f"  - type: spriteAnimator\n    controller: {scout_animator}\n    playOnStart: true\n", parent="Scout")
 
@@ -138,16 +138,17 @@ obj("Facing", 12, -62, 200, 24, "  - type: uiRect\n    anchor: BottomLeft\n" + p
 obj("Facing text", 10, 4, 186, 16, label("<b>Scout</b>   Idle  ·  S"), parent="Facing")
 
 # State graph of the guard's animator (top right). Boxes 72 × 24; arrows and conditions as small labels.
-GX, GY, GW, GH = 800 - 12 - 318, 12, 318, 168
+GX, GY, GW, GH = 800 - 12 - 318, 12, 318, 152
 obj("Graph", GX, GY, GW, GH, "  - type: uiRect\n" + panel, parent="Canvas")
 obj("Graph title", 12, 6, 200, 16, label("<b>Guard animator</b>", 12), parent="Graph")
-boxes = {"Hurt": (124, 30), "Idle": (12, 78), "Attack": (124, 78), "Recover": (234, 78), "Walk": (12, 124)}
+# Walk is left out: the guard only trains on the spot, so the showcase never reaches it (the animator still has it).
+boxes = {"Hurt": (124, 30), "Idle": (12, 78), "Attack": (124, 78), "Recover": (234, 78)}
 box_ids = []
 for name, (x, y) in boxes.items():
     box_ids.append((name, obj(f"State {name}", x, y, 72, 24, "  - type: uiRect\n" + panel + f'  - type: uiText\n    text: "{name}"\n    size: 12\n    insetX: 10\n    insetY: 4\n', parent="Graph")))
-for i, (x, y, t) in enumerate(((12, 34, "Any State  →"), (95, 82, "→"), (86, 64, "Attack"), (206, 82, "→"), (204, 64, "exit"), (40, 104, "↕ Speed"), (234, 104, "exit → Idle"), (200, 34, "on Hit"))):
+for i, (x, y, t) in enumerate(((12, 34, "Any State  →"), (95, 82, "→"), (86, 64, "Attack"), (206, 82, "→"), (204, 64, "exit"), (234, 104, "exit → Idle"), (200, 34, "on Hit"))):
     obj(f"Graph note {i + 1}", x, y, 110, 14, label(t, 10, "#BFD0DC"), parent="Graph")
-obj("Graph params", 124, 128, 186, 16, label("State <b>Idle</b>", 11), parent="Graph")
+obj("Graph params", 12, 124, 186, 16, label("State <b>Idle</b>", 11), parent="Graph")
 hl = obj("Highlight", boxes["Idle"][0] - 2, boxes["Idle"][1] - 2, 76, 28, f"  - type: uiRect\n  - type: uiImage\n    sprite: {highlight_png}\n    borders: {{left: 4, top: 4, right: 4, bottom: 4}}\n", parent="Graph")
 names = ",".join(n for n, _ in box_ids)
 obj("Graph driver", 0, 0, 1, 1, script("Showcase/StateGraph", f'{{"Animated": "{oid("Guard")}", "Highlight": "{hl}", "Params": "{oid("Graph params")}", '

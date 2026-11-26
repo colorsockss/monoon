@@ -411,7 +411,7 @@ objects:
 - id: fea4182a-7a48-5879-8dac-89f6dd502c47
   name: Scout
   x: 110
-  y: 200
+  y: 185
   width: 22
   height: 12
   components:
@@ -603,7 +603,7 @@ objects:
   x: 470
   y: 12
   width: 318
-  height: 168
+  height: 152
   components:
   - type: uiRect
   - type: uiImage
@@ -691,23 +691,6 @@ objects:
     size: 12
     insetX: 10
     insetY: 4
-- id: 0f5193fd-669e-556e-897d-d245b9ffaf99
-  parentId: ccbe9d94-097e-5888-80d5-de9061ab6038
-  name: State Walk
-  x: 12
-  y: 124
-  width: 72
-  height: 24
-  components:
-  - type: uiRect
-  - type: uiImage
-    sprite: 83705588-ea5e-566a-8db8-d3d9268b6a87
-    borders: {left: 4, top: 4, right: 4, bottom: 4}
-  - type: uiText
-    text: "Walk"
-    size: 12
-    insetX: 10
-    insetY: 4
 - id: 3bd323f7-5aee-5c59-b9d4-e45d014e44b2
   parentId: ccbe9d94-097e-5888-80d5-de9061ab6038
   name: Graph note 1
@@ -781,20 +764,6 @@ objects:
 - id: 326b30ea-b74d-5d6c-952e-d10389b55722
   parentId: ccbe9d94-097e-5888-80d5-de9061ab6038
   name: Graph note 6
-  x: 40
-  y: 104
-  width: 110
-  height: 14
-  components:
-  - type: uiRect
-  - type: uiText
-    richText: true
-    text: "↕ Speed"
-    size: 10
-    color: "#BFD0DC"
-- id: 3f5061d8-d280-58a0-ac47-6b52c02ccbcb
-  parentId: ccbe9d94-097e-5888-80d5-de9061ab6038
-  name: Graph note 7
   x: 234
   y: 104
   width: 110
@@ -806,9 +775,9 @@ objects:
     text: "exit → Idle"
     size: 10
     color: "#BFD0DC"
-- id: 54dd4fbe-6850-5cec-b091-0af3a5fffdf9
+- id: 3f5061d8-d280-58a0-ac47-6b52c02ccbcb
   parentId: ccbe9d94-097e-5888-80d5-de9061ab6038
-  name: Graph note 8
+  name: Graph note 7
   x: 200
   y: 34
   width: 110
@@ -823,8 +792,8 @@ objects:
 - id: 3eda5aa8-9752-5472-8221-c2807af31f7c
   parentId: ccbe9d94-097e-5888-80d5-de9061ab6038
   name: Graph params
-  x: 124
-  y: 128
+  x: 12
+  y: 124
   width: 186
   height: 16
   components:
@@ -855,7 +824,7 @@ objects:
   components:
   - type: script
     script: Showcase/StateGraph
-    values: {"Animated": "0b0abe7c-079d-5094-920f-80890aa62e7b", "Highlight": "f896ee10-bd77-51ac-a001-f1c5cedc19f4", "Params": "3eda5aa8-9752-5472-8221-c2807af31f7c", "StateBoxes": ["33f1008e-c652-5619-bc5e-2f86a1ed6f11", "33fbed23-138a-5b42-b568-f26e2eb33d4e", "be191086-6af2-590f-85f6-fdee3beefb27", "1d80b6b4-971f-5b7a-82c8-529aafd23a75", "0f5193fd-669e-556e-897d-d245b9ffaf99"], "StateNames": "Hurt,Idle,Attack,Recover,Walk"}
+    values: {"Animated": "0b0abe7c-079d-5094-920f-80890aa62e7b", "Highlight": "f896ee10-bd77-51ac-a001-f1c5cedc19f4", "Params": "3eda5aa8-9752-5472-8221-c2807af31f7c", "StateBoxes": ["33f1008e-c652-5619-bc5e-2f86a1ed6f11", "33fbed23-138a-5b42-b568-f26e2eb33d4e", "be191086-6af2-590f-85f6-fdee3beefb27", "1d80b6b4-971f-5b7a-82c8-529aafd23a75"], "StateNames": "Hurt,Idle,Attack,Recover"}
 - id: a5f43a1f-ef4f-58cd-a581-a27a07207f91
   parentId: 6f78845c-55b8-561d-8cca-b310444a79e6
   name: Tag 1
