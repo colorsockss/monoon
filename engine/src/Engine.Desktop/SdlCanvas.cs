@@ -318,13 +318,40 @@ public sealed class SdlCanvas(SdlRenderer renderer, Func<ShaderClip, RgbaImage>?
         Sdl.Render.SetTextureColorMod(texture, tint.R, tint.G, tint.B);
         Sdl.Render.SetTextureAlphaMod(texture, tint.A);
         directDraws++;
-        bool drawn = borders == null ? renderer.RenderTextureTiled(texture, cut, scale, &target)
+        bool drawn = borders == null && software ? SnappedTiles(texture, crop, source == null ? sprite.Size : new(source.Width, source.Height), scale, target)
+            : borders == null ? renderer.RenderTextureTiled(texture, cut, scale, &target)
             : tiled ? renderer.RenderTexture9GridTiled(texture, cut, borders.Left, borders.Right, borders.Top, borders.Bottom, scale, &target, scale)
             : renderer.RenderTexture9Grid(texture, cut, borders.Left, borders.Right, borders.Top, borders.Bottom, scale, &target);
         // The sprite batch colours vertices and leaves texture modulation at white.
         Sdl.Render.SetTextureColorMod(texture, 255, 255, 255);
         Sdl.Render.SetTextureAlphaMod(texture, 255);
         return drawn;
+    }
+
+    // SDL's software tiling rounds each repeat's position and size on its own, so a fractional camera zoom leaves 1 px gaps
+    // between repeats. Here both edges of every repeat are rounded to output pixels, so neighbours share their edge.
+    private unsafe bool SnappedTiles(SdlTexture texture, SdlFRect crop, Size cell, float scale, SdlFRect target)
+    {
+        if (!renderer.GetRenderOutputSize(out int outW, out _)) return false;
+        float pixels = LogicalSize.IsEmpty ? 1 : (float)outW / LogicalSize.Width; // output pixels per canvas unit
+        float Snap(float v) => MathF.Round(v * pixels) / pixels;
+        float stepX = cell.Width * scale, stepY = cell.Height * scale;
+        if (stepX <= 0 || stepY <= 0) return false;
+        float right = target.x + target.w, bottom = target.y + target.h;
+        for (float y = target.y; y < bottom - 1e-4f; y += stepY)
+        {
+            float y1 = MathF.Min(y + stepY, bottom), top = Snap(y), low = Snap(y1);
+            for (float x = target.x; x < right - 1e-4f; x += stepX)
+            {
+                float x1 = MathF.Min(x + stepX, right), left = Snap(x), high = Snap(x1);
+                if (high <= left || low <= top) continue;
+                // A clipped last repeat shows the matching part of the cell.
+                var part = new SdlFRect { x = crop.x, y = crop.y, w = cell.Width * (x1 - x) / stepX, h = cell.Height * (y1 - y) / stepY };
+                var dest = new SdlFRect { x = left, y = top, w = high - left, h = low - top };
+                if (!renderer.RenderTexture(texture, &part, &dest)) return false;
+            }
+        }
+        return true;
     }
 
     private unsafe bool DrawTexture(string path, RectangleF destination, Color color, SpriteRegion? source = null, string layout = TileGrid.Orthogonal, Matrix3x2? transform = null)
