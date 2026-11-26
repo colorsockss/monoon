@@ -1,0 +1,17 @@
+duration: 0.2
+looping: false
+rate: 0
+bursts: [{time: 0, count: 10}]
+maxParticles: 24
+spread: 360
+space: World
+speed: {min: 30, max: 85}
+lifetime: {min: 0.2, max: 0.38}
+size: {min: 2, max: 5}
+gravity: 120
+color: {min: "#FFF1A8", max: "#CB702F"}
+texture: 0ca96ed6-a8fd-53cd-b545-1017f9e08c60
+sheet: {columns: 4, rows: 1, frames: 4, fps: 0}
+blend: Additive
+sizeOverLifetime: {keys: [{time: 0, value: 0.65}, {time: 0.2, value: 1}, {time: 1, value: 0.42}]}
+colorOverLifetime: {colors: [{time: 0, color: "#FFFFFF"}, {time: 1, color: "#BBA999"}], alphas: [{time: 0, alpha: 0.94}, {time: 0.56, alpha: 0.78}, {time: 1, alpha: 0}]}

@@ -1,0 +1,11 @@
+frames:
+- sprite: 0fb828a4-f0e3-5ef1-893b-ced412e1ec1b
+  seconds: 0.09
+  source: {x: 132, y: 59, width: 44, height: 31}
+- sprite: 0fb828a4-f0e3-5ef1-893b-ced412e1ec1b
+  seconds: 0.06
+  source: {x: 176, y: 59, width: 44, height: 31}
+- sprite: 0fb828a4-f0e3-5ef1-893b-ced412e1ec1b
+  seconds: 0.11
+  source: {x: 220, y: 59, width: 44, height: 31}
+loop: false

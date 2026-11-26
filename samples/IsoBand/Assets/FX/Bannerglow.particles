@@ -1,0 +1,20 @@
+duration: 0.2
+looping: false
+rate: 0
+bursts: [{time: 0, count: 5}]
+maxParticles: 9
+spread: 360
+shape: Circle
+radius: 32
+aspect: 2.6
+space: World
+speed: {min: 7, max: 24}
+lifetime: {min: 0.35, max: 0.55}
+size: {min: 19, max: 26}
+gravity: -25
+color: {min: "#FFF0A0", max: "#E6B053"}
+texture: a8e514b2-2e42-5b52-9ad5-4c45be3da4cb
+blend: Additive
+sizeOverLifetime: {keys: [{time: 0, value: 0.65}, {time: 0.2, value: 1}, {time: 1, value: 0.42}]}
+colorOverLifetime: {colors: [{time: 0, color: "#FFFFFF"}, {time: 1, color: "#BBA999"}], alphas: [{time: 0, alpha: 0.94}, {time: 0.56, alpha: 0.78}, {time: 1, alpha: 0}]}
+subEmitters: [{when: Death, particles: 0895d567-261b-5df9-a024-fd53c26ead7f, count: 2}]

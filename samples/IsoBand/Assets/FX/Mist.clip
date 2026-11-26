@@ -1,0 +1,38 @@
+frames:
+- sprite: cbaff870-dc06-5ee5-b90b-30a5e9728050
+  seconds: 0.14
+  source: {x: 0, y: 44, width: 96, height: 43}
+- sprite: cbaff870-dc06-5ee5-b90b-30a5e9728050
+  seconds: 0.14
+  source: {x: 96, y: 44, width: 96, height: 43}
+- sprite: cbaff870-dc06-5ee5-b90b-30a5e9728050
+  seconds: 0.14
+  source: {x: 192, y: 44, width: 96, height: 43}
+- sprite: cbaff870-dc06-5ee5-b90b-30a5e9728050
+  seconds: 0.14
+  source: {x: 288, y: 44, width: 96, height: 43}
+- sprite: cbaff870-dc06-5ee5-b90b-30a5e9728050
+  seconds: 0.14
+  source: {x: 0, y: 87, width: 96, height: 43}
+- sprite: cbaff870-dc06-5ee5-b90b-30a5e9728050
+  seconds: 0.14
+  source: {x: 96, y: 87, width: 96, height: 43}
+- sprite: cbaff870-dc06-5ee5-b90b-30a5e9728050
+  seconds: 0.14
+  source: {x: 192, y: 87, width: 96, height: 43}
+- sprite: cbaff870-dc06-5ee5-b90b-30a5e9728050
+  seconds: 0.14
+  source: {x: 288, y: 87, width: 96, height: 43}
+- sprite: cbaff870-dc06-5ee5-b90b-30a5e9728050
+  seconds: 0.14
+  source: {x: 0, y: 130, width: 96, height: 43}
+- sprite: cbaff870-dc06-5ee5-b90b-30a5e9728050
+  seconds: 0.14
+  source: {x: 96, y: 130, width: 96, height: 43}
+- sprite: cbaff870-dc06-5ee5-b90b-30a5e9728050
+  seconds: 0.14
+  source: {x: 192, y: 130, width: 96, height: 43}
+- sprite: cbaff870-dc06-5ee5-b90b-30a5e9728050
+  seconds: 0.14
+  source: {x: 288, y: 130, width: 96, height: 43}
+loop: true
