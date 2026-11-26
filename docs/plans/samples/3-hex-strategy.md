@@ -1,6 +1,6 @@
-# 3. HexRealm — 헥사고날 턴제 전략 (가칭)
+# 3. HexRealm — 헥사고날 턴제 전략
 
-[샘플 계획 목차](README.md)
+[샘플 계획 목차](README.md) · [플레이 매뉴얼](../../manual/hexrealm.md) · [제작 및 검증 기록](../../../engine/tests/results/hexrealm/README.md)
 
 ## 게임 개요
 

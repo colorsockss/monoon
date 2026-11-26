@@ -1,0 +1,11 @@
+schemaVersion: 34
+objects:
+- id: 4d527185-6140-50d5-b72f-2fe3182ca5e3
+  name: Spearman
+  width: 24
+  height: 24
+  components:
+  - type: spriteRenderer
+    assetId: 10416b6d-79cf-5e37-8c82-fc64be542fea
+    order: 8
+    sortByY: true

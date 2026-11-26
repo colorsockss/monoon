@@ -129,6 +129,8 @@ var route = grid.FindPath(courierCell, goalCell, GridDirections.Four);
 
 | API | 동작 |
 | --- | --- |
+| `TileCellAt(layer, worldPoint)` | 레이어의 Transform을 적용해 월드 좌표를 셀 좌표로 바꾼다. 타일이 없는 칸도 좌표를 얻는다. |
+| `TileCellCenter(layer, cell)` | 같은 레이어 Transform을 적용해 셀의 월드 중심을 돌려준다. 두 메서드는 레이어가 없으면 `null`을 반환한다. |
 | `TryGetTile(layer, cell, out info)` | `Tile`(0은 빈 칸), 실제로 그리는 `Display`(오토타일이면 연결 모양), `Terrain`, `MoveCost`, `Solid`를 돌려준다. 레이어가 없거나 스트리밍 레이어의 해당 청크가 올라와 있지 않으면 `false`다. |
 | `SetTile(layer, cell, tile)` | 한 칸을 바꾸고 0이면 비운다. 화면, 이웃 오토타일의 연결 그림, 타일 충돌, 아래 그리드가 같은 틱에 바뀐다. 등록되지 않은 타일 번호는 예외를 낸다. |
 | `TileNavigation(layer, area)` | `area` 안의 셀 비용을 타일셋에서 읽은 `GridNavigation`을 만든다. 그리드의 (0, 0)은 `area`의 왼쪽 위 칸이다. 빈 칸은 0이다. 이후 `SetTile`과 `ReplaceTiles`가 비용을 자동으로 갱신한다. |

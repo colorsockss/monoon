@@ -1,0 +1,11 @@
+schemaVersion: 34
+objects:
+- id: cb319e75-5c88-5197-b4e0-181cc63600bd
+  name: RivalSpear
+  width: 24
+  height: 24
+  components:
+  - type: spriteRenderer
+    assetId: fc80dbe9-bf67-5b0f-85e5-04b78cfa0902
+    order: 8
+    sortByY: true

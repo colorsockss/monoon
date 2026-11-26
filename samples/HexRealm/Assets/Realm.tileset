@@ -1,0 +1,38 @@
+image: e8fe7bb9-6870-549b-ace2-fdea4ccdcb84
+tileSize: {width: 48, height: 56}
+margin: 0
+spacing: 0
+nextId: 9
+tiles:
+- id: 1
+  source: {x: 0, y: 0, width: 48, height: 56}
+  terrain: meadow
+  moveCost: 1
+- id: 2
+  source: {x: 48, y: 0, width: 48, height: 56}
+  terrain: forest
+  moveCost: 2
+- id: 3
+  source: {x: 96, y: 0, width: 48, height: 56}
+  terrain: hill
+  moveCost: 2
+- id: 4
+  source: {x: 144, y: 0, width: 48, height: 56}
+  terrain: water
+  moveCost: 0
+- id: 5
+  source: {x: 192, y: 0, width: 48, height: 56}
+  terrain: mountain
+  moveCost: 0
+- id: 6
+  source: {x: 240, y: 0, width: 48, height: 56}
+  terrain: desert
+  moveCost: 2
+- id: 7
+  source: {x: 288, y: 0, width: 48, height: 56}
+  terrain: haven
+  moveCost: 1
+- id: 8
+  source: {x: 336, y: 0, width: 48, height: 56}
+  terrain: rival
+  moveCost: 1

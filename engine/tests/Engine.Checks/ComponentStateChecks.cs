@@ -27,16 +27,20 @@ internal static class ComponentStateChecks
         Require(!back.Active && !back.Components[0].Enabled && ProjectYaml.Decode<SceneObject>(Encoding.UTF8.GetBytes(plainText)) is { Active: true } p &&
             p.Components[0].Enabled, "round trip");
 
-        // Every sample scene and prefab saves without the new keys (unchanged content).
+        // Existing sample scenes omit default keys. New scenes may intentionally author inactive objects or components.
         int files = 0;
         foreach (var file in Directory.EnumerateFiles(Path.Combine(repository, "samples"), "*.*", SearchOption.AllDirectories)
                      .Where(f => f.EndsWith(".scene", StringComparison.Ordinal) || f.EndsWith(".prefab", StringComparison.Ordinal)))
         {
             var doc = SceneDocument.ReadAsset(file);
-            // Schemas 33 (parallax, sprite draw modes) and 34 (capsule/edge colliders) is above the active/enabled version 32 but does not imply it.
-            Require(doc.Objects.All(o => o.Active && o.Components.All(c => c.Enabled)) && doc.SchemaVersion != 32, $"{file} reads as active and enabled");
-            var text = Encoding.UTF8.GetString(ProjectYaml.Encode(doc));
-            Require(!text.Contains("\n  active:") && !text.Contains("    enabled:"), $"{file} writes no active/enabled keys");
+            var bytes = ProjectYaml.Encode(doc);
+            var text = Encoding.UTF8.GetString(bytes);
+            Require(!text.Contains("active: true") && !text.Contains("enabled: true"), $"{file} omits true active/enabled defaults");
+            var roundTrip = ProjectYaml.Decode<SceneDocument>(bytes);
+            Require(doc.Objects.Select(o => o.Active).SequenceEqual(roundTrip.Objects.Select(o => o.Active)) &&
+                doc.Objects.SelectMany(o => o.Components).Select(c => c.Enabled)
+                    .SequenceEqual(roundTrip.Objects.SelectMany(o => o.Components).Select(c => c.Enabled)),
+                $"{file} preserves authored active/enabled states");
             files++;
         }
 
@@ -76,7 +80,7 @@ internal static class ComponentStateChecks
             Require(game.Physics.Overlap(Shape2D.Circle(new(320, 120), 4), new PhysicsFilter(IncludeTriggers: true)).Count == 1, "the enabled collider is found");
         }
         Require(scene.CaptureObjects() == authored, "Play did not change the authored state");
-        Console.WriteLine($"PASS object active / component enabled: only false is stored ({files} sample files unchanged), " +
+        Console.WriteLine($"PASS object active / component enabled: only false is stored ({files} sample files round-trip), " +
             "runtime starts inactive subtrees and turned-off components disabled");
     }
 }

@@ -1,0 +1,1262 @@
+schemaVersion: 31
+objects:
+- id: 6a5bfc75-4d6f-5066-94fb-c57f12a80168
+  name: "Distant landscape"
+  x: 0
+  y: 0
+  width: 384
+  height: 216
+  components:
+  - type: spriteRenderer
+    squareColor: "#253950"
+    order: -20
+  - type: parallax2D
+    scrollX: 0.18
+    scrollY: 0
+    repeatX: true
+- id: a26af8f0-9d99-59b7-bde1-84c6f9c58f36
+  name: "Pillar 12"
+  x: 12
+  y: 0
+  width: 9
+  height: 1664
+  components:
+  - type: spriteRenderer
+    squareColor: "#293042"
+    order: -12
+- id: ca7c7a3b-08bb-52ce-9499-8622063978a0
+  name: "Pillar 76"
+  x: 76
+  y: 0
+  width: 9
+  height: 1664
+  components:
+  - type: spriteRenderer
+    squareColor: "#293042"
+    order: -12
+- id: abb68708-2cde-57be-b901-1a069ca910f4
+  name: "Pillar 140"
+  x: 140
+  y: 0
+  width: 9
+  height: 1664
+  components:
+  - type: spriteRenderer
+    squareColor: "#293042"
+    order: -12
+- id: c9c2cf28-d997-5192-97de-036710cbe9ea
+  name: "Pillar 204"
+  x: 204
+  y: 0
+  width: 9
+  height: 1664
+  components:
+  - type: spriteRenderer
+    squareColor: "#293042"
+    order: -12
+- id: 7c7e95d3-86c3-5caa-87bc-5bcae1effea6
+  name: "Pillar 268"
+  x: 268
+  y: 0
+  width: 9
+  height: 1664
+  components:
+  - type: spriteRenderer
+    squareColor: "#293042"
+    order: -12
+- id: e35b4d4c-e4ff-5320-96e0-7a274fd6ea04
+  name: "Pillar 332"
+  x: 332
+  y: 0
+  width: 9
+  height: 1664
+  components:
+  - type: spriteRenderer
+    squareColor: "#293042"
+    order: -12
+- id: 36d44c39-66cb-513f-90a1-d69e77471bab
+  name: "Pillar 396"
+  x: 396
+  y: 0
+  width: 9
+  height: 1664
+  components:
+  - type: spriteRenderer
+    squareColor: "#293042"
+    order: -12
+- id: b631fadf-1841-53c8-98a4-0c1d6a543041
+  name: "Trail terrain"
+  x: 0
+  y: 0
+  width: 16
+  height: 16
+  components:
+  - type: tilemap2D
+    tileset: 77049f99-9e6a-53a7-a9e6-3819d75cbaa0
+    cellSize: {width: 16, height: 16}
+    order: -1
+    streamRadius: 1
+    streamTarget: aa146a17-19cc-5183-ae1d-47260305eaf8
+    chunks:
+    - x: 0
+      y: 0
+      cells:
+      - {index: 230, tile: 7}
+      - {index: 231, tile: 7}
+      - {index: 232, tile: 7}
+      - {index: 233, tile: 7}
+      - {index: 234, tile: 7}
+      - {index: 235, tile: 7}
+      - {index: 296, tile: 7}
+      - {index: 297, tile: 7}
+      - {index: 298, tile: 7}
+      - {index: 299, tile: 7}
+      - {index: 300, tile: 7}
+      - {index: 301, tile: 7}
+      - {index: 362, tile: 7}
+      - {index: 363, tile: 7}
+      - {index: 364, tile: 7}
+      - {index: 365, tile: 7}
+      - {index: 366, tile: 7}
+      - {index: 367, tile: 7}
+      - {index: 428, tile: 7}
+      - {index: 429, tile: 7}
+      - {index: 430, tile: 7}
+      - {index: 431, tile: 7}
+      - {index: 432, tile: 7}
+      - {index: 433, tile: 7}
+      - {index: 494, tile: 7}
+      - {index: 495, tile: 7}
+      - {index: 496, tile: 7}
+      - {index: 497, tile: 7}
+      - {index: 498, tile: 7}
+      - {index: 499, tile: 7}
+      - {index: 560, tile: 7}
+      - {index: 561, tile: 7}
+      - {index: 562, tile: 7}
+      - {index: 563, tile: 7}
+      - {index: 564, tile: 7}
+      - {index: 565, tile: 7}
+      - {index: 626, tile: 7}
+      - {index: 627, tile: 7}
+      - {index: 628, tile: 7}
+      - {index: 629, tile: 7}
+      - {index: 630, tile: 7}
+      - {index: 631, tile: 7}
+      - {index: 688, tile: 7}
+      - {index: 689, tile: 7}
+      - {index: 690, tile: 7}
+      - {index: 691, tile: 7}
+      - {index: 692, tile: 7}
+      - {index: 693, tile: 7}
+      - {index: 750, tile: 7}
+      - {index: 751, tile: 7}
+      - {index: 752, tile: 7}
+      - {index: 753, tile: 7}
+      - {index: 754, tile: 7}
+      - {index: 755, tile: 7}
+      - {index: 812, tile: 7}
+      - {index: 813, tile: 7}
+      - {index: 814, tile: 7}
+      - {index: 815, tile: 7}
+      - {index: 816, tile: 7}
+      - {index: 817, tile: 7}
+      - {index: 874, tile: 7}
+      - {index: 875, tile: 7}
+      - {index: 876, tile: 7}
+      - {index: 877, tile: 7}
+      - {index: 878, tile: 7}
+      - {index: 879, tile: 7}
+      - {index: 936, tile: 7}
+      - {index: 937, tile: 7}
+      - {index: 938, tile: 7}
+      - {index: 939, tile: 7}
+      - {index: 940, tile: 7}
+      - {index: 941, tile: 7}
+      - {index: 998, tile: 7}
+      - {index: 999, tile: 7}
+      - {index: 1000, tile: 7}
+      - {index: 1001, tile: 7}
+      - {index: 1002, tile: 7}
+      - {index: 1003, tile: 7}
+    - x: 0
+      y: 1
+      cells:
+      - {index: 36, tile: 7}
+      - {index: 37, tile: 7}
+      - {index: 38, tile: 7}
+      - {index: 39, tile: 7}
+      - {index: 40, tile: 7}
+      - {index: 41, tile: 7}
+      - {index: 98, tile: 7}
+      - {index: 99, tile: 7}
+      - {index: 100, tile: 7}
+      - {index: 101, tile: 7}
+      - {index: 102, tile: 7}
+      - {index: 103, tile: 7}
+      - {index: 164, tile: 7}
+      - {index: 165, tile: 7}
+      - {index: 166, tile: 7}
+      - {index: 167, tile: 7}
+      - {index: 168, tile: 7}
+      - {index: 169, tile: 7}
+      - {index: 230, tile: 7}
+      - {index: 231, tile: 7}
+      - {index: 232, tile: 7}
+      - {index: 233, tile: 7}
+      - {index: 234, tile: 7}
+      - {index: 235, tile: 7}
+      - {index: 296, tile: 7}
+      - {index: 297, tile: 7}
+      - {index: 298, tile: 7}
+      - {index: 299, tile: 7}
+      - {index: 300, tile: 7}
+      - {index: 301, tile: 7}
+      - {index: 362, tile: 7}
+      - {index: 363, tile: 7}
+      - {index: 364, tile: 7}
+      - {index: 365, tile: 7}
+      - {index: 366, tile: 7}
+      - {index: 367, tile: 7}
+      - {index: 428, tile: 7}
+      - {index: 429, tile: 7}
+      - {index: 430, tile: 7}
+      - {index: 431, tile: 7}
+      - {index: 432, tile: 7}
+      - {index: 433, tile: 7}
+      - {index: 494, tile: 7}
+      - {index: 495, tile: 7}
+      - {index: 496, tile: 7}
+      - {index: 497, tile: 7}
+      - {index: 498, tile: 7}
+      - {index: 499, tile: 7}
+      - {index: 560, tile: 7}
+      - {index: 561, tile: 7}
+      - {index: 562, tile: 7}
+      - {index: 563, tile: 7}
+      - {index: 564, tile: 7}
+      - {index: 565, tile: 7}
+      - {index: 626, tile: 7}
+      - {index: 627, tile: 7}
+      - {index: 628, tile: 7}
+      - {index: 629, tile: 7}
+      - {index: 630, tile: 7}
+      - {index: 631, tile: 7}
+      - {index: 688, tile: 7}
+      - {index: 689, tile: 7}
+      - {index: 690, tile: 7}
+      - {index: 691, tile: 7}
+      - {index: 692, tile: 7}
+      - {index: 693, tile: 7}
+      - {index: 750, tile: 7}
+      - {index: 751, tile: 7}
+      - {index: 752, tile: 7}
+      - {index: 753, tile: 7}
+      - {index: 754, tile: 7}
+      - {index: 755, tile: 7}
+      - {index: 812, tile: 7}
+      - {index: 813, tile: 7}
+      - {index: 814, tile: 7}
+      - {index: 815, tile: 7}
+      - {index: 816, tile: 7}
+      - {index: 817, tile: 7}
+      - {index: 874, tile: 7}
+      - {index: 875, tile: 7}
+      - {index: 876, tile: 7}
+      - {index: 877, tile: 7}
+      - {index: 878, tile: 7}
+      - {index: 879, tile: 7}
+      - {index: 936, tile: 7}
+      - {index: 937, tile: 7}
+      - {index: 938, tile: 7}
+      - {index: 939, tile: 7}
+      - {index: 940, tile: 7}
+      - {index: 941, tile: 7}
+      - {index: 998, tile: 7}
+      - {index: 999, tile: 7}
+      - {index: 1000, tile: 7}
+      - {index: 1001, tile: 7}
+      - {index: 1002, tile: 7}
+      - {index: 1003, tile: 7}
+    - x: 0
+      y: 2
+      cells:
+      - {index: 36, tile: 7}
+      - {index: 37, tile: 7}
+      - {index: 38, tile: 7}
+      - {index: 39, tile: 7}
+      - {index: 40, tile: 7}
+      - {index: 41, tile: 7}
+      - {index: 98, tile: 7}
+      - {index: 99, tile: 7}
+      - {index: 100, tile: 7}
+      - {index: 101, tile: 7}
+      - {index: 102, tile: 7}
+      - {index: 103, tile: 7}
+      - {index: 164, tile: 7}
+      - {index: 165, tile: 7}
+      - {index: 166, tile: 7}
+      - {index: 167, tile: 7}
+      - {index: 168, tile: 7}
+      - {index: 169, tile: 7}
+      - {index: 230, tile: 7}
+      - {index: 231, tile: 7}
+      - {index: 232, tile: 7}
+      - {index: 233, tile: 7}
+      - {index: 234, tile: 7}
+      - {index: 235, tile: 7}
+      - {index: 296, tile: 7}
+      - {index: 297, tile: 7}
+      - {index: 298, tile: 7}
+      - {index: 299, tile: 7}
+      - {index: 300, tile: 7}
+      - {index: 301, tile: 7}
+      - {index: 362, tile: 7}
+      - {index: 363, tile: 7}
+      - {index: 364, tile: 7}
+      - {index: 365, tile: 7}
+      - {index: 366, tile: 7}
+      - {index: 367, tile: 7}
+      - {index: 428, tile: 7}
+      - {index: 429, tile: 7}
+      - {index: 430, tile: 7}
+      - {index: 431, tile: 7}
+      - {index: 432, tile: 7}
+      - {index: 433, tile: 7}
+      - {index: 494, tile: 7}
+      - {index: 495, tile: 7}
+      - {index: 496, tile: 7}
+      - {index: 497, tile: 7}
+      - {index: 498, tile: 7}
+      - {index: 499, tile: 7}
+      - {index: 560, tile: 7}
+      - {index: 561, tile: 7}
+      - {index: 562, tile: 7}
+      - {index: 563, tile: 7}
+      - {index: 564, tile: 7}
+      - {index: 565, tile: 7}
+      - {index: 626, tile: 7}
+      - {index: 627, tile: 7}
+      - {index: 628, tile: 7}
+      - {index: 629, tile: 7}
+      - {index: 630, tile: 7}
+      - {index: 631, tile: 7}
+      - {index: 688, tile: 7}
+      - {index: 689, tile: 7}
+      - {index: 690, tile: 7}
+      - {index: 691, tile: 7}
+      - {index: 692, tile: 7}
+      - {index: 693, tile: 7}
+      - {index: 750, tile: 7}
+      - {index: 751, tile: 7}
+      - {index: 752, tile: 7}
+      - {index: 753, tile: 7}
+      - {index: 754, tile: 7}
+      - {index: 755, tile: 7}
+      - {index: 812, tile: 7}
+      - {index: 813, tile: 7}
+      - {index: 814, tile: 7}
+      - {index: 815, tile: 7}
+      - {index: 816, tile: 7}
+      - {index: 817, tile: 7}
+      - {index: 874, tile: 7}
+      - {index: 875, tile: 7}
+      - {index: 876, tile: 7}
+      - {index: 877, tile: 7}
+      - {index: 878, tile: 7}
+      - {index: 879, tile: 7}
+      - {index: 936, tile: 7}
+      - {index: 937, tile: 7}
+      - {index: 938, tile: 7}
+      - {index: 939, tile: 7}
+      - {index: 940, tile: 7}
+      - {index: 941, tile: 7}
+      - {index: 998, tile: 7}
+      - {index: 999, tile: 7}
+      - {index: 1000, tile: 7}
+      - {index: 1001, tile: 7}
+      - {index: 1002, tile: 7}
+      - {index: 1003, tile: 7}
+    - x: 0
+      y: 3
+      cells:
+      - {index: 36, tile: 7}
+      - {index: 37, tile: 7}
+      - {index: 38, tile: 7}
+      - {index: 39, tile: 7}
+      - {index: 40, tile: 7}
+      - {index: 41, tile: 7}
+      - {index: 98, tile: 7}
+      - {index: 99, tile: 7}
+      - {index: 100, tile: 7}
+      - {index: 101, tile: 7}
+      - {index: 102, tile: 7}
+      - {index: 103, tile: 7}
+      - {index: 160, tile: 4}
+      - {index: 161, tile: 4}
+      - {index: 162, tile: 4}
+      - {index: 163, tile: 4}
+      - {index: 164, tile: 4}
+      - {index: 165, tile: 4}
+      - {index: 166, tile: 4}
+      - {index: 167, tile: 4}
+      - {index: 168, tile: 4}
+      - {index: 169, tile: 4}
+      - {index: 170, tile: 4}
+      - {index: 171, tile: 4}
+      - {index: 172, tile: 4}
+      - {index: 173, tile: 4}
+      - {index: 174, tile: 4}
+      - {index: 175, tile: 4}
+      - {index: 176, tile: 4}
+      - {index: 177, tile: 4}
+      - {index: 178, tile: 4}
+      - {index: 179, tile: 4}
+      - {index: 180, tile: 4}
+      - {index: 181, tile: 4}
+      - {index: 182, tile: 4}
+      - {index: 183, tile: 4}
+      - {index: 184, tile: 4}
+      - {index: 192, tile: 4}
+      - {index: 193, tile: 4}
+      - {index: 194, tile: 4}
+      - {index: 195, tile: 4}
+      - {index: 196, tile: 4}
+      - {index: 197, tile: 4}
+      - {index: 198, tile: 4}
+      - {index: 199, tile: 4}
+      - {index: 200, tile: 4}
+      - {index: 201, tile: 4}
+      - {index: 202, tile: 4}
+      - {index: 203, tile: 4}
+      - {index: 204, tile: 4}
+      - {index: 205, tile: 4}
+      - {index: 206, tile: 4}
+      - {index: 207, tile: 4}
+      - {index: 208, tile: 4}
+      - {index: 209, tile: 4}
+      - {index: 210, tile: 4}
+      - {index: 211, tile: 4}
+      - {index: 212, tile: 4}
+      - {index: 213, tile: 4}
+      - {index: 214, tile: 4}
+      - {index: 215, tile: 4}
+      - {index: 216, tile: 4}
+      - {index: 224, tile: 4}
+      - {index: 225, tile: 4}
+      - {index: 226, tile: 4}
+      - {index: 227, tile: 4}
+      - {index: 228, tile: 4}
+      - {index: 229, tile: 4}
+      - {index: 230, tile: 4}
+      - {index: 231, tile: 4}
+      - {index: 232, tile: 4}
+      - {index: 233, tile: 4}
+      - {index: 234, tile: 4}
+      - {index: 235, tile: 4}
+      - {index: 236, tile: 4}
+      - {index: 237, tile: 4}
+      - {index: 238, tile: 4}
+      - {index: 239, tile: 4}
+      - {index: 240, tile: 4}
+      - {index: 241, tile: 4}
+      - {index: 242, tile: 4}
+      - {index: 243, tile: 4}
+      - {index: 244, tile: 4}
+      - {index: 245, tile: 4}
+      - {index: 246, tile: 4}
+      - {index: 247, tile: 4}
+      - {index: 248, tile: 4}
+- id: aa146a17-19cc-5183-ae1d-47260305eaf8
+  name: "Courier"
+  x: 26
+  y: 1592
+  width: 14
+  height: 20
+  components:
+  - type: capsuleCollider2D
+    layer: 1
+  - type: rigidbody2D
+    freezeRotation: true
+  - type: characterMotor2D
+  - type: particleEmitter2D
+    particles: ddeba15c-d264-50ee-bf85-2f87a72942ee
+    trigger: Landing
+    offsetY: 9
+  - type: script
+    script: TrailRunner
+    values: {"Status": "43e1a655-916c-5a0e-880a-64afdf47c59c", "Totals": "db7a182e-17ed-532b-b506-38eb3de86292", "Portrait": "fa5b80cb-4827-5f86-9434-90fe05b711e6", "Idle": {"Id": "6836d239-7548-58d2-878d-30d2cc8f31c0"}, "Running": {"Id": "20fe28c1-6b3f-5a68-a0cd-ea10dc53efdf"}, "Airborne": {"Id": "7717b8a9-cc86-52a9-951d-efff4b4872fa"}, "NextStage": {"Id": "bf7a9ed5-3bac-5ca3-9338-dfb73e94f028"}, "TrailheadScene": {"Id": "352b64f0-d4ce-56d0-a9e9-388dbbec0cb3"}, "Chime": "68f45ff4-1e2c-51a7-9fe7-20bde94a3b83", "Hurt": "0ac7046a-955b-5f1b-b880-c2e7dd9ed6ea", "Clear": "2740369d-24fa-5289-b3ca-8edadf328a7e", "Stage": 3, "FallY": 1712}
+- id: 68f45ff4-1e2c-51a7-9fe7-20bde94a3b83
+  name: "Chime sound"
+  x: 0
+  y: 0
+  width: 1
+  height: 1
+  components:
+  - type: audioSource
+    sound: dfc4cc33-24eb-5d3b-843b-c2b98a45f8a5
+    bus: Effects
+- id: 0ac7046a-955b-5f1b-b880-c2e7dd9ed6ea
+  name: "Hurt sound"
+  x: 0
+  y: 0
+  width: 1
+  height: 1
+  components:
+  - type: audioSource
+    sound: 65574b41-42da-5d1a-b8a8-06bdc915c840
+    bus: Effects
+- id: 2740369d-24fa-5289-b3ca-8edadf328a7e
+  name: "Clear sound"
+  x: 0
+  y: 0
+  width: 1
+  height: 1
+  components:
+  - type: audioSource
+    sound: 75cbfdaa-bad9-52a9-ade6-fbf188cdb699
+    bus: Effects
+- id: fa5b80cb-4827-5f86-9434-90fe05b711e6
+  name: "Courier sprite"
+  x: -4
+  y: -6
+  width: 22
+  height: 26
+  parentId: aa146a17-19cc-5183-ae1d-47260305eaf8
+  pivotX: 0.5
+  pivotY: 0.5
+  components:
+  - type: spriteRenderer
+    assetId: 6836d239-7548-58d2-878d-30d2cc8f31c0
+    order: 8
+- id: 29e082ad-a51f-5c69-9ede-f67a3e96f42d
+  name: "Follow camera"
+  x: 192
+  y: 1556
+  width: 1
+  height: 1
+  components:
+  - type: camera2D
+    follow: aa146a17-19cc-5183-ae1d-47260305eaf8
+    halfLife: 0.13
+    deadZoneWidth: 96
+    deadZoneHeight: 42
+    lookAhead: 0.11
+    bounds: {x: 0, y: 0, width: 400, height: 1664}
+- id: 737ca51d-61ba-5927-a47b-6a94c316935f
+  name: "Token 2-0"
+  x: 103
+  y: 1507
+  width: 11
+  height: 11
+  components:
+  - type: spriteRenderer
+    assetId: 90d220e2-0a83-57d1-9ef2-e35632d96e51
+    order: 4
+  - type: boxCollider2D
+    isTrigger: true
+    layer: 2
+  - type: script
+    script: TrailMarker
+    values: {"Kind": "Token"}
+- id: ea959ce3-5b71-5268-8156-d714310e0495
+  name: "Token 2-1"
+  x: 118
+  y: 1507
+  width: 11
+  height: 11
+  components:
+  - type: spriteRenderer
+    assetId: 90d220e2-0a83-57d1-9ef2-e35632d96e51
+    order: 4
+  - type: boxCollider2D
+    isTrigger: true
+    layer: 2
+  - type: script
+    script: TrailMarker
+    values: {"Kind": "Token"}
+- id: c311ca02-b072-543a-95a4-d4e1bbac3c9a
+  name: "Token 2-2"
+  x: 133
+  y: 1507
+  width: 11
+  height: 11
+  components:
+  - type: spriteRenderer
+    assetId: 90d220e2-0a83-57d1-9ef2-e35632d96e51
+    order: 4
+  - type: boxCollider2D
+    isTrigger: true
+    layer: 2
+  - type: script
+    script: TrailMarker
+    values: {"Kind": "Token"}
+- id: c8417244-e4fd-5ba9-872d-276dc9f0f056
+  name: "Token 6-0"
+  x: 231
+  y: 1379
+  width: 11
+  height: 11
+  components:
+  - type: spriteRenderer
+    assetId: 90d220e2-0a83-57d1-9ef2-e35632d96e51
+    order: 4
+  - type: boxCollider2D
+    isTrigger: true
+    layer: 2
+  - type: script
+    script: TrailMarker
+    values: {"Kind": "Token"}
+- id: b762143a-b9b4-506c-857a-5d2abca35c5a
+  name: "Token 6-1"
+  x: 246
+  y: 1379
+  width: 11
+  height: 11
+  components:
+  - type: spriteRenderer
+    assetId: 90d220e2-0a83-57d1-9ef2-e35632d96e51
+    order: 4
+  - type: boxCollider2D
+    isTrigger: true
+    layer: 2
+  - type: script
+    script: TrailMarker
+    values: {"Kind": "Token"}
+- id: 96af95f9-e3ef-5215-8738-d65e74b8e50c
+  name: "Token 6-2"
+  x: 261
+  y: 1379
+  width: 11
+  height: 11
+  components:
+  - type: spriteRenderer
+    assetId: 90d220e2-0a83-57d1-9ef2-e35632d96e51
+    order: 4
+  - type: boxCollider2D
+    isTrigger: true
+    layer: 2
+  - type: script
+    script: TrailMarker
+    values: {"Kind": "Token"}
+- id: 3ba37471-b09a-5d79-bd1b-2b591b295309
+  name: "Token 10-0"
+  x: 231
+  y: 1251
+  width: 11
+  height: 11
+  components:
+  - type: spriteRenderer
+    assetId: 90d220e2-0a83-57d1-9ef2-e35632d96e51
+    order: 4
+  - type: boxCollider2D
+    isTrigger: true
+    layer: 2
+  - type: script
+    script: TrailMarker
+    values: {"Kind": "Token"}
+- id: 514ffb98-56ca-56e4-b0cb-0c5e462ed2ee
+  name: "Token 10-1"
+  x: 246
+  y: 1251
+  width: 11
+  height: 11
+  components:
+  - type: spriteRenderer
+    assetId: 90d220e2-0a83-57d1-9ef2-e35632d96e51
+    order: 4
+  - type: boxCollider2D
+    isTrigger: true
+    layer: 2
+  - type: script
+    script: TrailMarker
+    values: {"Kind": "Token"}
+- id: ee6fe2dd-47cf-5b1d-b3ce-0a303e7adfa3
+  name: "Token 10-2"
+  x: 261
+  y: 1251
+  width: 11
+  height: 11
+  components:
+  - type: spriteRenderer
+    assetId: 90d220e2-0a83-57d1-9ef2-e35632d96e51
+    order: 4
+  - type: boxCollider2D
+    isTrigger: true
+    layer: 2
+  - type: script
+    script: TrailMarker
+    values: {"Kind": "Token"}
+- id: f571eb7a-250e-52f4-a427-7adcd4a51d11
+  name: "Token 14-0"
+  x: 103
+  y: 1123
+  width: 11
+  height: 11
+  components:
+  - type: spriteRenderer
+    assetId: 90d220e2-0a83-57d1-9ef2-e35632d96e51
+    order: 4
+  - type: boxCollider2D
+    isTrigger: true
+    layer: 2
+  - type: script
+    script: TrailMarker
+    values: {"Kind": "Token"}
+- id: ccb86e60-882a-5ba7-99da-6c71b66f99f4
+  name: "Token 14-1"
+  x: 118
+  y: 1123
+  width: 11
+  height: 11
+  components:
+  - type: spriteRenderer
+    assetId: 90d220e2-0a83-57d1-9ef2-e35632d96e51
+    order: 4
+  - type: boxCollider2D
+    isTrigger: true
+    layer: 2
+  - type: script
+    script: TrailMarker
+    values: {"Kind": "Token"}
+- id: dc53a8f5-8ff7-5f32-926c-dbba0d2a839c
+  name: "Token 14-2"
+  x: 133
+  y: 1123
+  width: 11
+  height: 11
+  components:
+  - type: spriteRenderer
+    assetId: 90d220e2-0a83-57d1-9ef2-e35632d96e51
+    order: 4
+  - type: boxCollider2D
+    isTrigger: true
+    layer: 2
+  - type: script
+    script: TrailMarker
+    values: {"Kind": "Token"}
+- id: ff79d00d-8309-5612-9b8d-345005db38ad
+  name: "Token 18-0"
+  x: 103
+  y: 995
+  width: 11
+  height: 11
+  components:
+  - type: spriteRenderer
+    assetId: 90d220e2-0a83-57d1-9ef2-e35632d96e51
+    order: 4
+  - type: boxCollider2D
+    isTrigger: true
+    layer: 2
+  - type: script
+    script: TrailMarker
+    values: {"Kind": "Token"}
+- id: ca64524d-9668-5dc3-877e-c1eaa451185e
+  name: "Token 18-1"
+  x: 118
+  y: 995
+  width: 11
+  height: 11
+  components:
+  - type: spriteRenderer
+    assetId: 90d220e2-0a83-57d1-9ef2-e35632d96e51
+    order: 4
+  - type: boxCollider2D
+    isTrigger: true
+    layer: 2
+  - type: script
+    script: TrailMarker
+    values: {"Kind": "Token"}
+- id: a4955fa7-4a1f-5989-8c13-9a7b5c13f6c5
+  name: "Token 18-2"
+  x: 133
+  y: 995
+  width: 11
+  height: 11
+  components:
+  - type: spriteRenderer
+    assetId: 90d220e2-0a83-57d1-9ef2-e35632d96e51
+    order: 4
+  - type: boxCollider2D
+    isTrigger: true
+    layer: 2
+  - type: script
+    script: TrailMarker
+    values: {"Kind": "Token"}
+- id: 3d7a1832-efab-5aca-bf06-4f2d32f266a3
+  name: "Token 22-0"
+  x: 231
+  y: 867
+  width: 11
+  height: 11
+  components:
+  - type: spriteRenderer
+    assetId: 90d220e2-0a83-57d1-9ef2-e35632d96e51
+    order: 4
+  - type: boxCollider2D
+    isTrigger: true
+    layer: 2
+  - type: script
+    script: TrailMarker
+    values: {"Kind": "Token"}
+- id: 6e3fd1b7-38eb-53c1-bc7a-7c1aae2aeb4d
+  name: "Token 22-1"
+  x: 246
+  y: 867
+  width: 11
+  height: 11
+  components:
+  - type: spriteRenderer
+    assetId: 90d220e2-0a83-57d1-9ef2-e35632d96e51
+    order: 4
+  - type: boxCollider2D
+    isTrigger: true
+    layer: 2
+  - type: script
+    script: TrailMarker
+    values: {"Kind": "Token"}
+- id: 9579156e-a51c-5d1b-b633-636fe2291c50
+  name: "Token 22-2"
+  x: 261
+  y: 867
+  width: 11
+  height: 11
+  components:
+  - type: spriteRenderer
+    assetId: 90d220e2-0a83-57d1-9ef2-e35632d96e51
+    order: 4
+  - type: boxCollider2D
+    isTrigger: true
+    layer: 2
+  - type: script
+    script: TrailMarker
+    values: {"Kind": "Token"}
+- id: ac956248-2457-5d5f-9b53-5aa33e6fd69f
+  name: "Token 26-0"
+  x: 231
+  y: 739
+  width: 11
+  height: 11
+  components:
+  - type: spriteRenderer
+    assetId: 90d220e2-0a83-57d1-9ef2-e35632d96e51
+    order: 4
+  - type: boxCollider2D
+    isTrigger: true
+    layer: 2
+  - type: script
+    script: TrailMarker
+    values: {"Kind": "Token"}
+- id: 9dd604da-7c93-59e7-9a0c-ebdddb5b4998
+  name: "Token 26-1"
+  x: 246
+  y: 739
+  width: 11
+  height: 11
+  components:
+  - type: spriteRenderer
+    assetId: 90d220e2-0a83-57d1-9ef2-e35632d96e51
+    order: 4
+  - type: boxCollider2D
+    isTrigger: true
+    layer: 2
+  - type: script
+    script: TrailMarker
+    values: {"Kind": "Token"}
+- id: 0d06d743-2060-5f79-91db-1811d88a1fac
+  name: "Token 26-2"
+  x: 261
+  y: 739
+  width: 11
+  height: 11
+  components:
+  - type: spriteRenderer
+    assetId: 90d220e2-0a83-57d1-9ef2-e35632d96e51
+    order: 4
+  - type: boxCollider2D
+    isTrigger: true
+    layer: 2
+  - type: script
+    script: TrailMarker
+    values: {"Kind": "Token"}
+- id: ff60c7be-31b5-5669-a5e7-03d936676285
+  name: "Token 30-0"
+  x: 103
+  y: 611
+  width: 11
+  height: 11
+  components:
+  - type: spriteRenderer
+    assetId: 90d220e2-0a83-57d1-9ef2-e35632d96e51
+    order: 4
+  - type: boxCollider2D
+    isTrigger: true
+    layer: 2
+  - type: script
+    script: TrailMarker
+    values: {"Kind": "Token"}
+- id: 43a5da78-78a0-576c-a5a4-2d4b240fdc71
+  name: "Token 30-1"
+  x: 118
+  y: 611
+  width: 11
+  height: 11
+  components:
+  - type: spriteRenderer
+    assetId: 90d220e2-0a83-57d1-9ef2-e35632d96e51
+    order: 4
+  - type: boxCollider2D
+    isTrigger: true
+    layer: 2
+  - type: script
+    script: TrailMarker
+    values: {"Kind": "Token"}
+- id: 0f3b37fe-95b9-5831-ad73-02892160ef37
+  name: "Token 30-2"
+  x: 133
+  y: 611
+  width: 11
+  height: 11
+  components:
+  - type: spriteRenderer
+    assetId: 90d220e2-0a83-57d1-9ef2-e35632d96e51
+    order: 4
+  - type: boxCollider2D
+    isTrigger: true
+    layer: 2
+  - type: script
+    script: TrailMarker
+    values: {"Kind": "Token"}
+- id: b25279c2-89cf-5357-b2d3-cf1e48667787
+  name: "Token 34-0"
+  x: 103
+  y: 483
+  width: 11
+  height: 11
+  components:
+  - type: spriteRenderer
+    assetId: 90d220e2-0a83-57d1-9ef2-e35632d96e51
+    order: 4
+  - type: boxCollider2D
+    isTrigger: true
+    layer: 2
+  - type: script
+    script: TrailMarker
+    values: {"Kind": "Token"}
+- id: 4bb1d5fc-a82c-597f-9974-041e911c7aaf
+  name: "Token 34-1"
+  x: 118
+  y: 483
+  width: 11
+  height: 11
+  components:
+  - type: spriteRenderer
+    assetId: 90d220e2-0a83-57d1-9ef2-e35632d96e51
+    order: 4
+  - type: boxCollider2D
+    isTrigger: true
+    layer: 2
+  - type: script
+    script: TrailMarker
+    values: {"Kind": "Token"}
+- id: 1b8226fd-a3de-5eb5-a5b6-ba0183ad9f28
+  name: "Token 34-2"
+  x: 133
+  y: 483
+  width: 11
+  height: 11
+  components:
+  - type: spriteRenderer
+    assetId: 90d220e2-0a83-57d1-9ef2-e35632d96e51
+    order: 4
+  - type: boxCollider2D
+    isTrigger: true
+    layer: 2
+  - type: script
+    script: TrailMarker
+    values: {"Kind": "Token"}
+- id: 59100062-945c-5d23-9403-b7c10175e165
+  name: "Token 38-0"
+  x: 231
+  y: 355
+  width: 11
+  height: 11
+  components:
+  - type: spriteRenderer
+    assetId: 90d220e2-0a83-57d1-9ef2-e35632d96e51
+    order: 4
+  - type: boxCollider2D
+    isTrigger: true
+    layer: 2
+  - type: script
+    script: TrailMarker
+    values: {"Kind": "Token"}
+- id: f175af3a-5f9a-513f-83a3-fe4d43d8ee8e
+  name: "Token 38-1"
+  x: 246
+  y: 355
+  width: 11
+  height: 11
+  components:
+  - type: spriteRenderer
+    assetId: 90d220e2-0a83-57d1-9ef2-e35632d96e51
+    order: 4
+  - type: boxCollider2D
+    isTrigger: true
+    layer: 2
+  - type: script
+    script: TrailMarker
+    values: {"Kind": "Token"}
+- id: 32098308-0fbd-5b0d-9c87-7db85b170d76
+  name: "Token 38-2"
+  x: 261
+  y: 355
+  width: 11
+  height: 11
+  components:
+  - type: spriteRenderer
+    assetId: 90d220e2-0a83-57d1-9ef2-e35632d96e51
+    order: 4
+  - type: boxCollider2D
+    isTrigger: true
+    layer: 2
+  - type: script
+    script: TrailMarker
+    values: {"Kind": "Token"}
+- id: c5c78a6e-4803-5b02-8e8a-94791d80a973
+  name: "Token 42-0"
+  x: 231
+  y: 227
+  width: 11
+  height: 11
+  components:
+  - type: spriteRenderer
+    assetId: 90d220e2-0a83-57d1-9ef2-e35632d96e51
+    order: 4
+  - type: boxCollider2D
+    isTrigger: true
+    layer: 2
+  - type: script
+    script: TrailMarker
+    values: {"Kind": "Token"}
+- id: f04e9fc0-1f6e-536c-b1ce-3ab5b4fafa95
+  name: "Token 42-1"
+  x: 246
+  y: 227
+  width: 11
+  height: 11
+  components:
+  - type: spriteRenderer
+    assetId: 90d220e2-0a83-57d1-9ef2-e35632d96e51
+    order: 4
+  - type: boxCollider2D
+    isTrigger: true
+    layer: 2
+  - type: script
+    script: TrailMarker
+    values: {"Kind": "Token"}
+- id: 0d770a97-5e42-591f-8b56-feefe0c4fb0d
+  name: "Token 42-2"
+  x: 261
+  y: 227
+  width: 11
+  height: 11
+  components:
+  - type: spriteRenderer
+    assetId: 90d220e2-0a83-57d1-9ef2-e35632d96e51
+    order: 4
+  - type: boxCollider2D
+    isTrigger: true
+    layer: 2
+  - type: script
+    script: TrailMarker
+    values: {"Kind": "Token"}
+- id: 3275f033-3d6f-50fe-80b5-2edb99766a0f
+  name: "Token 46-0"
+  x: 103
+  y: 99
+  width: 11
+  height: 11
+  components:
+  - type: spriteRenderer
+    assetId: 90d220e2-0a83-57d1-9ef2-e35632d96e51
+    order: 4
+  - type: boxCollider2D
+    isTrigger: true
+    layer: 2
+  - type: script
+    script: TrailMarker
+    values: {"Kind": "Token"}
+- id: 3e806070-9b9a-50fc-a097-64bea02a3aac
+  name: "Token 46-1"
+  x: 118
+  y: 99
+  width: 11
+  height: 11
+  components:
+  - type: spriteRenderer
+    assetId: 90d220e2-0a83-57d1-9ef2-e35632d96e51
+    order: 4
+  - type: boxCollider2D
+    isTrigger: true
+    layer: 2
+  - type: script
+    script: TrailMarker
+    values: {"Kind": "Token"}
+- id: 243b7d06-a994-56f4-b691-2a5d54884b1f
+  name: "Token 46-2"
+  x: 133
+  y: 99
+  width: 11
+  height: 11
+  components:
+  - type: spriteRenderer
+    assetId: 90d220e2-0a83-57d1-9ef2-e35632d96e51
+    order: 4
+  - type: boxCollider2D
+    isTrigger: true
+    layer: 2
+  - type: script
+    script: TrailMarker
+    values: {"Kind": "Token"}
+- id: 70a9f763-bf83-5d97-a41f-ceb0e7acc1f0
+  name: "Gem 1"
+  x: 147
+  y: 1530
+  width: 10
+  height: 12
+  components:
+  - type: spriteRenderer
+    assetId: 79bb12ca-3bf1-5efa-8d17-7667174248f5
+    order: 4
+  - type: boxCollider2D
+    isTrigger: true
+    layer: 2
+  - type: script
+    script: TrailMarker
+    values: {"Kind": "Gem"}
+- id: 1a1c2d44-adb1-511e-bb46-f187b7e9c84e
+  name: "Gem 2"
+  x: 339
+  y: 826
+  width: 10
+  height: 12
+  components:
+  - type: spriteRenderer
+    assetId: 79bb12ca-3bf1-5efa-8d17-7667174248f5
+    order: 4
+  - type: boxCollider2D
+    isTrigger: true
+    layer: 2
+  - type: script
+    script: TrailMarker
+    values: {"Kind": "Gem"}
+- id: 57adfc73-d2f3-5f90-a6d4-c6766641b113
+  name: "Gem 3"
+  x: 179
+  y: 90
+  width: 10
+  height: 12
+  components:
+  - type: spriteRenderer
+    assetId: 79bb12ca-3bf1-5efa-8d17-7667174248f5
+    order: 4
+  - type: boxCollider2D
+    isTrigger: true
+    layer: 2
+  - type: script
+    script: TrailMarker
+    values: {"Kind": "Gem"}
+- id: 51b02059-f805-5083-9e02-a74771350537
+  name: "Checkpoint 1"
+  x: 288
+  y: 816
+  width: 26
+  height: 32
+  components:
+  - type: spriteRenderer
+    assetId: 824f6853-4ed5-5ce3-a67d-27a51c8f5a8b
+    order: 4
+  - type: boxCollider2D
+    isTrigger: true
+    layer: 2
+  - type: script
+    script: TrailMarker
+    values: {"Kind": "Checkpoint"}
+- id: b31ad76c-9ca7-5cc1-b39a-0f2d7316097f
+  name: "Goal 1"
+  x: 144
+  y: 80
+  width: 26
+  height: 32
+  components:
+  - type: spriteRenderer
+    assetId: 824f6853-4ed5-5ce3-a67d-27a51c8f5a8b
+    order: 4
+  - type: boxCollider2D
+    isTrigger: true
+    layer: 2
+  - type: script
+    script: TrailMarker
+    values: {"Kind": "Goal"}
+- id: f14b6795-e0d8-5158-a9c5-8d66981bc0fb
+  name: "HUD"
+  x: 0
+  y: 0
+  width: 1
+  height: 1
+  components:
+  - type: uiCanvas
+- id: aafecedd-768e-52d2-a827-b294a5759d83
+  name: "Stage"
+  x: 13
+  y: 8
+  width: 280
+  height: 22
+  parentId: f14b6795-e0d8-5158-a9c5-8d66981bc0fb
+  components:
+  - type: uiRect
+  - type: uiText
+    size: 15
+    color: "#FAF4D4"
+    text: "03  /  Stormwatch Tower"
+- id: db7a182e-17ed-532b-b506-38eb3de86292
+  name: "Totals"
+  x: 13
+  y: 31
+  width: 320
+  height: 14
+  parentId: f14b6795-e0d8-5158-a9c5-8d66981bc0fb
+  components:
+  - type: uiRect
+  - type: uiText
+    size: 10
+    color: "#FAF4D4"
+    text: "HEARTS  3       TOKENS  00       GEMS  0/3"
+- id: 708964d5-0abd-56db-a5a0-712dc395405e
+  name: "Instructions"
+  x: 13
+  y: 199
+  width: 360
+  height: 14
+  parentId: f14b6795-e0d8-5158-a9c5-8d66981bc0fb
+  components:
+  - type: uiRect
+  - type: uiText
+    size: 10
+    color: "#FAF4D4"
+    text: "ARROWS  Move     SPACE  Jump     X  Dash     P  Pause"
+- id: 43e1a655-916c-5a0e-880a-64afdf47c59c
+  name: "Status"
+  x: 13
+  y: 51
+  width: 360
+  height: 26
+  parentId: f14b6795-e0d8-5158-a9c5-8d66981bc0fb
+  components:
+  - type: uiRect
+  - type: uiText
+    size: 14
+    color: "#FAF4D4"
+    text: ""
+defaultCameraId: 29e082ad-a51f-5c69-9ede-f67a3e96f42d

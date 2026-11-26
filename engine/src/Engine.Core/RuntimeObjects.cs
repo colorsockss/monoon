@@ -72,6 +72,10 @@ public interface IGameObjects
     [EngineFeature(EngineFeature.Tilemaps)]
     bool ReplaceTiles(Guid layer, int width, int height, ReadOnlySpan<int> tiles);
     [EngineFeature(EngineFeature.Tilemaps)]
+    Point? TileCellAt(Guid layer, Vector2 worldPoint);
+    [EngineFeature(EngineFeature.Tilemaps)]
+    Vector2? TileCellCenter(Guid layer, Point cell);
+    [EngineFeature(EngineFeature.Tilemaps)]
     bool TryGetTile(Guid layer, Point cell, out TileInfo info);
     [EngineFeature(EngineFeature.Tilemaps)]
     bool SetTile(Guid layer, Point cell, int tile);

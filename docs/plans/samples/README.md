@@ -2,11 +2,33 @@
 
 2026-11-25 작성. AI 에이전트 도구(로드맵 17장)는 미루고 이 샘플을 먼저 만든다. 지금까지의 샘플(`PlatformerLab`, `KeyRoomTiles`, `SeedLab` 등)은 기능 하나를 확인하는 실험실이다. 이번 세 샘플은 **처음부터 끝까지 플레이할 수 있는 작은 게임**이다. 엔진 기능을 함께 써 보고, 실제 게임을 만들 때 막히는 곳을 찾는 것이 목적이다.
 
-| 샘플 (가칭) | 타일 레이아웃 | 장르 | 계획 |
+| 샘플 | 타일 레이아웃 | 장르 | 계획 |
 | --- | --- | --- | --- |
 | **LedgeRun** | Orthogonal | 횡스크롤 플랫포머, 3개 스테이지 | [1-platformer.md](1-platformer.md) |
 | **IsoBand** | Isometric | 용병단을 이끄는 캐주얼 액션 RPG, 자동 공격 | [2-iso-rpg.md](2-iso-rpg.md) |
 | **HexRealm** | Hex · Pointy | PC 턴제 문명 전략(마우스·키보드), 작은 맵 한 판 | [3-hex-strategy.md](3-hex-strategy.md) |
+
+## 제작 상태
+
+| 샘플 | 첫 플레이 버전 | 검증·남은 항목 |
+| --- | --- | --- |
+| LedgeRun | 초원·동굴·탑, 정상 수호자, 3개 저장 슬롯 | [매뉴얼](../../manual/ledgerun.md) · [결과](../../../engine/tests/results/ledgerun/README.md) |
+| IsoBand | 마을에서 두 필드와 지하 묘지를 돌고 복귀하는 원정 | [매뉴얼](../../manual/isoband.md) · [결과](../../../engine/tests/results/isoband/README.md) |
+| HexRealm | 600칸 도시·유닛 턴제 전략, 40턴 상태 재생 | [매뉴얼](../../manual/hexrealm.md) · [결과](../../../engine/tests/results/hexrealm/README.md) |
+
+macOS arm64의 세 실행 경로에서 샘플별 입력 기록과 화면을 비교했고, Debian Linux x64의 두 배포본에서 플레이 기록을 대조했다. 세 샘플의 배포 크기 기준도 등록했다. [샘플 아트 생성 프롬프트](asset-prompts.md)
+
+### 2026-11-26 독립 검수
+
+서브에이전트 세 명이 게임별로 플레이 규칙과 회귀 검사 범위를 점검했다. macOS arm64에서 프로젝트 테스트 7개, 기존 Release·Native AOT 플레이어 6개의 고정 리플레이와 기준 캡처 23장을 다시 확인했다. 이번 Linux 비교에는 기존 결과 파일을 사용했다. 별도 입력으로 재현한 문제와 우선순위는 게임별 기록에 적었다. [LedgeRun](../../../engine/tests/results/ledgerun/README.md#2026-11-26-독립-검수) · [IsoBand](../../../engine/tests/results/isoband/README.md#2026-11-26-독립-검수) · [HexRealm](../../../engine/tests/results/hexrealm/README.md#2026-11-26-독립-검수)
+
+### 검수 수정과 재검증
+
+HexRealm의 P1 빈 슬롯 F9 초기화를 먼저 수정했다. 세 샘플의 P2·P3도 수정하고 재현 입력을 프로젝트 검사에 추가하거나 기존 리플레이로 다시 실행했다. macOS arm64 프로젝트 검사 16개가 통과했다. Scene Play·Release·Native AOT의 완주 기록과 캡처 23장이 일치했다. [HexRealm](../../../engine/tests/results/hexrealm/README.md#2026-11-26-검수-수정과-재검증) · [LedgeRun](../../../engine/tests/results/ledgerun/README.md#2026-11-26-검수-수정과-재검증) · [IsoBand](../../../engine/tests/results/isoband/README.md#2026-11-26-검수-수정과-재검증)
+
+`./monoon test`를 통과했다. 배포 크기 검사에서 macOS arm64 빌드 12개가 모두 기존 기준의 +1% 이내였다.
+
+보존한 Debian 12 x64 QEMU 게스트에서는 Mac에서 교차 빌드한 Release 세 개를 헤드리스로 재생했다. 완주 로그 해시와 HexRealm 빈 슬롯 F9, IsoBand 마지막 복귀 누락의 판정이 Mac과 일치했다. 게스트 직접 빌드는 템플릿 경로와 macOS 아카이브 메타데이터 때문에 재시도한 뒤, 교차 빌드 검증을 마치고 종료했다. Linux Native AOT와 Windows 수정본 재검증은 남아 있다.
 
 ## 장르 참고와 독창성
 
@@ -18,7 +40,7 @@
 - **엔진 규칙**: [AGENTS.md](../../../AGENTS.md)를 따른다. 장르 규칙(전투 공식, 턴 순서, AI)은 엔진 내장이 아니라 **샘플의 프로젝트 스크립트**로 둔다. 여러 장르가 같이 쓸 기능만 엔진에 넣는다(아래 [엔진 보강](#엔진-보강-후보)).
 - **편집 방식**: 씬·프리팹·타일셋은 에디터에서 만든다. 맵이 크면 시드 기반 생성 스크립트로 채우고 결과를 씬에 굽는다.
 - **배포 확인**: 각 샘플은 macOS arm64에서 Scene Play·Release·Native AOT 기록이 바이트 단위로 같아야 한다. 입력 녹화(`.inputreplay`)를 재생한 trace와 캡처로 비교한다. Linux x64는 게스트에서 Release·AOT를 헤드리스로 재생한다. Windows는 장비가 준비되면 한 번에 확인한다.
-- **용량·성능 기록**: 샘플별로 Native AOT 실행 파일과 앱 크기, 첫 프레임 시간, 대표 장면의 프레임 시간과 틱당 할당을 [결과 README](../../../engine/tests/results/) 형식으로 남긴다. 크기 게이트(`./monoon test`)에는 완성 후 넣을지 결정한다(결정 4).
+- **용량·성능 기록**: 샘플별로 Native AOT 실행 파일과 앱 크기, 첫 프레임 시간, 대표 장면의 프레임 시간과 틱당 할당을 [결과 README](../../../engine/tests/results/) 형식으로 남긴다. 완성한 샘플은 결정 4에 따라 크기 게이트(`./monoon test`)에 등록한다.
 - **하네스**: 샘플마다 `engine/tests/<Sample>.Play/`에 입력 녹화 재생 하네스를 하나 만들고 `engine/tests/harnesses.json`에 등록한다. [하네스 빌드 묶음](../../../engine/tests/results/next1-x64/build-groups.md)의 규칙(시작 씬 하나, 원본 샘플 그대로)에 맞춰 x64 회귀에서 빌드 한 쌍으로 끝나게 한다.
 - **매뉴얼**: 샘플마다 매뉴얼 한 장("샘플에서 찾아보기"에서 링크)에 조작법과 어떤 엔진 기능을 어디서 썼는지 적는다. 새 엔진 기능은 해당 매뉴얼과 [구현 기록](../../history/README.md)에 추가한다.
 

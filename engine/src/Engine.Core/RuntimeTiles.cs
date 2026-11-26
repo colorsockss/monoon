@@ -1,4 +1,5 @@
 using System.Drawing;
+using System.Numerics;
 
 namespace Engine.Core;
 
@@ -51,6 +52,24 @@ public sealed partial class SceneGame
     private static int EntryCost(Body body, Point cell) =>
         body.Palette?.Tiles.GetValueOrDefault(body.Map!.Get(cell)) is {} tile ? tile.EntryCost() : 0;
 
+    /// <summary>Projects a world point onto the layer grid, including empty and unloaded cells.</summary>
+    public Point? TileCellAt(Guid layer, Vector2 worldPoint)
+    {
+        if (!TryTileLayer(layer, out var body) || !Shape2D.Finite(worldPoint)) return null;
+        var local = Affine2D.Transform(worldPoint, Affine2D.Inverse(body.MatrixAt(body.Position)));
+        return Shape2D.Finite(local) ? body.Map!.CellAt(Vector2.Zero, local.X, local.Y) : null;
+    }
+
+    /// <summary>Returns the world center of a cell on a live tile layer, regardless of residency.</summary>
+    public Vector2? TileCellCenter(Guid layer, Point cell)
+    {
+        if (!TryTileLayer(layer, out var body)) return null;
+        var bounds = body.Map!.Bounds(Vector2.Zero, cell);
+        var center = Affine2D.Transform(new(bounds.X + bounds.Width * .5f, bounds.Y + bounds.Height * .5f),
+            body.MatrixAt(body.Position));
+        return Shape2D.Finite(center) ? center : null;
+    }
+
     /// <summary>False for a missing layer or a streamed cell whose page is not resident.</summary>
     public bool TryGetTile(Guid layer, Point cell, out TileInfo info)
     {
@@ -100,7 +119,8 @@ public sealed partial class SceneGame
         var costs = new int[area.Width * area.Height];
         for (int y = 0; y < area.Height; y++)
         for (int x = 0; x < area.Width; x++) costs[y * area.Width + x] = EntryCost(body, new(area.X + x, area.Y + y));
-        var grid = new GridNavigation(area.Width, area.Height, costs);
+        var grid = new GridNavigation(area.Width, area.Height, costs,
+            TileGrid.IsHex(body.Map!.Layout) ? GridDirections.Hex : GridDirections.Four);
         (body.Grids ??= []).Add((grid, area.Location));
         return grid;
     }

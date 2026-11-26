@@ -1,0 +1,20 @@
+image: 6b28fbcc-c54b-5a04-88d4-bc676c4d1c91
+tileSize: {width: 64, height: 32}
+margin: 0
+spacing: 0
+nextId: 5
+tiles:
+- id: 1
+  source: {x: 0, y: 0, width: 64, height: 32}
+  terrain: meadow
+- id: 2
+  source: {x: 64, y: 0, width: 64, height: 32}
+  terrain: flagstone
+- id: 3
+  source: {x: 128, y: 0, width: 64, height: 32}
+  terrain: water
+  solid: true
+  moveCost: 0
+- id: 4
+  source: {x: 192, y: 0, width: 64, height: 32}
+  terrain: crypt

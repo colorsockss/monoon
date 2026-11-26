@@ -3,7 +3,7 @@ using System.Globalization;
 using System.Text.RegularExpressions;
 using Engine.Core;
 
-// Roadmap 15.6: KeyRoom, PlatformerLab and InventoryLab distribution builds for osx-arm64 must not grow more than
+// Roadmap 15.6: The built-in sample distribution builds for osx-arm64 must not grow more than
 // Tolerance over engine/tests/results/build-size/baseline.tsv. Start-up (headless first frame, main -> session_ready)
 // is printed and stored with --update but never gated: it moves with machine load. Update the baseline with
 // ./monoon test size --update after an intended size change, and commit the file with the change.
@@ -14,7 +14,7 @@ internal static class BuildSizeChecks
     // Stays last (roadmap 15.6, osx-arm64 only); --update records a new baseline only through --only build-size.
     [Check(1_000_000, "build-size", Templates = true)] static void Registered(CheckRun c) => Run(c.Repository, c.Scratch, c.Only == "build-size" && c.Args.Contains("--update"));
     internal const double Tolerance = 0.01;
-    private static readonly string[] Samples = ["KeyRoom", "PlatformerLab", "InventoryLab"];
+    private static readonly string[] Samples = ["KeyRoom", "PlatformerLab", "InventoryLab", "LedgeRun", "IsoBand", "HexRealm"];
 
     internal static void Run(string repository, string scratch, bool update)
     {

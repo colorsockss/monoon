@@ -415,7 +415,7 @@ player=game-builds/InventoryLab/InventoryLab.app/Contents/MacOS/MoNoonPlayer
 | KeyRoom 에디터 빌드 | **Build Game…**의 컨트롤로 설정을 저장하고 Release(패키지 포함)와 Native AOT를 빌드한 뒤, 같은 설정으로 `./monoon build`한 결과와 파일별 SHA-256을 비교한다. [실행 명령](../../engine/tests/KeyRoom.EditorBuild/README.md) |
 | KeyRoom 배포 게임 | Release와 Native AOT에서 코인을 생성하고 저장을 복원한 뒤 획득 상태를 대조한다. [월드 체크포인트 실행 명령](../../engine/tests/KeyRoom.WorldCheckpoints/README.md) |
 | AudioLab 배포 게임 | Release와 Native AOT에서 Ogg 루프를 재생하고 F 키로 정지해 SDL 출력과 페이드 길이를 대조한다. [실행 명령](../../engine/tests/AudioLab.Vorbis/README.md) |
-| 배포본 크기 | KeyRoom·PlatformerLab·InventoryLab의 osx-arm64 배포용 Release·Native AOT가 기준보다 1% 넘게 커지면 실패한다. Native AOT 키트 map에 VYaml 생성 쓰기 코드가 생겨도 실패한다. 시작 시간은 기록만 한다. `./monoon test`의 마지막 단계다. [기준값과 갱신 방법](../../engine/tests/results/build-size/README.md) |
+| 배포본 크기 | KeyRoom·PlatformerLab·InventoryLab·LedgeRun·IsoBand·HexRealm의 osx-arm64 배포용 Release·Native AOT가 기준보다 1% 넘게 커지면 실패한다. Native AOT 키트 map에 VYaml 생성 쓰기 코드가 생겨도 실패한다. 시작 시간은 기록만 한다. `./monoon test`의 마지막 단계다. [기준값과 갱신 방법](../../engine/tests/results/build-size/README.md) |
 
 런타임 코드는 VYaml의 `YamlSerializer` 정적 API나 `StandardResolver`를 쓰지 않는다. 읽기는 `ProjectYaml.Decode`, 쓰기는 `ProjectYamlWriters`의 오버로드를 쓴다. Native AOT 플레이어는 `Engine.Player/VYaml.Substitutions.xml`로 `YamlSerializerOptions`의 생성자를 없애므로 그 API는 예외를 낸다. 크기 검사 앞의 키트 map 검사가 둘 다 잡는다. JSON 값 하나를 만들 때는 `JsonSerializer.SerializeToElement` 대신 `JsonElements.Of`를 쓴다. [측정](../../engine/tests/results/aot-size-2/README.md) 플레이어는 `JsonSerializer`를 전혀 쓰지 않는다. 스크립트 필드의 기본 형식은 `JsonElements.ReadField`, 월드 체크포인트는 `WorldCheckpointJsonCodec`이 직렬화기와 같은 바이트·같은 판정으로 읽고 쓴다. 키트 map에 `JsonSerializer`가 다시 생기면 크기 검사 앞에서 실패한다. [측정](../../engine/tests/results/aot-feature-switches/README.md)
 

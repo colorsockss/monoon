@@ -29,11 +29,14 @@ public sealed partial record NavigationRegion2DComponent : SceneComponent
 public readonly record struct WalkPoint(Vector2 Feet,Guid Support);
 public interface INavigation2D
 {
+    [EngineFeature(EngineFeature.Physics)]
     bool CanSee(Guid observer,Guid target,float radius,uint blockers=uint.MaxValue);
     bool TryGetFeet(Guid id,out Vector2 feet);
+    [EngineFeature(EngineFeature.Physics)]
     IReadOnlyList<WalkPoint> FindWalkPath(Guid region,Guid actor,Vector2 goalFeet);
     /// <summary>Top-down free movement (16.15): bakes the region's open cells for agents of radius Agent W / 2 from the
     /// current static colliders and solid tiles in its mask. Call once at load (OnCreate) and keep the area.</summary>
+    [EngineFeature(EngineFeature.Physics)]
     NavArea2D? BakeArea(Guid region);
 }
 

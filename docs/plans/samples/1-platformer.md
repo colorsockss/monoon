@@ -1,6 +1,6 @@
-# 1. LedgeRun — 일반 타일맵 플랫포머 (가칭)
+# 1. LedgeRun — 일반 타일맵 플랫포머
 
-[샘플 계획 목차](README.md)
+[샘플 계획 목차](README.md) · [플레이 매뉴얼](../../manual/ledgerun.md) · [제작 및 검증 기록](../../../engine/tests/results/ledgerun/README.md)
 
 ## 게임 개요
 

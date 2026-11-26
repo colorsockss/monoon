@@ -83,3 +83,11 @@ Hierarchy에서 영역을 선택하면 Scene 보기가 지나갈 수 있는 칸�
 - `NavCrowd2D`는 유닛 여러 개를 함께 움직인다. `new NavCrowd2D(area, 최대 인원, 경로 점 수 = 32)`로 만들고 `Add(start, goal)`로 넣고 `FixedUpdate`마다 `Step(tick.DeltaTime)`을 부른다. 다음 모서리로 `Speed`(px/s)만큼 이동하고, 겹친 이웃과는 겹친 거리의 절반씩 밀어내며, 앞을 막은 유닛은 옆으로 비켜 간다. 닫힌 칸에서는 축 하나로 미끄러진다. 영역이 바뀌거나 `ReplanTicks`(기본 60)틱마다 다시 탐색하며 한 틱의 탐색은 `MaxPlansPerStep`(기본 16)개까지다. `Positions`로 위치를 읽는다.
 
 모든 버퍼는 생성할 때 한 번 만든다. 그 뒤의 경로 요청, 장애물 변경과 `Step`은 메모리를 할당하지 않는다. 탐색은 정수 비용, 이동은 FMA 없는 스칼라 연산을 고정된 순서로 쓰므로 같은 입력이면 Scene Play, Release, Native AOT의 결과가 같다. 200명은 [스프라이트 풀](sprite-pools.md)로 그린다. [CrowdRun.cs](../../samples/SeedLab/Scripts/CrowdRun.cs) · [검증과 비용 측정](../../engine/tests/results/navigation-free/README.md)
+
+## 육각 타일의 이동 범위
+
+[HexRealm](hexrealm.md)의 지형 레이어에서 `TileNavigation(layer, area)`를 만들면 그리드의 기본 방향이 `GridDirections.Hex`다. 두 육각 레이아웃은 같은 축 좌표 `(q, r)`를 쓴다. 일반 그리드의 기본은 4방향이다. 육각 이웃으로 이동하면 들어가는 칸의 `MoveCost × 10`을 쓴다.
+
+`grid.FindPath(start, goal, pathSpan, out cost)`는 양 끝을 포함한 칸 수를 돌려준다. 버퍼가 부족하면 필요한 길이만 반환한다. `grid.Reachable(start, budget, reachSpan)`는 시작 칸을 포함해 비용 순으로 기록하며, 같은 비용은 행과 열 순서로 정한다. 버퍼가 부족해도 반환값은 전체 칸 수다. 두 호출은 첫 검색에서 만든 작업 버퍼를 재사용한다.
+
+[육각 경로 검증](../../engine/tests/Engine.Checks/GridNavigationChecks.cs) · [HexRealm 구현 기록](../../engine/tests/results/hexrealm/README.md)
