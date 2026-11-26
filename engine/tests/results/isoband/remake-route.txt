@@ -1,0 +1,4 @@
+IsoBand zone 1: 9 defeated, 27 XP, 18 crowns.
+IsoBand zone 2: 12 defeated, 63 XP, 42 crowns.
+IsoBand zone 3: 7 defeated, 93 XP, 66 crowns.
+IsoBand zone 4: Returned to Haven.

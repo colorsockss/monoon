@@ -2141,7 +2141,9 @@
    ],
    "probe": "LedgeRunProbe",
    "baselines": [
-    "engine/tests/IsoBand.Play/route.tsv"
+    "engine/tests/IsoBand.Play/route.tsv",
+    "engine/tests/results/isoband/remake-route.txt",
+    "engine/tests/results/isoband/macos-arm64-remake-sha256.tsv"
    ],
    "watch": [
     "engine/src/Engine.Core/NavArea2D.cs",

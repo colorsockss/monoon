@@ -1,0 +1,20 @@
+entry: Idle
+states:
+- name: Idle
+  clip: d39e8f8d-6bbe-5bc3-a7b9-78f181a42822
+- name: Walk
+  clip: 66e0fba4-906b-57bf-86ba-6d2bff5d2d9f
+- name: Attack
+  clip: 09bfb8d6-3dbf-5310-be12-80177d7b62e6
+- name: Hurt
+  clip: 521380e6-bc83-5841-ba0d-3bc2748cefb7
+- name: Fall
+  clip: bbe97013-f75f-5cf3-bf56-cbf333f48081
+parameters:
+- {name: Pose, kind: Int, default: 0}
+transitions:
+- {from: Any State, to: Fall, parameter: Pose, test: Equal, value: 4}
+- {from: Any State, to: Hurt, parameter: Pose, test: Equal, value: 3}
+- {from: Any State, to: Attack, parameter: Pose, test: Equal, value: 2}
+- {from: Any State, to: Walk, parameter: Pose, test: Equal, value: 1}
+- {from: Any State, to: Idle, parameter: Pose, test: Equal, value: 0}

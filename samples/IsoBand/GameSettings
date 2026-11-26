@@ -3,6 +3,7 @@ gameTitle: IsoBand
 width: 480
 height: 270
 integerScale: true
+contentBundles: [Scenes, Assets/Motion, Assets/FX]
 startScene: 32ccf437-7ad0-53ae-962e-287d655678a6
 includedScenes: [32ccf437-7ad0-53ae-962e-287d655678a6, a1b92a57-febd-5582-87cc-8700e056ac09, e211290a-8462-5d97-b7a9-b088aa816bbb, fd96a88e-4577-5ef2-ac84-c67c9df6467d]
 input:
@@ -18,3 +19,8 @@ input:
   - {name: Rest, controls: [R, Pad.East]}
   - {name: Hire, controls: [H, Pad.West]}
   - {name: Gear, controls: [U, Pad.North]}
+  - {name: Ledger, controls: [Tab, Pad.RightShoulder]}
+  - {name: ReturnToHaven, controls: [V, Pad.LeftShoulder]}
+localization:
+  fallbackLocale: en
+  defaultFont: d8c0d8c8-562b-5421-887e-679fbaa95758

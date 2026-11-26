@@ -1,0 +1,103 @@
+id: cbaff870-dc06-5ee5-b90b-30a5e9728050
+slices:
+- source:
+    x: 0
+    y: 0
+    width: 44
+    height: 44
+- source:
+    x: 44
+    y: 0
+    width: 44
+    height: 44
+- source:
+    x: 88
+    y: 0
+    width: 44
+    height: 44
+- source:
+    x: 132
+    y: 0
+    width: 44
+    height: 44
+- source:
+    x: 176
+    y: 0
+    width: 44
+    height: 44
+- source:
+    x: 220
+    y: 0
+    width: 44
+    height: 44
+- source:
+    x: 264
+    y: 0
+    width: 44
+    height: 44
+- source:
+    x: 308
+    y: 0
+    width: 44
+    height: 44
+- source:
+    x: 0
+    y: 44
+    width: 96
+    height: 43
+- source:
+    x: 96
+    y: 44
+    width: 96
+    height: 43
+- source:
+    x: 192
+    y: 44
+    width: 96
+    height: 43
+- source:
+    x: 288
+    y: 44
+    width: 96
+    height: 43
+- source:
+    x: 0
+    y: 87
+    width: 96
+    height: 43
+- source:
+    x: 96
+    y: 87
+    width: 96
+    height: 43
+- source:
+    x: 192
+    y: 87
+    width: 96
+    height: 43
+- source:
+    x: 288
+    y: 87
+    width: 96
+    height: 43
+- source:
+    x: 0
+    y: 130
+    width: 96
+    height: 43
+- source:
+    x: 96
+    y: 130
+    width: 96
+    height: 43
+- source:
+    x: 192
+    y: 130
+    width: 96
+    height: 43
+- source:
+    x: 288
+    y: 130
+    width: 96
+    height: 43
+importHash: E9FC093DB689CABD0938C84C8B1357E4A4CDAF13E58C5B7698CA8D58213911EF

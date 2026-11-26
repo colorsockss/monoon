@@ -1,393 +1,3590 @@
-schemaVersion: 34
+schemaVersion: 42
 objects:
-- id: d7caad68-ab60-5283-b1e9-9397d331eae6
-  name: "Backdrop"
-  x: 0
-  y: 0
+- id: ffb4d0e3-7d7c-5f87-aa73-04d8ce43e4a5
+  name: "Deep water"
+  x: -80
+  y: -50
   width: 480
   height: 270
   components:
   - type: spriteRenderer
-    squareColor: "#162333"
-    order: -20
+    order: -22
+    tint: "#EBE4D0"
+    assetId: "6c5ae8dc-5206-5bb0-9aac-53ee5011555b"
   - type: parallax2D
-    scrollX: 0
-    scrollY: 0
-- id: a3f535b1-7e3c-5ff0-add8-10709185e5a2
+    scrollX: 0.14
+    scrollY: 0.19
+    repeatX: true
+    repeatY: true
+- id: 3d34012c-1de6-5a49-9407-bbd26c794499
   name: "Diamond terrain"
-  x: 373
-  y: 16
+  x: 384
+  y: 29
   width: 64
   height: 32
   components:
   - type: tilemap2D
-    layout: Isometric
-    cellSize: {width: 64, height: 32}
-    order: -2
-    tileset: af9d2264-383d-5ecd-a493-3a665904d8b3
+    layout: "Isometric"
+    cellSize: {"width": 64, "height": 32}
+    order: -5
+    tileset: "af9d2264-383d-5ecd-a493-3a665904d8b3"
     chunks:
     - x: 0
       y: 0
       cells:
-      - {index: 0, tile: 3}
-      - {index: 1, tile: 3}
-      - {index: 2, tile: 3}
-      - {index: 3, tile: 3}
-      - {index: 4, tile: 3}
-      - {index: 5, tile: 3}
-      - {index: 6, tile: 3}
-      - {index: 7, tile: 3}
-      - {index: 8, tile: 3}
-      - {index: 9, tile: 3}
-      - {index: 10, tile: 3}
-      - {index: 11, tile: 3}
-      - {index: 12, tile: 3}
-      - {index: 13, tile: 3}
-      - {index: 32, tile: 3}
-      - {index: 33, tile: 1}
-      - {index: 34, tile: 1}
-      - {index: 35, tile: 1}
+      - {index: 0, tile: 12}
+      - {index: 1, tile: 8}
+      - {index: 2, tile: 1}
+      - {index: 3, tile: 2}
+      - {index: 4, tile: 2}
+      - {index: 5, tile: 2}
+      - {index: 6, tile: 9}
+      - {index: 7, tile: 10}
+      - {index: 8, tile: 12}
+      - {index: 9, tile: 12}
+      - {index: 10, tile: 12}
+      - {index: 11, tile: 12}
+      - {index: 12, tile: 12}
+      - {index: 32, tile: 9}
+      - {index: 33, tile: 2}
+      - {index: 34, tile: 3}
+      - {index: 35, tile: 2}
       - {index: 36, tile: 1}
-      - {index: 37, tile: 1}
-      - {index: 38, tile: 2}
-      - {index: 39, tile: 1}
-      - {index: 40, tile: 1}
-      - {index: 41, tile: 1}
-      - {index: 42, tile: 1}
-      - {index: 43, tile: 1}
-      - {index: 44, tile: 1}
-      - {index: 45, tile: 3}
-      - {index: 64, tile: 3}
+      - {index: 37, tile: 3}
+      - {index: 38, tile: 1}
+      - {index: 39, tile: 3}
+      - {index: 40, tile: 8}
+      - {index: 41, tile: 12}
+      - {index: 42, tile: 12}
+      - {index: 43, tile: 12}
+      - {index: 44, tile: 12}
+      - {index: 64, tile: 2}
       - {index: 65, tile: 1}
-      - {index: 66, tile: 1}
-      - {index: 67, tile: 1}
+      - {index: 66, tile: 5}
+      - {index: 67, tile: 2}
       - {index: 68, tile: 1}
-      - {index: 69, tile: 2}
-      - {index: 70, tile: 1}
-      - {index: 71, tile: 1}
-      - {index: 72, tile: 1}
-      - {index: 73, tile: 1}
-      - {index: 74, tile: 1}
-      - {index: 75, tile: 1}
-      - {index: 76, tile: 2}
-      - {index: 77, tile: 3}
-      - {index: 96, tile: 3}
-      - {index: 97, tile: 1}
-      - {index: 98, tile: 1}
-      - {index: 99, tile: 1}
-      - {index: 100, tile: 2}
-      - {index: 101, tile: 1}
-      - {index: 102, tile: 1}
-      - {index: 103, tile: 1}
-      - {index: 104, tile: 1}
+      - {index: 69, tile: 1}
+      - {index: 70, tile: 4}
+      - {index: 71, tile: 2}
+      - {index: 72, tile: 2}
+      - {index: 73, tile: 8}
+      - {index: 74, tile: 12}
+      - {index: 75, tile: 12}
+      - {index: 76, tile: 12}
+      - {index: 96, tile: 2}
+      - {index: 97, tile: 3}
+      - {index: 98, tile: 3}
+      - {index: 99, tile: 4}
+      - {index: 100, tile: 7}
+      - {index: 101, tile: 5}
+      - {index: 102, tile: 5}
+      - {index: 103, tile: 6}
+      - {index: 104, tile: 3}
       - {index: 105, tile: 1}
-      - {index: 106, tile: 1}
-      - {index: 107, tile: 2}
-      - {index: 108, tile: 1}
-      - {index: 109, tile: 3}
-      - {index: 128, tile: 3}
-      - {index: 129, tile: 1}
-      - {index: 130, tile: 1}
-      - {index: 131, tile: 2}
-      - {index: 132, tile: 1}
-      - {index: 133, tile: 1}
-      - {index: 134, tile: 1}
-      - {index: 135, tile: 1}
-      - {index: 136, tile: 1}
-      - {index: 137, tile: 1}
+      - {index: 106, tile: 10}
+      - {index: 107, tile: 12}
+      - {index: 108, tile: 12}
+      - {index: 128, tile: 2}
+      - {index: 129, tile: 3}
+      - {index: 130, tile: 5}
+      - {index: 131, tile: 7}
+      - {index: 132, tile: 4}
+      - {index: 133, tile: 6}
+      - {index: 134, tile: 5}
+      - {index: 135, tile: 2}
+      - {index: 136, tile: 4}
+      - {index: 137, tile: 3}
       - {index: 138, tile: 2}
-      - {index: 139, tile: 1}
-      - {index: 140, tile: 1}
-      - {index: 141, tile: 3}
-      - {index: 160, tile: 3}
+      - {index: 139, tile: 9}
+      - {index: 140, tile: 12}
+      - {index: 160, tile: 8}
       - {index: 161, tile: 1}
-      - {index: 162, tile: 2}
-      - {index: 163, tile: 1}
-      - {index: 164, tile: 1}
-      - {index: 165, tile: 1}
-      - {index: 166, tile: 1}
-      - {index: 167, tile: 1}
-      - {index: 168, tile: 1}
-      - {index: 169, tile: 2}
-      - {index: 170, tile: 1}
-      - {index: 171, tile: 1}
-      - {index: 172, tile: 1}
-      - {index: 173, tile: 3}
-      - {index: 192, tile: 3}
-      - {index: 193, tile: 2}
+      - {index: 162, tile: 1}
+      - {index: 163, tile: 4}
+      - {index: 164, tile: 5}
+      - {index: 165, tile: 5}
+      - {index: 166, tile: 7}
+      - {index: 167, tile: 4}
+      - {index: 168, tile: 7}
+      - {index: 169, tile: 1}
+      - {index: 170, tile: 2}
+      - {index: 171, tile: 3}
+      - {index: 172, tile: 9}
+      - {index: 192, tile: 8}
+      - {index: 193, tile: 3}
       - {index: 194, tile: 1}
-      - {index: 195, tile: 1}
-      - {index: 196, tile: 1}
-      - {index: 197, tile: 1}
-      - {index: 198, tile: 1}
-      - {index: 199, tile: 1}
-      - {index: 200, tile: 2}
-      - {index: 201, tile: 1}
-      - {index: 202, tile: 1}
-      - {index: 203, tile: 1}
-      - {index: 204, tile: 1}
-      - {index: 205, tile: 3}
-      - {index: 224, tile: 3}
-      - {index: 225, tile: 1}
-      - {index: 226, tile: 1}
-      - {index: 227, tile: 1}
+      - {index: 195, tile: 3}
+      - {index: 196, tile: 4}
+      - {index: 197, tile: 3}
+      - {index: 198, tile: 7}
+      - {index: 199, tile: 6}
+      - {index: 200, tile: 3}
+      - {index: 201, tile: 4}
+      - {index: 202, tile: 3}
+      - {index: 203, tile: 2}
+      - {index: 204, tile: 8}
+      - {index: 224, tile: 12}
+      - {index: 225, tile: 9}
+      - {index: 226, tile: 2}
+      - {index: 227, tile: 2}
       - {index: 228, tile: 1}
-      - {index: 229, tile: 1}
-      - {index: 230, tile: 1}
-      - {index: 231, tile: 2}
-      - {index: 232, tile: 1}
+      - {index: 229, tile: 4}
+      - {index: 230, tile: 5}
+      - {index: 231, tile: 7}
+      - {index: 232, tile: 7}
       - {index: 233, tile: 1}
-      - {index: 234, tile: 1}
-      - {index: 235, tile: 1}
-      - {index: 236, tile: 1}
-      - {index: 237, tile: 3}
-      - {index: 256, tile: 3}
-      - {index: 257, tile: 1}
-      - {index: 258, tile: 1}
-      - {index: 259, tile: 1}
-      - {index: 260, tile: 1}
-      - {index: 261, tile: 1}
-      - {index: 262, tile: 2}
-      - {index: 263, tile: 1}
-      - {index: 264, tile: 1}
-      - {index: 265, tile: 1}
-      - {index: 266, tile: 1}
-      - {index: 267, tile: 1}
-      - {index: 268, tile: 1}
-      - {index: 269, tile: 3}
-      - {index: 288, tile: 3}
-      - {index: 289, tile: 1}
-      - {index: 290, tile: 1}
-      - {index: 291, tile: 1}
-      - {index: 292, tile: 1}
-      - {index: 293, tile: 2}
-      - {index: 294, tile: 1}
-      - {index: 295, tile: 1}
+      - {index: 234, tile: 2}
+      - {index: 235, tile: 8}
+      - {index: 236, tile: 12}
+      - {index: 256, tile: 12}
+      - {index: 257, tile: 12}
+      - {index: 258, tile: 9}
+      - {index: 259, tile: 2}
+      - {index: 260, tile: 2}
+      - {index: 261, tile: 3}
+      - {index: 262, tile: 7}
+      - {index: 263, tile: 6}
+      - {index: 264, tile: 4}
+      - {index: 265, tile: 4}
+      - {index: 266, tile: 2}
+      - {index: 267, tile: 8}
+      - {index: 268, tile: 12}
+      - {index: 288, tile: 12}
+      - {index: 289, tile: 12}
+      - {index: 290, tile: 12}
+      - {index: 291, tile: 10}
+      - {index: 292, tile: 3}
+      - {index: 293, tile: 1}
+      - {index: 294, tile: 2}
+      - {index: 295, tile: 4}
       - {index: 296, tile: 1}
-      - {index: 297, tile: 1}
-      - {index: 298, tile: 1}
-      - {index: 299, tile: 1}
-      - {index: 300, tile: 2}
-      - {index: 301, tile: 3}
-      - {index: 320, tile: 3}
-      - {index: 321, tile: 1}
-      - {index: 322, tile: 1}
-      - {index: 323, tile: 1}
-      - {index: 324, tile: 2}
-      - {index: 325, tile: 1}
+      - {index: 297, tile: 6}
+      - {index: 298, tile: 2}
+      - {index: 299, tile: 10}
+      - {index: 300, tile: 12}
+      - {index: 320, tile: 12}
+      - {index: 321, tile: 12}
+      - {index: 322, tile: 12}
+      - {index: 323, tile: 12}
+      - {index: 324, tile: 8}
+      - {index: 325, tile: 3}
       - {index: 326, tile: 1}
-      - {index: 327, tile: 1}
-      - {index: 328, tile: 1}
-      - {index: 329, tile: 1}
-      - {index: 330, tile: 1}
-      - {index: 331, tile: 2}
-      - {index: 332, tile: 1}
-      - {index: 333, tile: 3}
-      - {index: 352, tile: 3}
-      - {index: 353, tile: 3}
-      - {index: 354, tile: 3}
-      - {index: 355, tile: 3}
-      - {index: 356, tile: 3}
-      - {index: 357, tile: 3}
+      - {index: 327, tile: 2}
+      - {index: 328, tile: 4}
+      - {index: 329, tile: 11}
+      - {index: 330, tile: 3}
+      - {index: 331, tile: 3}
+      - {index: 332, tile: 9}
+      - {index: 352, tile: 12}
+      - {index: 353, tile: 12}
+      - {index: 354, tile: 12}
+      - {index: 355, tile: 12}
+      - {index: 356, tile: 12}
+      - {index: 357, tile: 10}
       - {index: 358, tile: 3}
-      - {index: 359, tile: 3}
-      - {index: 360, tile: 3}
+      - {index: 359, tile: 2}
+      - {index: 360, tile: 1}
       - {index: 361, tile: 3}
-      - {index: 362, tile: 3}
-      - {index: 363, tile: 3}
-      - {index: 364, tile: 3}
-      - {index: 365, tile: 3}
-- id: f6fa8cac-c2a0-5d36-95bb-9b6d31fd2bfa
-  name: "Free navigation"
-  x: 11
-  y: 12
-  width: 822
-  height: 422
+      - {index: 362, tile: 1}
+      - {index: 363, tile: 8}
+      - {index: 364, tile: 12}
+      - {index: 384, tile: 12}
+      - {index: 385, tile: 12}
+      - {index: 386, tile: 12}
+      - {index: 387, tile: 12}
+      - {index: 388, tile: 12}
+      - {index: 389, tile: 12}
+      - {index: 390, tile: 8}
+      - {index: 391, tile: 9}
+      - {index: 392, tile: 8}
+      - {index: 393, tile: 9}
+      - {index: 394, tile: 10}
+      - {index: 395, tile: 12}
+      - {index: 396, tile: 12}
+- id: c1685140-9f78-5247-8ae9-9236c1f4866a
+  name: "Shore face 00"
+  x: 256
+  y: 93
+  width: 64
+  height: 43
   components:
-  - type: navigationRegion2D
-    spacing: 8
-    agentWidth: 11
-    terrainMask: 1
-- id: a1a79a08-e11a-5ce2-96db-c2efc8bbac8d
-  name: "Camp"
-  x: 427
+  - type: spriteRenderer
+    order: -4
+    tint: "#EBE4D0"
+    assetId: "97a6825f-1de1-50fd-ae86-af4a4f20033a"
+- id: 35a39431-bf29-51c1-aeb9-538a49be01a8
+  name: "Shore face 01"
+  x: 544
+  y: 109
+  width: 64
+  height: 43
+  components:
+  - type: spriteRenderer
+    order: -4
+    tint: "#EBE4D0"
+    assetId: "3d33d6b9-221b-5faa-b301-b5e81bcd2f25"
+- id: 0db976d4-2b9e-54ad-8e5b-d7367b891fc7
+  name: "Shore face 02"
+  x: 224
+  y: 141
+  width: 64
+  height: 43
+  components:
+  - type: spriteRenderer
+    order: -4
+    tint: "#EBE4D0"
+    assetId: "97a6825f-1de1-50fd-ae86-af4a4f20033a"
+- id: a28005e9-808f-5143-b666-dcee3c2a7487
+  name: "Shore face 03"
+  x: 576
+  y: 157
+  width: 64
+  height: 43
+  components:
+  - type: spriteRenderer
+    order: -4
+    tint: "#EBE4D0"
+    assetId: "3d33d6b9-221b-5faa-b301-b5e81bcd2f25"
+- id: 13ef2fc0-98cb-5f3d-a730-81a55f8ffbee
+  name: "Shore face 04"
+  x: 224
+  y: 173
+  width: 64
+  height: 43
+  components:
+  - type: spriteRenderer
+    order: -4
+    tint: "#EBE4D0"
+    assetId: "97a6825f-1de1-50fd-ae86-af4a4f20033a"
+- id: 481097dd-78e6-5f22-bda5-746a75c7fc8d
+  name: "Shore face 05"
+  x: 576
+  y: 189
+  width: 64
+  height: 43
+  components:
+  - type: spriteRenderer
+    order: -4
+    tint: "#EBE4D0"
+    assetId: "3d33d6b9-221b-5faa-b301-b5e81bcd2f25"
+- id: b64ef9f3-378a-5f94-a746-55619de2fa0b
+  name: "Shore face 06"
+  x: 224
+  y: 205
+  width: 64
+  height: 43
+  components:
+  - type: spriteRenderer
+    order: -4
+    tint: "#EBE4D0"
+    assetId: "97a6825f-1de1-50fd-ae86-af4a4f20033a"
+- id: 32759c14-e30e-5b1d-88a7-61e44d89aefa
+  name: "Shore face 07"
+  x: 576
+  y: 221
+  width: 64
+  height: 43
+  components:
+  - type: spriteRenderer
+    order: -4
+    tint: "#EBE4D0"
+    assetId: "3d33d6b9-221b-5faa-b301-b5e81bcd2f25"
+- id: 310f156d-bad0-51ff-8d78-0abae82fa84a
+  name: "Shore face 08"
+  x: 224
+  y: 237
+  width: 64
+  height: 43
+  components:
+  - type: spriteRenderer
+    order: -4
+    tint: "#EBE4D0"
+    assetId: "97a6825f-1de1-50fd-ae86-af4a4f20033a"
+- id: 9b2b2ea4-6096-579a-abbe-d6c89edb3a76
+  name: "Shore face 09"
+  x: 576
+  y: 253
+  width: 64
+  height: 43
+  components:
+  - type: spriteRenderer
+    order: -4
+    tint: "#EBE4D0"
+    assetId: "3d33d6b9-221b-5faa-b301-b5e81bcd2f25"
+- id: 48cb2b8a-cf05-57a6-98bd-bfb087ee2823
+  name: "Shore face 10"
+  x: 224
+  y: 269
+  width: 64
+  height: 43
+  components:
+  - type: spriteRenderer
+    order: -4
+    tint: "#EBE4D0"
+    assetId: "97a6825f-1de1-50fd-ae86-af4a4f20033a"
+- id: 172913ec-ce1d-5a9e-84ef-9498caa61e30
+  name: "Shore face 11"
+  x: 576
+  y: 285
+  width: 64
+  height: 43
+  components:
+  - type: spriteRenderer
+    order: -4
+    tint: "#EBE4D0"
+    assetId: "3d33d6b9-221b-5faa-b301-b5e81bcd2f25"
+- id: 0277f4ee-7f91-5b5e-9c22-5fc61bfaf3ec
+  name: "Shore face 12"
+  x: 544
+  y: 301
+  width: 64
+  height: 43
+  components:
+  - type: spriteRenderer
+    order: -4
+    tint: "#EBE4D0"
+    assetId: "e408649c-487c-51fa-b386-abcadb66c76d"
+- id: a5f13b5d-c9f5-569b-a947-923347c800f1
+  name: "Shore face 13"
+  x: 480
+  y: 301
+  width: 64
+  height: 43
+  components:
+  - type: spriteRenderer
+    order: -4
+    tint: "#EBE4D0"
+    assetId: "3d33d6b9-221b-5faa-b301-b5e81bcd2f25"
+- id: 5af296df-a58e-58b5-989f-9068fee14aec
+  name: "Shore face 14"
+  x: 224
+  y: 301
+  width: 64
+  height: 43
+  components:
+  - type: spriteRenderer
+    order: -4
+    tint: "#EBE4D0"
+    assetId: "97a6825f-1de1-50fd-ae86-af4a4f20033a"
+- id: 963ee707-f98b-5c69-ade7-9434c897929c
+  name: "Shore face 15"
+  x: 448
+  y: 317
+  width: 64
+  height: 43
+  components:
+  - type: spriteRenderer
+    order: -4
+    tint: "#EBE4D0"
+    assetId: "3d33d6b9-221b-5faa-b301-b5e81bcd2f25"
+- id: 5d316252-3ccd-5772-953a-ac8764b74a56
+  name: "Shore face 16"
+  x: 256
+  y: 317
+  width: 64
+  height: 43
+  components:
+  - type: spriteRenderer
+    order: -4
+    tint: "#EBE4D0"
+    assetId: "97a6825f-1de1-50fd-ae86-af4a4f20033a"
+- id: 141f2aff-0733-5755-bce4-fa3115a04e84
+  name: "Shore face 17"
+  x: 416
+  y: 333
+  width: 64
+  height: 43
+  components:
+  - type: spriteRenderer
+    order: -4
+    tint: "#EBE4D0"
+    assetId: "3d33d6b9-221b-5faa-b301-b5e81bcd2f25"
+- id: df93c5c5-3977-5b76-97cd-2a00427cc074
+  name: "Shore face 18"
+  x: 288
+  y: 333
+  width: 64
+  height: 43
+  components:
+  - type: spriteRenderer
+    order: -4
+    tint: "#EBE4D0"
+    assetId: "97a6825f-1de1-50fd-ae86-af4a4f20033a"
+- id: 2c78bbf4-7f4d-54ab-8b3e-4005d7c96045
+  name: "Shore face 19"
+  x: 320
+  y: 349
+  width: 64
+  height: 43
+  components:
+  - type: spriteRenderer
+    order: -4
+    tint: "#EBE4D0"
+    assetId: "97a6825f-1de1-50fd-ae86-af4a4f20033a"
+- id: 2f62f206-9b9d-599a-a2ea-fdaff2e9358a
+  name: "Shore face 20"
+  x: 416
+  y: 365
+  width: 64
+  height: 43
+  components:
+  - type: spriteRenderer
+    order: -4
+    tint: "#EBE4D0"
+    assetId: "e408649c-487c-51fa-b386-abcadb66c76d"
+- id: 62bbf284-b791-53e2-81ca-eb8570b280e6
+  name: "Shore face 21"
+  x: 352
+  y: 365
+  width: 64
+  height: 43
+  components:
+  - type: spriteRenderer
+    order: -4
+    tint: "#EBE4D0"
+    assetId: "e408649c-487c-51fa-b386-abcadb66c76d"
+- id: 542e2189-fe10-56d7-8e33-c207801128d4
+  name: "Ground detail 2-0-0"
+  x: 475
+  y: 60
+  width: 23
+  height: 15
+  components:
+  - type: spriteRenderer
+    sortByY: false
+    order: -3
+    pixelSnap: true
+    tint: "#EBE4D0"
+    assetId: "381d8324-8644-5adc-a143-0739076b2003"
+- id: 71d3c82a-2a25-529d-910b-0d60fb9b8ecb
+  name: "Ground detail 3-0-0"
+  x: 497
+  y: 76
+  width: 23
+  height: 15
+  components:
+  - type: spriteRenderer
+    sortByY: false
+    order: -3
+    pixelSnap: true
+    tint: "#EBE4D0"
+    assetId: "20796dcd-bd09-5e49-a133-2a84046c3bf9"
+- id: 7ecc228b-e20e-5c52-a0c1-85d606add152
+  name: "Ground detail 4-0-0"
+  x: 523
+  y: 99
+  width: 23
+  height: 15
+  components:
+  - type: spriteRenderer
+    sortByY: false
+    order: -3
+    pixelSnap: true
+    tint: "#EBE4D0"
+    assetId: "381d8324-8644-5adc-a143-0739076b2003"
+- id: 80547fd5-edd3-5a82-954d-e16b7c4c2c42
+  name: "Ground detail 4-0-1"
+  x: 547
+  y: 95
+  width: 23
+  height: 15
+  components:
+  - type: spriteRenderer
+    sortByY: false
+    order: -3
+    pixelSnap: true
+    tint: "#EBE4D0"
+    assetId: "381d8324-8644-5adc-a143-0739076b2003"
+- id: 1e27021d-b61d-5686-8082-c534e7a4df45
+  name: "Ground detail 5-0-0"
+  x: 556
+  y: 114
+  width: 23
+  height: 15
+  components:
+  - type: spriteRenderer
+    sortByY: false
+    order: -3
+    pixelSnap: true
+    tint: "#EBE4D0"
+    assetId: "381d8324-8644-5adc-a143-0739076b2003"
+- id: 42c67c3f-b27a-542a-a5dd-a2d6754ee85e
+  name: "Ground detail 5-0-1"
+  x: 570
+  y: 111
+  width: 23
+  height: 15
+  components:
+  - type: spriteRenderer
+    sortByY: false
+    order: -3
+    pixelSnap: true
+    tint: "#EBE4D0"
+    assetId: "381d8324-8644-5adc-a143-0739076b2003"
+- id: 9c3b1b28-cdaa-55c6-9427-3aa336750173
+  name: "Ground detail 1-1-0"
+  x: 412
+  y: 54
+  width: 26
+  height: 20
+  components:
+  - type: spriteRenderer
+    sortByY: false
+    order: -3
+    pixelSnap: true
+    tint: "#EBE4D0"
+    assetId: "6b098327-9ea8-50e1-b017-688a1f72b5e9"
+- id: 2e163b56-147a-5fbf-9a71-066464d3fcec
+  name: "Ground detail 1-1-1"
+  x: 407
+  y: 54
+  width: 26
+  height: 20
+  components:
+  - type: spriteRenderer
+    sortByY: false
+    order: -3
+    pixelSnap: true
+    tint: "#EBE4D0"
+    assetId: "6b098327-9ea8-50e1-b017-688a1f72b5e9"
+- id: 648567ae-5f67-5764-b94f-a8092b069c03
+  name: "Ground detail 3-1-0"
+  x: 473
+  y: 99
+  width: 23
+  height: 15
+  components:
+  - type: spriteRenderer
+    sortByY: false
+    order: -3
+    pixelSnap: true
+    tint: "#EBE4D0"
+    assetId: "20796dcd-bd09-5e49-a133-2a84046c3bf9"
+- id: 4026ad0d-c477-5ecd-986f-a8ff1c04d245
+  name: "Ground detail 5-1-0"
+  x: 518
   y: 124
+  width: 26
+  height: 20
+  components:
+  - type: spriteRenderer
+    sortByY: false
+    order: -3
+    pixelSnap: true
+    tint: "#EBE4D0"
+    assetId: "6b098327-9ea8-50e1-b017-688a1f72b5e9"
+- id: 8b8c0fdb-05ad-5baa-b9fa-2453a593619f
+  name: "Ground detail 7-1-0"
+  x: 602
+  y: 161
+  width: 23
+  height: 15
+  components:
+  - type: spriteRenderer
+    sortByY: false
+    order: -3
+    pixelSnap: true
+    tint: "#EBE4D0"
+    assetId: "381d8324-8644-5adc-a143-0739076b2003"
+- id: 52486211-107a-59bd-9687-c1293eaeaf0d
+  name: "Ground detail 0-2-0"
+  x: 347
+  y: 64
+  width: 23
+  height: 15
+  components:
+  - type: spriteRenderer
+    sortByY: false
+    order: -3
+    pixelSnap: true
+    tint: "#EBE4D0"
+    assetId: "20796dcd-bd09-5e49-a133-2a84046c3bf9"
+- id: 77c2f2fe-a98e-5c26-9d1e-9473baad7493
+  name: "Ground detail 1-2-0"
+  x: 386
+  y: 80
+  width: 23
+  height: 15
+  components:
+  - type: spriteRenderer
+    sortByY: false
+    order: -3
+    pixelSnap: true
+    tint: "#EBE4D0"
+    assetId: "20796dcd-bd09-5e49-a133-2a84046c3bf9"
+- id: a544b9a4-ed26-5f59-8eb4-6def8e9865b3
+  name: "Ground detail 3-2-0"
+  x: 423
+  y: 107
+  width: 23
+  height: 15
+  components:
+  - type: spriteRenderer
+    sortByY: false
+    order: -3
+    pixelSnap: true
+    tint: "#EBE4D0"
+    assetId: "20796dcd-bd09-5e49-a133-2a84046c3bf9"
+- id: dc406048-0030-56bb-b099-264fd6adbeb4
+  name: "Ground detail 4-2-0"
+  x: 479
+  y: 125
+  width: 23
+  height: 15
+  components:
+  - type: spriteRenderer
+    sortByY: false
+    order: -3
+    pixelSnap: true
+    tint: "#EBE4D0"
+    assetId: "20796dcd-bd09-5e49-a133-2a84046c3bf9"
+- id: 718b3edd-1c0f-5fe1-ac19-d2a3faea2f1d
+  name: "Ground detail 5-2-0"
+  x: 499
+  y: 144
+  width: 23
+  height: 15
+  components:
+  - type: spriteRenderer
+    sortByY: false
+    order: -3
+    pixelSnap: true
+    tint: "#EBE4D0"
+    assetId: "20796dcd-bd09-5e49-a133-2a84046c3bf9"
+- id: 96fd877b-3ec4-53e9-9bce-3bd01cd92fd9
+  name: "Ground detail 5-2-1"
+  x: 501
+  y: 141
+  width: 23
+  height: 15
+  components:
+  - type: spriteRenderer
+    sortByY: false
+    order: -3
+    pixelSnap: true
+    tint: "#EBE4D0"
+    assetId: "20796dcd-bd09-5e49-a133-2a84046c3bf9"
+- id: a1e47312-5cfa-51a9-9ab7-2fe21b360a4c
+  name: "Ground detail 7-2-0"
+  x: 579
+  y: 171
+  width: 23
+  height: 15
+  components:
+  - type: spriteRenderer
+    sortByY: false
+    order: -3
+    pixelSnap: true
+    tint: "#EBE4D0"
+    assetId: "20796dcd-bd09-5e49-a133-2a84046c3bf9"
+- id: f5728692-36f9-5f13-8257-2d2233811dea
+  name: "Ground detail 7-2-1"
+  x: 562
+  y: 171
+  width: 23
+  height: 15
+  components:
+  - type: spriteRenderer
+    sortByY: false
+    order: -3
+    pixelSnap: true
+    tint: "#EBE4D0"
+    assetId: "381d8324-8644-5adc-a143-0739076b2003"
+- id: 01c4b8f6-6316-5e79-9d6a-f345b01f5c50
+  name: "Ground detail 8-2-0"
+  x: 605
+  y: 191
+  width: 23
+  height: 15
+  components:
+  - type: spriteRenderer
+    sortByY: false
+    order: -3
+    pixelSnap: true
+    tint: "#EBE4D0"
+    assetId: "20796dcd-bd09-5e49-a133-2a84046c3bf9"
+- id: de69c060-7b7c-54cb-a9a2-7f9e00da86de
+  name: "Ground detail 8-3-0"
+  x: 565
+  y: 208
+  width: 23
+  height: 15
+  components:
+  - type: spriteRenderer
+    sortByY: false
+    order: -3
+    pixelSnap: true
+    tint: "#EBE4D0"
+    assetId: "381d8324-8644-5adc-a143-0739076b2003"
+- id: 56b8e570-3969-5e84-b903-96cc3b46ef19
+  name: "Ground detail 8-3-1"
+  x: 569
+  y: 211
+  width: 23
+  height: 15
+  components:
+  - type: spriteRenderer
+    sortByY: false
+    order: -3
+    pixelSnap: true
+    tint: "#EBE4D0"
+    assetId: "20796dcd-bd09-5e49-a133-2a84046c3bf9"
+- id: c79df862-a476-5c64-8092-e82f9e6199a6
+  name: "Ground detail 9-3-0"
+  x: 585
+  y: 220
+  width: 23
+  height: 15
+  components:
+  - type: spriteRenderer
+    sortByY: false
+    order: -3
+    pixelSnap: true
+    tint: "#EBE4D0"
+    assetId: "381d8324-8644-5adc-a143-0739076b2003"
+- id: 59d400cf-381f-589d-a2c2-de89f20e3261
+  name: "Ground detail 9-3-1"
+  x: 602
+  y: 217
+  width: 26
+  height: 20
+  components:
+  - type: spriteRenderer
+    sortByY: false
+    order: -3
+    pixelSnap: true
+    tint: "#EBE4D0"
+    assetId: "6b098327-9ea8-50e1-b017-688a1f72b5e9"
+- id: f058216c-f41d-539f-b963-623ea5f92654
+  name: "Ground detail 7-4-0"
+  x: 488
+  y: 208
+  width: 23
+  height: 15
+  components:
+  - type: spriteRenderer
+    sortByY: false
+    order: -3
+    pixelSnap: true
+    tint: "#EBE4D0"
+    assetId: "381d8324-8644-5adc-a143-0739076b2003"
+- id: 722efd0c-5f89-5fd1-9d57-e9b517fa5226
+  name: "Ground detail 9-4-0"
+  x: 567
+  y: 239
+  width: 23
+  height: 15
+  components:
+  - type: spriteRenderer
+    sortByY: false
+    order: -3
+    pixelSnap: true
+    tint: "#EBE4D0"
+    assetId: "20796dcd-bd09-5e49-a133-2a84046c3bf9"
+- id: 6856ed02-5629-5b7a-9ac2-23224ef3eaa2
+  name: "Ground detail 2-5-0"
+  x: 296
+  y: 143
+  width: 23
+  height: 15
+  components:
+  - type: spriteRenderer
+    sortByY: false
+    order: -3
+    pixelSnap: true
+    tint: "#EBE4D0"
+    assetId: "381d8324-8644-5adc-a143-0739076b2003"
+- id: ff7df61e-cc5e-59fe-821b-ef080434cc62
+  name: "Ground detail 2-5-1"
+  x: 300
+  y: 146
+  width: 23
+  height: 15
+  components:
+  - type: spriteRenderer
+    sortByY: false
+    order: -3
+    pixelSnap: true
+    tint: "#EBE4D0"
+    assetId: "381d8324-8644-5adc-a143-0739076b2003"
+- id: a8f727af-21cb-5331-81c7-c4636e82d263
+  name: "Ground detail 9-5-0"
+  x: 525
+  y: 259
+  width: 23
+  height: 15
+  components:
+  - type: spriteRenderer
+    sortByY: false
+    order: -3
+    pixelSnap: true
+    tint: "#EBE4D0"
+    assetId: "20796dcd-bd09-5e49-a133-2a84046c3bf9"
+- id: 3343d133-76b7-5050-b827-ef2778694d22
+  name: "Ground detail 10-5-0"
+  x: 552
+  y: 267
+  width: 23
+  height: 15
+  components:
+  - type: spriteRenderer
+    sortByY: false
+    order: -3
+    pixelSnap: true
+    tint: "#EBE4D0"
+    assetId: "381d8324-8644-5adc-a143-0739076b2003"
+- id: b1dc4843-c6e6-5083-ada1-1716a626a67c
+  name: "Ground detail 10-5-1"
+  x: 567
+  y: 269
+  width: 23
+  height: 15
+  components:
+  - type: spriteRenderer
+    sortByY: false
+    order: -3
+    pixelSnap: true
+    tint: "#EBE4D0"
+    assetId: "381d8324-8644-5adc-a143-0739076b2003"
+- id: 2af134cd-085a-5b25-98bf-e1e4e817a628
+  name: "Ground detail 1-6-0"
+  x: 239
+  y: 142
+  width: 23
+  height: 15
+  components:
+  - type: spriteRenderer
+    sortByY: false
+    order: -3
+    pixelSnap: true
+    tint: "#EBE4D0"
+    assetId: "20796dcd-bd09-5e49-a133-2a84046c3bf9"
+- id: 9b0d18cc-4344-58d9-9c07-f9765523fb8f
+  name: "Ground detail 2-6-0"
+  x: 269
+  y: 161
+  width: 23
+  height: 15
+  components:
+  - type: spriteRenderer
+    sortByY: false
+    order: -3
+    pixelSnap: true
+    tint: "#EBE4D0"
+    assetId: "381d8324-8644-5adc-a143-0739076b2003"
+- id: 9f59178b-f278-542a-9ea1-4483d03cf65d
+  name: "Ground detail 3-6-0"
+  x: 316
+  y: 166
+  width: 26
+  height: 20
+  components:
+  - type: spriteRenderer
+    sortByY: false
+    order: -3
+    pixelSnap: true
+    tint: "#EBE4D0"
+    assetId: "6b098327-9ea8-50e1-b017-688a1f72b5e9"
+- id: f82d6a1c-9242-5a1a-a319-b1aac9f29073
+  name: "Ground detail 8-6-0"
+  x: 465
+  y: 255
+  width: 23
+  height: 15
+  components:
+  - type: spriteRenderer
+    sortByY: false
+    order: -3
+    pixelSnap: true
+    tint: "#EBE4D0"
+    assetId: "381d8324-8644-5adc-a143-0739076b2003"
+- id: b287b61f-8724-50ba-a71e-b5c0c19077cf
+  name: "Ground detail 9-7-0"
+  x: 476
+  y: 283
+  width: 23
+  height: 15
+  components:
+  - type: spriteRenderer
+    sortByY: false
+    order: -3
+    pixelSnap: true
+    tint: "#EBE4D0"
+    assetId: "381d8324-8644-5adc-a143-0739076b2003"
+- id: 2c868f1a-8827-5bf1-ba27-e79b77a2f87b
+  name: "Ground detail 3-8-0"
+  x: 253
+  y: 203
+  width: 23
+  height: 15
+  components:
+  - type: spriteRenderer
+    sortByY: false
+    order: -3
+    pixelSnap: true
+    tint: "#EBE4D0"
+    assetId: "20796dcd-bd09-5e49-a133-2a84046c3bf9"
+- id: 4b2cd232-a846-57b1-95f3-c8760c9d2e47
+  name: "Ground detail 4-8-0"
+  x: 264
+  y: 219
+  width: 26
+  height: 20
+  components:
+  - type: spriteRenderer
+    sortByY: false
+    order: -3
+    pixelSnap: true
+    tint: "#EBE4D0"
+    assetId: "6b098327-9ea8-50e1-b017-688a1f72b5e9"
+- id: fd6f2933-0c0d-5a45-9be7-ed033c36b931
+  name: "Ground detail 4-8-1"
+  x: 284
+  y: 225
+  width: 23
+  height: 15
+  components:
+  - type: spriteRenderer
+    sortByY: false
+    order: -3
+    pixelSnap: true
+    tint: "#EBE4D0"
+    assetId: "381d8324-8644-5adc-a143-0739076b2003"
+- id: 077d6a5a-1257-59f7-b4ff-5c65a6609782
+  name: "Ground detail 5-8-0"
+  x: 296
+  y: 232
+  width: 26
+  height: 20
+  components:
+  - type: spriteRenderer
+    sortByY: false
+    order: -3
+    pixelSnap: true
+    tint: "#EBE4D0"
+    assetId: "6b098327-9ea8-50e1-b017-688a1f72b5e9"
+- id: b73f5fa2-fd16-5994-8ec4-8e6ac6b50164
+  name: "Ground detail 10-8-0"
+  x: 467
+  y: 317
+  width: 23
+  height: 15
+  components:
+  - type: spriteRenderer
+    sortByY: false
+    order: -3
+    pixelSnap: true
+    tint: "#EBE4D0"
+    assetId: "381d8324-8644-5adc-a143-0739076b2003"
+- id: e1cfc856-9425-5431-b9e2-30110f36b9c4
+  name: "Ground detail 10-8-1"
+  x: 466
+  y: 319
+  width: 23
+  height: 15
+  components:
+  - type: spriteRenderer
+    sortByY: false
+    order: -3
+    pixelSnap: true
+    tint: "#EBE4D0"
+    assetId: "381d8324-8644-5adc-a143-0739076b2003"
+- id: 52fc5dde-6cc3-5c92-b373-2be0132dc271
+  name: "Ground detail 4-9-0"
+  x: 258
+  y: 243
+  width: 23
+  height: 15
+  components:
+  - type: spriteRenderer
+    sortByY: false
+    order: -3
+    pixelSnap: true
+    tint: "#EBE4D0"
+    assetId: "20796dcd-bd09-5e49-a133-2a84046c3bf9"
+- id: 2163b020-4ef2-527c-ae52-a1d34c3f5ffb
+  name: "Ground detail 4-9-1"
+  x: 255
+  y: 243
+  width: 23
+  height: 15
+  components:
+  - type: spriteRenderer
+    sortByY: false
+    order: -3
+    pixelSnap: true
+    tint: "#EBE4D0"
+    assetId: "20796dcd-bd09-5e49-a133-2a84046c3bf9"
+- id: 3ab8b8a3-3dfe-5437-8817-97913e14190b
+  name: "Ground detail 10-9-0"
+  x: 446
+  y: 327
+  width: 26
+  height: 20
+  components:
+  - type: spriteRenderer
+    sortByY: false
+    order: -3
+    pixelSnap: true
+    tint: "#EBE4D0"
+    assetId: "6b098327-9ea8-50e1-b017-688a1f72b5e9"
+- id: 7eb98527-3707-5cea-8c6d-01624581e120
+  name: "Ground detail 10-9-1"
+  x: 427
+  y: 337
+  width: 23
+  height: 15
+  components:
+  - type: spriteRenderer
+    sortByY: false
+    order: -3
+    pixelSnap: true
+    tint: "#EBE4D0"
+    assetId: "20796dcd-bd09-5e49-a133-2a84046c3bf9"
+- id: c49efb31-5d97-5dde-b950-b2bcf8777fab
+  name: "Ground detail 5-10-0"
+  x: 229
+  y: 270
+  width: 23
+  height: 15
+  components:
+  - type: spriteRenderer
+    sortByY: false
+    order: -3
+    pixelSnap: true
+    tint: "#EBE4D0"
+    assetId: "381d8324-8644-5adc-a143-0739076b2003"
+- id: ab71bc1c-0fab-59e8-b7d1-6c9199ebc9bd
+  name: "Ground detail 6-10-0"
+  x: 274
+  y: 287
+  width: 23
+  height: 15
+  components:
+  - type: spriteRenderer
+    sortByY: false
+    order: -3
+    pixelSnap: true
+    tint: "#EBE4D0"
+    assetId: "20796dcd-bd09-5e49-a133-2a84046c3bf9"
+- id: f979edfb-d1e4-586a-a8ba-2aca813c281f
+  name: "Ground detail 7-10-0"
+  x: 309
+  y: 296
+  width: 26
+  height: 20
+  components:
+  - type: spriteRenderer
+    sortByY: false
+    order: -3
+    pixelSnap: true
+    tint: "#EBE4D0"
+    assetId: "6b098327-9ea8-50e1-b017-688a1f72b5e9"
+- id: 9c49b77a-82e3-54e6-8434-e536c115fc9b
+  name: "Ground detail 10-10-0"
+  x: 397
+  y: 342
+  width: 26
+  height: 20
+  components:
+  - type: spriteRenderer
+    sortByY: false
+    order: -3
+    pixelSnap: true
+    tint: "#EBE4D0"
+    assetId: "6b098327-9ea8-50e1-b017-688a1f72b5e9"
+- id: da27f025-2c46-535b-ba1d-c9d62169398a
+  name: "Ground detail 10-10-1"
+  x: 402
+  y: 343
+  width: 26
+  height: 20
+  components:
+  - type: spriteRenderer
+    sortByY: false
+    order: -3
+    pixelSnap: true
+    tint: "#EBE4D0"
+    assetId: "6b098327-9ea8-50e1-b017-688a1f72b5e9"
+- id: 8b332c5c-876f-516b-8659-d619e861d464
+  name: "Ground detail 11-10-0"
+  x: 433
+  y: 366
+  width: 23
+  height: 15
+  components:
+  - type: spriteRenderer
+    sortByY: false
+    order: -3
+    pixelSnap: true
+    tint: "#EBE4D0"
+    assetId: "381d8324-8644-5adc-a143-0739076b2003"
+- id: ca434a27-0a9a-515c-9b44-9a20094007aa
+  name: "Ground detail 11-10-1"
+  x: 428
+  y: 370
+  width: 23
+  height: 15
+  components:
+  - type: spriteRenderer
+    sortByY: false
+    order: -3
+    pixelSnap: true
+    tint: "#EBE4D0"
+    assetId: "20796dcd-bd09-5e49-a133-2a84046c3bf9"
+- id: 2b487612-c0da-516d-a10b-a8530cded06a
+  name: "Ground detail 7-11-0"
+  x: 280
+  y: 315
+  width: 26
+  height: 20
+  components:
+  - type: spriteRenderer
+    sortByY: false
+    order: -3
+    pixelSnap: true
+    tint: "#EBE4D0"
+    assetId: "6b098327-9ea8-50e1-b017-688a1f72b5e9"
+- id: 2990096a-55aa-5dd8-86a9-a677f88a05c4
+  name: "Ground detail 7-11-1"
+  x: 292
+  y: 320
+  width: 23
+  height: 15
+  components:
+  - type: spriteRenderer
+    sortByY: false
+    order: -3
+    pixelSnap: true
+    tint: "#EBE4D0"
+    assetId: "381d8324-8644-5adc-a143-0739076b2003"
+- id: 04f936c0-e124-5a6c-b77c-13b85c43aa7d
+  name: "Ground detail 8-11-0"
+  x: 307
+  y: 338
+  width: 23
+  height: 15
+  components:
+  - type: spriteRenderer
+    sortByY: false
+    order: -3
+    pixelSnap: true
+    tint: "#EBE4D0"
+    assetId: "381d8324-8644-5adc-a143-0739076b2003"
+- id: f367fd52-5bca-59a9-a7a5-1b5820a5f4c0
+  name: "Ground detail 8-11-1"
+  x: 305
+  y: 333
+  width: 23
+  height: 15
+  components:
+  - type: spriteRenderer
+    sortByY: false
+    order: -3
+    pixelSnap: true
+    tint: "#EBE4D0"
+    assetId: "381d8324-8644-5adc-a143-0739076b2003"
+- id: 0a8d8ec4-d4d1-596c-bfc7-54fc565ded2f
+  name: "Ground detail 9-11-0"
+  x: 326
+  y: 350
+  width: 23
+  height: 15
+  components:
+  - type: spriteRenderer
+    sortByY: false
+    order: -3
+    pixelSnap: true
+    tint: "#EBE4D0"
+    assetId: "381d8324-8644-5adc-a143-0739076b2003"
+- id: 8565a141-1d0d-5265-85ed-cedff0ed2931
+  name: "Ground detail 9-11-1"
+  x: 329
+  y: 350
+  width: 23
+  height: 15
+  components:
+  - type: spriteRenderer
+    sortByY: false
+    order: -3
+    pixelSnap: true
+    tint: "#EBE4D0"
+    assetId: "381d8324-8644-5adc-a143-0739076b2003"
+- id: 36f2444d-16a2-5c85-909d-92bc5b333041
+  name: "Ground detail 10-11-0"
+  x: 355
+  y: 361
+  width: 26
+  height: 20
+  components:
+  - type: spriteRenderer
+    sortByY: false
+    order: -3
+    pixelSnap: true
+    tint: "#EBE4D0"
+    assetId: "6b098327-9ea8-50e1-b017-688a1f72b5e9"
+- id: e4cb28a2-5071-58e6-8f5d-e231eb41027a
+  name: "Inn 1"
+  x: 285
+  y: 54
+  width: 121
+  height: 100
+  components:
+  - type: spriteRenderer
+    sortByY: true
+    order: 0
+    pixelSnap: true
+    tint: "#EBE4D0"
+    assetId: "087527a1-7f32-552d-bb7b-5863e060c30f"
+- id: d4d46ea4-d7c1-5eb3-bbf6-11fbf69d1e34
+  name: "Forge 2"
+  x: 437
+  y: 56
+  width: 109
+  height: 92
+  components:
+  - type: spriteRenderer
+    sortByY: true
+    order: 0
+    pixelSnap: true
+    tint: "#EBE4D0"
+    assetId: "fea5d890-dc71-5200-8607-7c928d63670c"
+- id: 12b9276d-6957-5a80-ae83-29655f64bfd1
+  name: "Store 3"
+  x: 466
+  y: 116
+  width: 105
+  height: 89
+  components:
+  - type: spriteRenderer
+    sortByY: true
+    order: 0
+    pixelSnap: true
+    tint: "#EBE4D0"
+    assetId: "f44e76d9-6131-5f3c-962b-2b4b57240d76"
+- id: ed9ca9cf-6142-51e4-beea-7972df5479ba
+  name: "Awning 4"
+  x: 431
+  y: 141
+  width: 73
+  height: 66
+  components:
+  - type: spriteRenderer
+    sortByY: true
+    order: 0
+    pixelSnap: true
+    tint: "#EBE4D0"
+    assetId: "377e8237-8b96-5186-9eaa-bf948d13de75"
+- id: 1146dd9e-1c48-5491-a523-94330b30188b
+  name: "Crates 5"
+  x: 446
+  y: 169
+  width: 26
+  height: 20
+  components:
+  - type: spriteRenderer
+    sortByY: true
+    order: 0
+    pixelSnap: true
+    tint: "#EBE4D0"
+    assetId: "6b098327-9ea8-50e1-b017-688a1f72b5e9"
+- id: 62ec7f71-3edd-5369-aeaa-f619909d6524
+  name: "Pine 6"
+  x: 297
+  y: 87
+  width: 33
+  height: 42
+  components:
+  - type: spriteRenderer
+    sortByY: true
+    order: 0
+    pixelSnap: true
+    tint: "#EBE4D0"
+    assetId: "4ee23ca4-d0e3-5eea-ac3a-e0c57a48463d"
+- id: 11ca846c-9821-5c9b-843b-600e9d1992b8
+  name: "Rail 7"
+  x: 288
+  y: 129
+  width: 40
+  height: 32
+  components:
+  - type: spriteRenderer
+    sortByY: true
+    order: 0
+    pixelSnap: true
+    tint: "#EBE4D0"
+    assetId: "8f42ceff-57c4-5a7e-a97e-45d28891462b"
+- id: eff61d26-8c7f-5759-9432-07a81416361c
+  name: "Casks 8"
+  x: 321
+  y: 157
+  width: 31
+  height: 23
+  components:
+  - type: spriteRenderer
+    sortByY: true
+    order: 0
+    pixelSnap: true
+    tint: "#EBE4D0"
+    assetId: "91987aa3-c1ab-59ec-91a0-125b26b6fd62"
+- id: 2718014f-2725-50f0-99d1-5294e25741b5
+  name: "Pine 9"
+  x: 290
+  y: 116
+  width: 33
+  height: 42
+  components:
+  - type: spriteRenderer
+    sortByY: true
+    order: 0
+    pixelSnap: true
+    tint: "#EBE4D0"
+    assetId: "4ee23ca4-d0e3-5eea-ac3a-e0c57a48463d"
+- id: 238a7223-2729-5d52-b8b7-4810dfea16ff
+  name: "Pine 10"
+  x: 511
+  y: 86
+  width: 33
+  height: 42
+  components:
+  - type: spriteRenderer
+    sortByY: true
+    order: 0
+    pixelSnap: true
+    tint: "#EBE4D0"
+    assetId: "4ee23ca4-d0e3-5eea-ac3a-e0c57a48463d"
+- id: a442baf4-507d-59e6-948a-e01e1fb0ea95
+  name: "Pine 11"
+  x: 474
+  y: 268
+  width: 33
+  height: 42
+  components:
+  - type: spriteRenderer
+    sortByY: true
+    order: 0
+    pixelSnap: true
+    tint: "#EBE4D0"
+    assetId: "4ee23ca4-d0e3-5eea-ac3a-e0c57a48463d"
+- id: 10e78aca-66a8-5670-8892-ea6c75a8bbeb
+  name: "Banner 12"
+  x: 379
+  y: 157
+  width: 16
+  height: 37
+  components:
+  - type: spriteRenderer
+    sortByY: true
+    order: 0
+    pixelSnap: true
+    tint: "#EBE4D0"
+    assetId: "e426b7a6-fe74-5b0b-80da-a7f03c18a958"
+- id: 85d1f8cc-ddea-5d08-8e85-d534058ac789
+  name: "Banner 13"
+  x: 386
+  y: 315
+  width: 16
+  height: 37
+  components:
+  - type: spriteRenderer
+    sortByY: true
+    order: 0
+    pixelSnap: true
+    tint: "#EBE4D0"
+    assetId: "e426b7a6-fe74-5b0b-80da-a7f03c18a958"
+- id: 1381b62b-417a-50a0-9a4d-5f8ea971603d
+  name: "Lantern 14"
+  x: 434
+  y: 163
+  width: 15
+  height: 30
+  components:
+  - type: spriteRenderer
+    sortByY: true
+    order: 0
+    pixelSnap: true
+    tint: "#EBE4D0"
+    assetId: "0570d9c5-4f3f-582d-9a42-b7e44d9e69b9"
+- id: af1e855a-a28b-5314-94e0-5b0f07859292
+  name: "Lantern light 13"
+  x: 413
+  y: 165
+  width: 56
+  height: 33
+  components:
+  - type: spriteRenderer
+    order: -2
+    tint: "#EBE4D0"
+    assetId: "1f0823e1-c461-5c13-a15e-d7dca9a56e34"
+- id: b98b6c61-5ca2-5963-8a7c-4b2a3bc2470c
+  name: "Lantern 15"
+  x: 378
+  y: 195
+  width: 15
+  height: 30
+  components:
+  - type: spriteRenderer
+    sortByY: true
+    order: 0
+    pixelSnap: true
+    tint: "#EBE4D0"
+    assetId: "0570d9c5-4f3f-582d-9a42-b7e44d9e69b9"
+- id: 12005977-1e52-590c-990d-ef81d696e2ab
+  name: "Lantern light 14"
+  x: 357
+  y: 197
+  width: 56
+  height: 33
+  components:
+  - type: spriteRenderer
+    order: -2
+    tint: "#EBE4D0"
+    assetId: "1f0823e1-c461-5c13-a15e-d7dca9a56e34"
+- id: 11aa67cf-5f93-52a1-975a-2d1da2135b07
+  name: "Camp"
+  x: 406
+  y: 163
   width: 20
   height: 22
   components:
   - type: spriteRenderer
-    assetId: 92f3a45c-d149-504d-a167-3dab2aa002a3
     sortByY: true
-- id: 1a936037-6805-5727-8575-9df12727307a
+    order: 0
+    pixelSnap: true
+    tint: "#EBE4D0"
+    assetId: "92f3a45c-d149-504d-a167-3dab2aa002a3"
+- id: de575399-b475-5be5-85a6-fc2644ffac27
+  name: "Camp footprint"
+  x: 416
+  y: 184
+  width: 1
+  height: 1
+  components: []
+- id: 0360889f-c792-59d3-bb73-62ce41e86f3b
+  name: "Market light"
+  x: 354
+  y: 145
+  width: 124
+  height: 74
+  components:
+  - type: spriteRenderer
+    order: -2
+    tint: "#EBE4D0"
+    assetId: "1f0823e1-c461-5c13-a15e-d7dca9a56e34"
+- id: af4d8ff6-3834-56f4-93ce-9d55ec4fbe69
+  name: "Market embers"
+  x: 394
+  y: 148
+  width: 44
+  height: 44
+  components:
+  - type: spriteRenderer
+    sortingLayer: 3
+    assetId: "c92d161e-ab7a-5532-830b-6920aa5a1e31"
+  - type: spriteAnimator
+    clip: "964f9148-a9ff-53a3-9c33-c9faeef108e3"
+    playOnStart: true
+- id: 0992376f-cc04-53a0-b0b9-059932036cbe
+  name: "Quartermaster Ysra"
+  x: 429
+  y: 151
+  width: 26
+  height: 34
+  components:
+  - type: spriteRenderer
+    sortByY: true
+    order: 0
+    pixelSnap: true
+    tint: "#EBE4D0"
+    assetId: "dafcd321-3bea-534c-ac3f-10691780481c"
+- id: adacf1e1-8697-582d-bf64-1c65b3fd78c5
+  name: "Quartermaster plate"
+  x: 406
+  y: 137
+  width: 40
+  height: 15
+  components:
+  - type: text2D
+    text: "Ysra"
+    size: 8
+    color: "#FFDEA2"
+    richText: true
+    sortingLayer: 5
+    order: 1
+- id: 3c248e14-c8fd-5319-b125-5de3af8b731e
   name: "Gate"
-  x: 453
-  y: 288
+  x: 400
+  y: 236
   width: 32
   height: 34
   components:
   - type: spriteRenderer
-    assetId: df293170-6ee7-54fd-b468-c23e7ec63e8a
     sortByY: true
-- id: ec92f082-9530-5264-baea-6c631ba21ca8
-  name: "Pine 1"
-  x: 261
-  y: 88
-  width: 33
-  height: 42
+    order: 0
+    pixelSnap: true
+    tint: "#EBE4D0"
+    assetId: "df293170-6ee7-54fd-b468-c23e7ec63e8a"
+- id: 4fbc7975-5c8d-5c5c-9c93-6d1479ee378b
+  name: "Gate footprint"
+  x: 416
+  y: 269
+  width: 1
+  height: 1
+  components: []
+- id: d8e44045-b1e0-5f14-ae78-3203bb1523c6
+  name: "Gate light"
+  x: 376
+  y: 238
+  width: 81
+  height: 48
   components:
   - type: spriteRenderer
-    assetId: 4ee23ca4-d0e3-5eea-ac3a-e0c57a48463d
-    sortByY: true
-- id: c82c26c9-2946-5dff-a3af-4892d92ed660
-  name: "Pine 2"
-  x: 197
-  y: 152
-  width: 33
-  height: 42
-  components:
-  - type: spriteRenderer
-    assetId: 4ee23ca4-d0e3-5eea-ac3a-e0c57a48463d
-    sortByY: true
-- id: ca7aa3bc-36f6-5ea5-99f5-052b4f2a13e0
-  name: "Pine 3"
-  x: 485
-  y: 104
-  width: 33
-  height: 42
-  components:
-  - type: spriteRenderer
-    assetId: 4ee23ca4-d0e3-5eea-ac3a-e0c57a48463d
-    sortByY: true
-- id: a7eb8536-9962-58fd-b447-8119eea29584
-  name: "Pine 4"
-  x: 613
-  y: 168
-  width: 33
-  height: 42
-  components:
-  - type: spriteRenderer
-    assetId: 4ee23ca4-d0e3-5eea-ac3a-e0c57a48463d
-    sortByY: true
-- id: e473853a-ac77-5c7b-aeb9-c56cc8d2500e
-  name: "Pine 5"
-  x: 389
-  y: 280
-  width: 33
-  height: 42
-  components:
-  - type: spriteRenderer
-    assetId: 4ee23ca4-d0e3-5eea-ac3a-e0c57a48463d
-    sortByY: true
-- id: ae608a1c-9c33-5360-b560-e2240ea32d6f
-  name: "Pine 6"
-  x: 581
-  y: 248
-  width: 33
-  height: 42
-  components:
-  - type: spriteRenderer
-    assetId: 4ee23ca4-d0e3-5eea-ac3a-e0c57a48463d
-    sortByY: true
-- id: ef26dd11-5a88-579c-9597-50356cafd7a8
-  name: "Pine 7"
-  x: 517
-  y: 312
-  width: 33
-  height: 42
-  components:
-  - type: spriteRenderer
-    assetId: 4ee23ca4-d0e3-5eea-ac3a-e0c57a48463d
-    sortByY: true
-- id: c06c5840-a5f7-5f05-8649-6d44d5861d8a
-  name: "Pine 8"
-  x: 261
-  y: 248
-  width: 33
-  height: 42
-  components:
-  - type: spriteRenderer
-    assetId: 4ee23ca4-d0e3-5eea-ac3a-e0c57a48463d
-    sortByY: true
-- id: 0f27afb9-2e5b-514b-94fa-513c2576e514
+    order: -2
+    tint: "#EBE4D0"
+    assetId: "aa2ae190-f8c5-5ad4-ac7b-ea55a6ea0996"
+- id: 2a65b68b-d832-5509-9e28-55a7f183fb9f
   name: "Captain"
-  x: 361
-  y: 79
-  width: 24
-  height: 35
+  x: 416
+  y: 109
+  width: 1
+  height: 1
   components:
-  - type: spriteRenderer
-    assetId: 55e1e528-c536-5df6-9f9e-5069b4f19abc
-    sortByY: true
   - type: script
-    script: Expedition
-    values: {"Floor": "a3f535b1-7e3c-5ff0-add8-10709185e5a2", "Navigation": "f6fa8cac-c2a0-5d36-95bb-9b6d31fd2bfa", "Camera": "38eb746d-21c0-5e66-8ce5-5794488beeff", "Portal": "1a936037-6805-5727-8575-9df12727307a", "Campfire": "a1a79a08-e11a-5ce2-96db-c2efc8bbac8d", "Hud": "3a153277-c5c1-5074-ac75-79be43e11301", "Hint": "7a8849cf-5adb-588e-bf8b-15fdc19011cf", "Companions": ["ed4dbef5-a193-5b91-9351-4fb724690608", "94fb20c4-0e44-5934-84bf-138dd317680c", "8eb07652-7d33-5693-b8df-e8c8e3b7b65a", "c6863dfc-199c-5d2f-8894-c895cb7168de", "ac24b585-ab92-59f7-8d58-079e7ea77495"], "Enemies": [], "Haven": {"Id": "32ccf437-7ad0-53ae-962e-287d655678a6"}, "Routes": ["a1b92a57-febd-5582-87cc-8700e056ac09", "e211290a-8462-5d97-b7a9-b088aa816bbb", "fd96a88e-4577-5ef2-ac84-c67c9df6467d"], "Zone": 0}
-- id: ed4dbef5-a193-5b91-9351-4fb724690608
+    script: "Expedition"
+    values: {"Floor": "3d34012c-1de6-5a49-9407-bbd26c794499", "Campfire": "de575399-b475-5be5-85a6-fc2644ffac27", "Portal": "4fbc7975-5c8d-5c5c-9c93-6d1479ee378b", "Companions": ["9a09c502-1ec3-5969-8fe3-d1363133bac1", "c734dd1b-4c1a-514d-a9ea-70887de30b0b", "a6293018-a901-55dd-a33d-c1da737d2215", "9f3af0ee-c175-5570-bb79-b732b78e49e2"], "Enemies": [], "EnemyGroups": [], "EnemyKinds": [], "EncounterFocus": "04f901b1-73d6-56ec-a43b-977ec101cab9", "Camera": "6ff2c1a5-ffb3-5208-af5b-bb2c339a3eb8", "Sounds": ["f509931d-e435-571e-8e3e-e9fdf21ed598", "7faaa677-e80c-5bbd-8992-37b819b43064", "984a6a6c-def4-5aa8-a779-156f02b90203", "94d01196-3453-53b4-b6c2-c79ddf8fa0b9", "b68f24c3-791b-56db-970a-c6d402b139a4", "a5f3638e-43df-55f4-9273-0982693c9c36", "bf0991ad-7996-5c20-905d-fea31d331b18", "678b4f49-fd0d-55f2-8668-f99410d4c4fc", "2e81ee0d-f0a5-5820-a8ad-838fdeb4b095"], "CombatEmitters": ["1ba4ceb8-1ebc-5eb7-8c50-5a1e564959e1", "a5d03077-4030-5531-9c4c-d83dce7a5276", "f1535b97-1870-51f2-b9fd-811124653c01", "fbffb1fa-68a8-55b6-8edc-7a91dd56d1bd", "74330a72-8d72-55c7-81d5-39c2bc84407c", "51d24f1c-567d-55d0-bf7a-91bddac22873", "4c7e546c-ff6b-582f-ab4c-5c585f53f084", "5dff811b-fd8a-5095-a54b-93a4db0e86f6", "6b040461-8ea2-5197-93c2-bc76a6a958d5", "4a4498c7-bcd3-581d-8bf9-7bc6cff8a4a1", "43fd096f-1bd8-5609-804d-4b60346326b1", "fdef0f5e-b9be-596e-a8e7-61677ed75d87", "f76337ad-072b-5bdd-a2cc-d1eafd2c943a", "ee18e07c-386b-5fb5-8dcb-05c169b6c1a4", "3d23f722-06d8-57ed-b95a-205382ca9bda", "7ee62159-0be2-59ef-9d66-90d7a88ebb96", "783985df-44b7-5bc5-a0db-1add1f8ce7b8", "aaf15da0-89d8-5b65-92f8-44885d78eb78", "3fad57b1-633d-54e9-87c9-a2c9fa35fb73"], "Ring": "d88ecd30-7e26-5785-a3d1-97f1bbbf6c07", "ShieldRing": "a7d24404-beec-5a7f-a1ff-d4c7f630f0aa", "HealGlyph": "eec0382f-d04a-5012-ab14-7a1cae7e5902", "Warning": "f34d629c-da1e-5bf0-a6b3-d43d7901a8ee", "Cracks": "e02df6d5-ed6a-5df8-9b3d-a9b732a5ae15", "Saber": "403444e2-27af-5025-8a08-29d5f833565e", "WarFlag": "e5aad45e-ed8a-55d6-b650-ade11006f244", "Numbers": ["1745e240-4d9f-5de8-a4df-107985eb2c5a", "ec0e03c7-141e-5e4a-8c52-ddc0457045a0", "1f729e15-8aae-5bf4-8228-1ea0b905c367", "9310f0ca-7565-506c-b7e7-0d8b42061fe5", "1dff42ec-fb99-53f4-bc47-3f149d0a87df", "588c374c-8f68-5aa6-9cbe-9f85c1b20520", "3730099b-3901-5862-8ef3-de2f8b7a4245", "215a1a08-9aef-50d6-9aeb-d177f959a17c", "f47317ba-fd35-5507-9c46-018b638c4a99", "5152710b-c96e-5095-bd52-096525050bf6", "ba2bc267-9bcc-5fae-a3f3-771b4c4e461e", "14fca137-fd74-5fb0-b137-d3bd727b1848"], "NumberInk": ["1d26e2cd-538e-5e1c-a9d5-e16304a8e732", "b4a7b264-c170-51b2-a25b-5efe22c7cf0f", "5d37087c-293a-5b8b-81ff-ff90e15ecfa1", "c1e31538-c598-5403-a9e3-5faca348d8aa", "0d176073-51d3-547c-bf7f-cb71e61e495c", "0c984cf5-795a-570e-ae09-1acf38ea951c", "3758d25b-7dc5-507c-ab69-928ce94eb38b", "b72322e1-0863-5a7c-a74f-2fd44f4e001c", "e028b090-c998-5776-b948-09b640c15cfa", "6d7da442-ac4f-5359-9162-97d39fcc5533", "18097e1d-68d1-5e21-b52d-e0884ef3628e", "168c1024-93ac-585d-ac54-6c0060f3bac9"], "NumberOutline": ["208fe82a-1f30-5937-8ead-81eea4b246f6", "75efc407-0517-5eb9-b318-8bc84b701ca8", "f7b24b52-7637-525e-8888-75a64ad77083", "d1c0b869-66a0-506e-b901-474724bc7b39", "da3ee7b0-66bf-556f-883f-3909d039aec9", "06c4bdd7-50d8-5b39-a7ba-ce00a216dca2", "d911f3ef-7144-55a5-8b65-9284c48c5cc1", "27d891f9-c597-57a6-af31-319392e24bab", "11f81348-118f-5535-937e-685bc0843840", "1508c3e9-ea31-55a5-977e-ad91d016ace4", "bbab8c0f-d0a9-501e-994d-bf9f16009665", "a6b850db-e0ce-5ddb-8fcc-9fa380776413", "0ac53aa0-5a8a-5a37-9f0a-015a1cc59ca7", "cd23d6da-915b-50c0-98ef-b9cc7677085b", "cd8b864f-4839-5419-af82-51322c1c5aab", "a1211b35-7cb1-513c-a52a-91a92ad25ecc", "ddcac308-eed9-5322-9f99-a54a5ec01d97", "8841763e-5406-5df4-8514-6f31608fb428", "23578a9f-ada7-51b8-9012-2dd5876c70b5", "215bf9a2-00f3-5999-b12d-9e6888cb28d7", "27d2af40-2276-58b3-bdae-e4bcfe270f39", "ebcdd4d1-81b4-5844-9888-393b251ab4e2", "9a9a7833-c375-5cd7-87ea-77c081172b34", "abea34a8-ad4a-5ceb-a0e9-fdccb1acf261", "029f73af-56b3-52f7-bb8f-d61ba4f704ec", "3e0dc666-1d8a-5b40-a395-59388cc4c867", "b43ccafb-2aaf-564d-858a-4284a08a9861", "7dc7ce9a-0d47-5e2f-b318-15eae59ff43d", "aa2d81a3-20ea-5321-9a0f-b9061e982a76", "f70ef561-2a71-5b20-a719-c34768e55c60", "35548d50-512d-5d65-b6ae-3b99f4f07c2b", "0fb3c618-0c63-5166-9c53-5e08772e26dc", "1b3e387c-7f10-58f3-ba70-cf7e59ebc60c", "da19a7fa-e06b-52a0-b747-e552411d4aa2", "3aa6cfcf-2e27-5210-b411-580446b8ada0", "375dab1b-417a-5987-a7a2-ac0266b60758", "3b3f45eb-3c0a-51d9-bbf3-1125fe44e4a9", "0e585340-ca85-5c73-a7c7-0107fe6f380b", "0d48f236-cb33-5b95-a397-5a28cd256705", "538aaa9a-3ca6-51f7-88a4-10565d0ad894", "94933007-479d-57a1-a810-7b2b203d5aeb", "d02f8cad-910f-5890-8c3d-fcac39532a5a", "b0a03ef6-31d3-5ec1-a968-c726a4e3500b", "4150fa4b-005f-539f-8862-cf6d322db589", "5ba9b9b1-24c7-504a-9209-b66252c49f79", "ee932649-e84a-5370-8d56-709dc8908f8d", "34540d34-37e6-52e0-b288-8d43b5158873", "8962eb9e-a9bf-57e4-9db4-301836054b61"], "Arrows": ["1b143944-5e06-5a22-a4f3-8cd8ea8ae518", "62bcfc36-2a35-554d-9c26-dc5fad6c4d57", "de3d360c-f3b7-57f3-8ea2-b2205fd8c2cc", "41402a98-5ff8-541a-8d40-9fca552567a2", "48d188bb-8e3b-5f3f-8b84-746f578407d9", "9cdb8726-403f-596d-88e6-9cc718e1a019", "6d0b3f41-ba4e-5c06-824d-3ae4b6738011", "18e52568-4e34-56e3-99e7-0b647584a3f7"], "Loot": ["b8f76f76-0ebf-596d-a735-54bbd8a911ee", "f6fc6cf8-284a-59b2-9c2c-ebfdc61b5907", "352ac846-eefc-5f2a-af5f-267855c9661d", "d3759d7d-242d-58ec-a10c-d803f9d0f26e", "1d4518e0-f87f-5a35-b6e5-8933422f4aa0", "4a861a44-0983-56fc-80f8-70acc9ba8e06", "a0646bdf-45d6-58f9-b8e5-bd7cb837bc8f", "ac7ad917-2528-5348-947c-a82d9e7b6739", "ff6fcdb2-5e1e-5ecb-858f-9aa51666d51c", "527c583b-ccdb-5207-acd4-36fbd368891e", "91d552bc-e608-5bfe-b157-ab3767a1e6d9", "cdb896d3-2e90-5757-9db1-b18325031554"], "Waypoint": "f1f388fb-ebc0-559f-bf95-7565b32a58ec", "PartyPanel": "7416a365-f167-5d2e-9407-fa729663847f", "PartySlots": ["a7521cbf-572a-529b-9a83-c1db2f558165", "ed279dc8-6891-5513-a69f-efe24e877c0b", "3f9a9f49-d111-52b0-9534-8968ee7c88a1", "9bcfb7e8-ece2-5a72-b92d-ed57d8111e8d", "e004b45d-56c3-5deb-96a9-127aa0819926"], "PartyFill": ["83d78eea-4a66-5cff-bd9c-88e36490de4c", "aa8c1d09-88d1-5c1b-9014-65bda3da58b9", "a70975c7-0f32-5cf7-97c1-ee534365df6c", "8eac4cee-fd00-599d-8796-2e40d42297e0", "ac1b6180-440b-5ee6-b3e4-7c84c3b3beb3"], "PartyDown": ["d4280e4f-51d7-572c-8ea5-0d30adcf1859", "1a71e1d1-a61c-57f4-a7a6-35f0ec370962", "e8b43dca-a05c-52d6-aaf4-981ac3c6ffd9", "c1511498-f60a-555b-8674-2340c5fd1834", "23b03367-62b8-5c77-835b-24e05352cb5f"], "ProgressPanel": "6062492a-7f51-5bbc-ad64-06df12f5e6bd", "Crowns": "4a85a901-8bda-572b-b6d4-55f5ecead902", "Level": "1d676e23-afff-5a6e-af50-30dd9ddc2486", "ExperienceTrack": "11fcbf50-68ec-566a-9df8-2f43a56c29ce", "Experience": "b64147db-463a-53d1-b908-56bb84d7c8e4", "PulsePanel": "0b7e3900-7d9c-5d24-b125-012563d3467d", "PulseSegments": ["b04bf676-fa44-549c-998c-9517d6e45560", "71eeb245-89ba-5011-8ce3-bee9dcfee0b8", "dd1905c9-b056-5741-895a-785735dafafd", "f505fd5a-33aa-5fcc-9b3f-a4136654d366", "2c5bff42-ba82-53b2-87ec-6d22e089ffbf", "7dd960c3-8b99-5b3b-ad81-7c9c68bf8baa", "853ac3c7-103d-5933-86ce-5530b25da889", "db758c1a-a844-5a78-b254-6de829b6cc6f", "0a756362-6eb8-535d-aa48-83ccfe6d4f43", "4aa502f9-47f1-51a1-862e-489f027115f6", "d1b61716-dce5-57f2-939d-a233252c5e75", "5ed2f21b-60a4-50c2-aaf3-6b926fce52cb"], "PulseShine": "24b0dbbd-6fe6-5455-b14f-2a22609aa73f", "PulseCaption": "c1b4d73d-ce67-5faf-986d-8f4a3d2307d9", "WavePanel": "632bfea7-08ba-5f6a-b097-5fb0c9b75c2f", "WaveMarks": ["7096737d-42d9-501e-837f-6963a68e0144", "1e7f32cf-b768-5e86-a1f2-3cfa585ff493", "36877af3-a157-5cd9-a1c1-19ee82b455ac"], "FoeCount": "9d8e1e88-3e7d-546d-bebe-1f8cc9d437ba", "PromptPanel": "095b5ad5-67db-5f05-8e54-39e8dc5fcb77", "Prompt": "769f4d0a-aba6-55e5-a0e4-45c0f7c09c15", "PromptKeyText": "6f36d5ef-a188-5e4b-8fc5-8a3d02d63593", "GateChip": "5de0b217-3650-5aae-a3b6-aa094cfdc8c3", "RestChip": "c2a32d1f-4750-5e5e-8c91-509374716c14", "BossPanel": "9959062d-d8b6-59e8-9492-fd59c2ee090b", "BossTell": "64c82ef7-5bff-5f23-88de-23fce0b39e06", "BossFill": "662512e6-6d00-58fe-9d31-941a6b63f392", "ChapterPanel": "45477ee7-33d6-5239-ab9c-097e4830caaf", "BannerSkin": "408e393c-0f9e-541f-916f-72859932ecb7", "ScrollSkin": "e00a6b96-b214-5f83-9eb7-4dbfad28d382", "ChapterTitle": "0c730b62-53e3-54e3-8ca3-60bd2cb22900", "ChapterLine": "a2bdcbfe-ce94-58c3-9d0e-fce253e6e0b2", "ChapterActions": "8b6bd491-a00e-5300-9f7d-d1ee5d48c3f0", "ChapterGate": "f01f1aa0-1411-564e-9d33-6e5a84c73da3", "ChapterRetreat": "d3401412-d366-5194-87b5-b8598412720b", "MenuPanel": "cf882a77-1de0-5c5c-b257-9b70df6566f7", "MenuTag": "7a074e87-e951-59fb-a55e-d7472ee40e6e", "MenuTitle": "8097efa4-651d-54ec-9cf8-028b8422d48e", "MenuRecordLabels": ["08c6fb4e-ef2b-5b33-b0ea-a4137563910a", "9b7c065b-f3e1-56a0-90aa-e75459b5360b", "dfeaa2e2-942b-5aca-8af5-7c7fcbf1bf25", "92e106d8-adb4-57d3-9981-dc9fadd149ee", "20c50620-342e-5561-8d03-ffbe14f8a33a", "7ec8df56-836f-5d09-9898-9078209c2b3a"], "MenuRecord": ["a15564f5-db9c-5351-a14d-b060c8129f57", "a9b44205-55aa-5021-ad29-e414f270739e", "834a7797-9492-5172-af6a-aaee9db44ee5", "7e1f7cf9-d920-52ed-933f-8d4608b8391a", "8af92e4c-2fff-508a-8bf1-3d6af509453a", "f1a3721b-362b-59c1-8f79-741b081fa237"], "MenuRule": "dba0fa90-98ae-56e1-ac73-5bf1b007e74e", "MenuLine": "fab9a391-0d4d-5efd-a71e-c6dc68ad933c", "MenuLine2": "70f06539-a93d-57f1-9a47-6be98567ceb0", "MenuButtons": ["af541b6a-ea2b-51b7-be83-3b9899406207", "a75ee134-f8bd-5459-9740-30ba406d1eb7", "372a177b-1983-510d-8792-81c9b463a0e4", "2f33054e-e955-548c-a87f-c38764432d17", "f3208439-a956-5367-8766-92f62f4a1a6b"], "ButtonFocus": ["b3d33266-4d5b-5235-9a8a-e235ecd8195c", "2d026ceb-9d6c-5eb6-82a8-7cf51b1fa8cf", "a0cc88c2-3692-5167-bb8c-536a17b64dfc", "3babfefa-3e90-5d15-901e-191e5e4e4f36", "e87e95b4-a821-5ee2-9d49-56f8877885c5"], "ButtonDown": ["065ae02b-2299-5ba7-951c-28d7d38c5e71", "b9a3524c-a120-5915-ba1a-ad8032bcfb69", "8c82ddc9-e289-5dd0-b391-2b1b91fb60fa", "2a500d75-d5b0-5330-a42d-3a62ec90da02", "44264a81-5ed8-5f7f-a4c9-be5f16233b65"], "MenuSeal": "58c47a94-fff4-5abd-bd89-0f0238630a4d", "MenuHelpRows": ["06f26e18-0e1e-525d-8daa-f112c22e6a80", "cf9825e7-b5a3-5468-8123-73abada98403", "e07a0c30-c4ab-5b0b-b42e-384bceb7debb", "27fb1155-bccb-53fe-8f6c-bc540904a386", "c33e59ac-bc45-546b-879e-6cb0a2380b10", "d656ed20-e3b2-5351-911c-d82902d26344"], "ShopPanel": "8f2271a9-49b9-5903-b0d7-d65dea035f68", "ShopPrices": ["2c8cb52d-bc3f-5aab-80a1-2ea8cc323475", "d5aff537-3101-595c-8468-9097edf64cd8"], "HireLine": "177e5b6d-2bdc-5136-a24e-b8e8cb766813", "GearLine": "e26ff215-b6f1-51d5-a823-f58f7055c6f4", "Zone": 0, "ZoneName": "Haven", "ZoneSubtitle": "The lanterns are still lit.", "Haven": {"Id": "32ccf437-7ad0-53ae-962e-287d655678a6"}, "Next": {"Id": "00000000-0000-0000-0000-000000000000"}, "RegionTotals": [9, 12, 7], "Routes": ["a1b92a57-febd-5582-87cc-8700e056ac09", "e211290a-8462-5d97-b7a9-b088aa816bbb", "fd96a88e-4577-5ef2-ac84-c67c9df6467d"], "PartyMotion": ["5d85e2f9-9618-5fb3-921e-10fba87492af", "6e341b19-b755-5c3c-a10b-595a41882f6f", "ed87a2c6-3293-57e0-a93f-d361a582e4fa", "d6e65e49-8db4-572e-9f56-12b9156ef6fb", "4e42f232-ca00-58d6-a57e-fe8fd690099b"], "PartyBars": ["1d42ac95-978b-52e6-8010-f02df927ec53", "7cb6fb2e-df61-52f2-8990-3d8fcd262ac7", "2c2cc655-392b-540f-9835-8f2ebb6ccb4b", "875a8f99-f47e-5e4e-8830-0944e374d2fb", "34bb8b4b-4206-500a-8697-ca8ea8d89ab6"], "PartyLife": ["d6f9fa80-1c2e-5d8f-a382-94265c4bc8e4", "28e2a9e9-8726-5b41-af55-97d8ff5a5dab", "be43a3cc-e455-50c1-8f34-51753b6d4d26", "295c4eb0-82bb-556f-a3a9-b5aeef4011ea", "37736f9d-63cc-5276-9fd6-a66c6d2ac19a"], "FoeMotion": [], "FoeBars": [], "FoeLife": []}
+- id: 7c39b21b-2f7b-55ad-b3dc-b3923a70d785
+  name: "Captain shadow"
+  x: -15
+  y: -5
+  width: 30
+  height: 12
+  parentId: 2a65b68b-d832-5509-9e28-55a7f183fb9f
+  components:
+  - type: spriteRenderer
+    order: -1
+    pixelSnap: true
+    assetId: "857c35db-0d1b-58c9-acf7-02895cb8e5d1"
+- id: 5d85e2f9-9618-5fb3-921e-10fba87492af
+  name: "Captain motion"
+  x: -18
+  y: -37
+  width: 36
+  height: 40
+  parentId: 2a65b68b-d832-5509-9e28-55a7f183fb9f
+  pivotX: 0.5
+  pivotY: 0.5
+  components:
+  - type: spriteRenderer
+    sortByY: true
+    pixelSnap: true
+  - type: spriteAnimator
+    controller: "088c6b10-9e6d-5dd3-9841-43e9fabad471"
+    playOnStart: true
+- id: 1d42ac95-978b-52e6-8010-f02df927ec53
+  name: "Captain bar"
+  x: -12
+  y: -43
+  width: 24
+  height: 4
+  parentId: 2a65b68b-d832-5509-9e28-55a7f183fb9f
+  components:
+  - type: spriteRenderer
+    squareColor: "#151925"
+    sortingLayer: 4
+- id: d6f9fa80-1c2e-5d8f-a382-94265c4bc8e4
+  name: "Captain HP"
+  x: -11
+  y: -42
+  width: 22
+  height: 2
+  parentId: 2a65b68b-d832-5509-9e28-55a7f183fb9f
+  components:
+  - type: spriteRenderer
+    squareColor: "#58e3cf"
+    sortingLayer: 4
+    order: 1
+- id: 9a09c502-1ec3-5969-8fe3-d1363133bac1
   name: "Companion 1"
-  x: 343
-  y: 91
-  width: 26
-  height: 33
+  x: 390
+  y: 120
+  width: 1
+  height: 1
+  components: []
+- id: 2c62ff6b-032c-53e3-8d03-d5f1e5ddcd4d
+  name: "Companion 1 shadow"
+  x: -15
+  y: -5
+  width: 30
+  height: 12
+  parentId: 9a09c502-1ec3-5969-8fe3-d1363133bac1
   components:
   - type: spriteRenderer
-    assetId: 2ba0fb87-0f9e-5a58-bb86-cdad1f63e889
+    order: -1
+    pixelSnap: true
+    assetId: "857c35db-0d1b-58c9-acf7-02895cb8e5d1"
+- id: 6e341b19-b755-5c3c-a10b-595a41882f6f
+  name: "Companion 1 motion"
+  x: -21
+  y: -36
+  width: 42
+  height: 39
+  parentId: 9a09c502-1ec3-5969-8fe3-d1363133bac1
+  pivotX: 0.5
+  pivotY: 0.5
+  components:
+  - type: spriteRenderer
     sortByY: true
-- id: 94fb20c4-0e44-5934-84bf-138dd317680c
+    pixelSnap: true
+  - type: spriteAnimator
+    controller: "86872915-11cc-52d2-9cb6-0a4d694f88ea"
+    playOnStart: true
+- id: 7cb6fb2e-df61-52f2-8990-3d8fcd262ac7
+  name: "Companion 1 bar"
+  x: -12
+  y: -42
+  width: 24
+  height: 4
+  parentId: 9a09c502-1ec3-5969-8fe3-d1363133bac1
+  components:
+  - type: spriteRenderer
+    squareColor: "#151925"
+    sortingLayer: 4
+- id: 28e2a9e9-8726-5b41-af55-97d8ff5a5dab
+  name: "Companion 1 HP"
+  x: -11
+  y: -41
+  width: 22
+  height: 2
+  parentId: 9a09c502-1ec3-5969-8fe3-d1363133bac1
+  components:
+  - type: spriteRenderer
+    squareColor: "#58e3cf"
+    sortingLayer: 4
+    order: 1
+- id: c734dd1b-4c1a-514d-a9ea-70887de30b0b
   name: "Companion 2"
-  x: 377
-  y: 91
-  width: 26
-  height: 33
+  x: 442
+  y: 120
+  width: 1
+  height: 1
+  components: []
+- id: 07f1501f-040f-5476-adb3-b9b6b76a1000
+  name: "Companion 2 shadow"
+  x: -15
+  y: -5
+  width: 30
+  height: 12
+  parentId: c734dd1b-4c1a-514d-a9ea-70887de30b0b
   components:
   - type: spriteRenderer
-    assetId: 4b80073d-3810-5234-8821-07d06f31dd09
+    order: -1
+    pixelSnap: true
+    assetId: "857c35db-0d1b-58c9-acf7-02895cb8e5d1"
+- id: ed87a2c6-3293-57e0-a93f-d361a582e4fa
+  name: "Companion 2 motion"
+  x: -19
+  y: -36
+  width: 37
+  height: 39
+  parentId: c734dd1b-4c1a-514d-a9ea-70887de30b0b
+  pivotX: 0.5
+  pivotY: 0.5
+  components:
+  - type: spriteRenderer
     sortByY: true
-- id: 8eb07652-7d33-5693-b8df-e8c8e3b7b65a
+    pixelSnap: true
+  - type: spriteAnimator
+    controller: "0fd7b423-d942-5b82-9948-52b0fa746ea5"
+    playOnStart: true
+- id: 2c2cc655-392b-540f-9835-8f2ebb6ccb4b
+  name: "Companion 2 bar"
+  x: -12
+  y: -42
+  width: 24
+  height: 4
+  parentId: c734dd1b-4c1a-514d-a9ea-70887de30b0b
+  components:
+  - type: spriteRenderer
+    squareColor: "#151925"
+    sortingLayer: 4
+- id: be43a3cc-e455-50c1-8f34-51753b6d4d26
+  name: "Companion 2 HP"
+  x: -11
+  y: -41
+  width: 22
+  height: 2
+  parentId: c734dd1b-4c1a-514d-a9ea-70887de30b0b
+  components:
+  - type: spriteRenderer
+    squareColor: "#58e3cf"
+    sortingLayer: 4
+    order: 1
+- id: a6293018-a901-55dd-a33d-c1da737d2215
   name: "Companion 3"
-  x: 360
-  y: 100
-  width: 26
-  height: 33
-  active: false
+  x: 400
+  y: 93
+  width: 1
+  height: 1
+  components: []
+- id: b1f23f39-9afd-5b2f-b21c-7dd153a1b510
+  name: "Companion 3 shadow"
+  x: -15
+  y: -5
+  width: 30
+  height: 12
+  parentId: a6293018-a901-55dd-a33d-c1da737d2215
   components:
   - type: spriteRenderer
-    assetId: dafcd321-3bea-534c-ac3f-10691780481c
+    order: -1
+    pixelSnap: true
+    assetId: "857c35db-0d1b-58c9-acf7-02895cb8e5d1"
+- id: d6e65e49-8db4-572e-9f56-12b9156ef6fb
+  name: "Companion 3 motion"
+  x: -19
+  y: -36
+  width: 38
+  height: 39
+  parentId: a6293018-a901-55dd-a33d-c1da737d2215
+  pivotX: 0.5
+  pivotY: 0.5
+  components:
+  - type: spriteRenderer
     sortByY: true
-- id: c6863dfc-199c-5d2f-8894-c895cb7168de
+    pixelSnap: true
+  - type: spriteAnimator
+    controller: "a1f3c788-7141-5dc7-b9de-b7c3c5634976"
+    playOnStart: true
+- id: 875a8f99-f47e-5e4e-8830-0944e374d2fb
+  name: "Companion 3 bar"
+  x: -12
+  y: -42
+  width: 24
+  height: 4
+  parentId: a6293018-a901-55dd-a33d-c1da737d2215
+  components:
+  - type: spriteRenderer
+    squareColor: "#151925"
+    sortingLayer: 4
+- id: 295c4eb0-82bb-556f-a3a9-b5aeef4011ea
+  name: "Companion 3 HP"
+  x: -11
+  y: -41
+  width: 22
+  height: 2
+  parentId: a6293018-a901-55dd-a33d-c1da737d2215
+  components:
+  - type: spriteRenderer
+    squareColor: "#58e3cf"
+    sortingLayer: 4
+    order: 1
+- id: 9f3af0ee-c175-5570-bb79-b732b78e49e2
   name: "Companion 4"
-  x: 338
-  y: 101
-  width: 26
-  height: 33
-  active: false
+  x: 432
+  y: 93
+  width: 1
+  height: 1
+  components: []
+- id: 3b08b953-ef7d-577e-8ee5-ffc4f0abd137
+  name: "Companion 4 shadow"
+  x: -15
+  y: -5
+  width: 30
+  height: 12
+  parentId: 9f3af0ee-c175-5570-bb79-b732b78e49e2
   components:
   - type: spriteRenderer
-    assetId: 2ba0fb87-0f9e-5a58-bb86-cdad1f63e889
-    sortByY: true
-- id: ac24b585-ab92-59f7-8d58-079e7ea77495
-  name: "Companion 5"
-  x: 383
-  y: 102
-  width: 26
-  height: 33
-  active: false
+    order: -1
+    pixelSnap: true
+    assetId: "857c35db-0d1b-58c9-acf7-02895cb8e5d1"
+- id: 4e42f232-ca00-58d6-a57e-fe8fd690099b
+  name: "Companion 4 motion"
+  x: -19
+  y: -36
+  width: 37
+  height: 39
+  parentId: 9f3af0ee-c175-5570-bb79-b732b78e49e2
+  pivotX: 0.5
+  pivotY: 0.5
   components:
   - type: spriteRenderer
-    assetId: 4b80073d-3810-5234-8821-07d06f31dd09
     sortByY: true
-- id: 38eb746d-21c0-5e66-8ce5-5794488beeff
+    pixelSnap: true
+  - type: spriteAnimator
+    controller: "0fd7b423-d942-5b82-9948-52b0fa746ea5"
+    playOnStart: true
+- id: 34bb8b4b-4206-500a-8697-ca8ea8d89ab6
+  name: "Companion 4 bar"
+  x: -12
+  y: -42
+  width: 24
+  height: 4
+  parentId: 9f3af0ee-c175-5570-bb79-b732b78e49e2
+  components:
+  - type: spriteRenderer
+    squareColor: "#151925"
+    sortingLayer: 4
+- id: 37736f9d-63cc-5276-9fd6-a66c6d2ac19a
+  name: "Companion 4 HP"
+  x: -11
+  y: -41
+  width: 22
+  height: 2
+  parentId: 9f3af0ee-c175-5570-bb79-b732b78e49e2
+  components:
+  - type: spriteRenderer
+    squareColor: "#58e3cf"
+    sortingLayer: 4
+    order: 1
+- id: 38a76ce9-85db-5a30-a4f5-85a32ce257c4
+  name: "Camera anchor"
+  x: 0
+  y: -16
+  width: 1
+  height: 1
+  parentId: 2a65b68b-d832-5509-9e28-55a7f183fb9f
+  components: []
+- id: 04f901b1-73d6-56ec-a43b-977ec101cab9
+  name: "Encounter focus"
+  x: 416
+  y: 109
+  width: 1
+  height: 1
+  active: false
+  groups: ["Expedition framing"]
+  components: []
+- id: 6ff2c1a5-ffb3-5208-af5b-bb2c339a3eb8
   name: "Expedition camera"
-  x: 373
-  y: 146
+  x: 416
+  y: 93
   width: 1
   height: 1
   components:
   - type: camera2D
-    follow: 0f27afb9-2e5b-514b-94fa-513c2576e514
-    halfLife: 0.17
-    deadZoneWidth: 35
-    deadZoneHeight: 23
-    bounds: {x: 0, y: 0, width: 850, height: 430}
-- id: ded388f5-f738-5797-8afc-1bdeae4acd6e
+    zoom: 1
+    follow: "38a76ce9-85db-5a30-a4f5-85a32ce257c4"
+    halfLife: 0.1
+    frameGroup: "Expedition framing"
+    framePadding: 69
+    deadZoneWidth: 5
+    deadZoneHeight: 5
+- id: f509931d-e435-571e-8e3e-e9fdf21ed598
+  name: "Strike sound"
+  x: 0
+  y: 0
+  width: 1
+  height: 1
+  components:
+  - type: audioSource
+    sound: "6d78c31d-c4f5-549f-aa9b-c74cf7611313"
+    bus: "Effects"
+    volume: 0.35
+- id: 7faaa677-e80c-5bbd-8992-37b819b43064
+  name: "Hurt sound"
+  x: 0
+  y: 0
+  width: 1
+  height: 1
+  components:
+  - type: audioSource
+    sound: "013787da-3874-57a6-8f7a-722d0448f9b9"
+    bus: "Effects"
+    volume: 0.42
+- id: 984a6a6c-def4-5aa8-a779-156f02b90203
+  name: "Bow sound"
+  x: 0
+  y: 0
+  width: 1
+  height: 1
+  components:
+  - type: audioSource
+    sound: "a618a55d-a34d-59e4-b81d-ef58a93e0fb6"
+    bus: "Effects"
+    volume: 0.36
+- id: 94d01196-3453-53b4-b6c2-c79ddf8fa0b9
+  name: "Pulse sound"
+  x: 0
+  y: 0
+  width: 1
+  height: 1
+  components:
+  - type: audioSource
+    sound: "e4e08a86-e00c-556d-9ea3-3f19d9ae07dc"
+    bus: "Effects"
+    volume: 0.54
+- id: b68f24c3-791b-56db-970a-c6d402b139a4
+  name: "Crown sound"
+  x: 0
+  y: 0
+  width: 1
+  height: 1
+  components:
+  - type: audioSource
+    sound: "e8c52969-dffc-501b-b3f1-b09934666f4f"
+    bus: "Effects"
+    volume: 0.34
+- id: a5f3638e-43df-55f4-9273-0982693c9c36
+  name: "Clear sound"
+  x: 0
+  y: 0
+  width: 1
+  height: 1
+  components:
+  - type: audioSource
+    sound: "60dfd600-f047-5adc-8d41-a70cc9bc8047"
+    bus: "Effects"
+    volume: 0.43
+- id: bf0991ad-7996-5c20-905d-fea31d331b18
+  name: "Heal sound"
+  x: 0
+  y: 0
+  width: 1
+  height: 1
+  components:
+  - type: audioSource
+    sound: "890dbe94-0219-5c04-9111-5717b97b8d95"
+    bus: "Effects"
+    volume: 0.4
+- id: 678b4f49-fd0d-55f2-8668-f99410d4c4fc
+  name: "Windup sound"
+  x: 0
+  y: 0
+  width: 1
+  height: 1
+  components:
+  - type: audioSource
+    sound: "3c347599-d461-5eef-9d65-faacc0fa06f9"
+    bus: "Effects"
+    volume: 0.53
+- id: 2e81ee0d-f0a5-5820-a8ad-838fdeb4b095
+  name: "Step sound"
+  x: 0
+  y: 0
+  width: 1
+  height: 1
+  components:
+  - type: audioSource
+    sound: "6bef5b05-f946-5e8a-a7cb-d49200539ccd"
+    bus: "Effects"
+    volume: 0.2
+- id: 1ba4ceb8-1ebc-5eb7-8c50-5a1e564959e1
+  name: "Particles 1 Steel"
+  x: 0
+  y: 0
+  width: 1
+  height: 1
+  components:
+  - type: particleEmitter2D
+    particles: "45adb70a-cb44-5b01-a93a-93bef92d557a"
+    trigger: "Manual"
+    sortingLayer: 4
+    order: -3
+- id: a5d03077-4030-5531-9c4c-d83dce7a5276
+  name: "Particles 2 Brass"
+  x: 0
+  y: 0
+  width: 1
+  height: 1
+  components:
+  - type: particleEmitter2D
+    particles: "49578c0c-9f88-588e-a909-5ca22e420557"
+    trigger: "Manual"
+    sortingLayer: 4
+    order: -3
+- id: f1535b97-1870-51f2-b9fd-811124653c01
+  name: "Particles 3 Feathers"
+  x: 0
+  y: 0
+  width: 1
+  height: 1
+  components:
+  - type: particleEmitter2D
+    particles: "9e1f18e1-d2b2-5779-8d2b-e1c477c32ada"
+    trigger: "Manual"
+    sortingLayer: 4
+    order: -3
+- id: fbffb1fa-68a8-55b6-8edc-7a91dd56d1bd
+  name: "Particles 4 Critical"
+  x: 0
+  y: 0
+  width: 1
+  height: 1
+  components:
+  - type: particleEmitter2D
+    particles: "7cb46d4e-a10b-57a5-bac5-96db202970c6"
+    trigger: "Manual"
+    sortingLayer: 4
+    order: -3
+- id: 74330a72-8d72-55c7-81d5-39c2bc84407c
+  name: "Particles 5 Jade"
+  x: 0
+  y: 0
+  width: 1
+  height: 1
+  components:
+  - type: particleEmitter2D
+    particles: "3447b2eb-c2f3-58d4-b847-72dec2ce6f49"
+    trigger: "Manual"
+    sortingLayer: 4
+    order: -3
+- id: 51d24f1c-567d-55d0-bf7a-91bddac22873
+  name: "Particles 6 Mud"
+  x: 0
+  y: 0
+  width: 1
+  height: 1
+  components:
+  - type: particleEmitter2D
+    particles: "d5da77c3-67e0-5e5c-978c-bd646879a9ea"
+    trigger: "Manual"
+    sortingLayer: 4
+    order: -3
+- id: 4c7e546c-ff6b-582f-ab4c-5c585f53f084
+  name: "Particles 7 WispSmoke"
+  x: 0
+  y: 0
+  width: 1
+  height: 1
+  components:
+  - type: particleEmitter2D
+    particles: "5d62b2b9-35e5-55e7-b16d-6e993f394cb3"
+    trigger: "Manual"
+    sortingLayer: 4
+    order: -3
+- id: 5dff811b-fd8a-5095-a54b-93a4db0e86f6
+  name: "Particles 8 Stone"
+  x: 0
+  y: 0
+  width: 1
+  height: 1
+  components:
+  - type: particleEmitter2D
+    particles: "dbf76a7c-c04f-58aa-97d1-c96cc16e2d3f"
+    trigger: "Manual"
+    sortingLayer: 4
+    order: -3
+- id: 6b040461-8ea2-5197-93c2-bc76a6a958d5
+  name: "Particles 9 Soul"
+  x: 0
+  y: 0
+  width: 1
+  height: 1
+  components:
+  - type: particleEmitter2D
+    particles: "5d23c489-2b7e-51b9-bdb3-83758492253c"
+    trigger: "Manual"
+    sortingLayer: 4
+    order: -3
+- id: 4a4498c7-bcd3-581d-8bf9-7bc6cff8a4a1
+  name: "Particles 10 Bannerglow"
+  x: 0
+  y: 0
+  width: 1
+  height: 1
+  components:
+  - type: particleEmitter2D
+    particles: "64e56a10-4eec-5ebb-8e0f-76d1fc0ec117"
+    trigger: "Manual"
+    sortingLayer: 4
+    order: -3
+- id: 43fd096f-1bd8-5609-804d-4b60346326b1
+  name: "Particles 11 Emberfall"
+  x: 0
+  y: 0
+  width: 1
+  height: 1
+  parentId: 4a4498c7-bcd3-581d-8bf9-7bc6cff8a4a1
+  components:
+  - type: particleEmitter2D
+    particles: "0895d567-261b-5df9-a024-fd53c26ead7f"
+    trigger: "Manual"
+    sortingLayer: 4
+    order: -3
+- id: fdef0f5e-b9be-596e-a8e7-61677ed75d87
+  name: "Particles 12 Mud"
+  x: 0
+  y: 0
+  width: 1
+  height: 1
+  components:
+  - type: particleEmitter2D
+    particles: "d5da77c3-67e0-5e5c-978c-bd646879a9ea"
+    trigger: "Manual"
+    sortingLayer: 4
+    order: -3
+- id: f76337ad-072b-5bdd-a2cc-d1eafd2c943a
+  name: "Particles 13 WispSmoke"
+  x: 0
+  y: 0
+  width: 1
+  height: 1
+  components:
+  - type: particleEmitter2D
+    particles: "5d62b2b9-35e5-55e7-b16d-6e993f394cb3"
+    trigger: "Manual"
+    sortingLayer: 4
+    order: -3
+- id: ee18e07c-386b-5fb5-8dcb-05c169b6c1a4
+  name: "Particles 14 Stone"
+  x: 0
+  y: 0
+  width: 1
+  height: 1
+  components:
+  - type: particleEmitter2D
+    particles: "dbf76a7c-c04f-58aa-97d1-c96cc16e2d3f"
+    trigger: "Manual"
+    sortingLayer: 4
+    order: -3
+- id: 3d23f722-06d8-57ed-b95a-205382ca9bda
+  name: "Particles 15 Soul"
+  x: 0
+  y: 0
+  width: 1
+  height: 1
+  components:
+  - type: particleEmitter2D
+    particles: "5d23c489-2b7e-51b9-bdb3-83758492253c"
+    trigger: "Manual"
+    sortingLayer: 4
+    order: -3
+- id: 7ee62159-0be2-59ef-9d66-90d7a88ebb96
+  name: "Particles 16 Soul"
+  x: 0
+  y: 0
+  width: 1
+  height: 1
+  components:
+  - type: particleEmitter2D
+    particles: "5d23c489-2b7e-51b9-bdb3-83758492253c"
+    trigger: "Manual"
+    sortingLayer: 4
+    order: -3
+- id: 783985df-44b7-5bc5-a0db-1add1f8ce7b8
+  name: "Particles 17 MudPuff"
+  x: 0
+  y: 0
+  width: 1
+  height: 1
+  components:
+  - type: particleEmitter2D
+    particles: "a02a3ede-4197-545e-9866-e37920e2b122"
+    trigger: "Manual"
+    sortingLayer: 4
+    order: -3
+- id: aaf15da0-89d8-5b65-92f8-44885d78eb78
+  name: "Particles 18 WispPuff"
+  x: 0
+  y: 0
+  width: 1
+  height: 1
+  components:
+  - type: particleEmitter2D
+    particles: "8a2e9e13-9598-59c2-a7ea-f02364565860"
+    trigger: "Manual"
+    sortingLayer: 4
+    order: -3
+- id: 3fad57b1-633d-54e9-87c9-a2c9fa35fb73
+  name: "Particles 19 StonePuff"
+  x: 0
+  y: 0
+  width: 1
+  height: 1
+  components:
+  - type: particleEmitter2D
+    particles: "30fa3de8-cd35-5260-8f74-bd4836121a2f"
+    trigger: "Manual"
+    sortingLayer: 4
+    order: -3
+- id: d88ecd30-7e26-5785-a3d1-97f1bbbf6c07
+  name: "PulseRune"
+  x: 0
+  y: 0
+  width: 204
+  height: 104
+  pivotX: 0.5
+  pivotY: 0.5
+  components:
+  - type: spriteRenderer
+    sortingLayer: 1
+    order: 1
+    assetId: "0d8addba-ad1e-573d-9509-8cb2a188fdd8"
+- id: a7d24404-beec-5a7f-a1ff-d4c7f630f0aa
+  name: "ShieldRune"
+  x: 0
+  y: 0
+  width: 52
+  height: 28
+  pivotX: 0.5
+  pivotY: 0.5
+  components:
+  - type: spriteRenderer
+    sortingLayer: 1
+    order: 1
+    assetId: "6838be63-d57a-51dd-bceb-7fd092f54049"
+- id: eec0382f-d04a-5012-ab14-7a1cae7e5902
+  name: "HealRune"
+  x: 0
+  y: 0
+  width: 44
+  height: 26
+  pivotX: 0.5
+  pivotY: 0.5
+  components:
+  - type: spriteRenderer
+    sortingLayer: 1
+    order: 1
+    assetId: "cd9666a0-19b0-54de-ad7e-d54ef9f6c0af"
+- id: f34d629c-da1e-5bf0-a6b3-d43d7901a8ee
+  name: "GuardianRune"
+  x: 0
+  y: 0
+  width: 96
+  height: 96
+  pivotX: 0.5
+  pivotY: 0.5
+  components:
+  - type: spriteRenderer
+    sortingLayer: 1
+    order: 1
+    assetId: "d271df02-cf39-583f-aff5-e7fd6c1c1d97"
+- id: e02df6d5-ed6a-5df8-9b3d-a9b732a5ae15
+  name: "GuardianCrack"
+  x: 0
+  y: 0
+  width: 104
+  height: 104
+  pivotX: 0.5
+  pivotY: 0.5
+  components:
+  - type: spriteRenderer
+    sortingLayer: 1
+    order: 1
+    assetId: "ffdfb990-7ae1-5652-84b6-9bd5fda51c0f"
+- id: 403444e2-27af-5025-8a08-29d5f833565e
+  name: "Saber"
+  x: 0
+  y: 0
+  width: 52
+  height: 52
+  pivotX: 0.5
+  pivotY: 0.5
+  components:
+  - type: spriteRenderer
+    sortingLayer: 4
+    order: -4
+    assetId: "c92d161e-ab7a-5532-830b-6920aa5a1e31"
+  - type: spriteAnimator
+    clip: "95fc89e3-e768-5f52-a962-b515130ecdb6"
+    playOnStart: false
+- id: e5aad45e-ed8a-55d6-b650-ade11006f244
+  name: "WarFlag"
+  x: 0
+  y: 0
+  width: 44
+  height: 50
+  active: false
+  pivotX: 0.5
+  pivotY: 0.5
+  components:
+  - type: spriteRenderer
+    sortingLayer: 4
+    order: -4
+    assetId: "c92d161e-ab7a-5532-830b-6920aa5a1e31"
+  - type: spriteAnimator
+    clip: "9bafaf0a-f5cd-5758-ae3a-d942c1be8a60"
+    playOnStart: false
+- id: 1745e240-4d9f-5de8-a4df-107985eb2c5a
+  name: "Damage 1"
+  x: 0
+  y: 0
+  width: 1
+  height: 1
+  components: []
+- id: 1d26e2cd-538e-5e1c-a9d5-e16304a8e732
+  name: "Damage 1 ink"
+  x: -38
+  y: -9
+  width: 76
+  height: 18
+  parentId: 1745e240-4d9f-5de8-a4df-107985eb2c5a
+  components:
+  - type: text2D
+    text: ""
+    size: 12
+    color: "#FFF1C6"
+    richText: true
+    sortingLayer: 5
+    order: 2
+- id: 208fe82a-1f30-5937-8ead-81eea4b246f6
+  name: "Damage 1 outline 1"
+  x: -38.65
+  y: -9
+  width: 76
+  height: 18
+  parentId: 1745e240-4d9f-5de8-a4df-107985eb2c5a
+  components:
+  - type: text2D
+    text: ""
+    size: 12
+    color: "#24151B"
+    richText: true
+    sortingLayer: 5
+    order: 1
+- id: 75efc407-0517-5eb9-b318-8bc84b701ca8
+  name: "Damage 1 outline 2"
+  x: -37.35
+  y: -9
+  width: 76
+  height: 18
+  parentId: 1745e240-4d9f-5de8-a4df-107985eb2c5a
+  components:
+  - type: text2D
+    text: ""
+    size: 12
+    color: "#24151B"
+    richText: true
+    sortingLayer: 5
+    order: 1
+- id: f7b24b52-7637-525e-8888-75a64ad77083
+  name: "Damage 1 outline 3"
+  x: -38
+  y: -9.65
+  width: 76
+  height: 18
+  parentId: 1745e240-4d9f-5de8-a4df-107985eb2c5a
+  components:
+  - type: text2D
+    text: ""
+    size: 12
+    color: "#24151B"
+    richText: true
+    sortingLayer: 5
+    order: 1
+- id: d1c0b869-66a0-506e-b901-474724bc7b39
+  name: "Damage 1 outline 4"
+  x: -38
+  y: -8.35
+  width: 76
+  height: 18
+  parentId: 1745e240-4d9f-5de8-a4df-107985eb2c5a
+  components:
+  - type: text2D
+    text: ""
+    size: 12
+    color: "#24151B"
+    richText: true
+    sortingLayer: 5
+    order: 1
+- id: ec0e03c7-141e-5e4a-8c52-ddc0457045a0
+  name: "Damage 2"
+  x: 0
+  y: 0
+  width: 1
+  height: 1
+  components: []
+- id: b4a7b264-c170-51b2-a25b-5efe22c7cf0f
+  name: "Damage 2 ink"
+  x: -38
+  y: -9
+  width: 76
+  height: 18
+  parentId: ec0e03c7-141e-5e4a-8c52-ddc0457045a0
+  components:
+  - type: text2D
+    text: ""
+    size: 12
+    color: "#FFF1C6"
+    richText: true
+    sortingLayer: 5
+    order: 2
+- id: da3ee7b0-66bf-556f-883f-3909d039aec9
+  name: "Damage 2 outline 1"
+  x: -38.65
+  y: -9
+  width: 76
+  height: 18
+  parentId: ec0e03c7-141e-5e4a-8c52-ddc0457045a0
+  components:
+  - type: text2D
+    text: ""
+    size: 12
+    color: "#24151B"
+    richText: true
+    sortingLayer: 5
+    order: 1
+- id: 06c4bdd7-50d8-5b39-a7ba-ce00a216dca2
+  name: "Damage 2 outline 2"
+  x: -37.35
+  y: -9
+  width: 76
+  height: 18
+  parentId: ec0e03c7-141e-5e4a-8c52-ddc0457045a0
+  components:
+  - type: text2D
+    text: ""
+    size: 12
+    color: "#24151B"
+    richText: true
+    sortingLayer: 5
+    order: 1
+- id: d911f3ef-7144-55a5-8b65-9284c48c5cc1
+  name: "Damage 2 outline 3"
+  x: -38
+  y: -9.65
+  width: 76
+  height: 18
+  parentId: ec0e03c7-141e-5e4a-8c52-ddc0457045a0
+  components:
+  - type: text2D
+    text: ""
+    size: 12
+    color: "#24151B"
+    richText: true
+    sortingLayer: 5
+    order: 1
+- id: 27d891f9-c597-57a6-af31-319392e24bab
+  name: "Damage 2 outline 4"
+  x: -38
+  y: -8.35
+  width: 76
+  height: 18
+  parentId: ec0e03c7-141e-5e4a-8c52-ddc0457045a0
+  components:
+  - type: text2D
+    text: ""
+    size: 12
+    color: "#24151B"
+    richText: true
+    sortingLayer: 5
+    order: 1
+- id: 1f729e15-8aae-5bf4-8228-1ea0b905c367
+  name: "Damage 3"
+  x: 0
+  y: 0
+  width: 1
+  height: 1
+  components: []
+- id: 5d37087c-293a-5b8b-81ff-ff90e15ecfa1
+  name: "Damage 3 ink"
+  x: -38
+  y: -9
+  width: 76
+  height: 18
+  parentId: 1f729e15-8aae-5bf4-8228-1ea0b905c367
+  components:
+  - type: text2D
+    text: ""
+    size: 12
+    color: "#FFF1C6"
+    richText: true
+    sortingLayer: 5
+    order: 2
+- id: 11f81348-118f-5535-937e-685bc0843840
+  name: "Damage 3 outline 1"
+  x: -38.65
+  y: -9
+  width: 76
+  height: 18
+  parentId: 1f729e15-8aae-5bf4-8228-1ea0b905c367
+  components:
+  - type: text2D
+    text: ""
+    size: 12
+    color: "#24151B"
+    richText: true
+    sortingLayer: 5
+    order: 1
+- id: 1508c3e9-ea31-55a5-977e-ad91d016ace4
+  name: "Damage 3 outline 2"
+  x: -37.35
+  y: -9
+  width: 76
+  height: 18
+  parentId: 1f729e15-8aae-5bf4-8228-1ea0b905c367
+  components:
+  - type: text2D
+    text: ""
+    size: 12
+    color: "#24151B"
+    richText: true
+    sortingLayer: 5
+    order: 1
+- id: bbab8c0f-d0a9-501e-994d-bf9f16009665
+  name: "Damage 3 outline 3"
+  x: -38
+  y: -9.65
+  width: 76
+  height: 18
+  parentId: 1f729e15-8aae-5bf4-8228-1ea0b905c367
+  components:
+  - type: text2D
+    text: ""
+    size: 12
+    color: "#24151B"
+    richText: true
+    sortingLayer: 5
+    order: 1
+- id: a6b850db-e0ce-5ddb-8fcc-9fa380776413
+  name: "Damage 3 outline 4"
+  x: -38
+  y: -8.35
+  width: 76
+  height: 18
+  parentId: 1f729e15-8aae-5bf4-8228-1ea0b905c367
+  components:
+  - type: text2D
+    text: ""
+    size: 12
+    color: "#24151B"
+    richText: true
+    sortingLayer: 5
+    order: 1
+- id: 9310f0ca-7565-506c-b7e7-0d8b42061fe5
+  name: "Damage 4"
+  x: 0
+  y: 0
+  width: 1
+  height: 1
+  components: []
+- id: c1e31538-c598-5403-a9e3-5faca348d8aa
+  name: "Damage 4 ink"
+  x: -38
+  y: -9
+  width: 76
+  height: 18
+  parentId: 9310f0ca-7565-506c-b7e7-0d8b42061fe5
+  components:
+  - type: text2D
+    text: ""
+    size: 12
+    color: "#FFF1C6"
+    richText: true
+    sortingLayer: 5
+    order: 2
+- id: 0ac53aa0-5a8a-5a37-9f0a-015a1cc59ca7
+  name: "Damage 4 outline 1"
+  x: -38.65
+  y: -9
+  width: 76
+  height: 18
+  parentId: 9310f0ca-7565-506c-b7e7-0d8b42061fe5
+  components:
+  - type: text2D
+    text: ""
+    size: 12
+    color: "#24151B"
+    richText: true
+    sortingLayer: 5
+    order: 1
+- id: cd23d6da-915b-50c0-98ef-b9cc7677085b
+  name: "Damage 4 outline 2"
+  x: -37.35
+  y: -9
+  width: 76
+  height: 18
+  parentId: 9310f0ca-7565-506c-b7e7-0d8b42061fe5
+  components:
+  - type: text2D
+    text: ""
+    size: 12
+    color: "#24151B"
+    richText: true
+    sortingLayer: 5
+    order: 1
+- id: cd8b864f-4839-5419-af82-51322c1c5aab
+  name: "Damage 4 outline 3"
+  x: -38
+  y: -9.65
+  width: 76
+  height: 18
+  parentId: 9310f0ca-7565-506c-b7e7-0d8b42061fe5
+  components:
+  - type: text2D
+    text: ""
+    size: 12
+    color: "#24151B"
+    richText: true
+    sortingLayer: 5
+    order: 1
+- id: a1211b35-7cb1-513c-a52a-91a92ad25ecc
+  name: "Damage 4 outline 4"
+  x: -38
+  y: -8.35
+  width: 76
+  height: 18
+  parentId: 9310f0ca-7565-506c-b7e7-0d8b42061fe5
+  components:
+  - type: text2D
+    text: ""
+    size: 12
+    color: "#24151B"
+    richText: true
+    sortingLayer: 5
+    order: 1
+- id: 1dff42ec-fb99-53f4-bc47-3f149d0a87df
+  name: "Damage 5"
+  x: 0
+  y: 0
+  width: 1
+  height: 1
+  components: []
+- id: 0d176073-51d3-547c-bf7f-cb71e61e495c
+  name: "Damage 5 ink"
+  x: -38
+  y: -9
+  width: 76
+  height: 18
+  parentId: 1dff42ec-fb99-53f4-bc47-3f149d0a87df
+  components:
+  - type: text2D
+    text: ""
+    size: 12
+    color: "#FFF1C6"
+    richText: true
+    sortingLayer: 5
+    order: 2
+- id: ddcac308-eed9-5322-9f99-a54a5ec01d97
+  name: "Damage 5 outline 1"
+  x: -38.65
+  y: -9
+  width: 76
+  height: 18
+  parentId: 1dff42ec-fb99-53f4-bc47-3f149d0a87df
+  components:
+  - type: text2D
+    text: ""
+    size: 12
+    color: "#24151B"
+    richText: true
+    sortingLayer: 5
+    order: 1
+- id: 8841763e-5406-5df4-8514-6f31608fb428
+  name: "Damage 5 outline 2"
+  x: -37.35
+  y: -9
+  width: 76
+  height: 18
+  parentId: 1dff42ec-fb99-53f4-bc47-3f149d0a87df
+  components:
+  - type: text2D
+    text: ""
+    size: 12
+    color: "#24151B"
+    richText: true
+    sortingLayer: 5
+    order: 1
+- id: 23578a9f-ada7-51b8-9012-2dd5876c70b5
+  name: "Damage 5 outline 3"
+  x: -38
+  y: -9.65
+  width: 76
+  height: 18
+  parentId: 1dff42ec-fb99-53f4-bc47-3f149d0a87df
+  components:
+  - type: text2D
+    text: ""
+    size: 12
+    color: "#24151B"
+    richText: true
+    sortingLayer: 5
+    order: 1
+- id: 215bf9a2-00f3-5999-b12d-9e6888cb28d7
+  name: "Damage 5 outline 4"
+  x: -38
+  y: -8.35
+  width: 76
+  height: 18
+  parentId: 1dff42ec-fb99-53f4-bc47-3f149d0a87df
+  components:
+  - type: text2D
+    text: ""
+    size: 12
+    color: "#24151B"
+    richText: true
+    sortingLayer: 5
+    order: 1
+- id: 588c374c-8f68-5aa6-9cbe-9f85c1b20520
+  name: "Damage 6"
+  x: 0
+  y: 0
+  width: 1
+  height: 1
+  components: []
+- id: 0c984cf5-795a-570e-ae09-1acf38ea951c
+  name: "Damage 6 ink"
+  x: -38
+  y: -9
+  width: 76
+  height: 18
+  parentId: 588c374c-8f68-5aa6-9cbe-9f85c1b20520
+  components:
+  - type: text2D
+    text: ""
+    size: 12
+    color: "#FFF1C6"
+    richText: true
+    sortingLayer: 5
+    order: 2
+- id: 27d2af40-2276-58b3-bdae-e4bcfe270f39
+  name: "Damage 6 outline 1"
+  x: -38.65
+  y: -9
+  width: 76
+  height: 18
+  parentId: 588c374c-8f68-5aa6-9cbe-9f85c1b20520
+  components:
+  - type: text2D
+    text: ""
+    size: 12
+    color: "#24151B"
+    richText: true
+    sortingLayer: 5
+    order: 1
+- id: ebcdd4d1-81b4-5844-9888-393b251ab4e2
+  name: "Damage 6 outline 2"
+  x: -37.35
+  y: -9
+  width: 76
+  height: 18
+  parentId: 588c374c-8f68-5aa6-9cbe-9f85c1b20520
+  components:
+  - type: text2D
+    text: ""
+    size: 12
+    color: "#24151B"
+    richText: true
+    sortingLayer: 5
+    order: 1
+- id: 9a9a7833-c375-5cd7-87ea-77c081172b34
+  name: "Damage 6 outline 3"
+  x: -38
+  y: -9.65
+  width: 76
+  height: 18
+  parentId: 588c374c-8f68-5aa6-9cbe-9f85c1b20520
+  components:
+  - type: text2D
+    text: ""
+    size: 12
+    color: "#24151B"
+    richText: true
+    sortingLayer: 5
+    order: 1
+- id: abea34a8-ad4a-5ceb-a0e9-fdccb1acf261
+  name: "Damage 6 outline 4"
+  x: -38
+  y: -8.35
+  width: 76
+  height: 18
+  parentId: 588c374c-8f68-5aa6-9cbe-9f85c1b20520
+  components:
+  - type: text2D
+    text: ""
+    size: 12
+    color: "#24151B"
+    richText: true
+    sortingLayer: 5
+    order: 1
+- id: 3730099b-3901-5862-8ef3-de2f8b7a4245
+  name: "Damage 7"
+  x: 0
+  y: 0
+  width: 1
+  height: 1
+  components: []
+- id: 3758d25b-7dc5-507c-ab69-928ce94eb38b
+  name: "Damage 7 ink"
+  x: -38
+  y: -9
+  width: 76
+  height: 18
+  parentId: 3730099b-3901-5862-8ef3-de2f8b7a4245
+  components:
+  - type: text2D
+    text: ""
+    size: 12
+    color: "#FFF1C6"
+    richText: true
+    sortingLayer: 5
+    order: 2
+- id: 029f73af-56b3-52f7-bb8f-d61ba4f704ec
+  name: "Damage 7 outline 1"
+  x: -38.65
+  y: -9
+  width: 76
+  height: 18
+  parentId: 3730099b-3901-5862-8ef3-de2f8b7a4245
+  components:
+  - type: text2D
+    text: ""
+    size: 12
+    color: "#24151B"
+    richText: true
+    sortingLayer: 5
+    order: 1
+- id: 3e0dc666-1d8a-5b40-a395-59388cc4c867
+  name: "Damage 7 outline 2"
+  x: -37.35
+  y: -9
+  width: 76
+  height: 18
+  parentId: 3730099b-3901-5862-8ef3-de2f8b7a4245
+  components:
+  - type: text2D
+    text: ""
+    size: 12
+    color: "#24151B"
+    richText: true
+    sortingLayer: 5
+    order: 1
+- id: b43ccafb-2aaf-564d-858a-4284a08a9861
+  name: "Damage 7 outline 3"
+  x: -38
+  y: -9.65
+  width: 76
+  height: 18
+  parentId: 3730099b-3901-5862-8ef3-de2f8b7a4245
+  components:
+  - type: text2D
+    text: ""
+    size: 12
+    color: "#24151B"
+    richText: true
+    sortingLayer: 5
+    order: 1
+- id: 7dc7ce9a-0d47-5e2f-b318-15eae59ff43d
+  name: "Damage 7 outline 4"
+  x: -38
+  y: -8.35
+  width: 76
+  height: 18
+  parentId: 3730099b-3901-5862-8ef3-de2f8b7a4245
+  components:
+  - type: text2D
+    text: ""
+    size: 12
+    color: "#24151B"
+    richText: true
+    sortingLayer: 5
+    order: 1
+- id: 215a1a08-9aef-50d6-9aeb-d177f959a17c
+  name: "Damage 8"
+  x: 0
+  y: 0
+  width: 1
+  height: 1
+  components: []
+- id: b72322e1-0863-5a7c-a74f-2fd44f4e001c
+  name: "Damage 8 ink"
+  x: -38
+  y: -9
+  width: 76
+  height: 18
+  parentId: 215a1a08-9aef-50d6-9aeb-d177f959a17c
+  components:
+  - type: text2D
+    text: ""
+    size: 12
+    color: "#FFF1C6"
+    richText: true
+    sortingLayer: 5
+    order: 2
+- id: aa2d81a3-20ea-5321-9a0f-b9061e982a76
+  name: "Damage 8 outline 1"
+  x: -38.65
+  y: -9
+  width: 76
+  height: 18
+  parentId: 215a1a08-9aef-50d6-9aeb-d177f959a17c
+  components:
+  - type: text2D
+    text: ""
+    size: 12
+    color: "#24151B"
+    richText: true
+    sortingLayer: 5
+    order: 1
+- id: f70ef561-2a71-5b20-a719-c34768e55c60
+  name: "Damage 8 outline 2"
+  x: -37.35
+  y: -9
+  width: 76
+  height: 18
+  parentId: 215a1a08-9aef-50d6-9aeb-d177f959a17c
+  components:
+  - type: text2D
+    text: ""
+    size: 12
+    color: "#24151B"
+    richText: true
+    sortingLayer: 5
+    order: 1
+- id: 35548d50-512d-5d65-b6ae-3b99f4f07c2b
+  name: "Damage 8 outline 3"
+  x: -38
+  y: -9.65
+  width: 76
+  height: 18
+  parentId: 215a1a08-9aef-50d6-9aeb-d177f959a17c
+  components:
+  - type: text2D
+    text: ""
+    size: 12
+    color: "#24151B"
+    richText: true
+    sortingLayer: 5
+    order: 1
+- id: 0fb3c618-0c63-5166-9c53-5e08772e26dc
+  name: "Damage 8 outline 4"
+  x: -38
+  y: -8.35
+  width: 76
+  height: 18
+  parentId: 215a1a08-9aef-50d6-9aeb-d177f959a17c
+  components:
+  - type: text2D
+    text: ""
+    size: 12
+    color: "#24151B"
+    richText: true
+    sortingLayer: 5
+    order: 1
+- id: f47317ba-fd35-5507-9c46-018b638c4a99
+  name: "Damage 9"
+  x: 0
+  y: 0
+  width: 1
+  height: 1
+  components: []
+- id: e028b090-c998-5776-b948-09b640c15cfa
+  name: "Damage 9 ink"
+  x: -38
+  y: -9
+  width: 76
+  height: 18
+  parentId: f47317ba-fd35-5507-9c46-018b638c4a99
+  components:
+  - type: text2D
+    text: ""
+    size: 12
+    color: "#FFF1C6"
+    richText: true
+    sortingLayer: 5
+    order: 2
+- id: 1b3e387c-7f10-58f3-ba70-cf7e59ebc60c
+  name: "Damage 9 outline 1"
+  x: -38.65
+  y: -9
+  width: 76
+  height: 18
+  parentId: f47317ba-fd35-5507-9c46-018b638c4a99
+  components:
+  - type: text2D
+    text: ""
+    size: 12
+    color: "#24151B"
+    richText: true
+    sortingLayer: 5
+    order: 1
+- id: da19a7fa-e06b-52a0-b747-e552411d4aa2
+  name: "Damage 9 outline 2"
+  x: -37.35
+  y: -9
+  width: 76
+  height: 18
+  parentId: f47317ba-fd35-5507-9c46-018b638c4a99
+  components:
+  - type: text2D
+    text: ""
+    size: 12
+    color: "#24151B"
+    richText: true
+    sortingLayer: 5
+    order: 1
+- id: 3aa6cfcf-2e27-5210-b411-580446b8ada0
+  name: "Damage 9 outline 3"
+  x: -38
+  y: -9.65
+  width: 76
+  height: 18
+  parentId: f47317ba-fd35-5507-9c46-018b638c4a99
+  components:
+  - type: text2D
+    text: ""
+    size: 12
+    color: "#24151B"
+    richText: true
+    sortingLayer: 5
+    order: 1
+- id: 375dab1b-417a-5987-a7a2-ac0266b60758
+  name: "Damage 9 outline 4"
+  x: -38
+  y: -8.35
+  width: 76
+  height: 18
+  parentId: f47317ba-fd35-5507-9c46-018b638c4a99
+  components:
+  - type: text2D
+    text: ""
+    size: 12
+    color: "#24151B"
+    richText: true
+    sortingLayer: 5
+    order: 1
+- id: 5152710b-c96e-5095-bd52-096525050bf6
+  name: "Damage 10"
+  x: 0
+  y: 0
+  width: 1
+  height: 1
+  components: []
+- id: 6d7da442-ac4f-5359-9162-97d39fcc5533
+  name: "Damage 10 ink"
+  x: -38
+  y: -9
+  width: 76
+  height: 18
+  parentId: 5152710b-c96e-5095-bd52-096525050bf6
+  components:
+  - type: text2D
+    text: ""
+    size: 12
+    color: "#FFF1C6"
+    richText: true
+    sortingLayer: 5
+    order: 2
+- id: 3b3f45eb-3c0a-51d9-bbf3-1125fe44e4a9
+  name: "Damage 10 outline 1"
+  x: -38.65
+  y: -9
+  width: 76
+  height: 18
+  parentId: 5152710b-c96e-5095-bd52-096525050bf6
+  components:
+  - type: text2D
+    text: ""
+    size: 12
+    color: "#24151B"
+    richText: true
+    sortingLayer: 5
+    order: 1
+- id: 0e585340-ca85-5c73-a7c7-0107fe6f380b
+  name: "Damage 10 outline 2"
+  x: -37.35
+  y: -9
+  width: 76
+  height: 18
+  parentId: 5152710b-c96e-5095-bd52-096525050bf6
+  components:
+  - type: text2D
+    text: ""
+    size: 12
+    color: "#24151B"
+    richText: true
+    sortingLayer: 5
+    order: 1
+- id: 0d48f236-cb33-5b95-a397-5a28cd256705
+  name: "Damage 10 outline 3"
+  x: -38
+  y: -9.65
+  width: 76
+  height: 18
+  parentId: 5152710b-c96e-5095-bd52-096525050bf6
+  components:
+  - type: text2D
+    text: ""
+    size: 12
+    color: "#24151B"
+    richText: true
+    sortingLayer: 5
+    order: 1
+- id: 538aaa9a-3ca6-51f7-88a4-10565d0ad894
+  name: "Damage 10 outline 4"
+  x: -38
+  y: -8.35
+  width: 76
+  height: 18
+  parentId: 5152710b-c96e-5095-bd52-096525050bf6
+  components:
+  - type: text2D
+    text: ""
+    size: 12
+    color: "#24151B"
+    richText: true
+    sortingLayer: 5
+    order: 1
+- id: ba2bc267-9bcc-5fae-a3f3-771b4c4e461e
+  name: "Damage 11"
+  x: 0
+  y: 0
+  width: 1
+  height: 1
+  components: []
+- id: 18097e1d-68d1-5e21-b52d-e0884ef3628e
+  name: "Damage 11 ink"
+  x: -38
+  y: -9
+  width: 76
+  height: 18
+  parentId: ba2bc267-9bcc-5fae-a3f3-771b4c4e461e
+  components:
+  - type: text2D
+    text: ""
+    size: 12
+    color: "#FFF1C6"
+    richText: true
+    sortingLayer: 5
+    order: 2
+- id: 94933007-479d-57a1-a810-7b2b203d5aeb
+  name: "Damage 11 outline 1"
+  x: -38.65
+  y: -9
+  width: 76
+  height: 18
+  parentId: ba2bc267-9bcc-5fae-a3f3-771b4c4e461e
+  components:
+  - type: text2D
+    text: ""
+    size: 12
+    color: "#24151B"
+    richText: true
+    sortingLayer: 5
+    order: 1
+- id: d02f8cad-910f-5890-8c3d-fcac39532a5a
+  name: "Damage 11 outline 2"
+  x: -37.35
+  y: -9
+  width: 76
+  height: 18
+  parentId: ba2bc267-9bcc-5fae-a3f3-771b4c4e461e
+  components:
+  - type: text2D
+    text: ""
+    size: 12
+    color: "#24151B"
+    richText: true
+    sortingLayer: 5
+    order: 1
+- id: b0a03ef6-31d3-5ec1-a968-c726a4e3500b
+  name: "Damage 11 outline 3"
+  x: -38
+  y: -9.65
+  width: 76
+  height: 18
+  parentId: ba2bc267-9bcc-5fae-a3f3-771b4c4e461e
+  components:
+  - type: text2D
+    text: ""
+    size: 12
+    color: "#24151B"
+    richText: true
+    sortingLayer: 5
+    order: 1
+- id: 4150fa4b-005f-539f-8862-cf6d322db589
+  name: "Damage 11 outline 4"
+  x: -38
+  y: -8.35
+  width: 76
+  height: 18
+  parentId: ba2bc267-9bcc-5fae-a3f3-771b4c4e461e
+  components:
+  - type: text2D
+    text: ""
+    size: 12
+    color: "#24151B"
+    richText: true
+    sortingLayer: 5
+    order: 1
+- id: 14fca137-fd74-5fb0-b137-d3bd727b1848
+  name: "Damage 12"
+  x: 0
+  y: 0
+  width: 1
+  height: 1
+  components: []
+- id: 168c1024-93ac-585d-ac54-6c0060f3bac9
+  name: "Damage 12 ink"
+  x: -38
+  y: -9
+  width: 76
+  height: 18
+  parentId: 14fca137-fd74-5fb0-b137-d3bd727b1848
+  components:
+  - type: text2D
+    text: ""
+    size: 12
+    color: "#FFF1C6"
+    richText: true
+    sortingLayer: 5
+    order: 2
+- id: 5ba9b9b1-24c7-504a-9209-b66252c49f79
+  name: "Damage 12 outline 1"
+  x: -38.65
+  y: -9
+  width: 76
+  height: 18
+  parentId: 14fca137-fd74-5fb0-b137-d3bd727b1848
+  components:
+  - type: text2D
+    text: ""
+    size: 12
+    color: "#24151B"
+    richText: true
+    sortingLayer: 5
+    order: 1
+- id: ee932649-e84a-5370-8d56-709dc8908f8d
+  name: "Damage 12 outline 2"
+  x: -37.35
+  y: -9
+  width: 76
+  height: 18
+  parentId: 14fca137-fd74-5fb0-b137-d3bd727b1848
+  components:
+  - type: text2D
+    text: ""
+    size: 12
+    color: "#24151B"
+    richText: true
+    sortingLayer: 5
+    order: 1
+- id: 34540d34-37e6-52e0-b288-8d43b5158873
+  name: "Damage 12 outline 3"
+  x: -38
+  y: -9.65
+  width: 76
+  height: 18
+  parentId: 14fca137-fd74-5fb0-b137-d3bd727b1848
+  components:
+  - type: text2D
+    text: ""
+    size: 12
+    color: "#24151B"
+    richText: true
+    sortingLayer: 5
+    order: 1
+- id: 8962eb9e-a9bf-57e4-9db4-301836054b61
+  name: "Damage 12 outline 4"
+  x: -38
+  y: -8.35
+  width: 76
+  height: 18
+  parentId: 14fca137-fd74-5fb0-b137-d3bd727b1848
+  components:
+  - type: text2D
+    text: ""
+    size: 12
+    color: "#24151B"
+    richText: true
+    sortingLayer: 5
+    order: 1
+- id: 1b143944-5e06-5a22-a4f3-8cd8ea8ae518
+  name: "Arrow 1"
+  x: 0
+  y: 0
+  width: 16
+  height: 16
+  active: false
+  pivotX: 0.5
+  pivotY: 0.5
+  components:
+  - type: spriteRenderer
+    sortingLayer: 4
+    assetId: "bd59e315-ac5e-5229-8435-2162eb94f5f8"
+  - type: trail2D
+    time: 0.12
+    width: 2.5
+    startColor: "#EAC68A"
+    endColor: "#B78E66"
+    maxPoints: 10
+    minStep: 2
+    sortingLayer: 4
+    order: -3
+- id: 62bcfc36-2a35-554d-9c26-dc5fad6c4d57
+  name: "Arrow 2"
+  x: 0
+  y: 0
+  width: 16
+  height: 16
+  active: false
+  pivotX: 0.5
+  pivotY: 0.5
+  components:
+  - type: spriteRenderer
+    sortingLayer: 4
+    assetId: "bd59e315-ac5e-5229-8435-2162eb94f5f8"
+  - type: trail2D
+    time: 0.12
+    width: 2.5
+    startColor: "#EAC68A"
+    endColor: "#B78E66"
+    maxPoints: 10
+    minStep: 2
+    sortingLayer: 4
+    order: -3
+- id: de3d360c-f3b7-57f3-8ea2-b2205fd8c2cc
+  name: "Arrow 3"
+  x: 0
+  y: 0
+  width: 16
+  height: 16
+  active: false
+  pivotX: 0.5
+  pivotY: 0.5
+  components:
+  - type: spriteRenderer
+    sortingLayer: 4
+    assetId: "bd59e315-ac5e-5229-8435-2162eb94f5f8"
+  - type: trail2D
+    time: 0.12
+    width: 2.5
+    startColor: "#EAC68A"
+    endColor: "#B78E66"
+    maxPoints: 10
+    minStep: 2
+    sortingLayer: 4
+    order: -3
+- id: 41402a98-5ff8-541a-8d40-9fca552567a2
+  name: "Arrow 4"
+  x: 0
+  y: 0
+  width: 16
+  height: 16
+  active: false
+  pivotX: 0.5
+  pivotY: 0.5
+  components:
+  - type: spriteRenderer
+    sortingLayer: 4
+    assetId: "bd59e315-ac5e-5229-8435-2162eb94f5f8"
+  - type: trail2D
+    time: 0.12
+    width: 2.5
+    startColor: "#EAC68A"
+    endColor: "#B78E66"
+    maxPoints: 10
+    minStep: 2
+    sortingLayer: 4
+    order: -3
+- id: 48d188bb-8e3b-5f3f-8b84-746f578407d9
+  name: "Arrow 5"
+  x: 0
+  y: 0
+  width: 16
+  height: 16
+  active: false
+  pivotX: 0.5
+  pivotY: 0.5
+  components:
+  - type: spriteRenderer
+    sortingLayer: 4
+    assetId: "bd59e315-ac5e-5229-8435-2162eb94f5f8"
+  - type: trail2D
+    time: 0.12
+    width: 2.5
+    startColor: "#EAC68A"
+    endColor: "#B78E66"
+    maxPoints: 10
+    minStep: 2
+    sortingLayer: 4
+    order: -3
+- id: 9cdb8726-403f-596d-88e6-9cc718e1a019
+  name: "Arrow 6"
+  x: 0
+  y: 0
+  width: 16
+  height: 16
+  active: false
+  pivotX: 0.5
+  pivotY: 0.5
+  components:
+  - type: spriteRenderer
+    sortingLayer: 4
+    assetId: "bd59e315-ac5e-5229-8435-2162eb94f5f8"
+  - type: trail2D
+    time: 0.12
+    width: 2.5
+    startColor: "#EAC68A"
+    endColor: "#B78E66"
+    maxPoints: 10
+    minStep: 2
+    sortingLayer: 4
+    order: -3
+- id: 6d0b3f41-ba4e-5c06-824d-3ae4b6738011
+  name: "Arrow 7"
+  x: 0
+  y: 0
+  width: 16
+  height: 16
+  active: false
+  pivotX: 0.5
+  pivotY: 0.5
+  components:
+  - type: spriteRenderer
+    sortingLayer: 4
+    assetId: "bd59e315-ac5e-5229-8435-2162eb94f5f8"
+  - type: trail2D
+    time: 0.12
+    width: 2.5
+    startColor: "#EAC68A"
+    endColor: "#B78E66"
+    maxPoints: 10
+    minStep: 2
+    sortingLayer: 4
+    order: -3
+- id: 18e52568-4e34-56e3-99e7-0b647584a3f7
+  name: "Arrow 8"
+  x: 0
+  y: 0
+  width: 16
+  height: 16
+  active: false
+  pivotX: 0.5
+  pivotY: 0.5
+  components:
+  - type: spriteRenderer
+    sortingLayer: 4
+    assetId: "bd59e315-ac5e-5229-8435-2162eb94f5f8"
+  - type: trail2D
+    time: 0.12
+    width: 2.5
+    startColor: "#EAC68A"
+    endColor: "#B78E66"
+    maxPoints: 10
+    minStep: 2
+    sortingLayer: 4
+    order: -3
+- id: b8f76f76-0ebf-596d-a735-54bbd8a911ee
+  name: "Crown 1"
+  x: 0
+  y: 0
+  width: 13
+  height: 13
+  components:
+  - type: spriteRenderer
+    sortingLayer: 4
+    assetId: "73ac36a8-5858-5e08-850e-9bc20b817bf6"
+- id: f6fc6cf8-284a-59b2-9c2c-ebfdc61b5907
+  name: "Crown 2"
+  x: 0
+  y: 0
+  width: 13
+  height: 13
+  components:
+  - type: spriteRenderer
+    sortingLayer: 4
+    assetId: "73ac36a8-5858-5e08-850e-9bc20b817bf6"
+- id: 352ac846-eefc-5f2a-af5f-267855c9661d
+  name: "Crown 3"
+  x: 0
+  y: 0
+  width: 13
+  height: 13
+  components:
+  - type: spriteRenderer
+    sortingLayer: 4
+    assetId: "73ac36a8-5858-5e08-850e-9bc20b817bf6"
+- id: d3759d7d-242d-58ec-a10c-d803f9d0f26e
+  name: "Crown 4"
+  x: 0
+  y: 0
+  width: 13
+  height: 13
+  components:
+  - type: spriteRenderer
+    sortingLayer: 4
+    assetId: "73ac36a8-5858-5e08-850e-9bc20b817bf6"
+- id: 1d4518e0-f87f-5a35-b6e5-8933422f4aa0
+  name: "Crown 5"
+  x: 0
+  y: 0
+  width: 13
+  height: 13
+  components:
+  - type: spriteRenderer
+    sortingLayer: 4
+    assetId: "73ac36a8-5858-5e08-850e-9bc20b817bf6"
+- id: 4a861a44-0983-56fc-80f8-70acc9ba8e06
+  name: "Crown 6"
+  x: 0
+  y: 0
+  width: 13
+  height: 13
+  components:
+  - type: spriteRenderer
+    sortingLayer: 4
+    assetId: "73ac36a8-5858-5e08-850e-9bc20b817bf6"
+- id: a0646bdf-45d6-58f9-b8e5-bd7cb837bc8f
+  name: "Crown 7"
+  x: 0
+  y: 0
+  width: 13
+  height: 13
+  components:
+  - type: spriteRenderer
+    sortingLayer: 4
+    assetId: "73ac36a8-5858-5e08-850e-9bc20b817bf6"
+- id: ac7ad917-2528-5348-947c-a82d9e7b6739
+  name: "Crown 8"
+  x: 0
+  y: 0
+  width: 13
+  height: 13
+  components:
+  - type: spriteRenderer
+    sortingLayer: 4
+    assetId: "73ac36a8-5858-5e08-850e-9bc20b817bf6"
+- id: ff6fcdb2-5e1e-5ecb-858f-9aa51666d51c
+  name: "Crown 9"
+  x: 0
+  y: 0
+  width: 13
+  height: 13
+  components:
+  - type: spriteRenderer
+    sortingLayer: 4
+    assetId: "73ac36a8-5858-5e08-850e-9bc20b817bf6"
+- id: 527c583b-ccdb-5207-acd4-36fbd368891e
+  name: "Crown 10"
+  x: 0
+  y: 0
+  width: 13
+  height: 13
+  components:
+  - type: spriteRenderer
+    sortingLayer: 4
+    assetId: "73ac36a8-5858-5e08-850e-9bc20b817bf6"
+- id: 91d552bc-e608-5bfe-b157-ab3767a1e6d9
+  name: "Crown 11"
+  x: 0
+  y: 0
+  width: 13
+  height: 13
+  components:
+  - type: spriteRenderer
+    sortingLayer: 4
+    assetId: "73ac36a8-5858-5e08-850e-9bc20b817bf6"
+- id: cdb896d3-2e90-5757-9db1-b18325031554
+  name: "Crown 12"
+  x: 0
+  y: 0
+  width: 13
+  height: 13
+  components:
+  - type: spriteRenderer
+    sortingLayer: 4
+    assetId: "73ac36a8-5858-5e08-850e-9bc20b817bf6"
+- id: f1f388fb-ebc0-559f-bf95-7565b32a58ec
+  name: "Rally pennant"
+  x: 0
+  y: 0
+  width: 20
+  height: 20
+  active: false
+  components:
+  - type: spriteRenderer
+    sortingLayer: 4
+    assetId: "cc7d1797-747f-5609-998a-8f0f0ea355ba"
+- id: 8e8dac42-54b1-5ad3-8786-1bafd4029205
   name: "HUD"
   x: 0
   y: 0
@@ -395,67 +3592,3099 @@ objects:
   height: 1
   components:
   - type: uiCanvas
-- id: d1afb3f1-133c-5897-9fac-1260dd6fb2ee
-  name: "Title"
-  x: 15
-  y: 8
-  width: 445
-  height: 27
-  parentId: ded388f5-f738-5797-8afc-1bdeae4acd6e
-  components:
-  - type: uiRect
-  - type: uiText
-    size: 19
-    color: "#ABD7AA"
-    text: "ISOBAND  /  Haven"
-- id: 3a153277-c5c1-5074-ac75-79be43e11301
-  name: "HUD values"
-  x: 15
-  y: 37
-  width: 454
-  height: 18
-  parentId: ded388f5-f738-5797-8afc-1bdeae4acd6e
-  components:
-  - type: uiRect
-  - type: uiText
-    size: 11
-    color: "#FFFFFF"
-    text: ""
-- id: 77959845-67a0-4299-83ad-ca85c88c59c2
-  name: "Help background"
+- id: 7416a365-f167-5d2e-9407-fa729663847f
+  name: "Party panel"
   x: 8
-  y: 219
-  width: 464
-  height: 46
-  parentId: ded388f5-f738-5797-8afc-1bdeae4acd6e
+  y: 8
+  width: 124
+  height: 34
+  parentId: 8e8dac42-54b1-5ad3-8786-1bafd4029205
   components:
   - type: uiRect
   - type: uiImage
-    color: "#1C2A27"
-- id: 7a8849cf-5adb-588e-bf8b-15fdc19011cf
-  name: "Instructions"
-  x: 15
-  y: 224
-  width: 455
-  height: 18
-  parentId: ded388f5-f738-5797-8afc-1bdeae4acd6e
+    sprite: "56f43a1b-f883-5eff-9067-915176aa1729"
+    borders: {"left": 7, "top": 7, "right": 7, "bottom": 7}
+- id: a7521cbf-572a-529b-9a83-c1db2f558165
+  name: "Party slot 1"
+  x: 8
+  y: 4
+  width: 20
+  height: 26
+  parentId: 7416a365-f167-5d2e-9407-fa729663847f
   components:
   - type: uiRect
-  - type: uiText
-    size: 12
-    color: "#FFF1B5"
-    text: "Camp  /  H Hire  U Upgrade       Gate  /  Enter"
-- id: 858abdde-3a59-5869-bdb9-592687907726
-  name: "Controls"
-  x: 15
-  y: 246
-  width: 453
-  height: 17
-  parentId: ded388f5-f738-5797-8afc-1bdeae4acd6e
+- id: 757dd1a2-a9f6-53c7-8e8c-0c4a2f42ce70
+  name: "Portrait 1"
+  x: 0
+  y: 0
+  width: 20
+  height: 20
+  parentId: a7521cbf-572a-529b-9a83-c1db2f558165
   components:
   - type: uiRect
+  - type: uiImage
+    sprite: "03046b37-45c0-515e-87dd-f2a62fab462c"
+- id: d4280e4f-51d7-572c-8ea5-0d30adcf1859
+  name: "Down 1"
+  x: 0
+  y: 0
+  width: 20
+  height: 20
+  parentId: a7521cbf-572a-529b-9a83-c1db2f558165
+  components:
+  - type: uiRect
+  - type: uiImage
+    sprite: "524d1ca1-4b02-56d3-857d-d5a927caf6f5"
+- id: d6a4b6fe-04e1-5b72-b5d0-d1a64481243b
+  name: "Portrait track 1"
+  x: 0
+  y: 21
+  width: 20
+  height: 7
+  parentId: a7521cbf-572a-529b-9a83-c1db2f558165
+  components:
+  - type: uiRect
+  - type: uiImage
+    color: "#231413"
+- id: b334bdee-80db-5f69-8c5f-79142c33cd5f
+  name: "Portrait wax 1"
+  x: 1
+  y: 22
+  width: 18
+  height: 5
+  parentId: a7521cbf-572a-529b-9a83-c1db2f558165
+  components:
+  - type: uiRect
+  - type: uiImage
+    color: "#A54635"
+- id: 83d78eea-4a66-5cff-bd9c-88e36490de4c
+  name: "Portrait HP 1"
+  x: 1
+  y: 22
+  width: 18
+  height: 5
+  parentId: a7521cbf-572a-529b-9a83-c1db2f558165
+  components:
+  - type: uiRect
+  - type: uiImage
+    sprite: "c91e6ab7-961a-5e10-b6ea-7ca3586c5b2e"
+- id: ed279dc8-6891-5513-a69f-efe24e877c0b
+  name: "Party slot 2"
+  x: 30
+  y: 4
+  width: 20
+  height: 26
+  parentId: 7416a365-f167-5d2e-9407-fa729663847f
+  components:
+  - type: uiRect
+- id: 26d299e6-6145-56ed-8b78-7cfa6acb7afd
+  name: "Portrait 2"
+  x: 0
+  y: 0
+  width: 20
+  height: 20
+  parentId: ed279dc8-6891-5513-a69f-efe24e877c0b
+  components:
+  - type: uiRect
+  - type: uiImage
+    sprite: "6d02bc7b-50fb-5c03-a4ea-023510442237"
+- id: 1a71e1d1-a61c-57f4-a7a6-35f0ec370962
+  name: "Down 2"
+  x: 0
+  y: 0
+  width: 20
+  height: 20
+  parentId: ed279dc8-6891-5513-a69f-efe24e877c0b
+  components:
+  - type: uiRect
+  - type: uiImage
+    sprite: "524d1ca1-4b02-56d3-857d-d5a927caf6f5"
+- id: 4ec41760-d98d-51d4-bbee-87a86dba4697
+  name: "Portrait track 2"
+  x: 0
+  y: 21
+  width: 20
+  height: 7
+  parentId: ed279dc8-6891-5513-a69f-efe24e877c0b
+  components:
+  - type: uiRect
+  - type: uiImage
+    color: "#231413"
+- id: 114a9eee-704a-5f4a-8496-0a323402c312
+  name: "Portrait wax 2"
+  x: 1
+  y: 22
+  width: 18
+  height: 5
+  parentId: ed279dc8-6891-5513-a69f-efe24e877c0b
+  components:
+  - type: uiRect
+  - type: uiImage
+    color: "#A54635"
+- id: aa8c1d09-88d1-5c1b-9014-65bda3da58b9
+  name: "Portrait HP 2"
+  x: 1
+  y: 22
+  width: 18
+  height: 5
+  parentId: ed279dc8-6891-5513-a69f-efe24e877c0b
+  components:
+  - type: uiRect
+  - type: uiImage
+    sprite: "c91e6ab7-961a-5e10-b6ea-7ca3586c5b2e"
+- id: 3f9a9f49-d111-52b0-9534-8968ee7c88a1
+  name: "Party slot 3"
+  x: 52
+  y: 4
+  width: 20
+  height: 26
+  parentId: 7416a365-f167-5d2e-9407-fa729663847f
+  components:
+  - type: uiRect
+- id: cc947a9d-da25-52e9-a090-807a32399e15
+  name: "Portrait 3"
+  x: 0
+  y: 0
+  width: 20
+  height: 20
+  parentId: 3f9a9f49-d111-52b0-9534-8968ee7c88a1
+  components:
+  - type: uiRect
+  - type: uiImage
+    sprite: "5587b667-90ca-5410-b8bd-88d99bf2fa7b"
+- id: e8b43dca-a05c-52d6-aaf4-981ac3c6ffd9
+  name: "Down 3"
+  x: 0
+  y: 0
+  width: 20
+  height: 20
+  parentId: 3f9a9f49-d111-52b0-9534-8968ee7c88a1
+  components:
+  - type: uiRect
+  - type: uiImage
+    sprite: "524d1ca1-4b02-56d3-857d-d5a927caf6f5"
+- id: 267a14f2-67d9-56b7-8273-f6c48157d812
+  name: "Portrait track 3"
+  x: 0
+  y: 21
+  width: 20
+  height: 7
+  parentId: 3f9a9f49-d111-52b0-9534-8968ee7c88a1
+  components:
+  - type: uiRect
+  - type: uiImage
+    color: "#231413"
+- id: 09d424e8-7ae8-53e5-a37b-01b0be9c3f30
+  name: "Portrait wax 3"
+  x: 1
+  y: 22
+  width: 18
+  height: 5
+  parentId: 3f9a9f49-d111-52b0-9534-8968ee7c88a1
+  components:
+  - type: uiRect
+  - type: uiImage
+    color: "#A54635"
+- id: a70975c7-0f32-5cf7-97c1-ee534365df6c
+  name: "Portrait HP 3"
+  x: 1
+  y: 22
+  width: 18
+  height: 5
+  parentId: 3f9a9f49-d111-52b0-9534-8968ee7c88a1
+  components:
+  - type: uiRect
+  - type: uiImage
+    sprite: "c91e6ab7-961a-5e10-b6ea-7ca3586c5b2e"
+- id: 9bcfb7e8-ece2-5a72-b92d-ed57d8111e8d
+  name: "Party slot 4"
+  x: 74
+  y: 4
+  width: 20
+  height: 26
+  parentId: 7416a365-f167-5d2e-9407-fa729663847f
+  components:
+  - type: uiRect
+- id: 9cf0cba0-a5d2-522d-be33-042952264249
+  name: "Portrait 4"
+  x: 0
+  y: 0
+  width: 20
+  height: 20
+  parentId: 9bcfb7e8-ece2-5a72-b92d-ed57d8111e8d
+  components:
+  - type: uiRect
+  - type: uiImage
+    sprite: "d3bb75f7-80ca-5a8e-a04d-6eaeeeed124e"
+- id: c1511498-f60a-555b-8674-2340c5fd1834
+  name: "Down 4"
+  x: 0
+  y: 0
+  width: 20
+  height: 20
+  parentId: 9bcfb7e8-ece2-5a72-b92d-ed57d8111e8d
+  components:
+  - type: uiRect
+  - type: uiImage
+    sprite: "524d1ca1-4b02-56d3-857d-d5a927caf6f5"
+- id: 002062a1-9d6a-52b0-a164-edd3dcd57dc0
+  name: "Portrait track 4"
+  x: 0
+  y: 21
+  width: 20
+  height: 7
+  parentId: 9bcfb7e8-ece2-5a72-b92d-ed57d8111e8d
+  components:
+  - type: uiRect
+  - type: uiImage
+    color: "#231413"
+- id: bc2cfe42-e835-5e00-b3bb-9a80ecf4bcf9
+  name: "Portrait wax 4"
+  x: 1
+  y: 22
+  width: 18
+  height: 5
+  parentId: 9bcfb7e8-ece2-5a72-b92d-ed57d8111e8d
+  components:
+  - type: uiRect
+  - type: uiImage
+    color: "#A54635"
+- id: 8eac4cee-fd00-599d-8796-2e40d42297e0
+  name: "Portrait HP 4"
+  x: 1
+  y: 22
+  width: 18
+  height: 5
+  parentId: 9bcfb7e8-ece2-5a72-b92d-ed57d8111e8d
+  components:
+  - type: uiRect
+  - type: uiImage
+    sprite: "c91e6ab7-961a-5e10-b6ea-7ca3586c5b2e"
+- id: e004b45d-56c3-5deb-96a9-127aa0819926
+  name: "Party slot 5"
+  x: 96
+  y: 4
+  width: 20
+  height: 26
+  parentId: 7416a365-f167-5d2e-9407-fa729663847f
+  components:
+  - type: uiRect
+- id: 4cb2c231-15fa-555a-89f6-81b69142575b
+  name: "Portrait 5"
+  x: 0
+  y: 0
+  width: 20
+  height: 20
+  parentId: e004b45d-56c3-5deb-96a9-127aa0819926
+  components:
+  - type: uiRect
+  - type: uiImage
+    sprite: "5587b667-90ca-5410-b8bd-88d99bf2fa7b"
+- id: 23b03367-62b8-5c77-835b-24e05352cb5f
+  name: "Down 5"
+  x: 0
+  y: 0
+  width: 20
+  height: 20
+  parentId: e004b45d-56c3-5deb-96a9-127aa0819926
+  components:
+  - type: uiRect
+  - type: uiImage
+    sprite: "524d1ca1-4b02-56d3-857d-d5a927caf6f5"
+- id: 635d3c0f-b82f-5ae1-8673-0b532845a369
+  name: "Portrait track 5"
+  x: 0
+  y: 21
+  width: 20
+  height: 7
+  parentId: e004b45d-56c3-5deb-96a9-127aa0819926
+  components:
+  - type: uiRect
+  - type: uiImage
+    color: "#231413"
+- id: 753fbeac-6348-5d18-af61-95f2a702e6d7
+  name: "Portrait wax 5"
+  x: 1
+  y: 22
+  width: 18
+  height: 5
+  parentId: e004b45d-56c3-5deb-96a9-127aa0819926
+  components:
+  - type: uiRect
+  - type: uiImage
+    color: "#A54635"
+- id: ac1b6180-440b-5ee6-b3e4-7c84c3b3beb3
+  name: "Portrait HP 5"
+  x: 1
+  y: 22
+  width: 18
+  height: 5
+  parentId: e004b45d-56c3-5deb-96a9-127aa0819926
+  components:
+  - type: uiRect
+  - type: uiImage
+    sprite: "c91e6ab7-961a-5e10-b6ea-7ca3586c5b2e"
+- id: 6062492a-7f51-5bbc-ad64-06df12f5e6bd
+  name: "Progress panel"
+  x: 356
+  y: 8
+  width: 116
+  height: 34
+  parentId: 8e8dac42-54b1-5ad3-8786-1bafd4029205
+  components:
+  - type: uiRect
+  - type: uiImage
+    sprite: "56f43a1b-f883-5eff-9067-915176aa1729"
+    borders: {"left": 7, "top": 7, "right": 7, "bottom": 7}
+- id: a13bc753-75da-5bc6-a6ab-48cf2c7a9859
+  name: "Crowns illustration"
+  x: 8
+  y: 10
+  width: 12
+  height: 12
+  parentId: 6062492a-7f51-5bbc-ad64-06df12f5e6bd
+  components:
+  - type: uiRect
+  - type: uiImage
+    sprite: "f8663fef-2820-53f8-b0a2-eb2910a4723e"
+- id: 2e79deee-3a59-53d7-b3b3-70df53d503fc
+  name: "Crowns value row"
+  x: 22
+  y: 15
+  width: 43
+  height: 2
+  parentId: 6062492a-7f51-5bbc-ad64-06df12f5e6bd
+  components:
+  - type: uiRect
+- id: 4a85a901-8bda-572b-b6d4-55f5ecead902
+  name: "Crowns value"
+  x: 0
+  y: 1.6
+  width: 43
+  height: 1
+  parentId: 2e79deee-3a59-53d7-b3b3-70df53d503fc
+  components:
+  - type: uiRect
+    anchor: "MiddleLeft"
   - type: uiText
+    text: "6"
     size: 10
-    color: "#FFFFFF"
-    text: "WASD / CLICK  Move     SPACE  Pulse     R  Rest at camp"
-defaultCameraId: 38eb746d-21c0-5e66-8ce5-5794488beeff
+    color: "#FFF1D7"
+    richText: false
+    wrap: false
+    insetX: 0
+    insetY: 0
+- id: 0205cbb8-f203-5ed4-9adb-f572d4b18e69
+  name: "Level label row"
+  x: -31
+  y: 15
+  width: 18
+  height: 2
+  parentId: 6062492a-7f51-5bbc-ad64-06df12f5e6bd
+  components:
+  - type: uiRect
+    anchor: "TopRight"
+- id: 22ef4880-1228-54e4-8bc0-a673e791c465
+  name: "Level label"
+  x: 0
+  y: 1.6
+  width: 18
+  height: 1
+  parentId: 0205cbb8-f203-5ed4-9adb-f572d4b18e69
+  components:
+  - type: uiRect
+    anchor: "MiddleLeft"
+  - type: uiText
+    text: "Lv"
+    size: 8.5
+    color: "#FFDFAC"
+    richText: false
+    wrap: false
+    insetX: 0
+    insetY: 0
+- id: 5cb8a535-40fd-5815-bb4d-8ff16466e547
+  name: "Level medal"
+  x: -6
+  y: 4
+  width: 24
+  height: 24
+  parentId: 6062492a-7f51-5bbc-ad64-06df12f5e6bd
+  components:
+  - type: uiRect
+    anchor: "TopRight"
+  - type: uiImage
+    sprite: "4666d028-3ba1-5cee-8317-ab3f9dcc0939"
+- id: afc793c8-d57d-5612-8027-5c414506b0ab
+  name: "Level value center"
+  x: 0
+  y: 0
+  width: 24
+  height: 24
+  parentId: 5cb8a535-40fd-5815-bb4d-8ff16466e547
+  components:
+  - type: uiRect
+- id: 1d676e23-afff-5a6e-af50-30dd9ddc2486
+  name: "Level value"
+  x: 0
+  y: 1.6
+  width: 5.13
+  height: 1
+  parentId: afc793c8-d57d-5612-8027-5c414506b0ab
+  components:
+  - type: uiRect
+    anchor: "Center"
+    scaleHorizontalWithText: true
+  - type: uiText
+    text: "0"
+    size: 9.5
+    color: "#FFF1D7"
+    richText: false
+    wrap: false
+    insetX: 0
+    insetY: 0
+- id: 11fcbf50-68ec-566a-9df8-2f43a56c29ce
+  name: "XP track"
+  x: 8
+  y: 27
+  width: 100
+  height: 5
+  parentId: 6062492a-7f51-5bbc-ad64-06df12f5e6bd
+  components:
+  - type: uiRect
+  - type: uiImage
+    color: "#221510"
+- id: b64147db-463a-53d1-b908-56bb84d7c8e4
+  name: "XP fill"
+  x: 9
+  y: 28
+  width: 98
+  height: 3
+  parentId: 6062492a-7f51-5bbc-ad64-06df12f5e6bd
+  components:
+  - type: uiRect
+  - type: uiImage
+    sprite: "c91e6ab7-961a-5e10-b6ea-7ca3586c5b2e"
+- id: 0b7e3900-7d9c-5d24-b125-012563d3467d
+  name: "Pulse panel"
+  x: 180
+  y: 226
+  width: 108
+  height: 36
+  parentId: 8e8dac42-54b1-5ad3-8786-1bafd4029205
+  components:
+  - type: uiRect
+  - type: uiImage
+    sprite: "56f43a1b-f883-5eff-9067-915176aa1729"
+    borders: {"left": 7, "top": 7, "right": 7, "bottom": 7}
+- id: 5082f59e-0c03-5288-a33c-bbae4eea3f5a
+  name: "Pulse medallion"
+  x: 8
+  y: 5
+  width: 26
+  height: 26
+  parentId: 0b7e3900-7d9c-5d24-b125-012563d3467d
+  components:
+  - type: uiRect
+  - type: uiImage
+    sprite: "38586beb-c5fa-5f72-a8cc-c0d4836a3335"
+- id: b04bf676-fa44-549c-998c-9517d6e45560
+  name: "Charge 1"
+  x: 8
+  y: 5
+  width: 26
+  height: 26
+  parentId: 0b7e3900-7d9c-5d24-b125-012563d3467d
+  components:
+  - type: uiRect
+  - type: uiImage
+    sprite: "1b3acbd6-233b-5418-ab1b-80b3dbce7dfc"
+- id: 71eeb245-89ba-5011-8ce3-bee9dcfee0b8
+  name: "Charge 2"
+  x: 8
+  y: 5
+  width: 26
+  height: 26
+  parentId: 0b7e3900-7d9c-5d24-b125-012563d3467d
+  components:
+  - type: uiRect
+  - type: uiImage
+    sprite: "c1dc8e9f-f94b-5fbe-83a4-547ae7ca1d7c"
+- id: dd1905c9-b056-5741-895a-785735dafafd
+  name: "Charge 3"
+  x: 8
+  y: 5
+  width: 26
+  height: 26
+  parentId: 0b7e3900-7d9c-5d24-b125-012563d3467d
+  components:
+  - type: uiRect
+  - type: uiImage
+    sprite: "327252a8-6003-555d-b7a5-1a84dc70ffe3"
+- id: f505fd5a-33aa-5fcc-9b3f-a4136654d366
+  name: "Charge 4"
+  x: 8
+  y: 5
+  width: 26
+  height: 26
+  parentId: 0b7e3900-7d9c-5d24-b125-012563d3467d
+  components:
+  - type: uiRect
+  - type: uiImage
+    sprite: "326e3ae5-2b81-5519-aa22-74e927b58a86"
+- id: 2c5bff42-ba82-53b2-87ec-6d22e089ffbf
+  name: "Charge 5"
+  x: 8
+  y: 5
+  width: 26
+  height: 26
+  parentId: 0b7e3900-7d9c-5d24-b125-012563d3467d
+  components:
+  - type: uiRect
+  - type: uiImage
+    sprite: "4efbffbc-ce1b-5962-b7f1-784baf5c0cf3"
+- id: 7dd960c3-8b99-5b3b-ad81-7c9c68bf8baa
+  name: "Charge 6"
+  x: 8
+  y: 5
+  width: 26
+  height: 26
+  parentId: 0b7e3900-7d9c-5d24-b125-012563d3467d
+  components:
+  - type: uiRect
+  - type: uiImage
+    sprite: "58f07c11-a0c4-5e24-83c2-6d23fbf582df"
+- id: 853ac3c7-103d-5933-86ce-5530b25da889
+  name: "Charge 7"
+  x: 8
+  y: 5
+  width: 26
+  height: 26
+  parentId: 0b7e3900-7d9c-5d24-b125-012563d3467d
+  components:
+  - type: uiRect
+  - type: uiImage
+    sprite: "00185dea-211a-553f-bf56-2c46ac6c1d29"
+- id: db758c1a-a844-5a78-b254-6de829b6cc6f
+  name: "Charge 8"
+  x: 8
+  y: 5
+  width: 26
+  height: 26
+  parentId: 0b7e3900-7d9c-5d24-b125-012563d3467d
+  components:
+  - type: uiRect
+  - type: uiImage
+    sprite: "ecf2d68d-ea0d-53ab-8323-c9f42e2cf5a7"
+- id: 0a756362-6eb8-535d-aa48-83ccfe6d4f43
+  name: "Charge 9"
+  x: 8
+  y: 5
+  width: 26
+  height: 26
+  parentId: 0b7e3900-7d9c-5d24-b125-012563d3467d
+  components:
+  - type: uiRect
+  - type: uiImage
+    sprite: "459591a2-508a-53b6-93a7-6f8553852383"
+- id: 4aa502f9-47f1-51a1-862e-489f027115f6
+  name: "Charge 10"
+  x: 8
+  y: 5
+  width: 26
+  height: 26
+  parentId: 0b7e3900-7d9c-5d24-b125-012563d3467d
+  components:
+  - type: uiRect
+  - type: uiImage
+    sprite: "e4129f71-a18a-594a-af3b-5afde123aab2"
+- id: d1b61716-dce5-57f2-939d-a233252c5e75
+  name: "Charge 11"
+  x: 8
+  y: 5
+  width: 26
+  height: 26
+  parentId: 0b7e3900-7d9c-5d24-b125-012563d3467d
+  components:
+  - type: uiRect
+  - type: uiImage
+    sprite: "f13efb59-0a63-5691-ac4d-27b3a2deee75"
+- id: 5ed2f21b-60a4-50c2-aaf3-6b926fce52cb
+  name: "Charge 12"
+  x: 8
+  y: 5
+  width: 26
+  height: 26
+  parentId: 0b7e3900-7d9c-5d24-b125-012563d3467d
+  components:
+  - type: uiRect
+  - type: uiImage
+    sprite: "8b2b0535-4f2f-565f-95f2-90753a648cf3"
+- id: 24b0dbbd-6fe6-5455-b14f-2a22609aa73f
+  name: "Ready glint"
+  x: 8
+  y: 5
+  width: 26
+  height: 26
+  parentId: 0b7e3900-7d9c-5d24-b125-012563d3467d
+  components:
+  - type: uiRect
+  - type: uiImage
+    sprite: "e764475e-4950-5a60-9025-2d02040aa120"
+- id: ec52f1d0-d5a3-54cd-8359-59f3f30c0046
+  name: "Pulse caption row"
+  x: 40
+  y: 17
+  width: 98
+  height: 2
+  parentId: 0b7e3900-7d9c-5d24-b125-012563d3467d
+  components:
+  - type: uiRect
+- id: c1b4d73d-ce67-5faf-986d-8f4a3d2307d9
+  name: "Pulse caption"
+  x: 0
+  y: 1.6
+  width: 98
+  height: 1
+  parentId: ec52f1d0-d5a3-54cd-8359-59f3f30c0046
+  components:
+  - type: uiRect
+    anchor: "MiddleLeft"
+  - type: uiText
+    text: "Pulse Ready"
+    size: 9.5
+    color: "#FFF1D7"
+    richText: false
+    wrap: false
+    insetX: 0
+    insetY: 0
+- id: 632bfea7-08ba-5f6a-b097-5fb0c9b75c2f
+  name: "Wave panel"
+  x: 8
+  y: 226
+  width: 164
+  height: 36
+  parentId: 8e8dac42-54b1-5ad3-8786-1bafd4029205
+  components:
+  - type: uiRect
+  - type: uiImage
+    sprite: "56f43a1b-f883-5eff-9067-915176aa1729"
+    borders: {"left": 7, "top": 7, "right": 7, "bottom": 7}
+- id: 9a01b813-6ab4-51b3-8d65-31914e4d4426
+  name: "Wave label row"
+  x: 8
+  y: 17
+  width: 48
+  height: 2
+  parentId: 632bfea7-08ba-5f6a-b097-5fb0c9b75c2f
+  components:
+  - type: uiRect
+- id: 1e718e7c-11ff-5bc7-96d2-17d523fcf343
+  name: "Wave label"
+  x: 0
+  y: 1.6
+  width: 48
+  height: 1
+  parentId: 9a01b813-6ab4-51b3-8d65-31914e4d4426
+  components:
+  - type: uiRect
+    anchor: "MiddleLeft"
+  - type: uiText
+    text: "Wave"
+    size: 9.5
+    color: "#FFF1D7"
+    richText: false
+    wrap: false
+    insetX: 0
+    insetY: 0
+- id: 6e680aef-240e-51a0-8121-23870236885c
+  name: "Ward 1 socket"
+  x: 58
+  y: 14
+  width: 8
+  height: 8
+  parentId: 632bfea7-08ba-5f6a-b097-5fb0c9b75c2f
+  components:
+  - type: uiRect
+  - type: uiImage
+    sprite: "9733c9cd-604d-5d68-ac0c-ddac55521beb"
+- id: 7096737d-42d9-501e-837f-6963a68e0144
+  name: "Ward 1 lit"
+  x: 58
+  y: 14
+  width: 8
+  height: 8
+  parentId: 632bfea7-08ba-5f6a-b097-5fb0c9b75c2f
+  components:
+  - type: uiRect
+  - type: uiImage
+    sprite: "9899c428-3791-523b-a4d8-eedfbf353308"
+- id: 29550537-73e1-5fc0-81f8-502e8448b19b
+  name: "Ward 2 socket"
+  x: 68
+  y: 14
+  width: 8
+  height: 8
+  parentId: 632bfea7-08ba-5f6a-b097-5fb0c9b75c2f
+  components:
+  - type: uiRect
+  - type: uiImage
+    sprite: "9733c9cd-604d-5d68-ac0c-ddac55521beb"
+- id: 1e7f32cf-b768-5e86-a1f2-3cfa585ff493
+  name: "Ward 2 lit"
+  x: 68
+  y: 14
+  width: 8
+  height: 8
+  parentId: 632bfea7-08ba-5f6a-b097-5fb0c9b75c2f
+  components:
+  - type: uiRect
+  - type: uiImage
+    sprite: "9899c428-3791-523b-a4d8-eedfbf353308"
+- id: 29ee8453-38aa-5b8b-ba5f-62cf2170516e
+  name: "Ward 3 socket"
+  x: 78
+  y: 14
+  width: 8
+  height: 8
+  parentId: 632bfea7-08ba-5f6a-b097-5fb0c9b75c2f
+  components:
+  - type: uiRect
+  - type: uiImage
+    sprite: "9733c9cd-604d-5d68-ac0c-ddac55521beb"
+- id: 36877af3-a157-5cd9-a1c1-19ee82b455ac
+  name: "Ward 3 lit"
+  x: 78
+  y: 14
+  width: 8
+  height: 8
+  parentId: 632bfea7-08ba-5f6a-b097-5fb0c9b75c2f
+  components:
+  - type: uiRect
+  - type: uiImage
+    sprite: "9899c428-3791-523b-a4d8-eedfbf353308"
+- id: e3286e6b-eaad-585c-836b-bcf5677a9884
+  name: "Wave divider"
+  x: 91
+  y: 8
+  width: 1
+  height: 20
+  parentId: 632bfea7-08ba-5f6a-b097-5fb0c9b75c2f
+  components:
+  - type: uiRect
+  - type: uiImage
+    color: "#A9754C"
+- id: 73b753f7-00f0-5233-b813-67d67319d8e8
+  name: "Foe icon"
+  x: 96
+  y: 12
+  width: 12
+  height: 12
+  parentId: 632bfea7-08ba-5f6a-b097-5fb0c9b75c2f
+  components:
+  - type: uiRect
+  - type: uiImage
+    sprite: "5ae5ed39-fb1a-5467-a7bc-cc4ac30fee69"
+- id: 6134a5eb-199a-5dde-ba22-88c7af3ea51a
+  name: "Foe count row"
+  x: 112
+  y: 17
+  width: 47
+  height: 2
+  parentId: 632bfea7-08ba-5f6a-b097-5fb0c9b75c2f
+  components:
+  - type: uiRect
+- id: 9d8e1e88-3e7d-546d-bebe-1f8cc9d437ba
+  name: "Foe count"
+  x: 0
+  y: 1.6
+  width: 47
+  height: 1
+  parentId: 6134a5eb-199a-5dde-ba22-88c7af3ea51a
+  components:
+  - type: uiRect
+    anchor: "MiddleLeft"
+  - type: uiText
+    text: "0/9"
+    size: 9.5
+    color: "#FFF1D7"
+    richText: false
+    wrap: false
+    insetX: 0
+    insetY: 0
+- id: 095b5ad5-67db-5f05-8e54-39e8dc5fcb77
+  name: "Status panel"
+  x: 8
+  y: 226
+  width: 164
+  height: 36
+  parentId: 8e8dac42-54b1-5ad3-8786-1bafd4029205
+  components:
+  - type: uiRect
+  - type: uiImage
+    sprite: "7da662c8-c71e-5f27-a74e-a16f7f0eb8ca"
+    borders: {"left": 7, "top": 7, "right": 7, "bottom": 7}
+- id: ae3b159d-2a4b-5962-b54c-c59750c160a9
+  name: "Status row"
+  x: 9
+  y: 17
+  width: 147
+  height: 2
+  parentId: 095b5ad5-67db-5f05-8e54-39e8dc5fcb77
+  components:
+  - type: uiRect
+- id: 769f4d0a-aba6-55e5-a0e4-45c0f7c09c15
+  name: "Status"
+  x: 0
+  y: 1.6
+  width: 147
+  height: 1
+  parentId: ae3b159d-2a4b-5962-b54c-c59750c160a9
+  components:
+  - type: uiRect
+    anchor: "MiddleLeft"
+  - type: uiText
+    text: ""
+    size: 9.5
+    color: "#45291B"
+    richText: false
+    wrap: false
+    insetX: 0
+    insetY: 0
+- id: 07500c7b-95f5-5fce-a081-b7343aa82266
+  name: "Keyed status row"
+  x: 60
+  y: 17
+  width: 94
+  height: 2
+  parentId: 095b5ad5-67db-5f05-8e54-39e8dc5fcb77
+  components:
+  - type: uiRect
+- id: 6f36d5ef-a188-5e4b-8fc5-8a3d02d63593
+  name: "Keyed status"
+  x: 0
+  y: 1.6
+  width: 94
+  height: 1
+  parentId: 07500c7b-95f5-5fce-a081-b7343aa82266
+  components:
+  - type: uiRect
+    anchor: "MiddleLeft"
+  - type: uiText
+    text: ""
+    size: 9.5
+    color: "#45291B"
+    richText: false
+    wrap: false
+    insetX: 0
+    insetY: 0
+- id: 5de0b217-3650-5aae-a3b6-aa094cfdc8c3
+  name: "Gate key"
+  x: 9
+  y: 7
+  width: 46
+  height: 22
+  parentId: 095b5ad5-67db-5f05-8e54-39e8dc5fcb77
+  components:
+  - type: uiRect
+  - type: uiImage
+    sprite: "a09a9a2b-3128-55c1-b4cc-d3820762891f"
+    borders: {"left": 5, "top": 5, "right": 5, "bottom": 5}
+- id: 682ceb22-1ae4-5605-9fb4-3f8d543445e0
+  name: "Gate key glyph center"
+  x: 0
+  y: 0
+  width: 46
+  height: 22
+  parentId: 5de0b217-3650-5aae-a3b6-aa094cfdc8c3
+  components:
+  - type: uiRect
+- id: 26bc3532-7431-52f5-80ca-7d48ba6c6ee7
+  name: "Gate key glyph"
+  x: 0
+  y: 1.6
+  width: 19.34
+  height: 1
+  parentId: 682ceb22-1ae4-5605-9fb4-3f8d543445e0
+  components:
+  - type: uiRect
+    anchor: "Center"
+    scaleHorizontalWithText: true
+  - type: uiText
+    text: "Enter"
+    size: 8.5
+    color: "#FFDFAC"
+    richText: false
+    wrap: false
+    insetX: 0
+    insetY: 0
+- id: c2a32d1f-4750-5e5e-8c91-509374716c14
+  name: "Rest key"
+  x: 9
+  y: 7
+  width: 46
+  height: 22
+  parentId: 095b5ad5-67db-5f05-8e54-39e8dc5fcb77
+  components:
+  - type: uiRect
+  - type: uiImage
+    sprite: "a09a9a2b-3128-55c1-b4cc-d3820762891f"
+    borders: {"left": 5, "top": 5, "right": 5, "bottom": 5}
+- id: 6b1df462-01ee-5d79-bdad-f2b7a1f51b60
+  name: "Rest key glyph center"
+  x: 0
+  y: 0
+  width: 46
+  height: 22
+  parentId: c2a32d1f-4750-5e5e-8c91-509374716c14
+  components:
+  - type: uiRect
+- id: 8174a836-1a1a-5c60-8adc-ba0cac67cdac
+  name: "Rest key glyph"
+  x: 0
+  y: 1.6
+  width: 5.22
+  height: 1
+  parentId: 6b1df462-01ee-5d79-bdad-f2b7a1f51b60
+  components:
+  - type: uiRect
+    anchor: "Center"
+    scaleHorizontalWithText: true
+  - type: uiText
+    text: "R"
+    size: 8.5
+    color: "#FFDFAC"
+    richText: false
+    wrap: false
+    insetX: 0
+    insetY: 0
+- id: 9959062d-d8b6-59e8-9492-fd59c2ee090b
+  name: "Guardian panel"
+  x: 142
+  y: 8
+  width: 204
+  height: 36
+  parentId: 8e8dac42-54b1-5ad3-8786-1bafd4029205
+  components:
+  - type: uiRect
+  - type: uiImage
+    sprite: "56f43a1b-f883-5eff-9067-915176aa1729"
+    borders: {"left": 7, "top": 7, "right": 7, "bottom": 7}
+- id: b848bb15-46e2-5ddc-9b3d-492d6aabaf22
+  name: "Guardian label row"
+  x: 8
+  y: 13
+  width: 120
+  height: 2
+  parentId: 9959062d-d8b6-59e8-9492-fd59c2ee090b
+  components:
+  - type: uiRect
+- id: 08df72ea-fdbb-5b55-8eb1-c8194e5a3900
+  name: "Guardian label"
+  x: 0
+  y: 1.6
+  width: 120
+  height: 1
+  parentId: b848bb15-46e2-5ddc-9b3d-492d6aabaf22
+  components:
+  - type: uiRect
+    anchor: "MiddleLeft"
+  - type: uiText
+    text: "Stag Guardian"
+    size: 9.5
+    color: "#FFF1D7"
+    richText: false
+    wrap: false
+    insetX: 0
+    insetY: 0
+- id: a3363d2d-f9ba-581f-b307-5979ff7ce551
+  name: "Guardian badge"
+  x: 128
+  y: 4
+  width: 68
+  height: 20
+  parentId: 9959062d-d8b6-59e8-9492-fd59c2ee090b
+  components:
+  - type: uiRect
+  - type: uiImage
+    sprite: "ee53c9e4-60b9-5c5f-b0d4-6357f44882a4"
+    borders: {"left": 5, "top": 5, "right": 5, "bottom": 5}
+- id: 2ebcd1f9-45df-50a1-a512-14f7d22c1deb
+  name: "Guardian tell row"
+  x: 5
+  y: 9
+  width: 60
+  height: 2
+  parentId: a3363d2d-f9ba-581f-b307-5979ff7ce551
+  components:
+  - type: uiRect
+- id: 64c82ef7-5bff-5f23-88de-23fce0b39e06
+  name: "Guardian tell"
+  x: 0
+  y: 1.6
+  width: 60
+  height: 1
+  parentId: 2ebcd1f9-45df-50a1-a512-14f7d22c1deb
+  components:
+  - type: uiRect
+    anchor: "MiddleLeft"
+  - type: uiText
+    text: ""
+    size: 8.5
+    color: "#FFF1D7"
+    richText: false
+    wrap: false
+    insetX: 0
+    insetY: 0
+- id: 9d3dc283-cd1f-5248-8f01-3c2763f5948a
+  name: "Guardian track"
+  x: 8
+  y: 26
+  width: 188
+  height: 6
+  parentId: 9959062d-d8b6-59e8-9492-fd59c2ee090b
+  components:
+  - type: uiRect
+  - type: uiImage
+    color: "#261418"
+- id: 662512e6-6d00-58fe-9d31-941a6b63f392
+  name: "Guardian HP"
+  x: 9
+  y: 27
+  width: 186
+  height: 4
+  parentId: 9959062d-d8b6-59e8-9492-fd59c2ee090b
+  components:
+  - type: uiRect
+  - type: uiImage
+    color: "#ED8268"
+- id: 45477ee7-33d6-5239-ab9c-097e4830caaf
+  name: "Chapter card"
+  x: 150
+  y: 8
+  width: 180
+  height: 41
+  parentId: 8e8dac42-54b1-5ad3-8786-1bafd4029205
+  components:
+  - type: uiRect
+- id: 408e393c-0f9e-541f-916f-72859932ecb7
+  name: "Cloth banner"
+  x: 0
+  y: 0
+  width: 180
+  height: 41
+  parentId: 45477ee7-33d6-5239-ab9c-097e4830caaf
+  components:
+  - type: uiRect
+  - type: uiImage
+    sprite: "1d6befeb-5da3-5b36-b990-e9c919eab1c4"
+    borders: {"left": 7, "top": 7, "right": 7, "bottom": 7}
+- id: e00a6b96-b214-5f83-9eb7-4dbfad28d382
+  name: "Zone scroll"
+  x: 0
+  y: 0
+  width: 180
+  height: 41
+  parentId: 45477ee7-33d6-5239-ab9c-097e4830caaf
+  components:
+  - type: uiRect
+  - type: uiImage
+    sprite: "7da662c8-c71e-5f27-a74e-a16f7f0eb8ca"
+    borders: {"left": 7, "top": 7, "right": 7, "bottom": 7}
+- id: 678bbc1c-533d-5007-92bc-f947b403c5c8
+  name: "Chapter title row"
+  x: 8
+  y: 12
+  width: 164
+  height: 2
+  parentId: 45477ee7-33d6-5239-ab9c-097e4830caaf
+  components:
+  - type: uiRect
+- id: 0c730b62-53e3-54e3-8ca3-60bd2cb22900
+  name: "Chapter title"
+  x: 0
+  y: 1.6
+  width: 164
+  height: 1
+  parentId: 678bbc1c-533d-5007-92bc-f947b403c5c8
+  components:
+  - type: uiRect
+    anchor: "MiddleLeft"
+  - type: uiText
+    text: ""
+    size: 10
+    color: "#FFF1D7"
+    richText: true
+    wrap: false
+    insetX: 0
+    insetY: 0
+- id: b16c0ec7-d0fb-5b10-b881-ed6fd7b2dcc8
+  name: "Chapter subtitle row"
+  x: 8
+  y: 27
+  width: 164
+  height: 2
+  parentId: 45477ee7-33d6-5239-ab9c-097e4830caaf
+  components:
+  - type: uiRect
+- id: a2bdcbfe-ce94-58c3-9d0e-fce253e6e0b2
+  name: "Chapter subtitle"
+  x: 0
+  y: 1.6
+  width: 164
+  height: 1
+  parentId: b16c0ec7-d0fb-5b10-b881-ed6fd7b2dcc8
+  components:
+  - type: uiRect
+    anchor: "MiddleLeft"
+  - type: uiText
+    text: ""
+    size: 8.5
+    color: "#FFDFAC"
+    richText: true
+    wrap: false
+    insetX: 0
+    insetY: 0
+- id: 8b6bd491-a00e-5300-9f7d-d1ee5d48c3f0
+  name: "Gate notice actions"
+  x: 8
+  y: 20
+  width: 164
+  height: 18
+  parentId: 45477ee7-33d6-5239-ab9c-097e4830caaf
+  components:
+  - type: uiRect
+- id: a60ffb43-4f51-5105-980f-01f5237fa0e1
+  name: "Chapter gate key"
+  x: 0
+  y: 0
+  width: 46
+  height: 18
+  parentId: 8b6bd491-a00e-5300-9f7d-d1ee5d48c3f0
+  components:
+  - type: uiRect
+  - type: uiImage
+    sprite: "a09a9a2b-3128-55c1-b4cc-d3820762891f"
+    borders: {"left": 5, "top": 5, "right": 5, "bottom": 5}
+- id: c1c8a9de-3d90-54f5-952d-98e050bbc40c
+  name: "Chapter gate key glyph center"
+  x: 0
+  y: 0
+  width: 46
+  height: 18
+  parentId: a60ffb43-4f51-5105-980f-01f5237fa0e1
+  components:
+  - type: uiRect
+- id: 273da296-8db0-5fca-a057-c1e35e037b9e
+  name: "Chapter gate key glyph"
+  x: 0
+  y: 1.6
+  width: 19.34
+  height: 1
+  parentId: c1c8a9de-3d90-54f5-952d-98e050bbc40c
+  components:
+  - type: uiRect
+    anchor: "Center"
+    scaleHorizontalWithText: true
+  - type: uiText
+    text: "Enter"
+    size: 8.5
+    color: "#FFDFAC"
+    richText: false
+    wrap: false
+    insetX: 0
+    insetY: 0
+- id: ac37138a-374c-5a0f-9819-803e56c2d8ff
+  name: "Chapter gate action row"
+  x: 50
+  y: 8
+  width: 110
+  height: 2
+  parentId: 8b6bd491-a00e-5300-9f7d-d1ee5d48c3f0
+  components:
+  - type: uiRect
+- id: f01f1aa0-1411-564e-9d33-6e5a84c73da3
+  name: "Chapter gate action"
+  x: 0
+  y: 1.6
+  width: 110
+  height: 1
+  parentId: ac37138a-374c-5a0f-9819-803e56c2d8ff
+  components:
+  - type: uiRect
+    anchor: "MiddleLeft"
+  - type: uiText
+    text: ""
+    size: 8.5
+    color: "#FFF1D7"
+    richText: false
+    wrap: false
+    insetX: 0
+    insetY: 0
+- id: d3401412-d366-5194-87b5-b8598412720b
+  name: "Return shortcut"
+  x: 88
+  y: 0
+  width: 76
+  height: 20
+  parentId: 8b6bd491-a00e-5300-9f7d-d1ee5d48c3f0
+  components:
+  - type: uiRect
+- id: 695de7a9-902a-5528-b851-fa92696356d4
+  name: "Return key"
+  x: 0
+  y: 0
+  width: 20
+  height: 18
+  parentId: d3401412-d366-5194-87b5-b8598412720b
+  components:
+  - type: uiRect
+  - type: uiImage
+    sprite: "a09a9a2b-3128-55c1-b4cc-d3820762891f"
+    borders: {"left": 5, "top": 5, "right": 5, "bottom": 5}
+- id: 725a7b3b-564c-528b-bc8f-a5ec22a3f245
+  name: "Return key glyph center"
+  x: 0
+  y: 0
+  width: 20
+  height: 18
+  parentId: 695de7a9-902a-5528-b851-fa92696356d4
+  components:
+  - type: uiRect
+- id: 26734275-4362-5774-acc8-6ae03ed66091
+  name: "Return key glyph"
+  x: 0
+  y: 1.6
+  width: 5.28
+  height: 1
+  parentId: 725a7b3b-564c-528b-bc8f-a5ec22a3f245
+  components:
+  - type: uiRect
+    anchor: "Center"
+    scaleHorizontalWithText: true
+  - type: uiText
+    text: "V"
+    size: 8.5
+    color: "#FFDFAC"
+    richText: false
+    wrap: false
+    insetX: 0
+    insetY: 0
+- id: 259b6221-1470-54f7-9440-1083557384c7
+  name: "Return action row"
+  x: 24
+  y: 8
+  width: 52
+  height: 2
+  parentId: d3401412-d366-5194-87b5-b8598412720b
+  components:
+  - type: uiRect
+- id: 22dbe53c-83da-5a02-a42a-613ffb796513
+  name: "Return action"
+  x: 0
+  y: 1.6
+  width: 52
+  height: 1
+  parentId: 259b6221-1470-54f7-9440-1083557384c7
+  components:
+  - type: uiRect
+    anchor: "MiddleLeft"
+  - type: uiText
+    text: "Haven"
+    size: 8.5
+    color: "#FFF1D7"
+    richText: false
+    wrap: false
+    insetX: 0
+    insetY: 0
+- id: cf882a77-1de0-5c5c-b257-9b70df6566f7
+  name: "Ledger"
+  x: 36
+  y: 29
+  width: 408
+  height: 212
+  parentId: 8e8dac42-54b1-5ad3-8786-1bafd4029205
+  components:
+  - type: uiRect
+  - type: uiImage
+    sprite: "7482f4ea-d823-5923-baa2-85a0a6f8d295"
+    borders: {"left": 9, "top": 9, "right": 9, "bottom": 9}
+- id: 69fa3d1e-a65b-50d6-8d61-d6ad374ec839
+  name: "Ledger heading row"
+  x: 16
+  y: 23
+  width: 180
+  height: 2
+  parentId: cf882a77-1de0-5c5c-b257-9b70df6566f7
+  components:
+  - type: uiRect
+- id: 7a074e87-e951-59fb-a55e-d7472ee40e6e
+  name: "Ledger heading"
+  x: 0
+  y: 1.6
+  width: 180
+  height: 1
+  parentId: 69fa3d1e-a65b-50d6-8d61-d6ad374ec839
+  components:
+  - type: uiRect
+    anchor: "MiddleLeft"
+  - type: uiText
+    text: ""
+    size: 8.5
+    color: "#563722"
+    richText: false
+    wrap: false
+    insetX: 0
+    insetY: 0
+- id: 1b49ede3-d941-5400-bb06-82f59ad9b1d3
+  name: "Ledger title row"
+  x: 16
+  y: 48
+  width: 180
+  height: 2
+  parentId: cf882a77-1de0-5c5c-b257-9b70df6566f7
+  components:
+  - type: uiRect
+- id: 8097efa4-651d-54ec-9cf8-028b8422d48e
+  name: "Ledger title"
+  x: 0
+  y: 1.6
+  width: 180
+  height: 1
+  parentId: 1b49ede3-d941-5400-bb06-82f59ad9b1d3
+  components:
+  - type: uiRect
+    anchor: "MiddleLeft"
+  - type: uiText
+    text: ""
+    size: 14
+    color: "#382116"
+    richText: false
+    wrap: false
+    insetX: 0
+    insetY: 0
+- id: 3ac4608c-1206-5e43-ae9b-926addedaeed
+  name: "Ledger left rule"
+  x: 16
+  y: 66
+  width: 176
+  height: 1
+  parentId: cf882a77-1de0-5c5c-b257-9b70df6566f7
+  components:
+  - type: uiRect
+  - type: uiImage
+    color: "#B28356"
+- id: 2b4af423-051f-52c7-bd28-74d6625d219c
+  name: "Record label 1 row"
+  x: 16
+  y: 79
+  width: 114
+  height: 2
+  parentId: cf882a77-1de0-5c5c-b257-9b70df6566f7
+  components:
+  - type: uiRect
+- id: 08c6fb4e-ef2b-5b33-b0ea-a4137563910a
+  name: "Record label 1"
+  x: 0
+  y: 1.6
+  width: 114
+  height: 1
+  parentId: 2b4af423-051f-52c7-bd28-74d6625d219c
+  components:
+  - type: uiRect
+    anchor: "MiddleLeft"
+  - type: uiText
+    text: "Ashwater"
+    size: 9.5
+    color: "#45291B"
+    richText: false
+    wrap: false
+    insetX: 0
+    insetY: 0
+- id: e6696fa1-80a5-515a-a659-d8c1cd7f88d9
+  name: "Expedition record 1 row"
+  x: 133
+  y: 79
+  width: 58
+  height: 2
+  parentId: cf882a77-1de0-5c5c-b257-9b70df6566f7
+  components:
+  - type: uiRect
+- id: a15564f5-db9c-5351-a14d-b060c8129f57
+  name: "Expedition record 1"
+  x: 0
+  y: 1.6
+  width: 58
+  height: 1
+  parentId: e6696fa1-80a5-515a-a659-d8c1cd7f88d9
+  components:
+  - type: uiRect
+    anchor: "MiddleLeft"
+  - type: uiText
+    text: ""
+    size: 9.5
+    color: "#45291B"
+    richText: false
+    wrap: false
+    insetX: 0
+    insetY: 0
+- id: f8b5d591-a5a8-588d-a086-bf85532019e7
+  name: "Record label 2 row"
+  x: 16
+  y: 100
+  width: 114
+  height: 2
+  parentId: cf882a77-1de0-5c5c-b257-9b70df6566f7
+  components:
+  - type: uiRect
+- id: 9b7c065b-f3e1-56a0-90aa-e75459b5360b
+  name: "Record label 2"
+  x: 0
+  y: 1.6
+  width: 114
+  height: 1
+  parentId: f8b5d591-a5a8-588d-a086-bf85532019e7
+  components:
+  - type: uiRect
+    anchor: "MiddleLeft"
+  - type: uiText
+    text: "Gallery"
+    size: 9.5
+    color: "#45291B"
+    richText: false
+    wrap: false
+    insetX: 0
+    insetY: 0
+- id: 2be061b9-3bbb-5e26-9bc8-343e96b9cfb3
+  name: "Expedition record 2 row"
+  x: 133
+  y: 100
+  width: 58
+  height: 2
+  parentId: cf882a77-1de0-5c5c-b257-9b70df6566f7
+  components:
+  - type: uiRect
+- id: a9b44205-55aa-5021-ad29-e414f270739e
+  name: "Expedition record 2"
+  x: 0
+  y: 1.6
+  width: 58
+  height: 1
+  parentId: 2be061b9-3bbb-5e26-9bc8-343e96b9cfb3
+  components:
+  - type: uiRect
+    anchor: "MiddleLeft"
+  - type: uiText
+    text: ""
+    size: 9.5
+    color: "#45291B"
+    richText: false
+    wrap: false
+    insetX: 0
+    insetY: 0
+- id: 8df27dd1-1206-59b5-abed-80f7189a4de2
+  name: "Record label 3 row"
+  x: 16
+  y: 121
+  width: 114
+  height: 2
+  parentId: cf882a77-1de0-5c5c-b257-9b70df6566f7
+  components:
+  - type: uiRect
+- id: dfeaa2e2-942b-5aca-8af5-7c7fcbf1bf25
+  name: "Record label 3"
+  x: 0
+  y: 1.6
+  width: 114
+  height: 1
+  parentId: 8df27dd1-1206-59b5-abed-80f7189a4de2
+  components:
+  - type: uiRect
+    anchor: "MiddleLeft"
+  - type: uiText
+    text: "Crypt"
+    size: 9.5
+    color: "#45291B"
+    richText: false
+    wrap: false
+    insetX: 0
+    insetY: 0
+- id: c362bda3-c85b-5cce-9c93-a16725fafce0
+  name: "Expedition record 3 row"
+  x: 133
+  y: 121
+  width: 58
+  height: 2
+  parentId: cf882a77-1de0-5c5c-b257-9b70df6566f7
+  components:
+  - type: uiRect
+- id: 834a7797-9492-5172-af6a-aaee9db44ee5
+  name: "Expedition record 3"
+  x: 0
+  y: 1.6
+  width: 58
+  height: 1
+  parentId: c362bda3-c85b-5cce-9c93-a16725fafce0
+  components:
+  - type: uiRect
+    anchor: "MiddleLeft"
+  - type: uiText
+    text: ""
+    size: 9.5
+    color: "#45291B"
+    richText: false
+    wrap: false
+    insetX: 0
+    insetY: 0
+- id: 6ab177f4-d624-5c14-b1e6-c7b20bad3fad
+  name: "Record label 4 row"
+  x: 16
+  y: 142
+  width: 114
+  height: 2
+  parentId: cf882a77-1de0-5c5c-b257-9b70df6566f7
+  components:
+  - type: uiRect
+- id: 92e106d8-adb4-57d3-9981-dc9fadd149ee
+  name: "Record label 4"
+  x: 0
+  y: 1.6
+  width: 114
+  height: 1
+  parentId: 6ab177f4-d624-5c14-b1e6-c7b20bad3fad
+  components:
+  - type: uiRect
+    anchor: "MiddleLeft"
+  - type: uiText
+    text: "Level"
+    size: 9.5
+    color: "#45291B"
+    richText: false
+    wrap: false
+    insetX: 0
+    insetY: 0
+- id: e5498c67-fcab-5f58-a9a3-e7be11b25724
+  name: "Expedition record 4 row"
+  x: 133
+  y: 142
+  width: 58
+  height: 2
+  parentId: cf882a77-1de0-5c5c-b257-9b70df6566f7
+  components:
+  - type: uiRect
+- id: 7e1f7cf9-d920-52ed-933f-8d4608b8391a
+  name: "Expedition record 4"
+  x: 0
+  y: 1.6
+  width: 58
+  height: 1
+  parentId: e5498c67-fcab-5f58-a9a3-e7be11b25724
+  components:
+  - type: uiRect
+    anchor: "MiddleLeft"
+  - type: uiText
+    text: ""
+    size: 9.5
+    color: "#45291B"
+    richText: false
+    wrap: false
+    insetX: 0
+    insetY: 0
+- id: e5ff7f33-5920-5c10-9fc9-5db20d73443b
+  name: "Record label 5 row"
+  x: 16
+  y: 163
+  width: 114
+  height: 2
+  parentId: cf882a77-1de0-5c5c-b257-9b70df6566f7
+  components:
+  - type: uiRect
+- id: 20c50620-342e-5561-8d03-ffbe14f8a33a
+  name: "Record label 5"
+  x: 0
+  y: 1.6
+  width: 114
+  height: 1
+  parentId: e5ff7f33-5920-5c10-9fc9-5db20d73443b
+  components:
+  - type: uiRect
+    anchor: "MiddleLeft"
+  - type: uiText
+    text: "Band"
+    size: 9.5
+    color: "#45291B"
+    richText: false
+    wrap: false
+    insetX: 0
+    insetY: 0
+- id: 0aaf4f38-cfc5-5fca-9b7e-8da095c74210
+  name: "Expedition record 5 row"
+  x: 133
+  y: 163
+  width: 58
+  height: 2
+  parentId: cf882a77-1de0-5c5c-b257-9b70df6566f7
+  components:
+  - type: uiRect
+- id: 8af92e4c-2fff-508a-8bf1-3d6af509453a
+  name: "Expedition record 5"
+  x: 0
+  y: 1.6
+  width: 58
+  height: 1
+  parentId: 0aaf4f38-cfc5-5fca-9b7e-8da095c74210
+  components:
+  - type: uiRect
+    anchor: "MiddleLeft"
+  - type: uiText
+    text: ""
+    size: 9.5
+    color: "#45291B"
+    richText: false
+    wrap: false
+    insetX: 0
+    insetY: 0
+- id: 5ee24e99-4c85-53f0-95ef-5916435fd675
+  name: "Record label 6 row"
+  x: 16
+  y: 184
+  width: 114
+  height: 2
+  parentId: cf882a77-1de0-5c5c-b257-9b70df6566f7
+  components:
+  - type: uiRect
+- id: 7ec8df56-836f-5d09-9898-9078209c2b3a
+  name: "Record label 6"
+  x: 0
+  y: 1.6
+  width: 114
+  height: 1
+  parentId: 5ee24e99-4c85-53f0-95ef-5916435fd675
+  components:
+  - type: uiRect
+    anchor: "MiddleLeft"
+  - type: uiText
+    text: "Field time"
+    size: 9.5
+    color: "#45291B"
+    richText: false
+    wrap: false
+    insetX: 0
+    insetY: 0
+- id: 10b7743b-f0f7-59e3-b441-384a9970d38b
+  name: "Expedition record 6 row"
+  x: 133
+  y: 184
+  width: 58
+  height: 2
+  parentId: cf882a77-1de0-5c5c-b257-9b70df6566f7
+  components:
+  - type: uiRect
+- id: f1a3721b-362b-59c1-8f79-741b081fa237
+  name: "Expedition record 6"
+  x: 0
+  y: 1.6
+  width: 58
+  height: 1
+  parentId: 10b7743b-f0f7-59e3-b441-384a9970d38b
+  components:
+  - type: uiRect
+    anchor: "MiddleLeft"
+  - type: uiText
+    text: ""
+    size: 9.5
+    color: "#45291B"
+    richText: false
+    wrap: false
+    insetX: 0
+    insetY: 0
+- id: dba0fa90-98ae-56e1-ac73-5bf1b007e74e
+  name: "Record column rule"
+  x: 124
+  y: 70
+  width: 1
+  height: 127
+  parentId: cf882a77-1de0-5c5c-b257-9b70df6566f7
+  components:
+  - type: uiRect
+  - type: uiImage
+    color: "#C09362"
+- id: a6d14714-1821-5999-a260-7f7c1d33246d
+  name: "Ledger description row"
+  x: 216
+  y: 43
+  width: 176
+  height: 2
+  parentId: cf882a77-1de0-5c5c-b257-9b70df6566f7
+  components:
+  - type: uiRect
+- id: fab9a391-0d4d-5efd-a71e-c6dc68ad933c
+  name: "Ledger description"
+  x: 0
+  y: 1.6
+  width: 176
+  height: 1
+  parentId: a6d14714-1821-5999-a260-7f7c1d33246d
+  components:
+  - type: uiRect
+    anchor: "MiddleLeft"
+  - type: uiText
+    text: ""
+    size: 9.5
+    color: "#45291B"
+    richText: false
+    wrap: false
+    insetX: 0
+    insetY: 0
+- id: 35619aee-e203-5876-9eaf-815d4ed40602
+  name: "Ledger detail row"
+  x: 216
+  y: 68
+  width: 176
+  height: 2
+  parentId: cf882a77-1de0-5c5c-b257-9b70df6566f7
+  components:
+  - type: uiRect
+- id: 70f06539-a93d-57f1-9a47-6be98567ceb0
+  name: "Ledger detail"
+  x: 0
+  y: 1.6
+  width: 176
+  height: 1
+  parentId: 35619aee-e203-5876-9eaf-815d4ed40602
+  components:
+  - type: uiRect
+    anchor: "MiddleLeft"
+  - type: uiText
+    text: ""
+    size: 9.5
+    color: "#45291B"
+    richText: false
+    wrap: false
+    insetX: 0
+    insetY: 0
+- id: af541b6a-ea2b-51b7-be83-3b9899406207
+  name: "Muster action"
+  x: 216
+  y: 96
+  width: 88
+  height: 52
+  parentId: cf882a77-1de0-5c5c-b257-9b70df6566f7
+  components:
+  - type: uiRect
+  - type: uiImage
+    sprite: "43ff7cfa-6ed1-51a5-8d09-688e5413da42"
+    borders: {"left": 5, "top": 5, "right": 5, "bottom": 5}
+- id: b3d33266-4d5b-5235-9a8a-e235ecd8195c
+  name: "Muster action selected"
+  x: 0
+  y: 0
+  width: 88
+  height: 52
+  parentId: af541b6a-ea2b-51b7-be83-3b9899406207
+  components:
+  - type: uiRect
+  - type: uiImage
+    sprite: "b9e2acc9-16c4-51ba-bdaf-c8c21d48a337"
+    borders: {"left": 5, "top": 5, "right": 5, "bottom": 5}
+- id: 065ae02b-2299-5ba7-951c-28d7d38c5e71
+  name: "Muster action pressed"
+  x: 0
+  y: 0
+  width: 88
+  height: 52
+  parentId: af541b6a-ea2b-51b7-be83-3b9899406207
+  components:
+  - type: uiRect
+  - type: uiImage
+    sprite: "0797f07d-77f7-5bde-8530-cdc6585504e7"
+    borders: {"left": 5, "top": 5, "right": 5, "bottom": 5}
+- id: e8d022a6-09d9-5a8c-8501-2117b003093d
+  name: "Muster action key"
+  x: 21
+  y: 5
+  width: 46
+  height: 21
+  parentId: af541b6a-ea2b-51b7-be83-3b9899406207
+  components:
+  - type: uiRect
+  - type: uiImage
+    sprite: "a09a9a2b-3128-55c1-b4cc-d3820762891f"
+    borders: {"left": 5, "top": 5, "right": 5, "bottom": 5}
+- id: a05350fe-ccb0-5e45-91fe-d59b63f8a206
+  name: "Muster action key glyph center"
+  x: 0
+  y: 0
+  width: 46
+  height: 21
+  parentId: e8d022a6-09d9-5a8c-8501-2117b003093d
+  components:
+  - type: uiRect
+- id: 50203264-a988-5db5-aa4d-7f644e2c623b
+  name: "Muster action key glyph"
+  x: 0
+  y: 1.6
+  width: 19.34
+  height: 1
+  parentId: a05350fe-ccb0-5e45-91fe-d59b63f8a206
+  components:
+  - type: uiRect
+    anchor: "Center"
+    scaleHorizontalWithText: true
+  - type: uiText
+    text: "Enter"
+    size: 8.5
+    color: "#FFDFAC"
+    richText: false
+    wrap: false
+    insetX: 0
+    insetY: 0
+- id: 0c50d05a-9445-579c-a806-8eee825e57ff
+  name: "Muster action text center"
+  x: 0
+  y: 25
+  width: 88
+  height: 24
+  parentId: af541b6a-ea2b-51b7-be83-3b9899406207
+  components:
+  - type: uiRect
+- id: 4ef67a85-80ab-5705-9992-a4c325a2d307
+  name: "Muster action text"
+  x: 0
+  y: 1.6
+  width: 28.01
+  height: 1
+  parentId: 0c50d05a-9445-579c-a806-8eee825e57ff
+  components:
+  - type: uiRect
+    anchor: "Center"
+    scaleHorizontalWithText: true
+  - type: uiText
+    text: "Muster"
+    size: 9.5
+    color: "#FFF1D7"
+    richText: false
+    wrap: false
+    insetX: 0
+    insetY: 0
+- id: a75ee134-f8bd-5459-9740-30ba406d1eb7
+  name: "Resume action"
+  x: 216
+  y: 96
+  width: 88
+  height: 52
+  parentId: cf882a77-1de0-5c5c-b257-9b70df6566f7
+  components:
+  - type: uiRect
+  - type: uiImage
+    sprite: "43ff7cfa-6ed1-51a5-8d09-688e5413da42"
+    borders: {"left": 5, "top": 5, "right": 5, "bottom": 5}
+- id: 2d026ceb-9d6c-5eb6-82a8-7cf51b1fa8cf
+  name: "Resume action selected"
+  x: 0
+  y: 0
+  width: 88
+  height: 52
+  parentId: a75ee134-f8bd-5459-9740-30ba406d1eb7
+  components:
+  - type: uiRect
+  - type: uiImage
+    sprite: "b9e2acc9-16c4-51ba-bdaf-c8c21d48a337"
+    borders: {"left": 5, "top": 5, "right": 5, "bottom": 5}
+- id: b9a3524c-a120-5915-ba1a-ad8032bcfb69
+  name: "Resume action pressed"
+  x: 0
+  y: 0
+  width: 88
+  height: 52
+  parentId: a75ee134-f8bd-5459-9740-30ba406d1eb7
+  components:
+  - type: uiRect
+  - type: uiImage
+    sprite: "0797f07d-77f7-5bde-8530-cdc6585504e7"
+    borders: {"left": 5, "top": 5, "right": 5, "bottom": 5}
+- id: 0a5f6e93-210d-53ab-b2d9-6cc7642555c6
+  name: "Resume action key"
+  x: 21
+  y: 5
+  width: 46
+  height: 21
+  parentId: a75ee134-f8bd-5459-9740-30ba406d1eb7
+  components:
+  - type: uiRect
+  - type: uiImage
+    sprite: "a09a9a2b-3128-55c1-b4cc-d3820762891f"
+    borders: {"left": 5, "top": 5, "right": 5, "bottom": 5}
+- id: cb0759fc-da5c-5115-ab00-e52275d6279f
+  name: "Resume action key glyph center"
+  x: 0
+  y: 0
+  width: 46
+  height: 21
+  parentId: 0a5f6e93-210d-53ab-b2d9-6cc7642555c6
+  components:
+  - type: uiRect
+- id: 835d7a4f-c476-5dff-af6f-8d74b44d384a
+  name: "Resume action key glyph"
+  x: 0
+  y: 1.6
+  width: 19.34
+  height: 1
+  parentId: cb0759fc-da5c-5115-ab00-e52275d6279f
+  components:
+  - type: uiRect
+    anchor: "Center"
+    scaleHorizontalWithText: true
+  - type: uiText
+    text: "Enter"
+    size: 8.5
+    color: "#FFDFAC"
+    richText: false
+    wrap: false
+    insetX: 0
+    insetY: 0
+- id: cac27916-5c50-55dc-a511-727630947dff
+  name: "Resume action text center"
+  x: 0
+  y: 25
+  width: 88
+  height: 24
+  parentId: a75ee134-f8bd-5459-9740-30ba406d1eb7
+  components:
+  - type: uiRect
+- id: 074e311d-4439-590e-936b-4f8c831f0c3c
+  name: "Resume action text"
+  x: 0
+  y: 1.6
+  width: 31.64
+  height: 1
+  parentId: cac27916-5c50-55dc-a511-727630947dff
+  components:
+  - type: uiRect
+    anchor: "Center"
+    scaleHorizontalWithText: true
+  - type: uiText
+    text: "Resume"
+    size: 9.5
+    color: "#FFF1D7"
+    richText: false
+    wrap: false
+    insetX: 0
+    insetY: 0
+- id: 372a177b-1983-510d-8792-81c9b463a0e4
+  name: "Haven action"
+  x: 216
+  y: 96
+  width: 84
+  height: 52
+  parentId: cf882a77-1de0-5c5c-b257-9b70df6566f7
+  components:
+  - type: uiRect
+  - type: uiImage
+    sprite: "43ff7cfa-6ed1-51a5-8d09-688e5413da42"
+    borders: {"left": 5, "top": 5, "right": 5, "bottom": 5}
+- id: a0cc88c2-3692-5167-bb8c-536a17b64dfc
+  name: "Haven action selected"
+  x: 0
+  y: 0
+  width: 84
+  height: 52
+  parentId: 372a177b-1983-510d-8792-81c9b463a0e4
+  components:
+  - type: uiRect
+  - type: uiImage
+    sprite: "b9e2acc9-16c4-51ba-bdaf-c8c21d48a337"
+    borders: {"left": 5, "top": 5, "right": 5, "bottom": 5}
+- id: 8c82ddc9-e289-5dd0-b391-2b1b91fb60fa
+  name: "Haven action pressed"
+  x: 0
+  y: 0
+  width: 84
+  height: 52
+  parentId: 372a177b-1983-510d-8792-81c9b463a0e4
+  components:
+  - type: uiRect
+  - type: uiImage
+    sprite: "0797f07d-77f7-5bde-8530-cdc6585504e7"
+    borders: {"left": 5, "top": 5, "right": 5, "bottom": 5}
+- id: d0efe312-5018-57dd-bd0d-ec8de55446d4
+  name: "Haven action key"
+  x: 19
+  y: 5
+  width: 46
+  height: 21
+  parentId: 372a177b-1983-510d-8792-81c9b463a0e4
+  components:
+  - type: uiRect
+  - type: uiImage
+    sprite: "a09a9a2b-3128-55c1-b4cc-d3820762891f"
+    borders: {"left": 5, "top": 5, "right": 5, "bottom": 5}
+- id: cd4c75cf-2714-5f5c-aa41-ed40c82a63a3
+  name: "Haven action key glyph center"
+  x: 0
+  y: 0
+  width: 46
+  height: 21
+  parentId: d0efe312-5018-57dd-bd0d-ec8de55446d4
+  components:
+  - type: uiRect
+- id: d967707d-9676-5427-a16b-a84e26a16f26
+  name: "Haven action key glyph"
+  x: 0
+  y: 1.6
+  width: 19.34
+  height: 1
+  parentId: cd4c75cf-2714-5f5c-aa41-ed40c82a63a3
+  components:
+  - type: uiRect
+    anchor: "Center"
+    scaleHorizontalWithText: true
+  - type: uiText
+    text: "Enter"
+    size: 8.5
+    color: "#FFDFAC"
+    richText: false
+    wrap: false
+    insetX: 0
+    insetY: 0
+- id: d42a0347-fd45-5856-9062-f729fde36b20
+  name: "Haven action text center"
+  x: 0
+  y: 25
+  width: 84
+  height: 24
+  parentId: 372a177b-1983-510d-8792-81c9b463a0e4
+  components:
+  - type: uiRect
+- id: 14df3c01-d765-592b-9ff0-0797498a5def
+  name: "Haven action text"
+  x: 0
+  y: 1.6
+  width: 25.29
+  height: 1
+  parentId: d42a0347-fd45-5856-9062-f729fde36b20
+  components:
+  - type: uiRect
+    anchor: "Center"
+    scaleHorizontalWithText: true
+  - type: uiText
+    text: "Haven"
+    size: 9.5
+    color: "#FFF1D7"
+    richText: false
+    wrap: false
+    insetX: 0
+    insetY: 0
+- id: 2f33054e-e955-548c-a87f-c38764432d17
+  name: "New run action"
+  x: 308
+  y: 96
+  width: 84
+  height: 52
+  parentId: cf882a77-1de0-5c5c-b257-9b70df6566f7
+  components:
+  - type: uiRect
+  - type: uiImage
+    sprite: "43ff7cfa-6ed1-51a5-8d09-688e5413da42"
+    borders: {"left": 5, "top": 5, "right": 5, "bottom": 5}
+- id: 3babfefa-3e90-5d15-901e-191e5e4e4f36
+  name: "New run action selected"
+  x: 0
+  y: 0
+  width: 84
+  height: 52
+  parentId: 2f33054e-e955-548c-a87f-c38764432d17
+  components:
+  - type: uiRect
+  - type: uiImage
+    sprite: "b9e2acc9-16c4-51ba-bdaf-c8c21d48a337"
+    borders: {"left": 5, "top": 5, "right": 5, "bottom": 5}
+- id: 2a500d75-d5b0-5330-a42d-3a62ec90da02
+  name: "New run action pressed"
+  x: 0
+  y: 0
+  width: 84
+  height: 52
+  parentId: 2f33054e-e955-548c-a87f-c38764432d17
+  components:
+  - type: uiRect
+  - type: uiImage
+    sprite: "0797f07d-77f7-5bde-8530-cdc6585504e7"
+    borders: {"left": 5, "top": 5, "right": 5, "bottom": 5}
+- id: f5078b09-e790-55cb-b630-c522b9f2e70c
+  name: "New run action key"
+  x: 30
+  y: 5
+  width: 24
+  height: 21
+  parentId: 2f33054e-e955-548c-a87f-c38764432d17
+  components:
+  - type: uiRect
+  - type: uiImage
+    sprite: "a09a9a2b-3128-55c1-b4cc-d3820762891f"
+    borders: {"left": 5, "top": 5, "right": 5, "bottom": 5}
+- id: 1349ed18-1ef3-54cf-9031-a369e10fae34
+  name: "New run action key glyph center"
+  x: 0
+  y: 0
+  width: 24
+  height: 21
+  parentId: f5078b09-e790-55cb-b630-c522b9f2e70c
+  components:
+  - type: uiRect
+- id: 065fd2a1-41f5-5c12-b4d0-9e4f3bec4c3e
+  name: "New run action key glyph"
+  x: 0
+  y: 1.6
+  width: 6.0
+  height: 1
+  parentId: 1349ed18-1ef3-54cf-9031-a369e10fae34
+  components:
+  - type: uiRect
+    anchor: "Center"
+    scaleHorizontalWithText: true
+  - type: uiText
+    text: "N"
+    size: 8.5
+    color: "#FFDFAC"
+    richText: false
+    wrap: false
+    insetX: 0
+    insetY: 0
+- id: 4f49788c-0acd-51cc-a46e-63f68c3781a9
+  name: "New run action text center"
+  x: 0
+  y: 25
+  width: 84
+  height: 24
+  parentId: 2f33054e-e955-548c-a87f-c38764432d17
+  components:
+  - type: uiRect
+- id: 9ea244b5-b78f-5931-82da-2b3d78dbe04c
+  name: "New run action text"
+  x: 0
+  y: 1.6
+  width: 33.91
+  height: 1
+  parentId: 4f49788c-0acd-51cc-a46e-63f68c3781a9
+  components:
+  - type: uiRect
+    anchor: "Center"
+    scaleHorizontalWithText: true
+  - type: uiText
+    text: "New run"
+    size: 9.5
+    color: "#FFF1D7"
+    richText: false
+    wrap: false
+    insetX: 0
+    insetY: 0
+- id: f3208439-a956-5367-8766-92f62f4a1a6b
+  name: "Close notes action"
+  x: 216
+  y: 144
+  width: 88
+  height: 52
+  parentId: cf882a77-1de0-5c5c-b257-9b70df6566f7
+  components:
+  - type: uiRect
+  - type: uiImage
+    sprite: "43ff7cfa-6ed1-51a5-8d09-688e5413da42"
+    borders: {"left": 5, "top": 5, "right": 5, "bottom": 5}
+- id: e87e95b4-a821-5ee2-9d49-56f8877885c5
+  name: "Close notes action selected"
+  x: 0
+  y: 0
+  width: 88
+  height: 52
+  parentId: f3208439-a956-5367-8766-92f62f4a1a6b
+  components:
+  - type: uiRect
+  - type: uiImage
+    sprite: "b9e2acc9-16c4-51ba-bdaf-c8c21d48a337"
+    borders: {"left": 5, "top": 5, "right": 5, "bottom": 5}
+- id: 44264a81-5ed8-5f7f-a4c9-be5f16233b65
+  name: "Close notes action pressed"
+  x: 0
+  y: 0
+  width: 88
+  height: 52
+  parentId: f3208439-a956-5367-8766-92f62f4a1a6b
+  components:
+  - type: uiRect
+  - type: uiImage
+    sprite: "0797f07d-77f7-5bde-8530-cdc6585504e7"
+    borders: {"left": 5, "top": 5, "right": 5, "bottom": 5}
+- id: d5021716-ac02-5a7f-a46a-24a81562ec39
+  name: "Close notes action key"
+  x: 26
+  y: 5
+  width: 36
+  height: 21
+  parentId: f3208439-a956-5367-8766-92f62f4a1a6b
+  components:
+  - type: uiRect
+  - type: uiImage
+    sprite: "a09a9a2b-3128-55c1-b4cc-d3820762891f"
+    borders: {"left": 5, "top": 5, "right": 5, "bottom": 5}
+- id: d1061e19-7dcf-5678-8886-683f4144578d
+  name: "Close notes action key glyph center"
+  x: 0
+  y: 0
+  width: 36
+  height: 21
+  parentId: d5021716-ac02-5a7f-a46a-24a81562ec39
+  components:
+  - type: uiRect
+- id: 36aecb8e-318a-50f0-ae6b-9033449668f5
+  name: "Close notes action key glyph"
+  x: 0
+  y: 1.6
+  width: 13.72
+  height: 1
+  parentId: d1061e19-7dcf-5678-8886-683f4144578d
+  components:
+  - type: uiRect
+    anchor: "Center"
+    scaleHorizontalWithText: true
+  - type: uiText
+    text: "Tab"
+    size: 8.5
+    color: "#FFDFAC"
+    richText: false
+    wrap: false
+    insetX: 0
+    insetY: 0
+- id: 2461762a-65b2-50ef-b2fe-3d89eb26bfec
+  name: "Close notes action text center"
+  x: 0
+  y: 25
+  width: 88
+  height: 24
+  parentId: f3208439-a956-5367-8766-92f62f4a1a6b
+  components:
+  - type: uiRect
+- id: 83d2c579-e236-5665-af9e-2d7227c36504
+  name: "Close notes action text"
+  x: 0
+  y: 1.6
+  width: 22.25
+  height: 1
+  parentId: 2461762a-65b2-50ef-b2fe-3d89eb26bfec
+  components:
+  - type: uiRect
+    anchor: "Center"
+    scaleHorizontalWithText: true
+  - type: uiText
+    text: "Close"
+    size: 9.5
+    color: "#FFF1D7"
+    richText: false
+    wrap: false
+    insetX: 0
+    insetY: 0
+- id: 58c47a94-fff4-5abd-bd89-0f0238630a4d
+  name: "Ledger signature"
+  x: 216
+  y: 163
+  width: 176
+  height: 33
+  parentId: cf882a77-1de0-5c5c-b257-9b70df6566f7
+  components:
+  - type: uiRect
+- id: cf59b855-7076-5c65-9801-49733c96eb8f
+  name: "Signature rule"
+  x: 0
+  y: 30
+  width: 176
+  height: 1
+  parentId: 58c47a94-fff4-5abd-bd89-0f0238630a4d
+  components:
+  - type: uiRect
+  - type: uiImage
+    color: "#B28356"
+- id: c116b5cf-7112-58d9-8273-7aee7f7e590b
+  name: "Expedition seal"
+  x: 0
+  y: 4
+  width: 24
+  height: 24
+  parentId: 58c47a94-fff4-5abd-bd89-0f0238630a4d
+  components:
+  - type: uiRect
+  - type: uiImage
+    sprite: "e34f00f0-9198-5a06-a860-6583dea820a5"
+- id: 7902288f-bc88-5d42-b61a-c3c5e61e1225
+  name: "Ledger signature text row"
+  x: 32
+  y: 16
+  width: 144
+  height: 2
+  parentId: 58c47a94-fff4-5abd-bd89-0f0238630a4d
+  components:
+  - type: uiRect
+- id: 6eeee483-a044-59ad-ad08-a86b4e54aef1
+  name: "Ledger signature text"
+  x: 0
+  y: 1.6
+  width: 144
+  height: 1
+  parentId: 7902288f-bc88-5d42-b61a-c3c5e61e1225
+  components:
+  - type: uiRect
+    anchor: "MiddleLeft"
+  - type: uiText
+    text: "Filed by Ysra"
+    size: 8.5
+    color: "#563722"
+    richText: false
+    wrap: false
+    insetX: 0
+    insetY: 0
+- id: 06f26e18-0e1e-525d-8daa-f112c22e6a80
+  name: "Field note 1"
+  x: 216
+  y: 24
+  width: 176
+  height: 24
+  parentId: cf882a77-1de0-5c5c-b257-9b70df6566f7
+  components:
+  - type: uiRect
+- id: b0dd75d0-b70f-5755-b4cb-d7fa41b7133d
+  name: "Field note key 1"
+  x: 0
+  y: 1
+  width: 52
+  height: 22
+  parentId: 06f26e18-0e1e-525d-8daa-f112c22e6a80
+  components:
+  - type: uiRect
+  - type: uiImage
+    sprite: "a09a9a2b-3128-55c1-b4cc-d3820762891f"
+    borders: {"left": 5, "top": 5, "right": 5, "bottom": 5}
+- id: 1367e35d-884e-5148-beeb-b9a79852c918
+  name: "Field note key 1 glyph center"
+  x: 0
+  y: 0
+  width: 52
+  height: 22
+  parentId: b0dd75d0-b70f-5755-b4cb-d7fa41b7133d
+  components:
+  - type: uiRect
+- id: 2680c03d-bd33-5e91-8c01-9da2f959fbf4
+  name: "Field note key 1 glyph"
+  x: 0
+  y: 1.6
+  width: 23.75
+  height: 1
+  parentId: 1367e35d-884e-5148-beeb-b9a79852c918
+  components:
+  - type: uiRect
+    anchor: "Center"
+    scaleHorizontalWithText: true
+  - type: uiText
+    text: "WASD"
+    size: 8.5
+    color: "#FFDFAC"
+    richText: false
+    wrap: false
+    insetX: 0
+    insetY: 0
+- id: f8298231-1473-52b4-bfa4-df27c87aebe0
+  name: "Field note label 1 row"
+  x: 60
+  y: 11
+  width: 116
+  height: 2
+  parentId: 06f26e18-0e1e-525d-8daa-f112c22e6a80
+  components:
+  - type: uiRect
+- id: 22d446ad-4579-5b2c-aaf7-acdd8cad57cd
+  name: "Field note label 1"
+  x: 0
+  y: 1.6
+  width: 116
+  height: 1
+  parentId: f8298231-1473-52b4-bfa4-df27c87aebe0
+  components:
+  - type: uiRect
+    anchor: "MiddleLeft"
+  - type: uiText
+    text: "Move / click"
+    size: 8.5
+    color: "#45291B"
+    richText: false
+    wrap: false
+    insetX: 0
+    insetY: 0
+- id: cf9825e7-b5a3-5468-8123-73abada98403
+  name: "Field note 2"
+  x: 216
+  y: 52
+  width: 176
+  height: 24
+  parentId: cf882a77-1de0-5c5c-b257-9b70df6566f7
+  components:
+  - type: uiRect
+- id: 77ce6c18-8c4c-5837-b0f5-a3102036d45f
+  name: "Field note key 2"
+  x: 0
+  y: 1
+  width: 52
+  height: 22
+  parentId: cf9825e7-b5a3-5468-8123-73abada98403
+  components:
+  - type: uiRect
+  - type: uiImage
+    sprite: "a09a9a2b-3128-55c1-b4cc-d3820762891f"
+    borders: {"left": 5, "top": 5, "right": 5, "bottom": 5}
+- id: b2591846-7ad5-5533-844a-15fe220c0a63
+  name: "Field note key 2 glyph center"
+  x: 0
+  y: 0
+  width: 52
+  height: 22
+  parentId: 77ce6c18-8c4c-5837-b0f5-a3102036d45f
+  components:
+  - type: uiRect
+- id: dd5bfe18-2a99-5d2d-96a5-62c8bbbf5792
+  name: "Field note key 2 glyph"
+  x: 0
+  y: 1.6
+  width: 6.12
+  height: 1
+  parentId: b2591846-7ad5-5533-844a-15fe220c0a63
+  components:
+  - type: uiRect
+    anchor: "Center"
+    scaleHorizontalWithText: true
+  - type: uiText
+    text: "H"
+    size: 8.5
+    color: "#FFDFAC"
+    richText: false
+    wrap: false
+    insetX: 0
+    insetY: 0
+- id: eede2492-b2d6-5e40-993d-557f3f664ae2
+  name: "Field note label 2 row"
+  x: 60
+  y: 11
+  width: 116
+  height: 2
+  parentId: cf9825e7-b5a3-5468-8123-73abada98403
+  components:
+  - type: uiRect
+- id: e01ccde6-4083-541c-a3ac-f30462df71c0
+  name: "Field note label 2"
+  x: 0
+  y: 1.6
+  width: 116
+  height: 1
+  parentId: eede2492-b2d6-5e40-993d-557f3f664ae2
+  components:
+  - type: uiRect
+    anchor: "MiddleLeft"
+  - type: uiText
+    text: "Hire"
+    size: 8.5
+    color: "#45291B"
+    richText: false
+    wrap: false
+    insetX: 0
+    insetY: 0
+- id: e07a0c30-c4ab-5b0b-b42e-384bceb7debb
+  name: "Field note 3"
+  x: 216
+  y: 80
+  width: 176
+  height: 24
+  parentId: cf882a77-1de0-5c5c-b257-9b70df6566f7
+  components:
+  - type: uiRect
+- id: 01a757c1-7f77-550a-8ee9-373dbaf1e735
+  name: "Field note key 3"
+  x: 0
+  y: 1
+  width: 52
+  height: 22
+  parentId: e07a0c30-c4ab-5b0b-b42e-384bceb7debb
+  components:
+  - type: uiRect
+  - type: uiImage
+    sprite: "a09a9a2b-3128-55c1-b4cc-d3820762891f"
+    borders: {"left": 5, "top": 5, "right": 5, "bottom": 5}
+- id: ca326c51-1345-55d0-915e-ba3937e7d37a
+  name: "Field note key 3 glyph center"
+  x: 0
+  y: 0
+  width: 52
+  height: 22
+  parentId: 01a757c1-7f77-550a-8ee9-373dbaf1e735
+  components:
+  - type: uiRect
+- id: 58284dba-71f9-54cb-a241-6c04eeb9f0e7
+  name: "Field note key 3 glyph"
+  x: 0
+  y: 1.6
+  width: 6.06
+  height: 1
+  parentId: ca326c51-1345-55d0-915e-ba3937e7d37a
+  components:
+  - type: uiRect
+    anchor: "Center"
+    scaleHorizontalWithText: true
+  - type: uiText
+    text: "U"
+    size: 8.5
+    color: "#FFDFAC"
+    richText: false
+    wrap: false
+    insetX: 0
+    insetY: 0
+- id: 9e4fb38c-a227-5818-91d1-c5e327a18a28
+  name: "Field note label 3 row"
+  x: 60
+  y: 11
+  width: 116
+  height: 2
+  parentId: e07a0c30-c4ab-5b0b-b42e-384bceb7debb
+  components:
+  - type: uiRect
+- id: 7ac104db-c293-5826-bd17-f84a377d13ce
+  name: "Field note label 3"
+  x: 0
+  y: 1.6
+  width: 116
+  height: 1
+  parentId: 9e4fb38c-a227-5818-91d1-c5e327a18a28
+  components:
+  - type: uiRect
+    anchor: "MiddleLeft"
+  - type: uiText
+    text: "Upgrade"
+    size: 8.5
+    color: "#45291B"
+    richText: false
+    wrap: false
+    insetX: 0
+    insetY: 0
+- id: 27fb1155-bccb-53fe-8f6c-bc540904a386
+  name: "Field note 4"
+  x: 216
+  y: 108
+  width: 176
+  height: 24
+  parentId: cf882a77-1de0-5c5c-b257-9b70df6566f7
+  components:
+  - type: uiRect
+- id: ad117841-7cfe-565d-8132-4ce9969603a7
+  name: "Field note key 4"
+  x: 0
+  y: 1
+  width: 52
+  height: 22
+  parentId: 27fb1155-bccb-53fe-8f6c-bc540904a386
+  components:
+  - type: uiRect
+  - type: uiImage
+    sprite: "a09a9a2b-3128-55c1-b4cc-d3820762891f"
+    borders: {"left": 5, "top": 5, "right": 5, "bottom": 5}
+- id: 248be237-571b-5283-928f-d6ae33dc7e7e
+  name: "Field note key 4 glyph center"
+  x: 0
+  y: 0
+  width: 52
+  height: 22
+  parentId: ad117841-7cfe-565d-8132-4ce9969603a7
+  components:
+  - type: uiRect
+- id: 0ce7295e-8a32-5781-ac91-089664e697c8
+  name: "Field note key 4 glyph"
+  x: 0
+  y: 1.6
+  width: 19.34
+  height: 1
+  parentId: 248be237-571b-5283-928f-d6ae33dc7e7e
+  components:
+  - type: uiRect
+    anchor: "Center"
+    scaleHorizontalWithText: true
+  - type: uiText
+    text: "Enter"
+    size: 8.5
+    color: "#FFDFAC"
+    richText: false
+    wrap: false
+    insetX: 0
+    insetY: 0
+- id: 3f887af8-855e-52f7-a5bb-b0f47f14a2e0
+  name: "Field note label 4 row"
+  x: 60
+  y: 11
+  width: 116
+  height: 2
+  parentId: 27fb1155-bccb-53fe-8f6c-bc540904a386
+  components:
+  - type: uiRect
+- id: 6fd6311c-d4f3-5785-ac70-1e1b12946f1e
+  name: "Field note label 4"
+  x: 0
+  y: 1.6
+  width: 116
+  height: 1
+  parentId: 3f887af8-855e-52f7-a5bb-b0f47f14a2e0
+  components:
+  - type: uiRect
+    anchor: "MiddleLeft"
+  - type: uiText
+    text: "Gate"
+    size: 8.5
+    color: "#45291B"
+    richText: false
+    wrap: false
+    insetX: 0
+    insetY: 0
+- id: c33e59ac-bc45-546b-879e-6cb0a2380b10
+  name: "Field note 5"
+  x: 216
+  y: 52
+  width: 176
+  height: 24
+  parentId: cf882a77-1de0-5c5c-b257-9b70df6566f7
+  components:
+  - type: uiRect
+- id: e1e3db62-d77e-5f57-af93-2c1d85edb276
+  name: "Field note key 5"
+  x: 0
+  y: 1
+  width: 52
+  height: 22
+  parentId: c33e59ac-bc45-546b-879e-6cb0a2380b10
+  components:
+  - type: uiRect
+  - type: uiImage
+    sprite: "a09a9a2b-3128-55c1-b4cc-d3820762891f"
+    borders: {"left": 5, "top": 5, "right": 5, "bottom": 5}
+- id: 97327ed2-765a-5721-a795-0c2cc615a0fd
+  name: "Field note key 5 glyph center"
+  x: 0
+  y: 0
+  width: 52
+  height: 22
+  parentId: e1e3db62-d77e-5f57-af93-2c1d85edb276
+  components:
+  - type: uiRect
+- id: a16c4064-a13f-547c-8aee-cc25016228b1
+  name: "Field note key 5 glyph"
+  x: 0
+  y: 1.6
+  width: 21.16
+  height: 1
+  parentId: 97327ed2-765a-5721-a795-0c2cc615a0fd
+  components:
+  - type: uiRect
+    anchor: "Center"
+    scaleHorizontalWithText: true
+  - type: uiText
+    text: "Space"
+    size: 8.5
+    color: "#FFDFAC"
+    richText: false
+    wrap: false
+    insetX: 0
+    insetY: 0
+- id: 25c3a140-c9fe-5f01-979f-dc8b609fef52
+  name: "Field note label 5 row"
+  x: 60
+  y: 11
+  width: 116
+  height: 2
+  parentId: c33e59ac-bc45-546b-879e-6cb0a2380b10
+  components:
+  - type: uiRect
+- id: 3909043f-a79d-5449-9789-ba140ea7895d
+  name: "Field note label 5"
+  x: 0
+  y: 1.6
+  width: 116
+  height: 1
+  parentId: 25c3a140-c9fe-5f01-979f-dc8b609fef52
+  components:
+  - type: uiRect
+    anchor: "MiddleLeft"
+  - type: uiText
+    text: "Pulse"
+    size: 8.5
+    color: "#45291B"
+    richText: false
+    wrap: false
+    insetX: 0
+    insetY: 0
+- id: d656ed20-e3b2-5351-911c-d82902d26344
+  name: "Field note 6"
+  x: 216
+  y: 80
+  width: 176
+  height: 24
+  parentId: cf882a77-1de0-5c5c-b257-9b70df6566f7
+  components:
+  - type: uiRect
+- id: f8da39ab-b635-5fae-a593-6ba0db659fee
+  name: "Field note key 6"
+  x: 0
+  y: 1
+  width: 52
+  height: 22
+  parentId: d656ed20-e3b2-5351-911c-d82902d26344
+  components:
+  - type: uiRect
+  - type: uiImage
+    sprite: "a09a9a2b-3128-55c1-b4cc-d3820762891f"
+    borders: {"left": 5, "top": 5, "right": 5, "bottom": 5}
+- id: d1e31b88-88c0-5f2c-b885-3659a522c95d
+  name: "Field note key 6 glyph center"
+  x: 0
+  y: 0
+  width: 52
+  height: 22
+  parentId: f8da39ab-b635-5fae-a593-6ba0db659fee
+  components:
+  - type: uiRect
+- id: 18e4c08a-3743-5c3b-9694-a74960ea8c47
+  name: "Field note key 6 glyph"
+  x: 0
+  y: 1.6
+  width: 5.22
+  height: 1
+  parentId: d1e31b88-88c0-5f2c-b885-3659a522c95d
+  components:
+  - type: uiRect
+    anchor: "Center"
+    scaleHorizontalWithText: true
+  - type: uiText
+    text: "R"
+    size: 8.5
+    color: "#FFDFAC"
+    richText: false
+    wrap: false
+    insetX: 0
+    insetY: 0
+- id: 29a34d66-ca1c-5fae-8eb5-1f18d264fb0d
+  name: "Field note label 6 row"
+  x: 60
+  y: 11
+  width: 116
+  height: 2
+  parentId: d656ed20-e3b2-5351-911c-d82902d26344
+  components:
+  - type: uiRect
+- id: bea044b1-74ae-59a2-8e67-d59e6454bc8d
+  name: "Field note label 6"
+  x: 0
+  y: 1.6
+  width: 116
+  height: 1
+  parentId: 29a34d66-ca1c-5fae-8eb5-1f18d264fb0d
+  components:
+  - type: uiRect
+    anchor: "MiddleLeft"
+  - type: uiText
+    text: "Rest at fire"
+    size: 8.5
+    color: "#45291B"
+    richText: false
+    wrap: false
+    insetX: 0
+    insetY: 0
+- id: 8f2271a9-49b9-5903-b0d7-d65dea035f68
+  name: "Quartermaster shop"
+  x: 8
+  y: 174
+  width: 164
+  height: 88
+  parentId: 8e8dac42-54b1-5ad3-8786-1bafd4029205
+  components:
+  - type: uiRect
+  - type: uiImage
+    sprite: "56f43a1b-f883-5eff-9067-915176aa1729"
+    borders: {"left": 7, "top": 7, "right": 7, "bottom": 7}
+- id: 8685bf04-6bae-5ae4-ae02-389e3bc67490
+  name: "Quartermaster heading row"
+  x: 8
+  y: 14
+  width: 148
+  height: 2
+  parentId: 8f2271a9-49b9-5903-b0d7-d65dea035f68
+  components:
+  - type: uiRect
+- id: 1c367458-6fe1-5286-9d22-fad00b66dd4c
+  name: "Quartermaster heading"
+  x: 0
+  y: 1.6
+  width: 148
+  height: 1
+  parentId: 8685bf04-6bae-5ae4-ae02-389e3bc67490
+  components:
+  - type: uiRect
+    anchor: "MiddleLeft"
+  - type: uiText
+    text: "Quartermaster"
+    size: 10
+    color: "#FFF1D7"
+    richText: false
+    wrap: false
+    insetX: 0
+    insetY: 0
+- id: c161653d-cd21-597f-ba4f-d8f0e4ff77dc
+  name: "Hire action row"
+  x: 8
+  y: 28
+  width: 148
+  height: 24
+  parentId: 8f2271a9-49b9-5903-b0d7-d65dea035f68
+  components:
+  - type: uiRect
+  - type: uiImage
+    sprite: "43ff7cfa-6ed1-51a5-8d09-688e5413da42"
+    borders: {"left": 5, "top": 5, "right": 5, "bottom": 5}
+- id: a40fd128-ff5e-542e-a477-5e20c9f50045
+  name: "Hire key"
+  x: 4
+  y: 2
+  width: 23
+  height: 20
+  parentId: c161653d-cd21-597f-ba4f-d8f0e4ff77dc
+  components:
+  - type: uiRect
+  - type: uiImage
+    sprite: "a09a9a2b-3128-55c1-b4cc-d3820762891f"
+    borders: {"left": 5, "top": 5, "right": 5, "bottom": 5}
+- id: 8130e127-6954-540a-912b-84711a2bc1de
+  name: "Hire key glyph center"
+  x: 0
+  y: 0
+  width: 23
+  height: 20
+  parentId: a40fd128-ff5e-542e-a477-5e20c9f50045
+  components:
+  - type: uiRect
+- id: f81419b3-c5a8-5c15-85cd-68c2a9323a88
+  name: "Hire key glyph"
+  x: 0
+  y: 1.6
+  width: 6.12
+  height: 1
+  parentId: 8130e127-6954-540a-912b-84711a2bc1de
+  components:
+  - type: uiRect
+    anchor: "Center"
+    scaleHorizontalWithText: true
+  - type: uiText
+    text: "H"
+    size: 8.5
+    color: "#FFDFAC"
+    richText: false
+    wrap: false
+    insetX: 0
+    insetY: 0
+- id: 700bfeeb-3556-528e-b277-0339e8c865bd
+  name: "Hire price row"
+  x: 32
+  y: 11
+  width: 78
+  height: 2
+  parentId: c161653d-cd21-597f-ba4f-d8f0e4ff77dc
+  components:
+  - type: uiRect
+- id: 177e5b6d-2bdc-5136-a24e-b8e8cb766813
+  name: "Hire price"
+  x: 0
+  y: 1.6
+  width: 78
+  height: 1
+  parentId: 700bfeeb-3556-528e-b277-0339e8c865bd
+  components:
+  - type: uiRect
+    anchor: "MiddleLeft"
+  - type: uiText
+    text: ""
+    size: 9.5
+    color: "#FFF1D7"
+    richText: false
+    wrap: false
+    insetX: 0
+    insetY: 0
+- id: 2c8cb52d-bc3f-5aab-80a1-2ea8cc323475
+  name: "Hire crown price"
+  x: 112
+  y: 0
+  width: 30
+  height: 24
+  parentId: c161653d-cd21-597f-ba4f-d8f0e4ff77dc
+  components:
+  - type: uiRect
+- id: d7a7e546-1260-50a6-a402-ab217f60053f
+  name: "Hire coin"
+  x: 0
+  y: 6
+  width: 12
+  height: 12
+  parentId: 2c8cb52d-bc3f-5aab-80a1-2ea8cc323475
+  components:
+  - type: uiRect
+  - type: uiImage
+    sprite: "f8663fef-2820-53f8-b0a2-eb2910a4723e"
+- id: 673ee48d-fada-5355-bd1f-8c103823e2b1
+  name: "Hire amount row"
+  x: 16
+  y: 11
+  width: 13
+  height: 2
+  parentId: 2c8cb52d-bc3f-5aab-80a1-2ea8cc323475
+  components:
+  - type: uiRect
+- id: 64d8c63c-b7e8-547f-a185-6c9d521c33f8
+  name: "Hire amount"
+  x: 0
+  y: 1.6
+  width: 13
+  height: 1
+  parentId: 673ee48d-fada-5355-bd1f-8c103823e2b1
+  components:
+  - type: uiRect
+    anchor: "MiddleLeft"
+  - type: uiText
+    text: "6"
+    size: 9.5
+    color: "#FFF1D7"
+    richText: false
+    wrap: false
+    insetX: 0
+    insetY: 0
+- id: 2307aa2e-60dd-5da6-ac10-fefaf4c9700e
+  name: "Gear action row"
+  x: 8
+  y: 55
+  width: 148
+  height: 24
+  parentId: 8f2271a9-49b9-5903-b0d7-d65dea035f68
+  components:
+  - type: uiRect
+  - type: uiImage
+    sprite: "43ff7cfa-6ed1-51a5-8d09-688e5413da42"
+    borders: {"left": 5, "top": 5, "right": 5, "bottom": 5}
+- id: fca603ba-3c5e-5630-934e-db2aaf6d7227
+  name: "Gear key"
+  x: 4
+  y: 2
+  width: 23
+  height: 20
+  parentId: 2307aa2e-60dd-5da6-ac10-fefaf4c9700e
+  components:
+  - type: uiRect
+  - type: uiImage
+    sprite: "a09a9a2b-3128-55c1-b4cc-d3820762891f"
+    borders: {"left": 5, "top": 5, "right": 5, "bottom": 5}
+- id: 164ababb-6cda-5358-9161-9b2427636b16
+  name: "Gear key glyph center"
+  x: 0
+  y: 0
+  width: 23
+  height: 20
+  parentId: fca603ba-3c5e-5630-934e-db2aaf6d7227
+  components:
+  - type: uiRect
+- id: 7cfdacf0-32f9-5b89-823e-6fb061354d01
+  name: "Gear key glyph"
+  x: 0
+  y: 1.6
+  width: 6.06
+  height: 1
+  parentId: 164ababb-6cda-5358-9161-9b2427636b16
+  components:
+  - type: uiRect
+    anchor: "Center"
+    scaleHorizontalWithText: true
+  - type: uiText
+    text: "U"
+    size: 8.5
+    color: "#FFDFAC"
+    richText: false
+    wrap: false
+    insetX: 0
+    insetY: 0
+- id: 5c5d3cc9-977b-5e4c-9b37-9f4daeb6487e
+  name: "Gear price row"
+  x: 32
+  y: 11
+  width: 78
+  height: 2
+  parentId: 2307aa2e-60dd-5da6-ac10-fefaf4c9700e
+  components:
+  - type: uiRect
+- id: e26ff215-b6f1-51d5-a823-f58f7055c6f4
+  name: "Gear price"
+  x: 0
+  y: 1.6
+  width: 78
+  height: 1
+  parentId: 5c5d3cc9-977b-5e4c-9b37-9f4daeb6487e
+  components:
+  - type: uiRect
+    anchor: "MiddleLeft"
+  - type: uiText
+    text: ""
+    size: 9.5
+    color: "#FFF1D7"
+    richText: false
+    wrap: false
+    insetX: 0
+    insetY: 0
+- id: d5aff537-3101-595c-8468-9097edf64cd8
+  name: "Gear crown price"
+  x: 112
+  y: 0
+  width: 30
+  height: 24
+  parentId: 2307aa2e-60dd-5da6-ac10-fefaf4c9700e
+  components:
+  - type: uiRect
+- id: 26e6cf73-a1d0-5748-839f-7b5c48e25a08
+  name: "Gear coin"
+  x: 0
+  y: 6
+  width: 12
+  height: 12
+  parentId: d5aff537-3101-595c-8468-9097edf64cd8
+  components:
+  - type: uiRect
+  - type: uiImage
+    sprite: "f8663fef-2820-53f8-b0a2-eb2910a4723e"
+- id: 43ac8d14-7a99-5ce5-bf7d-56983f328327
+  name: "Gear amount row"
+  x: 16
+  y: 11
+  width: 13
+  height: 2
+  parentId: d5aff537-3101-595c-8468-9097edf64cd8
+  components:
+  - type: uiRect
+- id: e4cf340a-080b-5fc1-b1db-ad9615fb0d88
+  name: "Gear amount"
+  x: 0
+  y: 1.6
+  width: 13
+  height: 1
+  parentId: 43ac8d14-7a99-5ce5-bf7d-56983f328327
+  components:
+  - type: uiRect
+    anchor: "MiddleLeft"
+  - type: uiText
+    text: "8"
+    size: 9.5
+    color: "#FFF1D7"
+    richText: false
+    wrap: false
+    insetX: 0
+    insetY: 0
+defaultCameraId: 6ff2c1a5-ffb3-5208-af5b-bb2c339a3eb8

@@ -1,0 +1,298 @@
+id: 0fb828a4-f0e3-5ef1-893b-ced412e1ec1b
+slices:
+- source:
+    x: 0
+    y: 0
+    width: 34
+    height: 28
+- source:
+    x: 34
+    y: 0
+    width: 34
+    height: 28
+- source:
+    x: 68
+    y: 0
+    width: 34
+    height: 28
+- source:
+    x: 102
+    y: 0
+    width: 34
+    height: 28
+- source:
+    x: 136
+    y: 0
+    width: 34
+    height: 28
+- source:
+    x: 170
+    y: 0
+    width: 34
+    height: 28
+- source:
+    x: 204
+    y: 0
+    width: 34
+    height: 28
+- source:
+    x: 238
+    y: 0
+    width: 34
+    height: 28
+- source:
+    x: 272
+    y: 0
+    width: 34
+    height: 28
+- source:
+    x: 306
+    y: 0
+    width: 34
+    height: 28
+- source:
+    x: 340
+    y: 0
+    width: 34
+    height: 28
+- source:
+    x: 0
+    y: 28
+    width: 34
+    height: 28
+- source:
+    x: 34
+    y: 28
+    width: 34
+    height: 28
+- source:
+    x: 68
+    y: 28
+    width: 34
+    height: 28
+- source:
+    x: 102
+    y: 28
+    width: 34
+    height: 28
+- source:
+    x: 136
+    y: 28
+    width: 44
+    height: 31
+- source:
+    x: 180
+    y: 28
+    width: 44
+    height: 31
+- source:
+    x: 224
+    y: 28
+    width: 44
+    height: 31
+- source:
+    x: 268
+    y: 28
+    width: 44
+    height: 31
+- source:
+    x: 312
+    y: 28
+    width: 44
+    height: 31
+- source:
+    x: 0
+    y: 59
+    width: 44
+    height: 31
+- source:
+    x: 44
+    y: 59
+    width: 44
+    height: 31
+- source:
+    x: 88
+    y: 59
+    width: 44
+    height: 31
+- source:
+    x: 132
+    y: 59
+    width: 44
+    height: 31
+- source:
+    x: 176
+    y: 59
+    width: 44
+    height: 31
+- source:
+    x: 220
+    y: 59
+    width: 44
+    height: 31
+- source:
+    x: 264
+    y: 59
+    width: 44
+    height: 31
+- source:
+    x: 308
+    y: 59
+    width: 44
+    height: 31
+- source:
+    x: 0
+    y: 90
+    width: 44
+    height: 31
+- source:
+    x: 44
+    y: 90
+    width: 44
+    height: 31
+- source:
+    x: 88
+    y: 90
+    width: 36
+    height: 33
+- source:
+    x: 124
+    y: 90
+    width: 36
+    height: 33
+- source:
+    x: 160
+    y: 90
+    width: 36
+    height: 33
+- source:
+    x: 196
+    y: 90
+    width: 36
+    height: 33
+- source:
+    x: 232
+    y: 90
+    width: 36
+    height: 33
+- source:
+    x: 268
+    y: 90
+    width: 36
+    height: 33
+- source:
+    x: 304
+    y: 90
+    width: 36
+    height: 33
+- source:
+    x: 340
+    y: 90
+    width: 36
+    height: 33
+- source:
+    x: 0
+    y: 123
+    width: 36
+    height: 33
+- source:
+    x: 36
+    y: 123
+    width: 36
+    height: 33
+- source:
+    x: 72
+    y: 123
+    width: 36
+    height: 33
+- source:
+    x: 108
+    y: 123
+    width: 36
+    height: 33
+- source:
+    x: 144
+    y: 123
+    width: 36
+    height: 33
+- source:
+    x: 180
+    y: 123
+    width: 36
+    height: 33
+- source:
+    x: 216
+    y: 123
+    width: 49
+    height: 53
+- source:
+    x: 265
+    y: 123
+    width: 49
+    height: 53
+- source:
+    x: 314
+    y: 123
+    width: 49
+    height: 53
+- source:
+    x: 0
+    y: 176
+    width: 49
+    height: 53
+- source:
+    x: 49
+    y: 176
+    width: 49
+    height: 53
+- source:
+    x: 98
+    y: 176
+    width: 49
+    height: 53
+- source:
+    x: 147
+    y: 176
+    width: 49
+    height: 53
+- source:
+    x: 196
+    y: 176
+    width: 49
+    height: 53
+- source:
+    x: 245
+    y: 176
+    width: 49
+    height: 53
+- source:
+    x: 294
+    y: 176
+    width: 49
+    height: 53
+- source:
+    x: 0
+    y: 229
+    width: 49
+    height: 53
+- source:
+    x: 49
+    y: 229
+    width: 49
+    height: 53
+- source:
+    x: 98
+    y: 229
+    width: 49
+    height: 53
+- source:
+    x: 147
+    y: 229
+    width: 49
+    height: 53
+- source:
+    x: 196
+    y: 229
+    width: 49
+    height: 53
+importHash: 5D97CD2175CB079AB32AEA226F3FAC91AEB62404F06E53A54F073C5884FA7530
