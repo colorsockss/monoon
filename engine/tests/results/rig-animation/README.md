@@ -15,4 +15,4 @@
 
 기본 창의 [Runner Inspector](rig-inspector.png)와 880 × 660 창의 [뼈대·IK](rig-narrow.png), [발판 트윈](tween-narrow.png)에서 레이블과 입력 필드가 같은 열에 정렬되는 것을 확인했다.
 
-[사용 매뉴얼](../../../../docs/manual/rig-animation.md) · [샘플 뼈대](../../../../samples/PlatformerLab/Assets/Runner.rig)
+[사용 매뉴얼](../../../../docs/manual/rig-animation.md) · [샘플 뼈대](../../fixtures/RigRunner/Assets/Runner.rig) (2026-11-26 샘플에서 검사 자료로 옮김)

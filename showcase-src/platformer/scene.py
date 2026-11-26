@@ -35,13 +35,9 @@ def clip(name, frames, seconds):
 
 
 # ---- assets ---------------------------------------------------------------------------------------------------------
-ridge = (ROOT / "Assets/Ridge.tileset").read_text()
-ground_ts = text_asset("Ground.tileset", re.sub(r"^image: \S+", f"image: {asset('Ground.png')}", ridge, flags=re.M))
-incline = (ROOT / "Assets/Incline.tileset").read_text()   # five 38×90 cells; keep their collision polygons
-incline = re.sub(r"^image: \S+", f"image: {asset('Incline.png')}", incline, flags=re.M)
-incline = incline.replace("tileSize: {width: 152, height: 360}", "tileSize: {width: 76, height: 180}")
-incline = re.sub(r"source: \{x: (\d+), y: 0, width: 152, height: 360\}", lambda m: f"source: {{x: {int(m[1]) // 2}, y: 0, width: 76, height: 180}}", incline)
-incline_ts = text_asset("Incline.tileset", incline)
+# Ground.tileset (the lab's Ridge cells over Ground.png) and Incline.tileset (five 38×90 cells with collision polygons) were
+# made from lab tilesets that left the sample on 2026-11-26; they are kept as written.
+ground_ts, incline_ts = asset("Ground.tileset"), asset("Incline.tileset")
 ledge_ts = text_asset("Ledge.tileset", f"image: {asset('Ledge.png')}\ntileSize: {{width: 32, height: 12}}\nmargin: 0\nspacing: 0\nnextId: 2\ntiles:\n"
                       "- id: 1\n  source: {x: 0, y: 0, width: 32, height: 12}\n  solid: true\n  collision:\n    oneWay: true\n    vertices: [{x: 0, y: 0}, {x: 1, y: 0}]\n")
 flame = clip("Flame.clip", ["TorchFlame1.png", "TorchFlame2.png", "TorchFlame1.png", "TorchFlame3.png"], 0.16)
@@ -99,7 +95,7 @@ blend: Alpha
 # ---- copy the logic objects from Platform.scene -------------------------------------------------------------------
 source = (pathlib.Path(__file__).resolve().parent / "platform-objects.yaml").read_text()   # the retired Platform scene
 blocks = {}
-for block in re.split(r"\n(?=- id: )", source.split("objects:\n", 1)[1]):
+for block in re.split(r"\n(?=- id: )", source.split("objects:\n", 1)[1].split("\ndefaultCameraId:")[0]):
     name = re.search(r"\n  name: (.*)", block)[1]
     blocks.setdefault(name, block.rstrip("\n") + "\n")
 object_ids = set(re.findall(r"^- id: (\S+)", source, re.M))
@@ -153,8 +149,8 @@ picture("Deck planks", "Deck.png", 0, 0, deck, order=1)
 for i, x in enumerate((6, 88)): picture(f"Deck leg {i + 1}", "DeckLeg.png", x, 10, deck, order=-2)
 
 # The raft picture sits on the shuttle itself: a child of the tweened kinematic body drew ahead of its collider.
-keep("Shuttle", lambda b: re.sub(r"  - type: spriteRenderer\n(?:    .*\n)*", sprite("Raft.png", order=1), b, count=1).replace("  height: 14\n", "  height: 17\n").replace("  y: 240\n", "  y: 243\n", 1))
-# (3 units below the deck: the runner leaves the deck before landing on the shuttle, instead of riding on its last pixels.)
+keep("Shuttle", lambda b: re.sub(r"  - type: spriteRenderer\n(?:    .*\n)*", sprite("Raft.png", order=1), b, count=1).replace("  height: 14\n", "  height: 17\n"))
+# Its top (y 240) is level with the deck and the landing, so the runner walks on and off it, as the ferryman says.
 keep("Landing", lambda b: drop_component(b, "spriteRenderer"))
 picture("Pillar", "Pillar.png", 0, 0, new_id("Landing"), order=-1)
 picture("Pennant", "Pennant.png", 30, -30, new_id("Landing"), order=1)
