@@ -7,6 +7,6 @@ values:
   accessibility.flashScale: 1
   accessibility.rumble: true
   name: "한글"
-  scroll: 37.600006103515625
+  scroll: 45.600006103515625
   saveFocused: true
   sawComposition: true

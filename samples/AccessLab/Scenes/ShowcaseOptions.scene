@@ -166,31 +166,24 @@ objects:
   parentId: 2c1739c6-1174-5b57-a6ef-19e9e03e7302
   name: Speech
   x: 20
-  y: 250
+  y: -166
   width: 200
   height: 34
   components:
   - type: uiRect
+    anchor: BottomLeft
     scaleHorizontalWithText: true
   - type: uiImage
     sprite: 4b014d02-5654-5c94-aa0e-c00089b7d7b9
     borders: {left: 4, top: 4, right: 4, bottom: 4}
-- id: f54ca75b-ef57-5dfd-a43b-cf6558cc4fc7
-  parentId: 8e06e2a2-8973-5f04-9481-8db50afba32d
-  name: Speech text
-  x: 10
-  y: 4
-  width: 180
-  height: 26
-  components:
-  - type: uiRect
-    scaleHorizontalWithText: true
   - type: uiText
     text: "The festival fireworks!"
     translations: {"ko": "축제 불꽃놀이예요!", "ja": "お祭りの花火ですよ！"}
     size: 14
     color: "#F4F6F4"
     wrap: true
+    insetX: 10
+    insetY: 4
 - id: 5a9a28c3-514c-5a92-9d1c-7a03d7ecd439
   parentId: 2c1739c6-1174-5b57-a6ef-19e9e03e7302
   name: Settings
@@ -204,6 +197,19 @@ objects:
   - type: uiImage
     sprite: 4b014d02-5654-5c94-aa0e-c00089b7d7b9
     borders: {left: 4, top: 4, right: 4, bottom: 4}
+- id: 3cceeb9e-4dee-5a82-af3a-5f6b92de8ec4
+  parentId: 5a9a28c3-514c-5a92-9d1c-7a03d7ecd439
+  name: Settings form
+  x: 0
+  y: 0
+  width: 292
+  height: 418
+  components:
+  - type: uiRect
+    left: 4
+    right: 4
+    top: 4
+    bottom: 4
   - type: uiLayout
     axis: Vertical
     gap: 4
@@ -211,11 +217,11 @@ objects:
     stretch: true
   - type: uiScroll
 - id: 9c690a78-909d-5eb7-9420-d1ef9258bcef
-  parentId: 5a9a28c3-514c-5a92-9d1c-7a03d7ecd439
+  parentId: 3cceeb9e-4dee-5a82-af3a-5f6b92de8ec4
   name: 01 Title
   x: 0
   y: 0
-  width: 276
+  width: 268
   height: 30
   components:
   - type: uiRect
@@ -226,11 +232,11 @@ objects:
     color: "#F4F6F4"
     wrap: true
 - id: 59f0aa68-16de-5f1c-a6b2-e0a62c46f82b
-  parentId: 5a9a28c3-514c-5a92-9d1c-7a03d7ecd439
+  parentId: 3cceeb9e-4dee-5a82-af3a-5f6b92de8ec4
   name: 02 Name
   x: 0
   y: 0
-  width: 276
+  width: 268
   height: 18
   components:
   - type: uiRect
@@ -241,11 +247,11 @@ objects:
     color: "#BFD0DC"
     wrap: true
 - id: ad1f0b20-17c3-5304-ad5a-4388c5b0d394
-  parentId: 5a9a28c3-514c-5a92-9d1c-7a03d7ecd439
+  parentId: 3cceeb9e-4dee-5a82-af3a-5f6b92de8ec4
   name: 03 Name field
   x: 0
   y: 0
-  width: 276
+  width: 268
   height: 28
   components:
   - type: uiRect
@@ -259,11 +265,11 @@ objects:
     insetX: 8
     insetY: 3
 - id: 84b3e140-6abe-5522-b95e-b756a16145c3
-  parentId: 5a9a28c3-514c-5a92-9d1c-7a03d7ecd439
+  parentId: 3cceeb9e-4dee-5a82-af3a-5f6b92de8ec4
   name: 04 Language
   x: 0
   y: 0
-  width: 276
+  width: 268
   height: 18
   components:
   - type: uiRect
@@ -274,11 +280,11 @@ objects:
     color: "#BFD0DC"
     wrap: true
 - id: 1df284bb-a49b-5284-99c7-fa20c7975970
-  parentId: 5a9a28c3-514c-5a92-9d1c-7a03d7ecd439
+  parentId: 3cceeb9e-4dee-5a82-af3a-5f6b92de8ec4
   name: 05 Language list
   x: 0
   y: 0
-  width: 276
+  width: 268
   height: 28
   components:
   - type: uiRect
@@ -289,11 +295,11 @@ objects:
     script: Showcase/OptionSetting
     values: {"Action": 1}
 - id: 35841fcd-143d-5669-a168-89a0217235b1
-  parentId: 5a9a28c3-514c-5a92-9d1c-7a03d7ecd439
+  parentId: 3cceeb9e-4dee-5a82-af3a-5f6b92de8ec4
   name: 06 Text size
   x: 0
   y: 0
-  width: 276
+  width: 268
   height: 18
   components:
   - type: uiRect
@@ -304,11 +310,11 @@ objects:
     color: "#BFD0DC"
     wrap: true
 - id: 0c1c9360-184c-5417-8823-a0fba0847942
-  parentId: 5a9a28c3-514c-5a92-9d1c-7a03d7ecd439
+  parentId: 3cceeb9e-4dee-5a82-af3a-5f6b92de8ec4
   name: 07 Text size slider
   x: 0
   y: 0
-  width: 276
+  width: 268
   height: 26
   components:
   - type: uiRect
@@ -321,11 +327,11 @@ objects:
     script: Showcase/OptionSetting
     values: {"Action": 2}
 - id: e1ca67cc-ec2f-5207-bb2f-e119293b0f6b
-  parentId: 5a9a28c3-514c-5a92-9d1c-7a03d7ecd439
+  parentId: 3cceeb9e-4dee-5a82-af3a-5f6b92de8ec4
   name: 08 High contrast
   x: 0
   y: 0
-  width: 276
+  width: 268
   height: 18
   components:
   - type: uiRect
@@ -336,11 +342,11 @@ objects:
     color: "#BFD0DC"
     wrap: true
 - id: 063441ec-fb98-56bf-be39-8803d224f8f8
-  parentId: 5a9a28c3-514c-5a92-9d1c-7a03d7ecd439
+  parentId: 3cceeb9e-4dee-5a82-af3a-5f6b92de8ec4
   name: 09 Contrast toggle
   x: 0
   y: 0
-  width: 276
+  width: 268
   height: 26
   components:
   - type: uiRect
@@ -350,11 +356,11 @@ objects:
     script: Showcase/OptionSetting
     values: {"Action": 3}
 - id: 1d2a1784-f3cf-55c7-a33d-b4721baf8f38
-  parentId: 5a9a28c3-514c-5a92-9d1c-7a03d7ecd439
+  parentId: 3cceeb9e-4dee-5a82-af3a-5f6b92de8ec4
   name: 10 Screen shake
   x: 0
   y: 0
-  width: 276
+  width: 268
   height: 18
   components:
   - type: uiRect
@@ -365,11 +371,11 @@ objects:
     color: "#BFD0DC"
     wrap: true
 - id: 9e0fdffd-f23e-5404-a409-fb44f68ff6a1
-  parentId: 5a9a28c3-514c-5a92-9d1c-7a03d7ecd439
+  parentId: 3cceeb9e-4dee-5a82-af3a-5f6b92de8ec4
   name: 11 Shake slider
   x: 0
   y: 0
-  width: 276
+  width: 268
   height: 26
   components:
   - type: uiRect
@@ -382,11 +388,11 @@ objects:
     script: Showcase/OptionSetting
     values: {"Action": 4}
 - id: 6768c333-de95-559b-bc60-bea21f64268e
-  parentId: 5a9a28c3-514c-5a92-9d1c-7a03d7ecd439
+  parentId: 3cceeb9e-4dee-5a82-af3a-5f6b92de8ec4
   name: 12 Flashes
   x: 0
   y: 0
-  width: 276
+  width: 268
   height: 18
   components:
   - type: uiRect
@@ -397,11 +403,11 @@ objects:
     color: "#BFD0DC"
     wrap: true
 - id: 12047b0a-cc84-54f0-8443-e7eafc353593
-  parentId: 5a9a28c3-514c-5a92-9d1c-7a03d7ecd439
+  parentId: 3cceeb9e-4dee-5a82-af3a-5f6b92de8ec4
   name: 13 Flash slider
   x: 0
   y: 0
-  width: 276
+  width: 268
   height: 26
   components:
   - type: uiRect
@@ -414,11 +420,11 @@ objects:
     script: Showcase/OptionSetting
     values: {"Action": 5}
 - id: 15c3ac98-2133-53f3-a945-9a2b65e24d94
-  parentId: 5a9a28c3-514c-5a92-9d1c-7a03d7ecd439
+  parentId: 3cceeb9e-4dee-5a82-af3a-5f6b92de8ec4
   name: 14 Save
   x: 0
   y: 0
-  width: 276
+  width: 268
   height: 30
   components:
   - type: uiRect
@@ -428,16 +434,32 @@ objects:
     translations: {"ko": "설정 저장", "ja": "設定を保存"}
     size: 14
     color: "#F4F6F4"
+    wrap: true
     insetX: 10
     insetY: 4
   - type: script
     script: Showcase/OptionSetting
-    values: {"Action": 6, "NameField": "ad1f0b20-17c3-5304-ad5a-4388c5b0d394", "Language": "1df284bb-a49b-5284-99c7-fa20c7975970", "Receipt": "15c3ac98-2133-53f3-a945-9a2b65e24d94", "Form": "5a9a28c3-514c-5a92-9d1c-7a03d7ecd439"}
-- id: feb6e55f-2f03-521f-a3a4-a7d74eee078b
+    values: {"Action": 6, "NameField": "ad1f0b20-17c3-5304-ad5a-4388c5b0d394", "Language": "1df284bb-a49b-5284-99c7-fa20c7975970", "Receipt": "15c3ac98-2133-53f3-a945-9a2b65e24d94", "Form": "3cceeb9e-4dee-5a82-af3a-5f6b92de8ec4"}
+- id: f233cba1-70cb-5359-93dc-7edbb1a5e23c
   parentId: 2c1739c6-1174-5b57-a6ef-19e9e03e7302
-  name: Tag 1
+  name: Tags
   x: 12
   y: 12
+  width: 228.6
+  height: 24
+  components:
+  - type: uiRect
+    scaleHorizontalWithText: true
+  - type: uiLayout
+    axis: Vertical
+    gap: 4
+    padding: 0
+    stretch: true
+- id: feb6e55f-2f03-521f-a3a4-a7d74eee078b
+  parentId: f233cba1-70cb-5359-93dc-7edbb1a5e23c
+  name: Tag 1
+  x: 0
+  y: 0
   width: 228.6
   height: 24
   components:
@@ -454,10 +476,10 @@ objects:
     insetX: 10
     insetY: 4
 - id: 5507c949-8463-5579-8e39-fa7b86920a9e
-  parentId: 2c1739c6-1174-5b57-a6ef-19e9e03e7302
+  parentId: f233cba1-70cb-5359-93dc-7edbb1a5e23c
   name: Tag 2
-  x: 12
-  y: 40
+  x: 0
+  y: 0
   width: 228.6
   height: 24
   components:
@@ -474,10 +496,10 @@ objects:
     insetX: 10
     insetY: 4
 - id: e569c5f1-37e9-5307-ba2e-1c4b2855a6ce
-  parentId: 2c1739c6-1174-5b57-a6ef-19e9e03e7302
+  parentId: f233cba1-70cb-5359-93dc-7edbb1a5e23c
   name: Tag 3
-  x: 12
-  y: 68
+  x: 0
+  y: 0
   width: 228.6
   height: 24
   components:
@@ -494,10 +516,10 @@ objects:
     insetX: 10
     insetY: 4
 - id: 28c2e90d-722e-5d44-b25b-971aacc44ced
-  parentId: 2c1739c6-1174-5b57-a6ef-19e9e03e7302
+  parentId: f233cba1-70cb-5359-93dc-7edbb1a5e23c
   name: Tag 4
-  x: 12
-  y: 96
+  x: 0
+  y: 0
   width: 228.6
   height: 24
   components:
@@ -527,20 +549,12 @@ objects:
   - type: uiImage
     sprite: 4b014d02-5654-5c94-aa0e-c00089b7d7b9
     borders: {left: 4, top: 4, right: 4, bottom: 4}
-- id: 08dc7faa-2160-5b85-b71b-1db18d4544af
-  parentId: 23375e41-93dd-5f13-abee-a7c0b50fc1e1
-  name: Caption text
-  x: 12
-  y: 4
-  width: 210
-  height: 18
-  components:
-  - type: uiRect
-    scaleHorizontalWithText: true
   - type: uiText
     richText: true
     text: "<b>AccessLab</b>   Player settings"
     size: 13
+    insetX: 12
+    insetY: 4
 - id: d0b4e199-a678-58b2-a1ae-d3d19693765e
   name: Show
   x: 0

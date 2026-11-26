@@ -86,7 +86,7 @@ try:
   print('save:',reports[0].read_text() if reports else 'missing',flush=True)
   assert len(reports)==1,'missing save'
   data=reports[0].read_text()
-  for item in ['name: "한글"','accessibility.locale: "ja"','accessibility.textScale: 1.5','accessibility.highContrast: true','saveFocused: true','sawComposition: true','scroll: 37.6']:
+  for item in ['name: "한글"','accessibility.locale: "ja"','accessibility.textScale: 1.5','accessibility.highContrast: true','saveFocused: true','sawComposition: true','scroll: 45.6']:
    assert item in data,(mode,item,data)
   (out/(mode+'.settings')).write_bytes(reports[0].read_bytes())
   timestamp=reports[0].stat().st_mtime_ns
