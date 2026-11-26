@@ -1,0 +1,16 @@
+schemaVersion: 40
+objects:
+- id: a63b2023-117d-5e40-a83c-b88d38a91589
+  name: "Pieces/2-Spear"
+  x: 0
+  y: 0
+  width: 38
+  height: 42
+  components:
+  - type: spriteRenderer
+    assetId: "3783dcf2-a8fc-542d-9580-f5ff2ec86488"
+    order: 5
+    sortByY: true
+  - type: spriteAnimator
+    controller: "105d7d8c-ed99-510b-b7e8-35baa2a9288f"
+    playOnStart: true

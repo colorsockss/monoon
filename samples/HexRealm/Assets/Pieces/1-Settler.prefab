@@ -1,0 +1,16 @@
+schemaVersion: 40
+objects:
+- id: abc2c470-22ef-58f8-b724-744fda180d6e
+  name: "Pieces/1-Settler"
+  x: 0
+  y: 0
+  width: 38
+  height: 42
+  components:
+  - type: spriteRenderer
+    assetId: "b9471414-cb18-50ee-b198-7897791ee02c"
+    order: 5
+    sortByY: true
+  - type: spriteAnimator
+    controller: "9ba7bf31-c309-5295-a51f-033918c8409b"
+    playOnStart: true

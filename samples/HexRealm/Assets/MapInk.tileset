@@ -1,0 +1,908 @@
+image: aa46ddb6-bf8f-5959-b387-0568f1cdf11e
+tileSize: {width: 48, height: 56}
+nextId: 227
+tiles:
+- id: 1
+  source: {x: 0, y: 0, width: 48, height: 56}
+  terrain: mist
+  moveCost: 0
+- id: 2
+  source: {x: 48, y: 0, width: 48, height: 56}
+  terrain: mist
+  moveCost: 0
+- id: 3
+  source: {x: 96, y: 0, width: 48, height: 56}
+  terrain: mist
+  moveCost: 0
+- id: 4
+  source: {x: 144, y: 0, width: 48, height: 56}
+  terrain: explored
+  moveCost: 0
+- id: 5
+  source: {x: 192, y: 0, width: 48, height: 56}
+  terrain: range
+  moveCost: 0
+- id: 6
+  source: {x: 240, y: 0, width: 48, height: 56}
+  terrain: selected
+  moveCost: 0
+- id: 7
+  source: {x: 288, y: 0, width: 48, height: 56}
+  terrain: hover
+  moveCost: 0
+- id: 8
+  source: {x: 336, y: 0, width: 48, height: 56}
+  terrain: attack
+  moveCost: 0
+- id: 9
+  source: {x: 384, y: 0, width: 48, height: 56}
+  terrain: shore
+  moveCost: 0
+- id: 10
+  source: {x: 432, y: 0, width: 48, height: 56}
+  terrain: shore
+  moveCost: 0
+- id: 11
+  source: {x: 480, y: 0, width: 48, height: 56}
+  terrain: shore
+  moveCost: 0
+- id: 12
+  source: {x: 528, y: 0, width: 48, height: 56}
+  terrain: shore
+  moveCost: 0
+- id: 13
+  source: {x: 576, y: 0, width: 48, height: 56}
+  terrain: shore
+  moveCost: 0
+- id: 14
+  source: {x: 624, y: 0, width: 48, height: 56}
+  terrain: shore
+  moveCost: 0
+- id: 15
+  source: {x: 672, y: 0, width: 48, height: 56}
+  terrain: shore
+  moveCost: 0
+- id: 16
+  source: {x: 720, y: 0, width: 48, height: 56}
+  terrain: shore
+  moveCost: 0
+- id: 17
+  source: {x: 0, y: 56, width: 48, height: 56}
+  terrain: shore
+  moveCost: 0
+- id: 18
+  source: {x: 48, y: 56, width: 48, height: 56}
+  terrain: shore
+  moveCost: 0
+- id: 19
+  source: {x: 96, y: 56, width: 48, height: 56}
+  terrain: shore
+  moveCost: 0
+- id: 20
+  source: {x: 144, y: 56, width: 48, height: 56}
+  terrain: shore
+  moveCost: 0
+- id: 21
+  source: {x: 192, y: 56, width: 48, height: 56}
+  terrain: shore
+  moveCost: 0
+- id: 22
+  source: {x: 240, y: 56, width: 48, height: 56}
+  terrain: shore
+  moveCost: 0
+- id: 23
+  source: {x: 288, y: 56, width: 48, height: 56}
+  terrain: shore
+  moveCost: 0
+- id: 24
+  source: {x: 336, y: 56, width: 48, height: 56}
+  terrain: shore
+  moveCost: 0
+- id: 25
+  source: {x: 384, y: 56, width: 48, height: 56}
+  terrain: shore
+  moveCost: 0
+- id: 26
+  source: {x: 432, y: 56, width: 48, height: 56}
+  terrain: shore
+  moveCost: 0
+- id: 27
+  source: {x: 480, y: 56, width: 48, height: 56}
+  terrain: shore
+  moveCost: 0
+- id: 28
+  source: {x: 528, y: 56, width: 48, height: 56}
+  terrain: shore
+  moveCost: 0
+- id: 29
+  source: {x: 576, y: 56, width: 48, height: 56}
+  terrain: shore
+  moveCost: 0
+- id: 30
+  source: {x: 624, y: 56, width: 48, height: 56}
+  terrain: shore
+  moveCost: 0
+- id: 31
+  source: {x: 672, y: 56, width: 48, height: 56}
+  terrain: shore
+  moveCost: 0
+- id: 32
+  source: {x: 720, y: 56, width: 48, height: 56}
+  terrain: shore
+  moveCost: 0
+- id: 33
+  source: {x: 0, y: 112, width: 48, height: 56}
+  terrain: shore
+  moveCost: 0
+- id: 34
+  source: {x: 48, y: 112, width: 48, height: 56}
+  terrain: shore
+  moveCost: 0
+- id: 35
+  source: {x: 96, y: 112, width: 48, height: 56}
+  terrain: shore
+  moveCost: 0
+- id: 36
+  source: {x: 144, y: 112, width: 48, height: 56}
+  terrain: shore
+  moveCost: 0
+- id: 37
+  source: {x: 192, y: 112, width: 48, height: 56}
+  terrain: shore
+  moveCost: 0
+- id: 38
+  source: {x: 240, y: 112, width: 48, height: 56}
+  terrain: shore
+  moveCost: 0
+- id: 39
+  source: {x: 288, y: 112, width: 48, height: 56}
+  terrain: shore
+  moveCost: 0
+- id: 40
+  source: {x: 336, y: 112, width: 48, height: 56}
+  terrain: shore
+  moveCost: 0
+- id: 41
+  source: {x: 384, y: 112, width: 48, height: 56}
+  terrain: shore
+  moveCost: 0
+- id: 42
+  source: {x: 432, y: 112, width: 48, height: 56}
+  terrain: shore
+  moveCost: 0
+- id: 43
+  source: {x: 480, y: 112, width: 48, height: 56}
+  terrain: shore
+  moveCost: 0
+- id: 44
+  source: {x: 528, y: 112, width: 48, height: 56}
+  terrain: shore
+  moveCost: 0
+- id: 45
+  source: {x: 576, y: 112, width: 48, height: 56}
+  terrain: shore
+  moveCost: 0
+- id: 46
+  source: {x: 624, y: 112, width: 48, height: 56}
+  terrain: shore
+  moveCost: 0
+- id: 47
+  source: {x: 672, y: 112, width: 48, height: 56}
+  terrain: shore
+  moveCost: 0
+- id: 48
+  source: {x: 720, y: 112, width: 48, height: 56}
+  terrain: shore
+  moveCost: 0
+- id: 49
+  source: {x: 0, y: 168, width: 48, height: 56}
+  terrain: shore
+  moveCost: 0
+- id: 50
+  source: {x: 48, y: 168, width: 48, height: 56}
+  terrain: shore
+  moveCost: 0
+- id: 51
+  source: {x: 96, y: 168, width: 48, height: 56}
+  terrain: shore
+  moveCost: 0
+- id: 52
+  source: {x: 144, y: 168, width: 48, height: 56}
+  terrain: shore
+  moveCost: 0
+- id: 53
+  source: {x: 192, y: 168, width: 48, height: 56}
+  terrain: shore
+  moveCost: 0
+- id: 54
+  source: {x: 240, y: 168, width: 48, height: 56}
+  terrain: shore
+  moveCost: 0
+- id: 55
+  source: {x: 288, y: 168, width: 48, height: 56}
+  terrain: shore
+  moveCost: 0
+- id: 56
+  source: {x: 336, y: 168, width: 48, height: 56}
+  terrain: shore
+  moveCost: 0
+- id: 57
+  source: {x: 384, y: 168, width: 48, height: 56}
+  terrain: shore
+  moveCost: 0
+- id: 58
+  source: {x: 432, y: 168, width: 48, height: 56}
+  terrain: shore
+  moveCost: 0
+- id: 59
+  source: {x: 480, y: 168, width: 48, height: 56}
+  terrain: shore
+  moveCost: 0
+- id: 60
+  source: {x: 528, y: 168, width: 48, height: 56}
+  terrain: shore
+  moveCost: 0
+- id: 61
+  source: {x: 576, y: 168, width: 48, height: 56}
+  terrain: shore
+  moveCost: 0
+- id: 62
+  source: {x: 624, y: 168, width: 48, height: 56}
+  terrain: shore
+  moveCost: 0
+- id: 63
+  source: {x: 672, y: 168, width: 48, height: 56}
+  terrain: shore
+  moveCost: 0
+- id: 64
+  source: {x: 720, y: 168, width: 48, height: 56}
+  terrain: shore
+  moveCost: 0
+- id: 65
+  source: {x: 0, y: 224, width: 48, height: 56}
+  terrain: shore
+  moveCost: 0
+- id: 66
+  source: {x: 48, y: 224, width: 48, height: 56}
+  terrain: shore
+  moveCost: 0
+- id: 67
+  source: {x: 96, y: 224, width: 48, height: 56}
+  terrain: shore
+  moveCost: 0
+- id: 68
+  source: {x: 144, y: 224, width: 48, height: 56}
+  terrain: shore
+  moveCost: 0
+- id: 69
+  source: {x: 192, y: 224, width: 48, height: 56}
+  terrain: shore
+  moveCost: 0
+- id: 70
+  source: {x: 240, y: 224, width: 48, height: 56}
+  terrain: shore
+  moveCost: 0
+- id: 71
+  source: {x: 288, y: 224, width: 48, height: 56}
+  terrain: shore
+  moveCost: 0
+- id: 72
+  source: {x: 336, y: 224, width: 48, height: 56}
+  terrain: border
+  moveCost: 0
+- id: 73
+  source: {x: 384, y: 224, width: 48, height: 56}
+  terrain: border
+  moveCost: 0
+- id: 74
+  source: {x: 432, y: 224, width: 48, height: 56}
+  terrain: border
+  moveCost: 0
+- id: 75
+  source: {x: 480, y: 224, width: 48, height: 56}
+  terrain: border
+  moveCost: 0
+- id: 76
+  source: {x: 528, y: 224, width: 48, height: 56}
+  terrain: border
+  moveCost: 0
+- id: 77
+  source: {x: 576, y: 224, width: 48, height: 56}
+  terrain: border
+  moveCost: 0
+- id: 78
+  source: {x: 624, y: 224, width: 48, height: 56}
+  terrain: border
+  moveCost: 0
+- id: 79
+  source: {x: 672, y: 224, width: 48, height: 56}
+  terrain: border
+  moveCost: 0
+- id: 80
+  source: {x: 720, y: 224, width: 48, height: 56}
+  terrain: border
+  moveCost: 0
+- id: 81
+  source: {x: 0, y: 280, width: 48, height: 56}
+  terrain: border
+  moveCost: 0
+- id: 82
+  source: {x: 48, y: 280, width: 48, height: 56}
+  terrain: border
+  moveCost: 0
+- id: 83
+  source: {x: 96, y: 280, width: 48, height: 56}
+  terrain: border
+  moveCost: 0
+- id: 84
+  source: {x: 144, y: 280, width: 48, height: 56}
+  terrain: border
+  moveCost: 0
+- id: 85
+  source: {x: 192, y: 280, width: 48, height: 56}
+  terrain: border
+  moveCost: 0
+- id: 86
+  source: {x: 240, y: 280, width: 48, height: 56}
+  terrain: border
+  moveCost: 0
+- id: 87
+  source: {x: 288, y: 280, width: 48, height: 56}
+  terrain: border
+  moveCost: 0
+- id: 88
+  source: {x: 336, y: 280, width: 48, height: 56}
+  terrain: border
+  moveCost: 0
+- id: 89
+  source: {x: 384, y: 280, width: 48, height: 56}
+  terrain: border
+  moveCost: 0
+- id: 90
+  source: {x: 432, y: 280, width: 48, height: 56}
+  terrain: border
+  moveCost: 0
+- id: 91
+  source: {x: 480, y: 280, width: 48, height: 56}
+  terrain: border
+  moveCost: 0
+- id: 92
+  source: {x: 528, y: 280, width: 48, height: 56}
+  terrain: border
+  moveCost: 0
+- id: 93
+  source: {x: 576, y: 280, width: 48, height: 56}
+  terrain: border
+  moveCost: 0
+- id: 94
+  source: {x: 624, y: 280, width: 48, height: 56}
+  terrain: border
+  moveCost: 0
+- id: 95
+  source: {x: 672, y: 280, width: 48, height: 56}
+  terrain: border
+  moveCost: 0
+- id: 96
+  source: {x: 720, y: 280, width: 48, height: 56}
+  terrain: border
+  moveCost: 0
+- id: 97
+  source: {x: 0, y: 336, width: 48, height: 56}
+  terrain: border
+  moveCost: 0
+- id: 98
+  source: {x: 48, y: 336, width: 48, height: 56}
+  terrain: border
+  moveCost: 0
+- id: 99
+  source: {x: 96, y: 336, width: 48, height: 56}
+  terrain: border
+  moveCost: 0
+- id: 100
+  source: {x: 144, y: 336, width: 48, height: 56}
+  terrain: border
+  moveCost: 0
+- id: 101
+  source: {x: 192, y: 336, width: 48, height: 56}
+  terrain: border
+  moveCost: 0
+- id: 102
+  source: {x: 240, y: 336, width: 48, height: 56}
+  terrain: border
+  moveCost: 0
+- id: 103
+  source: {x: 288, y: 336, width: 48, height: 56}
+  terrain: border
+  moveCost: 0
+- id: 104
+  source: {x: 336, y: 336, width: 48, height: 56}
+  terrain: border
+  moveCost: 0
+- id: 105
+  source: {x: 384, y: 336, width: 48, height: 56}
+  terrain: border
+  moveCost: 0
+- id: 106
+  source: {x: 432, y: 336, width: 48, height: 56}
+  terrain: border
+  moveCost: 0
+- id: 107
+  source: {x: 480, y: 336, width: 48, height: 56}
+  terrain: border
+  moveCost: 0
+- id: 108
+  source: {x: 528, y: 336, width: 48, height: 56}
+  terrain: border
+  moveCost: 0
+- id: 109
+  source: {x: 576, y: 336, width: 48, height: 56}
+  terrain: border
+  moveCost: 0
+- id: 110
+  source: {x: 624, y: 336, width: 48, height: 56}
+  terrain: border
+  moveCost: 0
+- id: 111
+  source: {x: 672, y: 336, width: 48, height: 56}
+  terrain: border
+  moveCost: 0
+- id: 112
+  source: {x: 720, y: 336, width: 48, height: 56}
+  terrain: border
+  moveCost: 0
+- id: 113
+  source: {x: 0, y: 392, width: 48, height: 56}
+  terrain: border
+  moveCost: 0
+- id: 114
+  source: {x: 48, y: 392, width: 48, height: 56}
+  terrain: border
+  moveCost: 0
+- id: 115
+  source: {x: 96, y: 392, width: 48, height: 56}
+  terrain: border
+  moveCost: 0
+- id: 116
+  source: {x: 144, y: 392, width: 48, height: 56}
+  terrain: border
+  moveCost: 0
+- id: 117
+  source: {x: 192, y: 392, width: 48, height: 56}
+  terrain: border
+  moveCost: 0
+- id: 118
+  source: {x: 240, y: 392, width: 48, height: 56}
+  terrain: border
+  moveCost: 0
+- id: 119
+  source: {x: 288, y: 392, width: 48, height: 56}
+  terrain: border
+  moveCost: 0
+- id: 120
+  source: {x: 336, y: 392, width: 48, height: 56}
+  terrain: border
+  moveCost: 0
+- id: 121
+  source: {x: 384, y: 392, width: 48, height: 56}
+  terrain: border
+  moveCost: 0
+- id: 122
+  source: {x: 432, y: 392, width: 48, height: 56}
+  terrain: border
+  moveCost: 0
+- id: 123
+  source: {x: 480, y: 392, width: 48, height: 56}
+  terrain: border
+  moveCost: 0
+- id: 124
+  source: {x: 528, y: 392, width: 48, height: 56}
+  terrain: border
+  moveCost: 0
+- id: 125
+  source: {x: 576, y: 392, width: 48, height: 56}
+  terrain: border
+  moveCost: 0
+- id: 126
+  source: {x: 624, y: 392, width: 48, height: 56}
+  terrain: border
+  moveCost: 0
+- id: 127
+  source: {x: 672, y: 392, width: 48, height: 56}
+  terrain: border
+  moveCost: 0
+- id: 128
+  source: {x: 720, y: 392, width: 48, height: 56}
+  terrain: border
+  moveCost: 0
+- id: 129
+  source: {x: 0, y: 448, width: 48, height: 56}
+  terrain: border
+  moveCost: 0
+- id: 130
+  source: {x: 48, y: 448, width: 48, height: 56}
+  terrain: border
+  moveCost: 0
+- id: 131
+  source: {x: 96, y: 448, width: 48, height: 56}
+  terrain: border
+  moveCost: 0
+- id: 132
+  source: {x: 144, y: 448, width: 48, height: 56}
+  terrain: border
+  moveCost: 0
+- id: 133
+  source: {x: 192, y: 448, width: 48, height: 56}
+  terrain: border
+  moveCost: 0
+- id: 134
+  source: {x: 240, y: 448, width: 48, height: 56}
+  terrain: border
+  moveCost: 0
+- id: 135
+  source: {x: 288, y: 448, width: 48, height: 56}
+  terrain: border
+  moveCost: 0
+- id: 136
+  source: {x: 336, y: 448, width: 48, height: 56}
+  terrain: border
+  moveCost: 0
+- id: 137
+  source: {x: 384, y: 448, width: 48, height: 56}
+  terrain: border
+  moveCost: 0
+- id: 138
+  source: {x: 432, y: 448, width: 48, height: 56}
+  terrain: border
+  moveCost: 0
+- id: 139
+  source: {x: 480, y: 448, width: 48, height: 56}
+  terrain: border
+  moveCost: 0
+- id: 140
+  source: {x: 528, y: 448, width: 48, height: 56}
+  terrain: border
+  moveCost: 0
+- id: 141
+  source: {x: 576, y: 448, width: 48, height: 56}
+  terrain: border
+  moveCost: 0
+- id: 142
+  source: {x: 624, y: 448, width: 48, height: 56}
+  terrain: border
+  moveCost: 0
+- id: 143
+  source: {x: 672, y: 448, width: 48, height: 56}
+  terrain: border
+  moveCost: 0
+- id: 144
+  source: {x: 720, y: 448, width: 48, height: 56}
+  terrain: border
+  moveCost: 0
+- id: 145
+  source: {x: 0, y: 504, width: 48, height: 56}
+  terrain: border
+  moveCost: 0
+- id: 146
+  source: {x: 48, y: 504, width: 48, height: 56}
+  terrain: border
+  moveCost: 0
+- id: 147
+  source: {x: 96, y: 504, width: 48, height: 56}
+  terrain: border
+  moveCost: 0
+- id: 148
+  source: {x: 144, y: 504, width: 48, height: 56}
+  terrain: border
+  moveCost: 0
+- id: 149
+  source: {x: 192, y: 504, width: 48, height: 56}
+  terrain: border
+  moveCost: 0
+- id: 150
+  source: {x: 240, y: 504, width: 48, height: 56}
+  terrain: border
+  moveCost: 0
+- id: 151
+  source: {x: 288, y: 504, width: 48, height: 56}
+  terrain: border
+  moveCost: 0
+- id: 152
+  source: {x: 336, y: 504, width: 48, height: 56}
+  terrain: border
+  moveCost: 0
+- id: 153
+  source: {x: 384, y: 504, width: 48, height: 56}
+  terrain: border
+  moveCost: 0
+- id: 154
+  source: {x: 432, y: 504, width: 48, height: 56}
+  terrain: border
+  moveCost: 0
+- id: 155
+  source: {x: 480, y: 504, width: 48, height: 56}
+  terrain: border
+  moveCost: 0
+- id: 156
+  source: {x: 528, y: 504, width: 48, height: 56}
+  terrain: border
+  moveCost: 0
+- id: 157
+  source: {x: 576, y: 504, width: 48, height: 56}
+  terrain: border
+  moveCost: 0
+- id: 158
+  source: {x: 624, y: 504, width: 48, height: 56}
+  terrain: border
+  moveCost: 0
+- id: 159
+  source: {x: 672, y: 504, width: 48, height: 56}
+  terrain: border
+  moveCost: 0
+- id: 160
+  source: {x: 720, y: 504, width: 48, height: 56}
+  terrain: border
+  moveCost: 0
+- id: 161
+  source: {x: 0, y: 560, width: 48, height: 56}
+  terrain: border
+  moveCost: 0
+- id: 162
+  source: {x: 48, y: 560, width: 48, height: 56}
+  terrain: border
+  moveCost: 0
+- id: 163
+  source: {x: 96, y: 560, width: 48, height: 56}
+  terrain: border
+  moveCost: 0
+- id: 164
+  source: {x: 144, y: 560, width: 48, height: 56}
+  terrain: border
+  moveCost: 0
+- id: 165
+  source: {x: 192, y: 560, width: 48, height: 56}
+  terrain: border
+  moveCost: 0
+- id: 166
+  source: {x: 240, y: 560, width: 48, height: 56}
+  terrain: border
+  moveCost: 0
+- id: 167
+  source: {x: 288, y: 560, width: 48, height: 56}
+  terrain: border
+  moveCost: 0
+- id: 168
+  source: {x: 336, y: 560, width: 48, height: 56}
+  terrain: border
+  moveCost: 0
+- id: 169
+  source: {x: 384, y: 560, width: 48, height: 56}
+  terrain: border
+  moveCost: 0
+- id: 170
+  source: {x: 432, y: 560, width: 48, height: 56}
+  terrain: border
+  moveCost: 0
+- id: 171
+  source: {x: 480, y: 560, width: 48, height: 56}
+  terrain: border
+  moveCost: 0
+- id: 172
+  source: {x: 528, y: 560, width: 48, height: 56}
+  terrain: border
+  moveCost: 0
+- id: 173
+  source: {x: 576, y: 560, width: 48, height: 56}
+  terrain: border
+  moveCost: 0
+- id: 174
+  source: {x: 624, y: 560, width: 48, height: 56}
+  terrain: border
+  moveCost: 0
+- id: 175
+  source: {x: 672, y: 560, width: 48, height: 56}
+  terrain: border
+  moveCost: 0
+- id: 176
+  source: {x: 720, y: 560, width: 48, height: 56}
+  terrain: border
+  moveCost: 0
+- id: 177
+  source: {x: 0, y: 616, width: 48, height: 56}
+  terrain: border
+  moveCost: 0
+- id: 178
+  source: {x: 48, y: 616, width: 48, height: 56}
+  terrain: border
+  moveCost: 0
+- id: 179
+  source: {x: 96, y: 616, width: 48, height: 56}
+  terrain: border
+  moveCost: 0
+- id: 180
+  source: {x: 144, y: 616, width: 48, height: 56}
+  terrain: border
+  moveCost: 0
+- id: 181
+  source: {x: 192, y: 616, width: 48, height: 56}
+  terrain: border
+  moveCost: 0
+- id: 182
+  source: {x: 240, y: 616, width: 48, height: 56}
+  terrain: border
+  moveCost: 0
+- id: 183
+  source: {x: 288, y: 616, width: 48, height: 56}
+  terrain: border
+  moveCost: 0
+- id: 184
+  source: {x: 336, y: 616, width: 48, height: 56}
+  terrain: border
+  moveCost: 0
+- id: 185
+  source: {x: 384, y: 616, width: 48, height: 56}
+  terrain: border
+  moveCost: 0
+- id: 186
+  source: {x: 432, y: 616, width: 48, height: 56}
+  terrain: border
+  moveCost: 0
+- id: 187
+  source: {x: 480, y: 616, width: 48, height: 56}
+  terrain: border
+  moveCost: 0
+- id: 188
+  source: {x: 528, y: 616, width: 48, height: 56}
+  terrain: border
+  moveCost: 0
+- id: 189
+  source: {x: 576, y: 616, width: 48, height: 56}
+  terrain: border
+  moveCost: 0
+- id: 190
+  source: {x: 624, y: 616, width: 48, height: 56}
+  terrain: border
+  moveCost: 0
+- id: 191
+  source: {x: 672, y: 616, width: 48, height: 56}
+  terrain: border
+  moveCost: 0
+- id: 192
+  source: {x: 720, y: 616, width: 48, height: 56}
+  terrain: border
+  moveCost: 0
+- id: 193
+  source: {x: 0, y: 672, width: 48, height: 56}
+  terrain: border
+  moveCost: 0
+- id: 194
+  source: {x: 48, y: 672, width: 48, height: 56}
+  terrain: border
+  moveCost: 0
+- id: 195
+  source: {x: 96, y: 672, width: 48, height: 56}
+  terrain: border
+  moveCost: 0
+- id: 196
+  source: {x: 144, y: 672, width: 48, height: 56}
+  terrain: border
+  moveCost: 0
+- id: 197
+  source: {x: 192, y: 672, width: 48, height: 56}
+  terrain: border
+  moveCost: 0
+- id: 198
+  source: {x: 240, y: 672, width: 48, height: 56}
+  terrain: district
+  moveCost: 0
+- id: 199
+  source: {x: 288, y: 672, width: 48, height: 56}
+  terrain: district
+  moveCost: 0
+- id: 200
+  source: {x: 336, y: 672, width: 48, height: 56}
+  terrain: district
+  moveCost: 0
+- id: 201
+  source: {x: 384, y: 672, width: 48, height: 56}
+  terrain: survey
+  moveCost: 0
+- id: 202
+  source: {x: 432, y: 672, width: 48, height: 56}
+  terrain: rival tint
+  moveCost: 0
+- id: 203
+  source: {x: 480, y: 672, width: 48, height: 56}
+  terrain: revealing
+  moveCost: 0
+- id: 204
+  source: {x: 528, y: 672, width: 48, height: 56}
+  terrain: revealing
+  moveCost: 0
+- id: 205
+  source: {x: 576, y: 672, width: 48, height: 56}
+  terrain: revealing
+  moveCost: 0
+- id: 206
+  source: {x: 624, y: 672, width: 48, height: 56}
+  terrain: revealing
+  moveCost: 0
+- id: 207
+  source: {x: 672, y: 672, width: 48, height: 56}
+  terrain: revealing
+  moveCost: 0
+- id: 208
+  source: {x: 720, y: 672, width: 48, height: 56}
+  terrain: revealing
+  moveCost: 0
+- id: 209
+  source: {x: 0, y: 728, width: 48, height: 56}
+  terrain: revealing
+  moveCost: 0
+- id: 210
+  source: {x: 48, y: 728, width: 48, height: 56}
+  terrain: revealing
+  moveCost: 0
+- id: 211
+  source: {x: 96, y: 728, width: 48, height: 56}
+  terrain: revealing
+  moveCost: 0
+- id: 212
+  source: {x: 144, y: 728, width: 48, height: 56}
+  terrain: revealing
+  moveCost: 0
+- id: 213
+  source: {x: 192, y: 728, width: 48, height: 56}
+  terrain: revealing
+  moveCost: 0
+- id: 214
+  source: {x: 240, y: 728, width: 48, height: 56}
+  terrain: revealing
+  moveCost: 0
+- id: 215
+  source: {x: 288, y: 728, width: 48, height: 56}
+  terrain: revealing
+  moveCost: 0
+- id: 216
+  source: {x: 336, y: 728, width: 48, height: 56}
+  terrain: revealing
+  moveCost: 0
+- id: 217
+  source: {x: 384, y: 728, width: 48, height: 56}
+  terrain: revealing
+  moveCost: 0
+- id: 218
+  source: {x: 432, y: 728, width: 48, height: 56}
+  terrain: revealing
+  moveCost: 0
+- id: 219
+  source: {x: 480, y: 728, width: 48, height: 56}
+  terrain: revealing
+  moveCost: 0
+- id: 220
+  source: {x: 528, y: 728, width: 48, height: 56}
+  terrain: revealing
+  moveCost: 0
+- id: 221
+  source: {x: 576, y: 728, width: 48, height: 56}
+  terrain: revealing
+  moveCost: 0
+- id: 222
+  source: {x: 624, y: 728, width: 48, height: 56}
+  terrain: revealing
+  moveCost: 0
+- id: 223
+  source: {x: 672, y: 728, width: 48, height: 56}
+  terrain: revealing
+  moveCost: 0
+- id: 224
+  source: {x: 720, y: 728, width: 48, height: 56}
+  terrain: revealing
+  moveCost: 0
+- id: 225
+  source: {x: 0, y: 784, width: 48, height: 56}
+  terrain: revealing
+  moveCost: 0
+- id: 226
+  source: {x: 48, y: 784, width: 48, height: 56}
+  terrain: revealing
+  moveCost: 0

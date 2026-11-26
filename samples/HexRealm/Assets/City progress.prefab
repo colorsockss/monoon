@@ -1,0 +1,12 @@
+schemaVersion: 40
+objects:
+- id: 43ea68e4-00e9-59b2-9ff1-2718d5b3503c
+  name: "City progress"
+  x: 0
+  y: 0
+  width: 78
+  height: 4
+  components:
+  - type: spriteRenderer
+    order: 12
+    squareColor: "#aa865e"

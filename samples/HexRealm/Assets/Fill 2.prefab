@@ -1,0 +1,12 @@
+schemaVersion: 40
+objects:
+- id: 093c5543-1bf0-58d5-93e1-901d8a9dd275
+  name: "Fill 2"
+  x: 0
+  y: 0
+  width: 1
+  height: 2
+  components:
+  - type: spriteRenderer
+    order: 13
+    squareColor: "#ee956a"

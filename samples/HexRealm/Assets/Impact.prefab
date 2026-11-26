@@ -1,0 +1,15 @@
+schemaVersion: 40
+objects:
+- id: 1c2059ff-a2e8-5ab6-ba00-49b7f25d2a1d
+  name: "Impact"
+  x: 0
+  y: 0
+  width: 52
+  height: 52
+  components:
+  - type: spriteRenderer
+    assetId: "7c4f378f-bdf1-523a-8386-0debffb7d734"
+    order: 15
+  - type: spriteAnimator
+    clip: "e540b1c7-696c-5b56-88d0-86eacc67fc2f"
+    playOnStart: true

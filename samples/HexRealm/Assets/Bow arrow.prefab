@@ -1,0 +1,22 @@
+schemaVersion: 40
+objects:
+- id: 4ac217e6-f07b-580b-9863-0c20b4cd2d41
+  name: "Bow arrow"
+  x: 0
+  y: 0
+  width: 23
+  height: 6
+  groups:
+  - bow-arrow
+  components:
+  - type: spriteRenderer
+    assetId: "29e284aa-3cac-5464-80ef-a054b5aef2c9"
+    order: 17
+  - type: trail2D
+    time: 0.1
+    width: 1.35
+    startColor: "#f0d28c"
+    endColor: "#9a9780"
+    maxPoints: 8
+    minStep: 1.2
+    order: 16

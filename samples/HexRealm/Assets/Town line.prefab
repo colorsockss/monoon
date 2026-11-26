@@ -1,0 +1,16 @@
+schemaVersion: 40
+objects:
+- id: 9dbff710-b8f4-54e7-838d-75232988bd51
+  name: "Town line"
+  x: 0
+  y: 0
+  width: 132
+  height: 16
+  components:
+  - type: text2D
+    text: ""
+    size: 12
+    order: 11
+    color: "#2b1c14"
+    richText: true
+    align: "Center"

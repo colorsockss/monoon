@@ -1,0 +1,13 @@
+entry: Idle
+states:
+- {name: Idle, clip: 02feb189-2fbc-53c1-b857-c73f79187478}
+- {name: Walk, clip: 041b1f8a-2063-56eb-a6a6-1d76baa1a2b0}
+- {name: Strike, clip: a51a797e-1af0-5ddb-b098-446a4b688208}
+parameters:
+- {name: Moving, kind: Bool, default: 0}
+- {name: Strike, kind: Trigger, default: 0}
+transitions:
+- {from: "Any State", to: Strike, parameter: Strike, test: Triggered}
+- {from: Idle, to: Walk, parameter: Moving, test: "True"}
+- {from: Walk, to: Idle, parameter: Moving, test: "False"}
+- {from: Strike, to: Idle, parameter: "", test: "", exitTime: 1}

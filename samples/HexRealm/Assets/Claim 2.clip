@@ -1,0 +1,10 @@
+frames:
+- {sprite: d8749766-9703-57e3-835b-591342b992bf, seconds: 0.1, source: {x: 0, y: 0, width: 48, height: 56}, useRenderer: false}
+- {sprite: d8749766-9703-57e3-835b-591342b992bf, seconds: 0.1, source: {x: 48, y: 0, width: 48, height: 56}, useRenderer: false}
+- {sprite: d8749766-9703-57e3-835b-591342b992bf, seconds: 0.1, source: {x: 96, y: 0, width: 48, height: 56}, useRenderer: false}
+- {sprite: d8749766-9703-57e3-835b-591342b992bf, seconds: 0.1, source: {x: 144, y: 0, width: 48, height: 56}, useRenderer: false}
+- {sprite: d8749766-9703-57e3-835b-591342b992bf, seconds: 0.1, source: {x: 192, y: 0, width: 48, height: 56}, useRenderer: false}
+- {sprite: d8749766-9703-57e3-835b-591342b992bf, seconds: 0.1, source: {x: 240, y: 0, width: 48, height: 56}, useRenderer: false}
+- {sprite: d8749766-9703-57e3-835b-591342b992bf, seconds: 0.1, source: {x: 288, y: 0, width: 48, height: 56}, useRenderer: false}
+- {sprite: d8749766-9703-57e3-835b-591342b992bf, seconds: 0.1, source: {x: 336, y: 0, width: 48, height: 56}, useRenderer: false}
+loop: false

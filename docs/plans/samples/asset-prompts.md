@@ -36,6 +36,14 @@ Use case: illustration-story. Asset type: game source spritesheet for an origina
 
 같은 인물과 생물로 보이도록 원본의 몸통과 다리 픽셀을 분리해 대기·걷기·공격 프레임을 만들었다. 피격 흰색 실루엣과 낙하를 포함해 아군·적 각각을 팔레트 아틀라스로 묶었으며, 좌우는 같은 프레임을 반전한다. 64×32 지형, 노출된 둑 면, 건물·묘비·봉인, HUD와 파티 초상은 저장소의 제작 스크립트로 그렸다. Haven 건물은 64×32 타일과 같은 2:1 투영식으로 벽·처마·용마루·굴뚝을 계산한다. 배경 불씨와 안개는 팔레트 클립을 재생한다. 역할별 타격·회복·영혼과 Pulse 빛기둥은 엔진 파티클로 그리며 검과 깃발은 4프레임 시트를 공유한다. HUD는 작은 팔레트 PNG와 저장소의 GowunDodum-Regular TTF를 쓴다. 오디오 9종은 12 kHz 8비트 모노 PCM으로 합성했다. [아트 생성 스크립트](../../../samples/IsoBand/Tools/art.py) · [씬 배치](../../../samples/IsoBand/Tools/scenes.py)
 
-## HexRealm 시트
+## HexRealm 솔트 해안
 
-Use case: illustration-story. Asset type: game source tile sheet for an original top-down hex strategy sample named HexRealm. Transparent alpha backdrop. Exactly four columns and four rows of equal cells, every sprite isolated with generous gutters, no text or borders. Rows left to right: (1) four single top-down hex tile tiles with one vertex pointing up and down: moss meadow with low grass texture, pine forest with tiny canopies viewed from above, dusty ochre hill, deep turquoise water with small glints; (2) four pointy-top hex tiles: rugged slate mountains, ochre desert sands, a meadow village of cream stone buildings and teal roofs, a rusty pale-orange rival village. Every tile in these first two rows must have identical clearly defined regular pointy-top hex outline and fill the same centered area. Rows (3) and (4) are separate small original tabletop unit sprites with transparent surroundings: row 3 teal covered-wagon settler, worker with mallet, scout on a small elk, silver spear infantry; row 4 archer in teal hood, orange spear infantry, orange archer, plain gold banner on stake. Bright inviting board-game palette with readable shapes and chunky crisp 16-bit pixel art, light from upper left. No reference to existing intellectual property. No labeling, no letterforms, no UI, no props outside cells.
+해상 지도와 도색한 보드게임 말을 기준으로 자체 팔레트를 만들었다. 청회녹색 바다 위에 소금기 어린 해안, 이끼색 평야, 청록 전나무, 눈 덮인 산맥, 구릿빛 동부 구릉을 배치했다. 조각은 아군 청록과 상대 주홍으로 구분하며 동일한 실루엣에서 발, 망토, 무기 위치를 바꿔 프레임을 그렸다.
+
+[samples/HexRealm/Tools/art.py](../../../samples/HexRealm/Tools/art.py)의 좌표와 시드가 그림의 원본이다. 파이썬으로 그린 48×56 지형 변형, 길·해안·국경 조각, 지도 바탕과 UI 장식을 PNG로 묶는다. Idle/Walk/Strike의 네 프레임을 말 하나당 시트 한 장에 넣는다. 별도의 6프레임 시트에 타격 섬광과 전사 연기를 그려 같은 애니메이터로 재생한다. 미탐험 해역과 육지를 청회색 양피지 섬유 무늬로 덮는다. 선택·이동·타격·건설·턴 전환·승리 효과음은 16 kHz 모노 PCM으로 합성한다.
+
+지도 제작자의 책상에는 밝은 36×32 양피지 9-slice와 세피아 글자, 창작 밀랍 인장, 청록·주홍 리본을 쓴다. 국경 애니메이션은 48×56 한 칸을 채우며 번지는 잉크 8프레임으로 그렸다. 글꼴은 저장소의 GowunDodum-Regular를 SDL_ttf로 그린다.
+
+```sh
+python3 -B samples/HexRealm/Tools/build_board.py
+```

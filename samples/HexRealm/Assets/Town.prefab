@@ -1,0 +1,12 @@
+schemaVersion: 40
+objects:
+- id: 9119c165-6fd9-54ca-9c36-42526389c3ae
+  name: "Town"
+  x: 0
+  y: 0
+  width: 57
+  height: 49
+  components:
+  - type: spriteRenderer
+    assetId: "375d1e0c-4c52-54dc-9453-2ca9d2eeef78"
+    order: 3

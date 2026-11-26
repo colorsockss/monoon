@@ -1,0 +1,16 @@
+schemaVersion: 40
+objects:
+- id: 27ff35c0-72b0-5f9a-beba-f73d710721fb
+  name: "Pieces/2-Settler"
+  x: 0
+  y: 0
+  width: 38
+  height: 42
+  components:
+  - type: spriteRenderer
+    assetId: "ae548e06-fa92-56d3-b924-ed97ee83ee44"
+    order: 5
+    sortByY: true
+  - type: spriteAnimator
+    controller: "0da614df-02eb-55db-a18e-166abc782d43"
+    playOnStart: true

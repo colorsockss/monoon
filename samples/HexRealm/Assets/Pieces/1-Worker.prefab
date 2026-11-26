@@ -1,0 +1,16 @@
+schemaVersion: 40
+objects:
+- id: e5f678fa-caf9-5c33-85e3-77327b934952
+  name: "Pieces/1-Worker"
+  x: 0
+  y: 0
+  width: 38
+  height: 42
+  components:
+  - type: spriteRenderer
+    assetId: "f4024c81-69a4-59e9-a2ea-3ea536d47707"
+    order: 5
+    sortByY: true
+  - type: spriteAnimator
+    controller: "7aa49b42-860a-5c0f-97f5-30d60b1239de"
+    playOnStart: true
