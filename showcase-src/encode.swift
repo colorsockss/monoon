@@ -1,6 +1,6 @@
 // encode out.mp4 frames-dir [fps] : joins numbered PNG frames (0000.png, 0001.png, …) of a headless replay into an H.264 mp4.
-// Frames are scaled up with nearest-neighbour by the largest whole factor that fits 1080 lines (800×450 -> 1600×900,
-// 384×216 -> 1920×1080), or by ENCODE_SCALE, so pixel art stays sharp. No ffmpeg.
+// Frames are fitted to ENCODE_HEIGHT lines (1080): nearest-neighbour when that is a whole multiple, otherwise a high-quality
+// downscale of frames rendered larger (film.py renders at ceil(1080 / height) times the game size). No ffmpeg.
 import AVFoundation; import CoreGraphics; import ImageIO
 
 let a = CommandLine.arguments
@@ -13,8 +13,9 @@ func load(_ name: String) -> CGImage {
     return CGImageSourceCreateImageAtIndex(source, 0, nil)!
 }
 let first = load(files[0])
-let scale = Int(ProcessInfo.processInfo.environment["ENCODE_SCALE"] ?? "") ?? max(1, 1080 / first.height)
-let width = first.width * scale, height = first.height * scale
+let height = Int(ProcessInfo.processInfo.environment["ENCODE_HEIGHT"] ?? "") ?? 1080
+let width = (first.width * height / first.height + 1) / 2 * 2
+let exact = height % first.height == 0
 let out = URL(fileURLWithPath: a[1]); try? FileManager.default.removeItem(at: out)
 let writer = try AVAssetWriter(outputURL: out, fileType: .mp4)
 let input = AVAssetWriterInput(mediaType: .video, outputSettings: [AVVideoCodecKey: AVVideoCodecType.h264, AVVideoWidthKey: width,
@@ -30,7 +31,7 @@ for (i, name) in files.enumerated() {
     let c = CGContext(data: CVPixelBufferGetBaseAddress(buffer!), width: width, height: height, bitsPerComponent: 8,
         bytesPerRow: CVPixelBufferGetBytesPerRow(buffer!), space: CGColorSpace(name: CGColorSpace.sRGB)!,
         bitmapInfo: CGImageAlphaInfo.noneSkipFirst.rawValue | CGBitmapInfo.byteOrder32Little.rawValue)!
-    c.interpolationQuality = .none
+    c.interpolationQuality = exact ? .none : .high
     c.draw(i == 0 ? first : load(name), in: CGRect(x: 0, y: 0, width: width, height: height))
     CVPixelBufferUnlockBaseAddress(buffer!, [])
     adaptor.append(buffer!, withPresentationTime: CMTime(value: CMTimeValue(i), timescale: fps))

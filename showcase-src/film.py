@@ -6,7 +6,7 @@
 A shot file names the sample and one or more parts. Each part copies the sample, makes the part's scene the start scene,
 builds the Release player, writes an .inputreplay from the part's inputs and replays it headless while the player saves
 every frame as PNG (MONOON_REPLAY_SNAPSHOTS, SDL software renderer). The frames of all parts are joined into one
-60 fps mp4 (largest whole scale within 1080 lines) by encode.swift, and frames.swift writes a contact sheet next to it for checking.
+1080-line 60 fps mp4 by encode.swift (frames are rendered at least 1080 lines tall, so text stays sharp), and frames.swift writes a contact sheet next to it for checking.
 
     {"sample": "KeyRoom", "parts": [{
         "scene": "Scenes/Showcase.scene",      # optional, default: the sample's start scene
@@ -46,6 +46,8 @@ def prepare(sample, scene, profile='distribution'):
     """Copy of the sample that starts in `scene`; reused while the sample and scene are unchanged."""
     src = ROOT / 'samples' / sample
     digest = hashlib.sha256((scene + profile).encode())
+    for t in sorted((ROOT / 'player-templates').rglob('MoNoonPlayer*')):  # a rebuilt player template means a new build
+        digest.update(str(t.stat().st_mtime_ns).encode())
     for p in sorted(src.rglob('*')):
         if p.is_file() and not {'.monoon', 'bin', 'obj', 'Tests'} & set(p.relative_to(src).parts):
             digest.update(str(p.relative_to(src)).encode()); digest.update(p.read_bytes())
@@ -112,7 +114,9 @@ def film(shot_path, out_dir, keep_frames):
         text, frames = recording(part, settings.read_text(encoding='utf-8'))
         replay, profile, frame_dir = run / f'part{i}.inputreplay', run / f'profile{i}', run / f'part{i}'
         replay.write_text(text, encoding='utf-8'); frame_dir.mkdir()
+        logical_height = int(field(settings.read_text(encoding='utf-8'), 'height'))
         env = dict(os.environ, MONOON_USER_DATA=str(profile), MONOON_FEEDBACK_LOG=str(run / f'feedback{i}.log'),
+                   MONOON_REPLAY_SNAPSHOT_SCALE=str(-(-1080 // logical_height)),  # render at least 1080 lines
                    MONOON_REPLAY_SNAPSHOTS=f'{frame_dir};{",".join(map(str, range(frames)))}',
                    SDL_VIDEO_DRIVER='monoon-no-video', SDL_AUDIO_DRIVER='monoon-no-audio')
         with (run / f'part{i}.log').open('wb') as log:
