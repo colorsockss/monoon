@@ -14,6 +14,14 @@ macOS arm64, Windows x64, Linux x64를 지원합니다. 게임은 Release 또는
 | [PlatformerLab](samples/PlatformerLab/) | 경사 타일을 오르고, 한쪽 통과 발판을 뛰어오르고, 움직이는 발판을 타고, 경비병의 길찾기와 컷신을 봅니다. 흔들다리·도르래·곡선 경로 발판, 조명, 타일 스트리밍은 다른 쇼케이스 씬에 있습니다. | [발판과 스켈레탈 애니메이션](docs/manual/rig-animation.md) · [플랫폼 물리](docs/manual/platformer-physics.md) |
 | [InventoryLab](samples/InventoryLab/) | 약초상과 대화해 의뢰를 받고 보상을 수령합니다. 최신 저장이 손상되면 직전 저장에서 이어갑니다. | [게임 스크립트 API](docs/manual/api.md) · [세 운영체제에서 확인한 저장 복구](engine/tests/results/slot-recovery/README.md) |
 
+위 샘플은 기능마다 쇼케이스 씬으로 엔진 기능을 하나씩 보여 줍니다. 아래 게임 샘플은 그 기능을 함께 써서 처음부터 끝까지 플레이할 수 있게 만든 작은 게임입니다.
+
+| 게임 샘플 | 장르 | 플레이 방법 |
+| --- | --- | --- |
+| [LedgeRun](samples/LedgeRun/) | 직교 타일맵 횡스크롤 플랫포머 | [LedgeRun](docs/manual/ledgerun.md) |
+| [IsoBand](samples/IsoBand/) | 등각 타일맵 용병단 액션 RPG | [IsoBand](docs/manual/isoband.md) |
+| [HexRealm](samples/HexRealm/) | 육각 타일맵 턴제 전략 | [HexRealm](docs/manual/hexrealm.md) |
+
 ## 엔진은 어떻게 동작하나요?
 
 - **편집 도구**는 Avalonia로 만들었습니다. 애니메이션 타임라인에서 프레임 순서와 시간을 바꿀 수 있습니다. 타일맵은 씬에서 브러시로 칠합니다. [애니메이션 편집기](docs/manual/sprites.md) · [타일맵 편집기](docs/manual/tilemaps.md)
