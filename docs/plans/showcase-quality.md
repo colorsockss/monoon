@@ -301,7 +301,7 @@ KeyRoom-Moves 다시 만듦(2026-11-25, 사용자: 이번 영상들이 예전보
 | CardLab | 20.3초 | |
 | SeedLab · SeedLab-Crowd · SeedLab-Route | 20.9 · 16.0 · 11.7초 | 군중은 따로 뺐다(사용자 결정) |
 | CollisionLab · CollisionLab-Casts | 8.7 · 12.2초 | 아트 다시 만듦(밤 들판·돌 9종 아틀라스, 횃불 복도). Casts는 따로 뺐고(사용자 결정), 레이어 이름표와 마스크가 다른 레이 세 개로 문이 무엇을 보여 주는지 드러낸다 |
-| 게임 샘플 LedgeRun · IsoBand · HexRealm | 53.1 · 56.5 · 50.1초 | HexRealm 유닛이 경로를 따라 움직이고 공격 때 들이받는다. 나머지 퀄리티업은 나중에, README·매뉴얼에는 기능 샘플 영상만 넣는다(사용자 결정) |
+| 게임 샘플 LedgeRun · IsoBand · HexRealm | 74.0 · 82.7 · 129.6초 | 2026-11-26 리메이크 후 다시 촬영. 처음부터 끝까지 한 판을 편집 없이 연속 재생한다. 1분이 넘어 mp4는 상한을 올려 인코딩했고(로컬 전용), README 게임 샘플 갤러리와 각 매뉴얼 장에 포스터·WebP를 넣었다(사용자 결정 2026-11-26, 이전 결정 '기능 샘플 영상만'을 바꿈) |
 
 못 찍은 것: DisplayLab(헤드리스에서는 표시 설정을 바꿀 수 없음). 실제 창 녹화로 보충할 후보: DisplayLab, BarrageLab의 draw call, ParticleLab의 Play 중 편집.
 

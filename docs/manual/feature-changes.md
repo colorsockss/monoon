@@ -67,13 +67,15 @@ python3 showcase-src/film.py showcase-src/shots/<이름>.json
 
 - 형식: 720p, 30fps, 8.5MB 이하 mp4와 포스터 JPG, 560px·24fps·품질 45 WebP. 12fps WebP는 끊겨 보여서 24fps로 올렸다(사용자 결정 2026-11-26, 용량은 약 두 배). 방법과 촬영 표는 [쇼케이스 품질 계획 7장](../plans/showcase-quality.md#7-촬영과-컷-편집)에 있다.
 - 기존 mp4에서 WebP만 다시 만들 때는 `python3 showcase-src/preview.py ~/Movies/MoNoon-showcase/<이름>.mp4 docs/media/showcase/<이름>.webp`를 쓴다.
+- 1분이 넘는 영상(게임 샘플)은 8.5MB 상한에서 비트레이트가 1 Mbps 아래로 떨어져 글자와 육각 가장자리가 자글거린다. `ENCODE_MAX_MB=40 ENCODE_HEIGHT=720 engine/.artifacts/film/tools/encode <out>.mp4 <frames> 30`처럼 상한을 올려 인코딩한다. 저장소에 넣는 것은 WebP와 JPG뿐이다. (HexRealm 119초가 0.55 Mbps로 깨졌다)
+- Codex 샌드박스 안에서는 AVFoundation 인코더가 `SIGTRAP`으로 죽는다. 샌드박스에서는 `film.py`의 `joined/` 프레임만 남기고 인코딩은 밖에서 한다. 다른 인코더(Blender, 앱에 딸린 ffmpeg)로 우회한 저비트레이트 영상은 쓰지 않는다. (2026-11-26 샘플 리메이크)
 - 에디터 패널이나 실제 창이 필요한 장면(DisplayLab, Stats 숫자, Particle 패널 편집)만 GUI 잠금 아래 화면 녹화로 찍는다.
 
 ### 영상을 다시 찍을지 판단
 
 기능을 더하거나 고치거나 뺀 작업은 마무리 보고에 "다시 찍을 영상: …, 그대로 둘 영상: …(이유)"를 적는다. 판단은 두 단계다.
 
-1. **후보 찾기.** 다음 명령은 영상마다 마지막으로 WebP를 커밋한 뒤 바뀐 파일을 보여 준다. 커밋하지 않은 편집도 포함한다. 후보는 그 샘플·아트 원본·촬영 파일이 바뀐 영상과, 런타임 엔진(`Engine.Core`·`Engine.Desktop`·`Engine.Player`·`Engine.Authoring`, `engine/native`)이 바뀐 경우의 모든 영상이다. 게임 샘플은 문서에 WebP가 없으므로 기준 커밋을 직접 준다.
+1. **후보 찾기.** 다음 명령은 영상마다 마지막으로 WebP를 커밋한 뒤 바뀐 파일을 보여 준다. 커밋하지 않은 편집도 포함한다. 후보는 그 샘플·아트 원본·촬영 파일이 바뀐 영상과, 런타임 엔진(`Engine.Core`·`Engine.Desktop`·`Engine.Player`·`Engine.Authoring`, `engine/native`)이 바뀐 경우의 모든 영상이다.
 
    ```sh
    python3 showcase-src/stale.py            # 영상별 마지막 WebP 커밋 이후
@@ -97,6 +99,7 @@ python3 showcase-src/film.py showcase-src/shots/<이름>.json
 ## 문서와 미디어
 
 - README는 엔진 설명(소개, 설계 원칙, 숫자, 구조, 시작하기)을 먼저 두고 쇼케이스와 게임 샘플은 뒤의 별도 섹션에 둔다. 맨 위 링크 줄에 쇼케이스 링크를 둔다.
+- 게임 샘플도 쇼케이스처럼 README 게임 샘플 갤러리에 포스터 JPG를 두고 매뉴얼 장(`ledgerun.md` 등)으로 링크하며, 매뉴얼 장 첫 단락 뒤에 한 판을 재생한 WebP를 넣는다(사용자 결정 2026-11-26).
 - 영상은 저장소의 WebP와 JPG 포스터로 넣는다. mp4는 README에서 재생되지 않는다. GitHub `user-attachments` 링크는 이슈·댓글에 올리지 않은 파일이면 로그인하지 않은 방문자에게 404가 나고, 바꿀 때마다 이슈가 필요하다.
 - 매뉴얼에는 `![설명](../media/showcase/<이름>.webp)` 뒤에 기울임꼴 설명 한 줄을 붙인다.
 - 포트폴리오로 읽히는 문서다. 장마다 그 기능이 무엇을 보여 주는지 첫 문장에 쓰고, 숫자(용량, 개수, 프레임 비용)는 측정한 값만 쓴다.

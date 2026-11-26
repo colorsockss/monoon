@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Which showcase videos may need filming again: files that changed since each video's preview was last committed.
 
-    python3 showcase-src/stale.py            # since each docs/media/showcase/<shot>.webp (game samples: their shot file)
+    python3 showcase-src/stale.py            # since each docs/media/showcase/<shot>.webp (game samples too)
     python3 showcase-src/stale.py <commit>   # since one commit for every shot
 
 Uncommitted edits count. A listed video is a candidate, not a verdict: docs/manual/feature-changes.md#영상을-다시-찍을지-판단
@@ -27,7 +27,7 @@ def changes(shot, base=None):
     sample = json.loads(shot.read_text())['sample']
     base = base or next(iter(git('log', '-1', '--format=%H', '--', f'docs/media/showcase/{shot.stem}.webp')), None)
     if base is None:
-        return None, [], []  # game samples have no committed preview to date them; pass a commit
+        return None, [], []  # no committed preview yet to date it; pass a commit
     own = (f'samples/{sample}/', f'showcase-src/{art_folder(sample)}/', f'showcase-src/shots/{shot.name}')
     changed = git('diff', '--name-only', base, '--')
     return base[:7], [p for p in changed if p.startswith(own)], [p for p in changed if p.startswith(RUNTIME)]

@@ -87,13 +87,11 @@ KeyRoom 쇼케이스: 열쇠를 주우면 문이 열리고(이벤트 연결), �
 
 ## 게임 샘플
 
-쇼케이스의 기능을 함께 써서 처음부터 끝까지 플레이할 수 있게 만든 작은 게임입니다.
+쇼케이스의 기능을 함께 써서 처음부터 끝까지 플레이할 수 있게 만든 작은 게임입니다. 이미지를 누르면 플레이 방법을 담은 매뉴얼 장으로 가고, 거기서 처음부터 끝까지 한 판을 재생한 화면을 볼 수 있습니다. 쇼케이스와 같은 방식으로 입력 기록을 창 없이 재생해 만들었습니다.
 
-| 게임 샘플 | 장르 | 플레이 방법 |
+| | | |
 | --- | --- | --- |
-| [LedgeRun](samples/LedgeRun/) | 직교 타일맵 횡스크롤 플랫포머 | [LedgeRun](docs/manual/ledgerun.md) |
-| [IsoBand](samples/IsoBand/) | 등각 타일맵 용병단 액션 RPG | [IsoBand](docs/manual/isoband.md) |
-| [HexRealm](samples/HexRealm/) | 육각 타일맵 턴제 전략 | [HexRealm](docs/manual/hexrealm.md) |
+| [![LedgeRun](docs/media/showcase/LedgeRun.jpg)](docs/manual/ledgerun.md)<br>**LedgeRun** · 직교 타일맵 횡스크롤 플랫포머<br>초원·동굴·탑을 지나 정상의 수호자와 싸우는 산길 배달부<br>[플레이 방법](docs/manual/ledgerun.md) · [프로젝트](samples/LedgeRun/) | [![IsoBand](docs/media/showcase/IsoBand.jpg)](docs/manual/isoband.md)<br>**IsoBand** · 등각 타일맵 용병단 액션 RPG<br>자동 전투 용병단이 습지·유적·묘지를 지나 보스를 쓰러뜨림<br>[플레이 방법](docs/manual/isoband.md) · [프로젝트](samples/IsoBand/) | [![HexRealm](docs/media/showcase/HexRealm.jpg)](docs/manual/hexrealm.md)<br>**HexRealm** · 육각 타일맵 턴제 전략<br>도시를 세우고 국경을 넓히며 25턴 안에 해안을 차지함<br>[플레이 방법](docs/manual/hexrealm.md) · [프로젝트](samples/HexRealm/) |
 
 ## 문서
 

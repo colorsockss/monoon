@@ -2,6 +2,10 @@
 
 IsoBand는 대장을 움직여 **랜턴 용병단**을 이끄는 등각 액션 RPG다. Haven에서 단원을 꾸리고, 습지와 유적을 거쳐 Stag Guardian을 쓰러뜨린 뒤 마을로 돌아온다. [플레이 및 검증 기록](../../engine/tests/results/isoband/README.md)
 
+![IsoBand 한 판. Haven에서 단원을 꾸린 용병단이 습지·유적·묘지의 적 무리를 자동 전투와 Pulse로 물리치고, Stag Guardian을 쓰러뜨린 뒤 마을로 돌아와 원정 장부를 연다.](../media/showcase/IsoBand.webp)
+
+*IsoBand 한 판. Haven에서 단원을 꾸린 용병단이 습지·유적·묘지의 적 무리를 자동 전투와 Pulse로 물리치고, Stag Guardian을 쓰러뜨린 뒤 마을로 돌아와 원정 장부를 연다.*
+
 ## 조작
 
 | 동작 | 키보드·마우스 | 패드 |
