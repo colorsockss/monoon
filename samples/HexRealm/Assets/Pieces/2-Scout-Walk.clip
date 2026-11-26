@@ -1,0 +1,18 @@
+frames:
+- sprite: 9ef36de2-40ec-5b8f-979d-aeafb381e482
+  seconds: 0.08
+  useRenderer: false
+  source: {x: 0, y: 42, width: 38, height: 42}
+- sprite: 9ef36de2-40ec-5b8f-979d-aeafb381e482
+  seconds: 0.08
+  useRenderer: false
+  source: {x: 38, y: 42, width: 38, height: 42}
+- sprite: 9ef36de2-40ec-5b8f-979d-aeafb381e482
+  seconds: 0.08
+  useRenderer: false
+  source: {x: 76, y: 42, width: 38, height: 42}
+- sprite: 9ef36de2-40ec-5b8f-979d-aeafb381e482
+  seconds: 0.08
+  useRenderer: false
+  source: {x: 114, y: 42, width: 38, height: 42}
+loop: true

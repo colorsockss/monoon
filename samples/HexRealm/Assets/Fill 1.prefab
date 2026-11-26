@@ -1,0 +1,12 @@
+schemaVersion: 40
+objects:
+- id: e60679a2-bac8-561c-9b6c-21ec261967d5
+  name: "Fill 1"
+  x: 0
+  y: 0
+  width: 1
+  height: 2
+  components:
+  - type: spriteRenderer
+    order: 13
+    squareColor: "#56ccad"

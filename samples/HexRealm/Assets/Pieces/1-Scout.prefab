@@ -1,0 +1,16 @@
+schemaVersion: 40
+objects:
+- id: da1e670c-8cca-5c45-8ee6-15ce2b94b802
+  name: "Pieces/1-Scout"
+  x: 0
+  y: 0
+  width: 38
+  height: 42
+  components:
+  - type: spriteRenderer
+    assetId: "b61c3138-3af6-5b74-8b1d-dc24f0cdfeb1"
+    order: 5
+    sortByY: true
+  - type: spriteAnimator
+    controller: "2e030786-3080-57a0-9b36-e09661c02a14"
+    playOnStart: true

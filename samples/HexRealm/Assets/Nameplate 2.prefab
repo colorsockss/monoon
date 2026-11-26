@@ -1,0 +1,12 @@
+schemaVersion: 40
+objects:
+- id: 80689e41-39db-5c2c-b716-879187c9ae41
+  name: "Nameplate 2"
+  x: 0
+  y: 0
+  width: 132
+  height: 44
+  components:
+  - type: spriteRenderer
+    assetId: "a3526aab-3d62-5764-ac97-fbab5a379bf7"
+    order: 10

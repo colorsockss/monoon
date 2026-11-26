@@ -1,0 +1,15 @@
+schemaVersion: 40
+objects:
+- id: 02a057ed-79e5-5f93-b098-90fd0771ec43
+  name: "Claim 1"
+  x: 0
+  y: 0
+  width: 48
+  height: 56
+  components:
+  - type: spriteRenderer
+    assetId: "d5209090-155b-515b-afbd-7a38d47f21db"
+    order: -6
+  - type: spriteAnimator
+    clip: "30265fb5-7d13-54e2-a65b-284262f90df7"
+    playOnStart: true

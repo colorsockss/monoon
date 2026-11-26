@@ -1,0 +1,12 @@
+schemaVersion: 40
+objects:
+- id: 1fc7af3f-8118-5771-9621-6b80c2943d42
+  name: "Health"
+  x: 0
+  y: 0
+  width: 28
+  height: 4
+  components:
+  - type: spriteRenderer
+    order: 7
+    squareColor: "#182a32"

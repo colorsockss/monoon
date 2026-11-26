@@ -1,0 +1,15 @@
+schemaVersion: 40
+objects:
+- id: c17ec830-189a-5321-84b6-875b9413b93f
+  name: "Smoke"
+  x: 0
+  y: 0
+  width: 52
+  height: 52
+  components:
+  - type: spriteRenderer
+    assetId: "9d95fdf1-3ac6-57b1-9aaa-429ac4cd153b"
+    order: 15
+  - type: spriteAnimator
+    clip: "0ef99e2f-3b82-5741-bcf5-e42b69cb93e3"
+    playOnStart: true

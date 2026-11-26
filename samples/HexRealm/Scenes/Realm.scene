@@ -1,691 +1,3034 @@
-schemaVersion: 34
+schemaVersion: 40
 objects:
-- id: 5e4179b8-b367-5ca5-a904-9fec46b12a6f
-  name: "Backdrop"
-  x: 0
-  y: 0
-  width: 760
-  height: 430
+- id: d0eee236-7f70-54ab-9f1d-9acc6fdef239
+  name: "Chart water"
+  x: 79
+  y: -8
+  width: 1021
+  height: 575
   components:
   - type: spriteRenderer
-    order: -15
-    squareColor: "#192739"
+    assetId: "739e9abe-a161-52dc-889e-20ff48898f66"
+    order: -20
   - type: parallax2D
     scrollX: 0
     scrollY: 0
-- id: 48c55722-f08d-5e04-8618-102d1a423107
+- id: 2f1a3334-1f27-5633-adb7-d18092ecd345
   name: "Ground"
-  x: 96
-  y: 50
+  x: 24
+  y: 18
   width: 48
   height: 56
   components:
   - type: tilemap2D
-    layout: HexPointy
-    cellSize: {width: 48, height: 56}
-    tileset: bf7c56a5-0f15-5420-9ac8-6e83e32b3d77
+    layout: "HexPointy"
+    cellSize: {"width": 48, "height": 56}
+    tileset: "84d9b0d1-838f-5efd-9202-83249920c6cb"
+    order: -12
+    chunks: []
+- id: da828246-dd31-53fa-97d0-9a4d2d285fa1
+  name: "Coast"
+  x: 24
+  y: 18
+  width: 48
+  height: 56
+  components:
+  - type: tilemap2D
+    layout: "HexPointy"
+    cellSize: {"width": 48, "height": 56}
+    tileset: "655231de-803a-5f2c-8870-ec3a14ee6dd8"
+    order: -11
+    chunks: []
+- id: e329a805-2dd8-523a-8163-8647a30c135f
+  name: "Districts"
+  x: 24
+  y: 18
+  width: 48
+  height: 56
+  components:
+  - type: tilemap2D
+    layout: "HexPointy"
+    cellSize: {"width": 48, "height": 56}
+    tileset: "655231de-803a-5f2c-8870-ec3a14ee6dd8"
+    order: -10
+    chunks: []
+- id: 4b90aa55-925b-544e-9655-b928d9f59bb7
+  name: "Fog"
+  x: 24
+  y: 18
+  width: 48
+  height: 56
+  components:
+  - type: tilemap2D
+    layout: "HexPointy"
+    cellSize: {"width": 48, "height": 56}
+    tileset: "655231de-803a-5f2c-8870-ec3a14ee6dd8"
+    order: -9
+    chunks: []
+- id: cedf7356-db82-5fb1-87fd-eaa9c2ba0c38
+  name: "Borders"
+  x: 24
+  y: 18
+  width: 48
+  height: 56
+  components:
+  - type: tilemap2D
+    layout: "HexPointy"
+    cellSize: {"width": 48, "height": 56}
+    tileset: "655231de-803a-5f2c-8870-ec3a14ee6dd8"
+    order: -8
+    chunks: []
+- id: bdb4003d-8d01-5aab-b561-1362b577ae3e
+  name: "Orders"
+  x: 24
+  y: 18
+  width: 48
+  height: 56
+  components:
+  - type: tilemap2D
+    layout: "HexPointy"
+    cellSize: {"width": 48, "height": 56}
+    tileset: "655231de-803a-5f2c-8870-ec3a14ee6dd8"
+    order: -7
+    chunks: []
+- id: e4d06fe6-54bc-5df1-95ca-3af3daa6832d
+  name: "Reveal"
+  x: 24
+  y: 18
+  width: 48
+  height: 56
+  components:
+  - type: tilemap2D
+    layout: "HexPointy"
+    cellSize: {"width": 48, "height": 56}
+    tileset: "655231de-803a-5f2c-8870-ec3a14ee6dd8"
     order: -6
-    chunks:
-    - x: 0
-      y: 0
-      cells:
-      - {index: 0, tile: 4}
-      - {index: 1, tile: 4}
-      - {index: 2, tile: 4}
-      - {index: 3, tile: 4}
-      - {index: 4, tile: 4}
-      - {index: 5, tile: 4}
-      - {index: 6, tile: 4}
-      - {index: 7, tile: 4}
-      - {index: 8, tile: 4}
-      - {index: 9, tile: 4}
-      - {index: 10, tile: 4}
-      - {index: 11, tile: 4}
-      - {index: 12, tile: 4}
-      - {index: 13, tile: 4}
-      - {index: 14, tile: 4}
-      - {index: 15, tile: 4}
-      - {index: 16, tile: 4}
-      - {index: 17, tile: 4}
-      - {index: 18, tile: 4}
-      - {index: 19, tile: 4}
-      - {index: 20, tile: 4}
-      - {index: 21, tile: 4}
-      - {index: 22, tile: 4}
-      - {index: 23, tile: 4}
-      - {index: 24, tile: 4}
-      - {index: 25, tile: 4}
-      - {index: 26, tile: 4}
-      - {index: 27, tile: 4}
-      - {index: 28, tile: 4}
-      - {index: 29, tile: 4}
-      - {index: 32, tile: 4}
-      - {index: 33, tile: 2}
-      - {index: 34, tile: 1}
-      - {index: 35, tile: 1}
-      - {index: 36, tile: 6}
-      - {index: 37, tile: 1}
-      - {index: 38, tile: 1}
-      - {index: 39, tile: 4}
-      - {index: 40, tile: 1}
-      - {index: 41, tile: 6}
-      - {index: 42, tile: 1}
-      - {index: 43, tile: 1}
-      - {index: 44, tile: 6}
-      - {index: 45, tile: 6}
-      - {index: 46, tile: 6}
-      - {index: 47, tile: 6}
-      - {index: 48, tile: 1}
-      - {index: 49, tile: 1}
-      - {index: 50, tile: 1}
-      - {index: 51, tile: 6}
-      - {index: 52, tile: 1}
-      - {index: 53, tile: 2}
-      - {index: 54, tile: 1}
-      - {index: 55, tile: 6}
-      - {index: 56, tile: 6}
-      - {index: 57, tile: 1}
-      - {index: 58, tile: 6}
-      - {index: 59, tile: 1}
-      - {index: 60, tile: 6}
-      - {index: 61, tile: 4}
-      - {index: 64, tile: 4}
-      - {index: 65, tile: 4}
-      - {index: 66, tile: 6}
-      - {index: 67, tile: 1}
-      - {index: 68, tile: 3}
-      - {index: 69, tile: 1}
-      - {index: 70, tile: 1}
-      - {index: 71, tile: 2}
-      - {index: 72, tile: 2}
-      - {index: 73, tile: 3}
-      - {index: 74, tile: 1}
-      - {index: 75, tile: 5}
-      - {index: 76, tile: 6}
-      - {index: 77, tile: 1}
-      - {index: 78, tile: 2}
-      - {index: 79, tile: 1}
-      - {index: 80, tile: 6}
-      - {index: 81, tile: 1}
-      - {index: 82, tile: 6}
-      - {index: 83, tile: 1}
-      - {index: 84, tile: 1}
-      - {index: 85, tile: 1}
-      - {index: 86, tile: 6}
-      - {index: 87, tile: 1}
-      - {index: 88, tile: 6}
-      - {index: 89, tile: 1}
-      - {index: 90, tile: 2}
-      - {index: 91, tile: 6}
-      - {index: 92, tile: 1}
-      - {index: 93, tile: 4}
-      - {index: 96, tile: 4}
-      - {index: 97, tile: 1}
-      - {index: 98, tile: 1}
-      - {index: 99, tile: 1}
-      - {index: 100, tile: 1}
-      - {index: 101, tile: 1}
-      - {index: 102, tile: 1}
-      - {index: 103, tile: 1}
-      - {index: 104, tile: 4}
-      - {index: 105, tile: 4}
-      - {index: 106, tile: 1}
-      - {index: 107, tile: 2}
-      - {index: 108, tile: 3}
-      - {index: 109, tile: 2}
-      - {index: 110, tile: 2}
-      - {index: 111, tile: 2}
-      - {index: 112, tile: 1}
-      - {index: 113, tile: 2}
-      - {index: 114, tile: 1}
-      - {index: 115, tile: 1}
-      - {index: 116, tile: 6}
-      - {index: 117, tile: 1}
-      - {index: 118, tile: 5}
-      - {index: 119, tile: 1}
-      - {index: 120, tile: 5}
-      - {index: 121, tile: 1}
-      - {index: 122, tile: 1}
-      - {index: 123, tile: 3}
-      - {index: 124, tile: 1}
-      - {index: 125, tile: 4}
-      - {index: 128, tile: 4}
-      - {index: 129, tile: 2}
-      - {index: 130, tile: 5}
-      - {index: 131, tile: 1}
-      - {index: 132, tile: 1}
-      - {index: 133, tile: 4}
-      - {index: 134, tile: 1}
-      - {index: 135, tile: 5}
-      - {index: 136, tile: 6}
-      - {index: 137, tile: 2}
-      - {index: 138, tile: 1}
-      - {index: 139, tile: 1}
-      - {index: 140, tile: 2}
-      - {index: 141, tile: 2}
-      - {index: 142, tile: 3}
-      - {index: 143, tile: 2}
-      - {index: 144, tile: 3}
-      - {index: 145, tile: 1}
-      - {index: 146, tile: 3}
-      - {index: 147, tile: 1}
-      - {index: 148, tile: 6}
-      - {index: 149, tile: 2}
-      - {index: 150, tile: 3}
-      - {index: 151, tile: 1}
-      - {index: 152, tile: 6}
-      - {index: 153, tile: 6}
-      - {index: 154, tile: 1}
-      - {index: 155, tile: 1}
-      - {index: 156, tile: 6}
-      - {index: 157, tile: 4}
-      - {index: 160, tile: 4}
-      - {index: 161, tile: 1}
-      - {index: 162, tile: 1}
-      - {index: 163, tile: 2}
-      - {index: 164, tile: 2}
-      - {index: 165, tile: 1}
-      - {index: 166, tile: 1}
-      - {index: 167, tile: 1}
-      - {index: 168, tile: 3}
-      - {index: 169, tile: 4}
-      - {index: 170, tile: 6}
-      - {index: 171, tile: 2}
-      - {index: 172, tile: 1}
-      - {index: 173, tile: 5}
-      - {index: 174, tile: 1}
-      - {index: 175, tile: 1}
-      - {index: 176, tile: 1}
-      - {index: 177, tile: 2}
-      - {index: 178, tile: 6}
-      - {index: 179, tile: 1}
-      - {index: 180, tile: 1}
-      - {index: 181, tile: 2}
-      - {index: 182, tile: 1}
-      - {index: 183, tile: 4}
-      - {index: 184, tile: 2}
-      - {index: 185, tile: 3}
-      - {index: 186, tile: 6}
-      - {index: 187, tile: 5}
-      - {index: 188, tile: 3}
-      - {index: 189, tile: 4}
-      - {index: 192, tile: 4}
-      - {index: 193, tile: 5}
-      - {index: 194, tile: 1}
-      - {index: 195, tile: 1}
-      - {index: 196, tile: 1}
-      - {index: 197, tile: 1}
-      - {index: 198, tile: 1}
-      - {index: 199, tile: 1}
-      - {index: 200, tile: 2}
-      - {index: 201, tile: 1}
-      - {index: 202, tile: 6}
-      - {index: 203, tile: 3}
-      - {index: 204, tile: 1}
-      - {index: 205, tile: 1}
-      - {index: 206, tile: 1}
-      - {index: 207, tile: 1}
-      - {index: 208, tile: 2}
-      - {index: 209, tile: 1}
-      - {index: 210, tile: 5}
-      - {index: 211, tile: 1}
-      - {index: 212, tile: 1}
-      - {index: 213, tile: 6}
-      - {index: 214, tile: 1}
-      - {index: 215, tile: 1}
-      - {index: 216, tile: 2}
-      - {index: 217, tile: 3}
-      - {index: 218, tile: 1}
-      - {index: 219, tile: 1}
-      - {index: 220, tile: 2}
-      - {index: 221, tile: 4}
-      - {index: 224, tile: 4}
-      - {index: 225, tile: 1}
-      - {index: 226, tile: 1}
-      - {index: 227, tile: 1}
-      - {index: 228, tile: 1}
-      - {index: 229, tile: 1}
-      - {index: 230, tile: 1}
-      - {index: 231, tile: 1}
-      - {index: 232, tile: 1}
-      - {index: 233, tile: 1}
-      - {index: 234, tile: 3}
-      - {index: 235, tile: 2}
-      - {index: 236, tile: 1}
-      - {index: 237, tile: 1}
-      - {index: 238, tile: 1}
-      - {index: 239, tile: 3}
-      - {index: 240, tile: 3}
-      - {index: 241, tile: 1}
-      - {index: 242, tile: 1}
-      - {index: 243, tile: 1}
-      - {index: 244, tile: 3}
-      - {index: 245, tile: 6}
-      - {index: 246, tile: 2}
-      - {index: 247, tile: 4}
-      - {index: 248, tile: 6}
-      - {index: 249, tile: 6}
-      - {index: 250, tile: 1}
-      - {index: 251, tile: 6}
-      - {index: 252, tile: 1}
-      - {index: 253, tile: 4}
-      - {index: 256, tile: 4}
-      - {index: 257, tile: 3}
-      - {index: 258, tile: 5}
-      - {index: 259, tile: 1}
-      - {index: 260, tile: 1}
-      - {index: 261, tile: 1}
-      - {index: 262, tile: 1}
-      - {index: 263, tile: 1}
-      - {index: 264, tile: 5}
-      - {index: 265, tile: 2}
-      - {index: 266, tile: 1}
-      - {index: 267, tile: 1}
-      - {index: 268, tile: 2}
-      - {index: 269, tile: 1}
-      - {index: 270, tile: 3}
-      - {index: 271, tile: 1}
-      - {index: 272, tile: 2}
-      - {index: 273, tile: 6}
-      - {index: 274, tile: 5}
-      - {index: 275, tile: 2}
-      - {index: 276, tile: 5}
-      - {index: 277, tile: 4}
-      - {index: 278, tile: 5}
-      - {index: 279, tile: 1}
-      - {index: 280, tile: 5}
-      - {index: 281, tile: 2}
-      - {index: 282, tile: 6}
-      - {index: 283, tile: 2}
-      - {index: 284, tile: 1}
-      - {index: 285, tile: 4}
-      - {index: 288, tile: 4}
-      - {index: 289, tile: 1}
-      - {index: 290, tile: 3}
-      - {index: 291, tile: 1}
-      - {index: 292, tile: 1}
-      - {index: 293, tile: 1}
-      - {index: 294, tile: 2}
-      - {index: 295, tile: 1}
-      - {index: 296, tile: 2}
-      - {index: 297, tile: 2}
-      - {index: 298, tile: 5}
-      - {index: 299, tile: 3}
-      - {index: 300, tile: 1}
-      - {index: 301, tile: 3}
-      - {index: 302, tile: 1}
-      - {index: 303, tile: 1}
-      - {index: 304, tile: 1}
-      - {index: 305, tile: 2}
-      - {index: 306, tile: 1}
-      - {index: 307, tile: 1}
-      - {index: 308, tile: 1}
-      - {index: 309, tile: 2}
-      - {index: 310, tile: 6}
-      - {index: 311, tile: 1}
-      - {index: 312, tile: 6}
-      - {index: 313, tile: 2}
-      - {index: 314, tile: 1}
-      - {index: 315, tile: 3}
-      - {index: 316, tile: 6}
-      - {index: 317, tile: 4}
-      - {index: 320, tile: 4}
-      - {index: 321, tile: 1}
-      - {index: 322, tile: 2}
-      - {index: 323, tile: 2}
-      - {index: 324, tile: 3}
-      - {index: 325, tile: 1}
-      - {index: 326, tile: 1}
-      - {index: 327, tile: 1}
-      - {index: 328, tile: 3}
-      - {index: 329, tile: 6}
-      - {index: 330, tile: 2}
-      - {index: 331, tile: 2}
-      - {index: 332, tile: 1}
-      - {index: 333, tile: 1}
-      - {index: 334, tile: 3}
-      - {index: 335, tile: 1}
-      - {index: 336, tile: 3}
-      - {index: 337, tile: 1}
-      - {index: 338, tile: 6}
-      - {index: 339, tile: 1}
-      - {index: 340, tile: 5}
-      - {index: 341, tile: 1}
-      - {index: 342, tile: 1}
-      - {index: 343, tile: 1}
-      - {index: 344, tile: 1}
-      - {index: 345, tile: 3}
-      - {index: 346, tile: 1}
-      - {index: 347, tile: 1}
-      - {index: 348, tile: 2}
-      - {index: 349, tile: 4}
-      - {index: 352, tile: 4}
-      - {index: 353, tile: 2}
-      - {index: 354, tile: 1}
-      - {index: 355, tile: 2}
-      - {index: 356, tile: 1}
-      - {index: 357, tile: 1}
-      - {index: 358, tile: 1}
-      - {index: 359, tile: 1}
-      - {index: 360, tile: 3}
-      - {index: 361, tile: 1}
-      - {index: 362, tile: 2}
-      - {index: 363, tile: 2}
-      - {index: 364, tile: 6}
-      - {index: 365, tile: 2}
-      - {index: 366, tile: 2}
-      - {index: 367, tile: 1}
-      - {index: 368, tile: 6}
-      - {index: 369, tile: 1}
-      - {index: 370, tile: 6}
-      - {index: 371, tile: 1}
-      - {index: 372, tile: 6}
-      - {index: 373, tile: 1}
-      - {index: 374, tile: 1}
-      - {index: 375, tile: 1}
-      - {index: 376, tile: 1}
-      - {index: 377, tile: 1}
-      - {index: 378, tile: 2}
-      - {index: 379, tile: 1}
-      - {index: 380, tile: 1}
-      - {index: 381, tile: 4}
-      - {index: 384, tile: 4}
-      - {index: 385, tile: 6}
-      - {index: 386, tile: 1}
-      - {index: 387, tile: 4}
-      - {index: 388, tile: 1}
-      - {index: 389, tile: 2}
-      - {index: 390, tile: 2}
-      - {index: 391, tile: 4}
-      - {index: 392, tile: 1}
-      - {index: 393, tile: 3}
-      - {index: 394, tile: 1}
-      - {index: 395, tile: 6}
-      - {index: 396, tile: 1}
-      - {index: 397, tile: 1}
-      - {index: 398, tile: 1}
-      - {index: 399, tile: 5}
-      - {index: 400, tile: 1}
-      - {index: 401, tile: 1}
-      - {index: 402, tile: 2}
-      - {index: 403, tile: 2}
-      - {index: 404, tile: 1}
-      - {index: 405, tile: 1}
-      - {index: 406, tile: 1}
-      - {index: 407, tile: 1}
-      - {index: 408, tile: 1}
-      - {index: 409, tile: 1}
-      - {index: 410, tile: 6}
-      - {index: 411, tile: 1}
-      - {index: 412, tile: 4}
-      - {index: 413, tile: 4}
-      - {index: 416, tile: 4}
-      - {index: 417, tile: 6}
-      - {index: 418, tile: 3}
-      - {index: 419, tile: 3}
-      - {index: 420, tile: 1}
-      - {index: 421, tile: 1}
-      - {index: 422, tile: 2}
-      - {index: 423, tile: 4}
-      - {index: 424, tile: 2}
-      - {index: 425, tile: 1}
-      - {index: 426, tile: 2}
-      - {index: 427, tile: 3}
-      - {index: 428, tile: 2}
-      - {index: 429, tile: 1}
-      - {index: 430, tile: 2}
-      - {index: 431, tile: 1}
-      - {index: 432, tile: 2}
-      - {index: 433, tile: 4}
-      - {index: 434, tile: 1}
-      - {index: 435, tile: 1}
-      - {index: 436, tile: 1}
-      - {index: 437, tile: 1}
-      - {index: 438, tile: 1}
-      - {index: 439, tile: 1}
-      - {index: 440, tile: 1}
-      - {index: 441, tile: 2}
-      - {index: 442, tile: 1}
-      - {index: 443, tile: 1}
-      - {index: 444, tile: 6}
-      - {index: 445, tile: 4}
-      - {index: 448, tile: 4}
-      - {index: 449, tile: 3}
-      - {index: 450, tile: 1}
-      - {index: 451, tile: 2}
-      - {index: 452, tile: 3}
-      - {index: 453, tile: 1}
-      - {index: 454, tile: 3}
-      - {index: 455, tile: 1}
-      - {index: 456, tile: 1}
-      - {index: 457, tile: 3}
-      - {index: 458, tile: 1}
-      - {index: 459, tile: 4}
-      - {index: 460, tile: 6}
-      - {index: 461, tile: 1}
-      - {index: 462, tile: 1}
-      - {index: 463, tile: 6}
-      - {index: 464, tile: 5}
-      - {index: 465, tile: 1}
-      - {index: 466, tile: 1}
-      - {index: 467, tile: 4}
-      - {index: 468, tile: 1}
-      - {index: 469, tile: 1}
-      - {index: 470, tile: 1}
-      - {index: 471, tile: 1}
-      - {index: 472, tile: 1}
-      - {index: 473, tile: 3}
-      - {index: 474, tile: 1}
-      - {index: 475, tile: 1}
-      - {index: 476, tile: 1}
-      - {index: 477, tile: 4}
-      - {index: 480, tile: 4}
-      - {index: 481, tile: 4}
-      - {index: 482, tile: 1}
-      - {index: 483, tile: 1}
-      - {index: 484, tile: 3}
-      - {index: 485, tile: 2}
-      - {index: 486, tile: 3}
-      - {index: 487, tile: 3}
-      - {index: 488, tile: 6}
-      - {index: 489, tile: 3}
-      - {index: 490, tile: 4}
-      - {index: 491, tile: 1}
-      - {index: 492, tile: 1}
-      - {index: 493, tile: 1}
-      - {index: 494, tile: 1}
-      - {index: 495, tile: 1}
-      - {index: 496, tile: 1}
-      - {index: 497, tile: 1}
-      - {index: 498, tile: 1}
-      - {index: 499, tile: 4}
-      - {index: 500, tile: 2}
-      - {index: 501, tile: 2}
-      - {index: 502, tile: 6}
-      - {index: 503, tile: 1}
-      - {index: 504, tile: 1}
-      - {index: 505, tile: 1}
-      - {index: 506, tile: 1}
-      - {index: 507, tile: 5}
-      - {index: 508, tile: 1}
-      - {index: 509, tile: 4}
-      - {index: 512, tile: 4}
-      - {index: 513, tile: 3}
-      - {index: 514, tile: 1}
-      - {index: 515, tile: 4}
-      - {index: 516, tile: 3}
-      - {index: 517, tile: 2}
-      - {index: 518, tile: 1}
-      - {index: 519, tile: 2}
-      - {index: 520, tile: 1}
-      - {index: 521, tile: 2}
-      - {index: 522, tile: 1}
-      - {index: 523, tile: 1}
-      - {index: 524, tile: 2}
-      - {index: 525, tile: 2}
-      - {index: 526, tile: 1}
-      - {index: 527, tile: 1}
-      - {index: 528, tile: 6}
-      - {index: 529, tile: 1}
-      - {index: 530, tile: 5}
-      - {index: 531, tile: 6}
-      - {index: 532, tile: 2}
-      - {index: 533, tile: 3}
-      - {index: 534, tile: 3}
-      - {index: 535, tile: 1}
-      - {index: 536, tile: 1}
-      - {index: 537, tile: 4}
-      - {index: 538, tile: 1}
-      - {index: 539, tile: 3}
-      - {index: 540, tile: 1}
-      - {index: 541, tile: 4}
-      - {index: 544, tile: 4}
-      - {index: 545, tile: 1}
-      - {index: 546, tile: 3}
-      - {index: 547, tile: 2}
-      - {index: 548, tile: 1}
-      - {index: 549, tile: 3}
-      - {index: 550, tile: 1}
-      - {index: 551, tile: 2}
-      - {index: 552, tile: 3}
-      - {index: 553, tile: 2}
-      - {index: 554, tile: 5}
-      - {index: 555, tile: 1}
-      - {index: 556, tile: 2}
-      - {index: 557, tile: 1}
-      - {index: 558, tile: 3}
-      - {index: 559, tile: 6}
-      - {index: 560, tile: 2}
-      - {index: 561, tile: 3}
-      - {index: 562, tile: 2}
-      - {index: 563, tile: 6}
-      - {index: 564, tile: 1}
-      - {index: 565, tile: 1}
-      - {index: 566, tile: 4}
-      - {index: 567, tile: 2}
-      - {index: 568, tile: 1}
-      - {index: 569, tile: 1}
-      - {index: 570, tile: 5}
-      - {index: 571, tile: 2}
-      - {index: 572, tile: 2}
-      - {index: 573, tile: 4}
-      - {index: 576, tile: 4}
-      - {index: 577, tile: 2}
-      - {index: 578, tile: 1}
-      - {index: 579, tile: 3}
-      - {index: 580, tile: 1}
-      - {index: 581, tile: 2}
-      - {index: 582, tile: 1}
-      - {index: 583, tile: 2}
-      - {index: 584, tile: 1}
-      - {index: 585, tile: 6}
-      - {index: 586, tile: 3}
-      - {index: 587, tile: 1}
-      - {index: 588, tile: 6}
-      - {index: 589, tile: 1}
-      - {index: 590, tile: 1}
-      - {index: 591, tile: 1}
-      - {index: 592, tile: 3}
-      - {index: 593, tile: 1}
-      - {index: 594, tile: 2}
-      - {index: 595, tile: 3}
-      - {index: 596, tile: 3}
-      - {index: 597, tile: 2}
-      - {index: 598, tile: 1}
-      - {index: 599, tile: 3}
-      - {index: 600, tile: 6}
-      - {index: 601, tile: 1}
-      - {index: 602, tile: 2}
-      - {index: 603, tile: 6}
-      - {index: 604, tile: 6}
-      - {index: 605, tile: 4}
-      - {index: 608, tile: 4}
-      - {index: 609, tile: 4}
-      - {index: 610, tile: 4}
-      - {index: 611, tile: 4}
-      - {index: 612, tile: 4}
-      - {index: 613, tile: 4}
-      - {index: 614, tile: 4}
-      - {index: 615, tile: 4}
-      - {index: 616, tile: 4}
-      - {index: 617, tile: 4}
-      - {index: 618, tile: 4}
-      - {index: 619, tile: 4}
-      - {index: 620, tile: 4}
-      - {index: 621, tile: 4}
-      - {index: 622, tile: 4}
-      - {index: 623, tile: 4}
-      - {index: 624, tile: 4}
-      - {index: 625, tile: 4}
-      - {index: 626, tile: 4}
-      - {index: 627, tile: 4}
-      - {index: 628, tile: 4}
-      - {index: 629, tile: 4}
-      - {index: 630, tile: 4}
-      - {index: 631, tile: 4}
-      - {index: 632, tile: 4}
-      - {index: 633, tile: 4}
-      - {index: 634, tile: 4}
-      - {index: 635, tile: 4}
-      - {index: 636, tile: 4}
-      - {index: 637, tile: 4}
-- id: f2cba5db-8d75-57b9-a1ca-a73505f66c49
-  name: "Cities"
-  x: 96
-  y: 50
+    chunks: []
+- id: 671cc9c9-a74f-5fad-9b7c-342fa9d47196
+  name: "Pointer"
+  x: 24
+  y: 18
   width: 48
   height: 56
   components:
   - type: tilemap2D
-    layout: HexPointy
-    cellSize: {width: 48, height: 56}
-    tileset: bf7c56a5-0f15-5420-9ac8-6e83e32b3d77
+    layout: "HexPointy"
+    cellSize: {"width": 48, "height": 56}
+    tileset: "655231de-803a-5f2c-8870-ec3a14ee6dd8"
     order: -5
     chunks: []
-- id: e7df8eba-52bc-5bab-9aaa-4930528a5567
-  name: "Fog"
-  x: 96
-  y: 50
-  width: 48
-  height: 56
-  components:
-  - type: tilemap2D
-    layout: HexPointy
-    cellSize: {width: 48, height: 56}
-    tileset: 854e2dba-2b66-5dfb-82f2-269bef5680cf
-    order: -3
-    chunks: []
-- id: 6c45f309-7f22-5bd7-8bbd-53441375209a
-  name: "Orders"
-  x: 96
-  y: 50
-  width: 48
-  height: 56
-  components:
-  - type: tilemap2D
-    layout: HexPointy
-    cellSize: {width: 48, height: 56}
-    tileset: 854e2dba-2b66-5dfb-82f2-269bef5680cf
-    order: -2
-    chunks: []
-- id: f163aab3-7c43-5fcd-ab9f-089ad89346a3
-  name: "Far camera"
-  x: 478
-  y: 368
+- id: 76184387-89e6-5e3a-b1c2-0a100590aecf
+  name: "Camera frame"
+  x: 82.06349206349205
+  y: -5.714285714285722
+  width: 1280
+  height: 720
+  groups:
+  - chart-frame
+  components: []
+- id: 53ddf38c-d6e6-56ef-8b15-48bd5126599a
+  name: "Atlas camera"
+  x: 590
+  y: 280
   width: 1
   height: 1
   components:
   - type: camera2D
-    zoom: 0.72
-- id: 3c4d7fdb-3fe1-577b-877f-696b86829cc1
-  name: "Close camera"
-  x: 478
-  y: 368
+    zoom: 1.62
+    frameGroup: "chart-frame"
+- id: de26c494-d998-5cb5-90f2-653c3faf995a
+  name: "Route"
+  x: 0
+  y: 0
   width: 1
   height: 1
   components:
-  - type: camera2D
-    zoom: 1.12
+  - type: line2D
+    points: [{"x": 0, "y": 0}, {"x": 1, "y": 0}]
+    width: 2.2
+    startColor: "#fff0b3"
+    endColor: "#ffc478"
+    order: 1
+- id: 7e18c4f9-a00a-5ef2-ae37-484cfa5e879a
+  name: "Outer Reach"
+  x: 210
+  y: 469
+  width: 218
+  height: 32
+  components:
+  - type: text2D
+    text: "T H E   O U T E R   R E A C H"
+    size: 12
+    order: -14
+    color: "#f5dfae"
+    richText: true
+    align: "Center"
+- id: 1781e2be-6769-55ac-8fe5-7e28714f51c6
+  name: "North Passage"
+  x: 871
+  y: 188
+  width: 210
+  height: 24
+  components:
+  - type: text2D
+    text: "N O R T H   P A S S A G E"
+    size: 12
+    order: -14
+    color: "#f5dfae"
+    richText: true
+    align: "Center"
+- id: 51e9fdb6-6e9c-5644-af37-7c184570bb93
+  name: "Select sound"
+  x: 0
+  y: 0
+  width: 1
+  height: 1
+  components:
+  - type: audioSource
+    sound: "df590cee-f27a-5f0a-84ab-d895d5bc12d2"
+    bus: "Effects"
+    volume: 0.42
+    playOnStart: false
+- id: bc8633a2-b691-5879-8b7a-7c82bad256cb
+  name: "Move sound"
+  x: 0
+  y: 0
+  width: 1
+  height: 1
+  components:
+  - type: audioSource
+    sound: "b17b9b3b-6b94-525c-b4f3-44c454553abd"
+    bus: "Effects"
+    volume: 0.48
+    playOnStart: false
+- id: c8c55061-42ac-5a54-951b-6405672a1b43
+  name: "Hit sound"
+  x: 0
+  y: 0
+  width: 1
+  height: 1
+  components:
+  - type: audioSource
+    sound: "f359019d-bd93-5a3e-a270-bfdb6ea0791c"
+    bus: "Effects"
+    volume: 0.53
+    playOnStart: false
+- id: 05fbc158-77d5-55e1-bc54-d863f029f3e2
+  name: "Bow sound"
+  x: 0
+  y: 0
+  width: 1
+  height: 1
+  components:
+  - type: audioSource
+    sound: "29452285-ad5c-5d72-b8f2-b09c75de1660"
+    bus: "Effects"
+    volume: 0.61
+    playOnStart: false
+- id: 510d0494-4384-5033-99d4-01152c3751dd
+  name: "Build sound"
+  x: 0
+  y: 0
+  width: 1
+  height: 1
+  components:
+  - type: audioSource
+    sound: "9693e909-3bd1-5a58-b737-4a6e456d6e3e"
+    bus: "Effects"
+    volume: 0.57
+    playOnStart: false
+- id: 810c33f0-63cd-5674-9c27-2b90c901e547
+  name: "Turn sound"
+  x: 0
+  y: 0
+  width: 1
+  height: 1
+  components:
+  - type: audioSource
+    sound: "2f7cc2f8-cd87-5a6d-915b-ef9a80baa39f"
+    bus: "Effects"
+    volume: 0.49
+    playOnStart: false
+- id: 801a7cf9-b71d-5b39-b1de-73a0ee891b23
+  name: "Victory sound"
+  x: 0
+  y: 0
+  width: 1
+  height: 1
+  components:
+  - type: audioSource
+    sound: "b9c8f130-ad4d-5caa-bdef-f32898d5415f"
+    bus: "Effects"
+    volume: 0.64
+    playOnStart: false
+- id: fe7c1e69-255e-5186-b30e-f751490bee15
+  name: "Backdrop"
+  x: 0
+  y: 0
+  width: 1
+  height: 1
+  components:
+  - type: uiCanvas
+    order: 9
+- id: 8e6962e1-fb5f-5d76-b26e-20cb6f5a96aa
+  name: "HUD"
+  x: 0
+  y: 0
+  width: 1
+  height: 1
+  components:
+  - type: uiCanvas
+    order: 10
+- id: 21e9698f-58c2-5fb0-8d62-9766f9d0a401
+  name: "Modal"
+  x: 0
+  y: 0
+  width: 1
+  height: 1
+  components:
+  - type: uiCanvas
+    order: 20
+- id: 3f46990a-1424-58a8-abea-ef626a9d22dc
+  name: "Chart shade"
+  x: 0
+  y: 0
+  width: 1280
+  height: 720
+  parentId: fe7c1e69-255e-5186-b30e-f751490bee15
+  components:
+  - type: uiRect
+    anchor: "TopLeft"
+  - type: uiImage
+    sprite: "3b59286a-2ecb-5eed-9426-4fbb11d12902"
+    color: "#FFFFFF"
+- id: 16628819-4dd9-57de-82df-a3be268a58c2
+  name: "Top rail"
+  x: 24
+  y: 16
+  width: 1232
+  height: 88
+  parentId: 8e6962e1-fb5f-5d76-b26e-20cb6f5a96aa
+  components:
+  - type: uiRect
+    anchor: "TopLeft"
+  - type: uiImage
+    sprite: "160976c0-8e3e-5ec1-9f0a-d5e391eab1fb"
+    borders: {"left": 12, "top": 10, "right": 12, "bottom": 10}
+- id: 50b765c1-9b25-51e9-8ffb-74996e1843e2
+  name: "Heraldry"
+  x: 16
+  y: 28
+  width: 32
+  height: 32
+  parentId: 16628819-4dd9-57de-82df-a3be268a58c2
+  components:
+  - type: uiRect
+    anchor: "TopLeft"
+  - type: uiImage
+    sprite: "b07dd8b8-7c36-5861-830f-f9e338b1a754"
+    color: "#FFFFFF"
+- id: 05e96e5e-b2c9-5bcb-8617-972fdf8fcb40
+  name: "Wordmark"
+  x: 56
+  y: 8
+  width: 192
+  height: 40
+  parentId: 16628819-4dd9-57de-82df-a3be268a58c2
+  components:
+  - type: uiRect
+    anchor: "TopLeft"
+  - type: uiText
+    text: "<b>HexRealm</b>"
+    size: 20
+    color: "#2b1c14"
+    richText: true
+    insetX: 0
+    insetY: 8.438
+- id: 1339d700-fcd6-506c-baea-91c8337cc453
+  name: "Chapter"
+  x: 56
+  y: 48
+  width: 196
+  height: 28
+  parentId: 16628819-4dd9-57de-82df-a3be268a58c2
+  components:
+  - type: uiRect
+    anchor: "TopLeft"
+  - type: uiText
+    text: "<b>The Salt Coast</b>"
+    size: 14
+    color: "#483023"
+    richText: true
+    insetX: 0
+    insetY: 5.906
+- id: c6ffa3fd-1eea-555e-8ef8-ce07f55f3f9c
+  name: "Turn divider"
+  x: 256
+  y: 16
+  width: 1
+  height: 56
+  parentId: 16628819-4dd9-57de-82df-a3be268a58c2
+  components:
+  - type: uiRect
+    anchor: "TopLeft"
+  - type: uiImage
+    sprite: null
+    color: "#a98960"
+- id: aeca5f3b-ba89-5e9e-a6e0-c3e747214cc3
+  name: "Turn icon"
+  x: 268
+  y: 32
+  width: 24
+  height: 24
+  parentId: 16628819-4dd9-57de-82df-a3be268a58c2
+  components:
+  - type: uiRect
+    anchor: "TopLeft"
+  - type: uiImage
+    sprite: "c6558e1b-8f89-5145-8d1e-9a44d6265a4a"
+    color: "#FFFFFF"
+- id: e7703eb3-096a-51b5-9d2b-b9fc141009c4
+  name: "Turn label"
+  x: 300
+  y: 12
+  width: 132
+  height: 28
+  parentId: 16628819-4dd9-57de-82df-a3be268a58c2
+  components:
+  - type: uiRect
+    anchor: "TopLeft"
+  - type: uiText
+    text: "Turn"
+    size: 14
+    color: "#3c291d"
+    richText: false
+    insetX: 0
+    insetY: 5.469
+- id: 00e9d099-ac39-5318-966c-3184c757dd3b
+  name: "Turn number"
+  x: 300
+  y: 40
+  width: 136
+  height: 36
+  parentId: 16628819-4dd9-57de-82df-a3be268a58c2
+  components:
+  - type: uiRect
+    anchor: "TopLeft"
+- id: dd624bb4-5266-5282-b51b-531fb1d0e64f
+  name: "Turn value"
+  x: 0
+  y: 0
+  width: 136
+  height: 36
+  parentId: 00e9d099-ac39-5318-966c-3184c757dd3b
+  components:
+  - type: uiRect
+    anchor: "TopLeft"
+  - type: uiText
+    text: ""
+    size: 16
+    color: "#2b1c14"
+    richText: true
+    insetX: 0
+    insetY: 8.75
+- id: 1eb5c964-a80e-5c10-9d6f-49c005b354d9
+  name: "Gold divider"
+  x: 436
+  y: 16
+  width: 1
+  height: 56
+  parentId: 16628819-4dd9-57de-82df-a3be268a58c2
+  components:
+  - type: uiRect
+    anchor: "TopLeft"
+  - type: uiImage
+    sprite: null
+    color: "#a98960"
+- id: 1987e5e4-a97a-59f5-ace2-f6dd3ac4abb7
+  name: "Gold icon"
+  x: 448
+  y: 32
+  width: 24
+  height: 24
+  parentId: 16628819-4dd9-57de-82df-a3be268a58c2
+  components:
+  - type: uiRect
+    anchor: "TopLeft"
+  - type: uiImage
+    sprite: "1ed7d3d4-b4bf-53ee-9b45-cfe086da1e7a"
+    color: "#FFFFFF"
+- id: 627445c5-ccbd-5f2e-b235-86b73e21e295
+  name: "Gold label"
+  x: 480
+  y: 12
+  width: 132
+  height: 28
+  parentId: 16628819-4dd9-57de-82df-a3be268a58c2
+  components:
+  - type: uiRect
+    anchor: "TopLeft"
+  - type: uiText
+    text: "Gold"
+    size: 14
+    color: "#3c291d"
+    richText: false
+    insetX: 0
+    insetY: 5.906
+- id: f74923c3-f075-58f5-833f-57cfb0149808
+  name: "Gold number"
+  x: 480
+  y: 40
+  width: 136
+  height: 36
+  parentId: 16628819-4dd9-57de-82df-a3be268a58c2
+  components:
+  - type: uiRect
+    anchor: "TopLeft"
+- id: f39e2613-df5b-5fc7-b4f0-b719a854e38f
+  name: "Gold value"
+  x: 0
+  y: 0
+  width: 136
+  height: 36
+  parentId: f74923c3-f075-58f5-833f-57cfb0149808
+  components:
+  - type: uiRect
+    anchor: "TopLeft"
+  - type: uiText
+    text: ""
+    size: 16
+    color: "#2b1c14"
+    richText: true
+    insetX: 0
+    insetY: 8.75
+- id: 42137927-39b4-5654-9ac6-a836176839ca
+  name: "Land divider"
+  x: 616
+  y: 16
+  width: 1
+  height: 56
+  parentId: 16628819-4dd9-57de-82df-a3be268a58c2
+  components:
+  - type: uiRect
+    anchor: "TopLeft"
+  - type: uiImage
+    sprite: null
+    color: "#a98960"
+- id: d9d017e8-1f94-5a49-8aa6-4467edb7ef04
+  name: "Land icon"
+  x: 628
+  y: 32
+  width: 24
+  height: 24
+  parentId: 16628819-4dd9-57de-82df-a3be268a58c2
+  components:
+  - type: uiRect
+    anchor: "TopLeft"
+  - type: uiImage
+    sprite: "2443d8b6-0fb6-58c7-bbd0-12f40d55d0da"
+    color: "#FFFFFF"
+- id: d291e3cf-7ed3-5303-99a0-ed1d67a79a2c
+  name: "Land label"
+  x: 660
+  y: 12
+  width: 132
+  height: 28
+  parentId: 16628819-4dd9-57de-82df-a3be268a58c2
+  components:
+  - type: uiRect
+    anchor: "TopLeft"
+  - type: uiText
+    text: "Land goal"
+    size: 14
+    color: "#3c291d"
+    richText: false
+    insetX: 0
+    insetY: 5.031
+- id: 1a2c0864-fb00-5adf-b085-ece0d3e8d23e
+  name: "Land number"
+  x: 660
+  y: 40
+  width: 136
+  height: 36
+  parentId: 16628819-4dd9-57de-82df-a3be268a58c2
+  components:
+  - type: uiRect
+    anchor: "TopLeft"
+- id: f724a12b-7c70-5292-8e0c-2c95d9791c22
+  name: "Land value"
+  x: 0
+  y: 0
+  width: 136
+  height: 36
+  parentId: 1a2c0864-fb00-5adf-b085-ece0d3e8d23e
+  components:
+  - type: uiRect
+    anchor: "TopLeft"
+  - type: uiText
+    text: ""
+    size: 16
+    color: "#2b1c14"
+    richText: true
+    insetX: 0
+    insetY: 8.75
+- id: af8422a2-0eac-59b6-bcda-85a092c7059a
+  name: "Lore divider"
+  x: 796
+  y: 16
+  width: 1
+  height: 56
+  parentId: 16628819-4dd9-57de-82df-a3be268a58c2
+  components:
+  - type: uiRect
+    anchor: "TopLeft"
+  - type: uiImage
+    sprite: null
+    color: "#a98960"
+- id: 554f3eff-cf1f-5636-bb55-db4af13e7af8
+  name: "Lore icon"
+  x: 808
+  y: 32
+  width: 24
+  height: 24
+  parentId: 16628819-4dd9-57de-82df-a3be268a58c2
+  components:
+  - type: uiRect
+    anchor: "TopLeft"
+  - type: uiImage
+    sprite: "cbc9735c-f8fd-5bc9-a77a-ab53e5a67cb9"
+    color: "#FFFFFF"
+- id: e023922c-1a6e-55a8-979a-53f96340964f
+  name: "Lore label"
+  x: 840
+  y: 12
+  width: 132
+  height: 28
+  parentId: 16628819-4dd9-57de-82df-a3be268a58c2
+  components:
+  - type: uiRect
+    anchor: "TopLeft"
+  - type: uiText
+    text: "Research"
+    size: 14
+    color: "#3c291d"
+    richText: false
+    insetX: 0
+    insetY: 5.906
+- id: c9a6683f-20b6-52ab-9b66-8bf57eea9d9e
+  name: "Lore number"
+  x: 840
+  y: 40
+  width: 136
+  height: 36
+  parentId: 16628819-4dd9-57de-82df-a3be268a58c2
+  components:
+  - type: uiRect
+    anchor: "TopLeft"
+- id: 68048504-e1ef-5330-bff6-fe5b445979a0
+  name: "Research glint"
+  x: -6
+  y: 24
+  width: 16
+  height: 3
+  parentId: c9a6683f-20b6-52ab-9b66-8bf57eea9d9e
+  components:
+  - type: uiRect
+    anchor: "TopLeft"
+  - type: uiImage
+    sprite: null
+    color: "#fff4c4"
+- id: a2c5a04c-85f9-5b44-b45b-313674aff649
+  name: "Lore value"
+  x: 0
+  y: 0
+  width: 136
+  height: 36
+  parentId: c9a6683f-20b6-52ab-9b66-8bf57eea9d9e
+  components:
+  - type: uiRect
+    anchor: "TopLeft"
+  - type: uiText
+    text: ""
+    size: 16
+    color: "#2b1c14"
+    richText: true
+    insetX: 0
+    insetY: 8.75
+- id: 021ac4c7-9163-5697-a1a0-240f76a83b2a
+  name: "Actions divider"
+  x: 976
+  y: 16
+  width: 1
+  height: 56
+  parentId: 16628819-4dd9-57de-82df-a3be268a58c2
+  components:
+  - type: uiRect
+    anchor: "TopLeft"
+  - type: uiImage
+    sprite: null
+    color: "#a98960"
+- id: 8ce39e58-94a0-58bf-ae9d-e4a5be4aa3f4
+  name: "Research bar"
+  x: 840
+  y: 76
+  width: 128
+  height: 2
+  parentId: 16628819-4dd9-57de-82df-a3be268a58c2
+  components:
+  - type: uiRect
+    anchor: "TopLeft"
+  - type: uiImage
+    sprite: null
+    color: "#a98960"
+- id: bebcb47f-70a5-5b16-bcde-c1c21b9e58ce
+  name: "Research fill"
+  x: 840
+  y: 76
+  width: 1
+  height: 2
+  parentId: 16628819-4dd9-57de-82df-a3be268a58c2
+  components:
+  - type: uiRect
+    anchor: "TopLeft"
+  - type: uiImage
+    sprite: null
+    color: "#245d50"
+- id: a446a876-686a-5f86-b4f5-747d53c5c680
+  name: "Research toggle"
+  x: 984
+  y: 20
+  width: 112
+  height: 48
+  parentId: 16628819-4dd9-57de-82df-a3be268a58c2
+  components:
+  - type: uiRect
+    anchor: "TopLeft"
+  - type: uiButton
+    style: "button"
+  - type: uiImage
+    sprite: "db5fc2c1-d6c7-58dd-b65d-153dd2c36d6c"
+    borders: {"left": 6, "top": 6, "right": 6, "bottom": 6}
+  - type: script
+    script: "RealmButton"
+    values: {"Action": "HexRealm.Button.Research", "Caption": "c7028bb9-24f8-5144-9828-3822251b0fe5", "Width": 112, "Height": 48, "Titles": ["Fund", "Funded", "Done"], "Keys": ["", "", ""], "TextMetrics": [34.0, 9.25, 49.5, 9.25, 35.0, 9.75], "KeyMetrics": [0, 0, 0, 0, 0, 0], "SelectionMark": "a4df4b47-f0bc-5ee4-9e01-5158d7dcae3f"}
+- id: c7028bb9-24f8-5144-9828-3822251b0fe5
+  name: "Research toggle caption"
+  x: 0
+  y: 0
+  width: 112
+  height: 48
+  parentId: a446a876-686a-5f86-b4f5-747d53c5c680
+  components:
+  - type: uiRect
+    anchor: "TopLeft"
+  - type: uiText
+    text: "Fund"
+    size: 16
+    color: "#2b1c14"
+- id: a4df4b47-f0bc-5ee4-9e01-5158d7dcae3f
+  name: "Research toggle selected"
+  x: 8
+  y: 38
+  width: 96
+  height: 2
+  parentId: a446a876-686a-5f86-b4f5-747d53c5c680
+  components:
+  - type: uiRect
+    anchor: "TopLeft"
+  - type: uiImage
+    sprite: null
+    color: "#245d50"
+- id: c05e9738-baa9-54a0-856e-f77d955c0cec
+  name: "Help"
+  x: 1104
+  y: 20
+  width: 112
+  height: 48
+  parentId: 16628819-4dd9-57de-82df-a3be268a58c2
+  components:
+  - type: uiRect
+    anchor: "TopLeft"
+  - type: uiButton
+    style: "button"
+  - type: uiImage
+    sprite: "db5fc2c1-d6c7-58dd-b65d-153dd2c36d6c"
+    borders: {"left": 6, "top": 6, "right": 6, "bottom": 6}
+  - type: script
+    script: "RealmButton"
+    values: {"Action": "HexRealm.Button.Help", "Caption": "a39c80a7-95d7-544a-aaf9-96e81404ab30", "Width": 112, "Height": 48, "Titles": ["Help"], "Keys": [""], "TextMetrics": [31.0, 10.25], "KeyMetrics": [0, 0]}
+- id: a39c80a7-95d7-544a-aaf9-96e81404ab30
+  name: "Help caption"
+  x: 0
+  y: 0
+  width: 112
+  height: 48
+  parentId: c05e9738-baa9-54a0-856e-f77d955c0cec
+  components:
+  - type: uiRect
+    anchor: "TopLeft"
+  - type: uiText
+    text: "Help"
+    size: 16
+    color: "#2b1c14"
+- id: ceae1d1b-0c12-5b71-9d4a-5cda0ead4cf6
+  name: "Command"
+  x: 904
+  y: 408
+  width: 352
+  height: 224
+  parentId: 8e6962e1-fb5f-5d76-b26e-20cb6f5a96aa
+  components:
+  - type: uiRect
+    anchor: "TopLeft"
+  - type: uiImage
+    sprite: "aba3b074-52ca-5d54-b778-9537ba8d7aa1"
+    borders: {"left": 12, "top": 10, "right": 12, "bottom": 10}
+- id: 3e0c5f1f-cf55-55fa-8a9a-71d6b3960028
+  name: "Command pin"
+  x: 316
+  y: 8
+  width: 24
+  height: 24
+  parentId: ceae1d1b-0c12-5b71-9d4a-5cda0ead4cf6
+  components:
+  - type: uiRect
+    anchor: "TopLeft"
+  - type: uiImage
+    sprite: "e810c988-f752-5de4-a71d-ace6dfd4677d"
+    color: "#FFFFFF"
+- id: b658bee4-3b11-535e-97b0-25e50729634c
+  name: "Command crest"
+  x: 12
+  y: 8
+  width: 32
+  height: 32
+  parentId: ceae1d1b-0c12-5b71-9d4a-5cda0ead4cf6
+  components:
+  - type: uiRect
+    anchor: "TopLeft"
+  - type: uiImage
+    sprite: "b07dd8b8-7c36-5861-830f-f9e338b1a754"
+    color: "#FFFFFF"
+- id: 14f8b292-1bae-5b3e-8ced-19533b6c9e2a
+  name: "Selection"
+  x: 52
+  y: 4
+  width: 258
+  height: 40
+  parentId: ceae1d1b-0c12-5b71-9d4a-5cda0ead4cf6
+  components:
+  - type: uiRect
+    anchor: "TopLeft"
+  - type: uiText
+    text: ""
+    size: 20
+    color: "#2b1c14"
+    richText: true
+    insetX: 0
+    insetY: 8.438
+- id: 567c23a6-00d8-5af1-9a85-2a5406865594
+  name: "Command rule"
+  x: 52
+  y: 44
+  width: 284
+  height: 1
+  parentId: ceae1d1b-0c12-5b71-9d4a-5cda0ead4cf6
+  components:
+  - type: uiRect
+    anchor: "TopLeft"
+  - type: uiImage
+    sprite: null
+    color: "#a98960"
+- id: 3ceb01a7-b3f2-5255-9e9b-a7a6abd02078
+  name: "Command chips"
+  x: 52
+  y: 52
+  width: 284
+  height: 36
+  parentId: ceae1d1b-0c12-5b71-9d4a-5cda0ead4cf6
+  components:
+  - type: uiRect
+    anchor: "TopLeft"
+- id: 60da62d9-3762-52ee-98f2-e9f6281487b0
+  name: "Health chip"
+  x: 0
+  y: 0
+  width: 128
+  height: 36
+  parentId: 3ceb01a7-b3f2-5255-9e9b-a7a6abd02078
+  components:
+  - type: uiRect
+    anchor: "TopLeft"
+  - type: uiImage
+    sprite: "625bccbd-d7fe-5a42-95cb-9e66f139d1b4"
+    color: "#FFFFFF"
+    borders: {"left": 6, "top": 6, "right": 6, "bottom": 6}
+- id: a6f69b97-489e-515f-8e9e-34b2484d699d
+  name: "Health icon"
+  x: 8
+  y: 10
+  width: 16
+  height: 16
+  parentId: 60da62d9-3762-52ee-98f2-e9f6281487b0
+  components:
+  - type: uiRect
+    anchor: "TopLeft"
+  - type: uiImage
+    sprite: "9c4adc07-e816-503c-b500-922893e46a32"
+    color: "#FFFFFF"
+- id: fb8bbdc3-e999-5959-8fda-efb6ebc62c47
+  name: "Command stats"
+  x: 32
+  y: 0
+  width: 96
+  height: 36
+  parentId: 60da62d9-3762-52ee-98f2-e9f6281487b0
+  components:
+  - type: uiRect
+    anchor: "TopLeft"
+  - type: uiText
+    text: ""
+    size: 16
+    color: "#2b1c14"
+    richText: true
+    insetX: 0
+    insetY: 8.75
+- id: c41a28ff-1958-5277-9772-0832ce491c54
+  name: "Action chip"
+  x: 136
+  y: 0
+  width: 148
+  height: 36
+  parentId: 3ceb01a7-b3f2-5255-9e9b-a7a6abd02078
+  components:
+  - type: uiRect
+    anchor: "TopLeft"
+  - type: uiImage
+    sprite: "625bccbd-d7fe-5a42-95cb-9e66f139d1b4"
+    color: "#FFFFFF"
+    borders: {"left": 6, "top": 6, "right": 6, "bottom": 6}
+- id: 7cbce687-2fde-5878-8a87-c407f924ce6b
+  name: "Move icon"
+  x: 8
+  y: 10
+  width: 16
+  height: 16
+  parentId: c41a28ff-1958-5277-9772-0832ce491c54
+  components:
+  - type: uiRect
+    anchor: "TopLeft"
+  - type: uiImage
+    sprite: "c89a2d10-7411-585d-9fa7-6a267d0fa365"
+    color: "#FFFFFF"
+- id: c4414e72-db19-5e3f-bfb8-697f50ffff70
+  name: "People icon"
+  x: 8
+  y: 10
+  width: 16
+  height: 16
+  parentId: c41a28ff-1958-5277-9772-0832ce491c54
+  components:
+  - type: uiRect
+    anchor: "TopLeft"
+  - type: uiImage
+    sprite: "91787329-ef29-51d5-a548-79e6101f3374"
+    color: "#FFFFFF"
+- id: 1b6a39ed-c716-5c15-ae97-135751e32ef3
+  name: "Action value"
+  x: 32
+  y: 0
+  width: 112
+  height: 36
+  parentId: c41a28ff-1958-5277-9772-0832ce491c54
+  components:
+  - type: uiRect
+    anchor: "TopLeft"
+  - type: uiText
+    text: ""
+    size: 16
+    color: "#2b1c14"
+    richText: true
+    insetX: 0
+    insetY: 8.75
+- id: 0a4d437d-292c-5499-bc9b-8e54a5b8e128
+  name: "Command notes"
+  x: 52
+  y: 92
+  width: 284
+  height: 64
+  parentId: ceae1d1b-0c12-5b71-9d4a-5cda0ead4cf6
+  components:
+  - type: uiRect
+    anchor: "TopLeft"
+- id: 1f78ad45-79aa-5e8d-86cf-b089dba7000b
+  name: "Command advice"
+  x: 0
+  y: 0
+  width: 284
+  height: 32
+  parentId: 0a4d437d-292c-5499-bc9b-8e54a5b8e128
+  components:
+  - type: uiRect
+    anchor: "TopLeft"
+  - type: uiText
+    text: ""
+    size: 16
+    color: "#483023"
+    richText: true
+    insetX: 0
+    insetY: 6.75
+- id: 9ff0d381-89da-59dd-9256-19d90245db24
+  name: "Command hint"
+  x: 0
+  y: 32
+  width: 284
+  height: 32
+  parentId: 0a4d437d-292c-5499-bc9b-8e54a5b8e128
+  components:
+  - type: uiRect
+    anchor: "TopLeft"
+  - type: uiText
+    text: ""
+    size: 14
+    color: "#483023"
+    richText: true
+    insetX: 0
+    insetY: 7.906
+- id: 008dcb88-4bfe-5800-8c2c-e382390e04e0
+  name: "Context"
+  x: 52
+  y: 160
+  width: 284
+  height: 48
+  parentId: ceae1d1b-0c12-5b71-9d4a-5cda0ead4cf6
+  components:
+  - type: uiRect
+    anchor: "TopLeft"
+  - type: uiButton
+    style: "button"
+  - type: uiImage
+    sprite: "db5fc2c1-d6c7-58dd-b65d-153dd2c36d6c"
+    borders: {"left": 6, "top": 6, "right": 6, "bottom": 6}
+  - type: script
+    script: "RealmButton"
+    values: {"Action": "HexRealm.Button.Context", "Caption": "6a508b36-f06d-59c1-a2ee-b504177c3dd8", "Width": 284, "Height": 48, "Titles": ["Found city", "Build farm", "Next unit", "Train spear", "Settler in training", "Worker in training", "Scout in training", "Spear in training", "Bow in training"], "Keys": ["B", "I", "Tab", "4", "", "", "", "", ""], "TextMetrics": [71.0, 10.25, 72.0, 9.25, 63.5, 9.75, 77.5, 10.75, 121.0, 10.25, 126.0, 10.25, 114.5, 10.75, 114.5, 10.75, 103.5, 10.75], "KeyMetrics": [7.875, 8.531, 3.5, 8.531, 22.312, 8.094, 7.875, 8.531, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], "Key": "fdbb926a-e867-549a-873a-fe60fc4ec012", "KeyCaption": "2318f66a-03b9-5d22-8df1-5f7c65729ead"}
+- id: 6a508b36-f06d-59c1-a2ee-b504177c3dd8
+  name: "Context caption"
+  x: 0
+  y: 0
+  width: 284
+  height: 48
+  parentId: 008dcb88-4bfe-5800-8c2c-e382390e04e0
+  components:
+  - type: uiRect
+    anchor: "TopLeft"
+  - type: uiText
+    text: "Found city"
+    size: 16
+    color: "#2b1c14"
+- id: fdbb926a-e867-549a-873a-fe60fc4ec012
+  name: "Context key"
+  x: 0
+  y: 0
+  width: 24
+  height: 24
+  parentId: 008dcb88-4bfe-5800-8c2c-e382390e04e0
+  components:
+  - type: uiRect
+    anchor: "TopLeft"
+  - type: uiImage
+    sprite: "625bccbd-d7fe-5a42-95cb-9e66f139d1b4"
+    color: "#FFFFFF"
+    borders: {"left": 6, "top": 6, "right": 6, "bottom": 6}
+- id: 2318f66a-03b9-5d22-8df1-5f7c65729ead
+  name: "Context key text"
+  x: 0
+  y: 0
+  width: 152
+  height: 36
+  parentId: fdbb926a-e867-549a-873a-fe60fc4ec012
+  components:
+  - type: uiRect
+    anchor: "TopLeft"
+  - type: uiText
+    text: "B"
+    size: 14
+    color: "#2b1c14"
+- id: a86bc8c7-7738-508c-8b79-3c17036f57aa
+  name: "End"
+  x: 904
+  y: 640
+  width: 352
+  height: 56
+  parentId: 8e6962e1-fb5f-5d76-b26e-20cb6f5a96aa
+  components:
+  - type: uiRect
+    anchor: "TopLeft"
+  - type: uiButton
+    style: "end"
+  - type: uiImage
+    sprite: "4f7e7cc0-a547-52e1-b7a6-1218a5df62ee"
+    borders: {"left": 6, "top": 6, "right": 6, "bottom": 6}
+  - type: script
+    script: "RealmButton"
+    values: {"Action": "HexRealm.Button.End", "Caption": "f763ef4b-b994-58e1-bcf7-cc0e1a668850", "Width": 352, "Height": 56, "Titles": ["End turn"], "Keys": ["Enter"], "TextMetrics": [60.5, 9.25], "KeyMetrics": [32.375, 8.531], "Seal": "d5ab1980-c024-5abb-aabb-a63a7499549a", "Key": "c461d7b5-5a6c-5717-a422-fb7cbf9dd82c", "KeyCaption": "e5621b3b-8c85-5fac-88bc-9501dff2900b"}
+- id: f763ef4b-b994-58e1-bcf7-cc0e1a668850
+  name: "End caption"
+  x: 0
+  y: 0
+  width: 352
+  height: 56
+  parentId: a86bc8c7-7738-508c-8b79-3c17036f57aa
+  components:
+  - type: uiRect
+    anchor: "TopLeft"
+  - type: uiText
+    text: "End turn"
+    size: 16
+    color: "#2b1c14"
+- id: d5ab1980-c024-5abb-aabb-a63a7499549a
+  name: "End seal"
+  x: 0
+  y: 0
+  width: 24
+  height: 24
+  parentId: a86bc8c7-7738-508c-8b79-3c17036f57aa
+  components:
+  - type: uiRect
+    anchor: "TopLeft"
+  - type: uiImage
+    sprite: "b07dd8b8-7c36-5861-830f-f9e338b1a754"
+    color: "#FFFFFF"
+- id: c461d7b5-5a6c-5717-a422-fb7cbf9dd82c
+  name: "End key"
+  x: 0
+  y: 0
+  width: 24
+  height: 24
+  parentId: a86bc8c7-7738-508c-8b79-3c17036f57aa
+  components:
+  - type: uiRect
+    anchor: "TopLeft"
+  - type: uiImage
+    sprite: "625bccbd-d7fe-5a42-95cb-9e66f139d1b4"
+    color: "#FFFFFF"
+    borders: {"left": 6, "top": 6, "right": 6, "bottom": 6}
+- id: e5621b3b-8c85-5fac-88bc-9501dff2900b
+  name: "End key text"
+  x: 0
+  y: 0
+  width: 152
+  height: 36
+  parentId: c461d7b5-5a6c-5717-a422-fb7cbf9dd82c
+  components:
+  - type: uiRect
+    anchor: "TopLeft"
+  - type: uiText
+    text: "Enter"
+    size: 14
+    color: "#2b1c14"
+- id: a271ef66-48c9-5b42-b71d-c15c90fed7eb
+  name: "Objective"
+  x: 24
+  y: 608
+  width: 344
+  height: 88
+  parentId: 8e6962e1-fb5f-5d76-b26e-20cb6f5a96aa
+  components:
+  - type: uiRect
+    anchor: "TopLeft"
+  - type: uiImage
+    sprite: "aba3b074-52ca-5d54-b778-9537ba8d7aa1"
+    borders: {"left": 12, "top": 10, "right": 12, "bottom": 10}
+- id: a005c1ca-cf80-5c00-98e4-39a3c7fa940c
+  name: "Objective label"
+  x: 16
+  y: 8
+  width: 312
+  height: 36
+  parentId: a271ef66-48c9-5b42-b71d-c15c90fed7eb
+  components:
+  - type: uiRect
+    anchor: "TopLeft"
+  - type: uiText
+    text: "First orders"
+    size: 20
+    color: "#2b1c14"
+    richText: true
+    insetX: 0
+    insetY: 6.438
+- id: ef838652-6394-5eea-afdb-22f763a68a10
+  name: "Objective text"
+  x: 16
+  y: 44
+  width: 312
+  height: 32
+  parentId: a271ef66-48c9-5b42-b71d-c15c90fed7eb
+  components:
+  - type: uiRect
+    anchor: "TopLeft"
+  - type: uiText
+    text: "Found Haven"
+    size: 16
+    color: "#2b1c14"
+    richText: false
+    insetX: 0
+    insetY: 6.75
+- id: a5109754-6b41-5b09-8a56-60bbf1d9500e
+  name: "Objective key"
+  x: 272
+  y: 44
+  width: 56
+  height: 32
+  parentId: a271ef66-48c9-5b42-b71d-c15c90fed7eb
+  components:
+  - type: uiRect
+    anchor: "TopLeft"
+  - type: uiImage
+    sprite: "625bccbd-d7fe-5a42-95cb-9e66f139d1b4"
+    color: "#FFFFFF"
+    borders: {"left": 6, "top": 6, "right": 6, "bottom": 6}
+- id: 9bb3eaef-a133-5823-99fe-bee9b2c75f78
+  name: "Objective key text"
+  x: 0
+  y: 0
+  width: 56
+  height: 32
+  parentId: a5109754-6b41-5b09-8a56-60bbf1d9500e
+  components:
+  - type: uiRect
+    anchor: "TopLeft"
+  - type: uiText
+    text: "B"
+    size: 14
+    color: "#2b1c14"
+    richText: false
+    insetX: 24.062
+    insetY: 7.469
+- id: 89c33456-3da1-56a5-ac9b-5e93a97abf90
+  name: "Tooltip"
+  x: 384
+  y: 648
+  width: 504
+  height: 48
+  parentId: 8e6962e1-fb5f-5d76-b26e-20cb6f5a96aa
+  components:
+  - type: uiRect
+    anchor: "TopLeft"
+  - type: uiImage
+    sprite: "aba3b074-52ca-5d54-b778-9537ba8d7aa1"
+    borders: {"left": 12, "top": 10, "right": 12, "bottom": 10}
+- id: 83900b26-6443-5004-8134-ce5edd260dc6
+  name: "Tooltip text"
+  x: 16
+  y: 8
+  width: 472
+  height: 32
+  parentId: 89c33456-3da1-56a5-ac9b-5e93a97abf90
+  components:
+  - type: uiRect
+    anchor: "TopLeft"
+  - type: uiText
+    text: ""
+    size: 16
+    color: "#2b1c14"
+    richText: true
+    insetX: 0
+    insetY: 6.75
+- id: 5ebb66d6-56a3-5ab1-9b1a-f359e33a4e32
+  name: "Land guide"
+  x: 568
+  y: 112
+  width: 368
+  height: 88
+  parentId: 8e6962e1-fb5f-5d76-b26e-20cb6f5a96aa
+  components:
+  - type: uiRect
+    anchor: "TopLeft"
+  - type: uiImage
+    sprite: "160976c0-8e3e-5ec1-9f0a-d5e391eab1fb"
+    borders: {"left": 12, "top": 10, "right": 12, "bottom": 10}
+- id: 56a423b8-1853-5894-b0ab-fa2d73e8c9bd
+  name: "Land guide heading"
+  x: 16
+  y: 8
+  width: 336
+  height: 32
+  parentId: 5ebb66d6-56a3-5ab1-9b1a-f359e33a4e32
+  components:
+  - type: uiRect
+    anchor: "TopLeft"
+  - type: uiText
+    text: "<b>Grow cities with food</b>"
+    size: 16
+    color: "#3c291d"
+    richText: true
+    insetX: 0
+    insetY: 6.75
+- id: 6d925ed7-f3b5-54d9-a7c6-3f229b2b6a5f
+  name: "Land guide text"
+  x: 16
+  y: 44
+  width: 336
+  height: 36
+  parentId: 5ebb66d6-56a3-5ab1-9b1a-f359e33a4e32
+  components:
+  - type: uiRect
+    anchor: "TopLeft"
+  - type: uiText
+    text: "Found or capture cities"
+    size: 16
+    color: "#2b1c14"
+    richText: false
+    insetX: 0
+    insetY: 7.75
+- id: 4b936730-6266-50d1-b370-02e5bdc5fa34
+  name: "Notice panel"
+  x: 928
+  y: 164
+  width: 328
+  height: 44
+  parentId: 21e9698f-58c2-5fb0-8d62-9766f9d0a401
+  components:
+  - type: uiRect
+    anchor: "TopLeft"
+  - type: uiImage
+    sprite: "160976c0-8e3e-5ec1-9f0a-d5e391eab1fb"
+    borders: {"left": 12, "top": 10, "right": 12, "bottom": 10}
+- id: be80e8b0-77ee-5c66-b5e7-709a25f17fee
+  name: "Notice"
+  x: 16
+  y: 4
+  width: 296
+  height: 36
+  parentId: 4b936730-6266-50d1-b370-02e5bdc5fa34
+  components:
+  - type: uiRect
+    anchor: "TopLeft"
+  - type: uiText
+    text: ""
+    size: 16
+    color: "#2b1c14"
+    richText: true
+    insetX: 0
+    insetY: 8.75
+- id: 0ed5c58d-ca0b-5a40-8c58-8f2de9587e10
+  name: "Turn stamp"
+  x: 928
+  y: 112
+  width: 328
+  height: 44
+  parentId: 21e9698f-58c2-5fb0-8d62-9766f9d0a401
+  components:
+  - type: uiRect
+    anchor: "TopLeft"
+  - type: uiImage
+    sprite: "3fa4899b-d0b9-5627-827f-5fbd75348684"
+    borders: {"left": 12, "top": 10, "right": 12, "bottom": 10}
+- id: 754416e3-df0e-5150-9e4b-79c3e956f218
+  name: "Stamp text"
+  x: 16
+  y: 4
+  width: 296
+  height: 36
+  parentId: 0ed5c58d-ca0b-5a40-8c58-8f2de9587e10
+  components:
+  - type: uiRect
+    anchor: "TopLeft"
+  - type: uiText
+    text: "Rival turn"
+    size: 16
+    color: "#803f2d"
+    richText: true
+    insetX: 114.75
+    insetY: 8.75
+- id: 678dfa2e-f5cc-5cb0-ad07-845b9b5f9e41
+  name: "Portrait 0"
+  x: 12
+  y: 8
+  width: 32
+  height: 32
+  parentId: ceae1d1b-0c12-5b71-9d4a-5cda0ead4cf6
+  components:
+  - type: uiRect
+    anchor: "TopLeft"
+  - type: uiImage
+    sprite: "b9471414-cb18-50ee-b198-7897791ee02c"
+    color: "#FFFFFF"
+- id: 1e668522-04eb-5783-baed-18cd18d400db
+  name: "Portrait 1"
+  x: 12
+  y: 8
+  width: 32
+  height: 32
+  parentId: ceae1d1b-0c12-5b71-9d4a-5cda0ead4cf6
+  components:
+  - type: uiRect
+    anchor: "TopLeft"
+  - type: uiImage
+    sprite: "f4024c81-69a4-59e9-a2ea-3ea536d47707"
+    color: "#FFFFFF"
+- id: 3c150f0e-4af1-5a95-a2c2-8a735f3a9a62
+  name: "Portrait 2"
+  x: 12
+  y: 8
+  width: 32
+  height: 32
+  parentId: ceae1d1b-0c12-5b71-9d4a-5cda0ead4cf6
+  components:
+  - type: uiRect
+    anchor: "TopLeft"
+  - type: uiImage
+    sprite: "b61c3138-3af6-5b74-8b1d-dc24f0cdfeb1"
+    color: "#FFFFFF"
+- id: 3acdd1df-39a6-5938-8b87-60138214536a
+  name: "Portrait 3"
+  x: 12
+  y: 8
+  width: 32
+  height: 32
+  parentId: ceae1d1b-0c12-5b71-9d4a-5cda0ead4cf6
+  components:
+  - type: uiRect
+    anchor: "TopLeft"
+  - type: uiImage
+    sprite: "e585afef-1dfe-561c-afaf-7d96aa3b4fe5"
+    color: "#FFFFFF"
+- id: f69a9496-8def-5f40-9a97-f903791eb7f7
+  name: "Portrait 4"
+  x: 12
+  y: 8
+  width: 32
+  height: 32
+  parentId: ceae1d1b-0c12-5b71-9d4a-5cda0ead4cf6
+  components:
+  - type: uiRect
+    anchor: "TopLeft"
+  - type: uiImage
+    sprite: "419595fd-bcdc-5599-a2dc-183f2617cc15"
+    color: "#FFFFFF"
+- id: c11e5c45-70d3-5432-8e3e-2928c06edfc5
+  name: "Title card"
+  x: 80
+  y: 156
+  width: 552
+  height: 392
+  parentId: 21e9698f-58c2-5fb0-8d62-9766f9d0a401
+  components:
+  - type: uiRect
+    anchor: "TopLeft"
+  - type: uiImage
+    sprite: "160976c0-8e3e-5ec1-9f0a-d5e391eab1fb"
+    borders: {"left": 12, "top": 10, "right": 12, "bottom": 10}
+- id: 23ae23c2-3cf2-5b3e-8854-36d122aba983
+  name: "Title crest"
+  x: 16
+  y: 20
+  width: 48
+  height: 48
+  parentId: c11e5c45-70d3-5432-8e3e-2928c06edfc5
+  components:
+  - type: uiRect
+    anchor: "TopLeft"
+  - type: uiImage
+    sprite: "b07dd8b8-7c36-5861-830f-f9e338b1a754"
+    color: "#FFFFFF"
+- id: 9b333479-fef8-5788-94e4-8c3a49a6493b
+  name: "Title"
+  x: 76
+  y: 16
+  width: 456
+  height: 48
+  parentId: c11e5c45-70d3-5432-8e3e-2928c06edfc5
+  components:
+  - type: uiRect
+    anchor: "TopLeft"
+  - type: uiText
+    text: "<b>HexRealm</b>"
+    size: 24
+    color: "#2b1c14"
+    richText: true
+    insetX: 0
+    insetY: 10.125
+- id: 04054a67-f3c8-566a-b0e3-06ba19be20dd
+  name: "Title subtitle"
+  x: 76
+  y: 64
+  width: 456
+  height: 36
+  parentId: c11e5c45-70d3-5432-8e3e-2928c06edfc5
+  components:
+  - type: uiRect
+    anchor: "TopLeft"
+  - type: uiText
+    text: "The Salt Coast"
+    size: 16
+    color: "#483023"
+    richText: false
+    insetX: 0
+    insetY: 8.75
+- id: 6b3c7bb4-fec3-518c-94dd-2465265a5874
+  name: "Title rule"
+  x: 76
+  y: 108
+  width: 456
+  height: 1
+  parentId: c11e5c45-70d3-5432-8e3e-2928c06edfc5
+  components:
+  - type: uiRect
+    anchor: "TopLeft"
+  - type: uiImage
+    sprite: null
+    color: "#a98960"
+- id: 669f4501-f0cd-54da-a365-0109403da411
+  name: "Title stakes"
+  x: 76
+  y: 120
+  width: 456
+  height: 40
+  parentId: c11e5c45-70d3-5432-8e3e-2928c06edfc5
+  components:
+  - type: uiRect
+    anchor: "TopLeft"
+  - type: uiText
+    text: "Two banners. One coast."
+    size: 20
+    color: "#2b1c14"
+    richText: false
+    insetX: 0
+    insetY: 8.438
+- id: a78ff537-96ff-5390-bf12-dfc257959182
+  name: "Title goal"
+  x: 76
+  y: 172
+  width: 456
+  height: 36
+  parentId: c11e5c45-70d3-5432-8e3e-2928c06edfc5
+  components:
+  - type: uiRect
+    anchor: "TopLeft"
+  - type: uiText
+    text: "Found Haven. Take Redwatch."
+    size: 16
+    color: "#2b1c14"
+    richText: false
+    insetX: 0
+    insetY: 8.75
+- id: 2e4ab6a8-8a06-52b6-8268-5f07b73d69ad
+  name: "Title pace"
+  x: 76
+  y: 216
+  width: 456
+  height: 36
+  parentId: c11e5c45-70d3-5432-8e3e-2928c06edfc5
+  components:
+  - type: uiRect
+    anchor: "TopLeft"
+  - type: uiText
+    text: "25 turns, one rival"
+    size: 14
+    color: "#483023"
+    richText: false
+    insetX: 0
+    insetY: 9.25
+- id: 6db3646a-78b2-5621-9973-e7c3f8b07699
+  name: "Start"
+  x: 76
+  y: 272
+  width: 224
+  height: 48
+  parentId: c11e5c45-70d3-5432-8e3e-2928c06edfc5
+  components:
+  - type: uiRect
+    anchor: "TopLeft"
+  - type: uiButton
+    style: "button"
+  - type: uiImage
+    sprite: "db5fc2c1-d6c7-58dd-b65d-153dd2c36d6c"
+    borders: {"left": 6, "top": 6, "right": 6, "bottom": 6}
+  - type: script
+    script: "RealmButton"
+    values: {"Action": "HexRealm.Button.Start", "Caption": "7854981a-3ed2-55e7-88dd-ca75a7da82f3", "Width": 224, "Height": 48, "Titles": ["New game"], "Keys": ["N"], "TextMetrics": [71.0, 10.75], "KeyMetrics": [9.625, 8.531], "Key": "f68f5dbb-fd94-5625-b0d8-c7a87f033e0c", "KeyCaption": "23cc64e8-7548-5ad2-a942-15003b3a3f6c"}
+- id: 7854981a-3ed2-55e7-88dd-ca75a7da82f3
+  name: "Start caption"
+  x: 0
+  y: 0
+  width: 224
+  height: 48
+  parentId: 6db3646a-78b2-5621-9973-e7c3f8b07699
+  components:
+  - type: uiRect
+    anchor: "TopLeft"
+  - type: uiText
+    text: "New game"
+    size: 16
+    color: "#2b1c14"
+- id: f68f5dbb-fd94-5625-b0d8-c7a87f033e0c
+  name: "Start key"
+  x: 0
+  y: 0
+  width: 24
+  height: 24
+  parentId: 6db3646a-78b2-5621-9973-e7c3f8b07699
+  components:
+  - type: uiRect
+    anchor: "TopLeft"
+  - type: uiImage
+    sprite: "625bccbd-d7fe-5a42-95cb-9e66f139d1b4"
+    color: "#FFFFFF"
+    borders: {"left": 6, "top": 6, "right": 6, "bottom": 6}
+- id: 23cc64e8-7548-5ad2-a942-15003b3a3f6c
+  name: "Start key text"
+  x: 0
+  y: 0
+  width: 152
+  height: 36
+  parentId: f68f5dbb-fd94-5625-b0d8-c7a87f033e0c
+  components:
+  - type: uiRect
+    anchor: "TopLeft"
+  - type: uiText
+    text: "N"
+    size: 14
+    color: "#2b1c14"
+- id: 63ef4979-a380-55ac-8083-3c499315e8a1
+  name: "Continue"
+  x: 308
+  y: 272
+  width: 224
+  height: 48
+  parentId: c11e5c45-70d3-5432-8e3e-2928c06edfc5
+  components:
+  - type: uiRect
+    anchor: "TopLeft"
+  - type: uiButton
+    style: "button"
+  - type: uiImage
+    sprite: "db5fc2c1-d6c7-58dd-b65d-153dd2c36d6c"
+    borders: {"left": 6, "top": 6, "right": 6, "bottom": 6}
+  - type: script
+    script: "RealmButton"
+    values: {"Action": "HexRealm.Button.Load", "Caption": "6049c2b9-f99c-55cd-8343-a5d43c56c3db", "Width": 224, "Height": 48, "Titles": ["Load game"], "Keys": ["F9"], "TextMetrics": [74.0, 10.25], "KeyMetrics": [14.438, 8.531], "Key": "654d030c-a67c-536c-ab47-cf5ea2fca7ce", "KeyCaption": "1ba4f00d-3b3a-589d-8604-dd1653b0f5bc"}
+- id: 6049c2b9-f99c-55cd-8343-a5d43c56c3db
+  name: "Continue caption"
+  x: 0
+  y: 0
+  width: 224
+  height: 48
+  parentId: 63ef4979-a380-55ac-8083-3c499315e8a1
+  components:
+  - type: uiRect
+    anchor: "TopLeft"
+  - type: uiText
+    text: "Load game"
+    size: 16
+    color: "#2b1c14"
+- id: 654d030c-a67c-536c-ab47-cf5ea2fca7ce
+  name: "Continue key"
+  x: 0
+  y: 0
+  width: 24
+  height: 24
+  parentId: 63ef4979-a380-55ac-8083-3c499315e8a1
+  components:
+  - type: uiRect
+    anchor: "TopLeft"
+  - type: uiImage
+    sprite: "625bccbd-d7fe-5a42-95cb-9e66f139d1b4"
+    color: "#FFFFFF"
+    borders: {"left": 6, "top": 6, "right": 6, "bottom": 6}
+- id: 1ba4f00d-3b3a-589d-8604-dd1653b0f5bc
+  name: "Continue key text"
+  x: 0
+  y: 0
+  width: 152
+  height: 36
+  parentId: 654d030c-a67c-536c-ab47-cf5ea2fca7ce
+  components:
+  - type: uiRect
+    anchor: "TopLeft"
+  - type: uiText
+    text: "F9"
+    size: 14
+    color: "#2b1c14"
+- id: efd67133-cf58-50d5-b200-9cc65a28e5b1
+  name: "Title help"
+  x: 76
+  y: 328
+  width: 160
+  height: 48
+  parentId: c11e5c45-70d3-5432-8e3e-2928c06edfc5
+  components:
+  - type: uiRect
+    anchor: "TopLeft"
+  - type: uiButton
+    style: "button"
+  - type: uiImage
+    sprite: "db5fc2c1-d6c7-58dd-b65d-153dd2c36d6c"
+    borders: {"left": 6, "top": 6, "right": 6, "bottom": 6}
+  - type: script
+    script: "RealmButton"
+    values: {"Action": "HexRealm.Button.Help", "Caption": "804359dd-d9e8-5bd7-a16d-4cf65c53e926", "Width": 160, "Height": 48, "Titles": ["Help"], "Keys": ["H"], "TextMetrics": [31.0, 10.25], "KeyMetrics": [9.625, 8.531], "Key": "be8c85a3-5f90-590f-a811-3503c50c416c", "KeyCaption": "8c42eb6d-ae35-538c-8d7c-ff943d4e310b"}
+- id: 804359dd-d9e8-5bd7-a16d-4cf65c53e926
+  name: "Title help caption"
+  x: 0
+  y: 0
+  width: 160
+  height: 48
+  parentId: efd67133-cf58-50d5-b200-9cc65a28e5b1
+  components:
+  - type: uiRect
+    anchor: "TopLeft"
+  - type: uiText
+    text: "Help"
+    size: 16
+    color: "#2b1c14"
+- id: be8c85a3-5f90-590f-a811-3503c50c416c
+  name: "Title help key"
+  x: 0
+  y: 0
+  width: 24
+  height: 24
+  parentId: efd67133-cf58-50d5-b200-9cc65a28e5b1
+  components:
+  - type: uiRect
+    anchor: "TopLeft"
+  - type: uiImage
+    sprite: "625bccbd-d7fe-5a42-95cb-9e66f139d1b4"
+    color: "#FFFFFF"
+    borders: {"left": 6, "top": 6, "right": 6, "bottom": 6}
+- id: 8c42eb6d-ae35-538c-8d7c-ff943d4e310b
+  name: "Title help key text"
+  x: 0
+  y: 0
+  width: 152
+  height: 36
+  parentId: be8c85a3-5f90-590f-a811-3503c50c416c
+  components:
+  - type: uiRect
+    anchor: "TopLeft"
+  - type: uiText
+    text: "H"
+    size: 14
+    color: "#2b1c14"
+- id: 4a4c80e9-0f9d-5cd1-9ef9-b8ef48aaf8d8
+  name: "Help card"
+  x: 320
+  y: 96
+  width: 640
+  height: 528
+  parentId: 21e9698f-58c2-5fb0-8d62-9766f9d0a401
+  components:
+  - type: uiRect
+    anchor: "TopLeft"
+  - type: uiImage
+    sprite: "160976c0-8e3e-5ec1-9f0a-d5e391eab1fb"
+    borders: {"left": 12, "top": 10, "right": 12, "bottom": 10}
+- id: bc7ff14a-064c-5714-9580-f6cbeb7677e4
+  name: "Help heading"
+  x: 16
+  y: 12
+  width: 608
+  height: 52
+  parentId: 4a4c80e9-0f9d-5cd1-9ef9-b8ef48aaf8d8
+  components:
+  - type: uiRect
+    anchor: "TopLeft"
+  - type: uiText
+    text: "<b>Field orders</b>"
+    size: 24
+    color: "#2b1c14"
+    richText: true
+    insetX: 0
+    insetY: 12.125
+- id: 43ab02db-18b4-5def-add8-7d5f68d6514e
+  name: "Help left 0"
+  x: 16
+  y: 72
+  width: 192
+  height: 40
+  parentId: 4a4c80e9-0f9d-5cd1-9ef9-b8ef48aaf8d8
+  components:
+  - type: uiRect
+    anchor: "TopLeft"
+  - type: uiText
+    text: "Select"
+    size: 16
+    color: "#2b1c14"
+    richText: false
+    insetX: 0
+    insetY: 10.75
+- id: a6226345-ea31-5e92-a7a0-0864ded620c8
+  name: "Help left key 0"
+  x: 212
+  y: 76
+  width: 104
+  height: 32
+  parentId: 4a4c80e9-0f9d-5cd1-9ef9-b8ef48aaf8d8
+  components:
+  - type: uiRect
+    anchor: "TopLeft"
+  - type: uiImage
+    sprite: "625bccbd-d7fe-5a42-95cb-9e66f139d1b4"
+    color: "#FFFFFF"
+    borders: {"left": 6, "top": 6, "right": 6, "bottom": 6}
+- id: 96ec8487-6e68-5a3c-9f21-f87b98ea65c4
+  name: "Help left key 0 text"
+  x: 0
+  y: 0
+  width: 104
+  height: 32
+  parentId: a6226345-ea31-5e92-a7a0-0864ded620c8
+  components:
+  - type: uiRect
+    anchor: "TopLeft"
+  - type: uiText
+    text: "L click"
+    size: 14
+    color: "#2b1c14"
+    richText: false
+    insetX: 32.969
+    insetY: 7.906
+- id: 50450360-385c-5b6c-88b7-8dffda4440f0
+  name: "Help right 0"
+  x: 332
+  y: 72
+  width: 168
+  height: 40
+  parentId: 4a4c80e9-0f9d-5cd1-9ef9-b8ef48aaf8d8
+  components:
+  - type: uiRect
+    anchor: "TopLeft"
+  - type: uiText
+    text: "Order"
+    size: 16
+    color: "#2b1c14"
+    richText: false
+    insetX: 0
+    insetY: 10.75
+- id: 7a9bd678-add7-53e9-a907-4d189f96a745
+  name: "Help right key 0"
+  x: 512
+  y: 76
+  width: 112
+  height: 32
+  parentId: 4a4c80e9-0f9d-5cd1-9ef9-b8ef48aaf8d8
+  components:
+  - type: uiRect
+    anchor: "TopLeft"
+  - type: uiImage
+    sprite: "625bccbd-d7fe-5a42-95cb-9e66f139d1b4"
+    color: "#FFFFFF"
+    borders: {"left": 6, "top": 6, "right": 6, "bottom": 6}
+- id: 74422398-2abb-5cb7-b8cd-ae33b4beb2df
+  name: "Help right key 0 text"
+  x: 0
+  y: 0
+  width: 112
+  height: 32
+  parentId: 7a9bd678-add7-53e9-a907-4d189f96a745
+  components:
+  - type: uiRect
+    anchor: "TopLeft"
+  - type: uiText
+    text: "R click"
+    size: 14
+    color: "#2b1c14"
+    richText: false
+    insetX: 36.531
+    insetY: 7.906
+- id: 74f445e9-fcce-52fd-ac9e-9e77030c77cb
+  name: "Help left 1"
+  x: 16
+  y: 120
+  width: 192
+  height: 40
+  parentId: 4a4c80e9-0f9d-5cd1-9ef9-b8ef48aaf8d8
+  components:
+  - type: uiRect
+    anchor: "TopLeft"
+  - type: uiText
+    text: "Found city"
+    size: 16
+    color: "#2b1c14"
+    richText: false
+    insetX: 0
+    insetY: 9.75
+- id: 1f8e1674-ad2f-5c0d-b475-547ca9ffbbdb
+  name: "Help left key 1"
+  x: 212
+  y: 124
+  width: 104
+  height: 32
+  parentId: 4a4c80e9-0f9d-5cd1-9ef9-b8ef48aaf8d8
+  components:
+  - type: uiRect
+    anchor: "TopLeft"
+  - type: uiImage
+    sprite: "625bccbd-d7fe-5a42-95cb-9e66f139d1b4"
+    color: "#FFFFFF"
+    borders: {"left": 6, "top": 6, "right": 6, "bottom": 6}
+- id: ac8a6bb8-be96-53e4-bdbe-5acd855dae05
+  name: "Help left key 1 text"
+  x: 0
+  y: 0
+  width: 104
+  height: 32
+  parentId: 1f8e1674-ad2f-5c0d-b475-547ca9ffbbdb
+  components:
+  - type: uiRect
+    anchor: "TopLeft"
+  - type: uiText
+    text: "B"
+    size: 14
+    color: "#2b1c14"
+    richText: false
+    insetX: 48.062
+    insetY: 7.469
+- id: 40ecc86f-1a94-5d8d-a362-6e4cd81c85f8
+  name: "Help right 1"
+  x: 332
+  y: 120
+  width: 168
+  height: 40
+  parentId: 4a4c80e9-0f9d-5cd1-9ef9-b8ef48aaf8d8
+  components:
+  - type: uiRect
+    anchor: "TopLeft"
+  - type: uiText
+    text: "Districts"
+    size: 16
+    color: "#2b1c14"
+    richText: false
+    insetX: 0
+    insetY: 10.25
+- id: efcf9a20-0768-5a1e-b850-11a0bfdb77d4
+  name: "Help right key 1"
+  x: 512
+  y: 124
+  width: 112
+  height: 32
+  parentId: 4a4c80e9-0f9d-5cd1-9ef9-b8ef48aaf8d8
+  components:
+  - type: uiRect
+    anchor: "TopLeft"
+  - type: uiImage
+    sprite: "625bccbd-d7fe-5a42-95cb-9e66f139d1b4"
+    color: "#FFFFFF"
+    borders: {"left": 6, "top": 6, "right": 6, "bottom": 6}
+- id: 755d4f93-062f-5775-a532-308d5480e485
+  name: "Help right key 1 text"
+  x: 0
+  y: 0
+  width: 112
+  height: 32
+  parentId: efcf9a20-0768-5a1e-b850-11a0bfdb77d4
+  components:
+  - type: uiRect
+    anchor: "TopLeft"
+  - type: uiText
+    text: "I/M/O"
+    size: 14
+    color: "#2b1c14"
+    richText: false
+    insetX: 36.531
+    insetY: 7.688
+- id: f38522f6-e822-58aa-9db5-23b07be7dcbf
+  name: "Help left 2"
+  x: 16
+  y: 168
+  width: 192
+  height: 40
+  parentId: 4a4c80e9-0f9d-5cd1-9ef9-b8ef48aaf8d8
+  components:
+  - type: uiRect
+    anchor: "TopLeft"
+  - type: uiText
+    text: "Train"
+    size: 16
+    color: "#2b1c14"
+    richText: false
+    insetX: 0
+    insetY: 10.25
+- id: 1f02db73-ff54-5863-89a2-dd2c84ed0166
+  name: "Help left key 2"
+  x: 212
+  y: 172
+  width: 104
+  height: 32
+  parentId: 4a4c80e9-0f9d-5cd1-9ef9-b8ef48aaf8d8
+  components:
+  - type: uiRect
+    anchor: "TopLeft"
+  - type: uiImage
+    sprite: "625bccbd-d7fe-5a42-95cb-9e66f139d1b4"
+    color: "#FFFFFF"
+    borders: {"left": 6, "top": 6, "right": 6, "bottom": 6}
+- id: 0171a660-ea76-51f4-b0aa-8739146951fb
+  name: "Help left key 2 text"
+  x: 0
+  y: 0
+  width: 104
+  height: 32
+  parentId: 1f02db73-ff54-5863-89a2-dd2c84ed0166
+  components:
+  - type: uiRect
+    anchor: "TopLeft"
+  - type: uiText
+    text: "1-5"
+    size: 14
+    color: "#2b1c14"
+    richText: false
+    insetX: 41.938
+    insetY: 7.469
+- id: c5064e95-4b39-51ba-864e-e7a3e2dbd78e
+  name: "Help right 2"
+  x: 332
+  y: 168
+  width: 168
+  height: 40
+  parentId: 4a4c80e9-0f9d-5cd1-9ef9-b8ef48aaf8d8
+  components:
+  - type: uiRect
+    anchor: "TopLeft"
+  - type: uiText
+    text: "Research"
+    size: 16
+    color: "#2b1c14"
+    richText: false
+    insetX: 0
+    insetY: 10.75
+- id: 646ea28c-93e5-59aa-ad72-b3e720b599fd
+  name: "Help right key 2"
+  x: 512
+  y: 172
+  width: 112
+  height: 32
+  parentId: 4a4c80e9-0f9d-5cd1-9ef9-b8ef48aaf8d8
+  components:
+  - type: uiRect
+    anchor: "TopLeft"
+  - type: uiImage
+    sprite: "625bccbd-d7fe-5a42-95cb-9e66f139d1b4"
+    color: "#FFFFFF"
+    borders: {"left": 6, "top": 6, "right": 6, "bottom": 6}
+- id: 00734c6a-ae0e-5832-b7bc-db4f96b30fef
+  name: "Help right key 2 text"
+  x: 0
+  y: 0
+  width: 112
+  height: 32
+  parentId: 646ea28c-93e5-59aa-ad72-b3e720b599fd
+  components:
+  - type: uiRect
+    anchor: "TopLeft"
+  - type: uiText
+    text: "R"
+    size: 14
+    color: "#2b1c14"
+    richText: false
+    insetX: 51.844
+    insetY: 7.469
+- id: 6683f338-1116-5d02-a717-1a9a298775d1
+  name: "Help left 3"
+  x: 16
+  y: 216
+  width: 192
+  height: 40
+  parentId: 4a4c80e9-0f9d-5cd1-9ef9-b8ef48aaf8d8
+  components:
+  - type: uiRect
+    anchor: "TopLeft"
+  - type: uiText
+    text: "Next unit"
+    size: 16
+    color: "#2b1c14"
+    richText: false
+    insetX: 0
+    insetY: 10.25
+- id: bd3f46ec-b2bd-5e36-a203-0c5ec50c2d94
+  name: "Help left key 3"
+  x: 212
+  y: 220
+  width: 104
+  height: 32
+  parentId: 4a4c80e9-0f9d-5cd1-9ef9-b8ef48aaf8d8
+  components:
+  - type: uiRect
+    anchor: "TopLeft"
+  - type: uiImage
+    sprite: "625bccbd-d7fe-5a42-95cb-9e66f139d1b4"
+    color: "#FFFFFF"
+    borders: {"left": 6, "top": 6, "right": 6, "bottom": 6}
+- id: 8222ab49-f69e-57d6-b1b5-811ea5a7a0ec
+  name: "Help left key 3 text"
+  x: 0
+  y: 0
+  width: 104
+  height: 32
+  parentId: bd3f46ec-b2bd-5e36-a203-0c5ec50c2d94
+  components:
+  - type: uiRect
+    anchor: "TopLeft"
+  - type: uiText
+    text: "Tab"
+    size: 14
+    color: "#2b1c14"
+    richText: false
+    insetX: 40.844
+    insetY: 7.906
+- id: 2ac950be-b32a-562c-8de0-12979b95bbfb
+  name: "Help right 3"
+  x: 332
+  y: 216
+  width: 168
+  height: 40
+  parentId: 4a4c80e9-0f9d-5cd1-9ef9-b8ef48aaf8d8
+  components:
+  - type: uiRect
+    anchor: "TopLeft"
+  - type: uiText
+    text: "End turn"
+    size: 16
+    color: "#2b1c14"
+    richText: false
+    insetX: 0
+    insetY: 10.75
+- id: b1ed41ac-9ac8-53b8-bb15-9029f45c294e
+  name: "Help right key 3"
+  x: 512
+  y: 220
+  width: 112
+  height: 32
+  parentId: 4a4c80e9-0f9d-5cd1-9ef9-b8ef48aaf8d8
+  components:
+  - type: uiRect
+    anchor: "TopLeft"
+  - type: uiImage
+    sprite: "625bccbd-d7fe-5a42-95cb-9e66f139d1b4"
+    color: "#FFFFFF"
+    borders: {"left": 6, "top": 6, "right": 6, "bottom": 6}
+- id: ca89a24a-13df-5afa-a258-2877824671a8
+  name: "Help right key 3 text"
+  x: 0
+  y: 0
+  width: 112
+  height: 32
+  parentId: b1ed41ac-9ac8-53b8-bb15-9029f45c294e
+  components:
+  - type: uiRect
+    anchor: "TopLeft"
+  - type: uiText
+    text: "Enter"
+    size: 14
+    color: "#2b1c14"
+    richText: false
+    insetX: 39.812
+    insetY: 7.469
+- id: 8bb02be1-32b9-5199-8ad9-219cb84b0499
+  name: "Help left 4"
+  x: 16
+  y: 264
+  width: 192
+  height: 40
+  parentId: 4a4c80e9-0f9d-5cd1-9ef9-b8ef48aaf8d8
+  components:
+  - type: uiRect
+    anchor: "TopLeft"
+  - type: uiText
+    text: "Save"
+    size: 16
+    color: "#2b1c14"
+    richText: false
+    insetX: 0
+    insetY: 10.25
+- id: 19b13b5c-b264-52ab-93d7-ff3691d4cf44
+  name: "Help left key 4"
+  x: 212
+  y: 268
+  width: 104
+  height: 32
+  parentId: 4a4c80e9-0f9d-5cd1-9ef9-b8ef48aaf8d8
+  components:
+  - type: uiRect
+    anchor: "TopLeft"
+  - type: uiImage
+    sprite: "625bccbd-d7fe-5a42-95cb-9e66f139d1b4"
+    color: "#FFFFFF"
+    borders: {"left": 6, "top": 6, "right": 6, "bottom": 6}
+- id: 791ae1fa-9bc5-5823-b969-fcb9c228ad43
+  name: "Help left key 4 text"
+  x: 0
+  y: 0
+  width: 104
+  height: 32
+  parentId: 19b13b5c-b264-52ab-93d7-ff3691d4cf44
+  components:
+  - type: uiRect
+    anchor: "TopLeft"
+  - type: uiText
+    text: "F5"
+    size: 14
+    color: "#2b1c14"
+    richText: false
+    insetX: 44.562
+    insetY: 7.469
+- id: 976ef9e3-01b4-5eb8-a6d0-0ffbd870ff35
+  name: "Help right 4"
+  x: 332
+  y: 264
+  width: 168
+  height: 40
+  parentId: 4a4c80e9-0f9d-5cd1-9ef9-b8ef48aaf8d8
+  components:
+  - type: uiRect
+    anchor: "TopLeft"
+  - type: uiText
+    text: "Load"
+    size: 16
+    color: "#2b1c14"
+    richText: false
+    insetX: 0
+    insetY: 10.75
+- id: 88bb27a3-b01a-592f-8342-f41ef0f8b577
+  name: "Help right key 4"
+  x: 512
+  y: 268
+  width: 112
+  height: 32
+  parentId: 4a4c80e9-0f9d-5cd1-9ef9-b8ef48aaf8d8
+  components:
+  - type: uiRect
+    anchor: "TopLeft"
+  - type: uiImage
+    sprite: "625bccbd-d7fe-5a42-95cb-9e66f139d1b4"
+    color: "#FFFFFF"
+    borders: {"left": 6, "top": 6, "right": 6, "bottom": 6}
+- id: 0f6eb61c-20cf-50e2-9ec1-f826e801338a
+  name: "Help right key 4 text"
+  x: 0
+  y: 0
+  width: 112
+  height: 32
+  parentId: 88bb27a3-b01a-592f-8342-f41ef0f8b577
+  components:
+  - type: uiRect
+    anchor: "TopLeft"
+  - type: uiText
+    text: "F9"
+    size: 14
+    color: "#2b1c14"
+    richText: false
+    insetX: 48.781
+    insetY: 7.469
+- id: 4b6e3ffe-05d3-511c-bad1-d00691a31064
+  name: "Help left 5"
+  x: 16
+  y: 312
+  width: 192
+  height: 40
+  parentId: 4a4c80e9-0f9d-5cd1-9ef9-b8ef48aaf8d8
+  components:
+  - type: uiRect
+    anchor: "TopLeft"
+  - type: uiText
+    text: "Zoom"
+    size: 16
+    color: "#2b1c14"
+    richText: false
+    insetX: 0
+    insetY: 10.25
+- id: ea44a399-edb2-5364-ac7f-9bd41d2171dd
+  name: "Help left key 5"
+  x: 212
+  y: 316
+  width: 104
+  height: 32
+  parentId: 4a4c80e9-0f9d-5cd1-9ef9-b8ef48aaf8d8
+  components:
+  - type: uiRect
+    anchor: "TopLeft"
+  - type: uiImage
+    sprite: "625bccbd-d7fe-5a42-95cb-9e66f139d1b4"
+    color: "#FFFFFF"
+    borders: {"left": 6, "top": 6, "right": 6, "bottom": 6}
+- id: fada3324-8de5-538b-b8a9-1097ee7f8e2b
+  name: "Help left key 5 text"
+  x: 0
+  y: 0
+  width: 104
+  height: 32
+  parentId: ea44a399-edb2-5364-ac7f-9bd41d2171dd
+  components:
+  - type: uiRect
+    anchor: "TopLeft"
+  - type: uiText
+    text: "+/-"
+    size: 14
+    color: "#2b1c14"
+    richText: false
+    insetX: 40.844
+    insetY: 7.688
+- id: 883f9ca1-b791-5fa1-bf39-635509db34ee
+  name: "Help right 5"
+  x: 332
+  y: 312
+  width: 168
+  height: 40
+  parentId: 4a4c80e9-0f9d-5cd1-9ef9-b8ef48aaf8d8
+  components:
+  - type: uiRect
+    anchor: "TopLeft"
+  - type: uiText
+    text: "Pan"
+    size: 16
+    color: "#2b1c14"
+    richText: false
+    insetX: 0
+    insetY: 10.25
+- id: 5c279d10-8f4c-51fe-a713-ba8685ca588b
+  name: "Help right key 5"
+  x: 512
+  y: 316
+  width: 112
+  height: 32
+  parentId: 4a4c80e9-0f9d-5cd1-9ef9-b8ef48aaf8d8
+  components:
+  - type: uiRect
+    anchor: "TopLeft"
+  - type: uiImage
+    sprite: "625bccbd-d7fe-5a42-95cb-9e66f139d1b4"
+    color: "#FFFFFF"
+    borders: {"left": 6, "top": 6, "right": 6, "bottom": 6}
+- id: 37a2c37b-2989-5221-bbfa-0b468748fe82
+  name: "Help right key 5 text"
+  x: 0
+  y: 0
+  width: 112
+  height: 32
+  parentId: 5c279d10-8f4c-51fe-a713-ba8685ca588b
+  components:
+  - type: uiRect
+    anchor: "TopLeft"
+  - type: uiText
+    text: "WASD"
+    size: 14
+    color: "#2b1c14"
+    richText: false
+    insetX: 36.75
+    insetY: 7.469
+- id: 98f743de-f922-5426-bda7-ad1dd0246014
+  name: "Help rule"
+  x: 16
+  y: 368
+  width: 608
+  height: 1
+  parentId: 4a4c80e9-0f9d-5cd1-9ef9-b8ef48aaf8d8
+  components:
+  - type: uiRect
+    anchor: "TopLeft"
+  - type: uiImage
+    sprite: null
+    color: "#a98960"
+- id: bae38bfe-0374-541b-80e8-17c90728de97
+  name: "Help land"
+  x: 16
+  y: 380
+  width: 608
+  height: 36
+  parentId: 4a4c80e9-0f9d-5cd1-9ef9-b8ef48aaf8d8
+  components:
+  - type: uiRect
+    anchor: "TopLeft"
+  - type: uiText
+    text: "Claim land by growth, founding, or capture."
+    size: 16
+    color: "#2b1c14"
+    richText: false
+    insetX: 0
+    insetY: 7.75
+- id: 0aeff62e-ffaa-5f6b-8306-0b8452f5df5b
+  name: "Help win"
+  x: 16
+  y: 420
+  width: 608
+  height: 36
+  parentId: 4a4c80e9-0f9d-5cd1-9ef9-b8ef48aaf8d8
+  components:
+  - type: uiRect
+    anchor: "TopLeft"
+  - type: uiText
+    text: "Win by land, capital, or score after turn 25."
+    size: 16
+    color: "#2b1c14"
+    richText: false
+    insetX: 0
+    insetY: 7.75
+- id: e1b68281-fa2d-5f42-a0d0-edb11b7167e8
+  name: "Back"
+  x: 16
+  y: 464
+  width: 204
+  height: 48
+  parentId: 4a4c80e9-0f9d-5cd1-9ef9-b8ef48aaf8d8
+  components:
+  - type: uiRect
+    anchor: "TopLeft"
+  - type: uiButton
+    style: "button"
+  - type: uiImage
+    sprite: "db5fc2c1-d6c7-58dd-b65d-153dd2c36d6c"
+    borders: {"left": 6, "top": 6, "right": 6, "bottom": 6}
+  - type: script
+    script: "RealmButton"
+    values: {"Action": "HexRealm.Button.Help", "Caption": "2cfdafd6-c88b-5c47-8121-21cee52f3fd5", "Width": 204, "Height": 48, "Titles": ["Back"], "Keys": ["H"], "TextMetrics": [31.5, 9.25], "KeyMetrics": [9.625, 8.531], "Key": "ef0cf314-b1ef-5022-bc37-3d5ba8da5333", "KeyCaption": "6b6ae28e-d70d-5a77-ba61-ac3aba913a42"}
+- id: 2cfdafd6-c88b-5c47-8121-21cee52f3fd5
+  name: "Back caption"
+  x: 0
+  y: 0
+  width: 204
+  height: 48
+  parentId: e1b68281-fa2d-5f42-a0d0-edb11b7167e8
+  components:
+  - type: uiRect
+    anchor: "TopLeft"
+  - type: uiText
+    text: "Back"
+    size: 16
+    color: "#2b1c14"
+- id: ef0cf314-b1ef-5022-bc37-3d5ba8da5333
+  name: "Back key"
+  x: 0
+  y: 0
+  width: 24
+  height: 24
+  parentId: e1b68281-fa2d-5f42-a0d0-edb11b7167e8
+  components:
+  - type: uiRect
+    anchor: "TopLeft"
+  - type: uiImage
+    sprite: "625bccbd-d7fe-5a42-95cb-9e66f139d1b4"
+    color: "#FFFFFF"
+    borders: {"left": 6, "top": 6, "right": 6, "bottom": 6}
+- id: 6b6ae28e-d70d-5a77-ba61-ac3aba913a42
+  name: "Back key text"
+  x: 0
+  y: 0
+  width: 152
+  height: 36
+  parentId: ef0cf314-b1ef-5022-bc37-3d5ba8da5333
+  components:
+  - type: uiRect
+    anchor: "TopLeft"
+  - type: uiText
+    text: "H"
+    size: 14
+    color: "#2b1c14"
+- id: c9304e57-b729-504f-b424-12923cff5f53
+  name: "Result card"
+  x: 320
+  y: 156
+  width: 640
+  height: 472
+  parentId: 21e9698f-58c2-5fb0-8d62-9766f9d0a401
+  components:
+  - type: uiRect
+    anchor: "TopLeft"
+  - type: uiImage
+    sprite: "160976c0-8e3e-5ec1-9f0a-d5e391eab1fb"
+    borders: {"left": 12, "top": 10, "right": 12, "bottom": 10}
+- id: 0c33184d-c080-53d7-9544-06204a1ce74b
+  name: "Charter contents"
+  x: 0
+  y: 0
+  width: 640
+  height: 472
+  parentId: c9304e57-b729-504f-b424-12923cff5f53
+  components:
+  - type: uiRect
+    anchor: "TopLeft"
+- id: 9886d242-19fa-5858-b2d4-48e3cee77c04
+  name: "Result crest"
+  x: 560
+  y: 16
+  width: 48
+  height: 48
+  parentId: 0c33184d-c080-53d7-9544-06204a1ce74b
+  components:
+  - type: uiRect
+    anchor: "TopLeft"
+  - type: uiImage
+    sprite: "b07dd8b8-7c36-5861-830f-f9e338b1a754"
+    color: "#FFFFFF"
+- id: 5b52bc0c-a865-5401-89e7-b893d59beb2d
+  name: "Result heading"
+  x: 32
+  y: 12
+  width: 512
+  height: 52
+  parentId: 0c33184d-c080-53d7-9544-06204a1ce74b
+  components:
+  - type: uiRect
+    anchor: "TopLeft"
+  - type: uiText
+    text: ""
+    size: 24
+    color: "#2b1c14"
+    richText: true
+    insetX: 0
+    insetY: 12.125
+- id: a62ee099-6ab0-5466-a252-dd76412bfe55
+  name: "Result cause"
+  x: 32
+  y: 68
+  width: 576
+  height: 40
+  parentId: 0c33184d-c080-53d7-9544-06204a1ce74b
+  components:
+  - type: uiRect
+    anchor: "TopLeft"
+  - type: uiText
+    text: ""
+    size: 16
+    color: "#483023"
+    richText: false
+    insetX: 0
+    insetY: 10.75
+- id: 320a83e3-12f2-5a6d-9404-2879b5f846d2
+  name: "Result rule"
+  x: 32
+  y: 116
+  width: 576
+  height: 1
+  parentId: 0c33184d-c080-53d7-9544-06204a1ce74b
+  components:
+  - type: uiRect
+    anchor: "TopLeft"
+  - type: uiImage
+    sprite: null
+    color: "#a98960"
+- id: ac60d3af-876b-51e7-b1e5-57f346fcaf2d
+  name: "Player ribbon"
+  x: 16
+  y: 128
+  width: 296
+  height: 40
+  parentId: 0c33184d-c080-53d7-9544-06204a1ce74b
+  components:
+  - type: uiRect
+    anchor: "TopLeft"
+  - type: uiImage
+    sprite: "f7d201ac-2759-5c03-bf5b-0144d939d383"
+    color: "#FFFFFF"
+    borders: {"left": 12, "top": 10, "right": 12, "bottom": 10}
+- id: dee15294-acaf-5862-8ead-7270396b2c6f
+  name: "Rival ribbon"
+  x: 328
+  y: 128
+  width: 296
+  height: 40
+  parentId: 0c33184d-c080-53d7-9544-06204a1ce74b
+  components:
+  - type: uiRect
+    anchor: "TopLeft"
+  - type: uiImage
+    sprite: "a3526aab-3d62-5764-ac97-fbab5a379bf7"
+    color: "#FFFFFF"
+    borders: {"left": 12, "top": 10, "right": 12, "bottom": 10}
+- id: 491b5ac8-f997-58f6-aa59-906f3f1d0529
+  name: "Player tally"
+  x: 32
+  y: 128
+  width: 264
+  height: 40
+  parentId: 0c33184d-c080-53d7-9544-06204a1ce74b
+  components:
+  - type: uiRect
+    anchor: "TopLeft"
+  - type: uiText
+    text: "<b>Haven</b>"
+    size: 20
+    color: "#245d50"
+    richText: true
+    insetX: 0
+    insetY: 7.812
+- id: 6a9514a8-ebb6-5a00-b98b-6dabbc79c836
+  name: "Rival tally"
+  x: 344
+  y: 128
+  width: 264
+  height: 40
+  parentId: 0c33184d-c080-53d7-9544-06204a1ce74b
+  components:
+  - type: uiRect
+    anchor: "TopLeft"
+  - type: uiText
+    text: "<b>Redwatch</b>"
+    size: 20
+    color: "#803f2d"
+    richText: true
+    insetX: 0
+    insetY: 8.438
+- id: a262bfcb-569a-572e-b2fe-17e3c21fed25
+  name: "Player Land label"
+  x: 32
+  y: 176
+  width: 164
+  height: 36
+  parentId: 0c33184d-c080-53d7-9544-06204a1ce74b
+  components:
+  - type: uiRect
+    anchor: "TopLeft"
+  - type: uiText
+    text: "Land"
+    size: 16
+    color: "#3c291d"
+    richText: false
+    insetX: 0
+    insetY: 8.75
+- id: 104fc9a9-ea0a-5446-a8ee-a13da0285dd5
+  name: "Player Land"
+  x: 212
+  y: 176
+  width: 64
+  height: 36
+  parentId: 0c33184d-c080-53d7-9544-06204a1ce74b
+  components:
+  - type: uiRect
+    anchor: "TopLeft"
+  - type: uiText
+    text: ""
+    size: 16
+    color: "#2b1c14"
+    richText: true
+    insetX: 0
+    insetY: 8.75
+- id: 937dde9e-d91e-5286-822d-b698860faa6f
+  name: "Player People label"
+  x: 32
+  y: 220
+  width: 164
+  height: 36
+  parentId: 0c33184d-c080-53d7-9544-06204a1ce74b
+  components:
+  - type: uiRect
+    anchor: "TopLeft"
+  - type: uiText
+    text: "People"
+    size: 16
+    color: "#3c291d"
+    richText: false
+    insetX: 0
+    insetY: 7.75
+- id: f88830b7-1c69-572d-b391-86ac89f8f9ba
+  name: "Player People"
+  x: 212
+  y: 220
+  width: 64
+  height: 36
+  parentId: 0c33184d-c080-53d7-9544-06204a1ce74b
+  components:
+  - type: uiRect
+    anchor: "TopLeft"
+  - type: uiText
+    text: ""
+    size: 16
+    color: "#2b1c14"
+    richText: true
+    insetX: 0
+    insetY: 8.75
+- id: dc170598-58a3-5f7f-820c-cf1816112659
+  name: "Player Treasury label"
+  x: 32
+  y: 264
+  width: 164
+  height: 36
+  parentId: 0c33184d-c080-53d7-9544-06204a1ce74b
+  components:
+  - type: uiRect
+    anchor: "TopLeft"
+  - type: uiText
+    text: "Treasury"
+    size: 16
+    color: "#3c291d"
+    richText: false
+    insetX: 0
+    insetY: 7.25
+- id: 86ead81e-f7ae-544e-aa4c-99bc6885f436
+  name: "Player Treasury"
+  x: 212
+  y: 264
+  width: 64
+  height: 36
+  parentId: 0c33184d-c080-53d7-9544-06204a1ce74b
+  components:
+  - type: uiRect
+    anchor: "TopLeft"
+  - type: uiText
+    text: ""
+    size: 16
+    color: "#2b1c14"
+    richText: true
+    insetX: 0
+    insetY: 8.75
+- id: 0ad3b545-8281-5999-b78f-1ca0a74903fa
+  name: "Player Forces label"
+  x: 32
+  y: 308
+  width: 164
+  height: 36
+  parentId: 0c33184d-c080-53d7-9544-06204a1ce74b
+  components:
+  - type: uiRect
+    anchor: "TopLeft"
+  - type: uiText
+    text: "Forces"
+    size: 16
+    color: "#3c291d"
+    richText: false
+    insetX: 0
+    insetY: 8.25
+- id: c620163a-00b9-5276-a593-140e3dd9e1fe
+  name: "Player Forces"
+  x: 212
+  y: 308
+  width: 64
+  height: 36
+  parentId: 0c33184d-c080-53d7-9544-06204a1ce74b
+  components:
+  - type: uiRect
+    anchor: "TopLeft"
+  - type: uiText
+    text: ""
+    size: 16
+    color: "#2b1c14"
+    richText: true
+    insetX: 0
+    insetY: 8.75
+- id: 946bf794-707c-54c6-8661-311cc19d251a
+  name: "Player Total label"
+  x: 32
+  y: 352
+  width: 164
+  height: 36
+  parentId: 0c33184d-c080-53d7-9544-06204a1ce74b
+  components:
+  - type: uiRect
+    anchor: "TopLeft"
+  - type: uiText
+    text: "Total"
+    size: 16
+    color: "#3c291d"
+    richText: true
+    insetX: 0
+    insetY: 8.75
+- id: cdcf7a9a-ee80-50e9-b28f-638e9da2183d
+  name: "Player Total"
+  x: 212
+  y: 352
+  width: 64
+  height: 36
+  parentId: 0c33184d-c080-53d7-9544-06204a1ce74b
+  components:
+  - type: uiRect
+    anchor: "TopLeft"
+  - type: uiText
+    text: ""
+    size: 16
+    color: "#2b1c14"
+    richText: true
+    insetX: 0
+    insetY: 8.75
+- id: 3314b788-277c-5cd2-95a2-69cc7ac0c952
+  name: "Rival Land label"
+  x: 344
+  y: 176
+  width: 164
+  height: 36
+  parentId: 0c33184d-c080-53d7-9544-06204a1ce74b
+  components:
+  - type: uiRect
+    anchor: "TopLeft"
+  - type: uiText
+    text: "Land"
+    size: 16
+    color: "#3c291d"
+    richText: false
+    insetX: 0
+    insetY: 8.75
+- id: 3260e88b-24a8-5b5c-afcd-b6e4c380b2e8
+  name: "Rival Land"
+  x: 524
+  y: 176
+  width: 64
+  height: 36
+  parentId: 0c33184d-c080-53d7-9544-06204a1ce74b
+  components:
+  - type: uiRect
+    anchor: "TopLeft"
+  - type: uiText
+    text: ""
+    size: 16
+    color: "#2b1c14"
+    richText: true
+    insetX: 0
+    insetY: 8.75
+- id: b097a736-fb37-5710-9fec-be53b0ca82e3
+  name: "Rival People label"
+  x: 344
+  y: 220
+  width: 164
+  height: 36
+  parentId: 0c33184d-c080-53d7-9544-06204a1ce74b
+  components:
+  - type: uiRect
+    anchor: "TopLeft"
+  - type: uiText
+    text: "People"
+    size: 16
+    color: "#3c291d"
+    richText: false
+    insetX: 0
+    insetY: 7.75
+- id: b0a8366b-b778-54b8-9f5f-47b9a52ec3bf
+  name: "Rival People"
+  x: 524
+  y: 220
+  width: 64
+  height: 36
+  parentId: 0c33184d-c080-53d7-9544-06204a1ce74b
+  components:
+  - type: uiRect
+    anchor: "TopLeft"
+  - type: uiText
+    text: ""
+    size: 16
+    color: "#2b1c14"
+    richText: true
+    insetX: 0
+    insetY: 8.75
+- id: f72fabd8-1abe-541a-9164-fbbeb6cdd5a2
+  name: "Rival Treasury label"
+  x: 344
+  y: 264
+  width: 164
+  height: 36
+  parentId: 0c33184d-c080-53d7-9544-06204a1ce74b
+  components:
+  - type: uiRect
+    anchor: "TopLeft"
+  - type: uiText
+    text: "Treasury"
+    size: 16
+    color: "#3c291d"
+    richText: false
+    insetX: 0
+    insetY: 7.25
+- id: 89b765f2-d7fc-531f-a62d-1196f7104f48
+  name: "Rival Treasury"
+  x: 524
+  y: 264
+  width: 64
+  height: 36
+  parentId: 0c33184d-c080-53d7-9544-06204a1ce74b
+  components:
+  - type: uiRect
+    anchor: "TopLeft"
+  - type: uiText
+    text: ""
+    size: 16
+    color: "#2b1c14"
+    richText: true
+    insetX: 0
+    insetY: 8.75
+- id: 983947b0-0793-5420-9c4b-9eb96b53514f
+  name: "Rival Forces label"
+  x: 344
+  y: 308
+  width: 164
+  height: 36
+  parentId: 0c33184d-c080-53d7-9544-06204a1ce74b
+  components:
+  - type: uiRect
+    anchor: "TopLeft"
+  - type: uiText
+    text: "Forces"
+    size: 16
+    color: "#3c291d"
+    richText: false
+    insetX: 0
+    insetY: 8.25
+- id: 8726ae5e-d73f-5e33-99ca-0e1d270ea84c
+  name: "Rival Forces"
+  x: 524
+  y: 308
+  width: 64
+  height: 36
+  parentId: 0c33184d-c080-53d7-9544-06204a1ce74b
+  components:
+  - type: uiRect
+    anchor: "TopLeft"
+  - type: uiText
+    text: ""
+    size: 16
+    color: "#2b1c14"
+    richText: true
+    insetX: 0
+    insetY: 8.75
+- id: ae6b306c-c402-587b-b54e-041c1e6016ff
+  name: "Rival Total label"
+  x: 344
+  y: 352
+  width: 164
+  height: 36
+  parentId: 0c33184d-c080-53d7-9544-06204a1ce74b
+  components:
+  - type: uiRect
+    anchor: "TopLeft"
+  - type: uiText
+    text: "Total"
+    size: 16
+    color: "#3c291d"
+    richText: true
+    insetX: 0
+    insetY: 8.75
+- id: b94c6060-efcd-5f22-b343-a7f822d3bd89
+  name: "Rival Total"
+  x: 524
+  y: 352
+  width: 64
+  height: 36
+  parentId: 0c33184d-c080-53d7-9544-06204a1ce74b
+  components:
+  - type: uiRect
+    anchor: "TopLeft"
+  - type: uiText
+    text: ""
+    size: 16
+    color: "#2b1c14"
+    richText: true
+    insetX: 0
+    insetY: 8.75
+- id: a3320b2c-1e43-58ec-b13a-66c336c76fd3
+  name: "Return"
+  x: 32
+  y: 404
+  width: 264
+  height: 48
+  parentId: 0c33184d-c080-53d7-9544-06204a1ce74b
+  components:
+  - type: uiRect
+    anchor: "TopLeft"
+  - type: uiButton
+    style: "button"
+  - type: uiImage
+    sprite: "db5fc2c1-d6c7-58dd-b65d-153dd2c36d6c"
+    borders: {"left": 6, "top": 6, "right": 6, "bottom": 6}
+  - type: script
+    script: "RealmButton"
+    values: {"Action": "HexRealm.Button.Title", "Caption": "3406e732-5477-543a-8488-b18dc49f32c6", "Width": 264, "Height": 48, "Titles": ["Title screen"], "Keys": ["N"], "TextMetrics": [79.5, 9.25], "KeyMetrics": [9.625, 8.531], "Key": "b850dd2f-398e-50b5-bc3f-0c86207e1791", "KeyCaption": "7309e6fc-ae47-57f9-8d48-6513d24c487c"}
+- id: 3406e732-5477-543a-8488-b18dc49f32c6
+  name: "Return caption"
+  x: 0
+  y: 0
+  width: 264
+  height: 48
+  parentId: a3320b2c-1e43-58ec-b13a-66c336c76fd3
+  components:
+  - type: uiRect
+    anchor: "TopLeft"
+  - type: uiText
+    text: "Title screen"
+    size: 16
+    color: "#2b1c14"
+- id: b850dd2f-398e-50b5-bc3f-0c86207e1791
+  name: "Return key"
+  x: 0
+  y: 0
+  width: 24
+  height: 24
+  parentId: a3320b2c-1e43-58ec-b13a-66c336c76fd3
+  components:
+  - type: uiRect
+    anchor: "TopLeft"
+  - type: uiImage
+    sprite: "625bccbd-d7fe-5a42-95cb-9e66f139d1b4"
+    color: "#FFFFFF"
+    borders: {"left": 6, "top": 6, "right": 6, "bottom": 6}
+- id: 7309e6fc-ae47-57f9-8d48-6513d24c487c
+  name: "Return key text"
+  x: 0
+  y: 0
+  width: 152
+  height: 36
+  parentId: b850dd2f-398e-50b5-bc3f-0c86207e1791
+  components:
+  - type: uiRect
+    anchor: "TopLeft"
+  - type: uiText
+    text: "N"
+    size: 14
+    color: "#2b1c14"
+- id: c9b45ea0-05e2-557b-b47f-db397806ad18
+  name: "Keep"
+  x: 344
+  y: 404
+  width: 264
+  height: 48
+  parentId: 0c33184d-c080-53d7-9544-06204a1ce74b
+  components:
+  - type: uiRect
+    anchor: "TopLeft"
+  - type: uiButton
+    style: "button"
+  - type: uiImage
+    sprite: "db5fc2c1-d6c7-58dd-b65d-153dd2c36d6c"
+    borders: {"left": 6, "top": 6, "right": 6, "bottom": 6}
+  - type: script
+    script: "RealmButton"
+    values: {"Action": "HexRealm.Button.Save", "Caption": "46d24ec6-b78a-557e-be13-1f6c4de7ed9f", "Width": 264, "Height": 48, "Titles": ["Save result"], "Keys": ["F5"], "TextMetrics": [75.0, 9.25], "KeyMetrics": [14.875, 8.531], "Key": "93a3dbe3-eb7c-5610-b673-dd2934f3686a", "KeyCaption": "26d55843-e6dc-5ae8-ade0-b2659804d6ed"}
+- id: 46d24ec6-b78a-557e-be13-1f6c4de7ed9f
+  name: "Keep caption"
+  x: 0
+  y: 0
+  width: 264
+  height: 48
+  parentId: c9b45ea0-05e2-557b-b47f-db397806ad18
+  components:
+  - type: uiRect
+    anchor: "TopLeft"
+  - type: uiText
+    text: "Save result"
+    size: 16
+    color: "#2b1c14"
+- id: 93a3dbe3-eb7c-5610-b673-dd2934f3686a
+  name: "Keep key"
+  x: 0
+  y: 0
+  width: 24
+  height: 24
+  parentId: c9b45ea0-05e2-557b-b47f-db397806ad18
+  components:
+  - type: uiRect
+    anchor: "TopLeft"
+  - type: uiImage
+    sprite: "625bccbd-d7fe-5a42-95cb-9e66f139d1b4"
+    color: "#FFFFFF"
+    borders: {"left": 6, "top": 6, "right": 6, "bottom": 6}
+- id: 26d55843-e6dc-5ae8-ade0-b2659804d6ed
+  name: "Keep key text"
+  x: 0
+  y: 0
+  width: 152
+  height: 36
+  parentId: 93a3dbe3-eb7c-5610-b673-dd2934f3686a
+  components:
+  - type: uiRect
+    anchor: "TopLeft"
+  - type: uiText
+    text: "F5"
+    size: 14
+    color: "#2b1c14"
 - id: 666adbf5-6775-5a65-9cc4-254323f6985b
   name: "Board controller"
   x: 0
@@ -694,79 +3037,6 @@ objects:
   height: 1
   components:
   - type: script
-    script: RealmBoard
-    values: {"Ground": "48c55722-f08d-5e04-8618-102d1a423107", "Cities": "f2cba5db-8d75-57b9-a1ca-a73505f66c49", "Fog": "e7df8eba-52bc-5bab-9aaa-4930528a5567", "Orders": "6c45f309-7f22-5bd7-8bbd-53441375209a", "Camera": "f163aab3-7c43-5fcd-ab9f-089ad89346a3", "CloseCamera": "3c4d7fdb-3fe1-577b-877f-696b86829cc1", "Summary": "42d4e2db-047f-5055-97ea-47fa08436d08", "Selection": "892e2332-47c9-55f2-8b9f-2276b6ed75b0", "Notice": "d81705bb-a3f2-56f4-8c42-d33ecf974e8b", "UnitArt": ["20199988-f2e5-5d95-9e4f-025e3341ccfd", "33325bd0-7e71-5190-a878-fee771e20d29", "3c52550d-b6b4-58b4-8972-6c103c7aad34", "34871f38-8e74-54ae-80ab-9172657ed51e", "dc497d08-281d-54ac-b3ec-4a75f5d4c78a", "4af6b481-e8e2-50e4-825e-1335be08bea1", "582a452a-fba5-59f2-9016-5f952f0a332e"], "Board": {"Id": "00247366-a56a-5b55-9708-240396719f71"}}
-- id: b8b9d3bf-683f-5a4e-ae69-9fc9ea04d795
-  name: "HUD"
-  x: 0
-  y: 0
-  width: 1
-  height: 1
-  components:
-  - type: uiCanvas
-- id: b25dd276-39a3-5c56-a131-9a6d41082230
-  name: "Title"
-  x: 16
-  y: 9
-  width: 400
-  height: 27
-  parentId: b8b9d3bf-683f-5a4e-ae69-9fc9ea04d795
-  components:
-  - type: uiRect
-  - type: uiText
-    size: 21
-    color: "#F3E0B2"
-    text: "HEXREALM"
-- id: 42d4e2db-047f-5055-97ea-47fa08436d08
-  name: "Status"
-  x: 16
-  y: 39
-  width: 721
-  height: 24
-  parentId: b8b9d3bf-683f-5a4e-ae69-9fc9ea04d795
-  components:
-  - type: uiRect
-  - type: uiText
-    size: 13
-    color: "#F5F5EA"
-    text: ""
-- id: d81705bb-a3f2-56f4-8c42-d33ecf974e8b
-  name: "Notice"
-  x: 16
-  y: 66
-  width: 721
-  height: 23
-  parentId: b8b9d3bf-683f-5a4e-ae69-9fc9ea04d795
-  components:
-  - type: uiRect
-  - type: uiText
-    size: 13
-    color: "#F3E0B2"
-    text: ""
-- id: 892e2332-47c9-55f2-8b9f-2276b6ed75b0
-  name: "Selection"
-  x: 16
-  y: 372
-  width: 721
-  height: 21
-  parentId: b8b9d3bf-683f-5a4e-ae69-9fc9ea04d795
-  components:
-  - type: uiRect
-  - type: uiText
-    size: 13
-    color: "#F5F5EA"
-    text: ""
-- id: d03e0b5e-1e73-5a2a-863d-7ff475c8aef6
-  name: "Controls"
-  x: 16
-  y: 401
-  width: 735
-  height: 18
-  parentId: b8b9d3bf-683f-5a4e-ae69-9fc9ea04d795
-  components:
-  - type: uiRect
-  - type: uiText
-    size: 11
-    color: "#F3E0B2"
-    text: "LEFT CLICK   Select     RIGHT CLICK   Order     B   Found     ENTER   End turn     F5 / F9   Save / load"
-defaultCameraId: f163aab3-7c43-5fcd-ab9f-089ad89346a3
+    script: "RealmBoard"
+    values: {"Ground": "2f1a3334-1f27-5633-adb7-d18092ecd345", "Coast": "da828246-dd31-53fa-97d0-9a4d2d285fa1", "Districts": "e329a805-2dd8-523a-8163-8647a30c135f", "Fog": "4b90aa55-925b-544e-9655-b928d9f59bb7", "Borders": "cedf7356-db82-5fb1-87fd-eaa9c2ba0c38", "RevealFog": "e4d06fe6-54bc-5df1-95ca-3af3daa6832d", "ResearchGlint": "68048504-e1ef-5330-bff6-fe5b445979a0", "Orders": "bdb4003d-8d01-5aab-b561-1362b577ae3e", "Pointer": "671cc9c9-a74f-5fad-9b7c-342fa9d47196", "Route": "de26c494-d998-5cb5-90f2-653c3faf995a", "Camera": "53ddf38c-d6e6-56ef-8b15-48bd5126599a", "CameraFrame": "76184387-89e6-5e3a-b1c2-0a100590aecf", "Hud": "8e6962e1-fb5f-5d76-b26e-20cb6f5a96aa", "ChartShade": "3f46990a-1424-58a8-abea-ef626a9d22dc", "Title": "c11e5c45-70d3-5432-8e3e-2928c06edfc5", "Help": "4a4c80e9-0f9d-5cd1-9ef9-b8ef48aaf8d8", "Result": "c9304e57-b729-504f-b424-12923cff5f53", "Objective": "a271ef66-48c9-5b42-b71d-c15c90fed7eb", "ObjectiveLabel": "a005c1ca-cf80-5c00-98e4-39a3c7fa940c", "ObjectiveText": "ef838652-6394-5eea-afdb-22f763a68a10", "ObjectiveKey": "a5109754-6b41-5b09-8a56-60bbf1d9500e", "TurnLabel": "dd624bb4-5266-5282-b51b-531fb1d0e64f", "GoldLabel": "f39e2613-df5b-5fc7-b4f0-b719a854e38f", "LandLabel": "f724a12b-7c70-5292-8e0c-2c95d9791c22", "LoreLabel": "a2c5a04c-85f9-5b44-b45b-313674aff649", "LoreFill": "bebcb47f-70a5-5b16-bcde-c1c21b9e58ce", "ResearchButton": "a446a876-686a-5f86-b4f5-747d53c5c680", "Selection": "14f8b292-1bae-5b3e-8ced-19533b6c9e2a", "Stats": "fb8bbdc3-e999-5959-8fda-efb6ebc62c47", "Advice": "1f78ad45-79aa-5e8d-86cf-b089dba7000b", "Hint": "9ff0d381-89da-59dd-9256-19d90245db24", "CommandNotes": "0a4d437d-292c-5499-bc9b-8e54a5b8e128", "CommandChips": "3ceb01a7-b3f2-5255-9e9b-a7a6abd02078", "ActionValue": "1b6a39ed-c716-5c15-ae97-135751e32ef3", "MoveIcon": "7cbce687-2fde-5878-8a87-c407f924ce6b", "PeopleIcon": "c4414e72-db19-5e3f-bfb8-697f50ffff70", "Chapter": "1339d700-fcd6-506c-baea-91c8337cc453", "Crest": "b658bee4-3b11-535e-97b0-25e50729634c", "EndButton": "a86bc8c7-7738-508c-8b79-3c17036f57aa", "CommandPanel": "ceae1d1b-0c12-5b71-9d4a-5cda0ead4cf6", "Top": "16628819-4dd9-57de-82df-a3be268a58c2", "Context": "008dcb88-4bfe-5800-8c2c-e382390e04e0", "ResultHeading": "5b52bc0c-a865-5401-89e7-b893d59beb2d", "ResultCause": "a62ee099-6ab0-5466-a252-dd76412bfe55", "Tooltip": "89c33456-3da1-56a5-ac9b-5e93a97abf90", "TooltipText": "83900b26-6443-5004-8134-ce5edd260dc6", "Notice": "be80e8b0-77ee-5c66-b5e7-709a25f17fee", "NoticePanel": "4b936730-6266-50d1-b370-02e5bdc5fa34", "TurnStamp": "0ed5c58d-ca0b-5a40-8c58-8f2de9587e10", "StampText": "754416e3-df0e-5150-9e4b-79c3e956f218", "LandGuide": "5ebb66d6-56a3-5ab1-9b1a-f359e33a4e32", "SelectSound": "51e9fdb6-6e9c-5644-af37-7c184570bb93", "MoveSound": "bc8633a2-b691-5879-8b7a-7c82bad256cb", "HitSound": "c8c55061-42ac-5a54-951b-6405672a1b43", "BowSound": "05fbc158-77d5-55e1-bc54-d863f029f3e2", "BuildSound": "510d0494-4384-5033-99d4-01152c3751dd", "TurnSound": "810c33f0-63cd-5674-9c27-2b90c901e547", "VictorySound": "801a7cf9-b71d-5b39-b1de-73a0ee891b23", "ResourceRows": ["00e9d099-ac39-5318-966c-3184c757dd3b", "f74923c3-f075-58f5-833f-57cfb0149808", "1a2c0864-fb00-5adf-b085-ece0d3e8d23e", "c9a6683f-20b6-52ab-9b66-8bf57eea9d9e"], "AlignedLabels": ["05e96e5e-b2c9-5bcb-8617-972fdf8fcb40", "1339d700-fcd6-506c-baea-91c8337cc453", "e7703eb3-096a-51b5-9d2b-b9fc141009c4", "dd624bb4-5266-5282-b51b-531fb1d0e64f", "627445c5-ccbd-5f2e-b235-86b73e21e295", "f39e2613-df5b-5fc7-b4f0-b719a854e38f", "d291e3cf-7ed3-5303-99a0-ed1d67a79a2c", "f724a12b-7c70-5292-8e0c-2c95d9791c22", "e023922c-1a6e-55a8-979a-53f96340964f", "a2c5a04c-85f9-5b44-b45b-313674aff649", "14f8b292-1bae-5b3e-8ced-19533b6c9e2a", "fb8bbdc3-e999-5959-8fda-efb6ebc62c47", "1b6a39ed-c716-5c15-ae97-135751e32ef3", "1f78ad45-79aa-5e8d-86cf-b089dba7000b", "9ff0d381-89da-59dd-9256-19d90245db24", "a005c1ca-cf80-5c00-98e4-39a3c7fa940c", "ef838652-6394-5eea-afdb-22f763a68a10", "9bb3eaef-a133-5823-99fe-bee9b2c75f78", "83900b26-6443-5004-8134-ce5edd260dc6", "56a423b8-1853-5894-b0ab-fa2d73e8c9bd", "6d925ed7-f3b5-54d9-a7c6-3f229b2b6a5f", "be80e8b0-77ee-5c66-b5e7-709a25f17fee", "754416e3-df0e-5150-9e4b-79c3e956f218", "9b333479-fef8-5788-94e4-8c3a49a6493b", "04054a67-f3c8-566a-b0e3-06ba19be20dd", "669f4501-f0cd-54da-a365-0109403da411", "a78ff537-96ff-5390-bf12-dfc257959182", "2e4ab6a8-8a06-52b6-8268-5f07b73d69ad", "bc7ff14a-064c-5714-9580-f6cbeb7677e4", "43ab02db-18b4-5def-add8-7d5f68d6514e", "96ec8487-6e68-5a3c-9f21-f87b98ea65c4", "50450360-385c-5b6c-88b7-8dffda4440f0", "74422398-2abb-5cb7-b8cd-ae33b4beb2df", "74f445e9-fcce-52fd-ac9e-9e77030c77cb", "ac8a6bb8-be96-53e4-bdbe-5acd855dae05", "40ecc86f-1a94-5d8d-a362-6e4cd81c85f8", "755d4f93-062f-5775-a532-308d5480e485", "f38522f6-e822-58aa-9db5-23b07be7dcbf", "0171a660-ea76-51f4-b0aa-8739146951fb", "c5064e95-4b39-51ba-864e-e7a3e2dbd78e", "00734c6a-ae0e-5832-b7bc-db4f96b30fef", "6683f338-1116-5d02-a717-1a9a298775d1", "8222ab49-f69e-57d6-b1b5-811ea5a7a0ec", "2ac950be-b32a-562c-8de0-12979b95bbfb", "ca89a24a-13df-5afa-a258-2877824671a8", "8bb02be1-32b9-5199-8ad9-219cb84b0499", "791ae1fa-9bc5-5823-b969-fcb9c228ad43", "976ef9e3-01b4-5eb8-a6d0-0ffbd870ff35", "0f6eb61c-20cf-50e2-9ec1-f826e801338a", "4b6e3ffe-05d3-511c-bad1-d00691a31064", "fada3324-8de5-538b-b8a9-1097ee7f8e2b", "883f9ca1-b791-5fa1-bf39-635509db34ee", "37a2c37b-2989-5221-bbfa-0b468748fe82", "bae38bfe-0374-541b-80e8-17c90728de97", "0aeff62e-ffaa-5f6b-8306-0b8452f5df5b", "5b52bc0c-a865-5401-89e7-b893d59beb2d", "a62ee099-6ab0-5466-a252-dd76412bfe55", "491b5ac8-f997-58f6-aa59-906f3f1d0529", "6a9514a8-ebb6-5a00-b98b-6dabbc79c836", "a262bfcb-569a-572e-b2fe-17e3c21fed25", "104fc9a9-ea0a-5446-a8ee-a13da0285dd5", "937dde9e-d91e-5286-822d-b698860faa6f", "f88830b7-1c69-572d-b391-86ac89f8f9ba", "dc170598-58a3-5f7f-820c-cf1816112659", "86ead81e-f7ae-544e-aa4c-99bc6885f436", "0ad3b545-8281-5999-b78f-1ca0a74903fa", "c620163a-00b9-5276-a593-140e3dd9e1fe", "946bf794-707c-54c6-8661-311cc19d251a", "cdcf7a9a-ee80-50e9-b28f-638e9da2183d", "3314b788-277c-5cd2-95a2-69cc7ac0c952", "3260e88b-24a8-5b5c-afcd-b6e4c380b2e8", "b097a736-fb37-5710-9fec-be53b0ca82e3", "b0a8366b-b778-54b8-9f5f-47b9a52ec3bf", "f72fabd8-1abe-541a-9164-fbbeb6cdd5a2", "89b765f2-d7fc-531f-a62d-1196f7104f48", "983947b0-0793-5420-9c4b-9eb96b53514f", "8726ae5e-d73f-5e33-99ca-0e1d270ea84c", "ae6b306c-c402-587b-b54e-041c1e6016ff", "b94c6060-efcd-5f22-b343-a7f822d3bd89"], "TextOffsets": [0, -11.562, 0, -8.094, 0, -8.531, 0, -9.25, 0, -8.094, 0, -9.25, 0, -8.969, 0, -9.25, 0, -8.094, 0, -9.25, 0, -11.562, 0, -9.25, 0, -9.25, 0, -9.25, 0, -8.094, 0, -11.562, 0, -9.25, -3.9375, -8.531, 0, -9.25, 0, -9.25, 0, -10.25, 0, -9.25, -33.25, -9.25, 0, -13.875, 0, -9.25, 0, -11.562, 0, -9.25, 0, -8.75, 0, -13.875, 0, -9.25, -19.031, -8.094, 0, -9.25, -19.469, -8.094, 0, -10.25, -3.9375, -8.531, 0, -9.75, -19.469, -8.312, 0, -9.75, -10.0625, -8.531, 0, -9.25, -4.156, -8.531, 0, -9.75, -11.156, -8.094, 0, -9.25, -16.1875, -8.531, 0, -9.75, -7.4375, -8.531, 0, -9.25, -7.219, -8.531, 0, -9.75, -11.156, -8.312, 0, -9.75, -19.25, -8.531, 0, -10.25, 0, -10.25, 0, -13.875, 0, -9.25, 0, -12.188, 0, -11.562, 0, -9.25, 0, -9.25, 0, -10.25, 0, -9.25, 0, -10.75, 0, -9.25, 0, -9.75, 0, -9.25, 0, -9.25, 0, -9.25, 0, -9.25, 0, -9.25, 0, -10.25, 0, -9.25, 0, -10.75, 0, -9.25, 0, -9.75, 0, -9.25, 0, -9.25, 0, -9.25], "Portraits": ["678dfa2e-f5cc-5cb0-ad07-845b9b5f9e41", "1e668522-04eb-5783-baed-18cd18d400db", "3c150f0e-4af1-5a95-a2c2-8a735f3a9a62", "3acdd1df-39a6-5938-8b87-60138214536a", "f69a9496-8def-5f40-9a97-f903791eb7f7"], "Tallies": ["104fc9a9-ea0a-5446-a8ee-a13da0285dd5", "f88830b7-1c69-572d-b391-86ac89f8f9ba", "86ead81e-f7ae-544e-aa4c-99bc6885f436", "c620163a-00b9-5276-a593-140e3dd9e1fe", "cdcf7a9a-ee80-50e9-b28f-638e9da2183d", "3260e88b-24a8-5b5c-afcd-b6e4c380b2e8", "b0a8366b-b778-54b8-9f5f-47b9a52ec3bf", "89b765f2-d7fc-531f-a62d-1196f7104f48", "8726ae5e-d73f-5e33-99ca-0e1d270ea84c", "b94c6060-efcd-5f22-b343-a7f822d3bd89"], "UnitArt": ["50d826f4-ac94-510d-8cb4-f8369a200943", "80c16c47-e854-5674-a856-5c8642bc2754", "652006a2-5534-5684-aec9-423d49b52659", "287b7c84-8ca4-587f-a5e2-bd74f6d8a1fb", "6d128aae-c265-5bc0-b748-053296361304", "cf964d23-b562-50df-957b-97718e4ed82e", "0167ba19-b2a5-5d65-8748-916119b3759c", "d92c136e-2623-5513-869b-c9cc44ddc38e", "96625c1b-ca27-52ef-a5ff-07f4e361f068", "a4e42ed4-6ebe-54ab-a829-533bb04caee0"], "TownSprites": ["375d1e0c-4c52-54dc-9453-2ca9d2eeef78", "35f5cf10-c915-5ace-b3dc-e2f8d1bc6137", "82c17133-c9af-5f72-bd0c-456957b77741", "1f040d71-4270-562f-bc9f-8a26e1c61cf8", "af0b59f1-9a5a-588a-ad97-316ebd624e86", "92a9c397-8b9b-5232-a8e0-31d8b21a3fdd"], "TownArt": {"Id": "082adc52-60c4-5489-a8a6-9e385bcd7467"}, "Signs": ["8a04d0ac-fb4e-5dcd-a69a-35001f9fbb6d", "74156c49-9cab-5417-b048-da852bcc312c"], "TownLine": {"Id": "242d2969-437a-505f-87d4-0fe5215a1c5d"}, "HealthBar": {"Id": "34ef4cc2-5793-5033-a1fc-108893e79333"}, "CityBar": {"Id": "0e78b0a4-e961-5a6d-a3d7-91d79039459d"}, "Fill": ["5ea24eeb-9b4d-5a94-af02-99a4290698b4", "41bb42c4-bb34-5550-9c1e-1a5d657863cb"], "Number": {"Id": "bf1bab44-ee57-546c-bbf9-97d9c0383543"}, "Sparks": {"Id": "d0832e1d-ba46-54e4-ac70-5469387c3e8e"}, "Smoke": {"Id": "4d2c0c95-9b69-59b2-ae24-846ecb90e0fb"}, "ClaimInk": ["cf4a2927-dc66-5cac-996a-8200762d2f25", "39f651c1-575f-5f01-a6d0-039d226a6122"], "LandGain": {"Id": "97d264a2-1d40-59ca-a5ac-a1adcd58e140"}, "ArrowArt": {"Id": "21505f27-9e04-585f-a792-6ca378e8b7b5"}, "ArrowDust": {"Id": "a2e145b4-40de-5936-ba2a-d120143f4db1"}, "ArrowDamage": {"Id": "fb83ae57-97cd-5ad0-9c65-7a55684cacff"}}
+defaultCameraId: 53ddf38c-d6e6-56ef-8b15-48bd5126599a

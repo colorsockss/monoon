@@ -1,0 +1,15 @@
+version: 1
+columns:
+- {name: fill, type: Text}
+- {name: text, type: Text}
+rows:
+- {key: button.normal, cells: ["#e6cea2", "#2b1c14"]}
+- {key: button.hover, cells: ["#f5dfb1", "#2b1c14"]}
+- {key: button.focused, cells: ["#f5dfb1", "#2b1c14"]}
+- {key: button.pressed, cells: ["#c2a070", "#2b1c14"]}
+- {key: button.disabled, cells: ["#cdb994", "#2b1c14"]}
+- {key: end.normal, cells: ["#b6c8a6", "#2b1c14"]}
+- {key: end.hover, cells: ["#c7d6b1", "#2b1c14"]}
+- {key: end.focused, cells: ["#c7d6b1", "#2b1c14"]}
+- {key: end.pressed, cells: ["#94ad8d", "#2b1c14"]}
+- {key: end.disabled, cells: ["#cdb994", "#2b1c14"]}

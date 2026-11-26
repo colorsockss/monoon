@@ -1500,7 +1500,10 @@
     "templates"
    ],
    "probe": "LedgeRunProbe",
-   "baselines": [],
+   "baselines": [
+    "engine/tests/HexRealm.Play/verify.py (plays route.tsv)",
+    "engine/tests/results/hexrealm/macos-arm64-route.txt"
+   ],
    "watch": [
     "engine/src/Engine.Core/GridNavigation.cs",
     "engine/src/Engine.Core/RuntimeTiles.cs",

@@ -1,0 +1,15 @@
+schemaVersion: 40
+objects:
+- id: 0821c4d4-2026-5000-a6b1-69bbc75a44f2
+  name: "Arrow dust"
+  x: 0
+  y: 0
+  width: 52
+  height: 52
+  components:
+  - type: spriteRenderer
+    assetId: "a02ee80a-bd94-56f5-b53a-5d11e243edfa"
+    order: 16
+  - type: spriteAnimator
+    clip: "8da3bfd4-01bd-5bc4-9a96-9f0e9388c406"
+    playOnStart: true

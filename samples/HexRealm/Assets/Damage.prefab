@@ -1,0 +1,16 @@
+schemaVersion: 40
+objects:
+- id: ec701b52-1f89-59ba-91e8-3f0f49adadb6
+  name: "Damage"
+  x: 0
+  y: 0
+  width: 48
+  height: 18
+  components:
+  - type: text2D
+    text: ""
+    size: 15
+    order: 20
+    color: "#2b1c14"
+    richText: true
+    align: "Center"

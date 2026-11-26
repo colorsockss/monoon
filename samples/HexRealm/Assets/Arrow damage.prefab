@@ -1,0 +1,19 @@
+schemaVersion: 40
+objects:
+- id: 507a0aa1-87e5-5d98-9d19-3dc93b0fa60a
+  name: "Arrow damage"
+  x: 0
+  y: 0
+  width: 26
+  height: 18
+  components:
+  - type: spriteRenderer
+    assetId: "617cfb45-b6ae-5e40-9bd8-133f9407cb7e"
+    order: 19
+  - type: text2D
+    text: ""
+    size: 13
+    order: 20
+    color: "#2b1c14"
+    richText: true
+    align: "Center"

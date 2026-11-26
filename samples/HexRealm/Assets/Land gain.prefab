@@ -1,0 +1,19 @@
+schemaVersion: 40
+objects:
+- id: e0b8fac6-63ca-5fc2-b5c6-1aeb71e88e0a
+  name: "Land gain"
+  x: 0
+  y: 0
+  width: 86
+  height: 24
+  components:
+  - type: spriteRenderer
+    assetId: "425d77ec-f007-5ce7-a2ba-1be2ae0fea76"
+    order: 18
+  - type: text2D
+    text: ""
+    size: 16
+    order: 19
+    color: "#2b1c14"
+    richText: true
+    align: "Center"

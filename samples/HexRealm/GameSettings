@@ -1,7 +1,7 @@
 projectId: cbb32c55-fb51-581f-84c0-8c71d1f74721
 gameTitle: HexRealm
-width: 760
-height: 430
+width: 1280
+height: 720
 startScene: 00247366-a56a-5b55-9708-240396719f71
 includedScenes: [00247366-a56a-5b55-9708-240396719f71]
 input:
@@ -14,7 +14,7 @@ input:
   - {name: Order, controls: ["Mouse.Right"]}
   - {name: ZoomNear, controls: ["Mouse.WheelUp", "Equal"]}
   - {name: ZoomFar, controls: ["Mouse.WheelDown", "Minus"]}
-  - {name: NextUnit, controls: ["Space"]}
+  - {name: NextUnit, controls: ["Tab"]}
   - {name: Found, controls: ["B"]}
   - {name: Farm, controls: ["I"]}
   - {name: Mine, controls: ["M"]}
@@ -29,3 +29,8 @@ input:
   - {name: Train3, controls: ["3"]}
   - {name: Train4, controls: ["4"]}
   - {name: Train5, controls: ["5"]}
+  - {name: Help, controls: ["H"]}
+uiTheme: 9484031e-8052-5d38-bfc8-0a3a3d5180a6
+localization:
+  fallbackLocale: en
+  defaultFont: 49f19b82-85f7-5dca-a972-137d91a151dc

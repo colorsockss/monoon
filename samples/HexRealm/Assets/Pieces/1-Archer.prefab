@@ -1,0 +1,18 @@
+schemaVersion: 40
+objects:
+- id: 2baba72b-5bed-5003-a92a-695cf21f78e9
+  name: "Pieces/1-Archer"
+  x: 0
+  y: 0
+  width: 38
+  height: 42
+  components:
+  - type: spriteRenderer
+    assetId: "419595fd-bcdc-5599-a2dc-183f2617cc15"
+    order: 5
+    sortByY: true
+  - type: spriteAnimator
+    controller: "4df27203-aec3-5b7b-9b9c-609443dcba01"
+    playOnStart: true
+  - type: script
+    script: "RealmBowRelease"
