@@ -274,7 +274,8 @@ public sealed class RealmBoard : GameBehaviour
         float t = Math.Clamp(trailTimes[i] / ((length - 1) * StepSeconds), 0, 1);
         float along = t * t * (3 - 2 * t) * (length - 1);
         int step = Math.Min((int)along, length - 2), at = i * TrailCells + step;
-        return Vector2.Lerp(trails[at], trails[at + 1], along - step);
+        // Plain multiply and add: Vector2.Lerp may fuse them (MultiplyAddEstimate), which the determinism scan rejects.
+        return trails[at] + (trails[at + 1] - trails[at]) * (along - step);
     }
 
     // A new order for a unit still gliding starts from where it is drawn, so it never jumps.
