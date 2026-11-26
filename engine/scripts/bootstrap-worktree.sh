@@ -18,6 +18,8 @@ if [ "$(uname -s)" = Darwin ] && [ "$main" != "$repo" ]; then
     lib=$1; shift
     [ -f "$from/osx-arm64/$lib" ] || { echo "bootstrap-worktree: $from/osx-arm64/$lib not found; build the editor once in the main checkout." >&2; return; }
     for src do cmp -s "$main/$src" "$repo/$src" || { echo "bootstrap-worktree: $src differs from the main checkout; $lib will be rebuilt." >&2; return; }; done
+    # The main checkout's build can be older than its own sources (they changed after its last editor build): don't spread it.
+    for src do [ "$from/osx-arm64/$lib" -nt "$main/$src" ] || { echo "bootstrap-worktree: the main checkout's $lib is older than $src; $lib will be rebuilt." >&2; return; }; done
     cp "$from/osx-arm64/$lib" "$to/osx-arm64/$lib"
     echo "bootstrap-worktree: copied $lib"
   }

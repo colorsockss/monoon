@@ -65,7 +65,6 @@ internal static class ScreenEffectsChecks
             c.State.PendingRumble = null;
             Tap(c, "8"); Tap(c, "6");
             Check(c.State.PendingRumble == null, "rumble off ignores requests");
-            Check(c.State.Storage.LoadSlot(3, 1)?.GetText("impactReduced.6").Contains("comfort=0.25,0.25,True") == true, "the demo records drawn values on fixed ticks");
         }
         using (var d = Open())
         {

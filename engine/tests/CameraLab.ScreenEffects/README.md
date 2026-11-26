@@ -10,7 +10,7 @@
 | 커서 | LeftStick 두 번 | `MONOON_FEEDBACK_LOG`의 커서 픽셀 해시·핫스폿, 커서를 포함한 화면 캡처 |
 | 다시 실행 | North → RightStick → North | 저장한 25%·진동 끄기 복원, 다시 켠 뒤 진동 |
 
-효과 값은 [ScreenFxDemo](../../../samples/CameraLab/Scripts/ScreenFxDemo.cs)가 트리거 후 1·6·12·24번째 게임 틱에 슬롯 3에 기록하며, 세 실행 경로의 기록은 바이트 단위로 같아야 한다.
+효과 값은 복사본에만 붙는 관찰 스크립트 [TraceScreenFx](TraceScreenFx.source)가 트리거 후 1·6·12·24번째 게임 틱에 슬롯 3에 기록하며, 세 실행 경로의 기록은 바이트 단위로 같아야 한다. `replay.py prepare`가 샘플을 복사하고 이 스크립트를 쇼케이스에 붙인다. 샘플의 [ScreenFxDemo](../../../samples/CameraLab/Scripts/ScreenFxDemo.cs)는 효과마다 저장하지 않는다(2026-11-26: 손상에 강한 슬롯 저장이 한 번에 10–30ms라 효과마다 네 번 끊겼다).
 
 저장소 루트에서 실행한다. 창 도구 `engine/.artifacts/clip-qa/window`와 SDL 3.4.12 헤더 아카이브는 기존 GUI 검증과 같다. 도구나 드라이버는 설치하지 않는다.
 
@@ -20,7 +20,7 @@ tar -xf engine/.artifacts/native/downloads/SDL3-3.4.12.tar.gz -C "$qa" SDL3-3.4.
 clang -dynamiclib -I"$qa/SDL3-3.4.12/include" "$src/rumble-pad.c" -o "$qa/rumble.dylib"
 engine/scripts/build-players.sh osx-arm64 && engine/scripts/build-editor-mac.sh
 dotnet build "$src" -c Release -m:1 -p:UsedAvaloniaProducts=
-cp -R samples/CameraLab "$qa/CameraLab"
+python3 "$src/replay.py" prepare samples/CameraLab "$qa/CameraLab"
 ./monoon build "$qa/CameraLab" release --profile distribution --output "$qa/builds"
 ./monoon build "$qa/CameraLab" native-aot --profile distribution --output "$qa/builds"
 MONOON_QA_WINDOW=engine/.artifacts/clip-qa/window MONOON_QA_RUMBLE_LIBRARY="$qa/rumble.dylib" python3 "$src/verify.py" \

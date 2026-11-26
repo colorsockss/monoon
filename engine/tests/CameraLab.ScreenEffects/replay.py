@@ -5,9 +5,10 @@ The same key sequence as verify.py's first run and restart goes through each exp
 after each run and the frozen frames drawn by the player's SDL canvas. Rumble reaching a pad, the custom cursor and the
 editor's Scene Play are not covered here (no window, no pad); verify.py checks those on the Mac.
 
-Usage: replay.py play <MoNoonPlayer> <out>      replay.py compare <out> <out> ...
+Usage: replay.py prepare <sample> <dest>   copy CameraLab and attach the test-only TraceScreenFx (writes the slot 3 record)
+       replay.py play <MoNoonPlayer> <out>      replay.py compare <out> <out> ...
 """
-import hashlib, json, os, subprocess, sys
+import hashlib, json, os, shutil, subprocess, sys
 from pathlib import Path
 
 PROJECT = 'cf624488-489b-5951-a279-fffa22d99f7a'
@@ -44,6 +45,17 @@ def recording(path, run):
     path.write_text(f'version: 1\nproject: {PROJECT}\nstartScene: {SHOWCASE}\nframeTicks: [' + ', '.join(['166667'] * frames) +
                     ']\nevents:\n' + lines, encoding='utf-8')
     return snaps
+
+
+def prepare(sample, dest):
+    shutil.copytree(sample, dest, ignore=shutil.ignore_patterns('.monoon', '.monoon-compiled', '.DS_Store', 'bin', 'obj'))
+    shutil.copyfile(Path(__file__).resolve().parent / 'TraceScreenFx.source', dest / 'Scripts/TraceScreenFx.cs')
+    scene = dest / 'Scenes/Showcase.scene'
+    text = scene.read_text(encoding='utf-8')
+    trace = ('- id: 5d0c7a3e-91b4-4f2e-8c61-3a7f0e9b2d48\n  name: Screen effects trace\n  width: 1\n  height: 1\n  components:\n'
+             '  - type: script\n    script: TraceScreenFx\n')
+    assert text.count('defaultCameraId:') == 1
+    scene.write_text(text.replace('defaultCameraId:', trace + 'defaultCameraId:'), encoding='utf-8')
 
 
 def expect(ok, message):
@@ -103,4 +115,4 @@ def compare(*outs):
 
 if __name__ == '__main__':
     command, *paths = sys.argv[1:]
-    {'play': play, 'compare': compare, 'check': check}[command](*(Path(p) for p in paths))
+    {'prepare': prepare, 'play': play, 'compare': compare, 'check': check}[command](*(Path(p) for p in paths))

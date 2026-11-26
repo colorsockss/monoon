@@ -899,7 +899,7 @@
     },
     {
      "kind": "prepare",
-     "run": "cp -R samples/CameraLab \"$work/CameraLab\""
+     "run": "python3 \"$qa/replay.py\" prepare samples/CameraLab \"$work/CameraLab\""
     },
     {
      "kind": "build",

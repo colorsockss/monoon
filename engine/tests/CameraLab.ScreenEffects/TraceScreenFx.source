@@ -1,0 +1,41 @@
+using System;
+using System.Globalization;
+using Engine.Core;
+
+// Test-only observer copied into a disposable CameraLab (replay.py prepare). It names each effect ScreenFxDemo starts from the
+// same key presses and writes the drawn effect values on fixed game ticks 1, 6, 12 and 24 after it to save slot 3, so the
+// editor, Release and Native AOT runs can be compared exactly. The sample itself does no disk writes per effect: a crash-safe
+// slot save takes 10–30 ms and showed as a hitch on every effect.
+public sealed class TraceScreenFx : GameBehaviour
+{
+    private bool faded, graded;
+    private string effect = "";
+    private int since = -1;
+    private GameData record = new();
+
+    public override void UpdateUi(UiTick tick)
+    {
+        var input = tick.Input;
+        float shake = tick.Ui.Preferences.ShakeScale;
+        void Start(string name) { effect = shake < 1 ? name + "Reduced" : name; since = 0; }
+        if (input.Pressed("Impact")) Start("impact");
+        if (input.Pressed("Flash")) Start("flash");
+        if (input.Pressed("Fade")) { faded = !faded; Start(faded ? "fadeOut" : "fadeIn"); }
+        if (input.Pressed("Grade")) { graded = !graded; Start(graded ? "grade" : "ungrade"); }
+        if (input.Pressed("Buzz")) Start("buzz");
+    }
+
+    public override void FixedUpdate(ScriptTick tick)
+    {
+        if (since < 0) return;
+        since++;
+        if (since is not (1 or 6 or 12 or 24)) return;
+        var f = tick.Session.Screen.Current;
+        var c = CultureInfo.InvariantCulture;
+        record.Set($"{effect}.{since}", string.Format(c, "shake={0:F3},{1:F3} zoom={2:F4} fade={3} flash={4} tint={5:X6} brightness={6:F3} comfort={7:F2},{8:F2},{9}",
+            f.Shake.X, f.Shake.Y, f.Zoom, f.Fade.A, f.Flash.A, f.Tint.ToArgb() & 0xffffff, f.Brightness,
+            tick.Ui.Preferences.ShakeScale, tick.Ui.Preferences.FlashScale, tick.Ui.Preferences.Rumble));
+        if (tick.Session.Storage.IsAvailable) tick.Session.Storage.SaveSlot(3, record);
+        if (since == 24) since = -1;
+    }
+}
