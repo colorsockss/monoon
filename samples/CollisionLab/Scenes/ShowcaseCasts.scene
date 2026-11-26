@@ -70,7 +70,7 @@ objects:
     sortingLayer: -9
 - id: bcbb89ce-437a-59a0-85c2-ac8626285060
   name: Torch 1
-  x: 120
+  x: 400
   y: 110
   width: 32
   height: 22
@@ -83,8 +83,9 @@ objects:
     radius: 170
     intensity: 0.8
     flicker: 0.1
-    frequency: 1.1
+    frequency: 1.4
     color: "#FF8A3A"
+    shadows: true
 - id: 227fb341-f7e7-5315-aa9c-f6aefbda1ba3
   parentId: bcbb89ce-437a-59a0-85c2-ac8626285060
   name: Torch 1 flame
@@ -103,7 +104,7 @@ objects:
     playOnStart: true
 - id: 8bc9869e-3fa0-569b-a34e-37610924b43a
   name: Torch 2
-  x: 450
+  x: 590
   y: 110
   width: 32
   height: 22
@@ -116,9 +117,8 @@ objects:
     radius: 170
     intensity: 0.8
     flicker: 0.1
-    frequency: 1.4
+    frequency: 1.1
     color: "#FF8A3A"
-    shadows: true
 - id: 389f2e3b-9e4a-5c61-8e54-b77c6f117f14
   parentId: 8bc9869e-3fa0-569b-a34e-37610924b43a
   name: Torch 2 flame
@@ -137,7 +137,7 @@ objects:
     playOnStart: true
 - id: 7e4ea4fc-64a7-5852-bb52-1f60fb29763b
   name: Torch 3
-  x: 720
+  x: 760
   y: 110
   width: 32
   height: 22
@@ -181,7 +181,39 @@ objects:
     - {x: 1, y: 0}
     width: 2
     startColor: "#FFE08C"
-    endColor: "#FF9F6B"
+    endColor: "#FFE08C"
+    sortingLayer: 5
+    order: 4
+- id: f3c4c3db-976a-52bd-ab5a-b4d15b161711
+  name: Ray ghost
+  x: 0
+  y: 0
+  width: 1
+  height: 1
+  components:
+  - type: line2D
+    points:
+    - {x: 0, y: 0}
+    - {x: 1, y: 0}
+    width: 2
+    startColor: "#8FB4FF"
+    endColor: "#8FB4FF"
+    sortingLayer: 5
+    order: 4
+- id: 5cb909b1-6b87-5cdf-a7a7-100acf421c07
+  name: Ray glass
+  x: 0
+  y: 0
+  width: 1
+  height: 1
+  components:
+  - type: line2D
+    points:
+    - {x: 0, y: 0}
+    - {x: 1, y: 0}
+    width: 2
+    startColor: "#F49AE8"
+    endColor: "#F49AE8"
     sortingLayer: 5
     order: 4
 - id: 22074fd4-bfd8-56bb-b7c4-75296c30e8ab
@@ -213,7 +245,7 @@ objects:
     mask: 44
   - type: script
     script: Probe
-    values: {"Status": "7f5e0b61-85f9-556e-ad9e-189b6c3a009d", "Metrics": "ad0a8179-0349-5cbd-bd6c-acd40cb22956", "Wall": "f13ad8d5-3899-5e4c-a37e-a52f69661de0", "Sensor": "91298410-d245-500d-93af-4d10a6465374", "RayLine": "28c9ab58-5a68-5d3f-844c-721497af8acb", "SweepStop": "22074fd4-bfd8-56bb-b7c4-75296c30e8ab"}
+    values: {"Status": "7f5e0b61-85f9-556e-ad9e-189b6c3a009d", "Metrics": "ad0a8179-0349-5cbd-bd6c-acd40cb22956", "Wall": "f13ad8d5-3899-5e4c-a37e-a52f69661de0", "Sensor": "91298410-d245-500d-93af-4d10a6465374", "RayLine": "28c9ab58-5a68-5d3f-844c-721497af8acb", "SweepStop": "22074fd4-bfd8-56bb-b7c4-75296c30e8ab", "GhostRay": "f3c4c3db-976a-52bd-ab5a-b4d15b161711", "GlassRay": "5cb909b1-6b87-5cdf-a7a7-100acf421c07"}
   - type: pointLight2D
     radius: 56
     intensity: 0.45
@@ -230,6 +262,67 @@ objects:
     assetId: adc8aa73-c8b4-505d-ae11-206843187b82
     asset: Assets/Showcase/ShadowM.png
     order: -1
+- id: e7d6ecec-e524-5099-8016-65c87685e7d7
+  name: Sensor name
+  x: 150
+  y: 318
+  width: 180
+  height: 16
+  components:
+  - type: text2D
+    text: "<b>Sensor</b>  trigger, layer Sensor"
+    size: 14
+    color: "#F4F6F4"
+    align: Center
+    richText: true
+    sortingLayer: 5
+    order: 20
+- id: 65baf13d-817f-59ea-8683-7b79c54515e0
+  name: Sensor rule
+  x: 150
+  y: 334
+  width: 180
+  height: 16
+  components:
+  - type: text2D
+    text: "reports what passes through"
+    size: 12
+    color: "#BFD0DC"
+    align: Center
+    richText: true
+    sortingLayer: 5
+    order: 20
+- id: aabba3cc-222c-5084-90d5-a96a11d0b011
+  name: Sensor leader
+  x: 0
+  y: 0
+  width: 1
+  height: 1
+  components:
+  - type: line2D
+    points:
+    - {x: 240, y: 224}
+    - {x: 240, y: 316}
+    width: 1
+    startColor: "#8A93B8"
+    endColor: "#8A93B8"
+    sortingLayer: 5
+    order: 19
+- id: 9ecfd60f-ce5a-5b69-b2e6-20c3f084e8ac
+  name: Sensor note
+  x: 150
+  y: 350
+  width: 180
+  height: 16
+  components:
+  - type: text2D
+    text: ""
+    size: 13
+    color: "#F4F6F4"
+    align: Center
+    richText: true
+    sortingLayer: 5
+    order: 20
 - id: 91298410-d245-500d-93af-4d10a6465374
   name: Sensor
   x: 218
@@ -247,16 +340,61 @@ objects:
     isTrigger: true
   - type: script
     script: SensorEntry
-    values: {"Active": {"Id": "1015bdc7-090f-5388-9d76-6981c8dae593"}}
+    values: {"Active": {"Id": "1015bdc7-090f-5388-9d76-6981c8dae593"}, "Note": "9ecfd60f-ce5a-5b69-b2e6-20c3f084e8ac"}
   - type: pointLight2D
     radius: 60
     intensity: 0.5
     flicker: 0.2
     frequency: 0.8
     color: "#5CD6DE"
+- id: fb980490-40a4-5236-840f-a4bf899ae97c
+  name: Pass A name
+  x: 220
+  y: 262
+  width: 180
+  height: 16
+  components:
+  - type: text2D
+    text: "<b>Gate A</b>  layer <color=#8FB4FF>Ghost</color>"
+    size: 14
+    color: "#F4F6F4"
+    align: Center
+    richText: true
+    sortingLayer: 5
+    order: 20
+- id: 54c76adc-1f61-5a16-947e-cd3c4ec220c6
+  name: Pass A rule
+  x: 220
+  y: 278
+  width: 180
+  height: 16
+  components:
+  - type: text2D
+    text: "not in the probe's mask"
+    size: 12
+    color: "#BFD0DC"
+    align: Center
+    richText: true
+    sortingLayer: 5
+    order: 20
+- id: 5125e2d4-48aa-5ab9-bf80-2adb6bca4580
+  name: Pass A note
+  x: 220
+  y: 294
+  width: 180
+  height: 16
+  components:
+  - type: text2D
+    text: ""
+    size: 13
+    color: "#F4F6F4"
+    align: Center
+    richText: true
+    sortingLayer: 5
+    order: 20
 - id: 34f2f966-38e7-5e2a-978b-9cd5047cd054
   name: Pass A
-  x: 325
+  x: 305
   y: 155
   width: 10
   height: 90
@@ -272,9 +410,12 @@ objects:
     radius: 44
     intensity: 0.4
     color: "#8FB4FF"
+  - type: script
+    script: Showcase/ProbeTouch
+    values: {"Probe": "f6bf5031-579f-560b-9bdc-9b9f007cc814", "Note": "5125e2d4-48aa-5ab9-bf80-2adb6bca4580", "Says": "<color=#9CF09C><b>probe passes</b></color>", "Flash": "#FFFFFF"}
 - id: 9d24edcf-7f97-5c19-9594-cd876d7b9cba
   name: Pass A top
-  x: 322
+  x: 302
   y: 141
   width: 16
   height: 16
@@ -285,7 +426,7 @@ objects:
     order: 3
 - id: f52e8d5b-0301-56de-b757-d5b826c02f06
   name: Pass A foot
-  x: 322
+  x: 302
   y: 243
   width: 16
   height: 16
@@ -294,9 +435,70 @@ objects:
     assetId: 789618a4-a983-5c79-8feb-e67e521227a1
     asset: Assets/Showcase/GatePost.png
     order: 3
+- id: aaa5183a-6955-5b3b-a033-aad402bfd031
+  name: Pass B name
+  x: 320
+  y: 318
+  width: 180
+  height: 16
+  components:
+  - type: text2D
+    text: "<b>Gate B</b>  layer <color=#F49AE8>Glass</color>"
+    size: 14
+    color: "#F4F6F4"
+    align: Center
+    richText: true
+    sortingLayer: 5
+    order: 20
+- id: bdc3d809-5e21-50d8-853f-fad9814ad21d
+  name: Pass B rule
+  x: 320
+  y: 334
+  width: 180
+  height: 16
+  components:
+  - type: text2D
+    text: "its own mask is empty"
+    size: 12
+    color: "#BFD0DC"
+    align: Center
+    richText: true
+    sortingLayer: 5
+    order: 20
+- id: 4d32f595-311c-557f-84d2-ea5350663747
+  name: Pass B leader
+  x: 0
+  y: 0
+  width: 1
+  height: 1
+  components:
+  - type: line2D
+    points:
+    - {x: 410, y: 260}
+    - {x: 410, y: 316}
+    width: 1
+    startColor: "#8A93B8"
+    endColor: "#8A93B8"
+    sortingLayer: 5
+    order: 19
+- id: 7fac4f63-b7af-5536-98cd-bde2204e2d79
+  name: Pass B note
+  x: 320
+  y: 350
+  width: 180
+  height: 16
+  components:
+  - type: text2D
+    text: ""
+    size: 13
+    color: "#F4F6F4"
+    align: Center
+    richText: true
+    sortingLayer: 5
+    order: 20
 - id: 9ce8a341-74b7-5cf9-aec6-69306e76ff71
   name: Pass B
-  x: 380
+  x: 405
   y: 155
   width: 10
   height: 90
@@ -304,7 +506,7 @@ objects:
   - type: spriteRenderer
     assetId: ffdf3696-67ae-55b9-8c06-80f9e4634797
     asset: Assets/Showcase/Gate.png
-    tint: "#FFB48F"
+    tint: "#F49AE8"
     order: 2
   - type: boxCollider2D
     layer: 5
@@ -312,10 +514,13 @@ objects:
   - type: pointLight2D
     radius: 44
     intensity: 0.4
-    color: "#FFB48F"
+    color: "#F49AE8"
+  - type: script
+    script: Showcase/ProbeTouch
+    values: {"Probe": "f6bf5031-579f-560b-9bdc-9b9f007cc814", "Note": "7fac4f63-b7af-5536-98cd-bde2204e2d79", "Says": "<color=#9CF09C><b>probe passes</b></color>", "Flash": "#FFFFFF"}
 - id: 82bd40c8-a025-5d37-935a-f9090f5dbaa5
   name: Pass B top
-  x: 377
+  x: 402
   y: 141
   width: 16
   height: 16
@@ -326,7 +531,7 @@ objects:
     order: 3
 - id: 40d6e618-68f1-58f5-93c2-d1fc5a80573d
   name: Pass B foot
-  x: 377
+  x: 402
   y: 243
   width: 16
   height: 16
@@ -335,6 +540,51 @@ objects:
     assetId: 789618a4-a983-5c79-8feb-e67e521227a1
     asset: Assets/Showcase/GatePost.png
     order: 3
+- id: 1a296b3d-5ea5-5884-802c-37ff2dd73786
+  name: Ramp name
+  x: 460
+  y: 262
+  width: 180
+  height: 16
+  components:
+  - type: text2D
+    text: "<b>Wall</b>  layer <color=#FFE08C>Solid</color>"
+    size: 14
+    color: "#F4F6F4"
+    align: Center
+    richText: true
+    sortingLayer: 5
+    order: 20
+- id: 5abd7aab-926a-5832-bb52-a68c664f0052
+  name: Ramp rule
+  x: 460
+  y: 278
+  width: 180
+  height: 16
+  components:
+  - type: text2D
+    text: "masks match both ways"
+    size: 12
+    color: "#BFD0DC"
+    align: Center
+    richText: true
+    sortingLayer: 5
+    order: 20
+- id: 7b457e73-18eb-5134-849d-b1e4658ef3ee
+  name: Ramp note
+  x: 460
+  y: 294
+  width: 180
+  height: 16
+  components:
+  - type: text2D
+    text: ""
+    size: 13
+    color: "#F4F6F4"
+    align: Center
+    richText: true
+    sortingLayer: 5
+    order: 20
 - id: f13ad8d5-3899-5e4c-a37e-a52f69661de0
   name: Ramp
   x: 500
@@ -353,6 +603,54 @@ objects:
     - {x: 0, y: 0}
     - {x: 1, y: 0.5}
     - {x: 0, y: 1}
+  - type: script
+    script: Showcase/ProbeTouch
+    values: {"Probe": "f6bf5031-579f-560b-9bdc-9b9f007cc814", "Note": "7b457e73-18eb-5134-849d-b1e4658ef3ee", "Says": "<color=#FF9A8A><b>stops the probe</b></color>", "Flash": "#FF9A8A"}
+- id: 5b023bc3-7dc3-59bc-a2ce-9232d81f4e2a
+  name: Probe name
+  x: 10
+  y: 262
+  width: 180
+  height: 16
+  components:
+  - type: text2D
+    text: "<b>Probe</b>  rolls with →"
+    size: 14
+    color: "#F4F6F4"
+    align: Center
+    richText: true
+    sortingLayer: 5
+    order: 20
+- id: 25f79a67-3842-5ac4-9157-57d4abf66d50
+  name: Probe rule
+  x: 10
+  y: 278
+  width: 180
+  height: 16
+  components:
+  - type: text2D
+    text: "mask: <color=#FFE08C>Solid</color>, Sensor, <color=#F49AE8>Glass</color>"
+    size: 12
+    color: "#BFD0DC"
+    align: Center
+    richText: true
+    sortingLayer: 5
+    order: 20
+- id: 9cbe97fe-44e0-5916-bad5-59382c9125bc
+  name: Probe note
+  x: 10
+  y: 294
+  width: 180
+  height: 16
+  components:
+  - type: text2D
+    text: ""
+    size: 13
+    color: "#F4F6F4"
+    align: Center
+    richText: true
+    sortingLayer: 5
+    order: 20
 - id: aa364bf6-24b5-5dfe-9bde-191b0c9c94c9
   name: Camera
   x: 400
@@ -369,62 +667,90 @@ objects:
   height: 1
   components:
   - type: uiCanvas
-- id: 5b023bc3-7dc3-59bc-a2ce-9232d81f4e2a
-  name: Probe name
-  x: 30
-  y: 268
-  width: 140
+- id: e0aba80d-78d4-553c-a0bd-a86ea045650e
+  parentId: 38c04c97-d92c-5d23-be0a-5111ea8522ba
+  name: Legend
+  x: 12
+  y: 12
+  width: 360
+  height: 110
+  components:
+  - type: uiRect
+    anchor: TopLeft
+    showIf: cast
+  - type: uiImage
+    sprite: 9a537ccd-f083-5c9e-8d2d-d1f76dbecd32
+    borders: {left: 4, top: 4, right: 4, bottom: 4}
+- id: 8c41d392-ec71-547f-a5d5-aaa89ec845d0
+  parentId: e0aba80d-78d4-553c-a0bd-a86ea045650e
+  name: Legend 1
+  x: 10
+  y: 9
+  width: 340
   height: 18
   components:
-  - type: text2D
-    text: "Probe"
+  - type: uiRect
+  - type: uiText
+    richText: true
+    text: "<b>Queries pick the layers they stop at</b>"
     size: 12
-    color: "#DCE6EE"
-    align: Center
-    sortingLayer: 5
-    order: 20
-- id: e7d6ecec-e524-5099-8016-65c87685e7d7
-  name: Sensor name
-  x: 170
-  y: 268
-  width: 140
+    color: "#F4F6F4"
+- id: 22427c41-04b1-511c-92ac-a53c4a37d1dc
+  parentId: e0aba80d-78d4-553c-a0bd-a86ea045650e
+  name: Legend 2
+  x: 10
+  y: 27
+  width: 340
   height: 18
   components:
-  - type: text2D
-    text: "Sensor (trigger)"
+  - type: uiRect
+  - type: uiText
+    richText: true
+    text: "<color=#FFE08C><b>Ray</b>  mask Solid</color>   passes both gates, hits the wall"
     size: 12
-    color: "#DCE6EE"
-    align: Center
-    sortingLayer: 5
-    order: 20
-- id: e9a74c97-7677-5b2d-828e-ab2f7fdb2921
-  name: Gates name
-  x: 287
-  y: 268
-  width: 140
+    color: "#F4F6F4"
+- id: 008948de-0e0c-5820-9e53-cca0f98e008d
+  parentId: e0aba80d-78d4-553c-a0bd-a86ea045650e
+  name: Legend 3
+  x: 10
+  y: 45
+  width: 340
   height: 18
   components:
-  - type: text2D
-    text: "Gates A and B"
+  - type: uiRect
+  - type: uiText
+    richText: true
+    text: "<color=#8FB4FF><b>Ray</b>  mask Ghost + Solid</color>   stops at Gate A"
     size: 12
-    color: "#DCE6EE"
-    align: Center
-    sortingLayer: 5
-    order: 20
-- id: 1a296b3d-5ea5-5884-802c-37ff2dd73786
-  name: Ramp name
-  x: 470
-  y: 268
-  width: 140
+    color: "#F4F6F4"
+- id: 3be57509-4ab0-5051-8435-a8caaab9a24f
+  parentId: e0aba80d-78d4-553c-a0bd-a86ea045650e
+  name: Legend 4
+  x: 10
+  y: 63
+  width: 340
   height: 18
   components:
-  - type: text2D
-    text: "Polygon wall"
+  - type: uiRect
+  - type: uiText
+    richText: true
+    text: "<color=#F49AE8><b>Ray</b>  mask Glass + Solid</color>   stops at Gate B"
     size: 12
-    color: "#DCE6EE"
-    align: Center
-    sortingLayer: 5
-    order: 20
+    color: "#F4F6F4"
+- id: df86f8b0-92b0-5d1a-932f-b83e864d4360
+  parentId: e0aba80d-78d4-553c-a0bd-a86ea045650e
+  name: Legend 5
+  x: 10
+  y: 81
+  width: 340
+  height: 18
+  components:
+  - type: uiRect
+  - type: uiText
+    richText: true
+    text: "<color=#B8B6E8><b>Sweep</b>  mask Solid</color>   the probe's circle stops 20 short"
+    size: 12
+    color: "#F4F6F4"
 - id: 0b4d15a2-9631-5930-92d7-ff403ae5f62f
   parentId: 38c04c97-d92c-5d23-be0a-5111ea8522ba
   name: Readout
@@ -466,72 +792,12 @@ objects:
     text: "Press → to roll the probe"
     size: 12
     color: "#BFD0DC"
-- id: 86bd5dcf-e002-5a43-897b-d35c9afa35c2
-  parentId: 38c04c97-d92c-5d23-be0a-5111ea8522ba
-  name: Tag 1
-  x: 12
-  y: 12
-  width: 440
-  height: 24
-  components:
-  - type: uiRect
-    anchor: TopLeft
-    showIf: cast
-  - type: uiImage
-    sprite: 9a537ccd-f083-5c9e-8d2d-d1f76dbecd32
-    borders: {left: 4, top: 4, right: 4, bottom: 4}
-  - type: uiText
-    richText: true
-    text: "<b>Ray and sweep</b>   <color=#BFD0DC>the line hits the wall, the circle stops 20 short</color>"
-    size: 12
-    insetX: 10
-    insetY: 4
-- id: 2d11af98-14f5-5f02-bab5-20713cacc0d9
-  parentId: 38c04c97-d92c-5d23-be0a-5111ea8522ba
-  name: Tag 2
-  x: 12
-  y: 40
-  width: 440
-  height: 24
-  components:
-  - type: uiRect
-    anchor: TopLeft
-    showIf: crossed
-  - type: uiImage
-    sprite: 9a537ccd-f083-5c9e-8d2d-d1f76dbecd32
-    borders: {left: 4, top: 4, right: 4, bottom: 4}
-  - type: uiText
-    richText: true
-    text: "<b>Sensor</b>   <color=#BFD0DC>a trigger reports the probe passing through</color>"
-    size: 12
-    insetX: 10
-    insetY: 4
-- id: c9781d4e-c6ec-5457-b9d0-aa2ce7fc68b1
-  parentId: 38c04c97-d92c-5d23-be0a-5111ea8522ba
-  name: Tag 3
-  x: 12
-  y: 68
-  width: 440
-  height: 24
-  components:
-  - type: uiRect
-    anchor: TopLeft
-    showIf: stopped
-  - type: uiImage
-    sprite: 9a537ccd-f083-5c9e-8d2d-d1f76dbecd32
-    borders: {left: 4, top: 4, right: 4, bottom: 4}
-  - type: uiText
-    richText: true
-    text: "<b>Layer masks</b>   <color=#BFD0DC>both gates let the probe by, the wall stops it</color>"
-    size: 12
-    insetX: 10
-    insetY: 4
 - id: 4960bc11-6157-5c0f-9c2e-a5e60779376e
   parentId: 38c04c97-d92c-5d23-be0a-5111ea8522ba
   name: Caption
   x: 12
   y: -12
-  width: 470
+  width: 560
   height: 44
   components:
   - type: uiRect
@@ -544,13 +810,13 @@ objects:
   name: Caption title
   x: 12
   y: 5
-  width: 446
+  width: 536
   height: 20
   components:
   - type: uiRect
   - type: uiText
     richText: true
-    text: "<b>CollisionLab</b>   Rays, sweeps, sensors and layer masks"
+    text: "<b>CollisionLab</b>   Layer masks decide what rays, sweeps and colliders stop at"
     size: 15
     color: "#F4F6F4"
 - id: fb05cc35-ec75-5a9c-86e8-b8c106ec8ff8
@@ -558,13 +824,13 @@ objects:
   name: Caption controls
   x: 12
   y: 25
-  width: 446
+  width: 536
   height: 16
   components:
   - type: uiRect
   - type: uiText
     richText: true
-    text: "Roll the probe  →"
+    text: "Raycast, Sweep, trigger sensor, PhysicsFilter     Roll the probe  →"
     size: 12
     color: "#BFD0DC"
 defaultCameraId: aa364bf6-24b5-5dfe-9bde-191b0c9c94c9

@@ -85,7 +85,7 @@ def main():
         raise SystemExit(f"FAIL: expected frames 1..{FRAMES}, got {len(frames)}")
     summaries = {n: summarize(rows) for n, rows in frames.items()}
     heavy = [s for s in summaries.values() if s["calls"] == {q: PER_KIND for q in QUERIES}]
-    # The start scene's Probe casts 3 overlaps, 1 ray and 1 sweep once; nothing else queries.
+    # The start scene's Probe casts 3 overlaps, 3 rays and 1 sweep once; nothing else queries.
     light = [s for s in summaries.values() if any(s["calls"].values()) and s not in heavy]
     # Like a user who presses R and clicks the spike that follows; entering the field is a separate loading spike.
     slowest = max((s for n, s in summaries.items() if n > REPEAT), key=lambda s: s["frame_ms"])
@@ -102,8 +102,8 @@ def main():
     print("slowest after R", slowest["frame"], f"{slowest['frame_ms']} ms")
     for depth, name, calls, total, self in slowest["tree"]:
         print(f"{calls:9,} {total / 1000:10.3f} {self / 1000:10.3f}  {'  ' * depth}{name}")
-    if len(heavy) != 2 or [s["calls"] for s in light] != [dict(zip(QUERIES, (3, 1, 1)))]:
-        raise SystemExit(f"FAIL: expected two frames with {PER_KIND} queries of each kind and the lab probe's 5 queries")
+    if len(heavy) != 2 or [s["calls"] for s in light] != [dict(zip(QUERIES, (3, 3, 1)))]:
+        raise SystemExit(f"FAIL: expected two frames with {PER_KIND} queries of each kind and the lab probe's 7 queries")
     if slowest is not heavy[1] or any(s["query_share"] < .5 for s in heavy):
         raise SystemExit("FAIL: physics queries do not dominate the query frames")
     print(f"PASS slowest frame after R {slowest['frame']}: {3 * PER_KIND} queries take {slowest['query_share']:.1%} of {slowest['frame_ms']} ms;"
