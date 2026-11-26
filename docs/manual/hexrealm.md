@@ -22,7 +22,7 @@
 ## 에디터에서 찾아보기
 
 - **Ground**, **Cities**, **Fog**, **Orders**는 같은 Hex Pointy 투영을 공유하는 네 타일 레이어다. **Board controller**의 `MapSeed` 기본값을 바꾸고 저장 슬롯이 없는 프로필로 시작하면 다른 맵이 생성된다.
-- [RealmRules](../../samples/HexRealm/Scripts/RealmRules.cs)에 지형 비용, 이동·도시·전투·연구·AI 규칙이 있다. [RealmBoard](../../samples/HexRealm/Scripts/RealmBoard.cs)는 클릭을 셀 좌표로 바꾸고, 이동 범위와 안개 레이어를 갱신하며, 시드와 명령 목록을 저장한다.
+- [RealmRules](../../samples/HexRealm/Scripts/RealmRules.cs)에 지형 비용, 이동·도시·전투·연구·AI 규칙이 있다. [RealmBoard](../../samples/HexRealm/Scripts/RealmBoard.cs)는 클릭을 셀 좌표로 바꾸고, 이동 범위와 안개 레이어를 갱신하며, 시드와 명령 목록을 저장한다. 규칙은 명령을 즉시 반영하고, RealmBoard는 규칙이 찾은 경로를 따라 유닛 그림만 칸당 0.12초로 옮기고 공격 때는 대상 쪽으로 짧게 들이받았다 돌아온다. 같은 유닛에 새 명령을 내리면 지금 그려진 자리에서 이어 가고, Enter는 남은 이동 표시를 바로 끝내고 턴을 넘긴 뒤 AI 유닛도 같은 방식으로 움직인다. 저장·리플레이·턴 해시는 이 표시와 무관하다.
 - [40턴 리플레이](../../engine/tests/HexRealm.Play/README.md)는 같은 플레이어 명령에 AI가 어떻게 응답하는지 턴별 해시로 확인한다.
 
 [제작 계획](../plans/samples/3-hex-strategy.md) · [구현 및 검증 기록](../../engine/tests/results/hexrealm/README.md)

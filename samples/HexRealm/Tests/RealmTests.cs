@@ -103,9 +103,18 @@ public sealed class RealmTests
         yield return ScriptWait.Frames(2);
         run.Assert(run.Objects.TryGetTile(run.Find("Orders"), new(3, 7), out var detour) && detour.Tile == 3,
             "the scout can reach the destination via the alternate path");
+        var board = run.Script<RealmBoard>("Board controller");
+        var start = board.DrawnAt(1);
         yield return run.Replay("Tests/ScoutDetour.inputreplay");
         var saved = run.Session.Storage.LoadSlot(1, 1)!;
         run.AreEqual("0,1,3,7;", saved.GetText("orders"), "right click accepted the highlighted detour");
+        ulong hash = board.StateHash;
+        var gliding = board.DrawnAt(1);
+        yield return ScriptWait.Frames(40);
+        var end = board.DrawnAt(1);
+        run.Assert(gliding != start && gliding != end, "the scout is drawn between cells while it travels");
+        run.Assert(System.Numerics.Vector2.Distance(start, end) > System.Numerics.Vector2.Distance(start, gliding), "and keeps going to its cell");
+        run.AreEqual(hash, board.StateHash, "the move itself was instant");
     }
 
     [GameTest("Scenes/Realm.scene")]

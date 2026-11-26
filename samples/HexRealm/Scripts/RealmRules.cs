@@ -28,6 +28,10 @@ internal sealed class RealmRules
     internal int Turn = 1, Gold = 12, Tech, Research, ResearchPoints, Winner;
     internal readonly uint Seed;
     internal bool Legacy;
+    // Presentation hooks only: they never change the state the hash, saves and replays see.
+    internal delegate void PathTaken(Unit unit, ReadOnlySpan<Point> cells);
+    internal PathTaken? Moved;
+    internal Action<Unit, Point>? Struck;
 
     internal sealed class Unit(Point cell, int side, UnitKind kind)
     {
@@ -143,12 +147,14 @@ internal sealed class RealmRules
             if (!fighter || guard.Side == unit.Side || Distance(unit.Cell, target) > range) return false;
             guard.Health -= (unit.Kind == UnitKind.Archer ? 3 : 4) - (Terrain[Index(target)] is 2 or 3 ? 1 : 0);
             unit.Moves = 0;
+            Struck?.Invoke(unit, target);
             return true;
         }
         if (CityAt(target) is { } city && city.Side != unit.Side)
         {
             if (!fighter || Distance(unit.Cell, target) > range) return false;
             unit.Moves = 0;
+            Struck?.Invoke(unit, target);
             int damage = unit.Kind == UnitKind.Spear ? 5 : 3;
             if (city.Population >= 3) damage--;
             unit.Health -= city.Population >= 3 ? 3 : 2;
@@ -169,6 +175,7 @@ internal sealed class RealmRules
         if (terrainOnly)
             for (int i = 1; i < length; i++)
                 if (UnitAt(path[i]) != null || CityAt(path[i]) is { } block && block.Side != unit.Side) return false;
+        Moved?.Invoke(unit, path.AsSpan(0, length));
         unit.Cell = target;
         unit.Moves -= cost;
         return true;

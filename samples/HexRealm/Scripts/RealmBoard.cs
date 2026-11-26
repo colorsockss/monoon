@@ -19,6 +19,13 @@ public sealed class RealmBoard : GameBehaviour
     private readonly Guid[] actors = new Guid[RealmRules.UnitLimit];
     private readonly RealmRules.Unit?[] displayed = new RealmRules.Unit?[RealmRules.UnitLimit];
     private readonly Vector2[] lastPositions = new Vector2[RealmRules.UnitLimit];
+    // Units glide along the path the rules already took; the logical cell changes at once.
+    private const float StepSeconds = 0.12f;
+    private const int TrailCells = 8;
+    private readonly Vector2[] centers = new Vector2[RealmRules.Count];
+    private readonly Vector2[] trails = new Vector2[RealmRules.UnitLimit * TrailCells];
+    private readonly int[] trailLengths = new int[RealmRules.UnitLimit];
+    private readonly float[] trailTimes = new float[RealmRules.UnitLimit];
     private static readonly string[] TrainInputs = ["Train1", "Train2", "Train3", "Train4", "Train5"];
     private RealmRules rules = null!;
     private int unit = 0, city = -1;
@@ -31,6 +38,7 @@ public sealed class RealmBoard : GameBehaviour
     public int Turn => rules.Turn;
     public ulong StateHash => rules.Hash();
     public int CityCount => rules.Cities.Count;
+    public Vector2 DrawnAt(int index) => ViewOf(index);
 
     public override void OnCreate(ScriptLife life)
     {
@@ -42,8 +50,12 @@ public sealed class RealmBoard : GameBehaviour
         var costs = new int[RealmRules.Count];
         for (int i = 0; i < costs.Length; i++)
             if (life.Objects.TryGetTile(Ground, RealmRules.PointAt(i), out var tile)) costs[i] = tile.MoveCost;
+        for (int i = 0; i < centers.Length; i++)
+            centers[i] = life.Objects.TileCellCenter(Ground, RealmRules.PointAt(i))!.Value - new Vector2(12, 17);
         rules = new(seed, terrain, costs);
         if (saved != null) RestoreCommands(saved);
+        rules.Moved = TrailMove;
+        rules.Struck = TrailStrike;
         if (rules.Units[0].Health <= 0) unit = -1;
         city = rules.Cities.FindIndex(town => town is { Side: 1, Capital: true });
         activeCamera = Camera;
@@ -56,6 +68,7 @@ public sealed class RealmBoard : GameBehaviour
     {
         var input = tick.Input;
         var objects = tick.Objects;
+        Animate(objects, tick.DeltaTime);
         var pan = tick.Direction * (500 * tick.DeltaTime);
         if (pan != Vector2.Zero)
         {
@@ -141,6 +154,7 @@ public sealed class RealmBoard : GameBehaviour
     {
         if (rules.Winner != 0) return;
         var selected = unit < 0 ? null : rules.Units[unit];
+        if (order.Kind == OrderKind.End) Array.Clear(trailLengths); // the turn ends with every unit at its cell
         if (!rules.Apply(order))
         {
             SetNotice(tick.Ui, "Order unavailable.");
@@ -224,17 +238,67 @@ public sealed class RealmBoard : GameBehaviour
                 displayed[i] = null;
             }
             if (!display) continue;
-            Vector2 center = objects.TileCellCenter(Ground, actor.Cell)!.Value - new Vector2(12, 17);
+            Vector2 center = ViewOf(i);
             if (actors[i] == Guid.Empty)
             {
                 int art = actor.Side == 1 ? (int)actor.Kind : actor.Kind == UnitKind.Archer ? 6 : 5;
                 actors[i] = objects.Rent(UnitArt[art], center);
                 displayed[i] = actor;
+                lastPositions[i] = center;
             }
-            else if (lastPositions[i] != center)
-                objects.SetLocalTransform(actors[i], new(center, 0, Vector2.One));
-            lastPositions[i] = center;
+            else Place(objects, i, center);
         }
+    }
+
+    private void Place(IGameObjects objects, int i, Vector2 at)
+    {
+        if (lastPositions[i] == at) return;
+        objects.SetLocalTransform(actors[i], new(at, 0, Vector2.One));
+        lastPositions[i] = at;
+    }
+
+    private void Animate(IGameObjects objects, float seconds)
+    {
+        for (int i = 0; i < rules.Units.Count; i++)
+        {
+            if (trailLengths[i] == 0) continue;
+            if ((trailTimes[i] += seconds) >= (trailLengths[i] - 1) * StepSeconds) trailLengths[i] = 0;
+            if (actors[i] != Guid.Empty) Place(objects, i, ViewOf(i));
+        }
+    }
+
+    private Vector2 ViewOf(int i)
+    {
+        int length = trailLengths[i];
+        if (length == 0) return centers[RealmRules.Index(rules.Units[i].Cell)];
+        float t = Math.Clamp(trailTimes[i] / ((length - 1) * StepSeconds), 0, 1);
+        float along = t * t * (3 - 2 * t) * (length - 1);
+        int step = Math.Min((int)along, length - 2), at = i * TrailCells + step;
+        return Vector2.Lerp(trails[at], trails[at + 1], along - step);
+    }
+
+    // A new order for a unit still gliding starts from where it is drawn, so it never jumps.
+    private int StartTrail(RealmRules.Unit actor, int cells)
+    {
+        int i = rules.Units.IndexOf(actor);
+        trails[i * TrailCells] = trailLengths[i] > 0 ? ViewOf(i) : centers[RealmRules.Index(actor.Cell)];
+        trailLengths[i] = cells;
+        trailTimes[i] = 0;
+        return i * TrailCells;
+    }
+
+    private void TrailMove(RealmRules.Unit actor, ReadOnlySpan<Point> cells)
+    {
+        int count = Math.Min(cells.Length, TrailCells), start = StartTrail(actor, count);
+        for (int k = 1; k < count; k++) trails[start + k] = centers[RealmRules.Index(cells[cells.Length - count + k])];
+    }
+
+    private void TrailStrike(RealmRules.Unit actor, Point target)
+    {
+        Vector2 from = centers[RealmRules.Index(actor.Cell)], toward = centers[RealmRules.Index(target)] - from;
+        int start = StartTrail(actor, 3);
+        trails[start + 1] = from + toward * Math.Min(0.45f, 16 / toward.Length());
+        trails[start + 2] = from;
     }
 
     private string Description()
