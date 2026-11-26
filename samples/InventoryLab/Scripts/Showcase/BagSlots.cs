@@ -6,7 +6,7 @@ using Engine.Core;
 // pad A on it) its item leaves the slot and rides on a floating copy, Ghost: under the pointer, or with keys and a pad over
 // the focused slot (arrows / D-pad move the focus, Enter / A drops, Escape / B cancels). Dropped
 // on another slot it settles in there, and that slot's item flies back on GhostBack; the slots swap when both land and the
-// one it landed in pops. Raises the "drag" HUD tag flag.
+// one it landed in hops. Raises the "drag" HUD tag flag.
 public sealed class BagSlots : GameBehaviour
 {
     public Guid Ghost, GhostBack;
@@ -100,6 +100,7 @@ public sealed class BagSlots : GameBehaviour
             ui.SetVisible(ghost, false);
             objects.Tween(ghost, TweenClock.Ui).UiRect(default, .001f, TweenEase.Linear);
         }
-        objects.Tween(target, TweenClock.Ui).UiRect(new(-5, -5, 10, 10), .07f, TweenEase.EaseOut).UiRect(default, .14f, TweenEase.EaseIn);
+        // A hop, not a grow: the icon sits at a fixed inset from the slot's corner, so a growing box would push it off centre.
+        objects.Tween(target, TweenClock.Ui).UiRect(new(0, -5, 0, 0), .07f, TweenEase.EaseOut).UiRect(default, .14f, TweenEase.EaseIn);
     }
 }

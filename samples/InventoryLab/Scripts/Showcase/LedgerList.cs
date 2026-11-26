@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using Engine.Core;
 
 // Showcase: the herbalist's stock ledger, 1,000 generated items in a data-bound list. Range shows which rows are on screen
-// and how few row objects exist; R / pad Y (Sort) cycles the order and lights its tab. The list takes the keyboard and pad
+// and how few row objects exist; R / pad Y (Sort) cycles the order and shows it: the active tab gets its gold bar (Marks)
+// and ▲ / ▼, its column turns gold in every row and Sort names the order. The list takes the keyboard and pad
 // focus on entry; Return / pad A on a row uses one of that item and records the used item numbers, the order and the row
-// object count in save slot 2. B / pad Back returns to the yard. Attach to the Scroll View; its first child is the row template.
+// object count in save slot 2. B / pad Back returns to the yard. Raises the "scrolled", "sorted" and "used" HUD tag flags. Attach to the Scroll View; its first child is the row template.
 public sealed class LedgerList : GameBehaviour, IUiListSource
 {
     private sealed record Item(int Number, string Name, int Count);
@@ -13,11 +14,15 @@ public sealed class LedgerList : GameBehaviour, IUiListSource
     private static readonly string[] Nouns = ["Herb", "Crystal", "Key", "Rope", "Lantern", "Map", "Flask", "Bandage", "Arrow", "Shield"];
 
     public Guid Range;
+    public Guid Sort;                 // "Sorted by …" caption
     public Guid[] Tabs = [];          // No. / Name / Count, in sort order
+    public Guid[] Marks = [];         // the bar behind each tab, shown for the active one
     public float RowStep = 34;        // row height + layout gap
     public int ItemCount = 1000;
     public SceneReference Yard;
     private static readonly string[] Orders = ["No.", "Name", "Count"];
+    private static readonly string[] Arrows = ["▲", "▲", "▼"];
+    private static readonly string[] Captions = ["Sorted by No., lowest first", "Sorted by Name, A → Z", "Sorted by Count, most first"];
     private readonly List<Item> items = [];
     private readonly List<string> used = [];
     private Guid list;
@@ -28,12 +33,15 @@ public sealed class LedgerList : GameBehaviour, IUiListSource
     public string ItemId(int index) => items[index].Number.ToString();
     public string Field(int index, string name) => name switch
     {
-        "name" => items[index].Name,
+        "name" => Lit(1, items[index].Name),
         "icon" => items[index].Name[(items[index].Name.IndexOf(' ') + 1)..].ToLowerInvariant(),
-        "count" => items[index].Count.ToString(),
-        "number" => items[index].Number.ToString("N0"),
+        "count" => Lit(2, $"× {items[index].Count}"),
+        "number" => Lit(0, items[index].Number.ToString("N0")),
         _ => ""
     };
+
+    // The column the list is sorted by is gold in every row.
+    private string Lit(int column, string text) => column == order ? $"<color=#FFD84A>{text}</color>" : text;
 
     public override void OnEnable(ScriptLife life)
     {
@@ -63,9 +71,11 @@ public sealed class LedgerList : GameBehaviour, IUiListSource
             items.Sort((a, b) => compare(a, b) is var c && c != 0 ? c : a.Number.CompareTo(b.Number));
             ui.RefreshList(tick.ObjectId);
             ShowTabs(ui);
+            tick.Objects.Tween(Sort, TweenClock.Ui).UiRect(new(0, -4, 0, 0), .07f, TweenEase.EaseOut).UiRect(default, .14f, TweenEase.EaseIn);
             tick.Session.Set("sorted");
         }
         int first = (int)(ui.ScrollOffset(tick.ObjectId) / RowStep) + 1;
+        if (first > 1) tick.Session.Set("scrolled");
         int last = Math.Min(items.Count, first + (int)MathF.Round((ui.Bounds(tick.ObjectId)?.Height ?? 0) / RowStep) - 1);
         string text = $"Rows {first:N0}–{last:N0} of {items.Count:N0}     <color=#FFD84A>{ui.ListRowCount(tick.ObjectId)} row objects</color>";
         if (text != shown) ui.SetText(Range, shown = text);
@@ -92,6 +102,8 @@ public sealed class LedgerList : GameBehaviour, IUiListSource
     private void ShowTabs(IGameUi ui)
     {
         for (int i = 0; i < Tabs.Length && i < Orders.Length; i++)
-            ui.SetText(Tabs[i], i == order ? $"<b><color=#FFD84A>{Orders[i]}</color></b>" : Orders[i]);
+            ui.SetText(Tabs[i], i == order ? $"<b><color=#FFD84A>{Orders[i]} {Arrows[i]}</color></b>" : Orders[i]);
+        for (int i = 0; i < Marks.Length; i++) ui.SetVisible(Marks[i], i == order);
+        ui.SetText(Sort, Captions[order]);
     }
 }

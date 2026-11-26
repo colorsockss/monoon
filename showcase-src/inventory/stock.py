@@ -75,7 +75,11 @@ obj("Bag hint", M, 34, grid_w, 16, text("Drag an item onto another slot", 12, "#
 ghosts = [oid("Ghost"), oid("Ghost back")]
 obj("Bag grid", M, 60, grid_w, grid_h, f"  - type: uiRect\n  - type: uiLayout\n    axis: Grid\n    columns: 4\n    gap: {GAP}\n    padding: 0\n"
     + script("Showcase/BagSlots", f'{{"Ghost": "{ghosts[0]}", "GhostBack": "{ghosts[1]}"}}'), parent="Bag panel")
-slot_text = lambda item: text(f"<size=30><icon={item}></size>" if item else "", 13, "#FFFFFF", f"    insetX: {(CELL - 30) / 2:g}\n    insetY: 8\n")[len("  - type: uiRect\n"):]
+# An inline icon of size S gets a 1.2 S wide, 1.4 S tall cell and is drawn 0.1 S in and 0.12 S down from its corner
+# (RichTextLayout.Draw), so the insets put the 30 px icon itself, not its cell, in the middle of the slot.
+ICON = 30
+slot_text = lambda item: text(f"<size={ICON}><icon={item}></size>" if item else "", 13, "#FFFFFF",
+                              f"    insetX: {(CELL - ICON) / 2 - .1 * ICON:g}\n    insetY: {(CELL - ICON) / 2 - .12 * ICON:g}\n")[len("  - type: uiRect\n"):]
 contents = ["herb", "crystal", "key", "", "compass", "", "bread", "rope", "", "lantern", "", "map", "flask", "", "", "shield", "", "", "", ""]
 for i, item in enumerate(contents):
     obj(f"Bag slot {i + 1}", 0, 0, CELL, CELL, f"  - type: uiRect\n  - type: uiImage\n    sprite: {SLOT}\n    borders: {{left: 4, top: 4, right: 4, bottom: 4}}\n"
@@ -87,20 +91,24 @@ list_w = lw - 2 * M
 obj("Ledger panel", lx, TOP, lw, PANEL_H, "  - type: uiRect\n" + panel, parent="Canvas")
 obj("Ledger title", M, 12, list_w, 20, text("<b>Herbalist's stock ledger</b>", 16), parent="Ledger panel")
 rng = obj("Ledger range", M, 34, list_w, 16, text("Rows 1–7 of 1,000", 12, "#BFD0DC"), parent="Ledger panel")
-# Column headers double as the sort tabs; the row columns sit under them (row x = list x + 4 padding).
+# Column headers double as the sort tabs; the row columns sit under them (row x = list x + 4 padding). LedgerList lights
+# the active one: a gold bar behind it, gold text with ▲ / ▼, the same column in gold in every row, and the caption.
 NAME_X, NUM_X, COUNT_X = 34, 262, 362        # inside a row
+marks = [obj(f"Tab mark {i + 1}", M + 4 + x - 6, 58, w + 6, 20, '  - type: uiRect\n  - type: uiImage\n    color: "#5A4A1C"\n', parent="Ledger panel")
+         for i, (x, w) in enumerate(((NUM_X, 60), (NAME_X, 70), (COUNT_X, 66)))]
+sort = obj("Sort caption", M + list_w - 176, 15, 176, 16, text("", 13, "#FFD84A"), parent="Ledger panel")
 tabs = [obj("Tab number", M + 4 + NUM_X, 60, 80, 16, text("No.", 12, "#BFD0DC"), parent="Ledger panel"),
         obj("Tab name", M + 4 + NAME_X, 60, 120, 16, text("Name", 12, "#BFD0DC"), parent="Ledger panel"),
         obj("Tab count", M + 4 + COUNT_X, 60, 60, 16, text("Count", 12, "#BFD0DC"), parent="Ledger panel")]
 list_h = PANEL_H - 82 - M
 lst = obj("Ledger list", M, 82, list_w, list_h, "  - type: uiRect\n  - type: uiLayout\n    gap: 4\n    padding: 4\n  - type: uiScroll\n"
-          + script("Showcase/LedgerList", f'{{"Range": "{rng}", "Tabs": ["{tabs[0]}", "{tabs[1]}", "{tabs[2]}"], "RowStep": 34, '
+          + script("Showcase/LedgerList", f'{{"Range": "{rng}", "Sort": "{sort}", "Tabs": ["{tabs[0]}", "{tabs[1]}", "{tabs[2]}"], "Marks": ["{marks[0]}", "{marks[1]}", "{marks[2]}"], "RowStep": 34, '
                    '"Yard": {"Id": "0b0b8126-2ff1-5bbb-a7f0-5ef0af802bf8"}}'), parent="Ledger panel")
 obj("Ledger row", 0, 0, list_w - 8, 30, f"  - type: uiRect\n  - type: uiImage\n    sprite: {BUTTON}\n    borders: {{left: 4, top: 4, right: 4, bottom: 4}}\n  - type: uiButton\n"
-    + text("<icon={icon}>", 14, "#F2F7F5", "    insetX: 10\n    insetY: 5\n")[len("  - type: uiRect\n"):], parent="Ledger list")
+    + text("<icon={icon}>", 14, "#F2F7F5", f"    insetX: 10\n    insetY: {(30 - 14) / 2 - .12 * 14:g}\n")[len("  - type: uiRect\n"):], parent="Ledger list")
 obj("Row name", NAME_X, 0, 200, 30, text("{name}", 14, "#F2F7F5", "    insetY: 6\n"), parent="Ledger row")
 obj("Row number", NUM_X, 0, 80, 30, text("{number}", 13, "#95D8BE", "    insetY: 7\n"), parent="Ledger row")
-obj("Row count", COUNT_X, 0, 60, 30, text("× {count}", 13, "#95D8BE", "    insetY: 7\n"), parent="Ledger row")
+obj("Row count", COUNT_X, 0, 60, 30, text("{count}", 13, "#95D8BE", "    insetY: 7\n"), parent="Ledger row")
 
 # Caption, then the two floating copies BagSlots moves (last, so they draw over both panels).
 caption = "A bag and a 1,000-item ledger"
@@ -108,6 +116,14 @@ cw = 480   # as wide as the yard's caption, for the controls line
 cap = obj("Caption", 12, -12, cw, 44, "  - type: uiRect\n    anchor: BottomLeft\n" + panel, parent="Canvas")
 obj("Caption title", 12, 5, cw - 24, 20, text(f"<b>InventoryLab</b>   {caption}", 15), parent="Caption")
 obj("Caption controls", 12, 25, cw - 24, 16, text("Drag  mouse      Scroll  wheel      Sort  R      Use  Return      Back  B", 12, "#BFD0DC"), parent="Caption")
+# Feature tags (bottom right, beside the caption), shown as each part is used: the yard's tag style, names only.
+tags = [("drag", "Drag and drop"), ("scrolled", "Virtual list"), ("sorted", "Sort")]
+right = -12
+for i, (flag, feature) in reversed(list(enumerate(tags))):
+    w = 22 + 6.6 * len(feature)
+    obj(f"Tag {i + 1}", right, -22, w, 24, f"  - type: uiRect\n    anchor: BottomRight\n    showIf: {flag}\n" + panel
+        + f'  - type: uiText\n    richText: true\n    text: "<b>{feature}</b>"\n    size: 12\n    insetX: 10\n    insetY: 4\n', parent="Canvas")
+    right -= w + 6
 for g, name in zip(ghosts, ("Ghost", "Ghost back")):
     obj(name, 0, 0, CELL, CELL, "  - type: uiRect\n" + slot_text(""), parent="Canvas")   # the icon alone, lifted off its slot
 

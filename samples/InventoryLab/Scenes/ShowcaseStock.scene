@@ -274,8 +274,8 @@ objects:
     color: "#FFFFFF"
     richText: true
     icons: {herb: 5c1a7e2e-3b0d-4f53-9a51-6e0b7c11a503, crystal: 589328e1-9fc6-4acb-ac05-ac55da897e12, key: 8b767fbb-02ce-44a7-b503-e1c2cdcaafb1, rope: 76d6c4b8-9a70-4e63-bd75-6b35a78ba93f, lantern: 12aed755-8f41-4ce5-ac8c-8a074db75d38, map: 2ba01449-6f41-475c-86d7-23b8106e2b6a, flask: bf3e8702-0199-49a0-8336-6afdd8fba14d, bandage: 101c3dd5-450b-466a-b7ac-b3c3d3322d0a, arrow: 8dd9051c-717a-4396-8d92-fb9e3e304364, shield: 685066b2-faa0-44e0-af92-6526001f201c, compass: 82a2e9a8-988a-4f84-a9a7-ad355aecfac4, bread: 4a6cd46e-b3f6-4f76-a9b7-cacd817013ca}
-    insetX: 11
-    insetY: 8
+    insetX: 8
+    insetY: 7.4
 - id: f9082165-8860-5b07-a57f-65dc611602e0
   parentId: a914d719-362f-5871-9dd3-8bfea366e017
   name: Bag slot 2
@@ -296,8 +296,8 @@ objects:
     color: "#FFFFFF"
     richText: true
     icons: {herb: 5c1a7e2e-3b0d-4f53-9a51-6e0b7c11a503, crystal: 589328e1-9fc6-4acb-ac05-ac55da897e12, key: 8b767fbb-02ce-44a7-b503-e1c2cdcaafb1, rope: 76d6c4b8-9a70-4e63-bd75-6b35a78ba93f, lantern: 12aed755-8f41-4ce5-ac8c-8a074db75d38, map: 2ba01449-6f41-475c-86d7-23b8106e2b6a, flask: bf3e8702-0199-49a0-8336-6afdd8fba14d, bandage: 101c3dd5-450b-466a-b7ac-b3c3d3322d0a, arrow: 8dd9051c-717a-4396-8d92-fb9e3e304364, shield: 685066b2-faa0-44e0-af92-6526001f201c, compass: 82a2e9a8-988a-4f84-a9a7-ad355aecfac4, bread: 4a6cd46e-b3f6-4f76-a9b7-cacd817013ca}
-    insetX: 11
-    insetY: 8
+    insetX: 8
+    insetY: 7.4
 - id: 9dc3560e-d115-5beb-8d85-79cf971fde06
   parentId: a914d719-362f-5871-9dd3-8bfea366e017
   name: Bag slot 3
@@ -318,8 +318,8 @@ objects:
     color: "#FFFFFF"
     richText: true
     icons: {herb: 5c1a7e2e-3b0d-4f53-9a51-6e0b7c11a503, crystal: 589328e1-9fc6-4acb-ac05-ac55da897e12, key: 8b767fbb-02ce-44a7-b503-e1c2cdcaafb1, rope: 76d6c4b8-9a70-4e63-bd75-6b35a78ba93f, lantern: 12aed755-8f41-4ce5-ac8c-8a074db75d38, map: 2ba01449-6f41-475c-86d7-23b8106e2b6a, flask: bf3e8702-0199-49a0-8336-6afdd8fba14d, bandage: 101c3dd5-450b-466a-b7ac-b3c3d3322d0a, arrow: 8dd9051c-717a-4396-8d92-fb9e3e304364, shield: 685066b2-faa0-44e0-af92-6526001f201c, compass: 82a2e9a8-988a-4f84-a9a7-ad355aecfac4, bread: 4a6cd46e-b3f6-4f76-a9b7-cacd817013ca}
-    insetX: 11
-    insetY: 8
+    insetX: 8
+    insetY: 7.4
 - id: 8173e010-e28f-5445-9776-38e63dc54a57
   parentId: a914d719-362f-5871-9dd3-8bfea366e017
   name: Bag slot 4
@@ -340,8 +340,8 @@ objects:
     color: "#FFFFFF"
     richText: true
     icons: {herb: 5c1a7e2e-3b0d-4f53-9a51-6e0b7c11a503, crystal: 589328e1-9fc6-4acb-ac05-ac55da897e12, key: 8b767fbb-02ce-44a7-b503-e1c2cdcaafb1, rope: 76d6c4b8-9a70-4e63-bd75-6b35a78ba93f, lantern: 12aed755-8f41-4ce5-ac8c-8a074db75d38, map: 2ba01449-6f41-475c-86d7-23b8106e2b6a, flask: bf3e8702-0199-49a0-8336-6afdd8fba14d, bandage: 101c3dd5-450b-466a-b7ac-b3c3d3322d0a, arrow: 8dd9051c-717a-4396-8d92-fb9e3e304364, shield: 685066b2-faa0-44e0-af92-6526001f201c, compass: 82a2e9a8-988a-4f84-a9a7-ad355aecfac4, bread: 4a6cd46e-b3f6-4f76-a9b7-cacd817013ca}
-    insetX: 11
-    insetY: 8
+    insetX: 8
+    insetY: 7.4
 - id: 6ce3711c-9e47-569e-8057-f459fba29944
   parentId: a914d719-362f-5871-9dd3-8bfea366e017
   name: Bag slot 5
@@ -362,8 +362,8 @@ objects:
     color: "#FFFFFF"
     richText: true
     icons: {herb: 5c1a7e2e-3b0d-4f53-9a51-6e0b7c11a503, crystal: 589328e1-9fc6-4acb-ac05-ac55da897e12, key: 8b767fbb-02ce-44a7-b503-e1c2cdcaafb1, rope: 76d6c4b8-9a70-4e63-bd75-6b35a78ba93f, lantern: 12aed755-8f41-4ce5-ac8c-8a074db75d38, map: 2ba01449-6f41-475c-86d7-23b8106e2b6a, flask: bf3e8702-0199-49a0-8336-6afdd8fba14d, bandage: 101c3dd5-450b-466a-b7ac-b3c3d3322d0a, arrow: 8dd9051c-717a-4396-8d92-fb9e3e304364, shield: 685066b2-faa0-44e0-af92-6526001f201c, compass: 82a2e9a8-988a-4f84-a9a7-ad355aecfac4, bread: 4a6cd46e-b3f6-4f76-a9b7-cacd817013ca}
-    insetX: 11
-    insetY: 8
+    insetX: 8
+    insetY: 7.4
 - id: ab4b4a9f-d875-5a42-b707-5d070001797f
   parentId: a914d719-362f-5871-9dd3-8bfea366e017
   name: Bag slot 6
@@ -384,8 +384,8 @@ objects:
     color: "#FFFFFF"
     richText: true
     icons: {herb: 5c1a7e2e-3b0d-4f53-9a51-6e0b7c11a503, crystal: 589328e1-9fc6-4acb-ac05-ac55da897e12, key: 8b767fbb-02ce-44a7-b503-e1c2cdcaafb1, rope: 76d6c4b8-9a70-4e63-bd75-6b35a78ba93f, lantern: 12aed755-8f41-4ce5-ac8c-8a074db75d38, map: 2ba01449-6f41-475c-86d7-23b8106e2b6a, flask: bf3e8702-0199-49a0-8336-6afdd8fba14d, bandage: 101c3dd5-450b-466a-b7ac-b3c3d3322d0a, arrow: 8dd9051c-717a-4396-8d92-fb9e3e304364, shield: 685066b2-faa0-44e0-af92-6526001f201c, compass: 82a2e9a8-988a-4f84-a9a7-ad355aecfac4, bread: 4a6cd46e-b3f6-4f76-a9b7-cacd817013ca}
-    insetX: 11
-    insetY: 8
+    insetX: 8
+    insetY: 7.4
 - id: 7ed00739-68df-53e0-a42e-b79cb838052f
   parentId: a914d719-362f-5871-9dd3-8bfea366e017
   name: Bag slot 7
@@ -406,8 +406,8 @@ objects:
     color: "#FFFFFF"
     richText: true
     icons: {herb: 5c1a7e2e-3b0d-4f53-9a51-6e0b7c11a503, crystal: 589328e1-9fc6-4acb-ac05-ac55da897e12, key: 8b767fbb-02ce-44a7-b503-e1c2cdcaafb1, rope: 76d6c4b8-9a70-4e63-bd75-6b35a78ba93f, lantern: 12aed755-8f41-4ce5-ac8c-8a074db75d38, map: 2ba01449-6f41-475c-86d7-23b8106e2b6a, flask: bf3e8702-0199-49a0-8336-6afdd8fba14d, bandage: 101c3dd5-450b-466a-b7ac-b3c3d3322d0a, arrow: 8dd9051c-717a-4396-8d92-fb9e3e304364, shield: 685066b2-faa0-44e0-af92-6526001f201c, compass: 82a2e9a8-988a-4f84-a9a7-ad355aecfac4, bread: 4a6cd46e-b3f6-4f76-a9b7-cacd817013ca}
-    insetX: 11
-    insetY: 8
+    insetX: 8
+    insetY: 7.4
 - id: cda0a0b5-e013-549e-b122-8918c680189e
   parentId: a914d719-362f-5871-9dd3-8bfea366e017
   name: Bag slot 8
@@ -428,8 +428,8 @@ objects:
     color: "#FFFFFF"
     richText: true
     icons: {herb: 5c1a7e2e-3b0d-4f53-9a51-6e0b7c11a503, crystal: 589328e1-9fc6-4acb-ac05-ac55da897e12, key: 8b767fbb-02ce-44a7-b503-e1c2cdcaafb1, rope: 76d6c4b8-9a70-4e63-bd75-6b35a78ba93f, lantern: 12aed755-8f41-4ce5-ac8c-8a074db75d38, map: 2ba01449-6f41-475c-86d7-23b8106e2b6a, flask: bf3e8702-0199-49a0-8336-6afdd8fba14d, bandage: 101c3dd5-450b-466a-b7ac-b3c3d3322d0a, arrow: 8dd9051c-717a-4396-8d92-fb9e3e304364, shield: 685066b2-faa0-44e0-af92-6526001f201c, compass: 82a2e9a8-988a-4f84-a9a7-ad355aecfac4, bread: 4a6cd46e-b3f6-4f76-a9b7-cacd817013ca}
-    insetX: 11
-    insetY: 8
+    insetX: 8
+    insetY: 7.4
 - id: daca2f4c-f758-55f9-a4f1-8bb40eab19b1
   parentId: a914d719-362f-5871-9dd3-8bfea366e017
   name: Bag slot 9
@@ -450,8 +450,8 @@ objects:
     color: "#FFFFFF"
     richText: true
     icons: {herb: 5c1a7e2e-3b0d-4f53-9a51-6e0b7c11a503, crystal: 589328e1-9fc6-4acb-ac05-ac55da897e12, key: 8b767fbb-02ce-44a7-b503-e1c2cdcaafb1, rope: 76d6c4b8-9a70-4e63-bd75-6b35a78ba93f, lantern: 12aed755-8f41-4ce5-ac8c-8a074db75d38, map: 2ba01449-6f41-475c-86d7-23b8106e2b6a, flask: bf3e8702-0199-49a0-8336-6afdd8fba14d, bandage: 101c3dd5-450b-466a-b7ac-b3c3d3322d0a, arrow: 8dd9051c-717a-4396-8d92-fb9e3e304364, shield: 685066b2-faa0-44e0-af92-6526001f201c, compass: 82a2e9a8-988a-4f84-a9a7-ad355aecfac4, bread: 4a6cd46e-b3f6-4f76-a9b7-cacd817013ca}
-    insetX: 11
-    insetY: 8
+    insetX: 8
+    insetY: 7.4
 - id: 321ea33b-7ddc-5530-ba6a-1ac0cab76938
   parentId: a914d719-362f-5871-9dd3-8bfea366e017
   name: Bag slot 10
@@ -472,8 +472,8 @@ objects:
     color: "#FFFFFF"
     richText: true
     icons: {herb: 5c1a7e2e-3b0d-4f53-9a51-6e0b7c11a503, crystal: 589328e1-9fc6-4acb-ac05-ac55da897e12, key: 8b767fbb-02ce-44a7-b503-e1c2cdcaafb1, rope: 76d6c4b8-9a70-4e63-bd75-6b35a78ba93f, lantern: 12aed755-8f41-4ce5-ac8c-8a074db75d38, map: 2ba01449-6f41-475c-86d7-23b8106e2b6a, flask: bf3e8702-0199-49a0-8336-6afdd8fba14d, bandage: 101c3dd5-450b-466a-b7ac-b3c3d3322d0a, arrow: 8dd9051c-717a-4396-8d92-fb9e3e304364, shield: 685066b2-faa0-44e0-af92-6526001f201c, compass: 82a2e9a8-988a-4f84-a9a7-ad355aecfac4, bread: 4a6cd46e-b3f6-4f76-a9b7-cacd817013ca}
-    insetX: 11
-    insetY: 8
+    insetX: 8
+    insetY: 7.4
 - id: f24fd96e-31c0-5382-8401-daa972b912e2
   parentId: a914d719-362f-5871-9dd3-8bfea366e017
   name: Bag slot 11
@@ -494,8 +494,8 @@ objects:
     color: "#FFFFFF"
     richText: true
     icons: {herb: 5c1a7e2e-3b0d-4f53-9a51-6e0b7c11a503, crystal: 589328e1-9fc6-4acb-ac05-ac55da897e12, key: 8b767fbb-02ce-44a7-b503-e1c2cdcaafb1, rope: 76d6c4b8-9a70-4e63-bd75-6b35a78ba93f, lantern: 12aed755-8f41-4ce5-ac8c-8a074db75d38, map: 2ba01449-6f41-475c-86d7-23b8106e2b6a, flask: bf3e8702-0199-49a0-8336-6afdd8fba14d, bandage: 101c3dd5-450b-466a-b7ac-b3c3d3322d0a, arrow: 8dd9051c-717a-4396-8d92-fb9e3e304364, shield: 685066b2-faa0-44e0-af92-6526001f201c, compass: 82a2e9a8-988a-4f84-a9a7-ad355aecfac4, bread: 4a6cd46e-b3f6-4f76-a9b7-cacd817013ca}
-    insetX: 11
-    insetY: 8
+    insetX: 8
+    insetY: 7.4
 - id: 26dd749d-b0e2-5b5b-b879-78cc2d7dc1ec
   parentId: a914d719-362f-5871-9dd3-8bfea366e017
   name: Bag slot 12
@@ -516,8 +516,8 @@ objects:
     color: "#FFFFFF"
     richText: true
     icons: {herb: 5c1a7e2e-3b0d-4f53-9a51-6e0b7c11a503, crystal: 589328e1-9fc6-4acb-ac05-ac55da897e12, key: 8b767fbb-02ce-44a7-b503-e1c2cdcaafb1, rope: 76d6c4b8-9a70-4e63-bd75-6b35a78ba93f, lantern: 12aed755-8f41-4ce5-ac8c-8a074db75d38, map: 2ba01449-6f41-475c-86d7-23b8106e2b6a, flask: bf3e8702-0199-49a0-8336-6afdd8fba14d, bandage: 101c3dd5-450b-466a-b7ac-b3c3d3322d0a, arrow: 8dd9051c-717a-4396-8d92-fb9e3e304364, shield: 685066b2-faa0-44e0-af92-6526001f201c, compass: 82a2e9a8-988a-4f84-a9a7-ad355aecfac4, bread: 4a6cd46e-b3f6-4f76-a9b7-cacd817013ca}
-    insetX: 11
-    insetY: 8
+    insetX: 8
+    insetY: 7.4
 - id: d50e2ea0-62bf-567d-ae12-46d1d3d285f3
   parentId: a914d719-362f-5871-9dd3-8bfea366e017
   name: Bag slot 13
@@ -538,8 +538,8 @@ objects:
     color: "#FFFFFF"
     richText: true
     icons: {herb: 5c1a7e2e-3b0d-4f53-9a51-6e0b7c11a503, crystal: 589328e1-9fc6-4acb-ac05-ac55da897e12, key: 8b767fbb-02ce-44a7-b503-e1c2cdcaafb1, rope: 76d6c4b8-9a70-4e63-bd75-6b35a78ba93f, lantern: 12aed755-8f41-4ce5-ac8c-8a074db75d38, map: 2ba01449-6f41-475c-86d7-23b8106e2b6a, flask: bf3e8702-0199-49a0-8336-6afdd8fba14d, bandage: 101c3dd5-450b-466a-b7ac-b3c3d3322d0a, arrow: 8dd9051c-717a-4396-8d92-fb9e3e304364, shield: 685066b2-faa0-44e0-af92-6526001f201c, compass: 82a2e9a8-988a-4f84-a9a7-ad355aecfac4, bread: 4a6cd46e-b3f6-4f76-a9b7-cacd817013ca}
-    insetX: 11
-    insetY: 8
+    insetX: 8
+    insetY: 7.4
 - id: 3ab60b8d-0f09-52b8-a48c-9b1957079af1
   parentId: a914d719-362f-5871-9dd3-8bfea366e017
   name: Bag slot 14
@@ -560,8 +560,8 @@ objects:
     color: "#FFFFFF"
     richText: true
     icons: {herb: 5c1a7e2e-3b0d-4f53-9a51-6e0b7c11a503, crystal: 589328e1-9fc6-4acb-ac05-ac55da897e12, key: 8b767fbb-02ce-44a7-b503-e1c2cdcaafb1, rope: 76d6c4b8-9a70-4e63-bd75-6b35a78ba93f, lantern: 12aed755-8f41-4ce5-ac8c-8a074db75d38, map: 2ba01449-6f41-475c-86d7-23b8106e2b6a, flask: bf3e8702-0199-49a0-8336-6afdd8fba14d, bandage: 101c3dd5-450b-466a-b7ac-b3c3d3322d0a, arrow: 8dd9051c-717a-4396-8d92-fb9e3e304364, shield: 685066b2-faa0-44e0-af92-6526001f201c, compass: 82a2e9a8-988a-4f84-a9a7-ad355aecfac4, bread: 4a6cd46e-b3f6-4f76-a9b7-cacd817013ca}
-    insetX: 11
-    insetY: 8
+    insetX: 8
+    insetY: 7.4
 - id: 56509c75-1291-5ba8-9216-41bb2ed9a399
   parentId: a914d719-362f-5871-9dd3-8bfea366e017
   name: Bag slot 15
@@ -582,8 +582,8 @@ objects:
     color: "#FFFFFF"
     richText: true
     icons: {herb: 5c1a7e2e-3b0d-4f53-9a51-6e0b7c11a503, crystal: 589328e1-9fc6-4acb-ac05-ac55da897e12, key: 8b767fbb-02ce-44a7-b503-e1c2cdcaafb1, rope: 76d6c4b8-9a70-4e63-bd75-6b35a78ba93f, lantern: 12aed755-8f41-4ce5-ac8c-8a074db75d38, map: 2ba01449-6f41-475c-86d7-23b8106e2b6a, flask: bf3e8702-0199-49a0-8336-6afdd8fba14d, bandage: 101c3dd5-450b-466a-b7ac-b3c3d3322d0a, arrow: 8dd9051c-717a-4396-8d92-fb9e3e304364, shield: 685066b2-faa0-44e0-af92-6526001f201c, compass: 82a2e9a8-988a-4f84-a9a7-ad355aecfac4, bread: 4a6cd46e-b3f6-4f76-a9b7-cacd817013ca}
-    insetX: 11
-    insetY: 8
+    insetX: 8
+    insetY: 7.4
 - id: 9d83dbad-bb2d-5ab8-ad7d-0b65b5faff82
   parentId: a914d719-362f-5871-9dd3-8bfea366e017
   name: Bag slot 16
@@ -604,8 +604,8 @@ objects:
     color: "#FFFFFF"
     richText: true
     icons: {herb: 5c1a7e2e-3b0d-4f53-9a51-6e0b7c11a503, crystal: 589328e1-9fc6-4acb-ac05-ac55da897e12, key: 8b767fbb-02ce-44a7-b503-e1c2cdcaafb1, rope: 76d6c4b8-9a70-4e63-bd75-6b35a78ba93f, lantern: 12aed755-8f41-4ce5-ac8c-8a074db75d38, map: 2ba01449-6f41-475c-86d7-23b8106e2b6a, flask: bf3e8702-0199-49a0-8336-6afdd8fba14d, bandage: 101c3dd5-450b-466a-b7ac-b3c3d3322d0a, arrow: 8dd9051c-717a-4396-8d92-fb9e3e304364, shield: 685066b2-faa0-44e0-af92-6526001f201c, compass: 82a2e9a8-988a-4f84-a9a7-ad355aecfac4, bread: 4a6cd46e-b3f6-4f76-a9b7-cacd817013ca}
-    insetX: 11
-    insetY: 8
+    insetX: 8
+    insetY: 7.4
 - id: 17d45a5b-64c5-5b5e-9e1b-c42dbd3a4207
   parentId: a914d719-362f-5871-9dd3-8bfea366e017
   name: Bag slot 17
@@ -626,8 +626,8 @@ objects:
     color: "#FFFFFF"
     richText: true
     icons: {herb: 5c1a7e2e-3b0d-4f53-9a51-6e0b7c11a503, crystal: 589328e1-9fc6-4acb-ac05-ac55da897e12, key: 8b767fbb-02ce-44a7-b503-e1c2cdcaafb1, rope: 76d6c4b8-9a70-4e63-bd75-6b35a78ba93f, lantern: 12aed755-8f41-4ce5-ac8c-8a074db75d38, map: 2ba01449-6f41-475c-86d7-23b8106e2b6a, flask: bf3e8702-0199-49a0-8336-6afdd8fba14d, bandage: 101c3dd5-450b-466a-b7ac-b3c3d3322d0a, arrow: 8dd9051c-717a-4396-8d92-fb9e3e304364, shield: 685066b2-faa0-44e0-af92-6526001f201c, compass: 82a2e9a8-988a-4f84-a9a7-ad355aecfac4, bread: 4a6cd46e-b3f6-4f76-a9b7-cacd817013ca}
-    insetX: 11
-    insetY: 8
+    insetX: 8
+    insetY: 7.4
 - id: 8cc99bbe-08de-5487-ab90-fa251faf48d7
   parentId: a914d719-362f-5871-9dd3-8bfea366e017
   name: Bag slot 18
@@ -648,8 +648,8 @@ objects:
     color: "#FFFFFF"
     richText: true
     icons: {herb: 5c1a7e2e-3b0d-4f53-9a51-6e0b7c11a503, crystal: 589328e1-9fc6-4acb-ac05-ac55da897e12, key: 8b767fbb-02ce-44a7-b503-e1c2cdcaafb1, rope: 76d6c4b8-9a70-4e63-bd75-6b35a78ba93f, lantern: 12aed755-8f41-4ce5-ac8c-8a074db75d38, map: 2ba01449-6f41-475c-86d7-23b8106e2b6a, flask: bf3e8702-0199-49a0-8336-6afdd8fba14d, bandage: 101c3dd5-450b-466a-b7ac-b3c3d3322d0a, arrow: 8dd9051c-717a-4396-8d92-fb9e3e304364, shield: 685066b2-faa0-44e0-af92-6526001f201c, compass: 82a2e9a8-988a-4f84-a9a7-ad355aecfac4, bread: 4a6cd46e-b3f6-4f76-a9b7-cacd817013ca}
-    insetX: 11
-    insetY: 8
+    insetX: 8
+    insetY: 7.4
 - id: f0016d3f-f972-5a2e-a350-a04cad8f0256
   parentId: a914d719-362f-5871-9dd3-8bfea366e017
   name: Bag slot 19
@@ -670,8 +670,8 @@ objects:
     color: "#FFFFFF"
     richText: true
     icons: {herb: 5c1a7e2e-3b0d-4f53-9a51-6e0b7c11a503, crystal: 589328e1-9fc6-4acb-ac05-ac55da897e12, key: 8b767fbb-02ce-44a7-b503-e1c2cdcaafb1, rope: 76d6c4b8-9a70-4e63-bd75-6b35a78ba93f, lantern: 12aed755-8f41-4ce5-ac8c-8a074db75d38, map: 2ba01449-6f41-475c-86d7-23b8106e2b6a, flask: bf3e8702-0199-49a0-8336-6afdd8fba14d, bandage: 101c3dd5-450b-466a-b7ac-b3c3d3322d0a, arrow: 8dd9051c-717a-4396-8d92-fb9e3e304364, shield: 685066b2-faa0-44e0-af92-6526001f201c, compass: 82a2e9a8-988a-4f84-a9a7-ad355aecfac4, bread: 4a6cd46e-b3f6-4f76-a9b7-cacd817013ca}
-    insetX: 11
-    insetY: 8
+    insetX: 8
+    insetY: 7.4
 - id: 780a0335-c5f9-58de-8206-f196718e8a9b
   parentId: a914d719-362f-5871-9dd3-8bfea366e017
   name: Bag slot 20
@@ -692,8 +692,8 @@ objects:
     color: "#FFFFFF"
     richText: true
     icons: {herb: 5c1a7e2e-3b0d-4f53-9a51-6e0b7c11a503, crystal: 589328e1-9fc6-4acb-ac05-ac55da897e12, key: 8b767fbb-02ce-44a7-b503-e1c2cdcaafb1, rope: 76d6c4b8-9a70-4e63-bd75-6b35a78ba93f, lantern: 12aed755-8f41-4ce5-ac8c-8a074db75d38, map: 2ba01449-6f41-475c-86d7-23b8106e2b6a, flask: bf3e8702-0199-49a0-8336-6afdd8fba14d, bandage: 101c3dd5-450b-466a-b7ac-b3c3d3322d0a, arrow: 8dd9051c-717a-4396-8d92-fb9e3e304364, shield: 685066b2-faa0-44e0-af92-6526001f201c, compass: 82a2e9a8-988a-4f84-a9a7-ad355aecfac4, bread: 4a6cd46e-b3f6-4f76-a9b7-cacd817013ca}
-    insetX: 11
-    insetY: 8
+    insetX: 8
+    insetY: 7.4
 - id: eb99832b-acd8-5686-9e53-694965b92bab
   parentId: dd345c9a-846a-538c-85d7-fe02e5a336c6
   name: Ledger panel
@@ -734,6 +734,54 @@ objects:
     text: "Rows 1–7 of 1,000"
     size: 12
     color: "#BFD0DC"
+    richText: true
+    icons: {herb: 5c1a7e2e-3b0d-4f53-9a51-6e0b7c11a503, crystal: 589328e1-9fc6-4acb-ac05-ac55da897e12, key: 8b767fbb-02ce-44a7-b503-e1c2cdcaafb1, rope: 76d6c4b8-9a70-4e63-bd75-6b35a78ba93f, lantern: 12aed755-8f41-4ce5-ac8c-8a074db75d38, map: 2ba01449-6f41-475c-86d7-23b8106e2b6a, flask: bf3e8702-0199-49a0-8336-6afdd8fba14d, bandage: 101c3dd5-450b-466a-b7ac-b3c3d3322d0a, arrow: 8dd9051c-717a-4396-8d92-fb9e3e304364, shield: 685066b2-faa0-44e0-af92-6526001f201c, compass: 82a2e9a8-988a-4f84-a9a7-ad355aecfac4, bread: 4a6cd46e-b3f6-4f76-a9b7-cacd817013ca}
+- id: c1de6542-8a4d-5d35-8c7e-3f5e3bbf4703
+  parentId: eb99832b-acd8-5686-9e53-694965b92bab
+  name: Tab mark 1
+  x: 276
+  y: 58
+  width: 66
+  height: 20
+  components:
+  - type: uiRect
+  - type: uiImage
+    color: "#5A4A1C"
+- id: 779e58a3-4146-5558-aefb-100fda937c98
+  parentId: eb99832b-acd8-5686-9e53-694965b92bab
+  name: Tab mark 2
+  x: 48
+  y: 58
+  width: 76
+  height: 20
+  components:
+  - type: uiRect
+  - type: uiImage
+    color: "#5A4A1C"
+- id: 5ba08092-f1d7-53d5-b809-b9fad005ab76
+  parentId: eb99832b-acd8-5686-9e53-694965b92bab
+  name: Tab mark 3
+  x: 376
+  y: 58
+  width: 72
+  height: 20
+  components:
+  - type: uiRect
+  - type: uiImage
+    color: "#5A4A1C"
+- id: 8f2959f4-16e2-54b9-953d-462fd1177535
+  parentId: eb99832b-acd8-5686-9e53-694965b92bab
+  name: Sort caption
+  x: 280
+  y: 15
+  width: 176
+  height: 16
+  components:
+  - type: uiRect
+  - type: uiText
+    text: ""
+    size: 13
+    color: "#FFD84A"
     richText: true
     icons: {herb: 5c1a7e2e-3b0d-4f53-9a51-6e0b7c11a503, crystal: 589328e1-9fc6-4acb-ac05-ac55da897e12, key: 8b767fbb-02ce-44a7-b503-e1c2cdcaafb1, rope: 76d6c4b8-9a70-4e63-bd75-6b35a78ba93f, lantern: 12aed755-8f41-4ce5-ac8c-8a074db75d38, map: 2ba01449-6f41-475c-86d7-23b8106e2b6a, flask: bf3e8702-0199-49a0-8336-6afdd8fba14d, bandage: 101c3dd5-450b-466a-b7ac-b3c3d3322d0a, arrow: 8dd9051c-717a-4396-8d92-fb9e3e304364, shield: 685066b2-faa0-44e0-af92-6526001f201c, compass: 82a2e9a8-988a-4f84-a9a7-ad355aecfac4, bread: 4a6cd46e-b3f6-4f76-a9b7-cacd817013ca}
 - id: e0cbee9d-6f80-533e-860e-9612e2aeb241
@@ -796,7 +844,7 @@ objects:
   - type: uiScroll
   - type: script
     script: Showcase/LedgerList
-    values: {"Range": "caf727d2-c594-58c9-8420-a1b023517aa6", "Tabs": ["e0cbee9d-6f80-533e-860e-9612e2aeb241", "607dfd65-5e05-53f6-9bb5-5aef05942223", "392ac2b7-88a4-52e2-ac39-ad7f282a8e89"], "RowStep": 34, "Yard": {"Id": "0b0b8126-2ff1-5bbb-a7f0-5ef0af802bf8"}}
+    values: {"Range": "caf727d2-c594-58c9-8420-a1b023517aa6", "Sort": "8f2959f4-16e2-54b9-953d-462fd1177535", "Tabs": ["e0cbee9d-6f80-533e-860e-9612e2aeb241", "607dfd65-5e05-53f6-9bb5-5aef05942223", "392ac2b7-88a4-52e2-ac39-ad7f282a8e89"], "Marks": ["c1de6542-8a4d-5d35-8c7e-3f5e3bbf4703", "779e58a3-4146-5558-aefb-100fda937c98", "5ba08092-f1d7-53d5-b809-b9fad005ab76"], "RowStep": 34, "Yard": {"Id": "0b0b8126-2ff1-5bbb-a7f0-5ef0af802bf8"}}
 - id: fbbb045f-bbc9-556d-94da-cbfa76549657
   parentId: 85284ec5-af92-5956-a1ac-2889bb2e58e4
   name: Ledger row
@@ -817,7 +865,7 @@ objects:
     richText: true
     icons: {herb: 5c1a7e2e-3b0d-4f53-9a51-6e0b7c11a503, crystal: 589328e1-9fc6-4acb-ac05-ac55da897e12, key: 8b767fbb-02ce-44a7-b503-e1c2cdcaafb1, rope: 76d6c4b8-9a70-4e63-bd75-6b35a78ba93f, lantern: 12aed755-8f41-4ce5-ac8c-8a074db75d38, map: 2ba01449-6f41-475c-86d7-23b8106e2b6a, flask: bf3e8702-0199-49a0-8336-6afdd8fba14d, bandage: 101c3dd5-450b-466a-b7ac-b3c3d3322d0a, arrow: 8dd9051c-717a-4396-8d92-fb9e3e304364, shield: 685066b2-faa0-44e0-af92-6526001f201c, compass: 82a2e9a8-988a-4f84-a9a7-ad355aecfac4, bread: 4a6cd46e-b3f6-4f76-a9b7-cacd817013ca}
     insetX: 10
-    insetY: 5
+    insetY: 6.32
 - id: 00fbe066-d454-5fde-b4c9-671d8f05bb2c
   parentId: fbbb045f-bbc9-556d-94da-cbfa76549657
   name: Row name
@@ -860,7 +908,7 @@ objects:
   components:
   - type: uiRect
   - type: uiText
-    text: "× {count}"
+    text: "{count}"
     size: 13
     color: "#95D8BE"
     richText: true
@@ -909,6 +957,66 @@ objects:
     color: "#BFD0DC"
     richText: true
     icons: {herb: 5c1a7e2e-3b0d-4f53-9a51-6e0b7c11a503, crystal: 589328e1-9fc6-4acb-ac05-ac55da897e12, key: 8b767fbb-02ce-44a7-b503-e1c2cdcaafb1, rope: 76d6c4b8-9a70-4e63-bd75-6b35a78ba93f, lantern: 12aed755-8f41-4ce5-ac8c-8a074db75d38, map: 2ba01449-6f41-475c-86d7-23b8106e2b6a, flask: bf3e8702-0199-49a0-8336-6afdd8fba14d, bandage: 101c3dd5-450b-466a-b7ac-b3c3d3322d0a, arrow: 8dd9051c-717a-4396-8d92-fb9e3e304364, shield: 685066b2-faa0-44e0-af92-6526001f201c, compass: 82a2e9a8-988a-4f84-a9a7-ad355aecfac4, bread: 4a6cd46e-b3f6-4f76-a9b7-cacd817013ca}
+- id: 3a6634f5-b3f3-579b-a445-b934812a2130
+  parentId: dd345c9a-846a-538c-85d7-fe02e5a336c6
+  name: Tag 3
+  x: -12
+  y: -22
+  width: 48.4
+  height: 24
+  components:
+  - type: uiRect
+    anchor: BottomRight
+    showIf: sorted
+  - type: uiImage
+    sprite: 10aa8fe1-f416-5971-839d-3944dee38e3c
+    borders: {left: 4, top: 4, right: 4, bottom: 4}
+  - type: uiText
+    richText: true
+    text: "<b>Sort</b>"
+    size: 12
+    insetX: 10
+    insetY: 4
+- id: 2bcb3b64-3de1-56f3-88b4-730616acf805
+  parentId: dd345c9a-846a-538c-85d7-fe02e5a336c6
+  name: Tag 2
+  x: -66.4
+  y: -22
+  width: 101.2
+  height: 24
+  components:
+  - type: uiRect
+    anchor: BottomRight
+    showIf: scrolled
+  - type: uiImage
+    sprite: 10aa8fe1-f416-5971-839d-3944dee38e3c
+    borders: {left: 4, top: 4, right: 4, bottom: 4}
+  - type: uiText
+    richText: true
+    text: "<b>Virtual list</b>"
+    size: 12
+    insetX: 10
+    insetY: 4
+- id: 6377565e-d6f1-5b14-b8be-a760c745cd53
+  parentId: dd345c9a-846a-538c-85d7-fe02e5a336c6
+  name: Tag 1
+  x: -173.6
+  y: -22
+  width: 107.8
+  height: 24
+  components:
+  - type: uiRect
+    anchor: BottomRight
+    showIf: drag
+  - type: uiImage
+    sprite: 10aa8fe1-f416-5971-839d-3944dee38e3c
+    borders: {left: 4, top: 4, right: 4, bottom: 4}
+  - type: uiText
+    richText: true
+    text: "<b>Drag and drop</b>"
+    size: 12
+    insetX: 10
+    insetY: 4
 - id: 3c032083-855a-549e-b13a-7cadf7d1a8c8
   parentId: dd345c9a-846a-538c-85d7-fe02e5a336c6
   name: Ghost
@@ -924,8 +1032,8 @@ objects:
     color: "#FFFFFF"
     richText: true
     icons: {herb: 5c1a7e2e-3b0d-4f53-9a51-6e0b7c11a503, crystal: 589328e1-9fc6-4acb-ac05-ac55da897e12, key: 8b767fbb-02ce-44a7-b503-e1c2cdcaafb1, rope: 76d6c4b8-9a70-4e63-bd75-6b35a78ba93f, lantern: 12aed755-8f41-4ce5-ac8c-8a074db75d38, map: 2ba01449-6f41-475c-86d7-23b8106e2b6a, flask: bf3e8702-0199-49a0-8336-6afdd8fba14d, bandage: 101c3dd5-450b-466a-b7ac-b3c3d3322d0a, arrow: 8dd9051c-717a-4396-8d92-fb9e3e304364, shield: 685066b2-faa0-44e0-af92-6526001f201c, compass: 82a2e9a8-988a-4f84-a9a7-ad355aecfac4, bread: 4a6cd46e-b3f6-4f76-a9b7-cacd817013ca}
-    insetX: 11
-    insetY: 8
+    insetX: 8
+    insetY: 7.4
 - id: 1c5fa097-59ea-54b0-af7e-46612bffda73
   parentId: dd345c9a-846a-538c-85d7-fe02e5a336c6
   name: Ghost back
@@ -941,6 +1049,6 @@ objects:
     color: "#FFFFFF"
     richText: true
     icons: {herb: 5c1a7e2e-3b0d-4f53-9a51-6e0b7c11a503, crystal: 589328e1-9fc6-4acb-ac05-ac55da897e12, key: 8b767fbb-02ce-44a7-b503-e1c2cdcaafb1, rope: 76d6c4b8-9a70-4e63-bd75-6b35a78ba93f, lantern: 12aed755-8f41-4ce5-ac8c-8a074db75d38, map: 2ba01449-6f41-475c-86d7-23b8106e2b6a, flask: bf3e8702-0199-49a0-8336-6afdd8fba14d, bandage: 101c3dd5-450b-466a-b7ac-b3c3d3322d0a, arrow: 8dd9051c-717a-4396-8d92-fb9e3e304364, shield: 685066b2-faa0-44e0-af92-6526001f201c, compass: 82a2e9a8-988a-4f84-a9a7-ad355aecfac4, bread: 4a6cd46e-b3f6-4f76-a9b7-cacd817013ca}
-    insetX: 11
-    insetY: 8
+    insetX: 8
+    insetY: 7.4
 defaultCameraId: b47c5fa7-2cf6-5d35-b77b-c45d281f4d45
