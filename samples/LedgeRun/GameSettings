@@ -15,3 +15,7 @@ input:
   - {name: Pause, controls: [P, Pad.Back]}
   - {name: ChangeSlot, controls: [Tab, Pad.North]}
   - {name: BackToTrailhead, controls: [Backspace, Pad.East]}
+  - {name: TextSize, controls: [F2]}
+  - {name: Comfort, controls: [F3]}
+localization:
+  defaultFont: aaf6f4bb-1621-5fe0-a2fc-cd954da2cae7

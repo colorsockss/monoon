@@ -3630,7 +3630,9 @@
    ],
    "probe": "LedgeRunProbe",
    "baselines": [
-    "engine/tests/LedgeRun.Play/route.tsv"
+    "engine/tests/LedgeRun.Play/route.tsv",
+    "engine/tests/results/ledgerun/macos-arm64-route.txt",
+    "engine/tests/results/ledgerun/macos-arm64-sha256.tsv"
    ],
    "watch": [
     "engine/src/Engine.Core/InputReplay.cs",

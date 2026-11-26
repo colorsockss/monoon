@@ -1,4 +1,4 @@
-LedgeRun stage 1: 18 tokens, 0 gems, 1146 ticks.
-LedgeRun stage 2: 16 tokens, 0 gems, 693 ticks.
-LedgeRun stage 3: 23 tokens, 0 gems, 1253 ticks.
-LedgeRun stage 4: 0 tokens, 0 gems, 843 ticks.
+LedgeRun stage 1: 18 tokens, 0 gems, 1137 ticks.
+LedgeRun stage 2: 17 tokens, 0 gems, 685 ticks.
+LedgeRun stage 3: 9 tokens, 1 gems, 728 ticks.
+LedgeRun stage 4: 0 tokens, 0 gems, 1340 ticks.

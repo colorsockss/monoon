@@ -1,19 +1,35 @@
 schemaVersion: 31
 objects:
-- id: 8b04adb6-81e5-5078-9df7-9733f9388635
-  name: "Distant landscape"
+- id: ba2be321-395a-5b4a-a0ce-33c0a06328a5
+  name: "CaveVista"
   x: 0
   y: 0
   width: 384
   height: 216
   components:
   - type: spriteRenderer
-    squareColor: "#332441"
-    order: -20
+    assetId: 09cf8e7e-7c47-5110-852e-cfeb750d2635
+    order: -30
   - type: parallax2D
     scrollX: 0.18
     scrollY: 0
     repeatX: true
+    repeatY: false
+- id: a46d9f93-cd62-5b40-a17c-ca52753629bb
+  name: "CaveNear"
+  x: 0
+  y: 0
+  width: 384
+  height: 216
+  components:
+  - type: spriteRenderer
+    assetId: 936e3667-a039-5556-a24d-2aff13b0bb4b
+    order: -24
+  - type: parallax2D
+    scrollX: 0.46
+    scrollY: 0
+    repeatX: true
+    repeatY: false
 - id: d6fdde31-cbee-5231-b27f-0c4bfa10be9b
   name: "Ambient light"
   x: 0
@@ -22,161 +38,188 @@ objects:
   height: 1
   components:
   - type: globalLight2D
-    color: "#59486C"
+    color: "#AE9EBB"
     unlitLayer: 5
 - id: cb9b3e8e-4a7f-5a84-9c56-a04af4438b7a
   name: "Torch 80"
   x: 80
-  y: 119
-  width: 6
-  height: 8
+  y: 109
+  width: 13
+  height: 23
   components:
   - type: spriteRenderer
-    assetId: c76d9d1b-ba76-5379-9308-89ad4f59f51c
+    assetId: b0808c7c-a1b8-58a4-aacf-1e63ae156fd1
     order: 2
     sortingLayer: 5
   - type: pointLight2D
-    radius: 134
+    radius: 116
     color: "#FFD5AE"
-    flicker: 0.35
+    flicker: 0.13
     frequency: 1.3
     shadows: true
+  - type: spriteAnimator
+    clip: f1264cce-defe-5c03-8c09-c8129febb472
+    playOnStart: true
 - id: 53293d01-87ca-52b0-97fd-379c9b0b342b
   name: "Torch 224"
   x: 224
-  y: 119
-  width: 6
-  height: 8
+  y: 109
+  width: 13
+  height: 23
   components:
   - type: spriteRenderer
-    assetId: c76d9d1b-ba76-5379-9308-89ad4f59f51c
+    assetId: b0808c7c-a1b8-58a4-aacf-1e63ae156fd1
     order: 2
     sortingLayer: 5
   - type: pointLight2D
-    radius: 134
+    radius: 116
     color: "#FFD5AE"
-    flicker: 0.35
+    flicker: 0.13
     frequency: 1.3
     shadows: true
+  - type: spriteAnimator
+    clip: f1264cce-defe-5c03-8c09-c8129febb472
+    playOnStart: true
 - id: a0551b3b-a626-54cf-8b52-8640082e31e2
   name: "Torch 368"
   x: 368
-  y: 119
-  width: 6
-  height: 8
+  y: 109
+  width: 13
+  height: 23
   components:
   - type: spriteRenderer
-    assetId: c76d9d1b-ba76-5379-9308-89ad4f59f51c
+    assetId: b0808c7c-a1b8-58a4-aacf-1e63ae156fd1
     order: 2
     sortingLayer: 5
   - type: pointLight2D
-    radius: 134
+    radius: 116
     color: "#FFD5AE"
-    flicker: 0.35
+    flicker: 0.13
     frequency: 1.3
     shadows: true
+  - type: spriteAnimator
+    clip: f1264cce-defe-5c03-8c09-c8129febb472
+    playOnStart: true
 - id: 69b0ddce-5470-542e-8d3d-a4298cbebfc1
   name: "Torch 512"
   x: 512
-  y: 119
-  width: 6
-  height: 8
+  y: 109
+  width: 13
+  height: 23
   components:
   - type: spriteRenderer
-    assetId: c76d9d1b-ba76-5379-9308-89ad4f59f51c
+    assetId: b0808c7c-a1b8-58a4-aacf-1e63ae156fd1
     order: 2
     sortingLayer: 5
   - type: pointLight2D
-    radius: 134
+    radius: 116
     color: "#FFD5AE"
-    flicker: 0.35
+    flicker: 0.13
     frequency: 1.3
     shadows: true
+  - type: spriteAnimator
+    clip: f1264cce-defe-5c03-8c09-c8129febb472
+    playOnStart: true
 - id: 1ee5c7bc-8214-5ca2-b04b-bec8089ed9cc
   name: "Torch 656"
   x: 656
-  y: 119
-  width: 6
-  height: 8
+  y: 109
+  width: 13
+  height: 23
   components:
   - type: spriteRenderer
-    assetId: c76d9d1b-ba76-5379-9308-89ad4f59f51c
+    assetId: b0808c7c-a1b8-58a4-aacf-1e63ae156fd1
     order: 2
     sortingLayer: 5
   - type: pointLight2D
-    radius: 134
+    radius: 116
     color: "#FFD5AE"
-    flicker: 0.35
+    flicker: 0.13
     frequency: 1.3
     shadows: true
+  - type: spriteAnimator
+    clip: f1264cce-defe-5c03-8c09-c8129febb472
+    playOnStart: true
 - id: 73aa5b75-e92b-595b-9297-71cefd739827
   name: "Torch 800"
   x: 800
-  y: 119
-  width: 6
-  height: 8
+  y: 109
+  width: 13
+  height: 23
   components:
   - type: spriteRenderer
-    assetId: c76d9d1b-ba76-5379-9308-89ad4f59f51c
+    assetId: b0808c7c-a1b8-58a4-aacf-1e63ae156fd1
     order: 2
     sortingLayer: 5
   - type: pointLight2D
-    radius: 134
+    radius: 116
     color: "#FFD5AE"
-    flicker: 0.35
+    flicker: 0.13
     frequency: 1.3
     shadows: true
+  - type: spriteAnimator
+    clip: f1264cce-defe-5c03-8c09-c8129febb472
+    playOnStart: true
 - id: 16190ba8-7530-55ec-bcc3-7c4797e1f16c
   name: "Torch 944"
   x: 944
-  y: 119
-  width: 6
-  height: 8
+  y: 109
+  width: 13
+  height: 23
   components:
   - type: spriteRenderer
-    assetId: c76d9d1b-ba76-5379-9308-89ad4f59f51c
+    assetId: b0808c7c-a1b8-58a4-aacf-1e63ae156fd1
     order: 2
     sortingLayer: 5
   - type: pointLight2D
-    radius: 134
+    radius: 116
     color: "#FFD5AE"
-    flicker: 0.35
+    flicker: 0.13
     frequency: 1.3
     shadows: true
+  - type: spriteAnimator
+    clip: f1264cce-defe-5c03-8c09-c8129febb472
+    playOnStart: true
 - id: 436cb0b6-a7c2-50a0-80c0-c0c5f341872c
   name: "Torch 1088"
   x: 1088
-  y: 119
-  width: 6
-  height: 8
+  y: 109
+  width: 13
+  height: 23
   components:
   - type: spriteRenderer
-    assetId: c76d9d1b-ba76-5379-9308-89ad4f59f51c
+    assetId: b0808c7c-a1b8-58a4-aacf-1e63ae156fd1
     order: 2
     sortingLayer: 5
   - type: pointLight2D
-    radius: 134
+    radius: 116
     color: "#FFD5AE"
-    flicker: 0.35
+    flicker: 0.13
     frequency: 1.3
     shadows: true
+  - type: spriteAnimator
+    clip: f1264cce-defe-5c03-8c09-c8129febb472
+    playOnStart: true
 - id: 5c9eabd0-0a92-58f4-8118-fc1195030286
   name: "Torch 1232"
   x: 1232
-  y: 119
-  width: 6
-  height: 8
+  y: 109
+  width: 13
+  height: 23
   components:
   - type: spriteRenderer
-    assetId: c76d9d1b-ba76-5379-9308-89ad4f59f51c
+    assetId: b0808c7c-a1b8-58a4-aacf-1e63ae156fd1
     order: 2
     sortingLayer: 5
   - type: pointLight2D
-    radius: 134
+    radius: 116
     color: "#FFD5AE"
-    flicker: 0.35
+    flicker: 0.13
     frequency: 1.3
     shadows: true
+  - type: spriteAnimator
+    clip: f1264cce-defe-5c03-8c09-c8129febb472
+    playOnStart: true
 - id: 6228940a-c7dd-579e-ad0b-6aed178994a4
   name: "Trail terrain"
   x: 0
@@ -192,246 +235,246 @@ objects:
     - x: 0
       y: 0
       cells:
-      - {index: 285, tile: 6}
-      - {index: 286, tile: 6}
-      - {index: 287, tile: 6}
-      - {index: 293, tile: 6}
-      - {index: 294, tile: 6}
-      - {index: 295, tile: 6}
-      - {index: 296, tile: 6}
-      - {index: 305, tile: 6}
-      - {index: 306, tile: 6}
-      - {index: 307, tile: 6}
-      - {index: 308, tile: 6}
-      - {index: 346, tile: 3}
-      - {index: 347, tile: 3}
-      - {index: 348, tile: 3}
-      - {index: 349, tile: 3}
-      - {index: 350, tile: 3}
-      - {index: 351, tile: 3}
-      - {index: 352, tile: 3}
-      - {index: 353, tile: 3}
-      - {index: 354, tile: 3}
-      - {index: 355, tile: 3}
-      - {index: 356, tile: 3}
-      - {index: 357, tile: 3}
-      - {index: 358, tile: 3}
-      - {index: 359, tile: 3}
-      - {index: 360, tile: 3}
-      - {index: 361, tile: 3}
-      - {index: 362, tile: 3}
-      - {index: 363, tile: 3}
-      - {index: 366, tile: 3}
-      - {index: 367, tile: 3}
-      - {index: 368, tile: 3}
-      - {index: 369, tile: 3}
-      - {index: 370, tile: 3}
-      - {index: 371, tile: 3}
-      - {index: 372, tile: 3}
-      - {index: 373, tile: 3}
-      - {index: 374, tile: 3}
-      - {index: 375, tile: 3}
-      - {index: 378, tile: 3}
-      - {index: 379, tile: 3}
+      - {index: 285, tile: 24}
+      - {index: 286, tile: 23}
+      - {index: 287, tile: 23}
+      - {index: 293, tile: 24}
+      - {index: 294, tile: 23}
+      - {index: 295, tile: 23}
+      - {index: 296, tile: 25}
+      - {index: 305, tile: 24}
+      - {index: 306, tile: 23}
+      - {index: 307, tile: 23}
+      - {index: 308, tile: 25}
+      - {index: 346, tile: 21}
+      - {index: 347, tile: 18}
+      - {index: 348, tile: 18}
+      - {index: 349, tile: 18}
+      - {index: 350, tile: 18}
+      - {index: 351, tile: 18}
+      - {index: 352, tile: 21}
+      - {index: 353, tile: 18}
+      - {index: 354, tile: 18}
+      - {index: 355, tile: 18}
+      - {index: 356, tile: 18}
+      - {index: 357, tile: 18}
+      - {index: 358, tile: 18}
+      - {index: 359, tile: 18}
+      - {index: 360, tile: 18}
+      - {index: 361, tile: 18}
+      - {index: 362, tile: 18}
+      - {index: 363, tile: 22}
+      - {index: 366, tile: 21}
+      - {index: 367, tile: 18}
+      - {index: 368, tile: 18}
+      - {index: 369, tile: 18}
+      - {index: 370, tile: 18}
+      - {index: 371, tile: 18}
+      - {index: 372, tile: 18}
+      - {index: 373, tile: 18}
+      - {index: 374, tile: 18}
+      - {index: 375, tile: 22}
+      - {index: 378, tile: 19}
+      - {index: 379, tile: 26}
       - {index: 380, tile: 3}
       - {index: 381, tile: 3}
       - {index: 382, tile: 3}
-      - {index: 383, tile: 3}
-      - {index: 384, tile: 3}
+      - {index: 383, tile: 26}
+      - {index: 384, tile: 19}
       - {index: 385, tile: 3}
       - {index: 386, tile: 3}
-      - {index: 387, tile: 3}
-      - {index: 388, tile: 3}
+      - {index: 387, tile: 27}
+      - {index: 388, tile: 26}
       - {index: 389, tile: 3}
       - {index: 390, tile: 3}
       - {index: 391, tile: 3}
-      - {index: 392, tile: 3}
-      - {index: 393, tile: 3}
+      - {index: 392, tile: 26}
+      - {index: 393, tile: 27}
       - {index: 394, tile: 3}
-      - {index: 395, tile: 3}
-      - {index: 398, tile: 3}
+      - {index: 395, tile: 20}
+      - {index: 398, tile: 19}
       - {index: 399, tile: 3}
       - {index: 400, tile: 3}
       - {index: 401, tile: 3}
-      - {index: 402, tile: 3}
-      - {index: 403, tile: 3}
+      - {index: 402, tile: 26}
+      - {index: 403, tile: 27}
       - {index: 404, tile: 3}
       - {index: 405, tile: 3}
       - {index: 406, tile: 3}
-      - {index: 407, tile: 3}
-      - {index: 410, tile: 3}
+      - {index: 407, tile: 20}
+      - {index: 410, tile: 19}
       - {index: 411, tile: 3}
-      - {index: 412, tile: 3}
-      - {index: 413, tile: 3}
+      - {index: 412, tile: 26}
+      - {index: 413, tile: 27}
       - {index: 414, tile: 3}
       - {index: 415, tile: 3}
-      - {index: 416, tile: 3}
-      - {index: 417, tile: 3}
+      - {index: 416, tile: 19}
+      - {index: 417, tile: 26}
       - {index: 418, tile: 3}
       - {index: 419, tile: 3}
       - {index: 420, tile: 3}
-      - {index: 421, tile: 3}
-      - {index: 422, tile: 3}
+      - {index: 421, tile: 26}
+      - {index: 422, tile: 27}
       - {index: 423, tile: 3}
       - {index: 424, tile: 3}
       - {index: 425, tile: 3}
-      - {index: 426, tile: 3}
-      - {index: 427, tile: 3}
-      - {index: 430, tile: 3}
-      - {index: 431, tile: 3}
-      - {index: 432, tile: 3}
+      - {index: 426, tile: 27}
+      - {index: 427, tile: 20}
+      - {index: 430, tile: 19}
+      - {index: 431, tile: 26}
+      - {index: 432, tile: 27}
       - {index: 433, tile: 3}
       - {index: 434, tile: 3}
       - {index: 435, tile: 3}
-      - {index: 436, tile: 3}
-      - {index: 437, tile: 3}
+      - {index: 436, tile: 27}
+      - {index: 437, tile: 26}
       - {index: 438, tile: 3}
-      - {index: 439, tile: 3}
+      - {index: 439, tile: 20}
     - x: 1
       y: 0
       cells:
-      - {index: 256, tile: 6}
-      - {index: 280, tile: 6}
-      - {index: 281, tile: 6}
-      - {index: 282, tile: 6}
-      - {index: 283, tile: 6}
-      - {index: 284, tile: 6}
-      - {index: 299, tile: 6}
-      - {index: 300, tile: 6}
-      - {index: 301, tile: 6}
-      - {index: 320, tile: 3}
-      - {index: 321, tile: 3}
-      - {index: 322, tile: 3}
-      - {index: 323, tile: 3}
-      - {index: 342, tile: 3}
-      - {index: 343, tile: 3}
-      - {index: 344, tile: 3}
-      - {index: 345, tile: 3}
-      - {index: 346, tile: 3}
-      - {index: 347, tile: 3}
-      - {index: 348, tile: 3}
-      - {index: 349, tile: 3}
-      - {index: 350, tile: 3}
-      - {index: 351, tile: 3}
-      - {index: 352, tile: 3}
+      - {index: 256, tile: 25}
+      - {index: 280, tile: 24}
+      - {index: 281, tile: 23}
+      - {index: 282, tile: 23}
+      - {index: 283, tile: 23}
+      - {index: 284, tile: 25}
+      - {index: 299, tile: 24}
+      - {index: 300, tile: 23}
+      - {index: 301, tile: 25}
+      - {index: 320, tile: 18}
+      - {index: 321, tile: 18}
+      - {index: 322, tile: 18}
+      - {index: 323, tile: 22}
+      - {index: 342, tile: 21}
+      - {index: 343, tile: 18}
+      - {index: 344, tile: 18}
+      - {index: 345, tile: 18}
+      - {index: 346, tile: 18}
+      - {index: 347, tile: 18}
+      - {index: 348, tile: 18}
+      - {index: 349, tile: 18}
+      - {index: 350, tile: 18}
+      - {index: 351, tile: 18}
+      - {index: 352, tile: 27}
       - {index: 353, tile: 3}
       - {index: 354, tile: 3}
-      - {index: 355, tile: 3}
-      - {index: 358, tile: 3}
-      - {index: 359, tile: 3}
-      - {index: 360, tile: 3}
-      - {index: 361, tile: 3}
-      - {index: 362, tile: 3}
-      - {index: 363, tile: 3}
-      - {index: 364, tile: 3}
-      - {index: 365, tile: 3}
-      - {index: 366, tile: 3}
-      - {index: 367, tile: 3}
-      - {index: 368, tile: 3}
-      - {index: 369, tile: 3}
-      - {index: 370, tile: 3}
-      - {index: 371, tile: 3}
-      - {index: 374, tile: 3}
+      - {index: 355, tile: 20}
+      - {index: 358, tile: 21}
+      - {index: 359, tile: 18}
+      - {index: 360, tile: 18}
+      - {index: 361, tile: 18}
+      - {index: 362, tile: 18}
+      - {index: 363, tile: 18}
+      - {index: 364, tile: 18}
+      - {index: 365, tile: 18}
+      - {index: 366, tile: 18}
+      - {index: 367, tile: 18}
+      - {index: 368, tile: 18}
+      - {index: 369, tile: 18}
+      - {index: 370, tile: 18}
+      - {index: 371, tile: 22}
+      - {index: 374, tile: 19}
       - {index: 375, tile: 3}
-      - {index: 376, tile: 3}
-      - {index: 377, tile: 3}
+      - {index: 376, tile: 27}
+      - {index: 377, tile: 26}
       - {index: 378, tile: 3}
       - {index: 379, tile: 3}
       - {index: 380, tile: 3}
-      - {index: 381, tile: 3}
-      - {index: 382, tile: 3}
+      - {index: 381, tile: 26}
+      - {index: 382, tile: 27}
       - {index: 383, tile: 3}
       - {index: 384, tile: 3}
-      - {index: 385, tile: 3}
-      - {index: 386, tile: 3}
-      - {index: 387, tile: 3}
-      - {index: 390, tile: 3}
-      - {index: 391, tile: 3}
+      - {index: 385, tile: 27}
+      - {index: 386, tile: 26}
+      - {index: 387, tile: 20}
+      - {index: 390, tile: 19}
+      - {index: 391, tile: 27}
       - {index: 392, tile: 3}
       - {index: 393, tile: 3}
       - {index: 394, tile: 3}
-      - {index: 395, tile: 3}
-      - {index: 396, tile: 3}
+      - {index: 395, tile: 27}
+      - {index: 396, tile: 26}
       - {index: 397, tile: 3}
       - {index: 398, tile: 3}
       - {index: 399, tile: 3}
-      - {index: 400, tile: 3}
-      - {index: 401, tile: 3}
+      - {index: 400, tile: 26}
+      - {index: 401, tile: 27}
       - {index: 402, tile: 3}
-      - {index: 403, tile: 3}
-      - {index: 406, tile: 3}
+      - {index: 403, tile: 20}
+      - {index: 406, tile: 19}
       - {index: 407, tile: 3}
       - {index: 408, tile: 3}
       - {index: 409, tile: 3}
-      - {index: 410, tile: 3}
-      - {index: 411, tile: 3}
+      - {index: 410, tile: 26}
+      - {index: 411, tile: 27}
       - {index: 412, tile: 3}
       - {index: 413, tile: 3}
       - {index: 414, tile: 3}
-      - {index: 415, tile: 3}
-      - {index: 422, tile: 3}
+      - {index: 415, tile: 27}
+      - {index: 422, tile: 19}
       - {index: 423, tile: 3}
-      - {index: 424, tile: 3}
-      - {index: 425, tile: 3}
+      - {index: 424, tile: 27}
+      - {index: 425, tile: 26}
       - {index: 426, tile: 3}
       - {index: 427, tile: 3}
       - {index: 428, tile: 3}
-      - {index: 429, tile: 3}
-      - {index: 430, tile: 3}
+      - {index: 429, tile: 26}
+      - {index: 430, tile: 27}
       - {index: 431, tile: 3}
       - {index: 432, tile: 3}
       - {index: 433, tile: 3}
-      - {index: 434, tile: 3}
-      - {index: 435, tile: 3}
+      - {index: 434, tile: 27}
+      - {index: 435, tile: 20}
     - x: 2
       y: 0
       cells:
-      - {index: 296, tile: 6}
-      - {index: 297, tile: 6}
-      - {index: 298, tile: 6}
-      - {index: 299, tile: 6}
-      - {index: 320, tile: 3}
-      - {index: 352, tile: 3}
-      - {index: 355, tile: 3}
-      - {index: 356, tile: 3}
-      - {index: 357, tile: 3}
-      - {index: 358, tile: 3}
-      - {index: 359, tile: 3}
-      - {index: 360, tile: 3}
-      - {index: 361, tile: 3}
-      - {index: 362, tile: 3}
-      - {index: 363, tile: 3}
-      - {index: 364, tile: 3}
-      - {index: 365, tile: 3}
-      - {index: 366, tile: 3}
-      - {index: 367, tile: 3}
-      - {index: 384, tile: 3}
-      - {index: 387, tile: 3}
-      - {index: 388, tile: 3}
-      - {index: 389, tile: 3}
+      - {index: 296, tile: 24}
+      - {index: 297, tile: 23}
+      - {index: 298, tile: 23}
+      - {index: 299, tile: 25}
+      - {index: 320, tile: 22}
+      - {index: 352, tile: 20}
+      - {index: 355, tile: 21}
+      - {index: 356, tile: 18}
+      - {index: 357, tile: 18}
+      - {index: 358, tile: 18}
+      - {index: 359, tile: 18}
+      - {index: 360, tile: 18}
+      - {index: 361, tile: 18}
+      - {index: 362, tile: 18}
+      - {index: 363, tile: 18}
+      - {index: 364, tile: 18}
+      - {index: 365, tile: 18}
+      - {index: 366, tile: 18}
+      - {index: 367, tile: 22}
+      - {index: 384, tile: 20}
+      - {index: 387, tile: 19}
+      - {index: 388, tile: 26}
+      - {index: 389, tile: 27}
       - {index: 390, tile: 3}
       - {index: 391, tile: 3}
       - {index: 392, tile: 3}
-      - {index: 393, tile: 3}
-      - {index: 394, tile: 3}
+      - {index: 393, tile: 27}
+      - {index: 394, tile: 26}
       - {index: 395, tile: 3}
       - {index: 396, tile: 3}
       - {index: 397, tile: 3}
-      - {index: 398, tile: 3}
-      - {index: 399, tile: 3}
-      - {index: 419, tile: 3}
+      - {index: 398, tile: 26}
+      - {index: 399, tile: 20}
+      - {index: 419, tile: 19}
       - {index: 420, tile: 3}
       - {index: 421, tile: 3}
-      - {index: 422, tile: 3}
-      - {index: 423, tile: 3}
+      - {index: 422, tile: 27}
+      - {index: 423, tile: 26}
       - {index: 424, tile: 3}
       - {index: 425, tile: 3}
       - {index: 426, tile: 3}
-      - {index: 427, tile: 3}
-      - {index: 428, tile: 3}
+      - {index: 427, tile: 26}
+      - {index: 428, tile: 27}
       - {index: 429, tile: 3}
       - {index: 430, tile: 3}
-      - {index: 431, tile: 3}
+      - {index: 431, tile: 20}
 - id: 6c2def45-836f-5d94-9fcf-52a3cb699320
   name: "Courier"
   x: 26
@@ -450,7 +493,35 @@ objects:
     offsetY: 9
   - type: script
     script: TrailRunner
-    values: {"Status": "50bb0960-125e-55b7-bd8e-892b8a17942f", "Totals": "f4ffa413-001e-5db2-87f6-d1199ab84bfb", "Portrait": "3e2c2c2b-56dd-5328-a730-f92e54a1614d", "Idle": {"Id": "6836d239-7548-58d2-878d-30d2cc8f31c0"}, "Running": {"Id": "20fe28c1-6b3f-5a68-a0cd-ea10dc53efdf"}, "Airborne": {"Id": "7717b8a9-cc86-52a9-951d-efff4b4872fa"}, "NextStage": {"Id": "3fd3f646-00e2-55f2-814f-61feb49d6621"}, "TrailheadScene": {"Id": "352b64f0-d4ce-56d0-a9e9-388dbbec0cb3"}, "Chime": "10bdc40e-7eee-5fd4-8ccd-4c1d1740500a", "Hurt": "651a4b63-e255-5488-b647-cf70f1998972", "Clear": "4c355f0c-b91a-5e33-9808-4c8186048dfa", "Stage": 2, "FallY": 264}
+    values: {"Portrait": "3e2c2c2b-56dd-5328-a730-f92e54a1614d", "NextStage": {"Id": "3fd3f646-00e2-55f2-814f-61feb49d6621"}, "TrailheadScene": {"Id": "352b64f0-d4ce-56d0-a9e9-388dbbec0cb3"}, "Chime": "10bdc40e-7eee-5fd4-8ccd-4c1d1740500a", "Hurt": "651a4b63-e255-5488-b647-cf70f1998972", "Clear": "4c355f0c-b91a-5e33-9808-4c8186048dfa", "Stage": 2, "FallY": 264, "HeartCount": "9367eb1a-4dd7-52c6-96fa-8f6f31bcd3ef", "TokenCount": "d62d2fff-29a3-5a6b-ae30-9560862cf935", "GemCount": "0e42facf-5c35-52f6-9789-fae0337f9caf", "StageCard": "a3df41d6-388c-5522-85d5-02e170e7cd25", "Notice": "8ad4e709-3e5a-5976-90c9-1fa081e0685d", "PausePanel": "96042bfe-7be7-5a79-90ff-1d016873572b", "Results": "87c02941-430b-56ae-a606-ed0f6811b2a1", "ResultTime": "236918e4-83a7-5a4b-9de9-18dc25a131e3", "ResultHaul": "1189a1d1-c457-5215-b9f4-791999c53e3c", "Step": "09d3de8a-3a1e-50f7-aa60-38ebe4e3f7ad", "Rush": "664466a0-68ae-58bc-b37a-73d8c08266e8", "Stomp": "8f991bd2-ec37-57d7-8acb-f7a196c9a42c", "Warning": "362e4f82-4a9b-5e48-8677-28b5abc419b9", "Spark": "bff847e7-f230-5fd4-bfbf-a5940372411d", "DashWake": "669e73a5-077d-5d61-9e8c-bf52c1e71e34", "HitBurst": "a253fba8-b0f9-5997-b710-1b9550536066", "DashGhostA": "adc8cbed-e3cc-502b-bafd-f354ff7bb675", "DashGhostB": "8f312bc8-dfbf-591a-8454-f9da15c2ef83", "HeartPill": "3c2a9827-31b5-50f5-9948-7953209222da", "TokenPill": "d55f77b8-d726-5be0-9408-4cc4c7d71fae", "GemPill": "d3f9d2e6-dedc-598c-a276-df3226e50cbb", "DeliveredBadge": "428bdf0b-498e-58e2-bf5f-d7f42ae892f4", "ResultGems": "0ff9bfdc-a372-5da2-9c14-b700815e6120", "ResultPressed": "5f5fc6d5-b004-5821-accb-74feb97a4407", "SplitTime": [], "SplitTokens": [], "SplitGems": []}
+- id: adc8cbed-e3cc-502b-bafd-f354ff7bb675
+  name: "DashGhostA"
+  x: 0
+  y: 0
+  width: 36
+  height: 40
+  pivotX: 0.5
+  pivotY: 0.5
+  active: false
+  components:
+  - type: spriteRenderer
+    assetId: 67223484-0fce-53b4-9948-b3e53381612a
+    sortingLayer: 5
+    order: 4
+- id: 8f312bc8-dfbf-591a-8454-f9da15c2ef83
+  name: "DashGhostB"
+  x: 0
+  y: 0
+  width: 36
+  height: 40
+  pivotX: 0.5
+  pivotY: 0.5
+  active: false
+  components:
+  - type: spriteRenderer
+    assetId: 67223484-0fce-53b4-9948-b3e53381612a
+    sortingLayer: 5
+    order: 4
 - id: 10bdc40e-7eee-5fd4-8ccd-4c1d1740500a
   name: "Chime sound"
   x: 0
@@ -483,17 +554,20 @@ objects:
     bus: Effects
 - id: 3e2c2c2b-56dd-5328-a730-f92e54a1614d
   name: "Courier sprite"
-  x: -4
-  y: -6
-  width: 22
-  height: 26
+  x: -11
+  y: -19
+  width: 36
+  height: 40
   parentId: 6c2def45-836f-5d94-9fcf-52a3cb699320
   pivotX: 0.5
   pivotY: 0.5
   components:
   - type: spriteRenderer
-    assetId: 6836d239-7548-58d2-878d-30d2cc8f31c0
+    assetId: d0b81fae-8136-5d0d-9e5e-734a72d90b07
     order: 8
+  - type: spriteAnimator
+    controller: 604ffa64-099a-5e26-99b9-e259bb200f8a
+    playOnStart: true
 - id: 918d9171-3953-5dc9-afd3-05671e9731f7
   name: "Follow camera"
   x: 192
@@ -524,6 +598,9 @@ objects:
   - type: script
     script: TrailMarker
     values: {"Kind": "Token"}
+  - type: spriteAnimator
+    clip: 8a0143ec-874b-562b-bd03-2598c4ebaf43
+    playOnStart: true
 - id: 1fb047da-ea19-5429-9969-537a269c5d70
   name: "Token 0-1"
   x: 102
@@ -540,6 +617,9 @@ objects:
   - type: script
     script: TrailMarker
     values: {"Kind": "Token"}
+  - type: spriteAnimator
+    clip: 70518c4e-9b5f-5b4d-83a2-1fe637c15974
+    playOnStart: true
 - id: 6e417b88-9434-5612-ae0d-e2a8cfa56bda
   name: "Token 0-2"
   x: 117
@@ -556,6 +636,9 @@ objects:
   - type: script
     script: TrailMarker
     values: {"Kind": "Token"}
+  - type: spriteAnimator
+    clip: 8a0143ec-874b-562b-bd03-2598c4ebaf43
+    playOnStart: true
 - id: 27d6bbda-b66b-5860-b44e-5c1df9a9223e
   name: "Token 1-0"
   x: 279
@@ -572,6 +655,9 @@ objects:
   - type: script
     script: TrailMarker
     values: {"Kind": "Token"}
+  - type: spriteAnimator
+    clip: 70518c4e-9b5f-5b4d-83a2-1fe637c15974
+    playOnStart: true
 - id: 158749e7-cd5e-5521-8838-8e8d726765e8
   name: "Token 1-1"
   x: 294
@@ -588,6 +674,9 @@ objects:
   - type: script
     script: TrailMarker
     values: {"Kind": "Token"}
+  - type: spriteAnimator
+    clip: 8a0143ec-874b-562b-bd03-2598c4ebaf43
+    playOnStart: true
 - id: a05e7005-f82f-5228-a2f8-68631c3f4357
   name: "Token 1-2"
   x: 309
@@ -604,6 +693,9 @@ objects:
   - type: script
     script: TrailMarker
     values: {"Kind": "Token"}
+  - type: spriteAnimator
+    clip: 70518c4e-9b5f-5b4d-83a2-1fe637c15974
+    playOnStart: true
 - id: e8bb3dd3-e986-5238-8035-be2e63fee909
   name: "Token 2-0"
   x: 471
@@ -620,6 +712,9 @@ objects:
   - type: script
     script: TrailMarker
     values: {"Kind": "Token"}
+  - type: spriteAnimator
+    clip: 8a0143ec-874b-562b-bd03-2598c4ebaf43
+    playOnStart: true
 - id: d1342548-f929-557e-b3ce-8dc36ed70535
   name: "Token 2-1"
   x: 486
@@ -636,6 +731,9 @@ objects:
   - type: script
     script: TrailMarker
     values: {"Kind": "Token"}
+  - type: spriteAnimator
+    clip: 70518c4e-9b5f-5b4d-83a2-1fe637c15974
+    playOnStart: true
 - id: 6d0ed0e9-14b8-58ba-aa2c-c3637c11899c
   name: "Token 2-2"
   x: 501
@@ -652,6 +750,9 @@ objects:
   - type: script
     script: TrailMarker
     values: {"Kind": "Token"}
+  - type: spriteAnimator
+    clip: 8a0143ec-874b-562b-bd03-2598c4ebaf43
+    playOnStart: true
 - id: 7b1221e4-aea5-5c89-8161-d10dd33b80d9
   name: "Token 3-0"
   x: 695
@@ -668,6 +769,9 @@ objects:
   - type: script
     script: TrailMarker
     values: {"Kind": "Token"}
+  - type: spriteAnimator
+    clip: 70518c4e-9b5f-5b4d-83a2-1fe637c15974
+    playOnStart: true
 - id: 0a0fff49-61f6-5e38-9444-3bd8859ee46a
   name: "Token 3-1"
   x: 710
@@ -684,6 +788,9 @@ objects:
   - type: script
     script: TrailMarker
     values: {"Kind": "Token"}
+  - type: spriteAnimator
+    clip: 8a0143ec-874b-562b-bd03-2598c4ebaf43
+    playOnStart: true
 - id: 05e38274-3dbb-5a3d-b056-8bd14574cae1
   name: "Token 3-2"
   x: 725
@@ -700,6 +807,9 @@ objects:
   - type: script
     script: TrailMarker
     values: {"Kind": "Token"}
+  - type: spriteAnimator
+    clip: 70518c4e-9b5f-5b4d-83a2-1fe637c15974
+    playOnStart: true
 - id: abffb283-65ed-558a-b051-6e0bb40807a6
   name: "Token 4-0"
   x: 903
@@ -716,6 +826,9 @@ objects:
   - type: script
     script: TrailMarker
     values: {"Kind": "Token"}
+  - type: spriteAnimator
+    clip: 8a0143ec-874b-562b-bd03-2598c4ebaf43
+    playOnStart: true
 - id: 058bcbf8-494e-5e50-a81e-d652c5fcf5b5
   name: "Token 4-1"
   x: 918
@@ -732,6 +845,9 @@ objects:
   - type: script
     script: TrailMarker
     values: {"Kind": "Token"}
+  - type: spriteAnimator
+    clip: 70518c4e-9b5f-5b4d-83a2-1fe637c15974
+    playOnStart: true
 - id: 90acc862-f1c4-502b-b383-086e477f2f28
   name: "Token 4-2"
   x: 933
@@ -748,6 +864,9 @@ objects:
   - type: script
     script: TrailMarker
     values: {"Kind": "Token"}
+  - type: spriteAnimator
+    clip: 8a0143ec-874b-562b-bd03-2598c4ebaf43
+    playOnStart: true
 - id: 222f3ac3-f337-5a77-8d73-cabdf330ba71
   name: "Token 5-0"
   x: 1159
@@ -764,6 +883,9 @@ objects:
   - type: script
     script: TrailMarker
     values: {"Kind": "Token"}
+  - type: spriteAnimator
+    clip: 70518c4e-9b5f-5b4d-83a2-1fe637c15974
+    playOnStart: true
 - id: c3f4e9a7-9a24-5017-839e-3e1a3092682c
   name: "Token 5-1"
   x: 1174
@@ -780,6 +902,9 @@ objects:
   - type: script
     script: TrailMarker
     values: {"Kind": "Token"}
+  - type: spriteAnimator
+    clip: 8a0143ec-874b-562b-bd03-2598c4ebaf43
+    playOnStart: true
 - id: f12007b3-36da-563b-9837-8d8c0b75a32f
   name: "Token 5-2"
   x: 1189
@@ -796,6 +921,9 @@ objects:
   - type: script
     script: TrailMarker
     values: {"Kind": "Token"}
+  - type: spriteAnimator
+    clip: 70518c4e-9b5f-5b4d-83a2-1fe637c15974
+    playOnStart: true
 - id: 6e24faaf-9492-5dfd-956c-fd3542d3610d
   name: "Gem 1"
   x: 323
@@ -803,15 +931,26 @@ objects:
   width: 10
   height: 12
   components:
-  - type: spriteRenderer
-    assetId: 79bb12ca-3bf1-5efa-8d17-7667174248f5
-    order: 4
   - type: boxCollider2D
     isTrigger: true
     layer: 2
   - type: script
     script: TrailMarker
     values: {"Kind": "Gem"}
+- id: 006f4b5f-718c-50c6-a24b-acccc9ba4600
+  name: "Glimmer 6e24faaf"
+  x: -4
+  y: -3
+  width: 18
+  height: 18
+  parentId: 6e24faaf-9492-5dfd-956c-fd3542d3610d
+  components:
+  - type: spriteRenderer
+    assetId: f423db1a-fcd2-5414-882b-dc810a91e0fc
+    order: 5
+  - type: spriteAnimator
+    clip: 449c265f-cf68-5947-ac04-9d3095786aca
+    playOnStart: true
 - id: b3aa7ea3-e481-5a54-ac91-50d42a6a3551
   name: "Gem 2"
   x: 723
@@ -819,15 +958,26 @@ objects:
   width: 10
   height: 12
   components:
-  - type: spriteRenderer
-    assetId: 79bb12ca-3bf1-5efa-8d17-7667174248f5
-    order: 4
   - type: boxCollider2D
     isTrigger: true
     layer: 2
   - type: script
     script: TrailMarker
     values: {"Kind": "Gem"}
+- id: 096bbbb1-bd41-50c7-bdb0-59ea43e99b82
+  name: "Glimmer b3aa7ea3"
+  x: -4
+  y: -3
+  width: 18
+  height: 18
+  parentId: b3aa7ea3-e481-5a54-ac91-50d42a6a3551
+  components:
+  - type: spriteRenderer
+    assetId: f423db1a-fcd2-5414-882b-dc810a91e0fc
+    order: 5
+  - type: spriteAnimator
+    clip: 449c265f-cf68-5947-ac04-9d3095786aca
+    playOnStart: true
 - id: 20ee9022-530b-5ccc-81cf-439377861c07
   name: "Gem 3"
   x: 1203
@@ -835,15 +985,26 @@ objects:
   width: 10
   height: 12
   components:
-  - type: spriteRenderer
-    assetId: 79bb12ca-3bf1-5efa-8d17-7667174248f5
-    order: 4
   - type: boxCollider2D
     isTrigger: true
     layer: 2
   - type: script
     script: TrailMarker
     values: {"Kind": "Gem"}
+- id: 357bf18d-19ef-50f1-ab5f-25c7912da143
+  name: "Glimmer 20ee9022"
+  x: -4
+  y: -3
+  width: 18
+  height: 18
+  parentId: 20ee9022-530b-5ccc-81cf-439377861c07
+  components:
+  - type: spriteRenderer
+    assetId: f423db1a-fcd2-5414-882b-dc810a91e0fc
+    order: 5
+  - type: spriteAnimator
+    clip: 449c265f-cf68-5947-ac04-9d3095786aca
+    playOnStart: true
 - id: 3497d7c9-1c41-59df-8fa1-56976f304a1a
   name: "Token ground-0-0"
   x: 32
@@ -860,6 +1021,9 @@ objects:
   - type: script
     script: TrailMarker
     values: {"Kind": "Token"}
+  - type: spriteAnimator
+    clip: 8a0143ec-874b-562b-bd03-2598c4ebaf43
+    playOnStart: true
 - id: dfc4cf48-f65a-51b9-9bd3-638643a175a5
   name: "Token ground-0-1"
   x: 46
@@ -876,6 +1040,9 @@ objects:
   - type: script
     script: TrailMarker
     values: {"Kind": "Token"}
+  - type: spriteAnimator
+    clip: 70518c4e-9b5f-5b4d-83a2-1fe637c15974
+    playOnStart: true
 - id: bb5e3bbb-5b47-5362-a8a7-88553745ad91
   name: "Token ground-0-2"
   x: 60
@@ -892,6 +1059,9 @@ objects:
   - type: script
     script: TrailMarker
     values: {"Kind": "Token"}
+  - type: spriteAnimator
+    clip: 8a0143ec-874b-562b-bd03-2598c4ebaf43
+    playOnStart: true
 - id: ac21bc1a-fba6-56dd-9ee8-1fa90c3469e9
   name: "Token ground-1-0"
   x: 256
@@ -908,6 +1078,9 @@ objects:
   - type: script
     script: TrailMarker
     values: {"Kind": "Token"}
+  - type: spriteAnimator
+    clip: 70518c4e-9b5f-5b4d-83a2-1fe637c15974
+    playOnStart: true
 - id: 9963df0c-1aa5-5992-a00e-4a953ca484aa
   name: "Token ground-1-1"
   x: 270
@@ -924,6 +1097,9 @@ objects:
   - type: script
     script: TrailMarker
     values: {"Kind": "Token"}
+  - type: spriteAnimator
+    clip: 8a0143ec-874b-562b-bd03-2598c4ebaf43
+    playOnStart: true
 - id: c7b7c8c8-4e32-54d6-90d2-44cf23b3749f
   name: "Token ground-1-2"
   x: 284
@@ -940,6 +1116,9 @@ objects:
   - type: script
     script: TrailMarker
     values: {"Kind": "Token"}
+  - type: spriteAnimator
+    clip: 70518c4e-9b5f-5b4d-83a2-1fe637c15974
+    playOnStart: true
 - id: 6b1334d2-b641-5150-88a9-cea28e1e747a
   name: "Token ground-2-0"
   x: 448
@@ -956,6 +1135,9 @@ objects:
   - type: script
     script: TrailMarker
     values: {"Kind": "Token"}
+  - type: spriteAnimator
+    clip: 8a0143ec-874b-562b-bd03-2598c4ebaf43
+    playOnStart: true
 - id: 7e5372be-90ae-5f88-ad8e-52079056dbce
   name: "Token ground-2-1"
   x: 462
@@ -972,6 +1154,9 @@ objects:
   - type: script
     script: TrailMarker
     values: {"Kind": "Token"}
+  - type: spriteAnimator
+    clip: 70518c4e-9b5f-5b4d-83a2-1fe637c15974
+    playOnStart: true
 - id: b204fe45-9c84-5704-8c45-833f5da77975
   name: "Token ground-2-2"
   x: 476
@@ -988,6 +1173,9 @@ objects:
   - type: script
     script: TrailMarker
     values: {"Kind": "Token"}
+  - type: spriteAnimator
+    clip: 8a0143ec-874b-562b-bd03-2598c4ebaf43
+    playOnStart: true
 - id: 8db107b7-37c9-5ba3-927e-8f212640e6b6
   name: "Token ground-3-0"
   x: 640
@@ -1004,6 +1192,9 @@ objects:
   - type: script
     script: TrailMarker
     values: {"Kind": "Token"}
+  - type: spriteAnimator
+    clip: 70518c4e-9b5f-5b4d-83a2-1fe637c15974
+    playOnStart: true
 - id: 8e6f723d-ddca-5d40-8614-a2483900031a
   name: "Token ground-3-1"
   x: 654
@@ -1020,6 +1211,9 @@ objects:
   - type: script
     script: TrailMarker
     values: {"Kind": "Token"}
+  - type: spriteAnimator
+    clip: 8a0143ec-874b-562b-bd03-2598c4ebaf43
+    playOnStart: true
 - id: cda50bc2-2fef-5447-b575-4094cebc950a
   name: "Token ground-3-2"
   x: 668
@@ -1036,6 +1230,9 @@ objects:
   - type: script
     script: TrailMarker
     values: {"Kind": "Token"}
+  - type: spriteAnimator
+    clip: 70518c4e-9b5f-5b4d-83a2-1fe637c15974
+    playOnStart: true
 - id: 5f88e2ae-0d4e-5103-8a9d-18d5be733f5b
   name: "Token ground-4-0"
   x: 896
@@ -1052,6 +1249,9 @@ objects:
   - type: script
     script: TrailMarker
     values: {"Kind": "Token"}
+  - type: spriteAnimator
+    clip: 8a0143ec-874b-562b-bd03-2598c4ebaf43
+    playOnStart: true
 - id: 80221366-3892-5eb8-aff0-029a01184c1e
   name: "Token ground-4-1"
   x: 910
@@ -1068,6 +1268,9 @@ objects:
   - type: script
     script: TrailMarker
     values: {"Kind": "Token"}
+  - type: spriteAnimator
+    clip: 70518c4e-9b5f-5b4d-83a2-1fe637c15974
+    playOnStart: true
 - id: bcaf3dde-19c3-58e0-8d8e-831a0eab72f2
   name: "Token ground-4-2"
   x: 924
@@ -1084,6 +1287,9 @@ objects:
   - type: script
     script: TrailMarker
     values: {"Kind": "Token"}
+  - type: spriteAnimator
+    clip: 8a0143ec-874b-562b-bd03-2598c4ebaf43
+    playOnStart: true
 - id: 4fb7fb33-f338-53c8-9100-613009aecf20
   name: "Token ground-5-0"
   x: 1104
@@ -1100,6 +1306,9 @@ objects:
   - type: script
     script: TrailMarker
     values: {"Kind": "Token"}
+  - type: spriteAnimator
+    clip: 70518c4e-9b5f-5b4d-83a2-1fe637c15974
+    playOnStart: true
 - id: c88bb871-a543-5ce4-b6d3-c7baffdf333f
   name: "Token ground-5-1"
   x: 1118
@@ -1116,6 +1325,9 @@ objects:
   - type: script
     script: TrailMarker
     values: {"Kind": "Token"}
+  - type: spriteAnimator
+    clip: 8a0143ec-874b-562b-bd03-2598c4ebaf43
+    playOnStart: true
 - id: 84753fd1-e3f3-54a2-aadc-1fce0705000b
   name: "Token ground-5-2"
   x: 1132
@@ -1132,6 +1344,9 @@ objects:
   - type: script
     script: TrailMarker
     values: {"Kind": "Token"}
+  - type: spriteAnimator
+    clip: 70518c4e-9b5f-5b4d-83a2-1fe637c15974
+    playOnStart: true
 - id: 0d1b7167-84de-50c7-a793-1b1843529df1
   name: "Checkpoint 1"
   x: 688
@@ -1140,7 +1355,7 @@ objects:
   height: 32
   components:
   - type: spriteRenderer
-    assetId: 824f6853-4ed5-5ce3-a67d-27a51c8f5a8b
+    assetId: 8ef0badd-197b-5719-83d8-20e3ae8602dd
     order: 4
   - type: boxCollider2D
     isTrigger: true
@@ -1148,6 +1363,9 @@ objects:
   - type: script
     script: TrailMarker
     values: {"Kind": "Checkpoint"}
+  - type: spriteAnimator
+    controller: 1240868d-444a-506f-9e23-c2af4c097926
+    playOnStart: true
 - id: 1dd226af-6181-564f-ae9c-76123ca768bd
   name: "Goal 1"
   x: 1228
@@ -1156,7 +1374,7 @@ objects:
   height: 32
   components:
   - type: spriteRenderer
-    assetId: 824f6853-4ed5-5ce3-a67d-27a51c8f5a8b
+    assetId: c1997d9a-138e-5d9f-8a4a-02e548eb0a5c
     order: 4
   - type: boxCollider2D
     isTrigger: true
@@ -1164,6 +1382,9 @@ objects:
   - type: script
     script: TrailMarker
     values: {"Kind": "Goal"}
+  - type: spriteAnimator
+    clip: 8f1a4e0c-943e-5a91-91f3-4622e02d71bc
+    playOnStart: true
 - id: f8491c97-c973-5f02-adba-330c2d9258e9
   name: "Patrol"
   x: 255
@@ -1171,15 +1392,28 @@ objects:
   width: 24
   height: 17
   components:
-  - type: spriteRenderer
-    assetId: d6add7b7-79b2-5703-88b0-73d5cffd98c3
-    order: 6
   - type: boxCollider2D
     isTrigger: true
     layer: 2
   - type: script
     script: TrailEnemy
-    values: {"Kind": "Patrol", "Player": "6c2def45-836f-5d94-9fcf-52a3cb699320", "PatrolWidth": 58, "Projectile": "00000000-0000-0000-0000-000000000000", "Unlock": "00000000-0000-0000-0000-000000000000", "Stomps": 1}
+    values: {"Kind": "Patrol", "Player": "6c2def45-836f-5d94-9fcf-52a3cb699320", "PatrolWidth": 58, "Projectile": "00000000-0000-0000-0000-000000000000", "Unlock": "00000000-0000-0000-0000-000000000000", "Stomps": 1, "Art": "38ef0ca4-c67f-51df-b1b9-47ad36f1ffdd"}
+- id: 38ef0ca4-c67f-51df-b1b9-47ad36f1ffdd
+  name: "Enemy portrait f8491c"
+  x: 0
+  y: 0
+  width: 24
+  height: 17
+  parentId: f8491c97-c973-5f02-adba-330c2d9258e9
+  pivotX: 0.5
+  pivotY: 0.5
+  components:
+  - type: spriteRenderer
+    assetId: 4b60d5f5-89f3-5b5e-bc58-3f34cf697520
+    order: 6
+  - type: spriteAnimator
+    controller: 93ece8c5-8d8f-591b-bf42-78901289c03c
+    playOnStart: true
 - id: bc930874-35a0-561f-9e78-84fe6f4d31b0
   name: "Hopper"
   x: 659
@@ -1187,15 +1421,28 @@ objects:
   width: 24
   height: 17
   components:
-  - type: spriteRenderer
-    assetId: d6add7b7-79b2-5703-88b0-73d5cffd98c3
-    order: 6
   - type: boxCollider2D
     isTrigger: true
     layer: 2
   - type: script
     script: TrailEnemy
-    values: {"Kind": "Hopper", "Player": "6c2def45-836f-5d94-9fcf-52a3cb699320", "PatrolWidth": 39, "Projectile": "00000000-0000-0000-0000-000000000000", "Unlock": "00000000-0000-0000-0000-000000000000", "Stomps": 1}
+    values: {"Kind": "Hopper", "Player": "6c2def45-836f-5d94-9fcf-52a3cb699320", "PatrolWidth": 39, "Projectile": "00000000-0000-0000-0000-000000000000", "Unlock": "00000000-0000-0000-0000-000000000000", "Stomps": 1, "Art": "34b6f39e-c72a-5bc5-a677-6160f19a7761"}
+- id: 34b6f39e-c72a-5bc5-a677-6160f19a7761
+  name: "Enemy portrait bc9308"
+  x: 0
+  y: 0
+  width: 24
+  height: 17
+  parentId: bc930874-35a0-561f-9e78-84fe6f4d31b0
+  pivotX: 0.5
+  pivotY: 0.5
+  components:
+  - type: spriteRenderer
+    assetId: 4b60d5f5-89f3-5b5e-bc58-3f34cf697520
+    order: 6
+  - type: spriteAnimator
+    controller: 93ece8c5-8d8f-591b-bf42-78901289c03c
+    playOnStart: true
 - id: da13280f-f5e7-53b9-be2f-63e7953c6439
   name: "Hazard Sentry"
   x: 919
@@ -1220,15 +1467,28 @@ objects:
   width: 24
   height: 17
   components:
-  - type: spriteRenderer
-    assetId: d6add7b7-79b2-5703-88b0-73d5cffd98c3
-    order: 6
   - type: boxCollider2D
     isTrigger: true
     layer: 2
   - type: script
     script: TrailEnemy
-    values: {"Kind": "Sentry", "Player": "6c2def45-836f-5d94-9fcf-52a3cb699320", "PatrolWidth": 0, "Projectile": "da13280f-f5e7-53b9-be2f-63e7953c6439", "Unlock": "00000000-0000-0000-0000-000000000000", "Stomps": 1}
+    values: {"Kind": "Sentry", "Player": "6c2def45-836f-5d94-9fcf-52a3cb699320", "PatrolWidth": 0, "Projectile": "da13280f-f5e7-53b9-be2f-63e7953c6439", "Unlock": "00000000-0000-0000-0000-000000000000", "Stomps": 1, "Art": "f2650762-248e-56b5-9250-ac86887b5c04"}
+- id: f2650762-248e-56b5-9250-ac86887b5c04
+  name: "Enemy portrait ddba42"
+  x: 0
+  y: 0
+  width: 24
+  height: 17
+  parentId: ddba422d-f3a6-5bee-90ee-98b9a28de30e
+  pivotX: 0.5
+  pivotY: 0.5
+  components:
+  - type: spriteRenderer
+    assetId: 4b60d5f5-89f3-5b5e-bc58-3f34cf697520
+    order: 6
+  - type: spriteAnimator
+    controller: 93ece8c5-8d8f-591b-bf42-78901289c03c
+    playOnStart: true
 - id: 88a6aec9-4e00-5593-996a-6d9722ff3062
   name: "HUD"
   x: 0
@@ -1237,56 +1497,1214 @@ objects:
   height: 1
   components:
   - type: uiCanvas
-- id: fe0a77f7-206a-5ea9-8824-107decc4780e
-  name: "Stage"
-  x: 13
+- id: 70e2c7b5-85c4-5e0c-a119-83a52576ea12
+  name: "Trail dressings"
+  x: 0
+  y: 0
+  width: 16
+  height: 16
+  components:
+  - type: tilemap2D
+    tileset: 77049f99-9e6a-53a7-a9e6-3819d75cbaa0
+    cellSize: {width: 16, height: 16}
+    order: 1
+    chunks:
+    - x: 0
+      y: 0
+      cells:
+      - {index: 315, tile: 42}
+      - {index: 317, tile: 42}
+      - {index: 322, tile: 41}
+      - {index: 324, tile: 41}
+      - {index: 328, tile: 41}
+      - {index: 331, tile: 42}
+      - {index: 337, tile: 42}
+      - {index: 340, tile: 41}
+      - {index: 342, tile: 41}
+    - x: 1
+      y: 0
+      cells:
+      - {index: 289, tile: 42}
+      - {index: 310, tile: 41}
+      - {index: 312, tile: 41}
+      - {index: 316, tile: 41}
+      - {index: 319, tile: 42}
+      - {index: 326, tile: 41}
+      - {index: 328, tile: 41}
+      - {index: 332, tile: 41}
+      - {index: 335, tile: 42}
+      - {index: 337, tile: 42}
+    - x: 2
+      y: 0
+      cells:
+      - {index: 323, tile: 42}
+      - {index: 327, tile: 42}
+      - {index: 330, tile: 41}
+      - {index: 332, tile: 41}
+- id: 42b608ca-5cdd-52c5-b3bf-0e646440daa6
+  name: "Waypost 0"
+  x: 40
+  y: 151
+  width: 22
+  height: 23
+  components:
+  - type: spriteRenderer
+    assetId: 2b7a5305-5ba6-539e-922d-4c2e72105d59
+    order: 2
+- id: 81a1efed-0cd3-50a7-9195-e73416e6445e
+  name: "Waypost 1"
+  x: 350
+  y: 142
+  width: 22
+  height: 23
+  components:
+  - type: spriteRenderer
+    assetId: 2b7a5305-5ba6-539e-922d-4c2e72105d59
+    order: 2
+- id: 704e3126-a0cf-5eba-b578-947008d6bb0f
+  name: "Waypost 2"
+  x: 748
+  y: 128
+  width: 22
+  height: 23
+  components:
+  - type: spriteRenderer
+    assetId: 2b7a5305-5ba6-539e-922d-4c2e72105d59
+    order: 2
+- id: d82e5aa6-09f2-59cc-8db1-d7642e12dc92
+  name: "Waypost 3"
+  x: 1070
+  y: 144
+  width: 22
+  height: 23
+  components:
+  - type: spriteRenderer
+    assetId: 2b7a5305-5ba6-539e-922d-4c2e72105d59
+    order: 2
+- id: c1c18eeb-6d08-5337-82ff-3e0bd886446a
+  name: "Field kit"
+  x: 8
   y: 8
-  width: 280
-  height: 22
+  width: 184
+  height: 28
   parentId: 88a6aec9-4e00-5593-996a-6d9722ff3062
   components:
   - type: uiRect
+- id: 4ef89a27-3194-542e-8e1c-a166b3451bbe
+  name: "Heart icon"
+  x: 8
+  y: -1
+  width: 16
+  height: 16
+  parentId: 3c2a9827-31b5-50f5-9948-7953209222da
+  components:
+  - type: uiRect
+    anchor: MiddleLeft
+  - type: uiImage
+    sprite: daddec23-c0e2-5e3c-920e-a691a65edc54
+- id: 9367eb1a-4dd7-52c6-96fa-8f6f31bcd3ef
+  name: "Heart count"
+  x: 27
+  y: -1
+  width: 27
+  height: 1
+  parentId: 3c2a9827-31b5-50f5-9948-7953209222da
+  components:
+  - type: uiRect
+    anchor: MiddleLeft
   - type: uiText
-    size: 15
-    color: "#FAF4D4"
-    text: "02  /  Ember Cavern"
-- id: f4ffa413-001e-5db2-87f6-d1199ab84bfb
-  name: "Totals"
-  x: 13
-  y: 31
-  width: 320
-  height: 14
+    text: "<b>03</b>"
+    size: 9
+    color: "#201f34"
+    richText: true
+    insetX: 0
+    insetY: 0
+- id: c2b1603d-db16-5f98-afca-d5a5b0c96e46
+  name: "Token icon"
+  x: 8
+  y: -1
+  width: 16
+  height: 16
+  parentId: d55f77b8-d726-5be0-9408-4cc4c7d71fae
+  components:
+  - type: uiRect
+    anchor: MiddleLeft
+  - type: uiImage
+    sprite: 429f3a08-925d-597c-bb3b-3722bc4b8367
+- id: d62d2fff-29a3-5a6b-ae30-9560862cf935
+  name: "Token count"
+  x: 27
+  y: -1
+  width: 27
+  height: 1
+  parentId: d55f77b8-d726-5be0-9408-4cc4c7d71fae
+  components:
+  - type: uiRect
+    anchor: MiddleLeft
+  - type: uiText
+    text: "<b>00</b>"
+    size: 9
+    color: "#201f34"
+    richText: true
+    insetX: 0
+    insetY: 0
+- id: ccdc8b28-2a62-5711-a3ab-345b9b38907f
+  name: "Gem icon"
+  x: 8
+  y: -1
+  width: 16
+  height: 16
+  parentId: d3f9d2e6-dedc-598c-a276-df3226e50cbb
+  components:
+  - type: uiRect
+    anchor: MiddleLeft
+  - type: uiImage
+    sprite: 3dd3d62a-4906-54b4-abb5-1d6e0fa2167f
+- id: 0e42facf-5c35-52f6-9789-fae0337f9caf
+  name: "Gem count"
+  x: 27
+  y: -1
+  width: 35
+  height: 1
+  parentId: d3f9d2e6-dedc-598c-a276-df3226e50cbb
+  components:
+  - type: uiRect
+    anchor: MiddleLeft
+  - type: uiText
+    text: "<b>0/3</b>"
+    size: 9
+    color: "#201f34"
+    richText: true
+    insetX: 0
+    insetY: 0
+- id: a3df41d6-388c-5522-85d5-02e170e7cd25
+  name: "Stage card"
+  x: 197
+  y: 8
+  width: 179
+  height: 48
   parentId: 88a6aec9-4e00-5593-996a-6d9722ff3062
   components:
   - type: uiRect
-  - type: uiText
-    size: 10
-    color: "#FAF4D4"
-    text: "HEARTS  3       TOKENS  00       GEMS  0/3"
-- id: 14c7edcc-477e-5fdf-b940-64b8ce073484
-  name: "Instructions"
-  x: 13
-  y: 199
-  width: 360
-  height: 14
-  parentId: 88a6aec9-4e00-5593-996a-6d9722ff3062
+  - type: uiImage
+    sprite: c7377bf4-ad44-59b7-acbb-c701f35167f0
+    borders: {left: 12, top: 12, right: 12, bottom: 12}
+- id: 587be51e-6418-5fc8-a35f-0c65ac5569ce
+  name: "Stage title"
+  x: 12
+  y: 6
+  width: 155
+  height: 1
+  parentId: a3df41d6-388c-5522-85d5-02e170e7cd25
   components:
   - type: uiRect
+    anchor: TopLeft
   - type: uiText
-    size: 10
-    color: "#FAF4D4"
-    text: "ARROWS  Move     SPACE  Jump     X  Dash     P  Pause"
-- id: 50bb0960-125e-55b7-bd8e-892b8a17942f
-  name: "Status"
-  x: 13
-  y: 51
-  width: 360
+    text: "Ember Cavern"
+    size: 9
+    color: "#201f34"
+    richText: false
+    insetX: 0
+    insetY: 0
+- id: 4e415291-877b-5957-8b29-5a36092ee8f2
+  name: "Stage tip"
+  x: 12
+  y: 26
+  width: 155
+  height: 1
+  parentId: a3df41d6-388c-5522-85d5-02e170e7cd25
+  components:
+  - type: uiRect
+    anchor: TopLeft
+  - type: uiText
+    text: "Watch for ember shots."
+    size: 7.5
+    color: "#353b58"
+    richText: false
+    insetX: 0
+    insetY: 0
+- id: 8ad4e709-3e5a-5976-90c9-1fa081e0685d
+  name: "Notice panel"
+  x: 8
+  y: 40
+  width: 124
   height: 26
   parentId: 88a6aec9-4e00-5593-996a-6d9722ff3062
   components:
   - type: uiRect
+  - type: uiImage
+    sprite: 4f4f9c0d-027a-5c68-8438-e167ee116255
+    borders: {left: 12, top: 12, right: 12, bottom: 12}
+- id: dad45338-4022-5190-b2b3-c8c5e2848b25
+  name: "Notice"
+  x: 12
+  y: -1
+  width: 105
+  height: 1
+  parentId: 8ad4e709-3e5a-5976-90c9-1fa081e0685d
+  components:
+  - type: uiRect
+    anchor: MiddleLeft
   - type: uiText
-    size: 14
-    color: "#FAF4D4"
+    text: "<b>Checkpoint lit</b>"
+    size: 7.5
+    color: "#201f34"
+    richText: true
+    insetX: 0
+    insetY: 0
+- id: 96042bfe-7be7-5a79-90ff-1d016873572b
+  name: "Pause panel"
+  x: 63
+  y: 32
+  width: 258
+  height: 152
+  parentId: 88a6aec9-4e00-5593-996a-6d9722ff3062
+  components:
+  - type: uiRect
+  - type: uiImage
+    sprite: af06ee0f-d078-5e75-8a24-834405ee71b2
+    borders: {left: 12, top: 12, right: 12, bottom: 12}
+- id: 19f6b58a-9c56-546d-89c3-8cd8e18061e4
+  name: "Pause title"
+  x: 12
+  y: 7
+  width: 232
+  height: 1
+  parentId: 96042bfe-7be7-5a79-90ff-1d016873572b
+  components:
+  - type: uiRect
+    anchor: TopLeft
+  - type: uiText
+    text: "<b>Trail paused</b>"
+    size: 12
+    color: "#201f34"
+    richText: true
+    insetX: 0
+    insetY: 0
+- id: af609f32-4216-5e92-8c4c-c230002a2fbe
+  name: "Pause move 0"
+  x: 120
+  y: 0
+  width: 80
+  height: 1
+  parentId: 66c8447a-b85a-5d3b-8248-43d118ff143e
+  components:
+  - type: uiRect
+    anchor: MiddleLeft
+  - type: uiText
+    text: "Move"
+    size: 8
+    color: "#201f34"
+    richText: false
+    insetX: 0
+    insetY: 0
+- id: 8b631509-9797-522f-8dd5-391ad9d8df08
+  name: "Pause move 1"
+  x: 120
+  y: 0
+  width: 80
+  height: 1
+  parentId: 58a6b1bf-2352-5654-9c45-91a7b3cb0497
+  components:
+  - type: uiRect
+    anchor: MiddleLeft
+  - type: uiText
+    text: "Jump"
+    size: 8
+    color: "#201f34"
+    richText: false
+    insetX: 0
+    insetY: 0
+- id: 9b246868-9966-5320-8a40-d63430aa90f3
+  name: "Pause move 2"
+  x: 120
+  y: 0
+  width: 80
+  height: 1
+  parentId: 8511d9bc-1e4f-520d-aa14-7609454ea914
+  components:
+  - type: uiRect
+    anchor: MiddleLeft
+  - type: uiText
+    text: "Dash"
+    size: 8
+    color: "#201f34"
+    richText: false
+    insetX: 0
+    insetY: 0
+- id: 5e9fd0a0-b662-5749-a465-e1705315fd7d
+  name: "Pause resume"
+  x: 72
+  y: 0
+  width: 56
+  height: 1
+  parentId: 4431d9c2-6d69-5be2-b781-104323f43500
+  components:
+  - type: uiRect
+    anchor: MiddleLeft
+  - type: uiText
+    text: "Resume"
+    size: 7.5
+    color: "#201f34"
+    richText: false
+    insetX: 0
+    insetY: 0
+- id: 132c7ca4-77b3-5350-a4ac-7569463904af
+  name: "Pause leave"
+  x: 214
+  y: 0
+  width: 31
+  height: 1
+  parentId: 4431d9c2-6d69-5be2-b781-104323f43500
+  components:
+  - type: uiRect
+    anchor: MiddleLeft
+  - type: uiText
+    text: "Exit"
+    size: 7.5
+    color: "#201f34"
+    richText: false
+    insetX: 0
+    insetY: 0
+- id: 87c02941-430b-56ae-a606-ed0f6811b2a1
+  name: "Results panel"
+  x: 68
+  y: 55
+  width: 248
+  height: 118
+  parentId: 88a6aec9-4e00-5593-996a-6d9722ff3062
+  components:
+  - type: uiRect
+  - type: uiImage
+    sprite: af06ee0f-d078-5e75-8a24-834405ee71b2
+    borders: {left: 12, top: 12, right: 12, bottom: 12}
+- id: 95349cc8-11b9-5f32-b06e-2e109ed4d71a
+  name: "Results title"
+  x: 12
+  y: 20
+  width: 224
+  height: 1
+  parentId: 87c02941-430b-56ae-a606-ed0f6811b2a1
+  components:
+  - type: uiRect
+    anchor: TopLeft
+  - type: uiText
+    text: "<b>Ember Cavern</b>"
+    size: 12
+    color: "#201f34"
+    richText: true
+    insetX: 0
+    insetY: 0
+- id: 236918e4-83a7-5a4b-9de9-18dc25a131e3
+  name: "Results time"
+  x: 64
+  y: -1
+  width: 60
+  height: 1
+  parentId: 66a78d23-21c2-58d9-8211-ffdae71f4a74
+  components:
+  - type: uiRect
+    anchor: MiddleLeft
+  - type: uiText
     text: ""
+    size: 7.5
+    color: "#201f34"
+    richText: false
+    insetX: 0
+    insetY: 0
+- id: 1189a1d1-c457-5215-b9f4-791999c53e3c
+  name: "Results haul"
+  x: 143
+  y: -1
+  width: 34
+  height: 1
+  parentId: 66a78d23-21c2-58d9-8211-ffdae71f4a74
+  components:
+  - type: uiRect
+    anchor: MiddleLeft
+  - type: uiText
+    text: ""
+    size: 7.5
+    color: "#201f34"
+    richText: false
+    insetX: 0
+    insetY: 0
+- id: d3218341-d7a8-569a-904f-fcac257827c6
+  name: "Results continue"
+  x: 0
+  y: 1
+  width: 1
+  height: 1
+  parentId: b79d5d26-5deb-56ce-933b-c728b42489f1
+  components:
+  - type: uiRect
+    anchor: MiddleLeft
+    left: 0
+    right: 0
+  - type: uiText
+    text: "<b>Continue</b>"
+    size: 9
+    color: "#201f34"
+    richText: true
+    insetX: 0
+    insetY: 0
+- id: 09d3de8a-3a1e-50f7-aa60-38ebe4e3f7ad
+  name: "Step sound"
+  x: 0
+  y: 0
+  width: 1
+  height: 1
+  components:
+  - type: audioSource
+    sound: ebab929b-9579-54d5-8239-a8a1adbb1613
+    bus: Effects
+- id: 664466a0-68ae-58bc-b37a-73d8c08266e8
+  name: "Rush sound"
+  x: 0
+  y: 0
+  width: 1
+  height: 1
+  components:
+  - type: audioSource
+    sound: afe0f27f-988c-5040-bfaf-8e1cc0b82f8f
+    bus: Effects
+- id: 8f991bd2-ec37-57d7-8acb-f7a196c9a42c
+  name: "Stomp sound"
+  x: 0
+  y: 0
+  width: 1
+  height: 1
+  components:
+  - type: audioSource
+    sound: 3238aaf9-49e6-5c63-b464-e257ddb26b56
+    bus: Effects
+- id: 362e4f82-4a9b-5e48-8677-28b5abc419b9
+  name: "Warning sound"
+  x: 0
+  y: 0
+  width: 1
+  height: 1
+  components:
+  - type: audioSource
+    sound: a2fc9251-1044-5793-b59c-295d6d29fb9f
+    bus: Effects
+- id: bff847e7-f230-5fd4-bfbf-a5940372411d
+  name: "Spark"
+  x: 0
+  y: 0
+  width: 1
+  height: 1
+  components:
+  - type: particleEmitter2D
+    particles: f271327f-74ca-536e-97b6-58db7820f6c8
+    trigger: Manual
+    sortingLayer: 5
+    order: 10
+- id: 669e73a5-077d-5d61-9e8c-bf52c1e71e34
+  name: "DashWake"
+  x: 0
+  y: 0
+  width: 1
+  height: 1
+  components:
+  - type: particleEmitter2D
+    particles: 612444b9-9dd0-5494-8129-05a2305b6049
+    trigger: Manual
+    sortingLayer: 5
+    order: 10
+- id: a253fba8-b0f9-5997-b710-1b9550536066
+  name: "HitBurst"
+  x: 0
+  y: 0
+  width: 1
+  height: 1
+  components:
+  - type: particleEmitter2D
+    particles: d5fd2ec2-bf37-56fd-b8b4-8a185c5939c9
+    trigger: Manual
+    sortingLayer: 5
+    order: 10
+- id: 3c2a9827-31b5-50f5-9948-7953209222da
+  name: "Heart pill"
+  x: 0
+  y: 0
+  width: 56
+  height: 28
+  parentId: c1c18eeb-6d08-5337-82ff-3e0bd886446a
+  components:
+  - type: uiRect
+  - type: uiImage
+    sprite: cc99f20d-24c7-5f50-9f05-fbb8de470f8a
+    borders: {left: 12, top: 12, right: 12, bottom: 12}
+- id: d55f77b8-d726-5be0-9408-4cc4c7d71fae
+  name: "Token pill"
+  x: 60
+  y: 0
+  width: 56
+  height: 28
+  parentId: c1c18eeb-6d08-5337-82ff-3e0bd886446a
+  components:
+  - type: uiRect
+  - type: uiImage
+    sprite: c7377bf4-ad44-59b7-acbb-c701f35167f0
+    borders: {left: 12, top: 12, right: 12, bottom: 12}
+- id: d3f9d2e6-dedc-598c-a276-df3226e50cbb
+  name: "Gem pill"
+  x: 120
+  y: 0
+  width: 64
+  height: 28
+  parentId: c1c18eeb-6d08-5337-82ff-3e0bd886446a
+  components:
+  - type: uiRect
+  - type: uiImage
+    sprite: 4f4f9c0d-027a-5c68-8438-e167ee116255
+    borders: {left: 12, top: 12, right: 12, bottom: 12}
+- id: 428bdf0b-498e-58e2-bf5f-d7f42ae892f4
+  name: "Delivered badge"
+  x: 12
+  y: -13
+  width: 128
+  height: 31
+  parentId: 87c02941-430b-56ae-a606-ed0f6811b2a1
+  components:
+  - type: uiRect
+  - type: uiImage
+    sprite: c7377bf4-ad44-59b7-acbb-c701f35167f0
+    borders: {left: 12, top: 12, right: 12, bottom: 12}
+- id: 77a8606e-adc7-5b87-89b4-f348786a1a7f
+  name: "Delivery seal"
+  x: 6
+  y: -1
+  width: 24
+  height: 24
+  parentId: 428bdf0b-498e-58e2-bf5f-d7f42ae892f4
+  components:
+  - type: uiRect
+    anchor: MiddleLeft
+  - type: uiImage
+    sprite: 1606e72c-b859-53bc-8994-f4740e17aaea
+- id: 7239eb5d-b51b-5f45-8c3f-eeb0235a70d3
+  name: "Delivered"
+  x: 35
+  y: -1
+  width: 89
+  height: 1
+  parentId: 428bdf0b-498e-58e2-bf5f-d7f42ae892f4
+  components:
+  - type: uiRect
+    anchor: MiddleLeft
+  - type: uiText
+    text: "<b>Delivered</b>"
+    size: 9
+    color: "#201f34"
+    richText: true
+    insetX: 0
+    insetY: 0
+- id: 7c721ce3-ddc8-5e6a-9c0b-98280d563a19
+  name: "Results button"
+  x: 12
+  y: 86
+  width: 224
+  height: 28
+  parentId: 87c02941-430b-56ae-a606-ed0f6811b2a1
+  components:
+  - type: uiRect
+  - type: uiImage
+    sprite: 5e2b2253-c5d8-5729-9adc-1fb870166d11
+    borders: {left: 12, top: 12, right: 12, bottom: 12}
+- id: 66c8447a-b85a-5d3b-8248-43d118ff143e
+  name: "Pause control 0"
+  x: 12
+  y: 40
+  width: 232
+  height: 20
+  parentId: 96042bfe-7be7-5a79-90ff-1d016873572b
+  components:
+  - type: uiRect
+- id: 41cad504-a109-5b16-b07f-7df2550538b0
+  name: "Pause board 0"
+  x: 0
+  y: 0
+  width: 19
+  height: 22
+  parentId: 66c8447a-b85a-5d3b-8248-43d118ff143e
+  components:
+  - type: uiRect
+    anchor: MiddleLeft
+    scaleHorizontalWithText: true
+  - type: uiImage
+    sprite: 9d5b3665-3c02-582e-b93e-0a51a73928ef
+    borders: {left: 6, top: 6, right: 6, bottom: 6}
+- id: 72d157f4-fcb5-59fb-95c7-68fdc61a0f13
+  name: "Pause board 0 glyph"
+  x: 0
+  y: 0
+  width: 15
+  height: 1
+  parentId: 41cad504-a109-5b16-b07f-7df2550538b0
+  components:
+  - type: uiRect
+    anchor: Center
+    scaleHorizontalWithText: true
+  - type: uiText
+    text: "<b>A/D</b>"
+    size: 7.5
+    color: "#201f34"
+    richText: true
+    insetX: 0
+    insetY: 0
+- id: bba35d33-88e3-5afc-901e-324e903d47a7
+  name: "Pause controller 0"
+  x: 60
+  y: 0
+  width: 25
+  height: 22
+  parentId: 66c8447a-b85a-5d3b-8248-43d118ff143e
+  components:
+  - type: uiRect
+    anchor: MiddleLeft
+    scaleHorizontalWithText: true
+    left: 60
+  - type: uiImage
+    sprite: 9d5b3665-3c02-582e-b93e-0a51a73928ef
+    borders: {left: 6, top: 6, right: 6, bottom: 6}
+- id: d4522a8b-e976-5fed-b09e-3f429f3ee4ac
+  name: "Pause controller 0 glyph"
+  x: 0
+  y: 0
+  width: 21
+  height: 1
+  parentId: bba35d33-88e3-5afc-901e-324e903d47a7
+  components:
+  - type: uiRect
+    anchor: Center
+    scaleHorizontalWithText: true
+  - type: uiText
+    text: "<b>D-pad</b>"
+    size: 7.5
+    color: "#201f34"
+    richText: true
+    insetX: 0
+    insetY: 0
+- id: 58a6b1bf-2352-5654-9c45-91a7b3cb0497
+  name: "Pause control 1"
+  x: 12
+  y: 63
+  width: 232
+  height: 20
+  parentId: 96042bfe-7be7-5a79-90ff-1d016873572b
+  components:
+  - type: uiRect
+- id: 1696d817-dade-5b4e-bda2-c2ac1d08ffbc
+  name: "Pause board 1"
+  x: 0
+  y: 0
+  width: 24
+  height: 22
+  parentId: 58a6b1bf-2352-5654-9c45-91a7b3cb0497
+  components:
+  - type: uiRect
+    anchor: MiddleLeft
+    scaleHorizontalWithText: true
+  - type: uiImage
+    sprite: 9d5b3665-3c02-582e-b93e-0a51a73928ef
+    borders: {left: 6, top: 6, right: 6, bottom: 6}
+- id: 498b035c-6726-5d31-be6f-9227f6a1310d
+  name: "Pause board 1 glyph"
+  x: 0
+  y: 0
+  width: 20
+  height: 1
+  parentId: 1696d817-dade-5b4e-bda2-c2ac1d08ffbc
+  components:
+  - type: uiRect
+    anchor: Center
+    scaleHorizontalWithText: true
+  - type: uiText
+    text: "<b>Space</b>"
+    size: 7.5
+    color: "#201f34"
+    richText: true
+    insetX: 0
+    insetY: 0
+- id: aaf531cf-e629-5ca2-ad52-b4e4671f02e8
+  name: "Pause controller 1"
+  x: 60
+  y: 0
+  width: 24
+  height: 22
+  parentId: 58a6b1bf-2352-5654-9c45-91a7b3cb0497
+  components:
+  - type: uiRect
+    anchor: MiddleLeft
+    scaleHorizontalWithText: true
+    left: 60
+  - type: uiImage
+    sprite: 9d5b3665-3c02-582e-b93e-0a51a73928ef
+    borders: {left: 6, top: 6, right: 6, bottom: 6}
+- id: 1025f730-4496-5cd0-a4e8-f4d3af381646
+  name: "Pause controller 1 glyph"
+  x: 0
+  y: 0
+  width: 20
+  height: 1
+  parentId: aaf531cf-e629-5ca2-ad52-b4e4671f02e8
+  components:
+  - type: uiRect
+    anchor: Center
+    scaleHorizontalWithText: true
+  - type: uiText
+    text: "<b>South</b>"
+    size: 7.5
+    color: "#201f34"
+    richText: true
+    insetX: 0
+    insetY: 0
+- id: 8511d9bc-1e4f-520d-aa14-7609454ea914
+  name: "Pause control 2"
+  x: 12
+  y: 86
+  width: 232
+  height: 20
+  parentId: 96042bfe-7be7-5a79-90ff-1d016873572b
+  components:
+  - type: uiRect
+- id: db7742b6-6a91-5402-babf-24f8730fd4d9
+  name: "Pause board 2"
+  x: 0
+  y: 0
+  width: 12
+  height: 22
+  parentId: 8511d9bc-1e4f-520d-aa14-7609454ea914
+  components:
+  - type: uiRect
+    anchor: MiddleLeft
+    scaleHorizontalWithText: true
+  - type: uiImage
+    sprite: 9d5b3665-3c02-582e-b93e-0a51a73928ef
+    borders: {left: 6, top: 6, right: 6, bottom: 6}
+- id: 75d07b60-c275-53bc-8362-9a6425605b9b
+  name: "Pause board 2 glyph"
+  x: 0
+  y: 0
+  width: 6
+  height: 1
+  parentId: db7742b6-6a91-5402-babf-24f8730fd4d9
+  components:
+  - type: uiRect
+    anchor: Center
+    scaleHorizontalWithText: true
+  - type: uiText
+    text: "<b>X</b>"
+    size: 7.5
+    color: "#201f34"
+    richText: true
+    insetX: 0
+    insetY: 0
+- id: 3de9a10e-bd6f-5cc5-8f34-4f253014280e
+  name: "Pause controller 2"
+  x: 60
+  y: 0
+  width: 21
+  height: 22
+  parentId: 8511d9bc-1e4f-520d-aa14-7609454ea914
+  components:
+  - type: uiRect
+    anchor: MiddleLeft
+    scaleHorizontalWithText: true
+    left: 60
+  - type: uiImage
+    sprite: 9d5b3665-3c02-582e-b93e-0a51a73928ef
+    borders: {left: 6, top: 6, right: 6, bottom: 6}
+- id: 5d428223-a71b-5a35-a43b-0254bec6cd72
+  name: "Pause controller 2 glyph"
+  x: 0
+  y: 0
+  width: 17
+  height: 1
+  parentId: 3de9a10e-bd6f-5cc5-8f34-4f253014280e
+  components:
+  - type: uiRect
+    anchor: Center
+    scaleHorizontalWithText: true
+  - type: uiText
+    text: "<b>West</b>"
+    size: 7.5
+    color: "#201f34"
+    richText: true
+    insetX: 0
+    insetY: 0
+- id: 4431d9c2-6d69-5be2-b781-104323f43500
+  name: "Pause shortcuts"
+  x: 12
+  y: 113
+  width: 234
+  height: 28
+  parentId: 96042bfe-7be7-5a79-90ff-1d016873572b
+  components:
+  - type: uiRect
+- id: eda1325f-525b-569a-9af9-27c8dfb42a98
+  name: "Pause key resume"
+  x: 0
+  y: 0
+  width: 12
+  height: 22
+  parentId: 4431d9c2-6d69-5be2-b781-104323f43500
+  components:
+  - type: uiRect
+    anchor: MiddleLeft
+    scaleHorizontalWithText: true
+  - type: uiImage
+    sprite: 9d5b3665-3c02-582e-b93e-0a51a73928ef
+    borders: {left: 6, top: 6, right: 6, bottom: 6}
+- id: d0c0865b-d99f-5e86-932b-2729fa0fec17
+  name: "Pause key resume glyph"
+  x: 0
+  y: 0
+  width: 6
+  height: 1
+  parentId: eda1325f-525b-569a-9af9-27c8dfb42a98
+  components:
+  - type: uiRect
+    anchor: Center
+    scaleHorizontalWithText: true
+  - type: uiText
+    text: "<b>P</b>"
+    size: 7.5
+    color: "#201f34"
+    richText: true
+    insetX: 0
+    insetY: 0
+- id: 4ef6dd4a-5e8d-5f79-815b-c43e95b203ff
+  name: "Pause pad resume"
+  x: 28
+  y: 0
+  width: 20
+  height: 22
+  parentId: 4431d9c2-6d69-5be2-b781-104323f43500
+  components:
+  - type: uiRect
+    anchor: MiddleLeft
+    scaleHorizontalWithText: true
+    left: 28
+  - type: uiImage
+    sprite: 9d5b3665-3c02-582e-b93e-0a51a73928ef
+    borders: {left: 6, top: 6, right: 6, bottom: 6}
+- id: 2777fa2f-a1be-52fc-8c84-b5b2ddb08459
+  name: "Pause pad resume glyph"
+  x: 0
+  y: 0
+  width: 16
+  height: 1
+  parentId: 4ef6dd4a-5e8d-5f79-815b-c43e95b203ff
+  components:
+  - type: uiRect
+    anchor: Center
+    scaleHorizontalWithText: true
+  - type: uiText
+    text: "<b>Back</b>"
+    size: 7.5
+    color: "#201f34"
+    richText: true
+    insetX: 0
+    insetY: 0
+- id: 0e6103a7-edb1-56b4-a55e-d8e88da821db
+  name: "Pause key leave"
+  x: 128
+  y: 0
+  width: 21
+  height: 22
+  parentId: 4431d9c2-6d69-5be2-b781-104323f43500
+  components:
+  - type: uiRect
+    anchor: MiddleLeft
+    scaleHorizontalWithText: true
+    left: 128
+  - type: uiImage
+    sprite: 9d5b3665-3c02-582e-b93e-0a51a73928ef
+    borders: {left: 6, top: 6, right: 6, bottom: 6}
+- id: f887d13e-f106-5555-9a4f-3307b904baab
+  name: "Pause key leave glyph"
+  x: 0
+  y: 0
+  width: 17
+  height: 1
+  parentId: 0e6103a7-edb1-56b4-a55e-d8e88da821db
+  components:
+  - type: uiRect
+    anchor: Center
+    scaleHorizontalWithText: true
+  - type: uiText
+    text: "<b>Bksp</b>"
+    size: 7.5
+    color: "#201f34"
+    richText: true
+    insetX: 0
+    insetY: 0
+- id: 5442f5a8-f6ab-5078-becc-ed68173ee8a1
+  name: "Pause pad leave"
+  x: 172
+  y: 0
+  width: 19
+  height: 22
+  parentId: 4431d9c2-6d69-5be2-b781-104323f43500
+  components:
+  - type: uiRect
+    anchor: MiddleLeft
+    scaleHorizontalWithText: true
+    left: 172
+  - type: uiImage
+    sprite: 9d5b3665-3c02-582e-b93e-0a51a73928ef
+    borders: {left: 6, top: 6, right: 6, bottom: 6}
+- id: 8a65b952-17d2-563f-b3b3-1aa3ea991aae
+  name: "Pause pad leave glyph"
+  x: 0
+  y: 0
+  width: 15
+  height: 1
+  parentId: 5442f5a8-f6ab-5078-becc-ed68173ee8a1
+  components:
+  - type: uiRect
+    anchor: Center
+    scaleHorizontalWithText: true
+  - type: uiText
+    text: "<b>East</b>"
+    size: 7.5
+    color: "#201f34"
+    richText: true
+    insetX: 0
+    insetY: 0
+- id: 8613c651-9337-5e65-83e8-d8d8eb98e18b
+  name: "Score rule"
+  x: 12
+  y: 68
+  width: 224
+  height: 1
+  parentId: 87c02941-430b-56ae-a606-ed0f6811b2a1
+  components:
+  - type: uiRect
+  - type: uiImage
+    color: "#c3ad87"
+- id: b227efc8-b42c-5b6a-ada1-d46be5d80e57
+  name: "Score header"
+  x: 12
+  y: 49
+  width: 224
+  height: 20
+  parentId: 87c02941-430b-56ae-a606-ed0f6811b2a1
+  components:
+  - type: uiRect
+- id: 03db48cf-0461-505b-b218-ce633068cd0b
+  name: "Score route"
+  x: 0
+  y: -1
+  width: 68
+  height: 1
+  parentId: b227efc8-b42c-5b6a-ada1-d46be5d80e57
+  components:
+  - type: uiRect
+    anchor: MiddleLeft
+  - type: uiText
+    text: "<b>Delivery</b>"
+    size: 7.5
+    color: "#201f34"
+    richText: true
+    insetX: 0
+    insetY: 0
+- id: 8321a461-a6f9-58d1-adc8-e16d34c06430
+  name: "Score clock"
+  x: 0
+  y: -1
+  width: 17.6
+  height: 1
+  parentId: e46688f9-994c-5111-b41a-d3cae4c89757
+  components:
+  - type: uiRect
+    anchor: MiddleRight
+    scaleHorizontalWithText: true
+  - type: uiText
+    text: "<b>Time</b>"
+    size: 7.5
+    color: "#201f34"
+    richText: true
+    insetX: 0
+    insetY: 0
+- id: cc48a4cd-74ae-50ba-ab5b-fd35d2a1dc0b
+  name: "Score tokens"
+  x: 161
+  y: -1
+  width: 16
+  height: 16
+  parentId: b227efc8-b42c-5b6a-ada1-d46be5d80e57
+  components:
+  - type: uiRect
+    anchor: MiddleLeft
+  - type: uiImage
+    sprite: 429f3a08-925d-597c-bb3b-3722bc4b8367
+- id: 2f67544b-e435-5df7-bfa3-86530c8aa8e6
+  name: "Score gems"
+  x: 197
+  y: -1
+  width: 16
+  height: 16
+  parentId: b227efc8-b42c-5b6a-ada1-d46be5d80e57
+  components:
+  - type: uiRect
+    anchor: MiddleLeft
+  - type: uiImage
+    sprite: 3dd3d62a-4906-54b4-abb5-1d6e0fa2167f
+- id: 66a78d23-21c2-58d9-8211-ffdae71f4a74
+  name: "Score total"
+  x: 12
+  y: 70
+  width: 224
+  height: 18
+  parentId: 87c02941-430b-56ae-a606-ed0f6811b2a1
+  components:
+  - type: uiRect
+- id: 03e6dc39-76f9-5d4d-8622-ebfad63e6197
+  name: "Score total label"
+  x: 0
+  y: -1
+  width: 68
+  height: 1
+  parentId: 66a78d23-21c2-58d9-8211-ffdae71f4a74
+  components:
+  - type: uiRect
+    anchor: MiddleLeft
+  - type: uiText
+    text: "<b>Total</b>"
+    size: 8
+    color: "#201f34"
+    richText: true
+    insetX: 0
+    insetY: 0
+- id: 0ff9bfdc-a372-5da2-9c14-b700815e6120
+  name: "Results gems"
+  x: 185
+  y: -1
+  width: 28
+  height: 1
+  parentId: 66a78d23-21c2-58d9-8211-ffdae71f4a74
+  components:
+  - type: uiRect
+    anchor: MiddleLeft
+  - type: uiText
+    text: ""
+    size: 7.5
+    color: "#201f34"
+    richText: false
+    insetX: 0
+    insetY: 0
+- id: 5f5fc6d5-b004-5821-accb-74feb97a4407
+  name: "Result pressed"
+  x: 0
+  y: 0
+  width: 224
+  height: 28
+  parentId: 7c721ce3-ddc8-5e6a-9c0b-98280d563a19
+  components:
+  - type: uiRect
+  - type: uiImage
+    sprite: 76d35ab1-c879-5517-84db-bbef30007862
+    borders: {left: 12, top: 12, right: 12, bottom: 12}
+- id: bb377635-41d7-5409-91e7-182fddc81718
+  name: "Result key"
+  x: 0
+  y: 0
+  width: 23
+  height: 22
+  parentId: 59be43e2-51a1-59cf-8835-6bccbf586390
+  components:
+  - type: uiRect
+    anchor: MiddleLeft
+    scaleHorizontalWithText: true
+  - type: uiImage
+    sprite: 9d5b3665-3c02-582e-b93e-0a51a73928ef
+    borders: {left: 6, top: 6, right: 6, bottom: 6}
+- id: d8e729a6-c788-5524-a946-afd9df555324
+  name: "Result pad key"
+  x: 29
+  y: 0
+  width: 21
+  height: 22
+  parentId: 59be43e2-51a1-59cf-8835-6bccbf586390
+  components:
+  - type: uiRect
+    anchor: MiddleLeft
+    scaleHorizontalWithText: true
+  - type: uiImage
+    sprite: 9d5b3665-3c02-582e-b93e-0a51a73928ef
+    borders: {left: 6, top: 6, right: 6, bottom: 6}
+- id: 59be43e2-51a1-59cf-8835-6bccbf586390
+  name: "Result button unit"
+  x: 0
+  y: -1
+  width: 1
+  height: 22
+  parentId: 7c721ce3-ddc8-5e6a-9c0b-98280d563a19
+  components:
+  - type: uiRect
+    anchor: Center
+  - type: uiLayout
+    axis: Horizontal
+    gap: 5
+    padding: 0
+    stretch: true
+- id: 54f37836-1072-5ebc-9dd1-f722b5f509a1
+  name: "Result key glyph"
+  x: 0
+  y: 0
+  width: 19
+  height: 1
+  parentId: bb377635-41d7-5409-91e7-182fddc81718
+  components:
+  - type: uiRect
+    anchor: Center
+    scaleHorizontalWithText: true
+  - type: uiText
+    text: "<b>Enter</b>"
+    size: 7.5
+    color: "#201f34"
+    richText: true
+    insetX: 0
+    insetY: 0
+- id: e46688f9-994c-5111-b41a-d3cae4c89757
+  name: "Score time column"
+  x: 64
+  y: 0
+  width: 60
+  height: 20
+  parentId: b227efc8-b42c-5b6a-ada1-d46be5d80e57
+  components:
+  - type: uiRect
+- id: 7fcba1e3-a2d1-505b-adfb-0e3b0396fe0a
+  name: "Result pad key glyph"
+  x: 0
+  y: 0
+  width: 17
+  height: 1
+  parentId: d8e729a6-c788-5524-a946-afd9df555324
+  components:
+  - type: uiRect
+    anchor: Center
+    scaleHorizontalWithText: true
+  - type: uiText
+    text: "<b>Start</b>"
+    size: 7.5
+    color: "#201f34"
+    richText: true
+    insetX: 0
+    insetY: 0
+- id: b79d5d26-5deb-56ce-933b-c728b42489f1
+  name: "Results continue cell"
+  x: 0
+  y: 0
+  width: 36
+  height: 22
+  parentId: 59be43e2-51a1-59cf-8835-6bccbf586390
+  components:
+  - type: uiRect
+    scaleHorizontalWithText: true
 defaultCameraId: 918d9171-3953-5dc9-afd3-05671e9731f7
