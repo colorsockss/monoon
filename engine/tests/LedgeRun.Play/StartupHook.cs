@@ -35,6 +35,7 @@ public static class StartupHook
         var captures = File.ReadAllText(Path.Combine(Output, "frames.txt")).Split(',').Select(int.Parse).ToHashSet();
         if (game.SceneId != replay.StartScene) throw new InvalidDataException("Scene Play started from the wrong scene.");
         DrawReplay(game, replay, captures);
+        if (game.SceneId != replay.StartScene) throw new InvalidDataException("Scene Play did not return to Trailhead.");
         play.RaiseEvent(new RoutedEventArgs(Button.ClickEvent, play));
     }
 

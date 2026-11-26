@@ -22,7 +22,7 @@ internal static class TrailProfile
     internal static GameData Load(SessionState session, int slot) =>
         session.Storage.IsAvailable ? session.Storage.LoadSlot(slot, 1) ?? new() : new();
 
-    internal static void ClearStage(SessionState session, int stage, int tokens, int gems, long ticks)
+    internal static void ClearStage(SessionState session, int stage, int tokens, int gems, long ticks, long? expeditionTicks)
     {
         if (!session.Storage.IsAvailable) return;
         int slot = Selected(session);
@@ -34,6 +34,8 @@ internal static class TrailProfile
         double best = data.GetNumber(prefix + "bestTicks", ticks);
         data.Set(prefix + "bestTicks", Math.Min(best, ticks));
         data.Set("unlocked", Math.Max(Math.Min(4, stage + 1), data.GetNumber("unlocked", 1)));
+        if (expeditionTicks is long fullRun)
+            data.Set("bestExpeditionTicks", Math.Min(fullRun, data.GetNumber("bestExpeditionTicks", fullRun)));
         session.Storage.SaveSlot(slot, data);
     }
 }

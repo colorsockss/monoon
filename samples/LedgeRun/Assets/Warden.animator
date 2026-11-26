@@ -1,0 +1,43 @@
+entry: Move
+states:
+- name: Move
+  clip: 06079be0-7d91-515b-903b-43ef4f2e0085
+- name: Tell
+  clip: 2f05c919-14af-5e08-a2a0-aa31a951713c
+- name: Stagger
+  clip: 771e0e21-366b-5a82-b3c8-e9693a46994b
+parameters:
+- name: Pose
+  kind: Int
+  default: 0
+transitions:
+- from: Move
+  to: Tell
+  parameter: Pose
+  test: Equal
+  value: 1
+- from: Move
+  to: Stagger
+  parameter: Pose
+  test: Equal
+  value: 2
+- from: Tell
+  to: Move
+  parameter: Pose
+  test: Equal
+  value: 0
+- from: Tell
+  to: Stagger
+  parameter: Pose
+  test: Equal
+  value: 2
+- from: Stagger
+  to: Move
+  parameter: Pose
+  test: Equal
+  value: 0
+- from: Stagger
+  to: Tell
+  parameter: Pose
+  test: Equal
+  value: 1

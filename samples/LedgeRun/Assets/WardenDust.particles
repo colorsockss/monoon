@@ -1,0 +1,18 @@
+duration: 0.14
+looping: false
+maxParticles: 44
+bursts:
+- time: 0
+  count: 12
+shape: point
+direction: -90
+spread: 170
+lifetime: {min: 0.18, max: 0.48}
+speed: {min: 12, max: 39}
+size: {min: 2, max: 6}
+color: {min: "#E1B094"}
+endSize: 0.20
+endAlpha: 0
+gravity: 31
+space: world
+blend: alpha

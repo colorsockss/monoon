@@ -1,0 +1,21 @@
+entry: Dim
+states:
+- name: Dim
+  clip: 295c3fe1-70d6-5834-b0b1-7dfea2c0a6ad
+- name: Lit
+  clip: 8f1a4e0c-943e-5a91-91f3-4622e02d71bc
+parameters:
+- name: Pose
+  kind: Int
+  default: 0
+transitions:
+- from: Dim
+  to: Lit
+  parameter: Pose
+  test: Equal
+  value: 1
+- from: Lit
+  to: Dim
+  parameter: Pose
+  test: Equal
+  value: 0

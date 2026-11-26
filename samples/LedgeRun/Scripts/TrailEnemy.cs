@@ -2,29 +2,36 @@ using System;
 using System.Numerics;
 using Engine.Core;
 
-public enum TrailEnemyKind { Patrol, Hopper, Sentry, Guardian }
+public enum TrailEnemyKind { Patrol, Hopper, Sentry }
 
 public sealed class TrailEnemy : GameBehaviour
 {
     public TrailEnemyKind Kind;
-    public Guid Player, Projectile, Unlock;
+    public Guid Player, Projectile, Art;
     public float PatrolWidth = 64;
     public int Stomps = 1;
 
-    private Vector2 home;
-    private int age, grace, projectileTicks;
-    private Vector2 shot, shotVelocity;
+    private const int RecoveryPose = 2;
+    private Vector2 home, shot, shotVelocity;
+    private int age, grace, projectileTicks, defeatTicks, pose;
+    private float facing = 1;
 
     public override void OnCreate(ScriptLife life) => life.Objects.TryGetPosition(life.ObjectId, out home);
 
     public override void FixedUpdate(ScriptTick tick)
     {
+        if (defeatTicks > 0)
+        {
+            if (--defeatTicks == 0)
+                tick.Objects.Destroy(tick.ObjectId);
+            return;
+        }
         if (!tick.Objects.TryGetPosition(Player, out var runner)) return;
         if (grace > 0) grace--;
         if (projectileTicks > 0)
         {
             shot += shotVelocity;
-            Put(tick.Objects, Projectile, shot);
+            tick.Objects.SetLocalTransform(Projectile, new(shot, 0, Vector2.One));
             if (--projectileTicks == 0) tick.Objects.SetActive(Projectile, false);
         }
 
@@ -33,49 +40,43 @@ public sealed class TrailEnemy : GameBehaviour
         switch (Kind)
         {
             case TrailEnemyKind.Patrol:
-                Put(tick.Objects, tick.ObjectId, home + new Vector2(PatrolWidth * Triangle(age, 180), 0));
+                Move(tick, home + new Vector2(PatrolWidth * Triangle(age, 180), 0));
                 break;
             case TrailEnemyKind.Hopper:
                 float chase = Math.Clamp((runner.X - tick.Position.X) * .12f, -1.05f, 1.05f);
                 float x = Math.Clamp(tick.Position.X + chase, home.X - PatrolWidth, home.X + PatrolWidth);
-                Put(tick.Objects, tick.ObjectId, new(x, home.Y - 30 * Triangle(age, 72)));
+                Move(tick, new(x, home.Y - 30 * Triangle(age, 72)));
                 break;
             case TrailEnemyKind.Sentry:
-                if (age % 96 == 35) Fire(tick, runner, 2.2f);
-                break;
-            case TrailEnemyKind.Guardian:
-                Guard(tick, runner);
-                break;
+                Face(tick.Objects, MathF.Sign(runner.X - tick.Position.X));
+                Charge(tick, runner, age % 96, 18, 35, 2.2f);
+                return;
         }
+        SetPose(tick.Objects, grace > 0 ? RecoveryPose : 0);
     }
 
-    private void Guard(ScriptTick tick, Vector2 runner)
+    private void Charge(ScriptTick tick, Vector2 runner, int phase, int warnAt, int fireAt, float speed)
     {
-        int phase = age % 390;
-        if (phase < 130)
-            Put(tick.Objects, tick.ObjectId, home + new Vector2(PatrolWidth * Triangle(phase, 130), 0));
-        else if (phase < 260)
-            Put(tick.Objects, tick.ObjectId, home + new Vector2(0, -23 * Triangle(phase - 130, 65)));
-        else if (phase is 270 or 330)
-            Fire(tick, runner, 2.65f);
-        else
-            Put(tick.Objects, tick.ObjectId, home);
+        if (phase == warnAt) tick.Objects.GetComponent<TrailRunner>(Player)?.Telegraph(tick.Objects, tick.Position + new Vector2(10, 4));
+        bool warning = phase >= warnAt && phase < fireAt;
+        SetPose(tick.Objects, grace > 0 ? RecoveryPose : warning ? 1 : 0);
+        if (phase == fireAt) Fire(tick, runner, speed);
     }
 
     private void Fire(ScriptTick tick, Vector2 runner, float speed)
     {
         if (Projectile == Guid.Empty) return;
-        var delta = runner - tick.Position;
+        var delta = runner - (tick.Position + new Vector2(10, 4));
         shotVelocity = new(delta.X < 0 ? -speed : speed, Math.Clamp(delta.Y * .014f, -.95f, .95f));
         shot = tick.Position + new Vector2(delta.X < 0 ? -14 : 21, 4);
         projectileTicks = 56;
-        Put(tick.Objects, Projectile, shot);
+        tick.Objects.SetLocalTransform(Projectile, new(shot, 0, Vector2.One));
         tick.Objects.SetActive(Projectile, true);
     }
 
     public override void OnTriggerEnter(ScriptContact contact)
     {
-        if (contact.OtherId != Player ||
+        if (defeatTicks != 0 || contact.OtherId != Player ||
             contact.Objects.GetComponent<TrailRunner>(Player) is not { Completed: false } runner ||
             !contact.Objects.TryGetPosition(contact.ObjectId, out var enemy) ||
             !contact.Objects.TryGetPosition(Player, out var player) ||
@@ -86,17 +87,38 @@ public sealed class TrailEnemy : GameBehaviour
             if (grace != 0) return;
             grace = 24;
             contact.Objects.Motion.SetVelocity(Player, new(motion.Velocity.X, -218));
-            if (--Stomps > 0)
-            {
-                contact.Session.Rumble(.22f, .3f, .11);
-                return;
-            }
+            bool final = --Stomps == 0;
+            runner.EnemyStomp(enemy + new Vector2(10, 6), contact.Objects, contact.Session, final, warden: false);
+            if (!final) return;
+            defeatTicks = 13;
+            SetPose(contact.Objects, RecoveryPose);
+            contact.Objects.SetSpriteTint(Art, "#D28476");
             if (Projectile != Guid.Empty) contact.Objects.Destroy(Projectile);
-            if (Unlock != Guid.Empty) contact.Objects.SetActive(Unlock, true);
-            contact.Objects.Destroy(contact.ObjectId);
             return;
         }
-        runner.Damage(Player, contact.Objects, contact.Ui);
+        runner.Damage(Player, player, contact.Objects, contact.Ui, contact.Session);
+    }
+
+    private void SetPose(IGameObjects objects, int next)
+    {
+        if (pose == next) return;
+        pose = next;
+        objects.Animator(Art)?.SetInt("Pose", next);
+    }
+
+    private void Move(ScriptTick tick, Vector2 at)
+    {
+        float delta = at.X - tick.Position.X;
+        tick.Objects.SetLocalTransform(tick.ObjectId, new(at, 0, Vector2.One));
+        if (MathF.Abs(delta) > .05f) Face(tick.Objects, MathF.Sign(delta));
+    }
+
+    private void Face(IGameObjects objects, float direction)
+    {
+        if (direction == 0 || direction == facing) return;
+        facing = direction;
+        if (objects.TryGetLocalTransform(Art, out var art))
+            objects.SetLocalTransform(Art, art with { Scale = new(facing, 1) });
     }
 
     private static float Triangle(int tick, int period)
@@ -104,7 +126,4 @@ public sealed class TrailEnemy : GameBehaviour
         float phase = (tick % period) / (float)period;
         return 1 - MathF.Abs(2 * phase - 1);
     }
-
-    private static void Put(IGameObjects objects, Guid id, Vector2 position) =>
-        objects.SetLocalTransform(id, new(position, 0, Vector2.One));
 }
