@@ -46,7 +46,8 @@ internal static class CollisionChecks
         Check(query.Overlap(Shape2D.Circle(new(240,200),1),new(8,true)).Single().ObjectId==sensor.Id,"include trigger");
         Check(query.Raycast(new(220,200),Vector2.UnitX,100,new(8))==null,"ray excludes trigger");
         world.SetActive(obj.Id,false);Check(query.Raycast(new(0,200),Vector2.UnitX,800,walls)==null,"inactive collider");world.SetActive(obj.Id,true);
-        game.Actions.Press("Right");game.FixedUpdate(game.Actions.Take(),1/60f);game.FixedUpdate(game.Actions.Take(),1/60f);
+        // The probe rolls at a fixed speed; one 4-second step carries it through the sensor and both gates to the wall at once.
+        game.Actions.Press("Right");game.FixedUpdate(game.Actions.Take(),1/60f);game.FixedUpdate(game.Actions.Take(),4f);game.FixedUpdate(game.Actions.Take(),1/60f);
         Check(game.State.Storage.LoadSlot(1,1)?.GetBool("pass")==true,"continuous trigger and mutually filtered blockers match queries");
         var extended=SceneDocument.Empty(new());
         var mirrored=new SceneObject { X=250,Y=200,Width=20,Height=40,ScaleX=-3,ScaleY=2,Rotation=90 };

@@ -4,12 +4,15 @@ using Engine.Core;
 
 // CollisionLab showcase probe: on its first step it measures a ray and a circle sweep toward the wall, an overlap inside the
 // sensor (with and without triggers) and the polygon's empty corner, and draws the ray (RayLine) and where the sweep stops
-// (SweepStop). → moves it once by 800 units: through the sensor (SensorEntry raises "crossed") and both gates, against the wall.
+// (SweepStop). → rolls it right at Speed units per second through the sensor (SensorEntry raises "crossed") and both gates
+// until the wall stops it. Each step is one Move, so a long step (a slow frame) still crosses the sensor and stops at the wall.
 // It then saves what it measured to slot 1. Raises the HUD flags "cast" and "stopped".
 public sealed class Probe : GameBehaviour
 {
     public Guid Status, Metrics, Wall, Sensor, RayLine, SweepStop;
+    private const float Speed = 320;
     private int step;
+    private float lastX, asked;
     private PhysicsHit? ray,sweep;
     private bool sensorInside,cornerClear,filtered;
     public override void FixedUpdate(ScriptTick tick)
@@ -37,12 +40,19 @@ public sealed class Probe : GameBehaviour
             tick.Session.Set("cast");
             step=1;
         }
-        if (step==1 && tick.Input.Pressed("MoveRight"))
+        if (step==1 && tick.Input.Pressed("MoveRight")) { step=2; lastX=tick.Position.X; }
+        if (step==2)
         {
-            tick.Move(new(800,0)); step=2; return;
+            // A step that moved less than it asked for ended against the wall.
+            if (asked==0 || tick.Position.X-lastX>asked-.01f)
+            {
+                lastX=tick.Position.X; asked=Speed*tick.DeltaTime;
+                tick.Move(new(asked,0)); return;
+            }
+            step=3;
         }
-        if (step!=2) return;
-        step=3;
+        if (step!=3) return;
+        step=4;
         bool crossed=tick.Session.Has("crossed");
         bool pass=crossed && filtered && cornerClear && sensorInside && ray?.Target.ObjectId==Wall && sweep?.Target.ObjectId==Wall &&
             Math.Abs(ray.Value.Distance-400)<.001f && Math.Abs(sweep.Value.Distance-380)<.001f &&

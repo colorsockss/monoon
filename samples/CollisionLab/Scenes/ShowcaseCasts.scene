@@ -1,17 +1,173 @@
 schemaVersion: 42
 objects:
-- id: 9591f5b6-6681-5255-b0e6-d8da507e120d
-  name: Night grass
+- id: 120665b3-3ebf-55e2-8109-f1f39187f99b
+  name: Night
+  x: 0
+  y: 0
+  width: 1
+  height: 1
+  components:
+  - type: globalLight2D
+    color: "#4A4E7E"
+    unlitLayer: 5
+- id: b83302cd-c5da-55c1-b82c-ea48415c8acb
+  name: Backing
   x: 0
   y: 0
   width: 800
   height: 450
   components:
   - type: spriteRenderer
-    assetId: 7ac619dd-3bc8-509b-afa8-d23252401691
-    asset: Assets/Showcase/NightGrass.png
+    sortingLayer: -31
+    squareColor: "#171429"
+- id: 52fb8b95-f1e2-5555-964d-ca31b4854f87
+  name: Floor
+  x: 0
+  y: 144
+  width: 800
+  height: 236
+  components:
+  - type: spriteRenderer
+    assetId: 283f1f4c-e86a-57b7-9c9b-8c13f845fc9a
+    asset: Assets/Showcase/Floor.png
     drawMode: Tiled
-    order: -20
+    sortingLayer: -10
+- id: 9c55ac99-59b1-5505-afa5-8be364528d56
+  name: Wall cap
+  x: 0
+  y: 48
+  width: 800
+  height: 32
+  components:
+  - type: spriteRenderer
+    assetId: 96b4dbc0-33f2-59a6-bd1b-9d416d107ce5
+    asset: Assets/Showcase/WallCap.png
+    drawMode: Tiled
+    sortingLayer: -9
+- id: b74a1f39-2079-5cdf-b74e-4d82d97eaff1
+  name: Wall
+  x: 0
+  y: 80
+  width: 800
+  height: 64
+  components:
+  - type: spriteRenderer
+    assetId: ae0206ca-d323-5c31-86dd-aae6afba049f
+    asset: Assets/Showcase/WallFace.png
+    drawMode: Tiled
+    sortingLayer: -9
+- id: c935aa21-bd36-5307-a87e-7cc93e0cec8e
+  name: Wall cap low
+  x: 0
+  y: 380
+  width: 800
+  height: 32
+  components:
+  - type: spriteRenderer
+    assetId: 96b4dbc0-33f2-59a6-bd1b-9d416d107ce5
+    asset: Assets/Showcase/WallCap.png
+    drawMode: Tiled
+    sortingLayer: -9
+- id: bcbb89ce-437a-59a0-85c2-ac8626285060
+  name: Torch 1
+  x: 120
+  y: 110
+  width: 32
+  height: 22
+  components:
+  - type: spriteRenderer
+    assetId: c0ef83ca-f5f7-5337-8c09-65b900b4fdbd
+    asset: Assets/Showcase/TorchSconce.png
+    sortingLayer: 5
+  - type: pointLight2D
+    radius: 170
+    intensity: 0.8
+    flicker: 0.1
+    frequency: 1.1
+    color: "#FF8A3A"
+- id: 227fb341-f7e7-5315-aa9c-f6aefbda1ba3
+  parentId: bcbb89ce-437a-59a0-85c2-ac8626285060
+  name: Torch 1 flame
+  x: 0
+  y: -32
+  width: 32
+  height: 32
+  components:
+  - type: spriteRenderer
+    assetId: 3338d3a8-8fbd-5345-844e-f955d0d6be78
+    asset: Assets/Showcase/TorchFlame1.png
+    sortingLayer: 5
+    order: 1
+  - type: spriteAnimator
+    clip: 72c9fe86-9f20-5585-91d3-491e894cd0a1
+    playOnStart: true
+- id: 8bc9869e-3fa0-569b-a34e-37610924b43a
+  name: Torch 2
+  x: 450
+  y: 110
+  width: 32
+  height: 22
+  components:
+  - type: spriteRenderer
+    assetId: c0ef83ca-f5f7-5337-8c09-65b900b4fdbd
+    asset: Assets/Showcase/TorchSconce.png
+    sortingLayer: 5
+  - type: pointLight2D
+    radius: 170
+    intensity: 0.8
+    flicker: 0.1
+    frequency: 1.4
+    color: "#FF8A3A"
+    shadows: true
+- id: 389f2e3b-9e4a-5c61-8e54-b77c6f117f14
+  parentId: 8bc9869e-3fa0-569b-a34e-37610924b43a
+  name: Torch 2 flame
+  x: 0
+  y: -32
+  width: 32
+  height: 32
+  components:
+  - type: spriteRenderer
+    assetId: 3338d3a8-8fbd-5345-844e-f955d0d6be78
+    asset: Assets/Showcase/TorchFlame1.png
+    sortingLayer: 5
+    order: 1
+  - type: spriteAnimator
+    clip: 72c9fe86-9f20-5585-91d3-491e894cd0a1
+    playOnStart: true
+- id: 7e4ea4fc-64a7-5852-bb52-1f60fb29763b
+  name: Torch 3
+  x: 720
+  y: 110
+  width: 32
+  height: 22
+  components:
+  - type: spriteRenderer
+    assetId: c0ef83ca-f5f7-5337-8c09-65b900b4fdbd
+    asset: Assets/Showcase/TorchSconce.png
+    sortingLayer: 5
+  - type: pointLight2D
+    radius: 170
+    intensity: 0.8
+    flicker: 0.1
+    frequency: 1.25
+    color: "#FF8A3A"
+- id: 646bdb40-f500-5a05-b1bf-bb3724a94501
+  parentId: 7e4ea4fc-64a7-5852-bb52-1f60fb29763b
+  name: Torch 3 flame
+  x: 0
+  y: -32
+  width: 32
+  height: 32
+  components:
+  - type: spriteRenderer
+    assetId: 3338d3a8-8fbd-5345-844e-f955d0d6be78
+    asset: Assets/Showcase/TorchFlame1.png
+    sortingLayer: 5
+    order: 1
+  - type: spriteAnimator
+    clip: 72c9fe86-9f20-5585-91d3-491e894cd0a1
+    playOnStart: true
 - id: 28c9ab58-5a68-5d3f-844c-721497af8acb
   name: Ray
   x: 0
@@ -26,6 +182,7 @@ objects:
     width: 2
     startColor: "#FFE08C"
     endColor: "#FF9F6B"
+    sortingLayer: 5
     order: 4
 - id: 22074fd4-bfd8-56bb-b7c4-75296c30e8ab
   name: Sweep stop
@@ -36,9 +193,9 @@ objects:
   height: 40
   components:
   - type: spriteRenderer
-    assetId: 9bd92d3d-8e64-5d5f-beea-dbd8ef6b614e
-    asset: Assets/Showcase/PebbleLit.png
-    tint: "#9C98B8"
+    assetId: e572f53e-766d-5a5c-aa7a-aa1ee635a7bc
+    asset: Assets/Showcase/Probe.png
+    tint: "#9A98C8"
     order: 3
 - id: f6bf5031-579f-560b-9bdc-9b9f007cc814
   name: Probe
@@ -48,8 +205,8 @@ objects:
   height: 40
   components:
   - type: spriteRenderer
-    assetId: 9bd92d3d-8e64-5d5f-beea-dbd8ef6b614e
-    asset: Assets/Showcase/PebbleLit.png
+    assetId: e572f53e-766d-5a5c-aa7a-aa1ee635a7bc
+    asset: Assets/Showcase/Probe.png
     order: 10
   - type: circleCollider2D
     layer: 1
@@ -57,6 +214,22 @@ objects:
   - type: script
     script: Probe
     values: {"Status": "7f5e0b61-85f9-556e-ad9e-189b6c3a009d", "Metrics": "ad0a8179-0349-5cbd-bd6c-acd40cb22956", "Wall": "f13ad8d5-3899-5e4c-a37e-a52f69661de0", "Sensor": "91298410-d245-500d-93af-4d10a6465374", "RayLine": "28c9ab58-5a68-5d3f-844c-721497af8acb", "SweepStop": "22074fd4-bfd8-56bb-b7c4-75296c30e8ab"}
+  - type: pointLight2D
+    radius: 56
+    intensity: 0.45
+    color: "#FFD087"
+- id: c4a9d796-4c0d-5de7-8113-d6eb19d1f5a1
+  parentId: f6bf5031-579f-560b-9bdc-9b9f007cc814
+  name: Probe shadow
+  x: 4
+  y: 34
+  width: 32
+  height: 10
+  components:
+  - type: spriteRenderer
+    assetId: adc8aa73-c8b4-505d-ae11-206843187b82
+    asset: Assets/Showcase/ShadowM.png
+    order: -1
 - id: 91298410-d245-500d-93af-4d10a6465374
   name: Sensor
   x: 218
@@ -65,9 +238,8 @@ objects:
   height: 44
   components:
   - type: spriteRenderer
-    assetId: 8f516392-0819-591c-a87e-0ba5a4417685
-    asset: Assets/Showcase/Lantern.png
-    tint: "#9FE4FF"
+    assetId: a421fcbc-4ec2-5f72-a9ba-31efd72501d3
+    asset: Assets/Showcase/SensorIdle.png
     order: 2
   - type: circleCollider2D
     layer: 3
@@ -75,6 +247,13 @@ objects:
     isTrigger: true
   - type: script
     script: SensorEntry
+    values: {"Active": {"Id": "1015bdc7-090f-5388-9d76-6981c8dae593"}}
+  - type: pointLight2D
+    radius: 60
+    intensity: 0.5
+    flicker: 0.2
+    frequency: 0.8
+    color: "#5CD6DE"
 - id: 34f2f966-38e7-5e2a-978b-9cd5047cd054
   name: Pass A
   x: 325
@@ -83,13 +262,38 @@ objects:
   height: 90
   components:
   - type: spriteRenderer
-    assetId: 781191a6-8795-5bf3-838f-450d48d481ef
-    asset: Assets/Showcase/Block.png
-    drawMode: Tiled
+    assetId: ffdf3696-67ae-55b9-8c06-80f9e4634797
+    asset: Assets/Showcase/Gate.png
     tint: "#8FB4FF"
     order: 2
   - type: boxCollider2D
     layer: 4
+  - type: pointLight2D
+    radius: 44
+    intensity: 0.4
+    color: "#8FB4FF"
+- id: 9d24edcf-7f97-5c19-9594-cd876d7b9cba
+  name: Pass A top
+  x: 322
+  y: 141
+  width: 16
+  height: 16
+  components:
+  - type: spriteRenderer
+    assetId: 789618a4-a983-5c79-8feb-e67e521227a1
+    asset: Assets/Showcase/GatePost.png
+    order: 3
+- id: f52e8d5b-0301-56de-b757-d5b826c02f06
+  name: Pass A foot
+  x: 322
+  y: 243
+  width: 16
+  height: 16
+  components:
+  - type: spriteRenderer
+    assetId: 789618a4-a983-5c79-8feb-e67e521227a1
+    asset: Assets/Showcase/GatePost.png
+    order: 3
 - id: 9ce8a341-74b7-5cf9-aec6-69306e76ff71
   name: Pass B
   x: 380
@@ -98,14 +302,39 @@ objects:
   height: 90
   components:
   - type: spriteRenderer
-    assetId: 781191a6-8795-5bf3-838f-450d48d481ef
-    asset: Assets/Showcase/Block.png
-    drawMode: Tiled
+    assetId: ffdf3696-67ae-55b9-8c06-80f9e4634797
+    asset: Assets/Showcase/Gate.png
     tint: "#FFB48F"
     order: 2
   - type: boxCollider2D
     layer: 5
     mask: 0
+  - type: pointLight2D
+    radius: 44
+    intensity: 0.4
+    color: "#FFB48F"
+- id: 82bd40c8-a025-5d37-935a-f9090f5dbaa5
+  name: Pass B top
+  x: 377
+  y: 141
+  width: 16
+  height: 16
+  components:
+  - type: spriteRenderer
+    assetId: 789618a4-a983-5c79-8feb-e67e521227a1
+    asset: Assets/Showcase/GatePost.png
+    order: 3
+- id: 40d6e618-68f1-58f5-93c2-d1fc5a80573d
+  name: Pass B foot
+  x: 377
+  y: 243
+  width: 16
+  height: 16
+  components:
+  - type: spriteRenderer
+    assetId: 789618a4-a983-5c79-8feb-e67e521227a1
+    asset: Assets/Showcase/GatePost.png
+    order: 3
 - id: f13ad8d5-3899-5e4c-a37e-a52f69661de0
   name: Ramp
   x: 500
@@ -114,9 +343,8 @@ objects:
   height: 120
   components:
   - type: spriteRenderer
-    assetId: 607883bc-7b68-55f9-a576-2585a8be32c2
-    asset: Assets/Triangle.png
-    tint: "#B7A6E8"
+    assetId: 55d26e43-7f21-5dd4-a92e-a37ded7f2b48
+    asset: Assets/Showcase/RampWall.png
     order: 2
   - type: polygonCollider2D
     layer: 2
@@ -151,8 +379,9 @@ objects:
   - type: text2D
     text: "Probe"
     size: 12
-    color: "#BFD0DC"
+    color: "#DCE6EE"
     align: Center
+    sortingLayer: 5
     order: 20
 - id: e7d6ecec-e524-5099-8016-65c87685e7d7
   name: Sensor name
@@ -164,8 +393,9 @@ objects:
   - type: text2D
     text: "Sensor (trigger)"
     size: 12
-    color: "#BFD0DC"
+    color: "#DCE6EE"
     align: Center
+    sortingLayer: 5
     order: 20
 - id: e9a74c97-7677-5b2d-828e-ab2f7fdb2921
   name: Gates name
@@ -177,8 +407,9 @@ objects:
   - type: text2D
     text: "Gates A and B"
     size: 12
-    color: "#BFD0DC"
+    color: "#DCE6EE"
     align: Center
+    sortingLayer: 5
     order: 20
 - id: 1a296b3d-5ea5-5884-802c-37ff2dd73786
   name: Ramp name
@@ -190,8 +421,9 @@ objects:
   - type: text2D
     text: "Polygon wall"
     size: 12
-    color: "#BFD0DC"
+    color: "#DCE6EE"
     align: Center
+    sortingLayer: 5
     order: 20
 - id: 0b4d15a2-9631-5930-92d7-ff403ae5f62f
   parentId: 38c04c97-d92c-5d23-be0a-5111ea8522ba
@@ -231,7 +463,7 @@ objects:
   - type: uiRect
   - type: uiText
     richText: true
-    text: "Press → to move the probe"
+    text: "Press → to roll the probe"
     size: 12
     color: "#BFD0DC"
 - id: 86bd5dcf-e002-5a43-897b-d35c9afa35c2
@@ -332,7 +564,7 @@ objects:
   - type: uiRect
   - type: uiText
     richText: true
-    text: "Move the probe  →"
+    text: "Roll the probe  →"
     size: 12
     color: "#BFD0DC"
 defaultCameraId: aa364bf6-24b5-5dfe-9bde-191b0c9c94c9

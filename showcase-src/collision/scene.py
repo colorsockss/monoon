@@ -3,6 +3,9 @@
 #
 # LanternQuery (Scripts/Showcase) moves the lantern, streams the stones in on L, then asks one overlap query per fixed step
 # through the spatial grid and once more as a full scan; the grid's answer is lit, the panel compares the two.
+# The field is dark (Global Light 2D); the lantern carries a Point Light 2D and draws, with its ring, on the unlit layer.
+# Stones keep their positions and colliders (same random sequence); a second sequence only picks one of three looks per kind,
+# and each look is a group (Stone0..Stone8) whose dim and lit sprites LanternQuery swaps.
 import pathlib, random, uuid
 
 ROOT = pathlib.Path(__file__).resolve().parents[2] / "samples/CollisionLab"
@@ -41,25 +44,40 @@ panel = lambda: f"  - type: uiImage\n    sprite: {asset('Panel.png')}\n    borde
 label = lambda t, size=12, color="#F4F6F4": f'  - type: uiRect\n  - type: uiText\n    richText: true\n    text: "{t}"\n    size: {size}\n    color: "{color}"\n'
 
 # ---- stones: 125 × 80 = 10,000 on a jittered grid over the whole view ------------------------------------------------
-KINDS = [("Pebbles", "Pebble", "  - {type: circleCollider2D}\n"), ("Blocks", "Block", "  - {type: boxCollider2D}\n"),
-         ("Shards", "Shard", "  - {type: polygonCollider2D, points: [{x: 0, y: 0}, {x: 1, y: 0.5}, {x: 0, y: 1}]}\n")]
-rng = random.Random(10000)
+KINDS = [("Pebble", "  - {type: circleCollider2D}\n"), ("Block", "  - {type: boxCollider2D}\n"),
+         ("Shard", "  - {type: polygonCollider2D, points: [{x: 0, y: 0}, {x: 1, y: 0.5}, {x: 0, y: 1}]}\n")]
+LOOKS = [f"{kind}{i}" for kind, _ in KINDS for i in (1, 2, 3)]   # group Stone<k> draws LOOKS[k]
+rng, looks = random.Random(10000), random.Random(3)
 stones = ["schemaVersion: 42\nobjects:\n"]
 n = 0
 for row in range(80):
     for col in range(125):
         n += 1
-        group, image, collider = KINDS[0] if (k := rng.random()) < .5 else KINDS[1] if k < .75 else KINDS[2]
+        kind = 0 if (k := rng.random()) < .5 else 1 if k < .75 else 2
+        look = kind * 3 + looks.randrange(3)
         x, y = round(col * 6.4 + 1.5 + rng.uniform(-1, 1)), round(row * 5.625 + 1 + rng.uniform(-.8, .8))
-        stones.append(f"- id: {uid(f'stone/{n}')}\n  name: Stone {n}\n  groups: [{group}]\n  x: {x}\n  y: {y}\n  width: 5\n  height: 5\n"
-                      f"  components:\n{collider}" + sprite(image + ".png"))
+        stones.append(f"- id: {uid(f'stone/{n}')}\n  name: Stone {n}\n  groups: [Stone{look}]\n  x: {x}\n  y: {y}\n  width: 5\n  height: 5\n"
+                      f"  components:\n{KINDS[kind][1]}" + sprite(LOOKS[look] + ".png"))
 (ROOT / "Scenes/ShowcaseStones.scene").write_text("".join(stones))
 stones_scene = scene_id("ShowcaseStones.scene")
 
 # ---- lantern scene ----------------------------------------------------------------------------------------------------
 s = Scene("lantern")
-s.obj("Night grass", 0, 0, 800, 450, sprite("NightGrass.png", drawMode="Tiled", order=-20))
-lantern = s.obj("Lantern", 360, 185, 80, 80, sprite("Lantern.png", order=50))
+s.obj("Night", 0, 0, 1, 1, '  - type: globalLight2D\n    color: "#5A6280"\n    unlitLayer: 5\n')
+s.obj("Ground", 0, 0, 800, 450, sprite("Field.png", sortingLayer=-10))
+# Edges of the field: a well and bushes above, a fence below, bushes and flowers at the sides, all clear of the lantern's path
+# (x 82..718, y 137..363) so no lit stone hides under them. They draw over the stones (layer 1).
+props = [("Well", "Well.png", 367, 2, 66, 80), ("Bush top", "Bush.png", 442, 44, 50, 42), ("Flowers top", "Flowers.png", 312, 98, 54, 32),
+         ("Bush left", "Bush.png", -16, 176, 50, 42), ("Flowers left", "Flowers.png", 4, 292, 54, 32), ("Bush left low", "Bush.png", -10, 336, 50, 42),
+         ("Bush right", "Bush.png", 762, 150, 50, 42), ("Flowers right", "Flowers.png", 744, 238, 54, 32), ("Bush right low", "Bush.png", 756, 310, 50, 42),
+         ("Bush bottom", "Bush.png", 560, 384, 50, 42), ("Flowers bottom", "Flowers.png", 652, 396, 54, 32)]
+for name, image, x, y, w, h in props:
+    s.obj(name + " shadow", x + w / 2 - 16, y + h - 6, 32, 10, sprite("ShadowM.png", sortingLayer=1, order=-1))
+    s.obj(name, x, y, w, h, sprite(image, sortingLayer=1))
+s.obj("Fence", 0, 418, 816, 34, sprite("Fence.png", drawMode="Tiled", sortingLayer=1, order=2))
+lantern = s.obj("Lantern", 360, 185, 80, 80, sprite("LanternRing.png", sortingLayer=5)
+                + '  - type: pointLight2D\n    radius: 124\n    intensity: 1\n    flicker: 0.12\n    frequency: 1.3\n    color: "#FFC46A"\n')
+s.obj("Lamp", 24, 16, 32, 32, sprite("Lantern.png", sortingLayer=5, order=1), parent="Lantern")
 s.obj("Camera", 400, 225, 1, 1, "  - type: camera2D\n")
 s.obj("Canvas", 0, 0, 1, 1, "  - type: uiCanvas\n")
 # Query panel, top right: three rows on shared columns.
@@ -90,7 +108,7 @@ cw = 110 + 7.4 * len(title)
 s.obj("Caption", 12, -12, cw, 44, "  - type: uiRect\n    anchor: BottomLeft\n" + panel(), parent="Canvas")
 s.obj("Caption title", 12, 5, cw - 24, 20, label(f"<b>CollisionLab</b>   {title}", 15), parent="Caption")
 s.obj("Caption controls", 12, 25, cw - 24, 16, label("Load the field  L", 12, "#BFD0DC"), parent="Caption")
-refs = {k: f'{{"Id": "{asset(k + ".png")}"}}' for k in ("Pebble", "PebbleLit", "Block", "BlockLit", "Shard", "ShardLit")}
+refs = {k: "[" + ", ".join(f'"{asset(look + suffix + ".png")}"' for look in LOOKS) + "]" for k, suffix in (("Dim", ""), ("Lit", "Lit"))}
 values = {"Stones": f'{{"Id": "{stones_scene}"}}', "Lantern": f'"{lantern}"'}
 values.update({k: f'"{s.oid(k)}"' for k in ("Hits", "Grid checked", "Grid time", "Scan checked", "Scan time", "Verdict", "Load panel", "Load text", "Load fill")})
 values = {"".join(w[0].upper() + w[1:] for w in k.split()): v for k, v in values.items()} | refs

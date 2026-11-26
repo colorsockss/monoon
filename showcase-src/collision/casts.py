@@ -1,11 +1,16 @@
-# Writes CollisionLab's second showcase, Scenes/ShowcaseCasts.scene: the collision lab's probe course in the lantern scene's art.
+# Writes CollisionLab's second showcase, Scenes/ShowcaseCasts.scene: the collision lab's probe course in a torch-lit corridor.
 #   python3 showcase-src/collision/casts.py     (after art.py)
+#
+# Art: KeyRoom's flagstones, brick wall and torches (Point Light 2D, the middle one casts shadows of the gates and the wall)
+# under a Global Light 2D; the probe is a steel sphere with its own small light, the sensor a rune plate that lights up
+# (SensorEntry swaps in SensorActive), the gates tinted force fields between stone posts, the wall KeyRoom's bricks cut to
+# the triangle. Names and the ray draw on the unlit layer. Decoration has no colliders, so the measured geometry is unchanged.
 #
 # The objects keep the lab's ids, names, positions and colliders, so the engine checks that measure them (CollisionChecks,
 # CollisionLab.InspectorEdits) see the same geometry: a probe circle (r 20) at (80, 180), a sensor ring (trigger), two gates on
 # layers outside the probe's reach (A is not in the probe's mask; B's own mask is empty) and a solid triangle on the wall layer.
 # Probe casts a ray and sweeps its circle toward the triangle on the first step and draws both (the line to the hit, a ghost
-# where the circle stops); → moves the probe with one 800-unit Move, through the sensor and both gates, against the triangle.
+# where the circle stops); → rolls the probe at 320 units per second through the sensor and both gates, against the triangle.
 import pathlib, uuid
 
 ROOT = pathlib.Path(__file__).resolve().parents[2] / "samples/CollisionLab"
@@ -35,27 +40,44 @@ def sprite(path, **kw):
 panel = lambda: f"  - type: uiImage\n    sprite: {asset('Assets/Showcase/Panel.png')}\n    borders: {{left: 4, top: 4, right: 4, bottom: 4}}\n"
 text = lambda t, size=12, color="#F4F6F4", extra="": f'  - type: uiRect\n  - type: uiText\n    richText: true\n    text: "{t}"\n    size: {size}\n    color: "{color}"\n{extra}'
 
-obj("Night grass", 0, 0, 800, 450, sprite("Assets/Showcase/NightGrass.png", drawMode="Tiled", order=-20))
-ray = obj("Ray", 0, 0, 1, 1, '  - type: line2D\n    points:\n    - {x: 0, y: 0}\n    - {x: 1, y: 0}\n    width: 2\n    startColor: "#FFE08C"\n    endColor: "#FF9F6B"\n    order: 4\n')
-ghost = obj("Sweep stop", 0, 0, 40, 40, sprite("Assets/Showcase/PebbleLit.png", tint='"#9C98B8"', order=3), extra="  active: false\n")
-obj("Probe", 80, 180, 40, 40, sprite("Assets/Showcase/PebbleLit.png", order=10) + "  - type: circleCollider2D\n    layer: 1\n    mask: 44\n"
-    "  - type: script\n    script: Probe\n    values: {" + f'"Status": "{STATUS}", "Metrics": "{METRICS}", "Wall": "{RAMP}", "Sensor": "{SENSOR}", "RayLine": "{ray}", "SweepStop": "{ghost}"' + "}\n", oid=PROBE)
-obj("Sensor", 218, 178, 44, 44, sprite("Assets/Showcase/Lantern.png", tint='"#9FE4FF"', order=2) + "  - type: circleCollider2D\n    layer: 3\n    mask: 2\n    isTrigger: true\n"
-    "  - type: script\n    script: SensorEntry\n", oid=SENSOR)
-# Gates: posts of stone blocks, see-through because neither stops the probe.
-obj("Pass A", 325, 155, 10, 90, sprite("Assets/Showcase/Block.png", drawMode="Tiled", tint='"#8FB4FF"', order=2) + "  - type: boxCollider2D\n    layer: 4\n", oid=PASS_A)
-obj("Pass B", 380, 155, 10, 90, sprite("Assets/Showcase/Block.png", drawMode="Tiled", tint='"#FFB48F"', order=2) + "  - type: boxCollider2D\n    layer: 5\n    mask: 0\n", oid=PASS_B)
-obj("Ramp", 500, 140, 100, 120, sprite("Assets/Triangle.png", tint='"#B7A6E8"', order=2) + "  - type: polygonCollider2D\n    layer: 2\n    mask: 2\n"
+TORCH = '  - type: pointLight2D\n    radius: 170\n    intensity: 0.8\n    flicker: 0.1\n    frequency: {f}\n    color: "#FF8A3A"\n{shadows}'
+obj("Night", 0, 0, 1, 1, '  - type: globalLight2D\n    color: "#4A4E7E"\n    unlitLayer: 5\n')
+obj("Backing", 0, 0, 800, 450, '  - type: spriteRenderer\n    sortingLayer: -31\n    squareColor: "#171429"\n')
+obj("Floor", 0, 144, 800, 236, sprite("Assets/Showcase/Floor.png", drawMode="Tiled", sortingLayer=-10))
+obj("Wall cap", 0, 48, 800, 32, sprite("Assets/Showcase/WallCap.png", drawMode="Tiled", sortingLayer=-9))
+obj("Wall", 0, 80, 800, 64, sprite("Assets/Showcase/WallFace.png", drawMode="Tiled", sortingLayer=-9))
+obj("Wall cap low", 0, 380, 800, 32, sprite("Assets/Showcase/WallCap.png", drawMode="Tiled", sortingLayer=-9))
+for i, (x, f) in enumerate(((120, 1.1), (450, 1.4), (720, 1.25))):
+    torch = obj(f"Torch {i + 1}", x, 110, 32, 22, sprite("Assets/Showcase/TorchSconce.png", sortingLayer=5)
+                + TORCH.format(f=f, shadows="    shadows: true\n" if i == 1 else ""))
+    obj(f"Torch {i + 1} flame", 0, -32, 32, 32, sprite("Assets/Showcase/TorchFlame1.png", sortingLayer=5, order=1)
+        + f"  - type: spriteAnimator\n    clip: {asset('Assets/Showcase/Flame.clip')}\n    playOnStart: true\n", parent=torch)
+ray = obj("Ray", 0, 0, 1, 1, '  - type: line2D\n    points:\n    - {x: 0, y: 0}\n    - {x: 1, y: 0}\n    width: 2\n    startColor: "#FFE08C"\n    endColor: "#FF9F6B"\n    sortingLayer: 5\n    order: 4\n')
+ghost = obj("Sweep stop", 0, 0, 40, 40, sprite("Assets/Showcase/Probe.png", tint='"#9A98C8"', order=3), extra="  active: false\n")
+obj("Probe", 80, 180, 40, 40, sprite("Assets/Showcase/Probe.png", order=10) + "  - type: circleCollider2D\n    layer: 1\n    mask: 44\n"
+    "  - type: script\n    script: Probe\n    values: {" + f'"Status": "{STATUS}", "Metrics": "{METRICS}", "Wall": "{RAMP}", "Sensor": "{SENSOR}", "RayLine": "{ray}", "SweepStop": "{ghost}"' + "}\n"
+    '  - type: pointLight2D\n    radius: 56\n    intensity: 0.45\n    color: "#FFD087"\n', oid=PROBE)
+obj("Probe shadow", 4, 34, 32, 10, sprite("Assets/Showcase/ShadowM.png", order=-1), parent=PROBE)
+obj("Sensor", 218, 178, 44, 44, sprite("Assets/Showcase/SensorIdle.png", order=2) + "  - type: circleCollider2D\n    layer: 3\n    mask: 2\n    isTrigger: true\n"
+    f'  - type: script\n    script: SensorEntry\n    values: {{"Active": {{"Id": "{asset("Assets/Showcase/SensorActive.png")}"}}}}\n'
+    '  - type: pointLight2D\n    radius: 60\n    intensity: 0.5\n    flicker: 0.2\n    frequency: 0.8\n    color: "#5CD6DE"\n', oid=SENSOR)
+# Gates: force fields between stone posts, see-through because neither stops the probe.
+for name, oid, x, layer, tint in (("Pass A", PASS_A, 325, "    layer: 4\n", "#8FB4FF"), ("Pass B", PASS_B, 380, "    layer: 5\n    mask: 0\n", "#FFB48F")):
+    obj(name, x, 155, 10, 90, sprite("Assets/Showcase/Gate.png", tint=f'"{tint}"', order=2) + "  - type: boxCollider2D\n" + layer
+        + f'  - type: pointLight2D\n    radius: 44\n    intensity: 0.4\n    color: "{tint}"\n', oid=oid)
+    for end, y in (("top", 141), ("foot", 243)):
+        obj(f"{name} {end}", x - 3, y, 16, 16, sprite("Assets/Showcase/GatePost.png", order=3))
+obj("Ramp", 500, 140, 100, 120, sprite("Assets/Showcase/RampWall.png", order=2) + "  - type: polygonCollider2D\n    layer: 2\n    mask: 2\n"
     "    points:\n    - {x: 0, y: 0}\n    - {x: 1, y: 0.5}\n    - {x: 0, y: 1}\n", oid=RAMP)
 obj("Camera", 400, 225, 1, 1, "  - type: camera2D\n", oid=CAMERA)
 
 # Names under the course (world text); HUD: the probe's readout, feature tags, caption.
 obj("Canvas", 0, 0, 1, 1, "  - type: uiCanvas\n", oid=CANVAS)
 for name, label, x in (("Probe", "Probe", 100), ("Sensor", "Sensor (trigger)", 240), ("Gates", "Gates A and B", 357), ("Ramp", "Polygon wall", 540)):
-    obj(f"{name} name", x - 70, 268, 140, 18, f'  - type: text2D\n    text: "{label}"\n    size: 12\n    color: "#BFD0DC"\n    align: Center\n    order: 20\n')
+    obj(f"{name} name", x - 70, 268, 140, 18, f'  - type: text2D\n    text: "{label}"\n    size: 12\n    color: "#DCE6EE"\n    align: Center\n    sortingLayer: 5\n    order: 20\n')
 readout = obj("Readout", -12, 12, 330, 64, "  - type: uiRect\n    anchor: TopRight\n" + panel(), CANVAS)
 obj("Metrics", 12, 9, 306, 18, text("Ready", 13), readout, oid=METRICS)
-obj("Status", 12, 34, 306, 18, text("Press → to move the probe", 12, "#BFD0DC"), readout, oid=STATUS)
+obj("Status", 12, 34, 306, 18, text("Press → to roll the probe", 12, "#BFD0DC"), readout, oid=STATUS)
 tags = [("cast", "Ray and sweep", "the line hits the wall, the circle stops 20 short"),
         ("crossed", "Sensor", "a trigger reports the probe passing through"),
         ("stopped", "Layer masks", "both gates let the probe by, the wall stops it")]
@@ -65,7 +87,7 @@ for i, (flag, feature, detail) in enumerate(tags):
         + f'  - type: uiText\n    richText: true\n    text: "<b>{feature}</b>   <color=#BFD0DC>{detail}</color>"\n    size: 12\n    insetX: 10\n    insetY: 4\n', CANVAS)
 caption = obj("Caption", 12, -12, 470, 44, "  - type: uiRect\n    anchor: BottomLeft\n" + panel(), CANVAS)
 obj("Caption title", 12, 5, 446, 20, text("<b>CollisionLab</b>   Rays, sweeps, sensors and layer masks", 15), caption)
-obj("Caption controls", 12, 25, 446, 16, text("Move the probe  →", 12, "#BFD0DC"), caption)
+obj("Caption controls", 12, 25, 446, 16, text("Roll the probe  →", 12, "#BFD0DC"), caption)
 
 (ROOT / "Scenes/ShowcaseCasts.scene").write_text("schemaVersion: 42\nobjects:\n" + "".join(out) + f"defaultCameraId: {CAMERA}\n")
 print("wrote Scenes/ShowcaseCasts.scene,", len(out), "objects, id", (ROOT / "Scenes/ShowcaseCasts.scene.meta").read_text().split()[1])

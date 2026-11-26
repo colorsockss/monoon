@@ -1,17 +1,292 @@
 schemaVersion: 42
 objects:
-- id: 728f277b-8f15-5782-b603-591f3b55bfa2
-  name: Night grass
+- id: e5ac630a-d8f7-5ca4-be8b-f6a5d27d5a7b
+  name: Night
+  x: 0
+  y: 0
+  width: 1
+  height: 1
+  components:
+  - type: globalLight2D
+    color: "#5A6280"
+    unlitLayer: 5
+- id: c9233038-8ef6-51c7-aaac-428c0f59ccaa
+  name: Ground
   x: 0
   y: 0
   width: 800
   height: 450
   components:
   - type: spriteRenderer
-    assetId: 7ac619dd-3bc8-509b-afa8-d23252401691
-    asset: Assets/Showcase/NightGrass.png
+    assetId: 572193ea-40a8-502e-8c6b-14661aa48804
+    asset: Assets/Showcase/Field.png
+    sortingLayer: -10
+- id: bc8066ca-73c5-5bb3-aba0-2b296908a7c3
+  name: Well shadow
+  x: 384
+  y: 76
+  width: 32
+  height: 10
+  components:
+  - type: spriteRenderer
+    assetId: adc8aa73-c8b4-505d-ae11-206843187b82
+    asset: Assets/Showcase/ShadowM.png
+    sortingLayer: 1
+    order: -1
+- id: d9943fd1-99d3-580b-876d-02a80a042338
+  name: Well
+  x: 367
+  y: 2
+  width: 66
+  height: 80
+  components:
+  - type: spriteRenderer
+    assetId: 03a7f4c0-604f-55e5-9686-e90e189da783
+    asset: Assets/Showcase/Well.png
+    sortingLayer: 1
+- id: 1dac13ee-8a55-5a51-8d2d-a2c0ffb16234
+  name: Bush top shadow
+  x: 451
+  y: 80
+  width: 32
+  height: 10
+  components:
+  - type: spriteRenderer
+    assetId: adc8aa73-c8b4-505d-ae11-206843187b82
+    asset: Assets/Showcase/ShadowM.png
+    sortingLayer: 1
+    order: -1
+- id: bdf4846f-5e00-5ba8-b138-2011c8c5928c
+  name: Bush top
+  x: 442
+  y: 44
+  width: 50
+  height: 42
+  components:
+  - type: spriteRenderer
+    assetId: 08bfdfe3-2506-5b6c-aa7e-f301782306bb
+    asset: Assets/Showcase/Bush.png
+    sortingLayer: 1
+- id: 1bcf4086-6e89-540d-855f-6ad88fd2a1c3
+  name: Flowers top shadow
+  x: 323
+  y: 124
+  width: 32
+  height: 10
+  components:
+  - type: spriteRenderer
+    assetId: adc8aa73-c8b4-505d-ae11-206843187b82
+    asset: Assets/Showcase/ShadowM.png
+    sortingLayer: 1
+    order: -1
+- id: 3e85df55-41ef-5dca-a4a2-4590c910f3ea
+  name: Flowers top
+  x: 312
+  y: 98
+  width: 54
+  height: 32
+  components:
+  - type: spriteRenderer
+    assetId: 81ff5ad9-c479-5946-88d9-46e6cfb8a873
+    asset: Assets/Showcase/Flowers.png
+    sortingLayer: 1
+- id: 43fd2571-1992-5c0e-8735-c579c143eb73
+  name: Bush left shadow
+  x: -7
+  y: 212
+  width: 32
+  height: 10
+  components:
+  - type: spriteRenderer
+    assetId: adc8aa73-c8b4-505d-ae11-206843187b82
+    asset: Assets/Showcase/ShadowM.png
+    sortingLayer: 1
+    order: -1
+- id: 26c04cc8-59ae-5e61-802b-e75235592d1f
+  name: Bush left
+  x: -16
+  y: 176
+  width: 50
+  height: 42
+  components:
+  - type: spriteRenderer
+    assetId: 08bfdfe3-2506-5b6c-aa7e-f301782306bb
+    asset: Assets/Showcase/Bush.png
+    sortingLayer: 1
+- id: ebbdea6e-9f7e-5588-80a4-d6aff06ea360
+  name: Flowers left shadow
+  x: 15
+  y: 318
+  width: 32
+  height: 10
+  components:
+  - type: spriteRenderer
+    assetId: adc8aa73-c8b4-505d-ae11-206843187b82
+    asset: Assets/Showcase/ShadowM.png
+    sortingLayer: 1
+    order: -1
+- id: f8845ed6-825b-5789-aec8-3d1ef6b21bb5
+  name: Flowers left
+  x: 4
+  y: 292
+  width: 54
+  height: 32
+  components:
+  - type: spriteRenderer
+    assetId: 81ff5ad9-c479-5946-88d9-46e6cfb8a873
+    asset: Assets/Showcase/Flowers.png
+    sortingLayer: 1
+- id: 743e69b4-b2b8-5b99-90ac-4951e14687c5
+  name: Bush left low shadow
+  x: -1
+  y: 372
+  width: 32
+  height: 10
+  components:
+  - type: spriteRenderer
+    assetId: adc8aa73-c8b4-505d-ae11-206843187b82
+    asset: Assets/Showcase/ShadowM.png
+    sortingLayer: 1
+    order: -1
+- id: 41c5b88d-8d9c-5aab-b2ea-c20b80e83e74
+  name: Bush left low
+  x: -10
+  y: 336
+  width: 50
+  height: 42
+  components:
+  - type: spriteRenderer
+    assetId: 08bfdfe3-2506-5b6c-aa7e-f301782306bb
+    asset: Assets/Showcase/Bush.png
+    sortingLayer: 1
+- id: c77b47a4-1a53-5ecf-8c9c-f4ed21ee2d27
+  name: Bush right shadow
+  x: 771
+  y: 186
+  width: 32
+  height: 10
+  components:
+  - type: spriteRenderer
+    assetId: adc8aa73-c8b4-505d-ae11-206843187b82
+    asset: Assets/Showcase/ShadowM.png
+    sortingLayer: 1
+    order: -1
+- id: a88ee76b-e0dc-5bfd-8afd-bc2cd7959c12
+  name: Bush right
+  x: 762
+  y: 150
+  width: 50
+  height: 42
+  components:
+  - type: spriteRenderer
+    assetId: 08bfdfe3-2506-5b6c-aa7e-f301782306bb
+    asset: Assets/Showcase/Bush.png
+    sortingLayer: 1
+- id: 1e0f85d5-982b-5373-bd83-ee1c51dca1b7
+  name: Flowers right shadow
+  x: 755
+  y: 264
+  width: 32
+  height: 10
+  components:
+  - type: spriteRenderer
+    assetId: adc8aa73-c8b4-505d-ae11-206843187b82
+    asset: Assets/Showcase/ShadowM.png
+    sortingLayer: 1
+    order: -1
+- id: f5dae566-d869-51f1-a851-ac2bc1df48c4
+  name: Flowers right
+  x: 744
+  y: 238
+  width: 54
+  height: 32
+  components:
+  - type: spriteRenderer
+    assetId: 81ff5ad9-c479-5946-88d9-46e6cfb8a873
+    asset: Assets/Showcase/Flowers.png
+    sortingLayer: 1
+- id: 89863ff2-2563-5868-aa66-0b136f587836
+  name: Bush right low shadow
+  x: 765
+  y: 346
+  width: 32
+  height: 10
+  components:
+  - type: spriteRenderer
+    assetId: adc8aa73-c8b4-505d-ae11-206843187b82
+    asset: Assets/Showcase/ShadowM.png
+    sortingLayer: 1
+    order: -1
+- id: f7a3c017-6459-5b87-9088-e4a92bd50d6f
+  name: Bush right low
+  x: 756
+  y: 310
+  width: 50
+  height: 42
+  components:
+  - type: spriteRenderer
+    assetId: 08bfdfe3-2506-5b6c-aa7e-f301782306bb
+    asset: Assets/Showcase/Bush.png
+    sortingLayer: 1
+- id: c7ef7abc-7214-59de-8010-ca9cdd49f09f
+  name: Bush bottom shadow
+  x: 569
+  y: 420
+  width: 32
+  height: 10
+  components:
+  - type: spriteRenderer
+    assetId: adc8aa73-c8b4-505d-ae11-206843187b82
+    asset: Assets/Showcase/ShadowM.png
+    sortingLayer: 1
+    order: -1
+- id: 3620500c-6d58-5e6e-93b7-8ca06b397c47
+  name: Bush bottom
+  x: 560
+  y: 384
+  width: 50
+  height: 42
+  components:
+  - type: spriteRenderer
+    assetId: 08bfdfe3-2506-5b6c-aa7e-f301782306bb
+    asset: Assets/Showcase/Bush.png
+    sortingLayer: 1
+- id: 7fa6a309-5d5c-5a43-81d9-a7e7ac27beec
+  name: Flowers bottom shadow
+  x: 663
+  y: 422
+  width: 32
+  height: 10
+  components:
+  - type: spriteRenderer
+    assetId: adc8aa73-c8b4-505d-ae11-206843187b82
+    asset: Assets/Showcase/ShadowM.png
+    sortingLayer: 1
+    order: -1
+- id: 0f6ff3ce-e2ce-502a-951b-b342c7b32b3e
+  name: Flowers bottom
+  x: 652
+  y: 396
+  width: 54
+  height: 32
+  components:
+  - type: spriteRenderer
+    assetId: 81ff5ad9-c479-5946-88d9-46e6cfb8a873
+    asset: Assets/Showcase/Flowers.png
+    sortingLayer: 1
+- id: bb59a498-47fe-53de-824c-e8d0b536c1ab
+  name: Fence
+  x: 0
+  y: 418
+  width: 816
+  height: 34
+  components:
+  - type: spriteRenderer
+    assetId: cdadf176-fd74-57ab-bd32-3b7326aa5895
+    asset: Assets/Showcase/Fence.png
     drawMode: Tiled
-    order: -20
+    sortingLayer: 1
+    order: 2
 - id: 05f577b0-973c-502d-8b44-213b32f7c1a9
   name: Lantern
   x: 360
@@ -20,9 +295,28 @@ objects:
   height: 80
   components:
   - type: spriteRenderer
+    assetId: b33c4963-d092-5c86-84e5-b17d4a3ddd79
+    asset: Assets/Showcase/LanternRing.png
+    sortingLayer: 5
+  - type: pointLight2D
+    radius: 124
+    intensity: 1
+    flicker: 0.12
+    frequency: 1.3
+    color: "#FFC46A"
+- id: 7b427f08-bae3-55cb-84ab-36a2788688e9
+  parentId: 05f577b0-973c-502d-8b44-213b32f7c1a9
+  name: Lamp
+  x: 24
+  y: 16
+  width: 32
+  height: 32
+  components:
+  - type: spriteRenderer
     assetId: 8f516392-0819-591c-a87e-0ba5a4417685
     asset: Assets/Showcase/Lantern.png
-    order: 50
+    sortingLayer: 5
+    order: 1
 - id: 01ddfba8-5dee-5312-8ea4-b53678f6a9ff
   name: Camera
   x: 400
@@ -338,5 +632,5 @@ objects:
   components:
   - type: script
     script: Showcase/LanternQuery
-    values: {"Stones": {"Id": "b106e1fc-81c6-55c1-a642-173f1735d86a"}, "Lantern": "05f577b0-973c-502d-8b44-213b32f7c1a9", "Hits": "e4ea8d5c-b78c-595e-ac78-f132d60ed983", "GridChecked": "00cfc92b-6329-511d-95e1-f525506ba600", "GridTime": "fb8e9597-0a7f-5393-b0de-eaa23a67ee0a", "ScanChecked": "0d9cbce4-a630-507e-b4d0-aeb959557e43", "ScanTime": "f8c1c8da-8970-531a-b418-4f0d17a65513", "Verdict": "482849b3-ccf6-503a-b7ba-5635e2ed4d5f", "LoadPanel": "e44db4f5-98d4-5f25-a7e5-e2e2b0a5d067", "LoadText": "b0ba97ad-7218-5d24-bb6a-d29f8ea38d4b", "LoadFill": "98cd03c2-5109-5255-ae10-1694e19aec38", "Pebble": {"Id": "e280a9fb-4002-5ce6-a1b7-a6419631dcd3"}, "PebbleLit": {"Id": "9bd92d3d-8e64-5d5f-beea-dbd8ef6b614e"}, "Block": {"Id": "781191a6-8795-5bf3-838f-450d48d481ef"}, "BlockLit": {"Id": "c63eba00-2093-5e44-bd9d-a9da8cbbfe1d"}, "Shard": {"Id": "749c82af-ecf9-5f32-a269-7a1aed262cf8"}, "ShardLit": {"Id": "64502853-deb4-54d7-810d-31e177c5bac9"}}
+    values: {"Stones": {"Id": "b106e1fc-81c6-55c1-a642-173f1735d86a"}, "Lantern": "05f577b0-973c-502d-8b44-213b32f7c1a9", "Hits": "e4ea8d5c-b78c-595e-ac78-f132d60ed983", "GridChecked": "00cfc92b-6329-511d-95e1-f525506ba600", "GridTime": "fb8e9597-0a7f-5393-b0de-eaa23a67ee0a", "ScanChecked": "0d9cbce4-a630-507e-b4d0-aeb959557e43", "ScanTime": "f8c1c8da-8970-531a-b418-4f0d17a65513", "Verdict": "482849b3-ccf6-503a-b7ba-5635e2ed4d5f", "LoadPanel": "e44db4f5-98d4-5f25-a7e5-e2e2b0a5d067", "LoadText": "b0ba97ad-7218-5d24-bb6a-d29f8ea38d4b", "LoadFill": "98cd03c2-5109-5255-ae10-1694e19aec38", "Dim": ["f8ed206f-6ff1-504c-8203-93642c6f5fed", "51bdf4bc-872d-50ed-95c4-cf7b025a05c1", "79b9460c-ce7b-50f9-8453-96c2a11bce89", "0ccebedf-9bad-5193-b551-acab89a67c69", "76b39d92-48ab-53d4-a651-9f5942f0687e", "8c8e3c35-ea17-583d-9ad7-362f07326c08", "cd0c851a-1ddc-5f35-8e71-81765b54357b", "b9d51645-fbc5-51ea-92f5-6faeb36aae36", "1d0d3fcf-5f3f-520b-ac27-2b94e07a9abe"], "Lit": ["263a5bde-62e8-5a0d-a23c-2de4851220dd", "ab525af6-d7f9-5000-91c2-b4bda4ae8e71", "d144b888-96b2-5259-9cf5-67eb7d56f047", "5c206395-9c4d-5fb6-ba26-ae2467eebf01", "fe1438a6-1570-5f07-9f81-9099c1d53c1d", "28bc7b33-45a4-5610-a935-f4d3d858bd20", "9285fe02-154d-582f-bb7a-28e29521352e", "482e40fc-de0e-5cf6-be9c-bb68db58e8d5", "643fcfab-860f-51d6-8785-d962b73bc6b6"]}
 defaultCameraId: 01ddfba8-5dee-5312-8ea4-b53678f6a9ff

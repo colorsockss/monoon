@@ -11,11 +11,12 @@ using Engine.Core;
 // running and the bar shows the operation's progress. Then every fixed step asks one overlap query for the stones inside the
 // lantern's circle twice, through the spatial grid and as a full scan; the grid's answer is lit, and the panel compares how many
 // colliders each checked, how long each took, and whether both answers are the same. Raises "loaded", "grid", "match".
+// Each stone look is a group Stone<k> whose dim and lit sprites are Dim[k] and Lit[k] (cells of one atlas, so swaps keep one batch).
 public sealed class LanternQuery : GameBehaviour
 {
     public SceneReference Stones;
     public Guid Lantern, Hits, GridChecked, GridTime, ScanChecked, ScanTime, Verdict, LoadPanel, LoadText, LoadFill;
-    public SpriteReference Pebble, PebbleLit, Block, BlockLit, Shard, ShardLit;
+    public SpriteReference[] Dim = [], Lit = [];
     private const float Radius = 38, BarWidth = 325;
     private const int Window = 20;   // fixed steps averaged per readout
     private static readonly CultureInfo Invariant = CultureInfo.InvariantCulture;
@@ -61,9 +62,8 @@ public sealed class LanternQuery : GameBehaviour
         if (!op.IsDone) return;
         loading = null;
         if (op.Status != SceneStatus.Completed) { tick.Ui.SetText(LoadText, op.Error ?? "Loading stopped."); return; }
-        string[] groups = ["Pebbles", "Blocks", "Shards"];
-        for (int k = 0; k < groups.Length; k++)
-            foreach (var id in tick.Objects.FindByGroup(groups[k])) kinds[id] = k;
+        for (int k = 0; k < Math.Min(Dim.Length, Lit.Length); k++)
+            foreach (var id in tick.Objects.FindByGroup($"Stone{k}")) kinds[id] = k;
         total = kinds.Count;
         tick.Ui.SetVisible(LoadPanel, false);
         tick.Session.Set("loaded");
@@ -118,10 +118,10 @@ public sealed class LanternQuery : GameBehaviour
         {
             if (!kinds.TryGetValue(target.ObjectId, out int kind)) continue;
             next.Add(target.ObjectId);
-            if (!lit.Contains(target.ObjectId)) objects.SetSprite(target.ObjectId, kind == 0 ? PebbleLit : kind == 1 ? BlockLit : ShardLit);
+            if (!lit.Contains(target.ObjectId)) objects.SetSprite(target.ObjectId, Lit[kind]);
         }
         foreach (var id in lit)
-            if (!next.Contains(id)) objects.SetSprite(id, kinds[id] == 0 ? Pebble : kinds[id] == 1 ? Block : Shard);
+            if (!next.Contains(id)) objects.SetSprite(id, Dim[kinds[id]]);
         (lit, next) = (next, lit);
     }
 }

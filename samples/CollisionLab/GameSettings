@@ -1,5 +1,6 @@
 width: 800
 height: 450
+integerScale: true
 projectId: 5750e5bb-1700-5a5b-94c2-b6bd02a0356c
 gameTitle: CollisionLab
 startScene: 47a646c1-5281-5f2b-8e00-36e53e0ec9ca

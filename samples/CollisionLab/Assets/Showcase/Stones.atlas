@@ -1,0 +1,200 @@
+imageHash: 4C93BD9310E351820C9BB54A609C087E8BADAAB2FCEB2A757837869B03AA5F58
+entries:
+- sprite: f8ed206f-6ff1-504c-8203-93642c6f5fed
+  source:
+    x: 1
+    y: 1
+    width: 5
+    height: 5
+  canvas:
+    width: 5
+    height: 5
+    offsetX: 0
+    offsetY: 0
+- sprite: 263a5bde-62e8-5a0d-a23c-2de4851220dd
+  source:
+    x: 8
+    y: 1
+    width: 5
+    height: 5
+  canvas:
+    width: 5
+    height: 5
+    offsetX: 0
+    offsetY: 0
+- sprite: 51bdf4bc-872d-50ed-95c4-cf7b025a05c1
+  source:
+    x: 15
+    y: 1
+    width: 5
+    height: 5
+  canvas:
+    width: 5
+    height: 5
+    offsetX: 0
+    offsetY: 0
+- sprite: ab525af6-d7f9-5000-91c2-b4bda4ae8e71
+  source:
+    x: 22
+    y: 1
+    width: 5
+    height: 5
+  canvas:
+    width: 5
+    height: 5
+    offsetX: 0
+    offsetY: 0
+- sprite: 79b9460c-ce7b-50f9-8453-96c2a11bce89
+  source:
+    x: 29
+    y: 1
+    width: 5
+    height: 5
+  canvas:
+    width: 5
+    height: 5
+    offsetX: 0
+    offsetY: 0
+- sprite: d144b888-96b2-5259-9cf5-67eb7d56f047
+  source:
+    x: 36
+    y: 1
+    width: 5
+    height: 5
+  canvas:
+    width: 5
+    height: 5
+    offsetX: 0
+    offsetY: 0
+- sprite: 0ccebedf-9bad-5193-b551-acab89a67c69
+  source:
+    x: 1
+    y: 8
+    width: 5
+    height: 5
+  canvas:
+    width: 5
+    height: 5
+    offsetX: 0
+    offsetY: 0
+- sprite: 5c206395-9c4d-5fb6-ba26-ae2467eebf01
+  source:
+    x: 8
+    y: 8
+    width: 5
+    height: 5
+  canvas:
+    width: 5
+    height: 5
+    offsetX: 0
+    offsetY: 0
+- sprite: 76b39d92-48ab-53d4-a651-9f5942f0687e
+  source:
+    x: 15
+    y: 8
+    width: 5
+    height: 5
+  canvas:
+    width: 5
+    height: 5
+    offsetX: 0
+    offsetY: 0
+- sprite: fe1438a6-1570-5f07-9f81-9099c1d53c1d
+  source:
+    x: 22
+    y: 8
+    width: 5
+    height: 5
+  canvas:
+    width: 5
+    height: 5
+    offsetX: 0
+    offsetY: 0
+- sprite: 8c8e3c35-ea17-583d-9ad7-362f07326c08
+  source:
+    x: 29
+    y: 8
+    width: 5
+    height: 5
+  canvas:
+    width: 5
+    height: 5
+    offsetX: 0
+    offsetY: 0
+- sprite: 28bc7b33-45a4-5610-a935-f4d3d858bd20
+  source:
+    x: 36
+    y: 8
+    width: 5
+    height: 5
+  canvas:
+    width: 5
+    height: 5
+    offsetX: 0
+    offsetY: 0
+- sprite: cd0c851a-1ddc-5f35-8e71-81765b54357b
+  source:
+    x: 1
+    y: 15
+    width: 5
+    height: 5
+  canvas:
+    width: 5
+    height: 5
+    offsetX: 0
+    offsetY: 0
+- sprite: 9285fe02-154d-582f-bb7a-28e29521352e
+  source:
+    x: 8
+    y: 15
+    width: 5
+    height: 5
+  canvas:
+    width: 5
+    height: 5
+    offsetX: 0
+    offsetY: 0
+- sprite: b9d51645-fbc5-51ea-92f5-6faeb36aae36
+  source:
+    x: 15
+    y: 15
+    width: 5
+    height: 5
+  canvas:
+    width: 5
+    height: 5
+    offsetX: 0
+    offsetY: 0
+- sprite: 482e40fc-de0e-5cf6-be9c-bb68db58e8d5
+  source:
+    x: 22
+    y: 15
+    width: 5
+    height: 5
+  canvas:
+    width: 5
+    height: 5
+    offsetX: 0
+    offsetY: 0
+- sprite: 1d0d3fcf-5f3f-520b-ac27-2b94e07a9abe
+  source:
+    x: 29
+    y: 15
+    width: 5
+    height: 5
+  canvas:
+    width: 5
+    height: 5
+    offsetX: 0
+    offsetY: 0
+- sprite: 643fcfab-860f-51d6-8785-d962b73bc6b6
+  source:
+    x: 36
+    y: 15
+    width: 5
+    height: 5
+  canvas:
+    width: 5
+    height: 5
+    offsetX: 0
+    offsetY: 0
