@@ -143,10 +143,10 @@ public sealed partial class ScreenUi
                 if (n.ControlValue != 0 && mark.Width > 0) canvas.FillRectangle(mark, ink);
                 break;
             case UiDropdownComponent d when d.Options.Length > 0:
-                float font = 16 * scale * Preferences.TextScale;
-                using (canvas.PushClip(new(box.Left, box.Top, Math.Max(0, box.Width - 24 * scale), box.Height)))
+                float font = 16 * scale * Preferences.TextScale, slot = scale * Preferences.TextScale; // the +/- slot grows with the text
+                using (canvas.PushClip(new(box.Left, box.Top, Math.Max(0, box.Width - 24 * slot), box.Height)))
                     canvas.DrawText(d.Options[(int)n.ControlValue], box.Left + inset, box.Top + 2 * scale, font, ink);
-                canvas.DrawText(dropdownId == n.Object.Id ? "-" : "+", box.Right - 18 * scale, box.Top + 2 * scale, font, ink);
+                canvas.DrawText(dropdownId == n.Object.Id ? "-" : "+", box.Right - 18 * slot, box.Top + 2 * scale, font, ink);
                 break;
         }
     }
