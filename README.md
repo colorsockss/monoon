@@ -1,12 +1,17 @@
 # MoNoon Engine
 
-MoNoon은 C#으로 2D 데스크톱 게임을 만드는 엔진입니다. Unity를 대신할 엔진으로 만들고 있고, 목표는 **작은 배포 용량과 빠른 실행**입니다. 씬 편집기에서 오브젝트를 배치하고 컴포넌트로 동작을 만든 뒤, **Play**를 누르면 그 자리에서 게임을 조작할 수 있습니다.
+MoNoon은 C#으로 2D 데스크톱 게임을 만드는 엔진과 에디터입니다. Unity를 대신하려고 만들고 있으며, 목표는 **작은 배포 용량, 빠른 시작, 낮은 프레임당 비용**입니다. 씬 편집기에서 오브젝트를 배치하고 컴포넌트로 동작을 만든 뒤, **Play**를 누르면 그 자리에서 게임을 조작할 수 있습니다. 게임은 macOS arm64, Windows x64, Linux x64용 Release 또는 Native AOT로 빌드합니다.
 
-macOS arm64, Windows x64, Linux x64를 지원합니다. 게임은 Release 또는 Native AOT로 빌드할 수 있습니다.
+**[쇼케이스](#쇼케이스)** · [게임 샘플](#게임-샘플) · [시작하기](#시작하기) · [사용자 매뉴얼](docs/manual/README.md) · [개발 로드맵](docs/roadmap.md)
 
-![KeyRoom 쇼케이스: 열쇠를 주워 문을 열고, 상자를 끌고, 보조 카메라를 켜고, 다음 방에서 상자를 밀어 발판을 누르는 장면](docs/media/showcase/KeyRoom.webp)
+![MoNoon 에디터에서 KeyRoom 쇼케이스의 Player를 선택한 화면. 왼쪽에 오브젝트 계층과 프로젝트, 가운데에 씬, 오른쪽에 Transform·Sorting Group 2D·PlayerMovement·Box Collider 2D 속성이 보입니다.](docs/media/editor.png)
 
-KeyRoom 쇼케이스: 열쇠를 주우면 문이 열리고(이벤트 연결), 상자에서 동전 프리팹이 나오고, 마우스로 상자를 끌고, 보조 카메라를 켜고, 저장한 뒤 다음 방으로 넘어가 물리로 상자를 밀어 발판을 누릅니다.
+## 설계 원칙
+
+- **배포본에는 게임에 필요한 것만 들어갑니다.** 에디터, 임포터, Inspector, SkiaSharp는 배포본에 없습니다. 텍스트, 오디오, 물리, 타일맵, 파티클, 조명, 스켈레톤, 트윈 가운데 게임이 쓰지 않는 기능은 기능 스위치로 Native AOT 빌드에서 잘려 나갑니다.
+- **런타임 리플렉션 대신 빌드 때 코드를 만듭니다.** 게임 스크립트는 Roslyn으로 읽어 생성·필드 값 적용 코드를 함께 컴파일하므로, Native AOT trim에서 깨지지 않고 시작 비용도 들지 않습니다.
+- **렌더링은 BRUTAL의 SDL3 바인딩 하나입니다.** 같은 텍스처를 쓰는 스프라이트는 묶어서 제출하고, 글자는 배포한 TTF에서 SDL_ttf로 실행 중에 그립니다. 에디터의 Play도 같은 경로로 그립니다.
+- **시뮬레이션은 결정적입니다.** 이동과 충돌은 1/60초 고정 틱으로 계산하고, JIT과 Native AOT에서 결과 비트가 달라질 수 있는 수학 API는 검사로 막습니다. 같은 입력을 창 없이 재생하면 Release와 Native AOT가 바이트 단위로 같은 저장 파일을 만듭니다.
 
 ## 숫자로 보는 엔진
 
@@ -17,11 +22,55 @@ KeyRoom 쇼케이스: 열쇠를 주우면 문이 열리고(이벤트 연결), �
 | 스크립트 등록·필드 값 적용 | 런타임 리플렉션 없이 빌드 때 생성한 C# 코드 | [스크립팅 구현 기록](docs/history/runtime.md#스크립팅) |
 | 자동 검사 | 엔진 검사 970개, 샘플 하네스 73개 | [로컬 회귀 검사](docs/manual/build.md#로컬-회귀-검사) |
 
-아래 영상은 모두 사람이 녹화한 것이 아니라, 입력 기록을 창 없이 재생해 프레임을 저장한 것입니다. 같은 입력이면 같은 프레임이 나오므로, 엔진이 바뀔 때마다 같은 명령으로 다시 찍습니다. [촬영 도구](showcase-src/film.py) · [촬영 입력](showcase-src/shots/)
+## 구조
 
-## 기능 쇼케이스
+```mermaid
+flowchart LR
+  subgraph tools["개발 도구 (배포하지 않음)"]
+    Editor["Engine.Editor<br>Avalonia 에디터"]
+    Cli["Engine.Cli<br>monoon 명령"]
+    Authoring["Engine.Authoring<br>빌드·임포트·검사"]
+  end
+  subgraph game["배포 게임"]
+    Player["Engine.Player<br>게임 실행 파일"]
+    Desktop["Engine.Desktop<br>BRUTAL SDL3 창·입력·소리"]
+    Core["Engine.Core<br>씬·물리·UI·스크립트 런타임"]
+  end
+  Editor --> Authoring
+  Cli --> Authoring
+  Authoring --> Desktop
+  Editor --> Core
+  Player --> Desktop --> Core
+```
 
-샘플마다 쇼케이스 씬이 하나 이상 있고, 쇼케이스가 곧 샘플이자 회귀 검사 대상입니다. 이미지를 누르면 그 기능을 설명하는 매뉴얼 장으로 가고, 거기서 쇼케이스가 움직이는 화면으로 재생됩니다.
+- **Engine.Core**는 에디터의 Play와 배포 게임이 함께 쓰는 런타임입니다. 씬과 컴포넌트, Box2D 물리, 타일맵, 게임 UI, 애니메이터, 저장을 담습니다. 에디터나 빌드 도구를 참조하지 않습니다. [게임 루프](engine/src/Engine.Core/GameLoop.cs)
+- **Engine.Editor**는 Avalonia로 만든 편집기입니다. 씬 편집과 Play, Inspector, 애니메이션 타임라인, 타일 브러시, 파티클 패널이 있습니다. [에디터와 프로젝트](docs/manual/editor.md)
+- **Engine.Authoring**과 **monoon 명령**은 Release·Native AOT 빌드, 에셋 임포트, 회귀 검사를 맡습니다. [빌드와 배포](docs/manual/build.md)
+- **검증**은 엔진 검사와 샘플별 하네스로 합니다. 하네스는 에디터 Play, Release, Native AOT에서 같은 입력을 재생해 결과를 비교합니다. 아래 쇼케이스 화면도 같은 입력 재생으로 만듭니다. [입력 리플레이](engine/tests/InventoryLab.Replay/README.md)
+
+## 시작하기
+
+.NET 10 SDK가 필요합니다. macOS arm64에서 처음 빌드할 때는 Xcode Command Line Tools와 CMake 3.24 이상도 필요합니다. Linux에서는 X11 데스크톱에서 실행하세요.
+
+```sh
+git clone https://github.com/colorsockss/monoon.git
+cd monoon
+dotnet run --project engine/src/Engine.Editor -- samples/KeyRoom
+```
+
+1. **Play**를 누르고 방향키나 WASD로 왼쪽의 노란 열쇠를 주우세요.
+2. 위쪽 벽의 열린 문으로 걸어 들어가세요.
+3. **Stop**을 누르면 편집 화면으로 돌아옵니다. **Hierarchy → Player**를 선택하면 **Inspector**에서 이동 속도를 바꿀 수 있습니다.
+
+## 쇼케이스
+
+샘플마다 엔진 기능을 하나씩 보여 주는 쇼케이스 씬이 있습니다. 쇼케이스는 샘플이면서 회귀 검사 대상입니다.
+
+![KeyRoom 쇼케이스: 열쇠를 주워 문을 열고, 상자를 끌고, 보조 카메라를 켜고, 다음 방에서 상자를 밀어 발판을 누르는 장면](docs/media/showcase/KeyRoom.webp)
+
+KeyRoom 쇼케이스: 열쇠를 주우면 문이 열리고(이벤트 연결), 상자에서 동전 프리팹이 나오고, 마우스로 상자를 끌고, 보조 카메라를 켜고, 저장한 뒤 다음 방으로 넘어가 물리로 상자를 밀어 발판을 누릅니다.
+
+아래 이미지를 누르면 그 기능을 설명하는 매뉴얼 장으로 가고, 거기서 쇼케이스가 움직이는 화면으로 재생됩니다. 화면은 사람이 녹화한 것이 아니라 입력 기록을 창 없이 재생해 프레임을 저장한 것이라, 엔진이 바뀌면 같은 명령으로 다시 만듭니다. [촬영 도구](showcase-src/film.py) · [촬영 입력](showcase-src/shots/)
 
 | | | |
 | --- | --- | --- |
@@ -46,27 +95,9 @@ KeyRoom 쇼케이스: 열쇠를 주우면 문이 열리고(이벤트 연결), �
 | [IsoBand](samples/IsoBand/) | 등각 타일맵 용병단 액션 RPG | [IsoBand](docs/manual/isoband.md) |
 | [HexRealm](samples/HexRealm/) | 육각 타일맵 턴제 전략 | [HexRealm](docs/manual/hexrealm.md) |
 
-## 엔진은 어떻게 동작하나요?
+## 문서
 
-![MoNoon 에디터에서 KeyRoom 쇼케이스의 Player를 선택한 화면. 왼쪽에 오브젝트 계층과 프로젝트, 가운데에 씬, 오른쪽에 Transform·Sorting Group 2D·PlayerMovement·Box Collider 2D 속성이 보입니다.](docs/media/editor.png)
-
-- **편집 도구**는 Avalonia로 만들었습니다. 애니메이션 타임라인에서 프레임 순서와 시간을 바꿀 수 있습니다. 타일맵은 씬에서 브러시로 칠합니다. [애니메이션 편집기](docs/manual/sprites.md) · [타일맵 편집기](docs/manual/tilemaps.md)
-- **게임 로직**은 에디터의 Play와 배포 게임이 공유합니다. 이동과 충돌은 1/60초 간격으로 계산합니다. 같은 입력을 창 없이 재생해 Release와 Native AOT의 저장 결과를 바이트 단위로 비교합니다. [게임 루프](engine/src/Engine.Core/GameLoop.cs) · [입력 리플레이](engine/tests/InventoryLab.Replay/README.md)
-- **배포 게임**은 BRUTAL의 SDL3 바인딩으로 화면을 그리고, 글자는 SDL_ttf로 실행 중에 그립니다. 같은 텍스처를 쓰는 스프라이트는 묶어서 제출합니다. 에디터 전용 코드와 SkiaSharp는 배포본에 들어가지 않습니다. [BRUTAL](https://github.com/ahwootech/BRUTAL) · [BarrageLab 측정 조건과 원본 데이터](engine/tests/results/sprite-pools/README.md)
-- **게임 스크립트**는 빌드 때 Roslyn으로 읽어 생성·필드 값 적용 코드를 만들어 함께 컴파일합니다. 런타임 리플렉션이 없어 Native AOT trim에 안전하고, 게임이 쓰지 않는 엔진 기능은 기능 스위치로 배포본에서 빠집니다. [스크립팅 구현 기록](docs/history/runtime.md#스크립팅) · [프로젝트 C# 스크립팅](docs/manual/scripting.md)
-
-## KeyRoom 실행하기
-
-.NET 10 SDK가 필요합니다. macOS arm64에서 처음 빌드할 때는 Xcode Command Line Tools와 CMake 3.24 이상도 필요합니다. Linux에서는 X11 데스크톱에서 실행하세요.
-
-```sh
-git clone https://github.com/colorsockss/monoon.git
-cd monoon
-dotnet run --project engine/src/Engine.Editor -- samples/KeyRoom
-```
-
-1. **Play**를 누르고 방향키나 WASD로 왼쪽의 노란 열쇠를 주우세요.
-2. 위쪽 벽의 열린 문으로 걸어 들어가세요.
-3. **Stop**을 누르면 편집 화면으로 돌아옵니다. **Hierarchy → Player**를 선택하면 **Inspector**에서 이동 속도를 바꿀 수 있습니다.
-
-[사용자 매뉴얼](docs/manual/README.md) · [개발자 가이드와 빌드 방법](docs/development.md) · [개발 로드맵](docs/roadmap.md)
+- [사용자 매뉴얼](docs/manual/README.md): 에디터 사용법과 기능별 안내
+- [개발자 가이드와 빌드 방법](docs/development.md)
+- [구현 기록](docs/history/README.md): 기능이 어떻게, 왜 그렇게 만들어졌는지
+- [개발 로드맵](docs/roadmap.md)
