@@ -1,18 +1,20 @@
 // encode out.mp4 frames-dir [fps] : joins numbered PNG frames (0000.png, 0001.png, …) of a headless replay into an H.264 mp4.
-// Frames are scaled up with nearest-neighbour by ENCODE_SCALE (2: 800×450 -> 1600×900) so pixel art stays sharp. No ffmpeg.
+// Frames are scaled up with nearest-neighbour by the largest whole factor that fits 1080 lines (800×450 -> 1600×900,
+// 384×216 -> 1920×1080), or by ENCODE_SCALE, so pixel art stays sharp. No ffmpeg.
 import AVFoundation; import CoreGraphics; import ImageIO
 
 let a = CommandLine.arguments
 precondition(a.count >= 3, "usage: encode out.mp4 frames-dir [fps]")
 let fps = Int32(a.count > 3 ? a[3] : "60")!
-let scale = Int(ProcessInfo.processInfo.environment["ENCODE_SCALE"] ?? "2")!
 let files = try FileManager.default.contentsOfDirectory(atPath: a[2]).filter { $0.hasSuffix(".png") }.sorted()
 precondition(!files.isEmpty, "no PNG frames in \(a[2])")
 func load(_ name: String) -> CGImage {
     let source = CGImageSourceCreateWithURL(URL(fileURLWithPath: a[2]).appendingPathComponent(name) as CFURL, nil)!
     return CGImageSourceCreateImageAtIndex(source, 0, nil)!
 }
-let first = load(files[0]), width = first.width * scale, height = first.height * scale
+let first = load(files[0])
+let scale = Int(ProcessInfo.processInfo.environment["ENCODE_SCALE"] ?? "") ?? max(1, 1080 / first.height)
+let width = first.width * scale, height = first.height * scale
 let out = URL(fileURLWithPath: a[1]); try? FileManager.default.removeItem(at: out)
 let writer = try AVAssetWriter(outputURL: out, fileType: .mp4)
 let input = AVAssetWriterInput(mediaType: .video, outputSettings: [AVVideoCodecKey: AVVideoCodecType.h264, AVVideoWidthKey: width,

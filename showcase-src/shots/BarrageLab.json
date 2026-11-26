@@ -1,0 +1,6 @@
+{"sample": "BarrageLab", "parts": [{
+  "scene": "Scenes/Showcase.scene",
+  "seconds": 24,
+  "hold": [[2.0, 2.6, "Up"], [4.5, 5.2, "Down"], [11.0, 11.5, "Up"], [13.0, 13.8, "Down"]],
+  "tap": [[6.0, "B"], [9.0, "B"], [10.0, "Space"], [15.5, "Space"], [17.0, "P"], [20.5, "P"]]
+}]}

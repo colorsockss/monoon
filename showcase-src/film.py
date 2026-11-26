@@ -6,16 +6,18 @@
 A shot file names the sample and one or more parts. Each part copies the sample, makes the part's scene the start scene,
 builds the Release player, writes an .inputreplay from the part's inputs and replays it headless while the player saves
 every frame as PNG (MONOON_REPLAY_SNAPSHOTS, SDL software renderer). The frames of all parts are joined into one
-1600×900 60 fps mp4 by encode.swift, and frames.swift writes a contact sheet next to it for checking.
+60 fps mp4 (largest whole scale within 1080 lines) by encode.swift, and frames.swift writes a contact sheet next to it for checking.
 
     {"sample": "KeyRoom", "parts": [{
         "scene": "Scenes/Showcase.scene",      # optional, default: the sample's start scene
         "seconds": 24,                         # replay length
+        "profile": "development",              # optional build profile (debug draw); default distribution
         "keep": [1.0, 23.5],                   # optional: the seconds that go into the video
         "hold": [[0.5, 2.0, "Right"]],         # key held from..to (seconds)
         "tap":  [[3.0, "Space"]],              # key pressed for 0.1 s
         "type": [[4.0, "모눈"]],               # committed text
-        "click": [[5.0, 400, 225]],            # left click at game pixel x, y
+        "click": [[5.0, 400, 225]],            # left click at game pixel x, y ("rclick": right click)
+        "drag": [[6.0, 7.5, 300, 200, 420, 200]],  # left button held from..to while the pointer moves x0,y0 -> x1,y1
         "move": [[5.5, 420, 230]]}]}           # pointer move
 """
 import argparse, hashlib, json, os, re, shutil, subprocess, sys
@@ -40,16 +42,17 @@ def field(text, key):
     return re.search(rf'^{key}: *(\S+)', text, re.M).group(1)
 
 
-def prepare(sample, scene):
+def prepare(sample, scene, profile='distribution'):
     """Copy of the sample that starts in `scene`; reused while the sample and scene are unchanged."""
     src = ROOT / 'samples' / sample
-    digest = hashlib.sha256(scene.encode())
+    digest = hashlib.sha256((scene + profile).encode())
     for p in sorted(src.rglob('*')):
         if p.is_file() and not {'.monoon', 'bin', 'obj', 'Tests'} & set(p.relative_to(src).parts):
             digest.update(str(p.relative_to(src)).encode()); digest.update(p.read_bytes())
     work = SCRATCH / 'builds' / f'{sample}-{digest.hexdigest()[:12]}'
-    app = work / 'out' / f'{sample}.app'
-    if app.exists(): return work, app
+    # named after gameTitle, not the folder; development builds go one level down (out/Development/)
+    built = lambda: next(iter((*(work / 'out').glob('*.app'), *(work / 'out').glob('*/*.app'))), None)
+    if built(): return work, built()
     shutil.rmtree(work, ignore_errors=True)
     shutil.copytree(src, work / sample, ignore=shutil.ignore_patterns('.monoon', '.monoon-compiled', '.DS_Store', 'bin', 'obj'))
     settings = work / sample / 'GameSettings'
@@ -60,9 +63,9 @@ def prepare(sample, scene):
         if f'- {sid}' not in text:
             text = text.replace('includedScenes:\n', f'includedScenes:\n- {sid}\n')
         settings.write_text(text, encoding='utf-8')
-    subprocess.run([str(ROOT / 'monoon'), 'build', str(work / sample), 'release', '--profile', 'distribution', '--output', str(work / 'out')],
+    subprocess.run([str(ROOT / 'monoon'), 'build', str(work / sample), 'release', '--profile', profile, '--output', str(work / 'out')],
                    check=True, stdout=subprocess.DEVNULL)
-    return work, app
+    return work, built()
 
 
 def recording(part, settings):
@@ -77,14 +80,22 @@ def recording(part, settings):
         events.append((f(a), '{kind: commit, text: ' + json.dumps(text, ensure_ascii=False) + '}'))
     for a, x, y in part.get('move', []):
         events.append((f(a), f'{{kind: pointer, x: {x}, y: {y}}}'))
-    for a, x, y in part.get('click', []):
-        events += [(f(a), f'{{kind: pointer, x: {x}, y: {y}}}'),
-                   (f(a), f'{{kind: pointer, x: {x}, y: {y}, control: Mouse.Left, down: true}}'),
-                   (f(a) + TAP, f'{{kind: pointer, x: {x}, y: {y}, control: Mouse.Left, down: false}}')]
+    for a, b, x0, y0, x1, y1 in part.get('drag', []):
+        n0, n1 = f(a), max(f(a) + 1, f(b))
+        events += [(n0, f'{{kind: pointer, x: {x0}, y: {y0}}}'), (n0, f'{{kind: pointer, x: {x0}, y: {y0}, control: Mouse.Left, down: true}}')]
+        for n in range(n0 + 1, n1 + 1):
+            t = (n - n0) / (n1 - n0)
+            events.append((n, f'{{kind: pointer, x: {round(x0 + (x1 - x0) * t)}, y: {round(y0 + (y1 - y0) * t)}}}'))
+        events.append((n1 + 1, f'{{kind: pointer, x: {x1}, y: {y1}, control: Mouse.Left, down: false}}'))
+    for kind, button in (('click', 'Mouse.Left'), ('rclick', 'Mouse.Right')):
+        for a, x, y in part.get(kind, []):
+            events += [(f(a), f'{{kind: pointer, x: {x}, y: {y}}}'),
+                       (f(a), f'{{kind: pointer, x: {x}, y: {y}, control: {button}, down: true}}'),
+                       (f(a) + TAP, f'{{kind: pointer, x: {x}, y: {y}, control: {button}, down: false}}')]
     events.sort(key=lambda e: e[0])
     body = ''.join(f'- frame: {n}\n  timeTicks: {n * TICK}\n  input: {e}\n' for n, e in events)
     return (f'version: 1\nproject: {field(settings, "projectId")}\nstartScene: {field(settings, "startScene")}\n'
-            f'frameTicks: [{", ".join([str(TICK)] * frames)}]\nevents:\n{body}'), frames
+            f'frameTicks: [{", ".join([str(TICK)] * frames)}]\nevents:{chr(10) + body if body else " []" + chr(10)}'), frames
 
 
 def film(shot_path, out_dir, keep_frames):
@@ -95,7 +106,7 @@ def film(shot_path, out_dir, keep_frames):
     joined = run / 'joined'; joined.mkdir(parents=True)
     count = 0
     for i, part in enumerate(shot['parts']):
-        work, app = prepare(shot['sample'], part.get('scene', ''))
+        work, app = prepare(shot['sample'], part.get('scene', ''), part.get('profile', 'distribution'))
         settings = (app / 'Contents/Resources/Game/GameSettings')
         settings = settings if settings.exists() else next(app.rglob('Game/GameSettings'))
         text, frames = recording(part, settings.read_text(encoding='utf-8'))

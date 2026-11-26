@@ -1,0 +1,6 @@
+{"sample": "CameraLab", "parts": [{
+  "scene": "Scenes/ShowcaseFraming.scene",
+  "profile": "development",
+  "seconds": 15,
+  "tap": [[0.4, "G"]]
+}]}

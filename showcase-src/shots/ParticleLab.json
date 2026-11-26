@@ -1,0 +1,6 @@
+{"sample": "ParticleLab", "parts": [{
+  "scene": "Scenes/Showcase.scene",
+  "seconds": 23,
+  "hold": [[1.2, 2.4, "Right"], [4.0, 5.6, "Right"], [7.4, 9.5, "Right"], [11.0, 12.6, "Right"], [17.0, 19.2, "Right"]],
+  "tap": [[12.8, "Space"], [14.0, "Space"], [15.2, "Space"]]
+}]}

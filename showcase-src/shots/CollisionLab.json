@@ -1,0 +1,11 @@
+{"sample": "CollisionLab", "parts": [{
+ "scene": "Scenes/ShowcaseLantern.scene",
+ "seconds": 9.5,
+ "keep": [0.5, 9.2],
+ "tap": [[1.2, "L"]]
+}, {
+ "scene": "Scenes/ShowcaseCasts.scene",
+ "seconds": 5,
+ "keep": [0.3, 4.8],
+ "tap": [[1.8, "Right"]]
+}]}

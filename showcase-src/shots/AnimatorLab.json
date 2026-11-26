@@ -1,0 +1,9 @@
+{"sample": "AnimatorLab", "parts": [{
+  "scene": "Scenes/Showcase.scene",
+  "seconds": 14.5,
+  "hold": [[1.0, 1.9, "Right"], [1.9, 2.8, "Left"],
+           [2.8, 3.7, "Right"], [2.8, 3.7, "Up"], [3.7, 4.6, "Left"], [3.7, 4.6, "Down"],
+           [4.6, 5.2, "Up"], [5.2, 5.8, "Down"],
+           [5.8, 6.7, "Left"], [5.8, 6.7, "Up"], [6.7, 7.6, "Right"], [6.7, 7.6, "Down"]],
+  "tap": [[8.4, "Space"], [9.8, "Space"], [11.2, "Space"]]
+}]}
