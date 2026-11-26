@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Linq;
 using System.Numerics;
 using Engine.Core;
 using MoNoon.Dialogue;
@@ -127,14 +128,16 @@ public sealed class HerbYard : GameBehaviour
         { Show(tick.Ui, tick.Objects, "The save could not be read."); }
     }
 
-    // shortcut: cuts the editor Play save file in half to stand in for a crash during a write; showcase only.
+    // shortcut: cuts the newest save file in half to stand in for a crash during a write; showcase only. It guesses the
+    // storage folder (editor Play, built game, or a replay profile) because scripts don't get PlayerStorage's path.
     private void Crash(IGameUi ui, IGameObjects objects)
     {
         var root = Environment.GetEnvironmentVariable("MONOON_USER_DATA");
         if (string.IsNullOrWhiteSpace(root)) root = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "MoNoon");
         if (!Guid.TryParse(ProjectId, out var project)) { Show(ui, objects, "No project id."); return; }
-        var path = Path.Combine(root, "Play", project.ToString("N"), "slot-001.save");
-        if (!File.Exists(path)) { Show(ui, objects, "Save first."); return; }
+        var path = new[] { Path.Combine(root, "Play", project.ToString("N")), Path.Combine(root, "Games", project.ToString("N")), root }
+            .Select(folder => Path.Combine(folder, "slot-001.save")).Where(File.Exists).OrderByDescending(File.GetLastWriteTimeUtc).FirstOrDefault();
+        if (path == null) { Show(ui, objects, "Save first."); return; }
         var bytes = File.ReadAllBytes(path);
         File.WriteAllBytes(path, bytes[..(bytes.Length / 2)]);
         Show(ui, objects, "Crash mid-save: the file is cut in half.");
